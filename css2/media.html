@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+
+<HEAD>
+<TITLE>Media types</TITLE>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="cascade.html">
+<link rel="next" href="box.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+</HEAD>
+<BODY>
+<div class="navbar">
+<p><a href="cascade.html">前章</a> &nbsp; <a href="box.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+<H1><a name="q0">7 メディアタイプ</a></H1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="media.html#media-intro" class="tocxref">7.1メディアタイプの手引き</a>
+    </li><li class="tocline2"><a href="media.html#media-sheets" class="tocxref">7.2メディア依存なスタイルシートの指定</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="media.html#at-media-rule" class="tocxref">7.2.1 @media規則</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="media.html#media-types" class="tocxref">7.3認識されるメディアタイプ</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="media.html#media-groups" class="tocxref">7.3.1メディアグループ</a>
+    </li></ul>
+  </li></ul>
+</div>
+
+<H2>7.1 <a name="media-intro">メディアタイプの手引き</a></H2>
+
+<P>スタイルシートの最も重要な特徴のひとつは、画面上に、紙の上に、音声シンセサイザーに、点字デバイスになどの異なるメディア上への文書の表示方法を指定することである。
+
+<P>特定のCSSプロパティは、特定のメディア用に設計されている（例えば、<a href="page.html#propdef-page-break-before" class="noxref"><span
+class="propinst-page-break-before">'page-break-before'</span></a> プロパティは、ページメディアに適用される）。しかし、時折異なるメディアタイプのスタイルシートはプロパティを共有することがあるが、そのプロパティに異なる値が必要な場合がある。たとえば、<a href="fonts.html#propdef-font-size" class="noxref"><span
+class="propinst-font-size">'font-size'</span></a>プロパティは、画面と印刷メディアの両方に有用である。2つのメディアタイプは、共通のプロパティに別の値を必要とするほど異なるものである。一般に、文書は紙の上よりもコンピュータの画面上でより大きなフォントが必要になる。したがって、スタイルシートまたはスタイルシートの一部では、特定のメディアタイプの適用を表現する必要がある。
+
+<H2>7.2 <a name="media-sheets">メディア依存なスタイルシートの指定</a></H2>
+<P>スタイルシートのメディア依存関係を指定するには2つの方法が現在ある。</p>
+
+<UL>
+
+<LI><a name="x0"><span
+	    class="index-inst" title="@media">@media</span></a>または<a name="x1"><span
+	    class="index-inst" title="@import">@import</span></a>規則でスタイルシートから対象メディアを指定する。
+
+<div class="example"><P style="display:none">例：</P>
+<PRE>
+@import url("fancyfonts.css") screen;
+@media print {
+  /* 印刷用のスタイルシートがここに入る */
+}
+</PRE>
+</div>
+
+</LI><LI>言語内の対象メディアを指定する。たとえば、HTML 4（<a href="refs.html#ref-HTML4" rel="biblioentry" class="noxref"><span class="informref">[HTML4]</span></a>）では、LINK要素の"media"属性が外部スタイルシートの対象メディアを指定する。
+
+<div class="html-example">
+
+<PRE>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+   &lt;HEAD&gt;
+      &lt;TITLE&gt;Link to a target medium&lt;/TITLE&gt;
+      &lt;LINK REL="stylesheet" TYPE="text/css" 
+	 MEDIA="print, handheld" HREF="foo.css"&gt;
+   &lt;/HEAD&gt;
+   &lt;BODY&gt;
+      &lt;P&gt;The body...
+   &lt;/BODY&gt;
+&lt;/HTML&gt;
+</PRE>
+</div>
+</LI></UL>
+
+<p><a href="cascade.html#at-import">@import</a>は、<a href="cascade.html">カスケード処理の章</a>で定義されている。
+
+
+<H3>7.2.1 <a name="at-media-rule">@media規則</a></H3> 
+
+<P><a name="x2"><span class="index-def" title="media">@media</span></a>規則は<a
+href="syndata.html#tokenization">文</a>の集合（波括弧区切り）の対象<a href="#media-types">メディアタイプ</a>（コンマ区切り）を指定する。妥当でない文は、<a
+href="syndata.html#rule-sets">4.1.7節"規則セット、宣言ブロック、およびセレクタ"</a>と<a href="syndata.html#parsing-errors">4.2節"構文解析エラーの処理ルール"</a>を通して無視されなければならない。<a name="x3"><span
+class="index-inst" title="@media">@media</span></a>構造は、同一スタイルシート内の複数メディアのスタイルシート規則を許可する。</P>
+
+<pre class="example">
+  @media print {
+    body { font-size: 10pt }
+  }
+  @media screen {
+    body { font-size: 13px }
+  }
+  @media screen, print {
+    body { line-height: 1.2 }
+  }
+</pre>
+
+<p>@media規則外のスタイル規則は、スタイルシートを適用するすべてのメディアタイプに適用される。@media内部での@規則はCSS 2.1において無効である。
+
+<H2>7.3 <a name="media-types">認識されるメディアタイプ</a></H2> 
+
+
+
+<P>CSSメディアタイプに選ばれた名前は、関連するプロパティが意味をなす対象デバイスを反映している。以下のリストにあるCSSメディアタイプの名前は規範的であるが、説明は参考情報である。同様に、各プロパティの説明で"メディア"欄は参考情報である。
+
+<dl>
+<dt><strong>all</strong>
+<dd>すべてのデバイスにあてはまる。
+
+
+
+<dt><strong>braille</strong>
+<dd>点字触覚フィードバックデバイスを対象とする。
+
+<dt><strong>embossed</strong>
+<dd>ページ点字プリンタを対象としている。
+
+<dt><strong>handheld</strong>
+<dd>携帯端末（典型的な小さな画面、限られた帯域幅）を対象としている。
+
+<dt><strong>print</strong> 
+<dd>ページ素材を対象とした、または印刷プレビューモードの画面表示を想定している。ページメディア固有な整形問題の詳細については、<a
+href="page.html">ページメディア</a>に関する節を参照のこと。
+
+<dt><strong>projection</strong>
+<dd>例では、プロジェクターの投影を意図する。ページメディア固有な整形問題の詳細については、<a href="page.html">ページメディア</a>に関する節を参照のこと。
+
+<dt><strong>screen</strong> 
+<dd>主としてコンピュータのカラー画面を対象とする。 
+
+<dt><strong>speech</strong>
+<dd>音声合成を対象とする。注: CSS2は、この目的に対して"aural"と呼ばれる類似したメディアタイプを持っていた。詳細については<a href="./aural.html">聴覚スタイルシート</a>に関する付録を参照のこと。 
+
+<dt><strong>tty</strong>
+<dd>固定ピッチ文字格子（例えば、限られた表示機能を備えたテレタイプ、端末、またはポータブルデバイスなど）を使用したメディアを対象とする。著者は、"tty"メディアタイプで<a
+href="syndata.html#length-units">ピクセル単位</a>を使用すべきでない。
+
+<dt><strong>tv</strong>
+<dd>テレビ型デバイス（低解像度、カラー、限定スクロール画面、音声使用可能）を対象とする。 
+</dl>
+
+<P>メディアタイプ名は大文字と小文字の区別をしない。  
+
+<P>メディアタイプは、文書をレンダリングする際にユーザーエージェントが1つのメディアタイプのみをサポート可能であるという意味で相互に排他的である。ただし、ユーザーエージェントは、別のキャンバスに異なるメディアタイプを使用してもよい。たとえば、文書が（同時に）1つのキャンバスに'print'モード、もう1つのキャンバス上に'screen'モードで表示してもよい。 
+
+<p>マルチメディアタイプが1つのメディアタイプでしかないことに注意する。たとえば、'tv'メディアタイプは、単一のキャンバスに視覚と聴覚の両方をレンダリングするマルチメディアタイプである。
+
+<p>未知のメディアタイプをもつ（とはいえ、妥当な識別子である）@mediaと@import規則は、未知のメディアタイプが存在しないかのように処理される。@mediaまたは@import規則は、（識別子でない）不正な形式のメディアタイプを含む場合、その文は無効である。
+
+<p class=note><em><strong>注:</strong> メディアクエリは、このエラー処理を優先する。</em>
+
+<div class="example"><P style="display:none">例：</P>
+<p>たとえば、次の断片においてP要素の規則は、（'3D'メディアタイプが未知であるが）'screen'モードが適用される。
+
+<pre>
+@media screen, 3D {
+  P { color: green; }
+}
+</pre>
+</div>
+
+
+<div class="note"><P>
+<em><strong>注。</strong> 将来のCSSの改訂では、メディアタイプのリストを拡張するかもしれない。著者は、CSS仕様で未定義なメディアタイプの名前に依存すべきではない。
+</em>
+</div>
+
+<H3>7.3.1 <a name="media-groups">メディアグループ</a></H3>
+
+<P><em>この節は参考情報で、規範的ではない。</em></P>
+
+<P>各CSSプロパティの定義は、プロパティが適用されるメディアタイプを指定する。プロパティは、一般的に複数のメディアタイプに適用されるので、各プロパティ定義リストの<a name="x4"><span class="index-def" title="media group">メディアグループ</span></a>ではなく、個々のメディアタイプの"メディアに適用される"。各プロパティは、その定義に記載されているメディアグループ内のすべてのメディアタイプに適用される。
+
+<P>CSS 2.1は次のメディアグループを定義している。 </P>
+<ul>
+<li>
+<span class="index-def" title="'continuous' media group"><a
+name="continuous-media-group"><strong>continuous</strong></a></span>または<span class="index-def" title="'paged' media group"><a
+name="paged-media-group"><strong>paged</strong></a></span>。
+
+</li><li><span
+class="index-def" title="'visual' media group"><a
+name="visual-media-group"><strong>visual</strong></a></span>、<span class="index-def" title="'audio' media group"><a
+name="audio-media-group"><strong>audio</strong></a></span>、<span class="index-def" title="'speech' media group"><a
+name="speech-media-group"><strong>speech</strong></a></span>、<span
+class="index-def" title="'tactile' media group"><a
+name="tactile-media-group"><strong>tactile</strong></a></span>。
+</li><li><span
+class="index-def" title="'grid' media group"><a
+name="grid-media-group"><strong>grid</strong></a></span>（文字グリッドデバイス）または<span
+class="index-def" title="'bitmap' media group"><a
+name="bitmap-media-group"><strong>bitmap</strong></a></span>。
+
+</li><li><span
+class="index-def" title="'interactive media group"><a
+name="interactive-media-group"><strong>interactive</strong></a></span>（ユーザーとの対話を許可するデバイス）または<span
+class="index-def" title="'static' media group"><a
+name="static-media-group"><strong>static</strong></a></span>（そうでないもの）。
+
+</li><li><span class="index-def" title="'all'
+media group"> <a name="all-media-group"><strong>all</strong></a></span> （すべてのメディアタイプを含む）
+</li></ul>
+
+<P>次の表は、メディアグループとメディアタイプ間の関係を示している。</P>
+
+<TABLE border=1 
+       summary="メディアグループとメディアタイプの関係">
+<CAPTION>メディアグループとメディアタイプの関係</CAPTION>
+<TR><TH>メディアタイプ </TH><TH colspan="4">メディアグループ
+</TH></TR><TR><TH>&nbsp;
+    </TH><TH>continuous/paged
+    
+    </TH><TH>visual/audio/speech/tactile
+    
+    </TH><TH>grid/bitmap
+    
+    </TH><TH>interactive/static
+
+
+
+</TH></TR><TR><TH>braille<TD align="center">continuous</TD><TD align="center">tactile</TD><TD align="center">grid</TD><TD align="center">both</TD></TH></TR>
+<TR><TH>embossed<TD align="center">paged</TD><TD align="center">tactile</TD><TD align="center">grid</TD><TD align="center">static</TD></TH></TR>
+<TR><TH>handheld<TD align="center">both</TD><TD align="center">visual, audio, speech</TD><TD
+align="center">both</TD><TD align="center">both</TD></TH></TR>
+<TR><TH>print<TD align="center">paged</TD><TD align="center">visual</TD><TD
+align="center">bitmap</TD><TD align="center">static</TD></TH></TR>
+<TR><TH>projection<TD align="center">paged</TD><TD align="center">visual</TD><TD align="center">bitmap</TD><TD align="center">interactive</TD></TH></TR>
+<TR><TH>screen<TD align="center">continuous</TD><TD align="center">visual, audio</TD><TD align="center">bitmap</TD><TD align="center">both</TD></TH></TR>
+<TR><TH>speech<TD align="center">continuous</TD><TD align="center">speech</TD><TD align="center">利用不可</TD><TD align="center">both</TD></TH></TR>
+<TR><TH>tty<TD align="center">continuous</TD><TD align="center">visual</TD><TD align="center">grid</TD><TD align="center">both</TD></TH></TR>
+<TR><TH>tv<TD align="center">both</TD><TD align="center">visual, audio</TD><TD align="center">bitmap</TD><TD align="center">both</TD></TH></TR>
+</TABLE>
+
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="cascade.html">前章</a> &nbsp; <a href="box.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</BODY>
+</html>
+
