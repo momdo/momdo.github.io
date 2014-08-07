@@ -1,0 +1,390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+<head>
+<title>視覚効果</title>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="visudet.html">
+<link rel="next" href="generate.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+<style type="text/css">
+.current,.proposed,span.delcurrent { background:#feb }
+ins.proposed,span.insproposed { background:#bfb }
+del.proposed,span.delproposed { background:#fbb }
+span.insproposed { text-decoration:underline }
+span.delproposed,span.delcurrent { text-decoration:line-through }
+body>del,body>ins {display:block}
+</style>
+</head>
+<body>
+<div class="navbar">
+<p><a href="visudet.html">前章</a> &nbsp; <a href="generate.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+<h1><a name="q0">11 視覚効果</a></h1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="visufx.html#overflow-clipping" class="tocxref">11.1 はみ出しと切り抜き</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visufx.html#overflow" class="tocxref">11.1.1 はみ出し: <span class="propinst-overflow">'overflow'</span>プロパティ</a>
+      </li><li class="tocline3"><a href="visufx.html#clipping" class="tocxref">11.1.2 切り抜き: <span class="propinst-clip">'clip'</span>プロパティ</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visufx.html#visibility" class="tocxref">11.2 可視性: <span class="propinst-visibility">'visibility'</span>プロパティ</a>
+  </li></ul>
+</div>
+
+<h2>11.1 <a name="overflow-clipping">はみ出しと切り抜き</a></h2>
+
+<p>一般に、ブロックボックスの内容はボックスの内容辺の範囲内にとどめられる。場合によっては、ボックスは<a name="x0"><span
+class="index-def"
+title="overflow|box::overflow"><dfn>はみ出し</dfn></span></a>てもよく、その内容がボックスの外に一部あるいは全部を並べてしまうことを意味する。たとえば：</p>
+
+<ul>
+<li>行ボックスがブロックボックスより広くなるために、改行できない。
+</li>
+<li>ブロックレベルボックスの幅が包含ブロックに対して大きすぎる。要素の<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティが、生成ブロックボックスが包含ブロックの辺をあふれ出るような値を持つ場合、これは起ってもよい。
+</li>
+<li>要素の高さが、包含ブロックに割り当てられた明示的な高さを越える（すなわち、包含ブロックの高さが内容高さによってではなく、<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>プロパティによって決定される）。
+</li>
+<li>子孫ボックスは<a href="visuren.html#absolute-positioning">絶対配置</a>であり、ボックスの外に部分的にある。そのようなボックスはそれらの祖先で常にoverflowプロパティによって切り取られるわけではない。特に、それらは自分自身とそれらの包含ブロックの間の任意の祖先のオーバーフローによって切り取られない。
+</li>
+<li>子孫ボックスは部分的にボックスの外に置かれるために、<a href="box.html#margin-properties">負のマージン</a>を持つ。
+</li>
+<li>'text-indent'プロパティは、ブロックボックスの左右のどちらかの辺の後ろの方にいるインラインボックスの原因となる。
+</li>
+</ul>
+
+<p>はみ出しが起こるときはいつでも、<a href="visufx.html#propdef-overflow" class="noxref"><span
+class="propinst-overflow">'overflow'</span></a>プロパティは、ボックスがパディング辺で切り取られたかどうか、かつ、もしそうだとしたら、スクロールメカニズムが任意の切り取られた内容にアクセスを提供するかどうかを指定する。
+</p>
+
+<h3>11.1.1 <a name="overflow">はみ出し</a>: <a href="visufx.html#propdef-overflow" class="noxref"><span
+class="propinst-overflow">'overflow'</span></a>プロパティ</h3>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'overflow'"><a name="propdef-overflow" class="propdef-title"><strong>'overflow'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>visible | hidden | scroll | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>visible
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>block containers and boxes that establish a formatting context
+
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>
+このプロパティは、要素のボックスからはみ出したときに、ブロックコンテナ要素の内容が切り抜かれるかどうかを指定する。それは要素のすべてのコンテンツのクリッピングに影響を与える。ただし、任意の子孫要素（およびそれぞれの内容およびその子孫）の包含ブロックがビューポートまたは要素の祖先である場合を除く。値の意味は次のとおり：
+</p>
+
+<dl>
+
+<dt><strong>visible</strong></dt>
+
+<dd>この値は内容を切り抜かないよう指示する。すなわち、ブロックボックスの外側に描画されてもよい。 
+</dd>
+
+<dt><strong>hidden</strong></dt>
+
+<dd>この値は、内容が切り抜かれるよう指示する。スクロールなしのユーザーインターフェースが切り抜き要素の外側で内容を閲覧するために提供されるべきである。
+</dd>
+
+<dt><strong>scroll</strong></dt>
+
+<dd>この値は、内容が切り抜かれるよう指示する。ユーザーエージェントが画面上で可視のスクロールメカニズム（スクロールバーやパン表示など）を用いる場合、そのメカニズムは、その内容が切り抜かれたどうかに関わらずボックスを表示されるべきである。こうすれば、スクロールバーが動的な環境に現れたり消えたりする問題を回避できる。この値が指定され、対象メディアが'print'の場合、はみ出した内容が印刷されてもよい。When used on <a href="tables.html#table-box">table boxes,</a> this value has the same meaning as 'visible'.
+</dd>
+
+<dt><strong>auto</strong></dt>
+
+<dd>'auto'値の振る舞いはユーザーエージェント依存だが、はみ出したボックスにスクロールメカニズムを提供すべきである。When used on <a href="tables.html#table-box">table boxes,</a> this value has the same meaning as 'visible'.
+</dd>
+
+</dl>
+
+<p> たとえ<a href="visufx.html#propdef-overflow" class="noxref"><span class="propinst-overflow">'overflow'</span></a>が'visible'に設定されても、内容はネイティヴな操作環境によってユーザーエージェントのウィンドウを切り抜かれてもよい。
+</p>
+
+<p>On a table element ('display: table'), 'overflow' applies to the <a
+href="tables.html#table-box">table box</a> (i.e., not the <a
+href="tables.html#table-wrapper-box">table wrapper box</a>) and all
+values other than 'hidden' are treated as 'visible'.
+
+
+
+<p>
+ユーザーエージェントは、ビューポートへルート要素に設定された'overflow'プロパティを適用しなければならない。ルート要素はHTMLの"HTML"要素またはXHTMLの"html"要素であり、その要素は子としてHTMLの"BODY"要素またはXHTMLの"body"要素を持ち、ルート要素の値が'visible'である場合、ユーザーエージェントは、そのような子要素の最初からビューポートまで、'overflow'プロパティを代わりに適用しなければならない。ビューポートに使用されるとき'visible'値は'auto'として解釈さればければならない。値が伝播された要素は'visible'の'overflow'の使用値を持たなければならない。
+</p>
+
+<p>
+要素のボックス辺に置かれるスクロールバーの場合、そのスクロールバーは内側のボーダー辺と外側のパディング辺の間に挿入すべきである。スクロールバーによって占有されるすべての領域は、スクロールバーを持つ要素によって整形される包含ブロック（の大きさから減算）から取り出されるべきである。
+</p>
+
+<div class="example"><P style="display:none">例：</P><p>
+次の例を考えてみよう。ブロック引用（<code>&lt;blockquote&gt;</code>）は（<code>&lt;div&gt;</code>によって設置された）包含ブロックが大きすぎる。以下にソースを示す:</p>
+
+<pre class="html-example"><code class="html">
+&lt;div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I didn't like the play, but then I saw
+it under adverse conditions - the curtain was up.&lt;/p&gt;
+&lt;cite&gt;- Groucho Marx&lt;/cite&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>生成ボックスのサイズとスタイルを制御するスタイルシートは次のとおり:
+</p>
+
+<pre><code class="css">
+div { width : 100px; height: 100px;
+      border: thin solid red;
+      }
+
+blockquote   { width : 125px; height : 100px;
+      margin-top: 50px; margin-left: 50px; 
+      border: thin dashed black
+      }
+
+cite { display: block;
+       text-align : right; 
+       border: none
+       }
+</code></pre>
+
+<p><a href="visufx.html#propdef-overflow" class="noxref"><span
+class="propinst-overflow">'overflow'</span></a>の初期値は'visible'なので、<code>&lt;blockquote&gt;</code>は切り抜かれず、次のように整形されるだろう:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/overflow1.png" alt="はみだしの描画"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-overflow1" href="http://www.w3.org/TR/CSS2/images/longdesc/overflow1-desc.html" title="はみ出した内容が表示される例について">[D]</A></SPAN></p>
+</div>
+
+<p>一方、<code>&lt;div&gt;</code>の<a href="visufx.html#propdef-overflow" class="noxref"><span class="propinst-overflow">'overflow'</span></a>プロパティを'hidden'に設定すると、<code>&lt;blockquote&gt;</code>は包含する<code>&lt;div&gt;</code>に切り抜かれる:
+</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/overflow2.png" alt="切り抜きのはみ出し"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-overflow2" href="http://www.w3.org/TR/CSS2/images/longdesc/overflow2-desc.html" title="はみ出した内容が表示されない例について">[D]</A></SPAN></p>
+</div>
+
+<p>'scroll'を指定すると、ユーザが切り抜き内容を閲覧できるように、視覚スクロールメカニズムをサポートするユーザーエージェントに対して促す。
+</p>
+</div>
+
+<div>
+<p>
+最後に、絶対配置の要素があふれた親と混ぜられた場合を検討してみる。
+</p>
+<p>
+スタイルシートは:
+</p>
+<pre><code class="html">
+  container { position: relative; border: solid; }
+  scroller { overflow: scroll; height: 5em; margin: 5em; }
+  satellite { position: absolute; top: 0; }
+  body { height: 10em; }
+</code></pre>
+<p>
+文書断片は:
+</p>
+<pre><code class="xml">
+  &lt;container&gt;
+   &lt;scroller&gt;
+    &lt;satellite/&gt;
+    &lt;body/&gt;
+   &lt;/scroller&gt;
+  &lt;/container&gt;
+</code></pre>
+<p>
+この例では、後者の包含ブロックがあふれを切り取られてスクロールされる要素の外であるため、"scroller"要素は"satellite"要素をスクロールされない。
+</p>
+</div>
+
+<h3>11.1.2 <a name="clipping">切り抜き</a>: <a href="visufx.html#propdef-clip" class="noxref"><span
+class="propinst-clip">'clip'</span></a>プロパティ</h3>
+
+
+
+<p><a name="x3"><span class="index-def" title="clipping region"><dfn>切り抜き領域</dfn></span></a>は、要素のボーダーボックスの可視部であると定義する。デフォルトで、要素は切り抜かれない。しかし、切り抜き領域は<a href="visufx.html#propdef-clip" class="noxref"><span class="propinst-clip">'clip'</span></a>プロパティの設定で明示してもよい。
+</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'clip'"><a name="propdef-clip" class="propdef-title"><strong>'clip'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="visufx.html#value-def-shape" class="noxref"><span class="value-inst-shape">&lt;shape&gt;</span></a> | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>絶対配置要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>'auto'として指定された、またはそうでなければそれぞれ4つの値を持つ矩形として指定された、または'auto'として指定され、かつそれ以外の場合は算出長さとして指定されれば'auto'
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>'clip'プロパティは、絶対配置要素にのみ適用する。値の意味は次のとおり：</p>
+
+<dl>
+<dt><strong>auto</strong></dt>
+<dd>要素を切り抜かない。</dd>
+
+<dt><span class="index-def" title="&lt;shape&gt;::definition of"><a
+name="value-def-shape"
+class="value-def"><strong>&lt;shape&gt;</strong></a></span></dt>
+<dd>CSS&nbsp;2.1では、唯一妥当な&lt;shape&gt;値はrect(<a href="visufx.html#value-def-top" class="noxref"><span
+class="value-inst-top">&lt;top&gt;</span></a>, <a href="visufx.html#value-def-right" class="noxref"><span
+class="value-inst-right">&lt;right&gt;</span></a>, <a href="visufx.html#value-def-bottom" class="noxref"><span
+class="value-inst-bottom">&lt;bottom&gt;</span></a>, <a href="visufx.html#value-def-left" class="noxref"><span
+class="value-inst-left">&lt;left&gt;</span></a>) である。ここで<a href="visufx.html#value-def-top" class="noxref"><span class="value-inst-top">&lt;top&gt;</span></a>と<a href="visufx.html#value-def-bottom" class="noxref"><span
+class="value-inst-bottom">&lt;bottom&gt;</span></a>はボックスの上ボーダー辺からのオフセットを指定し、<a href="visufx.html#value-def-right" class="noxref"><span
+class="value-inst-right">&lt;right&gt;</span></a>と<a href="visufx.html#value-def-left" class="noxref"><span
+class="value-inst-left">&lt;left&gt;</span></a>はボックスの左ボーダー辺からのオフセットを指定する。著者はオフセット値をコンマで区切るべきである。ユーザーエージェントはコンマ区切りをサポートしなければならないが、コンマなし（組み合わせではない）の区切りをサポートしなくてもよい。本仕様の以前の版がこの点において曖昧であったためである。
+
+<p><span class="index-def" title="&lt;top&gt;::definition of"><a
+name="value-def-top" class="value-def">&lt;top&gt;</a></span>、<span
+class="index-def" title="&lt;right&gt;::definition of"><a
+name="value-def-right" class="value-def">&lt;right&gt;</a></span>、<span class="index-def" title="&lt;bottom&gt;::definition of"><a
+name="value-def-bottom" class="value-def">&lt;bottom&gt;</a></span>、<span class="index-def" title="&lt;left&gt;::definition of"><a
+name="value-def-left" class="value-def">&lt;left&gt;</a></span>は<a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a>値または'auto'のどちらかを持ってもよい。負の値は許可される。値'auto'は、与えられた切り抜き領域の辺が、要素の生成ボーダーボックスの辺と同じになることを意味する（すなわち、'auto'は<a href="visufx.html#value-def-top" class="noxref"><span class="value-inst-top">&lt;top&gt;</span></a>と<a href="visufx.html#value-def-left" class="noxref"><span
+class="value-inst-left">&lt;left&gt;</span></a>が'0'と同じであり、垂直方向のパディングの合計と<a href="visufx.html#value-def-right" class="noxref"><span
+class="value-inst-right">&lt;bottom&gt;</span></a>のボーダー幅の合計を加えた高さの使用値と同じで、水平方向のパディングと<a href="visufx.html#value-def-right" class="noxref"><span class="value-inst-right">&lt;right&gt;</span></a>のボーダー幅の合計を加えた幅の使用値と同じであることを意味し、そのような切り抜き領域での4つの'auto'値の結果は要素のボーダーボックスと同じである）。
+</p>
+<p>座標がピクセル座標に丸められる場合、&lt;left&gt;と&lt;right&gt;が同じ値を持つ（または&lt;top&gt;と&lt;bottom&gt;が同じ値を持つ）とき、ピクセル表示が残らないよう注意し、逆にこれらの値が'auto'のとき要素のボーダーボックスが非表示のままである。
+</p>
+</dd>
+</dl>
+
+<p>要素の切り抜き範囲は、切り抜き領域外にある要素の任意のアスペクト（たとえば、もしあれば、内容、子供、背景、ボーダー、テキストの装飾、アウトライン、可視スクロール機構）を切り抜く。切り抜かれた内容は、あふれ出しが起きない。
+</p>
+<p>要素の祖先がそれらの内容の一部を切り抜いてもよい（たとえば、自分の'clip'プロパティを経由しおよび/または<a href="visufx.html#propdef-clip" class="noxref"><span class="propinst-clip">'overflow'</span></a>プロパティが'visible'でない場合）。レンダリングされたものは、累積する共通集合である。
+</p>
+<p>切り抜き領域がユーザーエージェントの文書ウィンドウの境界を超えている場合、内容はネイティブの動作環境によってそのウィンドウに切り抜かれてもよい。
+</p>
+<div class="example"><P style="display:none">例：</P><p>次の2つの規則は:</p>
+<pre><code class="css">p#one { clip: rect(5px, 40px, 45px, 5px); }
+p#two { clip: rect(5px, 55px, 45px, 5px); }</code></pre>
+
+<p>両方の要素が50 * 55pxであると仮定すると、それぞれ、次の図に破線区切りで矩形の切り抜き領域を作成する:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/clip.png" alt="2つの切り抜き領域"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-clip" href="http://www.w3.org/TR/CSS2/images/longdesc/clip-desc.html" title="切り抜き領域の例について">[D]</A></SPAN></p>
+</div>
+</div>
+
+<div class="note"><p> <em><strong>注。</strong> CSS&nbsp;2.1では、すべての切り抜き領域は矩形である。将来的には矩形でない切り抜き領域も使えるような拡張が望ましい。将来の更新は、各辺から図形を相殺する代わりに、点から相殺するための構文を再導入するかもしれない。</em></p></div>
+
+<h2>11.2 <a name="visibility">可視性</a>:  <a href="visufx.html#propdef-visibility" class="noxref"><span
+class="propinst-visibility">'visibility'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'visibility'"><a name="propdef-visibility" class="propdef-title"><strong>'visibility'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>visible | hidden | collapse | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>visible
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p><a href="visufx.html#propdef-visibility" class="noxref"><span class="propinst-visibility">'visibility'</span></a>プロパティは、要素を描画することによって生成されたボックスを表示するかどうかを指定する。不可視のボックスはそれでもレイアウトに影響する（完全にボックス生成を抑制するには<a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>プロパティを'none'に設定する）。値の意味は次のとおり：</p>
+
+<dl>
+<dt><strong>visible</strong></dt>
+<dd>生成ボックスを可視にする。</dd> 
+<dt><strong>hidden</strong></dt>
+<dd>生成ボックスを不可視（何も描かれず、完全に透明）にするが、レイアウトには影響する。さらに、それが'visibility: visible'を持つ場合、要素の子孫は可視になる。</dd>
+<dt><strong>collapse</strong></dt>
+<dd>テーブルについての<a href="tables.html#dynamic-effects">行や列の動的効果</a>の節を参照のこと。行、行グループ、列、列グループ以外の要素で用いられる場合、'collapse'は'hidden'と同じ意味を持つ。
+</dd>
+</dl>
+
+<p>このプロパティは、動的な効果を生み出すためにスクリプトと組み合わせて使用されてもよい。
+</p>
+<div class="html-example"><p> 次の例では、どちらかのフォームのボタンを押すと対応するボックスを表示し、もう一方のボックスを非表示にする、著者が定義したスクリプト関数を呼び出す。これらのボックスは同じサイズと位置を持つので、一方が他方を置き換える効果が得られる。（このスクリプトコードは仮想的なスクリプト言語である。CSSを実装したユーザーエージェントが何らかの効果を得るとは限らない。）
+</p>
+<pre><code class="html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;&lt;TITLE&gt;Dynamic visibility example&lt;/TITLE&gt;
+&lt;META 
+ http-equiv="Content-Script-Type"
+ content="application/x-hypothetical-scripting-language"&gt;
+&lt;STYLE type="text/css"&gt;
+&lt;!--
+   #container1 { position: absolute; 
+                 top: 2in; left: 2in; width: 2in }
+   #container2 { position: absolute; 
+                 top: 2in; left: 2in; width: 2in;
+                 visibility: hidden; }
+--&gt;
+&lt;/STYLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+&lt;P&gt;Choose a suspect:&lt;/P&gt;
+&lt;DIV id="container1"&gt;
+   &lt;IMG alt="Al Capone" 
+        width="100" height="100" 
+        src="suspect1.png"&gt;
+   &lt;P&gt;Name: Al Capone&lt;/P&gt;
+   &lt;P&gt;Residence: Chicago&lt;/P&gt;
+&lt;/DIV&gt;
+
+&lt;DIV id="container2"&gt;
+   &lt;IMG alt="Lucky Luciano" 
+        width="100" height="100" 
+        src="suspect2.png"&gt;
+   &lt;P&gt;Name: Lucky Luciano&lt;/P&gt;
+   &lt;P&gt;Residence: New York&lt;/P&gt;
+&lt;/DIV&gt;
+
+&lt;FORM method="post" 
+      action="http://www.suspect.org/process-bums"&gt;
+   &lt;P&gt;
+   &lt;INPUT name="Capone" type="button" 
+          value="Capone" 
+          onclick='show("container1");hide("container2")'&gt;
+   &lt;INPUT name="Luciano" type="button" 
+          value="Luciano" 
+          onclick='show("container2");hide("container1")'&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+</code></pre>
+
+</div>
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="visudet.html">前章</a> &nbsp; <a href="generate.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</body>
+</html>
+
