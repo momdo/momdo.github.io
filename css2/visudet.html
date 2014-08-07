@@ -1,0 +1,1155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+
+<head>
+<title>視覚整形モデル詳細</title>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="visuren.html">
+<link rel="next" href="visufx.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+<style type="text/css">
+.current,.proposed,span.delcurrent,div.delcurrent { background:#feb }
+ins.proposed,span.insproposed,li.insproposed,div.insproposed { background:#bfb }
+del.proposed,span.delproposed { background:#fbb }
+span.insproposed,li.insproposed,div.insproposed { text-decoration:underline }
+span.delproposed,span.delcurrent,div.delcurrent { text-decoration:line-through }
+body>del,body>ins {display:block}
+</style>
+</head>
+<body>
+<div class="navbar">
+<p><a href="visuren.html">前章</a> &nbsp; <a href="visufx.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+<h1><a name="q0">10 視覚整形モデル詳細</a></h1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="visudet.html#containing-block-details" class="tocxref">10.1 "包含ブロック"の定義</a>
+    </li><li class="tocline2"><a href="visudet.html#the-width-property" class="tocxref">10.2 内容の幅: <span class="propinst-width">'width'</span>プロパティ</a>
+    </li><li class="tocline2"><a href="visudet.html#Computing_widths_and_margins" class="tocxref">10.3 幅とマージンの計算</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visudet.html#inline-width" class="tocxref">10.3.1 非置換インライン要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#inline-replaced-width" class="tocxref">10.3.2 置換インライン要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#blockwidth" class="tocxref">10.3.3 通常フローでの非置換ブロック要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#block-replaced-width" class="tocxref">10.3.4 通常フローでの置換ブロック要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#float-width" class="tocxref">10.3.5 非置換浮動要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#float-replaced-width" class="tocxref">10.3.6 置換浮動要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#abs-non-replaced-width" class="tocxref">10.3.7 絶対配置の非置換要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#abs-replaced-width" class="tocxref">10.3.8 絶対配置の置換要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#inlineblock-width" class="tocxref">10.3.9 通常フローでの非置換インラインブロック要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#inlineblock-replaced-width" class="tocxref">10.3.10 通常フローでの置換インラインブロック要素の場合</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visudet.html#min-max-widths" class="tocxref">10.4 幅の最大値と最小値: <span class="propinst-min-width">'min-width'</span>および<span class="propinst-max-width">'max-width'</span></a>
+    </li><li class="tocline2"><a href="visudet.html#the-height-property" class="tocxref">10.5 内容の高さ: <span class="propinst-height">'height'</span>プロパティ</a>
+    </li><li class="tocline2"><a href="visudet.html#Computing_heights_and_margins" class="tocxref">10.6 高さとマージンの計算</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visudet.html#inline-non-replaced" class="tocxref">10.6.1 非置換インライン要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#inline-replaced-height" class="tocxref">10.6.2 置換インライン要素、通常フローでの置換ブロックレベルおよび置換インラインレベル要素、置換浮動要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#normal-block" class="tocxref">10.6.3 'overflow'が'visible'時の通常フローでの非置換ブロックレベル要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#abs-non-replaced-height" class="tocxref">10.6.4 絶対配置の非置換要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#abs-replaced-height" class="tocxref">10.6.5 絶対配置の置換要素の場合</a>
+      </li><li class="tocline3"><a href="visudet.html#block-root-margin" class="tocxref">10.6.6 複雑な事例</a>
+      </li><li class="tocline3"><a href="visudet.html#root-height" class="tocxref">10.6.7 ブロック整形コンテキストルートの'auto'高さ</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visudet.html#min-max-heights" class="tocxref">10.7 高さの最大値と最小値: <span class="propinst-min-height">'min-height'</span>、<span class="propinst-max-height">'max-height'</span></a>
+    </li><li class="tocline2"><a href="visudet.html#line-height" class="tocxref">10.8 行の高さの計算: <span class="propinst-line-height">'line-height'</span>、<span class="propinst-vertical-align">'vertical-align'</span>プロパティ</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visudet.html#leading" class="tocxref">10.8.1 行間と半行間</a>
+    </li></ul>
+  </li></ul>
+</div>
+
+<h2>10.1 <a name="containing-block-details">"包含ブロック"の定義</a></h2>
+
+<p>要素のボックスの位置および大きさは、その要素の<dfn><a name="x0"><span
+class="index-def" title="containing block">包含ブロック</span></a></dfn>と呼ばれる矩形を参照して計算される。要素の包含ブロックを以下のように定義する:</p>
+
+<ol>
+<li><a href="conform.html#root">ルート要素</a>にある包含ブロックは<dfn><a name="x1"><span
+class="index-def" title="initial containing block|containing
+block::initial">初期包含ブロック</span></a></dfn>と呼ばれる長方形となる。連続メディアにおいて、初期包含ブロックは<a
+href="visuren.html#viewport">ビューポート</a>の寸法を持ち、キャンバスの原点で固定される。 初期包含ブロックはページメディアの<a href="page.html#page-area">ページ領域</a>となる。初期包含ブロックの'direction'プロパティはルート要素に同じである。
+</li>
+<li>For other elements, if the element's position is 'relative' or 'static',
+the containing block is formed by the content edge of the nearest
+ancestor box that is a <a href="visuren.html#block-boxes">block
+container</a> or which establishes a formatting context.
+
+</li>
+<li>要素が'position: fixed'を持つ場合、包含ブロックは連続メディアの場合またはページメディアのページ領域の場合<a href="visuren.html#viewport">ビューポート</a>によって設置される。
+</li>
+<li>要素が'position: absolute'を持つ場合、包含ブロックは'absolute'、'relative'または'fixed'の<a href="visuren.html#propdef-position" class="noxref"><span
+class="propinst-position">'position'</span></a>をもつ最も近い先祖によって以下の方法で確立される:
+<ol>
+<li>先祖がインライン要素である場合、包含ブロックは最初のパディングボックスおよびその要素によって生成される最後のインラインボックスの周りの境界ボックスである。CSS&nbsp;2.1では、インライン要素が複数行にわたって分割される場合、包含ブロックは未定義である。
+</li>
+<li>そうでなければ、包含ブロックは先祖の<a href="box.html#padding-edge">パディング辺</a>によって整形される。
+</li>
+</ol>
+
+<p>そのような先祖がない場合、包含ブロックは初期包含ブロックとなる。
+</p>
+</li>
+</ol>
+
+<p>ページメディアでは、絶対配置要素は任意のページ改行を（あたかも文書が連続であるかのように）無視するその包含ブロックに対して配置される。要素はその後複数のページに分割されてもよい。
+</p>
+
+<p>絶対配置されたコンテンツはレイアウトされている（現在のページ）以外のページ上の位置を解決する、またはすでに印刷のために描画された現在のページの位置を解決するために、プリンタは内容を配置してもよい
+<ul>
+<li>現在のページの別の場所、
+</li><li>後続のページ上で、
+</li><li>内容を省略してもよい。
+</li></ul>
+
+<p class="note">複数のページに分割されたブロックレベル要素は各ページで異なる幅を持ってよく、デバイス特性による制限を受けるかもしれないことに注意する。
+</p>
+
+<div class="example"><P style="display:none">例：</P>
+<p>配置がない状態で、以下の文書の包含ブロックは:</p>
+
+<pre class="html-example">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+   &lt;HEAD&gt;
+      &lt;TITLE&gt;Illustration of containing blocks&lt;/TITLE&gt;
+   &lt;/HEAD&gt;
+   &lt;BODY id="body"&gt;
+      &lt;DIV id="div1"&gt;
+      &lt;P id="p1"&gt;This is text in the first paragraph...&lt;/P&gt;
+      &lt;P id="p2"&gt;This is text &lt;EM id="em1"&gt; in the 
+      &lt;STRONG id="strong1"&gt;second&lt;/STRONG&gt; paragraph.&lt;/EM&gt;&lt;/P&gt;
+      &lt;/DIV&gt;
+   &lt;/BODY&gt;
+&lt;/HTML&gt;
+</pre>
+
+<p>次のように設置される:</p>
+
+<table border="1">
+<tr><th>ボックスを生成する要素 </th>
+<td><strong>包含ブロックを設定する要素</strong></td></tr>
+<tr><td>html</td><td>初期包含ブロック（UA依存）</td></tr>
+<tr><td>body</td><td>html</td></tr>
+<tr><td>div1</td><td>body</td></tr>
+<tr><td>p1</td><td>div1</td></tr>
+<tr><td>p2</td><td>div1</td></tr>
+<tr><td>em1</td><td>p2</td></tr>
+<tr><td>strong1</td><td>p2</td></tr>
+</table>
+
+<p>"div1"を配置する場合:</p>
+
+<pre class="example">
+   #div1 { position: absolute; left: 50px; top: 50px }
+</pre>
+
+<p>その包含ブロックはもはや"body"ではない。それは初期包含ブロックになる（配置される祖先ボックスが存在しないため）。
+</p>
+<p>さらに"em1"を配置する場合:</p>
+
+<pre class="example">
+   #div1 { position: absolute; left: 50px; top: 50px }
+   #em1  { position: absolute; left: 100px; top: 100px }
+</pre>
+
+<p>包含ブロックのテーブルはこのようになる:</p>
+
+<table border="1">
+<tr><th>ボックスを生成する要素</th>
+<td><strong>包含ブロックを設定する要素</strong></td></tr>
+<tr><td>html</td><td>初期包含ブロック（UA依存）</td></tr>
+<tr><td>body</td><td>html</td></tr>
+<tr><td>div1</td><td>初期包含ブロック</td></tr>
+<tr><td>p1</td><td>div1</td></tr>
+<tr><td>p2</td><td>div1</td></tr>
+<tr><td>em1</td><td>div1</td></tr>
+<tr><td>strong1</td><td>em1</td></tr>
+</table>
+
+<p>"em1"の位置指定によって、その包含ブロックは最も近い位置指定された祖先ボックスになる（すなわち、"div1"によって生成される）。 
+</p>
+</div>
+
+
+<h2>10.2 <a name="the-width-property">内容の幅</a>: <a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'width'"><a name="propdef-width" class="propdef-title"><strong>'width'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>非置換インライン要素、テーブル列と列グループを除く全要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>包含ブロックを含む幅を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>パーセンテージまたは'auto'として指定または絶対長さ
+</td></tr></table>
+</dl>
+</div>
+
+
+<p> このプロパティはボックスの<a
+href="box.html#content-width">内容幅</a>を指定する。  
+</p>
+<p>このプロパティは、非置換<a
+href="visuren.html#inline-boxes">インライン</a>要素には適用できない。非置換インライン要素のボックス幅は要素の中で（任意の子供の相対オフセットの<em>前の</em>）表示済み内容の幅である。インラインボックスは<a
+href="visuren.html#line-box">行ボックス</a>に流れることを思い出すとよい。行ボックスの幅は<a
+href="visuren.html#containing-block">包含ブロック</a>によって与えられるが、<a href="visuren.html#floats">浮動体</a>のために短縮されてもよい。
+</p>
+<p>値の意味は次のとおり：</p>
+
+<dl>
+<dt><span class="index-inst" title="&lt;length&gt;"><a name="x4" href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length"><strong>&lt;length&gt;</strong></span></a></span>
+</dt>
+<dd>長さの単位を用いて内容領域の幅を指定する。
+</dd>
+<dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x5" href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage"><strong>&lt;percentage&gt;</strong></span></a></span>
+</dt>
+<dd>パーセント幅を指定する。割合は、生成ボックスの<a href="visuren.html#containing-block">包含ブロック</a>の幅に対して計算される。包含ブロックの幅がこの要素の幅に依存している場合、その結果のレイアウトはCSS 2.1で未定義である。<span class="note">注: 絶対配置要素の包含ブロックはブロックコンテナ要素をもとにするため、割合はその要素の<em>パディングボックス</em>の幅に対して計算される。これはCSS1からの変更であり、パーセント幅は親要素の<em>内容ボックス</em>に対して常に計算されていた。</span>
+</dd>
+<dt><strong>auto</strong>
+</dt>
+<dd>幅は他のプロパティ値に依存する。以下の節を参照のこと。
+</dd>
+</dl>
+
+<p><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>での負の値は不正である。 
+</p>
+<div class="example"><P style="display:none">例：</P><p>
+たとえば、以下の規則は段落の内容幅を100pxに固定している:</p>
+
+<pre>
+p { width: 100px }
+</pre>
+</div>
+
+<h2>10.3 <a name="Computing_widths_and_margins">幅とマージンの計算</a></h2>
+
+<p>レイアウトに用いられるある要素の<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>、<a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>、<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>、<a href="visuren.html#propdef-left" class="noxref"><span
+class="propinst-left">'left'</span></a>および<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>プロパティの値は、生成するボックスの種類および互いの値に依存する。（レイアウトに使用される値はしばしば<a
+href="cascade.html#usedValue">使用値</a>とも呼ばれる。）原則として、使用される値は、算出値と同じであり、いくつかの適切な値によって置き換えられた'auto'をもち、包含ブロックに基づいて計算された割合であるが、例外がある。以下の状況では区別する必要がある:</p>
+
+    <ol>
+      <li>非置換インライン要素</li>
+      <li>置換インライン要素</li>
+      <li>通常フローでの非置換ブロックレベル要素</li>
+      <li>通常フローでの置換ブロックレベル要素</li>
+      <li>非置換浮動要素</li>
+      <li>置換浮動要素</li>
+      <li>絶対配置の非置換要素</li>
+      <li>絶対配置の置換要素</li>
+      <li>通常フローでの非置換インラインブロック要素</li>
+      <li>通常フローでの置換インラインブロック要素</li>
+    </ol>
+
+<p>ポイント1-6と9、10については、相対配置要素の場合の'left'および'right'の値は、<a
+href="visuren.html#relative-positioning">9.4.3節</a>の規則によって決定される。
+</p>
+
+<p class=note><em><strong>注。</strong> 'width'の使用値は仮の値であり、何度も計算されてもよく、<a href="visudet.html#propdef-min-width" class="noxref"><span
+class="propinst-min-width">'min-width'</span></a>および<a href="visudet.html#propdef-max-width" class="noxref"><span
+class="propinst-max-width">'max-width'</span></a>に依存する。下記の<a
+href="#min-max-widths">幅の最小値と最大値</a>の節を参照のこと。</em>
+
+<h3>10.3.1 <a name="inline-width">非置換インライン要素の場合</a></h3>
+
+<p><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティは適用しない。<a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>による'auto'の算出値は'0'の使用値になる。
+</p>
+
+<h3>10.3.2 <a name="inline-replaced-width">置換インライン要素の場合</a></h3>
+
+<p><a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>の'auto'の算出値は'0'の使用値になる。
+
+<p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>および<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつ要素が固有の幅を持つ場合、固有の幅が<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>の使用値となる。
+
+<p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>および<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつ要素が固有の幅を持たない場合、固有の高さと固有の幅を持つ。つまり、<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>は別の算出値を持ち、そしてその要素は固有の比を持つ。その結果<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の使用値は次のようになる:
+
+<blockquote><p>(使用高さ) * (固有比)</blockquote>
+
+<p>'height'および<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつその要素が固有比を持つが固有の高さまたは幅を持たない場合、'width'の使用値はCSS&nbsp;2.1では未定義である。しかし、その包含ブロックの幅が置換要素の幅に依存しない場合、'width'の使用値は通常フローでの非置換ブロックレベル要素に用いる拘束方程式より計算されることが示唆される。
+
+<p>そうでなければ、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、その要素は固有幅を持ち、その結果その固有幅は<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>の使用値となる。
+
+<p>そうでなければ、上記の条件に一致ぜず、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の使用値は300pxになる。デバイスにあわせて300pxが広すぎる場合、ユーザーエージェントは2:1の比率を持つ最大の矩形の幅を使用し、代わりにデバイスに収めるべきである。
+
+
+<h3>10.3.3 <a name="blockwidth">通常フローでの非置換ブロック要素の場合</a></h3>
+
+<p>次の<a name="width-constraints">等式</a>はその他のプロパティの使用値で適用できなければならない:</p>
+<blockquote>
+<p><a href="box.html#propdef-margin-left" class="noxref"><span class="propinst-margin-left">'margin-left'</span></a> + <a href="box.html#propdef-border-left-width" class="noxref"><span
+class="propinst-border-left-width">'border-left-width'</span></a> + <a href="box.html#propdef-padding-left" class="noxref"><span
+class="propinst-padding-left">'padding-left'</span></a> + <a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a> + <a href="box.html#propdef-padding-right" class="noxref"><span
+class="propinst-padding-right">'padding-right'</span></a> + <a href="box.html#propdef-border-right-width" class="noxref"><span
+class="propinst-border-right-width">'border-right-width'</span></a> + <a href="box.html#propdef-margin-right" class="noxref"><span class="propinst-margin-right">'margin-right'</span></a> = <a
+href="#containing-block-details">包含ブロック</a>の幅
+</p>
+</blockquote>
+ <p>'width'が'auto'でない（その上'margin-left'または'margin-right'のいずれかが'auto'でない）場合、'border-left-width' + 'padding-left' + 'width' + 'padding-right' + 'border-right-width'は包含ブロックの幅より大きくなり、その結果'margin-left'または'margin-right'のいずれかの'auto'値は以下の規則によって0として扱われる。
+</p>
+<p>上記のすべてが'auto'以外の算出値を持つ場合、値は"制限しすぎ"であるといい、使用値の1つはその算出値と異なる値を持つだろう。包含ブロックの<a href="visuren.html#propdef-direction" class="noxref"><span
+class="propinst-direction">'direction'</span></a>プロパティが値'ltr'を持つ場合、<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>の指定値は無視され、その値は等式が真になるように計算される。<a href="visuren.html#propdef-direction" class="noxref"><span class="propinst-direction">'direction'</span></a>の値が'rtl'ならば、代わりにこれは<a href="box.html#propdef-margin-left" class="noxref"><span class="propinst-margin-left">'margin-left'</span></a>に起こる。
+</p>
+<p>1つの値のみが'auto'に指定される場合、その使用値は等式から得られる。
+</p>
+<p><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'に設定される場合、それ以外の'auto'の値は'0'になり、<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>は等式から得られる。
+</p>
+<p><a href="box.html#propdef-margin-left" class="noxref"><span class="propinst-margin-left">'margin-left'</span></a>と<a href="box.html#propdef-margin-right" class="noxref"><span class="propinst-margin-right">'margin-right'</span></a>の両方が'auto'の場合、両者の使用値は等しい。これは、包含ブロックの辺に対して要素を水平に中心に置く。
+</p>
+
+<h3>10.3.4 <a name="block-replaced-width">通常フローでの置換ブロックレベル要素の場合</a></h3>
+
+<p><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の使用値は<a href="#inline-replaced-width">インライン置換要素</a>によって決定される。その結果<a href="#blockwidth">非置換ブロックレベル要素</a>の規則がマージンの決定に適用される。
+</p>
+<h3>10.3.5 <a name="float-width">非置換浮動要素の場合</a></h3>
+
+<p><a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>が'auto'として計算される場合、使用値は'0'となる。
+</p>
+<p><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'として計算される場合、使用値は"適合するよう縮む"幅となる。
+</p>
+<p><a name="shrink-to-fit-float"></a> 適合するよう縮む幅の計算は、自動テーブルレイアウトアルゴリズムを使用したテーブルセルの幅の計算に似ている。概略は、明白な改行が起きる場所以外で改行がない整形する内容によって望ましい幅を計算し、また望ましい<em>最小の</em>幅を計算する。すなわち、すべての可能な限りの改行を試みる。CSS&nbsp;2.1は実際のアルゴリズムを定義しない。そして、<em>利用可能な幅</em>を探す。この場合、これはすべての関連のあるスクロールバーの'margin-left'、'border-left-width'、'padding-left'、'padding-right'、'border-right-width'、'margin-right'および幅の使用値を引いた包含ブロックの幅である。
+</p>
+<p>その結果適合するよう縮む幅は次のようになる: min(max(望ましい最小の幅, 利用可能な幅), 望ましい幅)。</p>
+
+<h3>10.3.6 <a name="float-replaced-width">置換浮動要素の場合</a></h3>
+
+<p><a href="box.html#propdef-margin-left" class="noxref"><span class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>が'auto'として計算される場合、使用値は'0'となる。<a href="box.html#propdef-margin-left" class="noxref"><span class="propinst-margin-left">'width'</span></a>の使用値は<a href="box.html#propdef-margin-right" class="noxref">インライン置換要素</a>によって決定される。
+</p>
+<h3>10.3.7 <a name="abs-non-replaced-width">絶対配置の非置換要素の場合</a></h3>
+
+<p>本節と次節の目的のために、用語（ある要素の）<a
+name=static-position><span class=index>"通常位置"</span></a>は、おおまかに、要素が通常フロー内にある位置を参照する。より正確には:
+</p>
+<ul>
+<li><dfn>通常位置の包含ブロック</dfn>とは、仮ボックスの包含ブロックである。この仮ボックスは、<a href="visuren.html#propdef-position" class="noxref"><span
+class="propinst-position">'position'</span></a>の指定値が'static'で、かつ'float'の指定値が'none'であった場合に、最初に要素ボックスであっただろうものである。（<a href="visuren.html#dis-pos-flo">9.7節</a>の規則によればこの仮計算は異なる'display'の算出値と仮定することでも要求されるかもしれないことに注意する。）
+</li>
+<li>その<a href="visuren.html#propdef-position" class="noxref"><span
+class="propinst-position">'position'</span></a>プロパティが'static'かつ<a href="visuren.html#propdef-float" class="noxref"><span class="propinst-float">'float'</span></a>が'none'であった場合、'left'の通常位置は包含ブロックの左辺から最初に要素ボックスであった仮ボックスの左マージン辺までの距離である。仮ボックスが包含ブロックの左にある場合、値は負になる。
+</li>
+<li>'right'の通常位置は上記と同様に包含ブロックの右辺から同じ仮ボックスの右マージン辺までの距離である。仮ボックスが包含ブロック辺より左にある場合、値は正になる。
+</li>
+</ul>
+
+<p>しかし、仮ボックスの寸法を実際に計算するよりはむしろ、ユーザーエージェントは自由に可能性のある位置で見当を付けることができる。
+</p>
+<p>通常位置を計算する目的に対して、固定配置要素の包含ブロックはビューポートの代わりに初期包含ブロックとなり、すべてのスクロール可能なボックスはそれらの原点までスクロールされると仮定されるべきである。
+
+<p>これらの要素の使用値を決定する制約は:</p>
+
+  <blockquote> 
+    <p>'left' + 'margin-left' + 'border-left-width' + 'padding-left' + 'width' + 'padding-right' + 'border-right-width' + 'margin-right' + 'right' = 包含ブロックの幅 </p>
+  </blockquote>
+  
+<p>'left'、'width'、'right'の3つすべてが'auto'の場合: 最初に'margin-left'と'margin-right'のすべての'auto'値を0に設定する。つぎに、固定位置包含ブロックが設置する要素の'direction'プロパティが<a
+href="#static-position">通常位置</a>で'left'に設定された'ltr'であり、下記の番号3の規則を適用する。そうでなければ、<a
+href="#static-position">通常位置</a>に'right'を設定し、下記の番号1の規則を適用する。</p>
+
+<p>この3つが'auto'でない場合:'margin-left'および'margin-right'の両方が'auto'の場合、2つのマージンが等しい値を得る追加条件の下で式を解き、等式がその3つを負にする場合を除いて、包含ボックスの方向が'ltr'（'rtl'）の場合、'margin-left'（'margin-right'）を0に設定し'margin-right'（'margin-left'）を解く。'margin-left'または'margin-right'の1つが'auto'である場合、その値について等式を解く。値が制限しすぎである場合、（包含ブロックの'direction'プロパティが'rtl'の場合）または'right'（'direction'が'ltr'の場合）の値を無視し、その値について解く。</p>
+
+<p>そうでなければ、'margin-left'および'margin-right'の'auto'値を0に設定し、 以下の 適用される6つの規則のうちの1つを選ぶ。</p>
+
+<ol>
+
+<li>'left'と'width'が'auto'であり'right'が'auto'でないなら、幅は適合するように縮む。'left'について解く。</li>
+
+<li>'left'と'right'が'auto'であり'width'が'auto'でないなら、通常位置の包含ブロックを確立する要素の'direction'プロパティが<a
+href="#static-position">通常位置</a>の'left'に設置される'ltr'である。そうでなければ<a href="#static-position">通常位置</a>の'right'に設置される。そして、（'directionが'rtl'の場合）または'right'（'direction'が'ltr'の場合）について解く。</li>
+
+<li>'width'と'right'が'auto'であり'left'が'auto'でないなら、幅は適合するように縮む。そして'right'について解く。</li>
+
+<li>'left'が'auto'で'width'と'right'が'auto'でないなら、'left'について解く。</li>
+
+<li>'width'が'auto'で、'left'と'right'が'auto'でないなら、'width'について解く。</li>
+
+<li>'right'が'auto'で、'left'と'width'が'auto'でないなら、'right'について解く。</li>
+</ol>
+  
+<p>適合するよう縮む幅の計算は、自動テーブルレイアウトアルゴリズムを使用したテーブルセルの幅の計算に似ている。概略は、明白な改行が起きる場所以外で改行がない整形する内容によって望ましい幅を計算し、また望ましい<em>最小の</em>幅を計算する。すなわち、すべての可能な限りの改行を試みる。CSS&nbsp;2.1は実際のアルゴリズムを定義しない。次に、<em>利用可能な幅</em>を計算する。これは'left'（1の場合）または'right'（3の場合）を0に設定した後で'width'について解くことにより見つけられる。</p>
+
+<p>その結果適合するよう縮む幅は次のようになる: min(max(望ましい最小の幅, 利用可能な幅), 望ましい幅)。</p>
+
+<h3>10.3.8 <a name="abs-replaced-width">絶対配置の置換要素の場合</a></h3>
+
+<p>この場合、<a href="#abs-non-replaced-width">10.3.7節</a>が制約式を通して適用するが、<a href="#abs-non-replaced-width">10.3.7節</a>の残りの部分は以下の規則で置き換えられる:
+
+<ol>
+<li><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の使用値は<a href="#inline-replaced-width">インライン置換要素</a>によって決定される。<a href="box.html#propdef-margin-left" class="noxref"><span class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>が'auto'として指定される場合、その使用値は以下の規則によって決定される。
+</li>
+<li><a href="visuren.html#propdef-left" class="noxref"><span class="propinst-left">'left'</span></a>と<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>の両方が値'auto'を持つ場合、通常位置の包含ブロックを設置する要素の'direction'プロパティが'ltr'であるならば、通常位置の<a href="visuren.html#propdef-left" class="noxref"><span
+class="propinst-left">'left'</span></a>に設定される。そうでなければ'direction'が'rtl'であり、通常位置の<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>に設定される。
+</li>
+<li><a href="visuren.html#propdef-left" class="noxref"><span class="propinst-left">'left'</span></a>または<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>が'auto'の場合、<a href="box.html#propdef-margin-left" class="noxref"><span class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>の任意の'auto'を'0'に置換する。
+</li>
+<li>この時点で<a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>と<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>がまだ'auto'である場合、2つのマージンが等しい値にならなければならないような追加条件のもとで式を解き、これがマージンを負にする場合を除いて、包含ブロックの方向が'ltr'（'rtl'）である場合、<a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>（<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>）を0に設定し<a href="box.html#propdef-margin-right" class="noxref"><span class="propinst-margin-right">'margin-right'</span></a>（<a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>）について解く。
+</li>
+<li>この時点で'auto'がある場合、その値について式を解く。
+</li>
+<li>この時点で値が制限しすぎである場合、<a href="visuren.html#propdef-left" class="noxref"><span class="propinst-left">'left'</span></a>（包含ブロックの<a href="visuren.html#propdef-direction" class="noxref"><span class="propinst-direction">'direction'</span></a>プロパティが'rtl'の場合）または<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>（<a href="visuren.html#propdef-direction" class="noxref"><span
+class="propinst-direction">'direction'</span></a>が'ltr'の場合）のどちらかの値を無視し、その値について解く。
+</li>
+</ol>
+
+
+<h3>10.3.9 <a name="inlineblock-width">通常フローでの非置換インラインブロック要素の場合</a></h3>
+
+<p><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の場合、使用値は浮動要素のように<a href="#shrink-to-fit-float">適合するように縮む</a>幅になる。
+</p>
+<p><a href="box.html#propdef-margin-left" class="noxref"><span
+class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#propdef-margin-right" class="noxref"><span
+class="propinst-margin-right">'margin-right'</span></a>の'auto'の算出値は'0'の使用値になる。
+</p>
+
+<h3>10.3.10 <a name="inlineblock-replaced-width">通常フローでの置換インラインブロック要素の場合</a></h3>
+
+<p><a href="#inline-replaced-width">置換インライン要素</a>に同じ。
+</p>
+
+<h2>10.4 <a name="min-max-widths">幅の最大値と最小値</a>: <a href="visudet.html#propdef-min-width" class="noxref"><span
+class="propinst-min-width">'min-width'</span></a>、<a href="visudet.html#propdef-max-width" class="noxref"><span
+class="propinst-max-width">'max-width'</span></a></h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'min-width'"><a name="propdef-min-width" class="propdef-title"><strong>'min-width'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>0
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>非置換インライン要素、テーブル列と列グループを除く全要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>包含ブロックを含む幅を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定値のパーセンテージまたは絶対長さ
+</td></tr></table>
+</dl>
+</div>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'max-width'"><a name="propdef-max-width" class="propdef-title"><strong>'max-width'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | none | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>none
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>非置換インライン要素、テーブル列と列グループを除く全要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>包含ブロックを含む幅を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定されたパーセンテージまたは絶対長さまたは'none'
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>これらの2つのプロパティは著者にある内容幅で制限することを許可する。値の意味は次のとおり：</p>
+
+<dl>
+<dt><span class="index-inst" title="&lt;length&gt;"><a name="x8" href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length"><strong>&lt;length&gt;</strong></span></a></span>
+</dt>
+<dd>固定した値を用いて最小または最大を指定する。
+</dd>
+<dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x9" href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage"><strong>&lt;percentage&gt;</strong></span></a></span>
+</dt>
+<dd>パーセンテージで使用値の決定を指定する。割合は、生成ボックスの<a href="visuren.html#containing-block">包含ブロック</a>の幅に対して計算される。包含ブロックの幅が負の場合、使用値は0になる。包含ブロックの幅がこの要素の幅に依存している場合、その結果のレイアウトはCSS 2.1で未定義である。
+</dd>
+<dt><strong>none</strong>
+</dt>
+<dd>（<a href="visudet.html#propdef-max-width" class="noxref"><span class="propinst-max-width">'max-width'</span></a>にのみ）ボックスの幅を制限しない。
+</dd>
+</dl>
+
+<p><a href="visudet.html#propdef-min-width" class="noxref"><span
+class="propinst-min-width">'min-width'</span></a>と<a href="visudet.html#propdef-max-width" class="noxref"><span
+class="propinst-max-width">'max-width'</span></a>に対する負の値は不正である。
+</p>
+
+<p>CSS&nbsp;2.1において、テーブル、インラインテーブル、テーブルセル、テーブル列、列グループでの'min-width'および'max-width'の効果は未定義である。
+
+<p>以下のアルゴリズムはどのようにして2つのプロパティが<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティに影響を及ぼすかを示している:</p>
+<ol>
+
+<li>暫定的な使用幅は上述の<a href="#Computing_widths_and_margins">"幅とマージンを計算"</a>のもとで規則に従い計算される（<a href="visudet.html#propdef-min-width" class="noxref"><span
+class="propinst-min-width">'min-width'</span></a>と<a href="visudet.html#propdef-max-width" class="noxref"><span
+class="propinst-max-width">'max-width'</span></a>なしで）。
+</li>
+<li>仮の使用値が<a href="visudet.html#propdef-max-width" class="noxref"><span
+class="propinst-max-width">'max-width'</span></a>より大きい場合、<a
+href="#Computing_widths_and_margins">上記の</a>規則が再び適用されるが、今回は<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の算出値として<a href="visudet.html#propdef-max-width" class="noxref"><span
+class="propinst-max-width">'max-width'</span></a>の算出値を用いる。
+</li>
+<li>結果の幅が<a href="visudet.html#propdef-min-width" class="noxref"><span
+class="propinst-min-width">'min-width'</span></a>より小さい場合、<a
+href="#Computing_widths_and_margins">上記の</a>規則を再度適用するが、今回は<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の算出値として<a href="visudet.html#propdef-min-width" class="noxref"><span
+class="propinst-min-width">'min-width'</span></a>を用いる。
+</li>
+</ol>
+
+<p class="note">これらのステップは上記のプロパティの実際の算出値に影響しない。</p>
+
+<p>しかし、置換要素の固有比と<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>および<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>の両方に'auto'が指定されるため、アルゴリズムは次のようになる:
+</p>
+
+<p>適切な制限違反に対して解決される高さと幅の値をテーブルから選択する。<var>min</var> ≤ <var>max</var>が真となるために、<var>max-width</var>と<var>max-height</var>をmax(min, max)として解釈する。このテーブルにおいて<var>w</var>と<var>h</var>は<a href="visudet.html#propdef-min-width" class="noxref"><span
+class="propinst-min-width">'min-width'</span></a>、<a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>、<a href="visudet.html#propdef-max-width" class="noxref"><span
+class="propinst-max-width">'max-width'</span></a>、<a href="visudet.html#propdef-max-height" class="noxref"><span
+class="propinst-max-height">'max-height'</span></a>プロパティを無視した幅と高さの計算結果を表す。通常、固有の幅と高さを持つが、固有比を伴う置換要素の場合はもたない。
+
+<p class=note>注: 明確な幅または高さが設定され、他の寸法がautoである場所の場合、auto側の最小または最大の制限を適用することは制限し過ぎの状況を引き起こす。仕様はこの振る舞いで明らかであるが、著者が予期しないことが存在しないわけではない。CSS3 object-fitプロパティはこの状況で異なる結果を得るために使われる。
+
+<table rules=all>
+<thead>
+  <tr><th>制限違反</th><th>解決される幅</th><th>解決される高さ</th></tr>
+</thead>
+<tbody>
+
+  <tr><td>none</td>
+      <td><var>w</var></td>
+      <td><var>h</var></td></tr>
+  <tr><td><var>w&nbsp;&gt;&nbsp;max-width</var></td>
+      <td><var>max-width</var></td>
+
+      <td><var>max(max-width&nbsp;*&nbsp;h/w, min-height)</var></td></tr>
+  <tr><td><var>w&nbsp;&lt;&nbsp;min-width</var></td>
+      <td><var>min-width</var></td>
+      <td><var>min(min-width&nbsp;*&nbsp;h/w, max-height)</var></td></tr>
+
+  <tr><td><var>h&nbsp;&gt;&nbsp;max-height</var></td>
+      <td><var>max(max-height&nbsp;*&nbsp;w/h, min-width)</var></td>
+      <td><var>max-height</var></td></tr>
+  <tr><td><var>h&nbsp;&lt;&nbsp;min-height</var></td>
+
+      <td><var>min(min-height&nbsp;*&nbsp;w/h, max-width)</var></td>
+      <td><var>min-height</var></td></tr>
+  <tr><td>(<var>w&nbsp;&gt;&nbsp;max-width</var>) かつ (<var>h&nbsp;&gt;&nbsp;max-height</var>)、ここで (<var>max-width/w&nbsp;≤&nbsp;max-height/h</var>)</td>
+
+      <td><var>max-width</var></td>
+      <td><var>max(min-height, max-width&nbsp;*&nbsp;h/w)</var></td></tr>
+  <tr><td>(<var>w&nbsp;&gt;&nbsp;max-width</var>) かつ (<var>h&nbsp;&gt;&nbsp;max-height</var>)、ここで (<var>max-width/w&nbsp;&gt;&nbsp;max-height/h</var>)</td>
+
+      <td><var>max(min-width, max-height&nbsp;*&nbsp;w/h)</var></td>
+      <td><var>max-height</var></td></tr>
+  <tr><td>(<var>w&nbsp;&lt;&nbsp;min-width</var>) かつ (<var>h&nbsp;&lt;&nbsp;min-height</var>)、ここで (<var>min-width/w&nbsp;≤&nbsp;min-height/h</var>)</td>
+
+      <td><var>min(max-width, min-height&nbsp;*&nbsp;w/h)</var></td>
+      <td><var>min-height</var></td></tr>
+  <tr><td>(<var>w&nbsp;&lt;&nbsp;min-width</var>) かつ (<var>h&nbsp;&lt;&nbsp;min-height</var>)、ここで (<var>min-width/w&nbsp;&gt;&nbsp;min-height/h</var>)</td>
+
+      <td><var>min-width</var></td>
+      <td><var>min(max-height, min-width&nbsp;*&nbsp;h/w)</var></td></tr>
+  <tr><td>(<var>w&nbsp;&lt;&nbsp;min-width</var>) かつ (<var>h&nbsp;&gt;&nbsp;max-height</var>)</td>
+
+      <td><var>min-width</var></td>
+      <td><var>max-height</var></td></tr>
+  <tr><td>(<var>w&nbsp;&gt;&nbsp;max-width</var>) かつ (<var>h&nbsp;&lt;&nbsp;min-height</var>)</td>
+
+      <td><var>max-width</var></td>
+      <td><var>min-height</var></td></tr>
+</tbody>
+</table>
+
+<p>あたかも<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>がこの値で計算されたかのように、上記の<a
+href="#Computing_widths_and_margins">"幅とマージンの計算"</a>のもとで規則を適用する。
+
+
+
+
+
+<h2>10.5 <a name="the-height-property">内容の高さ</a>: <a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'height'"><a name="propdef-height" class="propdef-title"><strong>'height'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>非置換インライン要素、テーブル行と行グループを除く全要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>文を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>the percentage or 'auto' (as specified) or the absolute length
+
+</td></tr></table>
+</dl>
+</div>
+
+
+<p> このプロパティはボックスの<a
+href="box.html#content-height">内容幅</a>を指定する。
+
+<p>このプロパティは、非置換<a
+href="visuren.html#inline-boxes">インライン</a>要素には適用できない。代わりに使用する規則については<a
+href="#inline-non-replaced">非置換インライン要素の高さとマージンの節</a>を参照のこと。
+</p>
+<p>値の意味は次のとおり：</p>
+
+<dl>
+<dt><span class="index-inst" title="&lt;length&gt;"><a name="x11" href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length"><strong>&lt;length&gt;</strong></span></a></span>
+</dt>
+<dd>長さの値を用いて内容領域の高さを指定する。
+</dd>
+<dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x12" href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage"><strong>&lt;percentage&gt;</strong></span></a></span>
+</dt>
+<dd>パーセント高さを指定する。割合は生成ボックスの<a
+href="visuren.html#containing-block">包含ブロック</a>の高さに対して計算される。If the height of the containing block is not specified explicitly (i.e., it depends on content height), and this element is not absolutely positioned, the used height is calculated as if 'auto' was specified. <a href="conform.html#root">ルート要素</a>でのパーセント高さは<a href="#containing-block-details">初期包含ブロック</a>に対する高さである。<span class="note">注: 絶対配置要素の包含ブロックはブロックレベル要素をもとにするため、割合はその要素の<em>パディングボックス</em>の高さに対して計算される。これはCSS1からの変更点であり、パーセント高さは親要素の<em>内容ボックス</em>に対して常に計算されていた。</span>
+</dd>
+<dt><strong>auto</strong>
+</dt>
+<dd>高さは他のプロパティの値に依存する。以下の文を参照のこと。
+</dd>
+</dl>
+
+<p class="note">絶対配置要素の包含ボックスの高さは要素自身の大きさから独立しており、したがってそのような要素でのパーセント高さは常に解決できることに注意する。しかし、それは文書であとに来る要素が処理される時まで高さが未知であってもよい。
+</p>
+
+<p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>での負の値は不正である。
+</p>
+<div class="example"><P style="display:none">例：</P><p>
+たとえば、次の規則は段落の高さを100pxに設定している:</p>
+
+<pre>
+p { height: 100px }
+</pre>
+
+<p>100px以上の内容高さを持つ段落は、<a href="visufx.html#propdef-overflow" class="noxref"><span class="propinst-overflow">'overflow'</span></a>プロパティにしたがってボックスから<a href="visufx.html#overflow">はみ出す</a>。
+</p>
+</div>
+
+<h2>10.6 <a name="Computing_heights_and_margins">高さとマージンの計算</a></h2>
+
+<p><a href="visuren.html#propdef-top" class="noxref"><span class="propinst-top">'top'</span></a>、<a href="box.html#propdef-margin-top" class="noxref"><span class="propinst-margin-top">'margin-top'</span></a>、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>、<a href="box.html#propdef-margin-bottom" class="noxref"><span class="propinst-margin-bottom">'margin-bottom'</span></a>、<a href="visuren.html#propdef-bottom" class="noxref"><span class="propinst-bottom">'bottom'</span></a>の値を計算するために、ボックスの種類によって分類する必要がある:
+</p>
+    <ol>
+      <li>非置換インライン要素</li>
+      <li>置換インライン要素</li>
+      <li>通常フローでの非置換ブロックレベル要素</li>
+      <li>通常フローでの置換ブロックレベル要素</li>
+      <li>非置換浮動要素</li>
+      <li>置換浮動要素</li>
+      <li>絶対配置の非置換要素</li>
+      <li>絶対配置の置換要素</li>
+      <li>通常フローでの非置換インラインブロック要素</li>
+      <li>通常フローでの置換インラインブロック要素</li>
+    </ol>
+
+<p>ポイント1-6と9、10については、'top'および'bottom'の使用値は、9.4.3節の規則によって決定される。
+</p>
+
+<p class=note>注: これらの規則は、任意の他の要素に応じてルート要素に適用する。
+
+<p class=note><em><strong>注。</strong> 'height'の使用値は仮の値であり、何度も計算されてもよく、<a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>および<a href="visudet.html#propdef-max-height" class="noxref"><span
+class="propinst-max-height">'max-height'</span></a>に依存する。下記の<a
+href="#min-max-heights">高さの最小値と最大値</a>の節を参照のこと。</em>
+
+<h3>10.6.1 <a name="inline-non-replaced">非置換インライン要素の場合</a></h3>
+
+<p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>プロパティは適用しない。内容領域の高さはフォントをもとにすべきであるが、本仕様はその方法を指定しない。たとえば、ユーザーエージェントはemボックスやフォントの最大のアセンダーやディセンダーを用いてもよい。（前者は、著者が'line-height'に対する背景スタイルの制御を確実にするだろうが、その内容領域の外側に描くグリフをもたらすだろう。後者は、emボックスの上または下の部分にあるグリフがまだ内容領域内に収まることを保証するが、異なるフォントごとに異なるサイズのボックスをもたらすだろう。）
+</p>
+<p class=note>注: CSS level 3は、内容高さに用いるフォントの寸法を選択するプロパティがおそらく含まれるだろう。
+</p>
+<p>非置換インラインボックスのボーダーおよびマージン、垂直方向のパディングは、内容領域の上部と下部で開始し、<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>と関係しない。しかし<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>に限って、行ボックスの高さの計算時に用いられる。
+</p>
+<p><a name="multi-font-inline-height"></a> 1つ以上のフォントが用いられる場合（これはグリフが異なるフォントで発見された場合に起こる）、内容領域の高さは本仕様で定義されない。しかし、高さは内容領域が十分な高さとなるような、要素の<em>すべての</em>フォントの(1)emボックスまたは(2)最大のアセンダーとディセンダーのいずれかを選択することを示唆する。フォントのベースライン揃えにに応じて、これは関連するフォントの大きさのすべてより大きくてもよいことに注意する。
+</p>
+
+<h3>10.6.2 <a name="inline-replaced-height">置換インライン要素</a>、通常フローでの置換ブロックレベルおよび置換インラインブロック要素、置換浮動要素の場合</h3>
+
+<p><a href="box.html#propdef-margin-top" class="noxref"><span class="propinst-margin-top">'margin-top'</span></a>または<a href="box.html#propdef-margin-bottom" class="noxref"><span
+class="propinst-margin-bottom">'margin-bottom'</span></a>が'auto'の場合、使用値は0になる。
+
+<p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>と<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>が'auto'の算出値と固有の高さの両方である場合、固有の高さが<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>の使用値になる。
+
+<p>そうでなければ、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、その要素は固有比を持ち、結果その<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>の使用値は次のようになる:
+
+<blockquote><p>(使用幅) / (固有比)</blockquote>
+
+<p>そうでなければ、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、その要素は固有高さを持ち、結果その固有高さは<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>の使用値となる。
+
+<p>そうでなければ、上記の条件に一致しないが、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>の使用値は2:1の比を持つ最も大きい矩形の高さに設定されなければならず、150pxより大きくない高さを持ち、かつデバイスの幅より大きくない幅を持つ。
+
+
+
+
+
+<h3>10.6.3 <a name="normal-block">'overflow'が'visible'計算時の通常フローでの非置換ブロックレベル要素の場合</a></h3>
+
+<p>本節も'overflow'が'visible'に計算されない場合の通常のフローでの非置換ブロックレベル要素に適用されるが、ビューポートに伝播されている。
+
+<p><a href="box.html#propdef-margin-top" class="noxref"><span
+class="propinst-margin-top">'margin-top'</span></a>または<a href="box.html#propdef-margin-bottom" class="noxref"><span
+class="propinst-margin-bottom">'margin-bottom'</span></a>が'auto'の場合、使用値は0になる。<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>が'auto'の場合、高さはその要素が子供ブロックレベル要素を持つかどうか、およびパディングまたはボーダーを持つかどうかによって異なる。
+</p>
+
+<p>要素の高さは要素の上内容辺から、以下のうち最初に受け入れ可能なものまでの距離となる:
+
+<ol>
+  <li>ボックスが1行以上のインライン整形コンテキストを設置する場合、、最後の行ボックスの下辺
+
+  </li><li>子の下マージンが要素のマージンと相殺されない場合、最後のフロー内の子の（相殺可能な）下マージンの下辺
+
+  </li><li>最後のフロー内の子の下ボーダー辺であって、その子の上マージンがその要素の下マージンと相殺されない
+
+  </li><li>そうでなければ、0
+</li></ol>
+
+<p>通常フローの子供のみを考慮に入れる（すなわち、浮動ボックスと絶対配置ボックスは無視され、相対配置ボックスはオフセットを考慮しない）。子ボックスは<a
+href="visuren.html#anonymous-block-level">匿名ブロックボックス</a>であってもよいことに注意する。
+</p>
+
+<h3>10.6.4 <a name="abs-non-replaced-height">絶対配置の非置換要素の場合</a></h3>
+
+<p>本節と次節の目的のために、用語（ある要素の）"通常位置"は、おおまかに、要素が通常フロー内にある位置を参照する。より正確に、<a href="visuren.html#propdef-position" class="noxref"><span
+class="propinst-position">'position'</span></a>の指定値が'static'であり、'float'の指定値が'none'であり、かつ<a href="visuren.html#propdef-clear" class="noxref"><span class="propinst-clear">'clear'</span></a>の指定値が'none'である場合、'top'の通常位置は、包含ブロックの上辺から、要素の最初のボックスの仮定ボックスの上マージン辺までの距離である。（<a href="visuren.html#dis-pos-flo">9.7節</a>の規則によれば、この仮計算は異なる'display'の算出値と仮定することでも要求されるかもしれないことに注意する。）仮ボックスが包含ブロックの上にある場合、この値は負になる。
+</p>
+<p>しかし、仮ボックスの寸法を実際に計算するよりはむしろ、ユーザーエージェントは自由に可能性のある位置で見当を付けることができる。
+</p>
+<p>通常位置を計算する目的に対して、固定位置要素の包含ブロックはビューポートの代わりに初期包含ブロックとなる。
+
+<p>絶対配置要素に対して、垂直方向の使用値はこの等式を満たさなければならない:</p>
+ 
+  <blockquote>      
+    <p>'top' + 'margin-top' + 'border-top-width' + 'padding-top' + 'height' + 'padding-bottom' + 'border-bottom-width' + 'margin-bottom' + 'bottom' = 包含ブロックの高さ </p>
+  </blockquote>
+ 
+<p>'top'、'height'、'bottom'の3つすべてがautoの場合、'top'に通常位置を設定し、以下の規則3を適用する。</p>
+  
+<p>3つすべてが'auto'でない場合、'margin-top'と'margin-bottom'の両方が'auto'の場合、2つのマージンが等しい値になるような追加条件のもとで等式を解く。'margin-top'または'margin-bottom'の1つが'auto'である場合、その値について等式を解く。値が制限しすぎの場合、'bottom'の値を無視し、その値について解く。</p>
+  
+<p>そうでなければ、以下の6つの規則のうちの1つを選んで適用する。</p>
+
+<ol>
+<li>'top'と'height'が'auto'でかつ'bottom'が'auto'でないなら、高さは<a href="#root-height">10.6.7節による内容に基づき</a>、'margin-top'と'margin-bottom'の'auto'値を0に設定し、'top'について解く。
+
+</li><li>'top'と'bottom'が'auto'でかつ'height'が'auto'でないなら、'top'に固定位置を設定し、'margin-top'と'margin-bottom'の'auto'値を0に設定し、'bottom'について解く。</li>
+
+<li>'top'と'bottom'が'auto'でかつ'height'が'auto'でないなら、高さは<a href="#root-height">10.6.7節による内容に基づき</a>、'margin-top'と'margin-bottom'の'auto'値を0に設定し、'bottom'について解く。</li>
+
+<li>'top'が'auto'で'height'と'bottom'が'auto'でないなら、'margin-top'と'margin-bottom'の'auto'値を0に設定し、'top'について解く。</li>
+
+<li>'height'が'auto'で、'top'と'bottom'が'auto'でないなら、'margin-top'と'margin-bottom'の'auto'値を0に設定し、'height'について解く。</li>
+
+<li>'bottom'が'auto'で'top'と'height'が'auto'でないなら、'margin-top'と'margin-bottom'の'auto'値を0に設定し、'bottom'について解く。</li>
+</ol>
+
+<h3>10.6.5 <a name="abs-replaced-height">絶対配置される置換要素の場合</a></h3>
+
+<p>これは、要素が<a href="conform.html#intrinsic">固有</a>高さを持つことを除いて、1つ前の場合と似ている。置換の順序は現状ではこのようになる:
+</p>
+<ol>
+
+<li><a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>の使用値は<a
+href="#inline-replaced-height">インライン置換要素</a>によって決定される。'margin-left'または'margin-right'が'auto'として指定される場合、その使用値は以下の規則によって決定される。</li>
+<li><a href="visuren.html#propdef-top" class="noxref"><span class="propinst-top">'top'</span></a>と<a href="visuren.html#propdef-bottom" class="noxref"><span
+class="propinst-bottom">'bottom'</span></a>の両方が値'auto'を持つ場合、<a href="visuren.html#propdef-top" class="noxref"><span class="propinst-top">'top'</span></a>を要素の<a
+href="#static-position">通常位置</a>に置き換える。
+</li>
+<li><a href="visuren.html#propdef-bottom" class="noxref"><span class="propinst-bottom">'bottom'</span></a>が'auto'の場合、<a href="box.html#propdef-margin-top" class="noxref"><span
+class="propinst-margin-top">'margin-top'</span></a>または<a href="box.html#propdef-margin-bottom" class="noxref"><span
+class="propinst-margin-bottom">'margin-bottom'</span></a>の任意の'auto'を'0'に置き換える。
+</li>
+<li>この時点でまだ<a href="box.html#propdef-margin-top" class="noxref"><span
+class="propinst-margin-top">'margin-top'</span></a>と<a href="box.html#propdef-margin-bottom" class="noxref"><span
+class="propinst-margin-bottom">'margin-bottom'</span></a>の両方が'auto'の場合、2つのマージンが等しくなるように上の等式を解く。
+</li>
+<li>この時点でまだ'auto'が1つでも残っていれば、その値について式を解く。
+</li>
+<li>値が制限しすぎの場合、<a href="visuren.html#propdef-bottom" class="noxref"><span class="propinst-bottom">'bottom'</span></a>の値を無視し、その値ついて式を解く。
+</li>
+</ol>
+
+
+
+
+
+<h3>10.6.6 <a name="block-root-margin">複雑な事例</a></h3>
+
+<p>この節は以下に適用する:
+
+<ul>
+    <li>通常フロー内の非置換ブロックレベル要素で、'overflow'が'visible'に計算されない場合（'overflow'プロパティ値がビューポートに伝搬されている場合を除く）。
+
+    </li><li>非置換インラインブロック要素
+
+    </li><li>非置換浮動要素
+</li></ul>
+
+<p><a href="box.html#propdef-margin-top" class="noxref"><span class="propinst-margin-top">'margin-top'</span></a>または<a href="box.html#propdef-margin-bottom" class="noxref"><span
+class="propinst-margin-bottom">'margin-bottom'</span></a>が'auto'の場合、使用値は0になる。<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>が'auto' の場合、<a
+href="#root-height">10.6.7節によって要素の子孫に依存する</a>。
+
+<p>インラインブロック要素に対して、行ボックスの高さの計算時にマージンボックスが用いられる。
+
+
+<h3>10.6.7 <a name="root-height">ブロック整形コンテキストルートの'auto'高さ</a></h3>
+
+<p>ある場合（たとえば、上記の<a href="#abs-non-replaced-height">10.6.4節</a>や<a href="#block-root-margin">10.6.6節</a>を参照）、要素がブロック整形コンテキストを設置する高さは以下のように計算される:
+
+<p>If it only has inline-level children, the height is the distance
+between the top of the topmost line box and the bottom of the
+bottommost line box.
+
+</p>
+<p>その要素がインラインの子供である場合、最上段のブロックレベルの子ボックスの上マージン辺と行ボックスの上辺から最下段の行ボックスの下辺までの距離がheightの算出値になる。
+</p>
+<p>絶対配置の子供は無視され、相対配置ボックスはオフセットを考慮しない。子ボックスは<a
+href="visuren.html#anonymous-block-level">匿名ブロックボックス</a>であってもよいことに注意する。
+</p>
+<p>加えて、要素が任意の浮動子孫をもち、その子孫の下マージン辺が要素の下内容辺の下にある場合、高さはそれらの辺を含むよう増加する。このブロック整形コンテキストに参加する唯一の浮動が考慮され、たとえば、絶対配置された子孫の内部で浮動するか、他の浮動はない。
+</p>
+
+
+
+<h2>10.7 <a name="min-max-heights">高さの最大値と最小値</a>: <a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>、<a href="visudet.html#propdef-max-height" class="noxref"><span
+class="propinst-max-height">'max-height'</span></a></h2>
+
+<p>特定の範囲に要素の高さを制限することは便利な場合がある。2つのプロパティがこの機能を提供する：
+</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'min-height'"><a name="propdef-min-height" class="propdef-title"><strong>'min-height'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>0
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>非置換インライン要素、テーブル行と行グループを除く全要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>文を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定値のパーセンテージまたは絶対長さ
+</td></tr></table>
+</dl>
+</div>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'max-height'"><a name="propdef-max-height" class="propdef-title"><strong>'max-height'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | none | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>none
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>非置換インライン要素、テーブル行と行グループを除く全要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>文を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定されたパーセンテージまたは絶対長さまたは'none'
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>これら2つのプロパティは、著者が特定の範囲にボックスの高さを制限できる。値の意味は次のとおり：</p>
+
+<dl>
+<dt><span class="index-inst" title="&lt;length&gt;"><a name="x15" href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length"><strong>&lt;length&gt;</strong></span></a></span>
+</dt>
+<dd>固定の最小値または最大値の計算高さを指定する。
+</dd>
+<dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x16" href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage"><strong>&lt;percentage&gt;</strong></span></a></span>
+</dt>
+<dd>パーセンテージで使用値の決定を指定する。割合は生成ボックスの<a href="visuren.html#containing-block">包含ブロック</a>の高さに対して計算される。包含ブロックの高さが明示的に指定されず（すなわち、内容の高さに依存し）、この要素が絶対配置されない場合、パーセント値は0として（<a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>の場合）または'none'として（<a href="visudet.html#propdef-max-height" class="noxref"><span class="propinst-max-height">'max-height'</span></a>の場合）扱われる。
+</dd>
+<dt><strong>none</strong>
+</dt>
+<dd>（<a href="visudet.html#propdef-max-height" class="noxref"><span class="propinst-max-height">'max-height'</span></a>のみ）ボックスの高さを制限しない。 
+</dd>
+</dl>
+
+<p><a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>および<a href="visudet.html#propdef-max-height" class="noxref"><span
+class="propinst-max-height">'max-height'</span></a>での負の値は不正である。
+</p>
+
+<p>CSS&nbsp;2.1において、テーブル、インラインテーブル、テーブルセル、テーブル行、行グループでの'min-height'および'max-hegiht'の効果は未定義である。
+
+<p>以下のアルゴリズムはどのようにして2つのプロパティが<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>プロパティに影響を及ぼすかを示している:</p>
+
+<ol>
+
+<li>暫定的な使用高さは上述の<a href="#Computing_heights_and_margins">"高さとマージンを計算"</a>のもとで規則に従い計算される（<a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>と<a href="visudet.html#propdef-max-height" class="noxref"><span
+class="propinst-max-height">'max-height'</span></a>なしで）。
+</li>
+<li>仮の使用値が<a href="visudet.html#propdef-max-height" class="noxref"><span
+class="propinst-max-height">'max-height'</span></a>より大きい場合、<a
+href="#Computing_heights_and_margins">上記の</a>規則が再び適用されるが、今回は<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>の算出値として<a href="visudet.html#propdef-max-height" class="noxref"><span
+class="propinst-max-height">'max-height'</span></a>の算出値を用いる。
+</li>
+<li>結果の幅が<a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>より小さい場合、<a
+href="#Computing_heights_and_margins">上記の</a>規則を再度適用するが、今回は<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>の算出値として<a href="visudet.html#propdef-min-height" class="noxref"><span
+class="propinst-min-height">'min-height'</span></a>を用いる。
+</li>
+</ol>
+
+<p class="note">These steps do not affect the real computed value of <a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>. したがって、たとえばそれらは算出値に依存し、マージンの相殺に影響を与えない。
+
+<p>しかし、'auto'として計算された<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>と<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>の両方を持つ置換要素の場合、使用幅と高さを見つけるために上記の<a href="#min-max-widths">最小値と最大幅の幅</a>もとでアルゴリズムを使用する。その後、あたかも算出値であるかのように、結果の幅と高さを使用して、上記の<a href="#Computing_heights_and_margins">"高さとマージンを計算"</a>のもとに規則を適用する。
+</p>
+<h2>10.8 <a name="line-height">行の高さの計算</a>: <a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>、<a href="visudet.html#propdef-vertical-align" class="noxref"><span
+class="propinst-vertical-align">'vertical-align'</span></a>プロパティ</h2>
+
+<p><a
+href="visuren.html#inline-formatting">インライン整形コンテキスト</a>の節で示したとおり、ユーザーエージェントは縦に積み重ねた<a
+href="visuren.html#line-box">行ボックス</a>の中にインラインレベルボックスを流す。行ボックスの高さは次のように決定される:</p>
+
+<ol>
+<li>行ボックスの各インラインレベルボックスの高さが計算される。置換要素、インラインブロック要素、インラインテーブル要素に対して、これはそれらマージンボックスの高さになる。インラインボックスに対しては、これは'line-height'になる。（<a href="#Computing_heights_and_margins">"高さとマージンを計算"</a>および<a href="#leading">"行間と半行間"</a>の<a href="#inline-box-height">インラインボックスの高さ</a>を参照。）
+
+</li>
+<li>インラインレベルボックスの垂直方向の位置を<a href="visudet.html#propdef-vertical-align" class="noxref"><span class="propinst-vertical-align">'vertical-align'</span></a>プロパティにしたがって揃える。インラインレベルボックスが'top'または'bottom'に揃えられる場合、インラインレベルボックスは行ボックス高さの最小として揃えられればならない。そのようなボックスが十分高い場合、複数の解決法が存在し、CSS&nbsp;2.1は行ボックスのベースラインの位置を定義しない（すなわち、<a
+href="#strut">支柱</a>の位置、以下参照）。
+</li>
+<li>最上部にあるボックスの上から最下部にあるボックスの下までの距離が行ボックスの高さになる。（これは下記の<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>のもとで説明されるような<a
+href="#strut">支柱</a>を含む。）
+</li>
+</ol>
+
+<p>空のインライン要素は空のインラインボックスを生成するが、これらのボックスはマージン、パディング、ボーダー、行の高さを持っているため、内容を持つ要素のようにこれらの計算に影響を与える。
+</p>
+
+<h3>10.8.1 <a name="leading">行間と半行間</a></h3>
+
+<p>CSSはすべてのフォントが、ベースラインとその下に深さの上側に特性高さを指定したフォントメトリックスを持つことを想定している。本節では、<var>A</var>を高さ（与えられたサイズでの与えられたフォント）、<var>D</var>を深さの意味で用いる。また<var>AD</var> = <var>A</var> + <var>D</var>と定義し、上から下までの距離とする。（<a href="#sTypoAscender">TrueTypeおよびOpenTypeフォントでどのように<var>A</var>および<var>D</var>を発見するか</a>については下記の注を参照のこと。）これらはフォントメトリックのすべてであり、任意の個別のグリフの先祖および子孫と対応するは必要ないことに注意する。
+
+<p>ユーザーエージェントはそれらの関連のベースラインによって相互に非置換インラインボックス内のグリフを揃えなければならない。それから各グリフに対して、<var>A</var>と<var>D</var>を決定する。1つの要素でグリフは異なるフォントに由来してもよく、ひいては同じ<var>A</var>と<var>D</var>をすべて持つ必要もないことに注意する。インラインボックスがすべてにおいてグリフを含んでいない場合、それは要素の最初の利用可能なフォントの<var>A</var>と<var>D</var>をもつ<a
+href="#strut">支柱</a>（ゼロ幅の不可視のグリフ）を含むと考える。
+
+<p>それでも各グリフに対して、追加で行間<var>L</var>を決定する。ここで<var>L</var> = <a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a> - <var>AD</var>。半行間は上の<var>A</var>と他の半分の下の<var>D</var>追加される、グリフとその行間の上の<var>A'</var> = <var>A</var> + <var>L</var>/2のベースラインの合計の高さ、<var>D'</var> = <var>D</var> + <var>L</var>/2の合計の深さで与えられる。
+
+<p class=note><strong>注。</strong> <var>L</var>は負であってもよい。
+
+<p id="inline-box-height">インラインボックスの高さはすべてのグリフと各辺のそれらの半行間を含んでおり、したがってこれは厳密に'line-height'である。子要素のボックスはこの高さに影響しない。
+
+<p>非置換要素のマージン、パディング、ボーダーは行ボックスの計算の一部ではないが、それでもこれらはインラインボックスの周りに描画される。これは、<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>によって指定される高さが包含ボックスの高さより小さい場合、パディングとボーダーの背景と色は隣接する行ボックスにはみだしてもよいことを意味する。ユーザーエージェントは文書の順番にボックスを描画すべきである。これは、後続の行のボーダーが前の行のボーダーとテキストを上に描画するようになる。
+</p>
+
+<p class=note><em><strong>注。</strong> CSS&nbsp;2.1はインラインボックスの内容領域がどのようなものであるかを定義せず（上記<a
+href="#inline-non-replaced">10.6.1節</a>参照）、ひいては異なるユーザーエージェントが異なる場所で背景とボーダーを描いてもよい。</em>
+
+<p id=sTypoAscender class=note><em><strong>注。</strong>AとD（現在の要素のフォントサイズにスケーリングした後の）のためのフォントOS/2テーブルから"sTypoAscender"と"sTypoDescender"のメトリックを用いたOpenTypeまたはTrueTypeフォントを使用する実装を推奨する。これらのメトリックの不足において、HHEAテーブルから"アセント"および"ディセント"メトリックを使用すべきである。</em>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'line-height'"><a name="propdef-line-height" class="propdef-title"><strong>'line-height'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>normal | <a href="syndata.html#value-def-number" class="noxref"><span class="value-inst-number">&lt;number&gt;</span></a> | <a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>normal
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>要素自身のフォントの大きさを参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a>と<a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a>は絶対値、そうでなければ指定値に同じ
+</td></tr></table>
+</dl>
+</div>
+
+
+<p><a href="visuren.html#inline-level">インラインレベル</a>要素からなる<a href="visuren.html#block-boxes">ブロックコンテナ要素</a>の内容において、'line-height'は要素内の行ブロックの<em>最小の</em>高さを指定する。まさに、あたかも各行ボックスが<a name="strut">要素のフォントと'line-height'プロパティとともにゼロ幅の行ボックス</a>で開始されるかのように、最小の高さはベースラインとそれの下の最小深さを超える最小の高さからなる。この架空のボックスを"strut"と呼ぶ（この名前はTeXからアイデアを得ている）。
+</p>
+
+<p>上下のベースラインのフォントの高さと深さはフォントにメトリックが含まれていると仮定する。（詳細は、CSS level&nbsp;3を参照のこと。）
+
+<p>非置換<a
+href="visuren.html#inline-boxes">インライン</a>要素で、'line-height'は行ボックスの高さの計算で使用される高さを指定する。
+</p>
+<p>このプロパティの値は以下のような意味を持つ:</p>
+
+<dl>
+<dt><strong>normal</strong> </dt>
+<dd>ユーザーエージェントに要素のフォントをもとに"妥当な"値を使用値に設定するよう命じる。この値は<span class="index-inst"
+title="&lt;number&gt;"><a name="x18" href="syndata.html#value-def-number" class="noxref"><span
+class="value-inst-number">&lt;number&gt;</span></a></span>と同じ意味を持つ。'normal'には1.0と1.2の間の使用値を推奨する。<a
+href="cascade.html#computed-value">算出値</a>は'normal'になる。
+</dd>
+<dt><span class="index-inst" title="&lt;length&gt;"><a name="x19" href="syndata.html#value-def-length" class="noxref"><span
+class="value-inst-length"><strong>&lt;length&gt;</strong></span></a></span>
+</dt>
+<dd>指定長さは行ボックスの高さの計算で使用される。負の値は不正である。
+</dd>
+<dt><span class="index-inst" title="&lt;number&gt;"><a name="x20" href="syndata.html#value-def-number" class="noxref"><span
+class="value-inst-number"><strong>&lt;number&gt;</strong></span></a></span>
+</dt>
+<dd>プロパティの使用値はこの数に要素のフォントサイズを乗じたものである。負の値は不正である。<a
+href="cascade.html#computed-value">算出値</a>は指定値と同じである。
+</dd>
+<dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x21" href="syndata.html#value-def-percentage" class="noxref"><span
+class="value-inst-percentage"><strong>&lt;percentage&gt;</strong></span></a></span>
+</dt>
+<dd>プロパティの<a href="cascade.html#computed-value">算出値</a>はこのパーセンテージに要素の計算されたフォントサイズに乗じたものである。負の値は不正である。
+</dd>
+</dl>
+
+<div class="example"><P style="display:none">例：</P><p>
+以下の例で3つの規則はいずれも同じ結果となる：
+</p>
+<pre>
+div { line-height: 1.2; font-size: 10pt }     /* number */
+div { line-height: 1.2em; font-size: 10pt }   /* length */
+div { line-height: 120%; font-size: 10pt }    /* percentage */
+</pre>
+</div>
+
+<p>要素が1つ以上のフォントで描画されたテキストを含む場合、ユーザーエージェントはもっとも大きなフォントサイズに従って、'通常の'<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>値を決定してもよい。
+</p>
+<p class=note><em><strong>注。</strong> ブロックコンテナボックスのすべてのインラインボックスに対して<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>の値が1つのみあり、かつそれらがすべて同一のフォント（かつ置換要素やインライン要素などがない）場合、上記は、連続する行のベースラインが正確に別々の<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>であることを保証するだろう。たとえばテーブルにおいて、異なるフォントのテキスト列を揃えるときに重要になる。</em>
+</p>
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'vertical-align'"><a name="propdef-vertical-align" class="propdef-title"><strong>'vertical-align'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>baseline | sub | super | top | text-top | middle | 
+   bottom | text-bottom | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | <a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>baseline
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>インラインレベルとテーブルセル要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>要素自身の'line-height'を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;length&gt;</span></a>と<a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;percentage&gt;</span></a>は絶対長さ、そうでなければ指定値に同じ
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティは、インラインレベルボックスによって生成された行ボックス内における垂直方向の位置を指定する。</p>
+ 
+<div class="note"><p>
+<em><strong>注。</strong> このプロパティの値はテーブルのコンテキストで異なる意味を持つ。詳細は<a href="tables.html#height-layout">テーブルの高さのアルゴリズム</a>の節を参照のこと。
+</em>
+</p>
+</div>
+
+<p>以下の値は親インライン要素または親ブロックコンテナ要素の<a href="#strut">支柱</a>に関してのみ意味を持つ。
+
+<p>以下の定義において、非置換インライン要素に対して、配置に使用するボックスは、ボックスの高さが'line-height'である（包含ボックスのグリフと各辺の半行間は<a
+href="#inline-box-height">上記を</a>参照）。他のすべての要素に対して、配置に使用するボックスはマージンボックスである。
+
+<dl>
+  <dt><strong>baseline</strong></dt>
+  <dd>ボックスのベースラインと親ボックスのベースラインを揃える。ボックスにベースラインが存在しない場合、そのボックスの下辺を親ボックスのベースラインに揃える。</dd>
+  <dt><strong>middle</strong></dt>
+  <dd>ボックスの垂直の中心線を、親のx-heightの半分を加えた親ボックスのベースラインに揃える。</dd>
+  <dt><strong>sub</strong></dt>
+  <dd>ボックスのベースラインを、親ボックスの下付き文字として適切な位置まで下げる。（この値は要素のフォントサイズに影響を与えない。）</dd>
+  <dt><strong>super</strong></dt>
+  <dd>ボックスのベースラインを、親ボックスの上付き文字として適切な位置まで上げる。（この値は要素のフォントサイズに影響を与えない。）</dd>
+  <dt><strong>text-top</strong></dt>
+  <dd>ボックスの上を、親の内容領域の上に揃える。（<a href="#inline-non-replaced">10.6.1節</a>参照）。</dd>
+  <dt><strong>text-bottom</strong></dt>
+  <dd>ボックスの下を、親の内容領域の下に揃える。（<a
+      href="#inline-non-replaced">10.6.1 節</a>参照）。</dd>
+  <dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x23" href="syndata.html#value-def-percentage" class="noxref"><span
+  class="value-inst-percentage"><strong>&lt;percentage&gt;
+  
+  </strong></span></a></span></dt>
+  <dd>（<a href="visudet.html#propdef-line-height" class="noxref"><span
+      class="propinst-line-height">'line-height'</span></a>の値のパーセント）の距離だけ、ボックスを上に上げる（正の値）または下に下げる（負の値）。'0%'は'baseline'と同じ意味になる。</dd>
+  <dt><span class="index-inst" title="&lt;length&gt;"><a name="x24" href="syndata.html#value-def-length" class="noxref"><span
+  class="value-inst-length"><strong>&lt;length&gt;
+  
+  </strong></span></a></span></dt>
+  <dd>この距離だけボックスを上に上げる（正の値）または下に下げる（負の値）。値'0cm'は'baseline'と同じ意味になる。
+  </dd>
+</dl>
+<p>以下の値は行ボックスに対して要素を揃える。要素はそれに相対的に整列する子を持ってもよいので（順番に子孫がそれらと相対的に整列してよい）、これらの値は整列サブツリーで境界を使用する。インライン要素の<dfn>整列サブツリー</dfn>は、要素と、計算された'vertical-align'値が'top'または'bottom'でないすべての子供インライン要素のサブツリーを含む。整形サブツリーの上はサブツリーのボックスの上の最も高いものであり、下も同様である。
+<dl>
+  <dt><strong>top</strong></dt>
+  <dd>サブツリーの上を、行ボックスの上に揃える。</dd>
+  <dt><strong>bottom</strong></dt>
+  <dd>サブツリーの下を、行ボックスの下に揃える。</dd>
+</dl>
+
+<p>'inline-table'のベースラインは、テーブルの最初の行のベースラインである。
+</p>
+<p>その'overflow'プロパティが'visible'以外の算出値を持つ、またはそれがどちらか一方のフロー内の行ボックスを持たない場合、'inline-block'のベースラインは通常フローのその最後の行ボックスのベースラインとなる。この場合、ベースラインは下マージン辺となる。</p>
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="visuren.html">前章</a> &nbsp; <a href="visufx.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</body>
+</html>
+
+
