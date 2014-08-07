@@ -1,0 +1,1822 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+
+<head>
+<title>Visual formatting model</title>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="box.html">
+<link rel="next" href="visudet.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+<style type="text/css">
+.current,.proposed,span.delcurrent { background:#feb }
+ins.proposed,span.insproposed,li.insproposed { background:#bfb }
+del.proposed,span.delproposed { background:#fbb }
+span.insproposed,li.insproposed { text-decoration:underline }
+span.delproposed,span.delcurrent { text-decoration:line-through }
+body>del,body>ins {display:block}
+blockquote.math {display: table}
+blockquote.math p {display: table-row}
+blockquote.math span {display: table-cell; padding-right: 0.3em}
+blockquote.math span:first-child {text-align: right}
+</style>
+</head>
+<body>
+<div class="navbar">
+<p><a href="box.html">前章</a> &nbsp; <a href="visudet.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+<h1><a name="q0">9 視覚整形モデル</a></h1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="visuren.html#visual-model-intro" class="tocxref">9.1 視覚整形モデルの導入</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#viewport" class="tocxref">9.1.1 ビューポート</a>
+      </li><li class="tocline3"><a href="visuren.html#containing-block" class="tocxref">9.1.2 <span class="index-def" title="containing block">包含ブロック</span></a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#box-gen" class="tocxref">9.2 ボックスの生成を制御する</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#block-boxes" class="tocxref">9.2.1 ブロックレベル要素とブロックボックス</a>
+      <ul class="toc">
+        <li class="tocline4"><a href="visuren.html#anonymous-block-level" class="tocxref">9.2.1.1匿名ブロックボックス</a>
+      </li></ul>
+      </li><li class="tocline3"><a href="visuren.html#inline-boxes" class="tocxref">9.2.2インラインレベル要素とインラインボックス</a>
+      <ul class="toc">
+        <li class="tocline4"><a href="visuren.html#anonymous" class="tocxref">9.2.2.1 匿名インラインボックス</a>
+      </li></ul>
+      </li><li class="tocline3"><a href="visuren.html#run-in" class="tocxref">9.2.3 ランインボックス</a>
+      </li><li class="tocline3"><a href="visuren.html#display-prop" class="tocxref">9.2.4 <span class="propinst-display">'display'</span>プロパティ</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#positioning-scheme" class="tocxref">9.3 位置決め方式</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#choose-position" class="tocxref">9.3.1 位置決め方式の選択: <span class="propinst-position">'position'</span>プロパティ</a>
+      </li><li class="tocline3"><a href="visuren.html#position-props" class="tocxref">9.3.2 ボックスのオフセット: <span class="propinst-top">'top'</span>、<span class="propinst-right">'right'</span>、<span class="propinst-bottom">'bottom'</span>、<span class="propinst-left">'left'</span></a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#normal-flow" class="tocxref">9.4 通常フロー</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#block-formatting" class="tocxref">9.4.1 ブロック整形コンテキスト</a>
+      </li><li class="tocline3"><a href="visuren.html#inline-formatting" class="tocxref">9.4.2 インライン整形コンテキスト</a>
+      </li><li class="tocline3"><a href="visuren.html#relative-positioning" class="tocxref">9.4.3 相対配置</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#floats" class="tocxref">9.5 浮動</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#float-position" class="tocxref">9.5.1 浮動体の配置: <span class="propinst-float">'float'</span>プロパティ</a>
+      </li><li class="tocline3"><a href="visuren.html#flow-control" class="tocxref">9.5.2 浮動体に隣接するフローの制御: <span class="propinst-clear">'clear'</span>プロパティ</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#absolute-positioning" class="tocxref">9.6 絶対配置</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#fixed-positioning" class="tocxref">9.6.1 固定配置</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#dis-pos-flo" class="tocxref">9.7 'display'、'position'、'float'の関係</a>
+    </li><li class="tocline2"><a href="visuren.html#comparison" class="tocxref">9.8 通常フロー、浮動、絶対配置の比較</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#comp-normal-flow" class="tocxref">9.8.1 通常フロー</a>
+      </li><li class="tocline3"><a href="visuren.html#comp-relpos" class="tocxref">9.8.2 相対配置</a>
+      </li><li class="tocline3"><a href="visuren.html#comp-float" class="tocxref">9.8.3 ボックスの浮動</a>
+      </li><li class="tocline3"><a href="visuren.html#comp-abspos" class="tocxref">9.8.4 絶対配置</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#layers" class="tocxref">9.9 レイヤーの表現</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="visuren.html#z-index" class="tocxref">9.9.1 スタックレベルの指定: <span class="propinst-z-index">'z-index'</span>プロパティ</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="visuren.html#direction" class="tocxref">9.10 書字方向: <span class="propinst-direction">'direction'</span>、<span class="propinst-unicode-bidi">'unicode-bidi'</span>プロパティ</a>
+  </li></ul>
+</div>
+
+<h2>9.1 <a name="visual-model-intro">視覚整形モデルの導入</a></h2>
+
+<p>本章および次章では、ユーザーエージェントが視覚<a href="media.html">メディア</a>の<a href="conform.html#doctree">文書ツリー</a>を処理する方法である<a name="x0"><span class="index-def"
+title="visual formatting model">視覚整形モデル</span></a>について説明する。
+</p>
+
+<p>視覚整形モデルでは、文書ツリー内の各要素が<a href="box.html">ボックスモデル</a>に従って0個以上のボックスを生成する。これらボックスのレイアウトは以下の事項に左右される:</p>
+
+<ul>
+<li><a href="box.html#box-dimensions">ボックスの寸法</a>および<a
+href="#box-gen">種類</a>。
+</li><li><a href="#positioning-scheme">ボックスの位置決め方式</a>（通常フロー、浮動、絶対配置）。
+</li><li><a href="conform.html#doctree">文書ツリー</a>における要素間の関係。
+</li><li>外部情報（たとえば、ビューポートのサイズ、画像の<a
+href="conform.html#intrinsic">固有</a>寸法​​など）。
+</li></ul>
+
+<p>本章および次章で定義されたプロパティは、<a href="media.html#continuous-media-group">連続メディア</a>と<a href="media.html#paged-media-group">ページメディア</a>の両方に適用される。<span class="paged">しかし、ページメディアに適用した場合、<a href="box.html#margin-properties">マージンのプロパティ</a>の意味は異なる（詳細については、<a
+href="page.html#page-margins">ページモデル</a>を参照）。</span>
+</p>
+
+<p>視覚整形モデルは、書式設定のすべてを規定するものではない（たとえば、文字間隔アルゴリズムを規定しない）。<a
+href="conform.html#conformance">適合ユーザーエージェント</a>は、本仕様の対象外となる整形について動作が異なってもよい。
+</p>
+
+<h3>9.1.1 <a name="viewport">ビューポート</a></h3>
+
+<p>一般に、<a
+href="media.html#continuous-media-group">連続メディア</a>のユーザーエージェントは、ユーザーが文書を参照するための<a name="x1"><span class="index-def" title="viewport"><dfn>ビューポート</dfn></span></a>（画面上のウィンドウまたは他の表示領域）を提供している。ビューポートのサイズが変更されたときにユーザーエージェントは、文書のレイアウトを変更してもよい（<a
+href="visudet.html#containing-block-details">初期包含ブロック</a>を参照のこと）。
+</p>
+<p>
+ビューポートが文書のレンダリングされているキャンバスの面積よりも小さい場合、ユーザーエージェントはスクロール機構を提供すべきである。1つの<a href="intro.html#canvas">キャンバス</a>に複数のビューポートがあってはならないが、ユーザーエージェントは複数のキャンバスにレンダリングしてもよい（すなわち、同じ文書の異なる表示を提供してよい）。
+</p>
+
+<h3>9.1.2 <span class="index-def" title="containing block"><a name="containing-block">包含ブロック</a></span>
+</h3>
+
+<p>CSS 2.1では、多くのボックスの位置や大きさは、<a name="x3"><span class="index-def"
+title="containing block"><dfn>包含ブロック</dfn></span></a>と呼ばれる矩形のボックス辺を基準に計算される。一般に、生成ボックスは、子孫ボックスのブロックを含むとして機能する。これを、ボックスがその子孫の包含ブロックを"設置する"と言う。"ボックスの包含ブロック"は"そのボックスが含まれている包含ブロック"を意味し、そのボックスが生成する包含ブロックという意味ではない。
+</p>
+<p>各ボックスは、包含ブロックに対する位置を与えられるが、その位置はこの包含ブロックによって制限されない。外に<a
+href="visufx.html#overflow">はみ出して</a>もよい。
+</p>
+
+<p>包含ブロックの寸法を計算する方法の<a href="visudet.html#containing-block-details">詳細</a>については、<a href="visudet.html">次章</a>で説明される。
+</p>
+<h2>9.2 <a name="box-gen">ボックスの生成を制御する</a></h2>
+
+<p>以下の節では、CSS&nbsp;2.1で生成されるボックスの種類について説明する。視覚整形モデルでは、ボックスの種類が部分的にボックスの動作に影響を与える。後述の<a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>プロパティが、ボックスの種類を指定する。
+</p>
+
+<p>Certain values of the <a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a> property cause an element of the source document to generate a <span class="index-def"
+title="principal box"><a name="principal-box"><dfn>principal box</dfn></a></span> that contains descendant boxes and generated content and is also the box involved in any positioning scheme. Some elements may generate additional boxes in addition to the principal box: 'list-item' elements. この追加ボックスは主ボックスを基準にして配置される。
+
+<h3>9.2.1 <a name="block-boxes">ブロックレベル要素とブロックボックス</a></h3>
+
+<p><span class="index-def" title="block-level element"><a
+name="block-level"><dfn>Block-level elements</dfn></a></span> –
+those elements of the source document that are formatted visually as
+blocks (e.g., paragraphs) – are elements which generate a
+block-level principal box. Values of the <a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a> property that make an
+element block-level include: 'block', 'list-item', and 'table'. <a name="x6"><span
+class="index-def" title="block-level box"><dfn>Block-level
+boxes</dfn></span></a> are boxes that participate in a <a
+href="#block-formatting">block formatting context.</a>
+
+<p>In CSS&nbsp;2.1, a block-level box is also a block container box
+unless it is a table box or the principal box of a replaced element.
+A <span class="index-def" title="block container box"><a
+name="block-container-box"><dfn >block container box</dfn></a></span>
+either contains only block-level boxes or establishes an <a
+href="#inline-formatting" >inline formatting context</a> and thus
+contains only <a href="#anonymous-block-level" >inline-level
+boxes.</a> An element whose principal box is a block container box is
+a <span class="index-def" title="block container element" ><a
+name="block-container-element" ><dfn >block container
+element.</dfn></a></span> Values of the 'display' property which make
+a non-replaced element generate a block container include 'block',
+'list-item' and 'inline-block'. Not all block container boxes are
+block-level boxes: non-replaced inline blocks and non-replaced table
+cells are block containers but are not block-level. Block-level boxes
+that are also block containers are called <a name="x9"><span class="index-def"
+title="block box"><dfn>block boxes</dfn></span></a>.
+
+
+
+<p>3つの用語"ブロックレベルボックス"、"ブロックコンテナボックス"、"ブロックボックス"は明確な場合に"ブロック"と略される。
+
+<h4>9.2.1.1 <a name="anonymous-block-level">匿名ブロックボックス</a></h4>
+
+<p>次のような文書で:
+</p>
+<pre><code class="html">
+&lt;DIV&gt;
+  Some text
+  &lt;P&gt;More text
+&lt;/DIV&gt;
+</code></pre>
+<p>
+（DIVとPの両方が'display: block'であると仮定して）、DIVはインラインコンテンツとブロックコンテンツの両方を持つように見える。整形の定義のわかりやすさのために、"Some text"の周囲に<em><a name="x10"><span
+class="index-def" title="anonymous">匿名ブロックボックス</span></a></em>があるとみなす。
+</p>
+<div class="figure">
+<p><img src="images/anon-block.png" alt="上記の例で3つのボックスを示す図"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-anon-block" href="images/longdesc/anon-block-desc.html" title="匿名ブロックボックスについて">[D]</A></SPAN> 
+</p><p class="caption">上記の例である3つのボックスの図、そのうち1つは匿名である。
+</p></div>
+
+<p>言い換えれば、ブロックコンテナボックス（上記の例ではDIVに対して生成される）が内部にブロックレベルボックス（上記の例で P）を持つ場合、ブロックボックスの内部にブロックレベルボックス<em>のみ</em>を持つよう強制する。
+
+<p>When an inline box contains an in-flow block-level box, the inline box (and its inline ancestors within the same line box) is broken around the block-level box (and any block-level siblings that are consecutive or separated only by collapsible whitespace and/or out-of-flow elements), splitting the inline box into two boxes (even if either side is empty), one on each side of the block-level box(es). 中断前および中断後の行ボックスは匿名ブロックボックスで囲まれ、ブロックレベルボックスはこの匿名ボックスの兄弟となる。このようにインラインボックスが相対位置によって影響される場合、結果として得られる変換は、インラインボックスに含まれるブロックレベルボックスにも影響を与える。
+
+<div class="example"><P style="display:none">例：</P>
+<p>このモデルを以下の例に当てはめる。以下の規則を:</p>
+
+<pre><code class="css">
+p    { display: inline }
+span { display: block }
+</code></pre>
+
+<p>このようなHTML文書に用いるとする:</p>
+
+<pre class="html-example"><code class="html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HEAD&gt;
+&lt;TITLE&gt;Anonymous text interrupted by a block&lt;/TITLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+&lt;P&gt;
+<em>This is anonymous text before the SPAN.</em>
+&lt;SPAN&gt;This is the content of SPAN.&lt;/SPAN&gt;
+<em>This is anonymous text after the SPAN.</em>
+&lt;/P&gt;
+&lt;/BODY&gt;
+</code></pre>
+
+<p>P要素は、匿名テキスト（C1）、続いてブロックレベル要素、続いてもう1つの匿名テキスト（C2）を含んでいる。その結果ボックスは、C1の周囲の匿名ブロックボックス、SPANブロックボックス、C2の周囲の別の匿名ブロックボックスと、これらを含むBODYブロックボックスの4つとなる。
+</p></div>
+
+<p>匿名ボックスのプロパティは、囲んでいる非匿名ボックス（たとえば、例では単に"匿名ブロックボックス"、DIVのための1つをサブセクションの見出しの下）から継承される。非継承のプロパティは初期値を持つ。たとえば、匿名ボックスのフォントはDIVから継承されるが、マージンは0になる。
+</p>
+<p>
+匿名ブロックボックスを生成させる要素に設定されたプロパティは、まだ、その要素のボックスとコンテンツに適用される。たとえば、上記の例ではボーダーがP要素に設定された場合、ボーダーはC1（行の終わりにオープン）とC2（行の先頭に開いている）の周囲に描画される。
+</p>
+<p>
+一部のユーザーエージェントは、たとえば、"匿名の行ボックス"内のネストされたブロックをラップし、そのボックスの周囲にインラインのボーダーを描画するような方法で、ブロックを含むインラインでボーダーを実装している。CSS1とCSS2はこの動作を定義していないので、CSS1のみおよびCSS2のみのユーザーエージェントは、この代替モデルを実装してもCSS 2.1の本部分への適合を要求できる。これは、本仕様書がリリースされた後に開発されたユーザーエージェントには適用されない。
+</p>
+
+<p>パーセント値を参照することになり、パーセント値を解決するときに匿名ブロックボックスは無視される。最も近い非匿名先祖ボックスが代わりに使用される。たとえば、上記のDIV内の匿名ブロックボックスの子がパーセント高さを解決するために、その包含ブロックの高さを知る必要がある場合、匿名ブロックボックスではなくDIVによって形成された包含ブロックの高さを使用する。
+
+<h3>9.2.2 <a name="inline-boxes">インラインレベル要素とインラインボックス</a></h3>
+
+<p><span class="index-def" title="inline-level element"><a name="inline-level"><dfn>インラインレベル要素</dfn></a></span>はソース文書のうち新しい内容ブロック整形しない要素であり、内容は複数行にまたがる（たとえば、段落内の文字強調や、インライン画像など）。<a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>プロパティの'inline'、 'inline-table'、'inline-block'値は、要素をインラインレベルにする。インラインレベル要素は<a name="x12"><span class="index-def"
+title="inline-level box"><dfn>インラインレベルボックス</dfn></span></a>を生成する。これはインライン整形コンテキストに関与するボックスである。
+
+<p><span class="index-def" title="inline box"><a
+name="inline-box"><dfn>インラインボックス</dfn></a></span>は、インラインレベルとそのコンテンツの両方がインライン整形コンテキストを含むものの1つである。'inline'の'display'値を伴なう非置換要素は、インラインボックスを生成する。インラインレベルボックスが（置換インライン要素、インラインブロック要素、インラインテーブル要素のような）インラインボックスでないものは、単一の不透明なボックスとしてインライン整形コンテキストに関与するため、<a name="x14"><span class="index-def" title="atomic
+inline-level box"><dfn>原子インラインレベルボックス</dfn></span></a>と呼ばれる。
+
+<h4>9.2.2.1 <a name="anonymous">匿名インラインボックス</a></h4>
+
+<p>すべてのテキストは（インライン要素の内側ではなく）ブロックコンテナ要素の内側に直接含まれる。テキストは匿名インライン要素として扱われなければならない。
+
+<p>次のようなHTMLマークアップされた文書で:</p>
+
+<div class="html-example">
+<pre><code class="html">
+&lt;p&gt;Some &lt;em&gt;emphasized&lt;/em&gt; text&lt;/p&gt;
+</code></pre>
+</div>
+
+<p><code>&lt;p&gt;</code>はインラインボックスを伴なうブロックボックスを生成する。"emphasized"のボックスは、インライン要素（<code>&lt;em&gt;</code>）によって生成されたインラインボックスであるが、他のボックス（"Some"と"text"）はブロックレベル要素（<code>&lt;p&gt;</code>）によって生成されたインラインボックスである。後者は、関連するインラインレベル要素を持たないため<a name="x15"><span
+class="index-def" title="anonymous inline boxes">匿名インラインボックス</span></a>と呼ばれる。
+</p>
+<p>匿名インラインボックスは親ブロックボックスから継承可能なプロパティを継承する。非継承のプロパティは初期値を持つ。たとえば、匿名インラインボックスの色はPから継承するが、背景は透明になる。
+</p>
+
+<p>
+<a href="text.html#propdef-white-space" class="noxref"><span class="propinst-white-space">'white-space'</span></a>プロパティによって相殺される空白コンテンツは、任意の匿名インラインボックスを生成しない。
+</p>
+
+<p>本仕様において匿名ボックスの種類が文脈から明らかな場合、匿名インラインボックスと匿名ブロックボックスのどちらも単に匿名ボックスと呼ぶ。
+</p>
+<p><a href="tables.html#anonymous-boxes">テーブル</a>を整形する際に生じる匿名ボックスには、より多くの匿名ボックスの種類がある。
+</p>
+<h3>9.2.3 <a name="run-in">ランインボックス</a></h3>
+
+<p>[本節は、節番号が以前のドラフトと同じになるように存在する。<a name="x16"><span class="index-def" title="run-in">'Display: run-in'</span></a>は現在CSS level&nbsp;3で定義されている（<a
+href="/TR/css3-box">CSS basic box model</a>参照）。]
+
+<h3>9.2.4 <a name="display-prop"></a> <a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>プロパティ</h3>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'display'"><a name="propdef-display" class="propdef-title"><strong>'display'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>inline | block | list-item | inline-block |
+table | inline-table | table-row-group | table-header-group |
+table-footer-group | table-row | table-column-group | table-column |
+table-cell | table-caption | none | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>inline
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#all-media-group" class="noxref">all</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>テキスト参照
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティの値は以下の意味を持つ:</p>
+
+<dl>
+<dt><span class="index-def" title="'block'の定義"><a
+name="value-def-block"><strong>block</strong></a></span>
+</dt>
+<dd>This value causes an element to generate a principal block box.
+
+</dd>
+<dt><span class="index-def" title="'inline-block'の定義"><a
+name="value-def-inline-block"><strong>inline-block</strong></a></span>
+</dt>
+<dd>This value causes an element to generate a principal inline-level block
+container.
+(The inside of an inline-block is formatted as a block box, and the 
+element itself is formatted as an atomic inline-level box.)
+
+</dd>
+<dt><span class="index-def" title="'inline'の定義"><a
+name="value-def-inline"><strong>inline</strong></a></span>
+</dt>
+<dd>この値は1つ以上のインラインボックスを生成させる。
+</dd>
+<dt><span class="index-def" title="'list-item'の定義"><a
+name="value-def-list-item"><strong>list-item</strong></a></span>
+</dt>
+<dd>この値は要素（たとえばHTMLのLI）に主要ボックスとマーカーボックスを生成させる。リストおよびリストの書式設定の例については、<a href="generate.html#lists">リスト</a>の章を参照のこと。
+</dd>
+<dt><strong>none</strong></dt>
+
+<dd><a name="x22"><span class="index-def" title="'none'::as display value">この値</span></a>は要素を<a
+href="intro.html#formatting-structure">整形構造</a>に出現させない（すなわち、視覚メディアにおいて要素はボックスを生成せず、レイアウトに影響しない）。子孫要素もいかなるボックスも生成しない。要素とその内容は整形構造から完全に削除される。この動作は、子孫での<a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>プロパティの設定によって上書きされ<strong>ない</strong>。
+
+<p>'none'は不可視のボックスを作成するわけではないことに注意する。全くボックスを作成しないのである。CSSは、要素が整形に影響を与える整形構造においてボックスを生成できるようにするメカニズムを含むが、それ自体は不可視である。詳細については、<a href="visufx.html#visibility">可視性</a>の節を参照のこと。
+</p>
+</dd>
+<dt>
+<a href="tables.html#value-def-table" class="noxref"><span class="value-inst-table">table</span></a>、<a href="tables.html#value-def-inline-table" class="noxref"><span class="value-inst-inline-table">inline-table</span></a>、 <a href="tables.html#value-def-table-row-group" class="noxref"><span class="value-inst-table-row-group">table-row-group</span></a>、<a href="tables.html#value-def-table-column" class="noxref"><span class="value-inst-table-column">table-column</span></a>、<a href="tables.html#value-def-table-column-group" class="noxref"><span class="value-inst-table-column-group">table-column-group</span></a>、<a href="tables.html#value-def-table-header-group" class="noxref"><span class="value-inst-table-header-group">table-header-group</span></a>、<a href="tables.html#value-def-table-footer-group" class="noxref"><span class="value-inst-table-footer-group">table-footer-group</span></a>、<a href="tables.html#value-def-table-row" class="noxref"><span class="value-inst-table-row">table-row</span></a>、<a href="tables.html#value-def-table-cell" class="noxref"><span class="value-inst-table-cell">table-cell</span></a>、<a href="tables.html#value-def-table-caption" class="noxref"><span class="value-inst-table-caption">table-caption</span></a>
+</dt>
+<dd>これらの値は要素をテーブル要素のように作用させる（<a
+href="tables.html">テーブル</a>の章で説明される制限に従う）。
+</dd>
+</dl>
+
+<p>位置指定、浮動要素（<a
+href="#dis-pos-flo">'display'、'position'、'float'の関係</a>を参照）またルート要素を除いて、算出値は指定値と同値である。ルート要素に対しては、算出値は<a href="#dis-pos-flo">'display'、'position'、'float'の関係</a>の節で説明されたとおりに変更される。
+</p>
+
+<p><a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>の<a href="about.html#initial-value">初期値</a>は'inline'であるが、ユーザーエージェントの<a
+href="cascade.html#default-style-sheet">デフォルトスタイルシート</a>の規則は、この値を<a
+href="cascade.html">上書き</a>してもよいことに注意する。付録のHTML4における<a
+href="sample.html">サンプルスタイルシート</a>を参照のこと。
+</p>
+<div class="example"><P style="display:none">例：</P>
+<p><a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>プロパティのいくつかの例を示す:
+</p>
+<pre><code class="css">
+p   { display: block }
+em  { display: inline }
+li  { display: list-item } 
+img { display: none }      /* 画像を表示しない */
+</code></pre>
+</div>
+
+
+<h2>9.3 <a name="positioning-scheme">位置決め方式</a></h2>
+
+<p>CSS 2.1では、ボックスを3種類の<a name="x23"><span
+class="index-def" title="positioning scheme"><dfn>位置決め方式</dfn></span></a>に従ってレイアウトしてもよい：</p>
+
+<ol>
+<li><a href="#normal-flow">通常フロー</a>。CSS 2.1では、通常フローはブロックレベルボックスの<a href="#block-formatting">ブロック整形</a>、インラインレベルボックスの<a href="#inline-formatting">インライン整形</a>、およびブロックレベルとインラインレベルボックスの<a
+href="#relative-positioning">相対位置</a>が含まれる。
+</li>
+<li><a href="#floats">浮動</a>。浮動モデルでは、ボックスは最初に通常フローに従ってレイアウトされ、それからフローから取り出されて、左または右へ可能な限り遠くにシフトする。内容は、浮動の側面に沿って流しこんでもよい。
+</li>
+<li><a href="#absolute-positioning">絶対配置</a>。絶対位置決めモデルでは、ボックスは通常フローから完全に削除され（以降の兄弟に影響を与えない）、包含ブロックに対して位置が割り当てられる。
+</li>
+</ol>
+
+<p>ある要素が浮動、絶対位置決め、ルート要素である場合、<dfn><a name="x24"><span class="index-def">フロー外</span></a></dfn>と呼ばれる。ある要素がフロー外でなければ<dfn><a name="x25"><span
+class="index-def">フロー内</span></a></dfn>と呼ばれる。<dfn><a name="x26"><span class="index-def">要素のフロー</span></a></dfn><var>A</var>が<var>A</var>から構成される集合であり、最も近いフロー外の先祖が<var>A</var>であるようなすべてのフロー内要素。
+
+<div class="note">
+<em><strong>注。</strong> CSS 2.1の位置決め方式は、著者がレイアウト効果のために使われているマークアップのトリック（たとえば、不可視の画像）を回避できるようにすることで、文書をよりアクセシブルにする手助けとなる。
+</em>
+</div>
+
+<h3>9.3.1 <a name="choose-position">位置決め方式の選択:</a> <a href="visuren.html#propdef-position" class="noxref"><span
+class="propinst-position">'position'</span></a>プロパティ</h3>
+
+<p><a href="visuren.html#propdef-position" class="noxref"><span class="propinst-position">'position'</span></a>と<a href="visuren.html#propdef-float" class="noxref"><span
+class="propinst-float">'float'</span></a>プロパティはボックスの位置を計算するために使用されCSS&nbsp;2.1位置アルゴリズムを決定する。
+</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'position'"><a name="propdef-position" class="propdef-title"><strong>'position'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>static | relative | absolute | fixed | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>static
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティの値は以下の意味を持つ:</p>
+
+<dl>
+<dt><strong>static</strong></dt>
+
+<dd>ボックスは通常ボックスであり、<a
+href="#normal-flow">通常フロー</a>に従ってレイアウトされる。<a href="visuren.html#propdef-top" class="noxref"><span class="propinst-top">'top'</span></a>、<a href="visuren.html#propdef-right" class="noxref"><span class="propinst-right">'right'</span></a>、<a href="visuren.html#propdef-bottom" class="noxref"><span class="propinst-bottom">'bottom'</span></a>、<a href="visuren.html#propdef-left" class="noxref"><span class="propinst-left">'left'</span></a>プロパティは適用されない。 
+</dd>
+<dt><strong>relative</strong></dt>
+
+<dd>ボックスの位置は<a
+href="#normal-flow">通常フロー</a>に従って計算される（これを通常フローでの位置と呼ぶ）。それからボックスはその通常位置から<a
+href="#relative-positioning">相対的に</a>オフセットされる。あるボックスBが相対配置されるとき、後に続くボックスの位置はBがあたかもオフセットされていないかのように計算される。table-row-group、table-header-group、table-footer-group、table-row、table-column-group、table-column、table-cell、table-caption要素での'position:relative'の効果は未定義である。
+</dd>
+<dt><strong>absolute</strong></dt>
+<dd> ボックスの位置（と場合によっては大きさ）は<a href="visuren.html#propdef-top" class="noxref"><span class="propinst-top">'top'</span></a>、<a href="visuren.html#propdef-right" class="noxref"><span class="propinst-right">'right'</span></a>、<a href="visuren.html#propdef-bottom" class="noxref"><span class="propinst-bottom">'bottom'</span></a>、<a href="visuren.html#propdef-left" class="noxref"><span class="propinst-left">'left'</span></a>プロパティで指定される。これらのプロパティはボックスの<a href="#containing-block">包含ブロック</a>との関係を示すオフセットを指定する。絶対配置のボックスは通常フローの範囲外である。これはボックスが以降の兄弟に影響を与えないことを意味する。また、<a href="#absolutely-positioned">絶対配置</a>ボックスはマージンを持つが、このボックスは他のマージンと<a href="box.html#collapsing-margins">相殺</a>しない。
+</dd>
+<dt><strong>fixed</strong></dt>
+<dd> ボックスの位置は'絶対'モデルに従って計算されるが、それに加えて、ボックスはある参照に対して<a
+href="#fixed-positioning">固定</a>される。'絶対'モデルでは、ボックスのマージンは他のマージンと相殺しない。handheld、projection、screen、tty、tvメディアタイプの場合、ボックスは<a href="#viewport">ビューポート</a>に対して固定され、スクロール時に移動しない。printメディアタイプの場合、ボックスは各ページごとに描画され、ページボックスに対して固定される。たとえページが<a href="#viewport">ビューポート</a>を通して見られている場合でも固定される（たとえば、印刷プレビューの場合）。他のメディアタイプの場合、見栄えは未定義である。著者はメディアごとに'固定'を指定したい場合もあるだろう。たとえば、著者が画面上の<a href="#viewport">ビューポート</a>の上辺に対してボックスを固定したいが、印刷ページでは固定したくない場合である。2つの仕様が<a href="media.html#at-media-rule">@media規則</a>を用いて分離されてもよい：
+
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">   
+@media screen { 
+  h1#first { position: fixed } 
+}
+@media print { 
+  h1#first { position: static }
+}
+</code></pre>   
+</div>
+<p>ユーザーエージェントは固定ボックスの内容を割り付けてはならない。<span
+class="note">ユーザーエージェントは別の方法で不可視の内容を印刷してもよいことに注意する。13章の<a href="page.html#outside-page-box">"ページボックスの外側の内容 "</a>を参照。</span>
+</dd>
+</dl>
+<p>
+ユーザーエージェントはルート要素上で'static'として位置を扱ってもよい。
+</p>
+
+<h3>9.3.2 <a name="position-props">ボックスのオフセット</a>: <a href="visuren.html#propdef-top" class="noxref"><span
+class="propinst-top">'top'</span></a>、<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>、<a href="visuren.html#propdef-bottom" class="noxref"><span
+class="propinst-bottom">'bottom'</span></a>、<a href="visuren.html#propdef-left" class="noxref"><span
+class="propinst-left">'left'</span></a></h3>
+
+<p>ある要素の<a href="visuren.html#propdef-position" class="noxref"><span class="propinst-position">'position'</span></a>プロパティが'static'以外の値を取る場合、その要素は<span class="index-def" title="positioned
+element/box"><a name="positioned-element"><dfn>位置指定された</dfn></a></span>と言う。位置指定された要素は位置指定されたボックスを生成し、4つのプロパティに従ってレイアウトされる:</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'top'"><a name="propdef-top" class="propdef-title"><strong>'top'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>位置指定された要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>内容ブロックの高さを参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>長さが指定された場合、絶対長さが対応する。パーセンテージが指定された場合、指定値となる。そうでなければ、'auto'。
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティは、<a
+href="#absolutely-positioned">絶対配置</a>ボックスの上マージン辺がボックスの<a
+href="#containing-block">包含ブロック</a>の上辺からどれだけ下にオフセットされるかを指定する。相対配置ボックスの場合、オフセットはボックス自体の上辺を基準にしている（すなわち、ボックスは通常フロー内の位置を与えられ、その後、これらのプロパティに従ってその位置からのオフセットとなる）。
+</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'right'"><a name="propdef-right" class="propdef-title"><strong>'right'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>位置指定された要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>包含ブロックを含む幅を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>長さが指定された場合、絶対長さが対応する。パーセンテージが指定された場合、指定値となる。そうでなければ、'auto'。
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>'top'と同様だが、ボックスのマージン右辺が<a
+href="#containing-block">包含ブロック</a>右辺からどれだけ左に位置しているかを指定する。 相対配置ボックスの場合、オフセットはボックス自体の右辺を基準にする。
+</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'bottom'"><a name="propdef-bottom" class="propdef-title"><strong>'bottom'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>位置指定された要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>内容ブロックの高さを参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>長さが指定された場合、絶対長さが対応する。パーセンテージが指定された場合、指定値となる。そうでなければ、'auto'。
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>'top'と同様だが、ボックスのマージン下辺が<a
+href="#containing-block">包含ブロック</a>下辺からどれだけ上に位置しているかを指定する。相対配置ボックスの場合、オフセットはボックス自体の下辺を基準にする。
+</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'left'"><a name="propdef-left" class="propdef-title"><strong>'left'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | auto | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>位置指定された要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>包含ブロックを含む幅を参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>長さが指定された場合、絶対長さが対応する。パーセンテージが指定された場合、指定値となる。そうでなければ、'auto'。
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>'top'と同様だが、ボックスのマージン左辺が<a
+href="#containing-block">包含ブロック</a>左辺からどれだけ右に位置しているかを指定する。相対配置ボックスの場合、オフセットはボックス自体の左辺を基準にする。
+</p>
+
+<p>4つのプロパティ値の意味は次のとおり:</p>
+
+<dl>
+<dt><strong><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a></strong></dt>
+<dd>オフセットは基準となる辺からの固定距離となる。負の値は許可される。
+</dd>
+<dt><strong><a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a></strong></dt>
+
+<dd>オフセットは包含ブロック幅のパーセンテージ（<a href="visuren.html#propdef-left" class="noxref"><span class="propinst-left">'left'</span></a>または<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>）または高さ（<a href="visuren.html#propdef-top" class="noxref"><span
+class="propinst-top">'top'</span></a>および<a href="visuren.html#propdef-bottom" class="noxref"><span
+class="propinst-bottom">'bottom'</span></a>）。負の値は許可される。
+</dd>
+<dt><strong>auto</strong></dt>
+<dd>非置換要素の場合、この値の効果は同様に値が'auto'を持つ関連のプロパティのどれかに依存する。非置換要素の詳細については、<a href="#absolutely-positioned">絶対配置</a>の<a href="visudet.html#abs-non-replaced-width">幅</a>と<a href="visudet.html#abs-non-replaced-height">高さ</a>の章を参照のこと。置換要素の場合、この値の効果は置換コンテンツの固有寸法にのみ依存する。置換要素の詳細については、絶対配置の<a
+href="visudet.html#abs-replaced-width">幅</a>と<a
+href="visudet.html#abs-replaced-height">高さ</a>の章を参照のこと。
+</dd>
+</dl>
+
+<h2>9.4 <a name="normal-flow">通常フロー</a></h2> 
+
+<p>Boxes in the normal flow belong to a <a name="x33"><span class="index-def"
+title="formatting context">formatting context</span></a>, which in CSS&nbsp;2.1 may be table, block or inline. In future levels of CSS, other types of formatting context will be introduced. <a
+href="#block-level">ブロックレベル</a>ボックスは<a
+href="#block-formatting">ブロック整形</a>コンテキストに関与する。<a
+href="#inline-level">インラインレベルボックス</a>は<a
+href="#inline-formatting">インライン整形</a>コンテキストに関与する。Table formatting contexts are described in the <a href="tables.html"
+>chapter on tables.</a>
+</p>
+<h3>9.4.1 <a name="block-formatting">ブロック整形コンテキスト</a></h3>
+
+<p>フロート、絶対配置された要素、ブロックボックスでないブロックコンテナ（たとえば、インラインブロック、テーブルセル、テーブルのキャプションなど）、および'visible'以外の'overflow'をもつブロックボックス（値がビューポートに伝搬されている場合を除く）は、その内容のために新しいブロック整形コンテキストを設置する。</p>
+
+<p>ブロック整形コンテキストでは、ボックスは包含ブロックの最上部から下へと次々にレイアウトされる。2つの兄弟ボックスの縦の距離は、<a href="box.html#propdef-margin" class="noxref"><span
+class="propinst-margin">'margin'</span></a>プロパティによって決定される。ブロック整形コンテキストでの隣接するブロックレベルボックス間の垂直マージンは<a
+href="box.html#collapsing-margins">相殺</a>する。
+</p>
+
+<p>
+ブロック整形コンテキストでは、各ボックスの左外辺が包含ブロックの左辺と接する（右から左に整形の場合、右辺が接する）。これは、たとえ浮動体が存在するでも当てはまる（あるボックスの<em>行ボックス</em>が浮動体の分だけ縮むが）。ただしボックスが新しいブロック整形コンテキストを設置する場合を除く（その場合、ボックス自体が浮動体のために<a href="#bfc-next-to-float">より狭くなって<em>よい</em></a>）。
+</p>
+
+<p>ページメディアの改ページについては、<a href="page.html#allowed-page-breaks">許容改ページ</a>の節を参照のこと。
+</p>
+
+<h3>9.4.2 <a name="inline-formatting">インライン整形コンテキスト</a></h3>
+
+<p>An inline formatting context is established by a block container box that contains no block-level boxes. インライン整形コンテキストでは、ボックスは包含ブロックの最上部から順々に水平にレイアウトされる。水平マージン、ボーダー、パディングは、ボックス間で尊重される。ボックスはさまざまな方法で垂直に揃えてもよい。下部または上部を揃えてもよいし、ボックスのテキストのベースラインを揃えてもよい。ある行を形成するボックスを含む矩形領域のことを、<span class="index-def" title="line box"><a
+name="line-box"><dfn>行ボックス</dfn></a></span>と呼ぶ。 
+</p>
+<p>行ボックスの幅は、<a
+href="#containing-block">包含ブロック</a>および浮動体の存在によって決定される。行ボックスの高さは、<a
+href="visudet.html#line-height">行の高さの計算</a>の節で与えられる規則によって決定される。 
+</p>
+<p>行ボックスは、常に内部のボックスのすべてを含むのに十分な高さがある。しかし、内部の最も高いボックスと同じ高さになるとは限らない（たとえば、ボックスをベースラインで揃える場合）。ボックスBの高さがBを含む行ボックスの高さが低い場合、行ボックスにあるBの垂直揃えは<a href="visudet.html#propdef-vertical-align" class="noxref"><span class="propinst-vertical-align">'vertical-align'</span></a>プロパティによって決定される。複数のインラインレベルボックスが1つの行ボックスの中に水平に収めることができない場合、2つ以上の垂直に積層した行ボックスに分配する。したがって、段落は行ボックスを垂直に積み上げたものとなる行ボックスは、垂直に区切られることなく積み上げられ（他の場所で指定された場合を除く）、決して重ならない。
+</p>
+<p>一般に、行ボックスの左辺はその包含ブロックの左辺と接しており、右辺はその包含ブロックの右辺と接する。しかし、浮動ボックスは包含ブロックの辺と行ボックスの辺との間に出現してもよい。したがって、同一のインライン整形コンテキストの行ボックスは一般に同じ幅（包含ブロックの幅）を持つが、もし利用可能な水平スペースが<a
+href="#floats">浮動体</a>のために削減される場合は、幅は変化してもよい。同一インライン整形コンテキストの行ボックスは一般に高さが変化する（たとえば、ある行は高い画像含む一方で、他の行はテキストのみかもしれない）。
+</p>
+<p>ある行のインラインレベルボックスの幅が行ボックスの幅より小さい場合、行ボックスにおけるそれらの水平配分は<a href="text.html#propdef-text-align" class="noxref"><span
+class="propinst-text-align">'text-align'</span></a>プロパティによって決定される。プロパティの値が'justify'の場合、ユーザーエージェントはインラインボックス内の空白や単語を一様に伸ばしてもよい（inline-tableとinline-blockボックスを除く）。
+</p>
+
+<p>
+インラインボックスが行ボックスの幅を超える場合、インラインボックスを複数のボックスに分割して分配する。インラインボックスが分割できない場合（たとえば、インラインボックスが単一の文字を含む、または言語特有の単語で改行規則がインラインボックス内で改行を許可しない、またはインラインボックスがnowrapまたはpreの空白値によって影響される場合）、インラインボックスは行ボックスからあふれる。
+</p>
+<p>
+インラインボックスが分割されたとき、マージン、ボーダー、パッディングは分割が発生した場所で視覚効果を持たない（すなわち任意の分割箇所で、複数存在する場合）。
+</p>
+<p>インラインボックスは、<a href="#direction">双方向テキスト処理</a>によって<em>同一行ボックスで</em>複数のボックスに分割されてもよい。
+</p>
+<p id="phantom-line-box">行ボックスは、インライン整形コンテキストの内部でインラインレベルコンテンツを保持される必要があるときに作成される。テキストを含まない、<a
+href="text.html#white-space-prop">保存された空白</a>のない、ゼロでないマージン、パッディングまたはボーダーを伴なうインライン要素を含まない、他の<a
+href="#positioning-scheme">フロー内</a>の内容（画像や、インラインブロックやインラインテーブルなど）を持たない、または保存された改行で終わらない行ボックスは、それらの内部の任意の要素の位置を決定する目的のためにゼロ高さ行ボックスとして扱われなければならず、他の目的のために存在しないものとして扱われなければならない。
+</p>
+<div class="html-example"><p> 
+インラインボックス構造の例を示す。（HTMLのブロックレベル要素Pによって作成される）以下の段落はEM要素とSTRONG要素が散財する匿名テキストを含む:
+</p>
+<pre><code class="html">
+&lt;P&gt;Several &lt;EM&gt;emphasized words&lt;/EM&gt; appear
+&lt;STRONG&gt;in this&lt;/STRONG&gt; sentence, dear.&lt;/P&gt;
+</code></pre>
+
+<p>P要素は5つのインラインボックスを含むブロックボックスを生成する。そのうち3つは匿名である:</p>
+
+<ul>
+<li>Anonymous: "Several"</li>
+<li>EM: "emphasized words"</li>
+<li>Anonymous: "appear"</li>
+<li>STRONG: "in this"</li>
+<li>Anonymous: "sentence, dear."</li>
+</ul>
+ 
+<p>段落に整形するために、ユーザーエージェントは5つのボックスを行ボックスに流しこむ。この例では、P要素によって生成されたボックスは、行ボックスのために包含ボックスを設置する。包含ブロックが十分に幅広い場合、すべてのインラインボックスは単一の行ボックスに収まるだろう。
+</p>
+<pre>
+ 複数の<em>強調語</em>が<strong>この</strong>文中に出現する。
+</pre>
+
+<p>そうでなければ、インラインボックスは分割され複数の行ボックスにわたって確立するだろう。前の段落は以下のように分割されたり:
+</p>
+<pre>
+Several <em>emphasized words</em> appear
+<strong>in this</strong> sentence, dear.
+</pre>
+
+このように分割されたりする:
+
+<pre>
+Several <em>emphasized</em>  
+<em>words</em> appear <strong>in this</strong> 
+sentence, dear.
+</pre>
+
+</div>
+
+<p>後者の場合、EMボックスは2つのEMボックスに分割されている（これらを"split1"と"split2"と呼ぶ）。split1の直後とsplit2の直前で、マージン、ボーダー、パディングまたはテキスト装飾は視覚効果を持たない。
+</p>
+<div class="html-example"><p>
+以下の例を考えてみる:
+</p>
+<pre><code class="html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;TITLE&gt;Example of inline flow on several lines&lt;/TITLE&gt;
+    &lt;STYLE type="text/css"&gt;
+      EM {
+        padding: 2px; 
+        margin: 1em;
+        border-width: medium;
+        border-style: dashed;
+        line-height: 2.4em;
+      }
+    &lt;/STYLE&gt;
+  &lt;/HEAD&gt;
+  &lt;BODY&gt;
+    &lt;P&gt;Several &lt;EM&gt;emphasized words&lt;/EM&gt; appear here.&lt;/P&gt;
+  &lt;/BODY&gt;
+&lt;/HTML&gt;
+</code></pre>
+
+<p>Pの幅に応じて、ボックスは以下のように分配されてもよい：</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/inline-layout.png"
+     alt="コンテンツとパディング、ボーダー、マージンとの関係を示す画像。"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-inline-layout" href="http://www.w3.org/TR/CSS2/images/longdesc/inline-layout-desc.html" title="インラインボックスが複数行に分割された場合のマージンとボーダーの振る舞いについて">[D]</A></SPAN></p>
+</div>
+
+<ul>
+<li> マージンは"emphasized"の直前と"words"の直後に挿入される。 </li>
+
+<li> パディングは"emphasized"の直前と上下、"words"の直後と上下に挿入される。どちらの場合も破線のボーダーは3辺に描画される。</li>
+</ul>
+</div>
+
+<h3>9.4.3 <a name="relative-positioning">相対配置</a></h3>  
+
+<p>ボックスが<a
+href="#normal-flow">通常フロー</a>または浮動に従ってレイアウトされた時点で、ボックスをこの位置に対してシフトしてもよい。これを<a name="x35"><span class="index-def" title="relative
+positioning"><dfn>相対配置</dfn></span></a>と呼ぶ。この方法でボックス（B1）をオフセットすることは続くボックス（B2）は何の影響も受けない。B2は、あたかもB1がオフセットされておらず、B1のオフセットが適用された後にB2が再配置されていないかのように位置を与えられる。これは、相対配置がボックスの重なりを起こしてもよいという意味を含む。しかし、相対配置が'overflow:auto'または'overflow:scroll'のボックスにあふれさせる原因となる場合、ユーザーエージェントは、スクロールバーの作成を通してレイアウトに作用してもよく、ユーザーに（そのオフセット位置において）このコンテンツをアクセスできるようにしなければならない。
+</p>
+<p>相対配置のボックスは、改行や予約された空白も含めて、通常フローの大きさを維持する。 <a href="#containing-block">包含ブロック</a>の節は相対配置のボックスが新しい包含ブロックを設置した際の説明をする。
+</p>
+<p>相対配置の要素のために、大きさを変更することなく、'left'または'right'はボックスを水平に移動する。'left'はボックスを右に移動させ、'right'はボックスを右に移動する。ボックスは、'left'または'right'の結果として分割または伸長されないため、使用値は常にleft = -rightとなる。
+</p>
+<p>'left'と'right'のどちらも'auto'（初期値）の場合、使用値は'0'である（すなわち、ボックスは初期位置にとどまる）。
+</p>
+<p>'left'が'auto'の場合、使用値は'right'の負値となる（すなわち、ボックスは'right'の値によって左に移動する）。
+</p>
+<p>'right'が'auto'に指定された場合、使用値は'left'の負値となる。
+</p>
+<p>'left'も'right'も'auto'でない場合、位置は過剰に制約され、どちらか1つは無視される。包含ブロックの'direction'プロパティが'ltr'の場合、'left'の値が勝ち、'right'が-'left'になる。包含ブロックの'direction'が'rtl'の場合、'right'が勝ち、'left'が無視される。
+</p>
+<div class="example"><P style="display:none">例：</P>
+<p><strong>例。</strong> 以下の3つの規則は等価である:
+</p>
+<pre><code class="css">
+div.a8 { position: relative; direction: ltr; left: -1em; right: auto }
+div.a8 { position: relative; direction: ltr; left: auto; right: 1em }
+div.a8 { position: relative; direction: ltr; left: -1em; right: 5em }
+</code></pre>
+</div>
+
+<p>'top'および'bottom'プロパティは、大きさを変えることなく相対位置要素を上または下に移動する。'top'はボックスを下に移動し、'bottom'はボックスを上に移動する。ボックスは、'top'または'bottom'の結果として分割または伸長されないため、使用値は常にtop = -bottomとなる。どちらも'auto'の場合、使用値はどちらも'0'となる。1つが'auto'の場合、他方の負値となる。どちらも'auto'でない場合、'bottom'は無視される（すなわち、'bottom'の使用値は'top'の値のマイナスとなるだろう）。
+</p>
+
+<p class="note">
+注。相対配置ボックスが動的であることを利用すれば、スクリプト環境でアニメーション効果を作り出せる（<a href="visufx.html#propdef-visibility" class="noxref"><span
+class="propinst-visibility">'visibility'</span></a>プロパティも参照）。相対配置は上付き文字と下付き文字の一般的形式として利用してもよいが、配置を考慮した行高の自動調節は行われない。詳細は<a
+href="visudet.html#line-height">行の高さを計算する</a>を参照のこと。
+</p>
+<p>相対配置の例については<a
+href="#comparison">通常フロー、浮動体、絶対配置の比較</a>の節を参照のこと。
+</p>
+<h2>9.5 <a name="floats">浮動</a></h2>
+
+<p>浮動体は、現在の行から左または右にシフトしたボックスである。浮動体（または浮動したあるいは浮動ボックス）の最も興味深い特徴は内容が側面に沿って自由に動いてもよい（または<a href="visuren.html#propdef-clear" class="noxref"><span
+class="propinst-clear">'clear'</span></a>プロパティによって回り込みを禁止できる）ことである。内容は左浮動ボックスの右側あるいは右浮動ボックスの左側を流れる。以下は、浮動体の配置と内容フローに関する概論である。浮動体の振る舞いを抑制する正確な<a
+href="#float-rules">規則</a>は<a href="visuren.html#propdef-float" class="noxref"><span class="propinst-float">'float'</span></a> プロパティの説明で与えられる。
+</p>
+<p>
+浮動ボックスは、浮動体の外辺が包含ボックス辺または別の浮動体の外辺に接するときまで左または右に移動する。行ボックスが存在する場合、浮動ボックスの外上部は現在の行ボックスの上部で揃えられる。
+</p>
+<p>
+浮動体のための十分な水平空間がない場合、浮動体は、浮動体が適合するか、それ以上浮動体が存在しなくなるかのどちらかになるまで下に移動する。
+</p>
+<p>浮動体はフロー内にないので、浮動体の前後に生成された位置指定されないブロックボックスは、あたかも浮動体が存在しないかのように垂直に流れる。しかし、浮動体の次に生成される現在あるいは後続の行ボックスは、浮動体のマージンボックスの空間作成のために必要に応じて短縮される。
+
+<p>行ボックスは、以下の4つの条件をすべて満たす垂直位置が存在するときに浮動体に隣接する。(a)行ボックスの上部または上部より下、(b)行ボックスの下部または下部より上、(c)浮動体の上マージン辺の下、(d)浮動体の下マージン辺より上。
+
+<p class=note>注: これは、0または負の外面高さの浮動体が行ボックスを短縮しないことを意味する。
+
+<p>短縮された行ボックスが小さすぎて任意の内容を含むことができない場合、ある内容が適合するかそれ以上浮動体が存在しなくなるまでその時の行ボックスは下に移動する（そして行ボックスの幅は最計算される）。浮動ボックスの前の現在の行での任意の内容は浮動体の別の側面の同一行で流しなおす。言い換えるなら、インラインレベルボックスが行ボックス空間にとどまる中で、適合した左浮動体ボックスが出くわす前の行に置かれた場合、左浮動体はその行に置かれ、行ボックスの上部に揃えられ、次に行上のインラインレベルボックスがすでに浮動体の右にその結果移動され（左浮動体の別の側面では右）、rtlの場合は反対に右浮動体となる。
+</p>
+
+<p id="bfc-next-to-float">
+新しい<a href="visuren.html#block-formatting">ブロック整形コンテキスト</a>を設置する（'visible'以外の'overflow'を持つ要素のような）テーブルのボーダーボックス、ブロックレベル置換要素、または通常フロー内の要素は要素のそれ自身として同一ブロック整形コンテキスト内の任意の浮動体のマージンボックスと重なってはならない。必要ならば、実装は任意の先行する浮動体の下にそれを設置することによって前述の要素を消去すべきであるが、実装は十分な空間がある場合そのような浮動体に隣接した浮動体を設置してもよい。これらは、<a href="visudet.html#blockwidth">10.3.3節</a>で定義されるものより狭い前述の要素のボーダーボックスでさえ作成してもよい。CSS2 はユーザーエージェントが浮動体に隣接する前述の要素を置いてもよい場合や、どのような方法で前述の要素がより小さくなるかを定義しない。
+</p>
+<div class="example"><P style="display:none">例：</P>
+<p><strong>例。</strong> 次の文書断片において、包含ブロックはあまりにも小さすぎて浮動体に隣接する内容を含むことはできない。よって内容は包含ブロックがtext-alignプロパティに従って行ボックスが揃えられる場所の浮動体の下に移動させる。
+</p>
+<pre><code class="css">
+p { width: 10em; border: solid aqua; }
+span { float: left; width: 5em; height: 5em; border: solid blue; }
+</code>
+
+...
+
+<code class="html">
+&lt;p&gt;
+  &lt;span&gt; &lt;/span&gt;
+  Supercalifragilisticexpialidocious
+&lt;/p&gt;
+</code></pre>
+<p>この断片は次のようになる:</p>
+<div class="figure"><p>
+<img style="display:block" src="http://www.w3.org/TR/CSS2/images/supercal.png" 
+ alt="ボックスの内容に対する相対配置の効果 
+  
+ " >
+</p>
+</div>
+</div>
+
+<p>複数の浮動体は隣接してもよく、またこのモデルは、同じ行の隣接する浮動体に適用する。
+</p>
+<div class="example"><P style="display:none">例：</P><p>
+以下の規則は<samp>class="icon"</samp>をもつすべてのIMGボックスを左に浮動する（そして左マージンを'0'に設定する）：</p>
+
+<pre><code class="css">
+img.icon { 
+  float: left;
+  margin-left: 0;
+}
+</code></pre>
+</div>
+
+
+<div class="html-example"><p>
+次のHTMLソースとスタイルシートを考えてみる:</p>
+
+<pre><code class="html">  
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;TITLE&gt;Float example&lt;/TITLE&gt;
+    &lt;STYLE type="text/css"&gt;
+      IMG { float: left }
+      BODY, P, IMG { margin: 2em }
+    &lt;/STYLE&gt;
+  &lt;/HEAD&gt;
+  &lt;BODY&gt;
+    &lt;P&gt;&lt;IMG src=img.png alt="This image will illustrate floats"&gt;
+       Some sample text that has no other...
+  &lt;/BODY&gt;
+&lt;/HTML&gt;
+</code></pre>
+
+<p>IMGボックスは左に浮動する。後続の内容は、浮動体の右へ整形され、浮動体として同一行から開始する。浮動体の右の行ボックスは浮動体の存在のために短縮されるが、浮動体の後では"通常の"（P要素によって設置された包含ブロックの）幅に戻る。この文書は次のように整形される:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/floateg.png"
+     alt="Image illustrating how floating boxes interact with
+margins."><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-floateg" href="http://www.w3.org/TR/CSS2/images/longdesc/floateg-desc.html" title="浮動体とテキストの流し込みの例について">[D]</A></SPAN></p>
+</div>
+
+<p>文書が次のようになっても整形は同じである:
+</p>
+<pre><code class="html">
+&lt;BODY&gt;
+  &lt;P&gt;Some sample text 
+  &lt;IMG src=img.png alt="This image will illustrate floats"&gt;
+           that has no other...
+&lt;/BODY&gt;
+</code></pre>
+
+<p>なぜなら、浮動体の左の内容は浮動体によって移動し浮動体の右側に流しこみなおすためである。
+</p></div>
+
+<p><a href="box.html#collapsing-margins">8.3.1節</a>で述べたように、浮動ボックスのマージンは隣接するボックスのマージンと決して<a
+href="box.html#collapsing-margins">相殺</a>しない。したがって、上の例において、垂直マージンは、Pボックスと浮動IMGボックスとの間で<a href="box.html#collapsing-margins">相殺</a>しない。
+</p>
+<p>
+浮動体の内容は浮動体が新しいスタックコンテキストがあたかも生成されたかのように並べられる。ただし、任意の位置指定要素および実際に生成された新しいスタックコンテキストが浮動体の親スタックコンテキストに参加する場合を除く。浮動体は通常フロー内の他のボックスと重ねることができる（たとえば、通常フローボックスの次の浮動体が負のマージンを持つ場合）。重なりが起きた場合、浮動体が非位置指定のフロー内のインラインの背後ではなく、フロー内のブロックの前に描画される。
+</p>
+<div class="example"><P style="display:none">例：</P>
+<p>以下の図は、浮動体が通常フロー内のボーダーと重なった状態を示す。
+</p>
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/float2p.png" alt="浮動画像が2つの段落のボーダーと重なる状態: ボーダーは画像に覆い隠されている"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-float2p" href="http://www.w3.org/TR/CSS2/images/longdesc/float2p-desc.html" title="浮動体が通常フローにあるボックスと重なる状態について
+       ">[D]</A></SPAN>
+</p>
+<p class="caption">浮動画像がブロックボックスのボーダーを覆い隠す
+</p>
+</div>
+</div>
+
+<p>次の例では、浮動体側面への内容の流し込みを禁止する<a href="visuren.html#propdef-clear" class="noxref"><span
+class="propinst-clear">'clear'</span></a>プロパティを使っている。
+</p>
+<div class="example"><P style="display:none">例：</P>
+<p>このような規則があれば:
+</p>
+<pre><code class="css">
+p { clear: left }
+</code></pre>
+
+<p>次のように整形される:
+</p>
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/floatclear.png" alt="浮動画像と'clear: left'が前後の段落に及ぼす影響"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-floatclear" href="http://www.w3.org/TR/CSS2/images/longdesc/floatclear-desc.html" title="浮動体が通常フローにあるボックスと重なる状態について
+       ">[D]</A></SPAN>
+</p>
+<p class="caption">どちらの段落も'clear: left'と設定されており、第2段落は浮動体の下へ押し下げられている―整形に際しては第2段落の上マージンが大きくなる（<a href="visuren.html#propdef-clear" class="noxref"><span
+class="propinst-clear">'clear'</span></a>プロパティの解説を参照のこと）。
+</p>
+</div>
+</div>
+
+
+<h3>9.5.1 <a name="float-position">浮動体の配置:</a> <a href="visuren.html#propdef-float" class="noxref"><span class="propinst-float">'float'</span></a>プロパティ</h3>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'float'"><a name="propdef-float" class="propdef-title"><strong>'float'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>left | right | none | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>none
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべて、ただし<a href="visuren.html#dis-pos-flo">9.7</a>節参照
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティは、ボックスを左または右に浮動させるべきか、あるいはまったく浮動させないかどうかを指定する。このプロパティは任意の要素に設定してもよいが、<a href="#absolutely-positioned">絶対配置</a>でないボックスを生成する要素にのみ適用できる。このプロパティの値は以下の意味を持つ:</p>
+
+<dl>
+<dt><strong>left</strong></dt>
+
+<dd>要素が左に浮動する<a href="#block-boxes">ブロック</a>ボックスを生成する。内容はボックスの右側を流れ、上から開始する（<a href="visuren.html#propdef-clear" class="noxref"><span
+class="propinst-clear">'clear'</span></a>プロパティに依存する）。 
+</dd>
+<dt><strong>right</strong></dt>
+
+<dd>ボックスが右に浮動することを除いて'left'と同様で、内容はボックスの左側に流れ、上から開始する。</dd>
+
+<dt><strong>none</strong></dt>
+
+<dd>ボックスは浮動しない。</dd>
+</dl>
+
+<p>
+ユーザーエージェントはルート要素上で'none'として扱ってもよい。 
+</p>
+
+
+<p>以下は浮動体の振る舞いを制御する<span class="index-def" title="float rules"><a
+name="float-rules">厳密な規則</a></span>である:</p>
+
+<ol>
+<li> 左浮動ボックスの左<a href="box.html#outer-edge">外辺</a>は、その<a
+href="#containing-block">包含ブロック</a>の左辺の左にあってはならない。右浮動要素も同様である。
+</li>
+<li> 現在のボックスが左浮動体で、それ以前にソース文書内の要素によって任意の左浮動ボックスが生成される場合、そのような以前のボックスのために、現在のボックスの左<a
+href="box.html#outer-edge">外辺</a>が以前のボックスの右<a href="box.html#outer-edge">外辺</a>の右になければならないか、もしくはその上が以前のボックスの下より低くなければならない。右浮動要素も同様である。
+</li>
+<li>左浮動ボックスの右<a href="box.html#outer-edge">外辺</a>は、隣接する任意の右浮動ボックスの左<a
+href="box.html#outer-edge">外辺</a>の右にあってはならない。右浮動要素も同様である。
+</li>
+<li>浮動ボックスの<a href="box.html#outer-edge">外上</a>は、その<a
+href="#containing-block">包含ブロック</a>の上より高くなってはならない。2つの相殺マージンの間に浮動体が出現した場合、浮動体はあたかもそれがほかの空の<a
+href="#anonymous-block-level">匿名ブロック親</a>がフロー内に参加するかのように位置する。そのような親の位置はマージンの相殺の節の<a
+href="box.html#collapsed-through">規則</a>で定義される。
+</li>
+<li> 浮動ボックスの<a href="box.html#outer-edge">外上</a>は、ソース文書内の以前の要素によって生成された任意の<a
+href="#block-boxes">ブロック</a>または<a
+href="#floats">浮動</a>ボックスの外上より高くあってはならない。
+</li>
+<li>要素の浮動ボックスの<a href="box.html#outer-edge">外上</a>は、ソース文書内の以前の要素によって生成されたボックスを含む任意の<span
+class="index-inst" title="line-box"><a name="x38"
+href="#line-box">行ボックス</a></span>より高くあってはならない。
+</li>
+<li>自身の左にもう1つ左浮動ボックスを持つ左浮動ボックスは、その包含ブロックの右辺にその右外辺を持ってはならない。(おおまかに言うと: 左浮動体は、すでにできる限り左寄りである場合を除いて、右辺で突き抜けてはならない。）右浮動ボックスの場合の同様である。
+</li>
+<li> 浮動ボックスは可能な限り上に位置しなければならない。
+</li>
+<li> 左浮動ボックスは可能な限り左寄せで、右浮動ボックスは可能なかぎり右寄せで位置しなければならない。より高い位置は左寄せ・右寄せより優先される。
+</li>
+</ol>
+
+<p>しかしCSS&nbsp;2.1において、ブロック整形コンテキストの内で、そのような0に設定される負のマージンの位置より上側の浮動位置であるような負の垂直マージンの場合、浮動体の位置は未定義である。
+
+<p>これらの規則での他の要素への言及は、浮動体と同じ<a href="#block-formatting">ブロック整形コンテキスト</a>における他の要素のみを参照する。
+</p>
+
+<div class=example><P style="display:none">例：</P>
+<p>このHTML断片はbを右寄せに浮動する結果となる。
+
+<pre>&lt;P&gt;a&lt;SPAN style="float: right"&gt;b&lt;/SPAN&gt;&lt;/P&gt;</pre>
+
+<p>P要素の幅が十分である場合、aとbは並んで存在するだろう。これは次のように見える:
+
+<div class=figure>
+<p><img src="http://www.w3.org/TR/CSS2/images/float-right.png"
+alt="ボックスの左側のaと右側のb">
+</div>
+</div>
+
+
+<h3>9.5.2 <a name="flow-control">浮動体に隣接するフローの制御:</a> <a href="visuren.html#propdef-clear" class="noxref"><span class="propinst-clear">'clear'</span></a>プロパティ</h3> 
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'clear'"><a name="propdef-clear" class="propdef-title"><strong>'clear'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>none | left | right | both | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>none
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>ブロックレベル要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティは、ある要素ボックスのどちら側が先行する浮動ボックスに隣接しては<em>ならない</em>かを指示する。'clear'プロパティは、要素自身の内側または他の<a href="visuren.html#block-formatting">ブロック整形コンテキスト</a>内の浮動体を考慮しない。
+</p>
+
+<p>浮動しないブロックレベルボックスに適用された場合、値は以下のような意味を持つ:</p>
+
+<dl>
+<dt><strong>left</strong></dt>
+
+<dd>ボックスの上ボーダー辺が、ソース文書内で以前の要素に由来するすべての左浮動ボックスの下外辺より下に存在することを要求する。
+</dd>
+
+<dt><strong>right</strong></dt>
+
+<dd>ボックスの上ボーダー辺が、ソース文書内で以前の要素に由来するすべての右浮動ボックスの下外辺より下に存在することを要求する。
+</dd>
+
+<dt><strong>both</strong></dt>
+
+<dd>ボックスの上ボーダー辺が、ソース文書内で以前の要素に由来するすべての左および右浮動ボックスの下外辺より下に存在することを要求する。
+</dd>
+
+<dt><strong>none</strong></dt>
+
+<dd>浮動体に関するボックスの位置は何の制約もない。</dd>
+</dl>
+
+<p>'none'以外の値は、潜在的に<dfn><span
+class="index-def"><a name="clearance">クリアランス</a></span></dfn>を導入する。クリアランスはマージンの相殺を抑制し、要素のmargin-topの上へ空白のように振る舞う。浮動体を過ぎて垂直に要素を押すために使用される。
+
+<p>'clear'が設定された要素のクリアランスの計算は最初に要素の上ボーダー辺の仮の決定によってされる。要素の'clear'プロパティが'none'である場合、この位置は実際の上ボーダー辺となる。
+
+<p>この要素の上ボーダー辺の仮定位置が関連する浮動体を超えない場合、クリアランスは導入され、マージンは8.3.1節の規則に従って相殺する。
+
+<p>その結果クリアランスはの量はより大きくなる:
+
+<ol>
+  <li>最も低い浮動体の下外辺と同等なブロックのボーダー編の設置に必要な量が除去される。
+ 
+  </li><li>その結果の仮定うつにブロックの上ボーダー辺を置くために必要な量。
+</li></ol>
+
+<p>あるいは、クリアランスは除去される最低のフロートの下外辺と同等なブロックのボーダー辺を置くために必要な量に設定される。
+
+<p class="note"><em><strong>注:</strong>どちらの振る舞いも既存のウェブコンテンツと適合性の評価の保留を許可されている。将来のCSS仕様は、いずれか一方を要求するだろう。</em>
+
+<p class=note>
+注: クリアランスは負または0であってもよい。
+
+<div class=example><P style="display:none">例：</P>
+<p>例1。（単純化のために）単に3つのボックスが順に持つと仮定する: M1の下マージンを持つブロックB1（B1は子およびパディングまたはボーダーを持たない）、高さHを持つ浮動ブロックF、M2の上マージンを持つブロックB2（子を持たず、パディングまたはボーダーはない）。B2は'clear'が'both'に設定される。またB2は空でないと仮定する。
+
+<p>B2の'clear'プロパティを考慮することなく、下の図の状況となる。B1とB2のマージンは相殺する。B1の下ボーダー辺がy = 0と仮定して、それからFの上がy = M1、B2の上ボーダー辺がy = max(M1,M2)、Fの下部がy = M1 + Hであるとする。
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/clearance.png"
+     alt="浮動体FはM2の上にあるマージンを拡大する。"></p>
+</div>
+
+<p>Fの下にB2がないと仮定する、すなわち、クリアランスを追加する必要のある場所で仕様に記述された状況にある。それは意味する:
+
+<blockquote>
+<p>max(M1,M2) &lt; M1 + H
+
+</blockquote>
+
+<p>C1とC2のクリアランスCを2回計算する必要があり、2つの大きさは次の等式を保持する: C = max(C1,C2)。1つ目の方法はB2の上がFの下とぴったり重なって置くことである。すなわち、y = M1 + Hである。これはマージンがもはやそれらの間でクリアランスを伴って相殺されないことを意味する:
+
+<blockquote class=math>
+<p> <span>F の下部</span> <span>= B2 の上ボーダー辺</span> <span>⇔</span>
+<p>      <span>M1 + H</span> <span>= M1 + C1 + M2</span>          <span>⇔</span>
+<p>          <span>C1</span> <span>= M1 + H - M1 - M2</span>
+<p>            <span></span> <span>= H - M2</span>
+</blockquote>
+
+<p>2つ目の計算はそれがB2の上部で保持される。すなわちy = max(M1,M2)。それは意味する:
+
+<blockquote class=math>
+<p> <span>max(M1,M2)</span> <span>= M1 + C2 + M2</span>          <span>⇔</span>
+<p>         <span>C2</span> <span>= max(M1,M2) - M1 - M2</span>
+</blockquote>
+
+<p>max(M1,M2) &lt; M1 + Hであると仮定して、これは意味する
+
+<blockquote class=math>
+<p> <span>C2 = max(M1,M2) - M1 - M2</span> <span>&lt; M1 + H - M1 - M2 = H - M2</span> <span>⇒</span>
+<p>                        <span>C2</span> <span>&lt; H - M2</span>
+</blockquote>
+
+<p>そして、C1 = H - M2として、次のようになる
+
+<blockquote class=math>
+<p> <span>C2 &lt; C1</span>
+</blockquote>
+
+<p>したがって
+
+<blockquote class=math>
+<p> <span>C = max(C1,C2) = C1</span>
+</blockquote>
+</div>
+
+<div class=example><P style="display:none">例：</P>
+<p>例2。負のクリアランスの例が-1emという状態である。（要素はボーダーやパディングを持たないと仮定して）
+
+<pre class=html>
+&lt;p style="<b>margin-bottom: 4em</b>"&gt;
+  First paragraph.
+
+&lt;p style="<b>float: left; height: 2em; margin: 0</b>"&gt;
+  Floating paragraph.
+
+&lt;p style="<b>clear: left; margin-top: 3em</b>"&gt;
+  Last paragraph.
+</pre>
+
+<p>説明: 'clear'なしで、最初と最後の段落のマージンは相殺し、最後の段落のボーダー辺は浮動段落の上とぴったり重なる。しかし'clear'は上ボーダー辺が浮動体の<em>下に</em>あること要求する。すなわち、2em低い。これはクリアランスが導入されなければならないことを意味する。したがって、マージンはもはや相殺されず、クリアランスの量は、クリアランス + margin-top = 2emに設定される。すなわち、クリアランス = 2em - margin-top = 2em - 3em = -1emである。
+</div>
+
+<p>プロパティが浮動要素に設定される場合、浮動体の配置についての<a href="#float-rules">規則</a>の修正をもたらす。追加の10番目の制約が加わる:
+</p>
+
+<ul>
+<li>浮動体の<a href="box.html#outer-edge">外上辺</a>は、先行するあらゆる左浮動ボックス（'clear: left'の場合）、もしくは右浮動ボックス（'clear: right'の場合）の外下辺より下でなければならない（'clear: both'の場合は両方）。</li>
+</ul>
+
+<div class="note"><p>
+<em><strong>注。</strong> このプロパティは<a href="http://www.w3.org/TR/REC-CSS1#clear">CSS1で全要素に適用される。</a>. その結果実装は全プロパティでサポートしてもよい。CSS2およびCSS 2.1では'clear'プロパティはブロックレベル要素にのみ適用される。したがって著者はこのプロパティをブロックレベル要素でのみ使うべきである。実装がclearをインライン要素でサポートする場合、上記の説明のようにクリアランスの設定をするよりはむしろ、実装は、下の個別の浮動ボックスに対して除去されるインラインの行ボックスの上に移動するため、改行を強制して効率的に1つ以上の空の行ボックスを挿入すべきである（または<a href="#floats">9.5節</a>で説明されるような新しい行ボックスを下に移動する）。
+</em>
+</p>
+</div>
+
+<h2>9.6 <a name="absolute-positioning">絶対配置</a></h2>
+
+<p>絶対配置モデルでは、ボックスはその包含ブロックに対して明白にオフセットとなる。これは通常フローから完全に取り除かれる（以降の兄弟に影響しない）。絶対配置ボックスは、通常フローの子供と（fixedでない）絶対位置指定される子孫のための新しい包含ブロックを設置する。しかし、絶対位置要素の内容は任意の他のボックスに流されない。それらは、もう1つのボックスの内容（またはそれら自身）を覆い隠してもよく、重なるボックスの<a href="#stack-level">スタックレベル</a>に依存する。
+</p>
+<p>本仕様において<span class="index-def"
+title="absolutely positioned element"><a name="absolutely-positioned"><dfn>絶対参照要素</dfn></a></span>（またはそのボックス）への言及は、要素の<a href="visuren.html#propdef-position" class="noxref"><span
+class="propinst-position">'position'</span></a>プロパティが値'absolute'または'fixed'を持つという意味を含む。
+</p>
+<h3>9.6.1 <a name="fixed-positioning">固定配置</a></h3>
+
+<p>固定配置は絶対配置の下位区分である。固定配置ボックスにとっての唯一の相違点は、包含ブロックは<a href="#viewport">ビューポート</a>によって設置されることである。<a
+href="media.html#continuous-media-group">連続メディア</a>では、固定ボックスは文書のスクロール時に移動しない。この点において、それらは<a href="colors.html#background-properties">固定背景画像</a>に似ている。<a href="page.html">ページメディア</a>では、固定配置のボックスはページごとに繰り返される。これは、たとえば各ページの下に署名を打ち込むのに有用である。固定配置のボックスはページの切り取られた領域よりも大きい。固定配置の一部は初期包含ブロックにおいて不可視であり、印刷されない。
+</p>
+<div class="html-example">
+<p>著者は、フレームのような見栄えの作成のために固定配置を用いてよい。以下のフレームレイアウトを考える:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/frame.png"
+     alt="'position: fixed'を利用したフレーム風のレイアウト"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-frame" href="http://www.w3.org/TR/CSS2/images/longdesc/frame-desc.html" title="フレーム風レイアウトの例について">[D]</A></SPAN></p>
+</div>
+
+<p>このレイアウトは、次のHTML文書とスタイル規則で実現することになる:</p>
+
+<pre><code class="html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;TITLE&gt;A frame document with CSS&nbsp;2.1&lt;/TITLE&gt;
+    &lt;STYLE type="text/css" media="screen"&gt;
+      BODY { height: 8.5in } /* Required for percentage heights below */
+      #header {
+        position: fixed;
+        width: 100%;
+        height: 15%;
+        top: 0;
+        right: 0;
+        bottom: auto;
+        left: 0;
+      }
+      #sidebar {
+        position: fixed;
+        width: 10em;
+        height: auto;
+        top: 15%;
+        right: auto;
+        bottom: 100px;
+        left: 0;
+      }
+      #main {
+        position: fixed;
+        width: auto;
+        height: auto;
+        top: 15%;
+        right: 0;
+        bottom: 100px;
+        left: 10em;
+      }
+      #footer {
+        position: fixed;
+        width: 100%;
+        height: 100px;
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    &lt;/STYLE&gt;
+  &lt;/HEAD&gt;
+  &lt;BODY&gt;
+    &lt;DIV id="header"&gt; ...  &lt;/DIV&gt;
+    &lt;DIV id="sidebar"&gt; ...  &lt;/DIV&gt;
+    &lt;DIV id="main"&gt; ...  &lt;/DIV&gt;
+    &lt;DIV id="footer"&gt; ...  &lt;/DIV&gt;
+  &lt;/BODY&gt;
+&lt;/HTML&gt;
+</code></pre>
+</div>
+
+<h2>9.7 <a name="dis-pos-flo">'display'、'position'、'float'の関係</a></h2>
+
+<p>ボックス生成とレイアウトに作用する3つのプロパティ―<a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>、<a href="visuren.html#propdef-position" class="noxref"><span class="propinst-position">'position'</span></a>、<a href="visuren.html#propdef-float" class="noxref"><span class="propinst-float">'float'</span></a>―は次のように相互に作用する。</p>
+
+<ol>
+<li><a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>が値'none'を持つ場合、<a href="visuren.html#propdef-position" class="noxref"><span class="propinst-position">'position'</span></a>および<a href="visuren.html#propdef-float" class="noxref"><span class="propinst-float">'float'</span></a>は適用しない。この場合、要素はボックスを生成しない。</li>
+
+<li>そうでなければ、<a href="visuren.html#propdef-position" class="noxref"><span class="propinst-position">'position'</span></a>が値'absolute'または'fixed'を持つ場合、ボックスは絶対位置であり、<a href="visuren.html#propdef-float" class="noxref"><span class="propinst-float">'float'</span></a>の算出値は'none'となり、表示は下記のテーブルに従って設定される。ボックスの位置は<a href="visuren.html#propdef-top" class="noxref"><span
+class="propinst-top">'top'</span></a>、<a href="visuren.html#propdef-right" class="noxref"><span
+class="propinst-right">'right'</span></a>、<a href="visuren.html#propdef-bottom" class="noxref"><span
+class="propinst-bottom">'bottom'</span></a>、<a href="visuren.html#propdef-left" class="noxref"><span
+class="propinst-left">'left'</span></a>プロパティとボックスの包含ブロックによって決定されるだろう。
+</li>
+
+<li>そうでなければ、'float'が'none'以外の値を持つ場合、ボックスは浮動または'display'が下記のテーブルにしたがって設定される。
+</li>
+
+<li>そうでなければ、要素がルート要素である場合、それが'list-item'の指定値が'block'または'list-item'の算出値になるかどうかCSS&nbsp;2.1で未定義である場合を除いて、'display'が下記のテーブルにしたがって設定される。</li>
+
+<li>そうでなければ、残りの<a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>プロパティ値は指定された通りに適用される。
+</li>
+</ol>
+
+<table border="1">
+<tr><th>指定値 </th><th style="width:30%">算出値</th></tr>
+<tr><td>inline-table  </td><td>table</td></tr>
+<tr><td>inline、table-row-group、table-column、table-column-group、table-header-group、table-footer-group、table-row、table-cell、table-caption、inline-block </td><td>block</td></tr>
+<tr><td>その他 </td><td>指定値と同じ</td></tr>
+</table>
+
+<h2>9.8 <a name="comparison">通常フロー、浮動、絶対配置の比較</a></h2>
+<p>通常フロー、相対配置、浮動体、絶対配置の間の相違点を説明するために、以下のHTMLをもとにして例を提供する:
+</p>
+<pre class="html-example"><code class="html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;TITLE&gt;Comparison of positioning schemes&lt;/TITLE&gt;
+  &lt;/HEAD&gt;
+  &lt;BODY&gt;
+    &lt;P&gt;Beginning of body contents.
+      &lt;SPAN id="outer"&gt; Start of outer contents.
+      &lt;SPAN id="inner"&gt; Inner contents.&lt;/SPAN&gt;
+      End of outer contents.&lt;/SPAN&gt;
+      End of body contents.
+    &lt;/P&gt;
+  &lt;/BODY&gt;
+&lt;/HTML&gt;
+</code></pre>
+
+<p>この文書に、以下の規則を仮定する:</p>
+
+<pre class="example"><code class="css">
+body { display: block; font-size:12px; line-height: 200%; 
+       width: 400px; height: 400px }
+p    { display: block }
+span { display: inline }
+</code></pre>
+
+<p><em>outer</em>および<em>inner</em>要素によって生成されるボックスの最終的な配置はそれぞれの例において変化する。それぞれの図において、図の左側の数字は、（わかりやすさのために）2倍の間隔で行の<a
+href="#normal-flow">通常フロー</a>位置を示す。 </p>
+
+<p class="note">
+注。この節の図は説明であって正確な縮尺ではない。これらはCSS 2.1のさまざまな位置決め方式の違いを強調するために意図されており、与えられた例の規範レンダリングを意図しない。
+</p>
+
+<h3>9.8.1 <a name="comp-normal-flow">通常フロー</a></h3>
+
+<p><em>outer</em>および<em>inner</em>に以下のCSS宣言を考えてみる。これらはボックスの<a href="#normal-flow">通常フロー</a>を変更しない:</p>
+
+<pre class="example"><code class="css">
+#outer { color: red }
+#inner { color: blue }
+</code></pre>
+
+<p>P要素はすべてのインライン内容、<a
+href="#anonymous">匿名インラインテキスト</a>および2つのSPAN要素を含む。したがって、内容のすべては、P要素によって設置される包含ブロック内で、インライン整形コンテキストでレイアウトされる。つまり、以下のものを作る:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-generic.png"
+     alt="親ボックスと兄弟ボックスの間にあるテキストの通常フロー"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-generic" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-generic-desc.html" title="通常フローの例について">[D]</A></SPAN></p>
+</div>
+
+<h3>9.8.2 <a name="comp-relpos">相対配置</a></h3>
+
+<p><a href="#relative-positioning">相対配置</a>の効果を見るために、次の指定をする:</p>
+
+<pre class="example"><code class="css">
+#outer { position: relative; top: -12px; color: red }
+#inner { position: relative; top: 12px; color: blue }
+</code></pre>
+
+<p>テキストは<em>outer</em>要素の直前まで通常に流す。<em>outer</em>のテキストはその結果行1の最後でその通常フローの位置および寸法に流し込まれる。次に、（3行にわたって分布する）テキストを含むインラインボックスが（上に）'-12px'ずつの単位として移動する。
+</p>
+
+<p><em>inner</em>の内容は、<em>outer</em>の子として"of outer contents"の直後に通常に流し込まれる（行1.5）。しかし、<em>inner</em> の内容は <em>outer</em>の内容に関して（下に）'12px'分オフセットし、行2上の元の位置に戻る。
+</p>
+
+<p><em>outer</em>の後の内容は、<em>outer</em>の相対配置によって影響されないことに注意する。</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-relative.png"
+     alt="ボックスの内容に対する相対配置の効果"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-relative" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-relative-desc.html" title="相対配置の例について">[D]</A></SPAN></p>
+</div>
+
+<p><em>outer</em>のオフセットが'-24px'なら、<em>outer</em>のテキストとbodyのテキストが重なることにも注意する。
+</p>
+
+<h3>9.8.3 <a name="comp-float">ボックスの浮動</a></h3>
+
+<p>以下の規則を用いて<em>inner</em>要素のテキストを右に<a href="#floats">浮動</a>する効果を考える:
+</p>
+<pre class="example"><code class="css">
+#outer { color: red }
+#inner { float: right; width: 130px; color: blue }
+</code></pre>
+
+<p>テキストは<em>inner</em>ボックスと並んで通常に流れる。innnerボックスはフローの外から引っ張られ、右マージンへと浮動する（マージンの<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>は明白に割り当てられている）。浮動体の左の行ボックスは短縮され、文書の残りのテキストがそこに流される。</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-float.png"
+     alt="浮動ボックスの効果"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-float" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-float-desc.html" title="浮動体の例について">[D]</A></SPAN></p>
+</div>
+
+<p><a href="visuren.html#propdef-clear" class="noxref"><span
+class="propinst-clear">'clear'</span></a>プロパティの効果を示すため、例に<em>兄弟</em>要素を付け加えてみよう:
+</p>
+<pre class="html-example"><code class="html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;TITLE&gt;Comparison of positioning schemes II&lt;/TITLE&gt;
+  &lt;/HEAD&gt;
+  &lt;BODY&gt;
+    &lt;P&gt;Beginning of body contents.
+      &lt;SPAN id=outer&gt; Start of outer contents.
+      &lt;SPAN id=inner&gt; Inner contents.&lt;/SPAN&gt;
+      &lt;SPAN id=sibling&gt; Sibling contents.&lt;/SPAN&gt;
+      End of outer contents.&lt;/SPAN&gt;
+      End of body contents.
+    &lt;/P&gt;
+  &lt;/BODY&gt;
+&lt;/HTML&gt;
+</code></pre>
+
+<p>次の規則を適用する:
+</p>
+<pre class="example"><code class="css">
+#inner { float: right; width: 130px; color: blue }
+#sibling { color: red }
+</code></pre>
+
+<p><em>inner</em>ボックスは前例と同様に右へ浮動し、文書の残りのテキストは空いたスペースに流し込まれる:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-clear.png"
+     alt="clearプロパティなしでボックスへのテキストの回り込みを制御しない浮動ボックスの効果"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-clear" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-clear-desc.html" title="clearなしの浮動体の例について">[D]</A></SPAN></p>
+</div>
+
+<p>しかし、<em>兄弟</em>要素の<a href="visuren.html#propdef-clear" class="noxref"><span class="propinst-clear">'clear'</span></a>プロパティを'right'に設定する（すなわち生成<em>兄弟</em>ボックスが右に浮動ボックスが隣接するのを受け入れない）と、<em>兄弟</em>の内容は浮動体の下へ流れる。
+</p>
+<pre class="example"><code class="css">
+#inner { float: right; width: 130px; color: blue }
+#sibling { clear: right; color: red }
+</code></pre>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-clear2.png" 
+alt="clearプロパティありでボックスへのテキストの回り込みを制御する浮動ボックスの効果"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-clear2" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-clear2-desc.html" title="clearありの浮動体の例について">[D]</A></SPAN></p>
+</div>
+
+<h3>9.8.4 <a name="comp-abspos">絶対配置</a></h3>
+
+<p>最後に、<a
+href="#absolute-positioning">絶対配置</a>の効果を考える。<em>outer</em>と<em>inner</em>に次のCSS宣言を考える:</p>
+
+<pre class="example"><code class="css">
+#outer { 
+    position: absolute; 
+    top: 200px; left: 200px; 
+    width: 200px; 
+    color: red;
+}
+#inner { color: blue }
+</code></pre>
+
+<p><em>outer</em>ボックスの上はその包含ブロックに対して位置が決まる。位置指定されたボックスの包含ブロックは、最も近い位置指定された祖先（または、例のように存在しない場合は<a href="visudet.html#containing-block-details">初期包含ブロック</a>）によって設置される。<em>outer</em>ボックスの上側は初期包含ブロックの下'200px'であり、左側は左側から'200px'である。<em>outer</em>の子ボックスは親に対して通常に流れる。</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-absolute.png"
+   alt="絶対配置ボックスの効果"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-absolute" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-absolute-desc.html" title="絶対配置の例について">[D]</A></SPAN></p>
+</div>
+
+<p>以下の例は絶対配置ボックスが相対配置ボックスの子になるのを示す。親<em>outer</em>ボックスは実際にはオフセットでないが、その<a href="visuren.html#propdef-position" class="noxref"><span
+class="propinst-position">'position'</span></a>プロパティが'relative'に設定することは、そのボックスが位置指定された子孫に包含ブロックとしての機能を果たしてもよいことを意味する。<em>outer</em>ボックスは複数行に分割されたインラインボックスであるので、最初のインラインボックスの上辺と左辺（下の図で太い破線で表現される）が<a href="visuren.html#propdef-top" class="noxref"><span class="propinst-top">'top'</span></a>および<a href="visuren.html#propdef-left" class="noxref"><span class="propinst-left">'left'</span></a>のオフセットの参照としての機能を果たす。
+</p>
+<pre class="example"><code class="css">
+#outer { 
+  position: relative; 
+  color: red 
+}
+#inner { 
+  position: absolute; 
+  top: 200px; left: -100px; 
+  height: 130px; width: 130px; 
+  color: blue;
+}
+</code></pre>
+
+<p>これは次のような結果になる:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-abs-rel.png"
+     alt="包含ブロックに対する絶対配置ボックスの効果"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-abs-rel" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-abs-rel-desc.html" title="位置指定された祖先要素に対する配置の例について"">[D]</A></SPAN></p>
+</div>
+
+<p><em>outer</em>ボックスの位置指定をしなければ:</p>
+
+<pre class="example"><code class="css">
+#outer { color: red }
+#inner {
+  position: absolute; 
+  top: 200px; left: -100px; 
+  height: 130px; width: 130px; 
+  color: blue;
+}
+</code></pre>
+
+<p><em>inner</em>の包含ブロックは<a
+href="visudet.html#containing-block-details">初期包含ブロック</a>になる（この例において）。以下の図は、<em>inner</em>ボックスが最後にはこの場合になる場所を示す。</p>
+
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/flow-static.png"
+     alt="祖先要素が通常に流し込まれる場合の絶対配置ボックスの効果"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-flow-static" href="http://www.w3.org/TR/CSS2/images/longdesc/flow-static-desc.html" title="初期包含ブロックに対する絶対配置の例について">[D]</A></SPAN></p>
+</div>
+
+<div class="html-example"><p>
+相対配置と絶対配置を使うと、次例の様に上下に動く棒を実装できる。次の断片で:
+</p>
+<pre><code class="html">
+&lt;P style="position: relative; margin-right: 10px; left: 10px;"&gt;
+I used two red hyphens to serve as a change bar. They
+will "float" to the left of the line containing THIS
+&lt;SPAN style="position: absolute; top: auto; left: -1em; color: red;"&gt;--&lt;/SPAN&gt;
+word.&lt;/P&gt;
+</code></pre>
+
+<p>次のような結果になる:</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/changebar.png"
+     alt="動く棒を作り出すための浮動の利用法"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-changebar" href="http://www.w3.org/TR/CSS2/images/longdesc/changebar-desc.html" title="動く棒の例について">[D]</A></SPAN></p>
+</div>
+
+<p>まず、段落は通常に流れる（段落の包含ブロックの端を図に示す）。次に、段落は包含ブロックの左辺から'10px'オフセットになる（つまり、オフセットを見越して'10px'の右マージンが予約されている）。動く棒として2つのハイフンはフローから取り除かれ、現在の行に位置し（'top: auto'による）、その包含ブロックの左辺から'-1em'になる（Pの最終位置でPの設置によって）。その結果動く棒が現在の行の左に"浮動"しているかのようになる。</p>
+</div>
+
+<h2>9.9 <a name="layers">レイヤーの表現</a></h2>
+
+<h3>9.9.1 <a name="z-index">スタックレベルの指定</a>: <a href="visuren.html#propdef-z-index" class="noxref"><span
+class="propinst-z-index">'z-index'</span></a>プロパティ</h3> 
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'z-index'"><a name="propdef-z-index" class="propdef-title"><strong>'z-index'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>auto | <a href="syndata.html#value-def-integer" class="noxref"><span class="value-inst-integer">&lt;integer&gt;</span></a> | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>位置指定された要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>位置指定されたボックスに対して、<a href="visuren.html#propdef-z-index" class="noxref"><span
+class="propinst-z-index">'z-index'</span></a>プロパティは以下を指定する:
+
+<ol>
+  <li>現在のスタックコンテキストでのボックスのスタックレベル。
+
+  </li><li>ボックスがスタックコンテキストを設置するかどうか。
+</li></ol>
+
+<p>値の意味は次のとおり：
+
+<dl>
+  <dt><span class="index-inst" title="&lt;integer&gt;"><a name="x43" href="syndata.html#value-def-integer" class="noxref"><span
+  class="value-inst-integer"><strong>&lt;integer&gt;</strong></span></a></span>
+
+  <dd>この整数値は、現在のスタックコンテキストにおける生成ボックスのスタックレベルである。ボックスはまた新しいスタックコンテキストを設置する。
+
+  <dt><strong>auto</strong>
+
+  <dd>現在のスタックコンテキストでの生成ボックスのスタックレベルは0になる。ボックスはルート要素でない限り新しいスタックコンテキストを設置しない。
+</dl>
+
+<p><em>本節で、"～より前に"という表現は、ユーザーが画面に向かっているとしてユーザーにより近づくことを意味する。</em></p>
+
+<p>CSS&nbsp;2.1では、各ボックスは3次元の位置を持つ。ボックスの水平と垂直位置に加えて、ボックスは"z軸"と平行に位置し、他のボックスの上にあるボックスが整形される。z軸の位置は、ボックスが視覚的に重なるときにとりわけ意味を帯びる。本節はどのようにしてボックスがz軸に沿って配置してもよいのかを議論する。
+</p>
+<p>
+レンダリングツリーがキャンバスに描かれる順序は、スタックコンテキストの観点から説明される。スタックコンテキストは追加のスタックコンテキストを含むことができる。スタックコンテキストは親コンテキストスタックの観点から原子性となり、他のスタックコンテキスト内のボックスは、任意のボックスの間に来ることはできない。
+</p>
+<p>各ボックスは、ある<a name="x44"><span class="index-def" title="stacking context"><dfn>スタックコンテキスト</dfn></span></a>に属する。与えられたスタックコンテキストでの各位置指定されたボックスは整数の<span class="index-def"
+title="stack level"><a name="stack-level"><dfn>スタックレベル</dfn></a></span>をもつ。このスタックレベルは同一スタックコンテキスト内で他のスタックレベルに対するz軸での位置となる。スタックレベルが大きいボックスはスタックレベルが小さいボックスより前で常に整形される。ボックスは負のスタックレベルを持ってもよい。スタックコンテキストで同一のスタックレベルをもつボックスは、文書ツリーの順番に従って後ろから前に積み重ねられる。
+</p>
+
+<p>
+ルート要素はルートスタックコンテキストを整形する。他のスタックコンテキストは、'auto'以外の'z-index'の算出値を持つ任意の位置指定された要素（相対配置の要素を含む）によって生成される。スタックコンテキストは必ずしも包含ブロックと関連しない。CSSの将来のレベルで、他のプロパティがスタックコンテキストを導入してもよい。たとえば'<a
+href="http://www.w3.org/TR/css3-color/#transparency">opacity</a>'<a href="refs.html#ref-CSS3COLOR" rel="biblioentry" class="noxref"><span class="informref">[CSS3COLOR]</span></a>。
+</p>
+
+<p>各スタックコンテキスト内で、以下のレイヤーは後ろから前の順番に描かれる:
+
+<ol>
+  <li>スタックコンテキストが整形する要素の背景とボーダー。
+
+  </li><li>負のスタックレベルをもつ子スタックコンテキスト（最も小さな値が最初になる）。
+
+  </li><li>フロー内、非インラインレベル、非位置指定子孫。
+
+  </li><li>非位置指定の浮動体。
+
+  </li><li>フロー内、インラインレベル、非位置指定の子孫、インラインテーブルとインラインブロックを含むもの。
+
+  </li><li>スタックレベル0をもつ子スタックコンテキストでスタックレベル0をもつ位置指定された子孫。
+
+  </li><li>正のスタックレベルをもつ子スタックコンテキスト（最も小さな値が最初になる）。
+</li></ol>
+
+<p>各スタックコンテキストの中で、スタックレベル0をもつ位置指定された要素（レイヤー6）、非位置指定の浮動体（レイヤー4）、インラインブロック（レイヤー5）、およびインラインテーブル（レイヤー5）はこれら要素自身があたかも新しいスタックコンテキストを生成したかのように描かれる。ただし、それらの位置指定された子孫と現在のスタックコンテキストの参加する任意の子スタックコンテキストを除く。
+
+<p>この描画順序は各スタックコンテキストを再帰的に適用したものである。このスタックコンテキストの描画順序の説明は<a href="zindex.html">付録&nbsp;E</a>で詳細な規範的な定義の概説を構成する。
+
+<div class="html-example">
+<p>以下の例で、ボックスのスタックレベル（"id"要素で識別される）は: "text2"=0、"image"=1、"text3"=2、"text1"=3である。"text2"のスタックレベルはルートボックスからの継承である。その他は<a href="visuren.html#propdef-z-index" class="noxref"><span
+class="propinst-z-index">'z-index'</span></a>プロパティで指定される。
+</p>
+<pre><code class="html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;TITLE&gt;Z-order positioning&lt;/TITLE&gt;
+    &lt;STYLE type="text/css"&gt;
+      .pile { 
+        position: absolute; 
+        left: 2in; 
+        top: 2in; 
+        width: 3in; 
+        height: 3in; 
+      }
+    &lt;/STYLE&gt;
+  &lt;/HEAD&gt;
+  &lt;BODY&gt;
+    &lt;P&gt;
+      &lt;IMG id="image" class="pile" 
+           src="butterfly.png" alt="A butterfly image"
+           style="z-index: 1"&gt;
+
+    &lt;DIV id="text1" class="pile" 
+         style="z-index: 3"&gt;
+      This text will overlay the butterfly image.
+    &lt;/DIV&gt;
+
+    &lt;DIV id="text2"&gt;
+      This text will be beneath everything.
+    &lt;/DIV&gt;
+
+    &lt;DIV id="text3" class="pile" 
+         style="z-index: 2"&gt;
+      This text will underlay text1, but overlay the butterfly image
+    &lt;/DIV&gt;
+  &lt;/BODY&gt;
+&lt;/HTML&gt;
+</code></pre>
+</div>
+
+
+<p>この例は<em>透過</em>の概念の説明である。背景のデフォルトの振る舞いは背後にあるボックスが見えるようにすることである。この例では、各ボックスはその下のボックスを透過的に覆う。この振る舞いは既存の<a href="colors.html#background-properties">背景のプロパティ</a>によって上書きできる。
+</p>
+
+<h2>9.10 <a name="direction">書字方向:</a><a href="visuren.html#propdef-direction" class="noxref"> <span class="propinst-direction">'direction'</span></a>、<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span class="propinst-unicode-bidi">'unicode-bidi'</span></a>プロパティ
+</h2>
+
+<p>双方向テキストをサポートしない<a href="conform.html#conformance">適合</a>ユーザーエージェントは、本節で説明する <a href="visuren.html#propdef-direction" class="noxref"><span
+class="propinst-direction">'direction'</span></a>および<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span
+class="propinst-unicode-bidi">'unicode-bidi'</span></a>プロパティを無視してもよい。この例外は右から左への文字を単純に描画するユーザーエージェントを含む。なぜなら、システム上のフォントは右から左への文字を含むが、右から左へのテキスト方向の概念をサポートしないためである。
+
+<p>ある用字系において文字は右から左に記述する。特にアラビア語やヘブライ語の文書や、複数の言語が混在する内容において、（視覚的に）1つのかたまりの文書は混在した書字方向が出現してもよい。この現象を<a name="x46"><span class="index-def"
+title="bidirectionality (bidi)"><dfn>双方向性</dfn></span></a>あるいは"bidi"と呼ぶ。
+</p>
+<p>ユニコード標準（<a href="refs.html#ref-UNICODE" rel="biblioentry" class="noxref"><span class="normref">[UNICODE]</span></a>、<a href="refs.html#ref-UAX9" rel="biblioentry" class="noxref"><span class="normref">[UAX9]</span></a>）は適切なテキストの方向性を決定する複雑なアルゴリズムを定義する。このアルゴルズムは、埋め込みや上書きによる明示的な制御だけでなく、文字特性を基にした暗黙の部分からなる。CSS&nbsp;2.1は適切な双方向レンダリングを達成するために、このアルゴリズムに依存する。<a href="visuren.html#propdef-direction" class="noxref"><span
+class="propinst-direction">'direction'</span></a>および<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span
+class="propinst-unicode-bidi">'unicode-bidi'</span></a>プロパティは、文書言語の要素や属性がこのアルゴリズムとどのように対応させるかを著者が指定できる。.
+</p>
+<p>ユーザーエージェントは、強制的な（<a
+href="http://www.unicode.org/reports/tr9/#Bidirectional_Character_Types">bidi class&nbsp;B</a>）改行またはブロック境界によって中断することなく、インラインレベルボックスのシーケンスごとにユニコード双方向アルゴリズムを適用しなければならない双方向テキストをサポートする。このシーケンスは双方向アルゴリズムで"段落"単位を形成する。埋め込みレベルの段落は、ユニコードアルゴリズムのステップP2とP3で与えられた経験則よりはむしろ、包含ブロックの<a href="visuren.html#propdef-direction" class="noxref"><span
+class="propinst-direction">'direction'</span></a>プロパティ値に従って設定される。</p>
+<p>テキストの方向性は文書言語の構造や意味に依存するため、これらのプロパティはほとんどの場合DTDの設計者や特殊な文書の著者によってのみ使用されるべきである。デフォルトスタイルシートがこれらのプロパティを指定する場合、著者とユーザーはこれらを上書きするような規則を指定すべきではない。 
+</p>
+<p>HTML 4仕様（[HTML4]8.2節）はHTML要素の双方向性の振る舞いを定義する。<a href="refs.html#ref-HTML4" rel="biblioentry" class="noxref"><span class="normref">[HTML4]</span></a>で指定されるbidiの振る舞いを達成するためのスタイルシート規則は、<a href="sample.html#bidi">サンプルスタイルシート</a>で与えられる。HTML 4仕様はまた双方向性の問題についてより詳しい情報を含む。
+</p>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'direction'"><a name="propdef-direction" class="propdef-title"><strong>'direction'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>ltr | rtl | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>ltr
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素、ただし文を参照のこと。
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティは、ブロックの基本書字方向と埋め込みの方向を指定し、ユニコード双方向アルゴルズムを上書きする（<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span
+class="propinst-unicode-bidi">'unicode-bidi'</span></a>参照）。さらに、<a
+href="tables.html">テーブル</a>列のレイアウト方向、水平の<a href="visufx.html#overflow">はみ出す</a>方向、'text-align: justify'の場合のブロックで不完全な最終行の配置なども指定する。
+</p>
+
+<p>このプロパティの値は以下のような意味を持つ:</p>
+
+<dl>
+<dt><strong>ltr</strong></dt>
+<dd>左から右の方向。</dd>
+<dt><strong>rtl</strong></dt>
+<dd> 
+ 右から左の方向。</dd>
+</dl>
+
+<p><a href="visuren.html#propdef-direction" class="noxref"><span class="propinst-direction">'direction'</span></a>プロパティにインライン要素で並び替えに作用するためには、<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span
+class="propinst-unicode-bidi">'unicode-bidi'</span></a>プロパティ値は'embed'または'override'でなければならない。
+</p>
+<div class="note"><p>
+<em><strong>注。</strong> <a href="visuren.html#propdef-direction" class="noxref"><span class="propinst-direction">'direction'</span></a>プロパティをテーブル列要素に指定しても、列は文書ツリーでセルの祖先でないために、列内のセルには継承されない。したがって、CSSは<a href="refs.html#ref-HTML4" rel="biblioentry" class="noxref"><span class="normref">[HTML4]</span></a>11.3.2.1節で説明される"dir"属性の継承規則を容易に表現することができない。
+</em></p></div>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'unicode-bidi'"><a name="propdef-unicode-bidi" class="propdef-title"><strong>'unicode-bidi'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>normal | embed | bidi-override | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>normal
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素、ただし文を参照のこと。
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティの値は以下のような意味を持つ:</p>
+
+<dl>
+<dt><strong>normal</strong></dt>
+<dd>要素は双方向アルゴリズムに関する埋め込みの追加の水準を開始しない。インライン要素において、暗黙的な並び替えは要素の境界をまたいで働く。
+</dd>
+<dt><strong>embed</strong></dt>
+
+<dd>要素がインラインの場合、この値は双方向アルゴリズムに関する埋め込みの追加水準を開始する。この埋め込み水準の方向性は<a href="visuren.html#propdef-direction" class="noxref"><span class="propinst-direction">'direction'</span></a>プロパティによって与えられる。要素の内側で、並び替えは暗黙のうちに完了する。これは要素の先頭でLRE（U+202A、'direction: ltr'）またはRLE（U+202B、'direction: rtl'）の追加に対応し、要素の末尾でPDF（U+202C）の追加に対応する。
+</dd>
+<dt><strong>bidi-override</strong></dt>
+
+<dd>
+インライン要素に上書きを作成する。ブロックコンテナ要素にもう1つのブロックコンテナ要素の中ではなく、インラインレベル子孫の上書きを作成する。これは要素の内側で、<a href="visuren.html#propdef-direction" class="noxref"><span class="propinst-direction">'direction'</span></a>プロパティにしたがってシーケンスで並び替えが暗黙的であることを意味する。双方向アルゴリズムの暗黙的な部分は無視される。これは要素の先頭または各匿名子ブロックボックスでLRO（U+202D、'direction: ltr'）またはRLO（U+202E、'direction: rtl'）の追加に対応し、もしあるならば、要素の末尾にPDF（U+202C）の追加に対応する。
+</dd>
+</dl>
+
+<p>各ブロック要素の最終的な文字の順序は、あたかもbidi制御コードが上記の説のように追加され、マークアップが取り除かれた状態と同じになる。 結果、文字列はプレーンテキストのUnicode双方向アルゴリズムの実装を通過し、整形されたテキストと同じように改行を生じる。 この過程で、'display:inline'をもつ置換要素は中立の文字として扱われる。ただし<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span
+class="propinst-unicode-bidi">'unicode-bidi'</span></a>プロパティが'normal'以外の値を持つ場合、要素で指定された<a href="visuren.html#propdef-direction" class="noxref"><span class="propinst-direction">'direction'</span></a>強調文字として扱われる。その他の原子インラインレベルボックスは中立文字として扱われる。
+
+
+
+
+</p>
+<p>順序は単一の方向（完全に左から右または完全に右から左）でインラインボックスを流すことが可能であり、より多くのインラインボックス（匿名インラインボックスを含む）が作成されてもよく、一部のインラインボックスは分割され、流す前に並び替えられてもよいことに注意する。
+</p>
+<p>Unicodeアルゴリズムは埋め込み<em title="According to unicode 3.0, chapter 3, section 12, definition BD2. 
+Specifically, page 58 here: http://www.unicode.org/unicode/uni2book/ch03.pdf" 
+>レベルを61</em>に制限しているため、適切な場合を除いて'normal'以外の値の<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span
+class="propinst-unicode-bidi">'unicode-bidi'</span></a>を用いることを避けるべきである。特に、'inherit'値は特別な注意でもって使用されるべきである。しかし、一般にブロックとして表示されることが目的の要素において、'unicode-bidi: embed'の設定は、万が一displayがインラインに変更される場合に備えて　要素とともに保持するのが好ましい（下記の例を参照）。
+</p>
+<p>以下の例は双方向テキストをもつXML文書を示す。これは重要な設計原則を示す: <a name="x49"><span
+class="index-inst" title="DTD">DTD</span></a>設計者は適切な言語（要素と属性）と任意の付随スタイルシートの要素を考慮に入れるべきである。スタイルシートは、bidi規則が他のスタイル規則と分けて設計されるべきである。bidi規則は、文書言語やDTDのbidiの振る舞いを保持するためにも、他のスタイルシートによって上書きされるべきではない。
+</p>
+<div class="example"><P style="display:none">例：</P><p>
+この例で、小文字は本質的に左から右の文字を表し、大文字は右から左への文字を表す:
+</p>
+<pre class="xml-example"><code class="xml">
+&lt;HEBREW&gt;
+  &lt;PAR&gt;HEBREW1 HEBREW2 english3 HEBREW4 HEBREW5&lt;/PAR&gt;
+  &lt;PAR&gt;HEBREW6 &lt;EMPH&gt;HEBREW7&lt;/EMPH&gt; HEBREW8&lt;/PAR&gt;
+&lt;/HEBREW&gt;
+&lt;ENGLISH&gt;
+  &lt;PAR&gt;english9 english10 english11 HEBREW12 HEBREW13&lt;/PAR&gt;
+  &lt;PAR&gt;english14 english15 english16&lt;/PAR&gt;
+  &lt;PAR&gt;english17 &lt;HE-QUO&gt;HEBREW18 english19 HEBREW20&lt;/HE-QUO&gt;&lt;/PAR&gt;
+&lt;/ENGLISH&gt;
+</code></pre>
+
+<p>これはXMLであるので、スタイルシートが書字方向を設定する責任を持つ。これがスタイルシートである:</p>
+
+<pre class="example">
+/* bidi の規則 */
+HEBREW, HE-QUO  {direction: rtl; unicode-bidi: embed}
+ENGLISH         {direction: ltr; unicode-bidi: embed} 
+
+/* 見栄えの規則 */
+HEBREW, ENGLISH, PAR  {display: block}
+EMPH                  {font-weight: bold}
+</pre>
+
+<p>HEBREW要素は右から左の基本方向を持つブロックであり、ENGLISH要素は左から右の基本方向をもつブロックである。PARは親から基本方向を継承するブロックである。したがって、最初の2つのPARは右から読まれ、最後の3つは左から読まれる。HEBREWおよびENGLISHは表現のためだけの要素名であることに注意する。一般に、要素名は言語の参照とは無関係に構造を伝達すべきである。
+</p>
+<p>EMPH要素はインラインレベルであり、<a href="visuren.html#propdef-unicode-bidi" class="noxref"><span
+class="propinst-unicode-bidi">'unicode-bidi'</span></a>の値は'normal'（初期値）であるので、テキストの順序に影響しない。一方、HE-QUO要素は埋め込みを作成する。
+</p>
+<p>行の長さが長ければ、このテキストの整形はこのようになるだろう:
+</p>
+<pre class="ascii-art">
+               5WERBEH 4WERBEH english3 2WERBEH 1WERBEH
+
+                                8WERBEH <b>7WERBEH</b> 6WERBEH
+
+english9 english10 english11 13WERBEH 12WERBEH
+
+english14 english15 english16
+
+english17 20WERBEH english19 18WERBEH
+</pre>
+
+<p>HE-QUOの埋め込みがenglish19の右にHEBREW18を引き起こすことに注意する。
+</p>
+<p>行が改行される場合、このようになる:
+</p>
+<pre class="ascii-art">
+       2WERBEH 1WERBEH
+  -EH 4WERBEH english3
+                 5WERB
+
+   -EH <b>7WERBEH</b> 6WERBEH
+                 8WERB
+
+english9 english10 en-
+glish11 12WERBEH
+13WERBEH
+
+english14 english15
+english16
+
+english17 18WERBEH
+20WERBEH english19
+</pre>
+
+<p>HEBREW18はenglish19の前に読まれなければならずHEBREW18はenglish19の上の行となる。単純に早い整形から長い行を改行することにはならない。また、english19からの最初の音節が前の行に収まるようになっていないが、これは右から左へのコンテキストにおける左から右への単語のハイフネーション、およびその逆が、行の途中でハイフンの表示されるのを避けることで抑制されるためである。
+</p>
+</div>
+
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="box.html">前章</a> &nbsp; <a href="visudet.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</body>
+</html>
+
