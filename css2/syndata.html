@@ -1,0 +1,1170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+
+<head>
+<title>Syntax and basic data types</title>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="conform.html">
+<link rel="next" href="selector.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+<style type="text/css"> 
+ span.colorsquare { float:left; width:5em; height:3em; text-align:center; padding:1.2em 0 .8em }
+ span.colorname { font-weight:bold }
+ div.colordiagram { width:25em; height:20em; margin:1em auto; font-family:Verdana,sans-serif; font-size:12px }
+ div.diagramrow { height:5em }
+</style>
+<style type="text/css">
+.current,.proposed,span.delcurrent { background:#feb }
+ins.proposed,span.insproposed { background:#bfb }
+del.proposed,span.delproposed { background:#fbb }
+span.insproposed { text-decoration:underline }
+span.delproposed,span.delcurrent { text-decoration:line-through }
+body>del,body>ins {display:block}
+</style>
+</head>
+<body>
+<div class="navbar">
+<p><a href="conform.html">前章</a> &nbsp; <a href="selector.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+<h1><a name="q0">4 構文と基本データ型</a></h1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="syndata.html#syntax" class="tocxref">4.1 構文</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="syndata.html#tokenization" class="tocxref">4.1.1 トークン化</a>
+      </li><li class="tocline3"><a href="syndata.html#keywords" class="tocxref">4.1.2 キーワード</a>
+      <ul class="toc">
+        <li class="tocline4"><a href="syndata.html#vendor-keywords" class="tocxref">4.1.2.1 ベンダー固有の拡張</a>
+        </li><li class="tocline4"><a href="syndata.html#vendor-keyword-history" class="tocxref">4.1.2.2 参考情報の歴史的なノート</a>
+      </li></ul>
+      </li><li class="tocline3"><a href="syndata.html#characters" class="tocxref">4.1.3 文字と活字ケース</a>
+      </li><li class="tocline3"><a href="syndata.html#statements" class="tocxref">4.1.4 文</a>
+      </li><li class="tocline3"><a href="syndata.html#at-rules" class="tocxref">4.1.5 <span class="index-def" title="at-rule">@規則</span></a>
+      </li><li class="tocline3"><a href="syndata.html#block" class="tocxref">4.1.6 ブロック</a>
+      </li><li class="tocline3"><a href="syndata.html#rule-sets" class="tocxref">4.1.7 規則集合、宣言ブロック、セレクタ</a>
+      </li><li class="tocline3"><a href="syndata.html#declaration" class="tocxref">4.1.8 宣言とプロパティ</a>
+      </li><li class="tocline3"><a href="syndata.html#comments" class="tocxref">4.1.9 コメント</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="syndata.html#parsing-errors" class="tocxref">4.2 構文解析エラーの処理規定</a>
+    </li><li class="tocline2"><a href="syndata.html#values" class="tocxref">4.3 値</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="syndata.html#numbers" class="tocxref">4.3.1 整数値と実数値</a>
+      </li><li class="tocline3"><a href="syndata.html#length-units" class="tocxref">4.3.2 長さ</a>
+      </li><li class="tocline3"><a href="syndata.html#percentage-units" class="tocxref">4.3.3 パーセント値</a>
+      </li><li class="tocline3"><a href="syndata.html#uri" class="tocxref">4.3.4 URLおよびURI</a>
+      </li><li class="tocline3"><a href="syndata.html#counter" class="tocxref">4.3.5 カウンタ</a>
+      </li><li class="tocline3"><a href="syndata.html#color-units" class="tocxref">4.3.6 色</a>
+      </li><li class="tocline3"><a href="syndata.html#strings" class="tocxref">4.3.7 文字列</a>
+      </li><li class="tocline3"><a href="syndata.html#unsupported-values" class="tocxref">4.3.8 サポートしない値</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="syndata.html#charset" class="tocxref">4.4 CSSスタイルシートの表現</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="syndata.html#escaping" class="tocxref">4.4.1 文字符号化で表現できない文字を参照する</a>
+    </li></ul>
+  </li></ul>
+</div>
+<h2>4.1 <a name="syntax">構文</a></h2>
+
+<p>この章では、（CSS 2.1を含む）CSSの全レベルに共通の文法（および、<a name="x0"><span class="index-def"
+title="forward-compatible parsing"><dfn>前方互換な構文解析規則</dfn></span></a>）を説明する。CSSの将来の改訂は、さらなる構文上の制約を追加するかもしれないが、このコア構文に忠実だろう。
+</p>
+<p>以下の説明は規範的である。また、<a
+href="grammar.html">付録G</a>に示す規範的な文法規則により補完される。
+</p>
+<p>この仕様において、式の"直前"または"直後"は、空白またはコメントが間に入らないことを意味する。
+
+<h3>4.1.1 <a name="tokenization">トークン化</a></h3>
+
+<p>CSSの全レベル―レベル1、レベル2、将来のレベル―は、同じコア構文を使用する。これにより、ユーザーエージェントが作成された当時に存在しなかったCSSのレベルで記述されたスタイルシートを（完全に理解できないものの）解析することができる。デザイナーは、CSSの最新レベルが持つ発展性を行使しつつ、古いユーザーエージェントで動作するスタイルシートを作成するためにこの機能を使用できる。
+</p>
+<p>字句レベルで、CSSスタイルシートはトークンのシーケンスで構成される。CSSトークンのリストは以下のとおりである。定義は、Lexスタイルの正規表現を使用した。8進コードは、ISO 10646（<a href="refs.html#ref-ISO10646" rel="biblioentry" class="noxref"><span class="normref">[ISO10646]</span></a>）への参照である。複数の一致がある場合には、Lexのように最長一致のトークンを決定する。
+</p>
+<table>
+<thead>
+<tr><th>トークン		</th><th>定義</th></tr>
+</thead>
+<tr><td colspan=2><hr></td></tr>
+<tr><td>IDENT				</td><td><code><var>{ident}</var></code></td></tr>
+<tr><td>ATKEYWORD		</td><td><code>@<var>{ident}</var></code></td></tr>
+<tr><td>STRING				</td><td><code><var>{string}</var></code></td></tr>
+<tr><td>BAD_STRING            </td><td><code><var>{badstring}</var></code></td></tr>
+<tr><td>BAD_URI                  </td><td><code><var>{baduri}</var></code></td></tr>
+<tr><td>BAD_COMMENT          </td><td><code><var>{badcomment}</var></code></td></tr>
+<tr><td>HASH				</td><td><code>#<var>{name}</var></code></td></tr>
+<tr><td>NUMBER				</td><td><code><var>{num}</var></code></td></tr>
+<tr><td>PERCENTAGE		</td><td><code><var>{num}</var>%</code></td></tr>
+<tr><td>DIMENSION		</td><td><code><var>{num}{ident}</var></code></td></tr>
+<tr><td>URI				</td><td><code>{U}{R}{L}\(<var>{w}{string}{w}</var>\)|<br>
+			{U}{R}{L}\(<var>{w}</var>([!#$%&amp;*-\[\]-~]|<var>{nonascii}</var>|<var>{escape}</var>)*<var>{w}</var>\)</code></td></tr>
+<tr><td>UNICODE-RANGE      </td><td><code>u\+[?]{1,6}|<br>
+			u\+[0-9a-f]{1}[?]{0,5}|<br>
+			u\+[0-9a-f]{2}[?]{0,4}|<br>
+			u\+[0-9a-f]{3}[?]{0,3}|<br>
+			u\+[0-9a-f]{4}[?]{0,2}|<br>
+			u\+[0-9a-f]{5}[?]{0,1}|<br>
+			u\+[0-9a-f]{6}|<br>
+			u\+[0-9a-f]{1,6}-[0-9a-f]{1,6}</code></td></tr>
+<tr><td>CDO				</td><td><code>&lt;!--</code></td></tr>
+<tr><td>CDC				</td><td><code>--&gt;</code></td></tr>
+<tr><td>:		</td><td><code>:</code></td></tr>
+<tr><td>;		</td><td><code>;</code></td></tr>
+<tr><td>{		</td><td><code>\{</code></td></tr>
+<tr><td>}		</td><td><code>\}</code></td></tr>
+<tr><td>(		</td><td><code>\(</code></td></tr>
+<tr><td>)		</td><td><code>\)</code></td></tr>
+<tr><td>[		</td><td><code>\[</code></td></tr>
+<tr><td>]		</td><td><code>\]</code></td></tr>
+<tr><td>S		</td><td><code>[ \t\r\n\f]+</code></td></tr>
+<tr><td>COMMENT				</td><td><code>\/\*[^*]*\*+([^/*][^*]*\*+)*\/</code></td></tr>
+<tr><td>FUNCTION		</td><td><code><var>{ident}</var>\(</code></td></tr>
+<tr><td>INCLUDES		</td><td><code>~=</code></td></tr>
+<tr><td>DASHMATCH		</td><td><code>|=</code></td></tr>
+<tr><td>DELIM				</td><td><var>上の規則にマッチしなかったすべての他の文字で、シングルクォートでもダブルクォートでもくくられていないもの</var>
+</td></tr></table>
+
+<p>上記の波括弧（{}）内のマクロは、以下のように定義される。
+</p>
+<table>
+<thead>
+<tr><th>マクロ	</th><th>定義</th></tr>
+</thead>
+<tr><td colspan=2><hr></td></tr>
+<tr><td>ident		</td><td><code>[-]?<var>{nmstart}</var><var>{nmchar}*</var></code></td></tr>
+<tr><td>name		</td><td><code><var>{nmchar}+</var></code></td></tr>
+<tr><td>nmstart		</td><td><code>[_a-z]|<var>{nonascii}</var>|<var>{escape}</var></code></td></tr>
+<tr><td>nonascii</td><td><code>[^\0-\177]</code></td></tr>
+<tr><td>unicode		</td><td><code>\\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?</code></td></tr>
+<tr><td>escape		</td><td><code><var>{unicode}</var>|\\[^\n\r\f0-9a-f]</code></td></tr>
+<tr><td>nmchar		</td><td><code>[_a-z0-9-]|<var>{nonascii}</var>|<var>{escape}</var></code></td></tr>
+<tr><td>num		</td><td><code>[+-]?([0-9]+|[0-9]*\.[0-9]+)(e[+-]?[0-9]+)?</code></td></tr>
+<tr><td>string		</td><td><code><var>{string1}</var>|<var>{string2}</var></code></td></tr>
+<tr><td>string1		</td><td><code>\"([^\n\r\f\\"]|\\{nl}|<var>{escape}</var>)*\"</code></td></tr>
+<tr><td>string2		</td><td><code>\'([^\n\r\f\\']|\\{nl}|<var>{escape}</var>)*\'</code></td></tr>
+<tr><td>badstring      </td><td><code><var>{badstring1}</var>|<var>{badstring2}</var></code></td></tr>
+<tr><td>badstring1    </td><td><code>\"([^\n\r\f\\"]|\\{nl}|<var>{escape}</var>)*\\?</code></td></tr>
+<tr><td>badstring2    </td><td><code>\'([^\n\r\f\\']|\\{nl}|<var>{escape}</var>)*\\?</code></td></tr>
+<tr><td>badcomment    </td><td><code><var>{badcomment1}</var>|<var>{badcomment2}</var></code></td></tr>
+<tr><td>badcomment1  </td><td><code>\/\*[^*]*\*+([^/*][^*]*\*+)*</code></td></tr>
+<tr><td>badcomment2  </td><td><code>\/\*[^*]*(\*+[^/*][^*]*)*</code></td></tr>
+<tr><td>baduri            </td><td><code><var>{baduri1}</var>|<var>{baduri2}</var>|<var>{baduri3}</var></code></td></tr>
+<tr><td>baduri1          </td><td><code>{U}{R}{L}\(<var>{w}</var>([!#$%&amp;*-~]|<var>{nonascii}</var>|<var>{escape}</var>)*<var>{w}</var></code></td></tr>
+<tr><td>baduri2          </td><td><code>{U}{R}{L}\(<var>{w}</var><var>{string}</var><var>{w}</var></code></td></tr>
+<tr><td>baduri3          </td><td><code>{U}{R}{L}\(<var>{w}</var><var>{badstring}</var></code></td></tr>
+<tr><td>nl		</td><td><code>\n|\r\n|\r|\f</code></td></tr>
+<tr><td>w	</td><td><code>[ \t\r\n\f]*</code></td></tr>
+<tr><td>L	</td><td><code>l|\\0{0,4}(4c|6c)(\r\n|[ \t\r\n\f])?|\\l</code>
+</td></tr><tr><td>R	</td><td><code>r|\\0{0,4}(52|72)(\r\n|[ \t\r\n\f])?|\\r</code>
+</td></tr><tr><td>U	</td><td><code>u|\\0{0,4}(55|75)(\r\n|[ \t\r\n\f])?|\\u</code>
+</td></tr></table>
+
+<div class="example"><P style="display:none">例：</P>
+<p>たとえば、最長一致の規則は、"<code>red--&gt;</code>"がIDENTに続くCDCとしてではなく、IDENT"<code>red--</code>"の後にDELIM"<code>&gt;</code>"としてトークン化されることを意味する。
+</div>
+
+<p>以下はCSSのコア構文である。以降の節では、この構文を使用する方法について説明する。<a href="grammar.html">付録G</a>では、CSS レベル 2言語により近い、より限定的な文法を説明する。この文法に従うが、付録Gの文法に従わない文法により解析されたスタイルシートの部分は、<a href="#parsing-errors">構文解析エラーの処理規則</a>に従って無視される部分となる。
+</p>
+<pre>
+stylesheet  : [ CDO | CDC | S | statement ]*;
+statement   : ruleset | at-rule;
+at-rule     : ATKEYWORD S* any* [ block | ';' S* ];
+block       : '{' S* [ any | block | ATKEYWORD S* | ';' S* ]* '}' S*;
+ruleset     : selector? '{' S* declaration? [ ';' S* declaration? ]* '}' S*;
+selector    : any+;
+declaration : property S* ':' S* value;
+property    : IDENT;
+value       : [ any | block | ATKEYWORD S* ]+;
+any         : [ IDENT | NUMBER | PERCENTAGE | DIMENSION | STRING
+              | DELIM | URI | HASH | UNICODE-RANGE | INCLUDES
+              | DASHMATCH | ':' | FUNCTION S* [any|unused]* ')'
+              | '(' S* [any|unused]* ')' | '[' S* [any|unused]* ']'
+              ] S*;
+unused      : block | ATKEYWORD S* | ';' S* | CDO S* | CDC S*;
+</pre>
+
+<p>"unused"生産物は、CSSで使用されず、かつ将来のいかなる拡張でも使用されない。これは、エラー処理を助けるためだけにここに含まれる。（<a href="#parsing-errors">4.2節"構文解析エラーの処理規定"</a>参照。）
+
+<p>文法において<a name="comment">COMMENT</a>トークンは（読みやすさのために）出現しないが、このトークンは他のトークンの外側であれば任意の場所でいくらでも出現してもよい。（ただし、@charse規則の前または内側のコメントは、@charsetが無効になることに注意する。）</p>
+
+<p>上記の文法におけるトークンSは<a
+name="whitespace">空白</a>を表す。文字"スペース"（U+0020）、"タブ"（U+0009）、"改行"（U+000A）、"復帰"（U+000D）、"書式送り"（U+000C）のみが空白として出現する。"emスペース"（U+2003）や"全角スペース"（U+3000）のような他のスペースに似た文字は、決して空白の一部ではない。
+</p>
+<p>トークン化または解析できないデータの意味は、CSS 2.1において未定義である。
+</p>
+
+<h3>4.1.2 <a name="keywords">キーワ－ド</a></h3>
+
+
+
+<p>キーワードは、<a
+href="#value-def-identifier">識別子</a>の形式である。キーワードは引用符("..."または'...')の間に配置されてはならない。つまり、
+</p>
+<pre>
+red
+</pre>
+
+<p>これはキーワードだが、
+</p>
+<pre>
+"red"
+</pre>
+
+<p>これはキーワードではない。（これは<a href="#strings">文字列</a>である。）その他の不正な例：
+
+<div class="illegal-example"><P style="display:none">不正な例：</P>
+<pre><code>
+width: "auto";
+border: "none";
+background: "red";
+</code></pre>
+</div>
+
+<h4>4.1.2.1 <a name="vendor-keywords">ベンダー固有の拡張</a></h4>
+
+<p>CSSにおいて識別子は、'<code
+class="css">-</code>'（ダッシュ）または'<code
+class="css">_</code>'（アンダースコア）から始めてもよい。'<code class="css">-</code>'または'<code
+class="css">_</code>'で始まるキーワードと<a href="#properties">プロパティ名</a>は、ベンダー固有の拡張用に予約されている。このようなベンダー固有の拡張は、以下の形式のいずれかを持つべきである:
+</p>
+<pre>
+'-' + ベンダー識別子 + '-' + 有意な名前
+'_' + ベンダー識別子 + '-' + 有意な名前
+</pre>
+<div class="example"><P style="display:none">例：</P>
+<p>たとえば、組織XYZがディスプレイの東側のボーダー色を記述するプロパティを追加した場合、<span
+class="css">-xyz-border-east-color</span>として呼び出すだろう。
+</p>
+<p>その他の既知の例：</p>
+<pre>
+-moz-box-sizing
+-moz-border-radius
+-wap-accesskey
+</pre>
+</div>
+<p>最初のダッシュまたはアンダースコアは、CSSの現在または将来のレベルにおいて、プロパティもしくはキーワードで決して使用されないことが保証されている。よって、典型的なCSSの実装はそのようなプロパティを認識しなくてよく、<a
+href="#parsing-errors">構文解析エラーの処理規則</a>に従って、それらを無視してもよい。ただし、最初のダッシュまたはアンダースコアは文法の一部であるため、任意のベンダー固有の拡張をサポートしているかどうかに関係なく、CSS 2.1実装は常にCSS準拠のパーサを使用可能にするべきである。
+</p>
+
+<p>著者は、ベンダー固有の拡張を避けるべきである。</p>
+
+<h4>4.1.2.2 <a name="vendor-keyword-history">参考情報の歴史的なノート</a></h4>
+<p>この節は参考情報である。</p>
+<p>執筆時点において、以下の接頭辞の存在が知られている：</p>
+
+<table border='1'>
+<thead><tr><th>接頭辞</th><th>団体</th></tr></thead>
+<tbody>
+<tr><td><code>-ms-</code>, <code>mso-</code></td><td>Microsoft</td></tr>
+<tr><td><code>-moz-</code></td><td>Mozilla</td></tr>
+<tr><td><code>-o-</code>, <code>-xv-</code></td><td>Opera ソフトウェア</td></tr>
+<tr><td><code>-atsc-</code></td><td>先進型テレビジョン方式委員会</td></tr>
+<tr><td><code>-wap-</code></td><td>WAPフォーラム（訳注：現OMA）</td></tr>
+<tr><td><code>-khtml-</code></td><td>KDE</td></tr>
+<tr><td><code>-webkit-</code></td><td>Apple</td></tr>
+<tr><td><code>prince-</code></td><td>YesLogic</td></tr>
+<tr><td><code>-ah-</code></td><td>アンテナハウス</td></tr>
+<tr><td><code>-hp-</code></td><td>Hewlett Packard</td></tr>
+<tr><td><code>-ro-</code></td><td>Real Objects</td></tr>
+<tr><td><code>-rim-</code></td><td>Research In Motion（訳注：現BlackBerry）</td></tr>
+<tr><td><code>-tc-</code></td><td>TallComponents</td></tr>
+</tbody>
+</table>
+
+<h3>4.1.3 <a name="characters">文字と活字ケース</a></h3>
+<p>  以下の規則は常に効力がある：</p>
+
+<ul>
+    <li> すべてのCSSの構文は、ASCIIの範囲内で<a name="x1"><span class="index-inst" title="case
+    sensitivity">大文字・小文字不区別</span></a>である（つまり、[a-z]と[A-Z]は等価である）。ただし、CSSの制御下にない部分は除く。たとえば、HTMLの属性値"id"および"class"、フォント名、およびURIの値の大文字・小文字区別は、本仕様の範囲外である。特に、HTMLにおいて要素名は大文字・小文字不区別であるが、XMLにおいて大文字・小文字区別であることに注意する。
+    </li>
+
+    <li> CSSにおいて、（要素名、クラス、および<a
+    href="selector.html">セレクタ</a>内のIDを含む）<span class="index-def"
+    title="identifier|identifier, definition of"><a
+    name="value-def-identifier"><dfn>識別子</dfn></a></span>は、文字[a-zA-Z0-9]およびISO 10646のU+0080以上の文字、さらにハイフン（-）およびアンダースコア（_）のみを含むことができる。識別子は、数字、2つのハイフン、ハイフンの直後の数字で開始できない。識別子はまた、エスケープされた文字および数字コードとして任意のISO 10646文字を含めることができる（次項を参照）。<span class="example">たとえば、識別子"B&amp;W?"は、"B\&amp;W\?"または"B\26 W\3F"として記述してもよい。</span>
+    <p>Unicodeは、コード・バイ・コードでISO 10646と等価であることに注意する（<a href="refs.html#ref-UNICODE" rel="biblioentry" class="noxref"><span class="normref">[UNICODE]</span></a>および<a href="refs.html#ref-ISO10646" rel="biblioentry" class="noxref"><span class="normref">[ISO10646]</span></a>参照）。
+    </p>
+	</li>
+    <li> CSS 2.1においてバックスラッシュ（\）文字は、3種類の<span class="index-def" title="backslash escapes
+     "><a name="escaped-characters">文字エスケープ</a></span>のいずれかを示す。CSSのコメントの内側でバックスラッシュそのものを表し、また、バックスラッシュがスタイルシートの直後に末尾が続く場合もバックスラッシュそのものを表す（すなわち、DELIMトークン）。
+
+    <p>第一に、<a href="#strings">文字列</a>の内側で、改行が続くバックスラッシュは無視される（すなわち、文字列はバックスラッシュや改行のいずれも含まれていないとみなす）。文字列の外に、改行が続くバックスラッシュはバックスラッシュそのものを表す（すなわち、改行が続くDELIM）。
+
+    <p>第二に、バックスラッシュは特殊なCSS文字の意味を相殺する。（16進数字、改行、復帰、書式送りを除く）任意の文字は、その文字の特別な意味を除去するためにバックスラッシュでエスケープすることができる。たとえば、<samp>"\""</samp>は、1つのダブルクォートからなる文字列である。スタイルシートの意味を変更するため、スタイルシートのプリプロセッサは、スタイルシートからこれらバックスラッシュを削除してはならない。
+	</p>
+    <p>第三に、バックスラッシュエスケープは、著者が容易に文書内に挿入できない文字の参照を可能にする。この場合、バックスラッシュの後に最大で6桁の16進数（0..9A..F）を続ける。この数字は0でないISO 10646（<a href="refs.html#ref-ISO10646" rel="biblioentry" class="noxref"><span class="normref">[ISO10646]</span></a>）文字を表さなければならない。（スタイルシートがUnicodeコードポイント0をもつ文字を<em>含む</em>場合、CSS 2.1において何が起こるか未定義である。）範囲[0-9a-fA-F]における文字が16進数の後に続く場合、数値の末尾を明確にする必要がある。これには2つの方法がある：
+	</p>
+    <ol>
+    <li>スペース（または他の空白文字）を伴う："\26 B"（"&amp;B"）。この場合、ユーザーエージェントは、"CR/LF"のペア（U+000D/U+000A）を単独の空白文字として処理すべきである。</li>
+    <li>厳密に6桁の16進数を与える："\000026B"（"&amp;B"）</li>
+    </ol>
+
+    <p>実際には、これら二つの方法を組み合わせてもよい。16進エスケープの後で、1つの空白文字のみが無視される。この手段は、エスケープシーケンスの後に"本物"の空白文字を二重にしなければならないことに注意する。
+    </p>
+    <p>Unicodeで許容された範囲外にある数である（たとえば、"\110000" は現在のUnicodeで許される最大の10FFFFを超えている）場合、ユーザーエージェントは"replacement character"（U+FFFD）によってエスケープを置換してもよい。文字が表示される場合、ユーザーエージェントはそのような"欠落文字"のグリフとして、明確な記号を表示すべきである（<a
+    href="fonts.html#algorithm">15.2節の項目5</a>を参照）。
+	</li>
+    <li class=note>注：バックスラッシュエスケープは、常に<a
+    href="#value-def-identifier">識別子</a>または文字列の一部であると考えられる（すなわち、"{"は句読点であるけれども"\7B"は句読点でなく、また"2"はクラス名の先頭に許可されないが"\32"は許可される）。
+
+    <p>識別子"te\st"は、厳密に"test"と同一の識別子である。
+    </li>
+  </ul>
+
+
+<h3>4.1.4 <a name="statements">文</a></h3>
+
+<p> CSSの全レベルにおいて、CSSスタイルシートは、<a name="x5"><span class="index-inst" title="statements"><em>文</em></span></a>のリストで構成される（上記の<a href="#tokenization">文法</a>を参照）。2種類の文：<a name="x6"><span
+class="index-inst" title="at-rules"><em>@規則</em></span></a>と<a name="x7"><span class="index-inst" title="rule sets"><em>規則集合</em></span></a>が存在する。文の前後に<a href="#whitespace">空白</a>が存在してもよい。
+</p>
+
+<h3>4.1.5 <span class="index-def" title="at-rule">@規則</span></h3>
+
+<p> <dfn>@キーワード</dfn>で始まる@規則は、'@'文字の直後に続く<a
+href="#value-def-identifier">識別子</a>である（たとえば、'@import'、'@page'）。
+</p>
+<p> @規則は、次のセミコロン（;）または次の<a href="#block">ブロック</a>のいずれか早い方の終端まで含めたすべてで構成される。
+</p>
+
+<p>CSS 2.1ユーザーエージェントは、<a
+href="#block">ブロック</a>内部に出現するすべての<a
+href="cascade.html#at-import">'@import'</a>規則、または<a name="x10"><span
+class="index-inst">@charset</span></a>以外の後のすべての無視されない文、または@import規則を<span class="index-inst" title="ignore"><a name="x9"
+href="#ignore">無視</a></span>しなければならない。
+</p>
+
+<div class="illegal-example"><P style="display:none">不正な例：</P><p>
+たとえば、CSS&nbsp;2.1パーサが次のスタイルシートに遭遇すると仮定する：
+</p>
+<pre><code>
+@import "subs.css";
+h1 { color: blue }
+@import "list.css";
+</code></pre>
+
+<p> 2番目の'@import'は、CSS 2.1によれば不正である。CSS 2.1パーサは@規則全体を<span class="index-inst" title="ignore"><a name="x11" href="#ignore">無視</a></span>し、事実上スタイルシートを減少させる：
+</p>
+<pre><code class="css">
+@import "subs.css";
+h1 { color: blue }
+</code></pre>
+</div>
+
+<div class="illegal-example"><P style="display:none">不正な例：</P><p>
+'@media'<a href="#block">ブロック</a>内で'@import'が出現するため、次の例において2番目の'@import'規則は不正である。
+</p>
+<pre><code>
+@import "subs.css";
+@media print {
+  @import "print-main.css";
+  body { font-size: 10pt }
+}
+h1 {color: blue }
+</code></pre>
+<p>その代わりに、"print"メディア用のスタイルシートのインポート効果だけを実現するよう、media構文で@import規則を使用する。例：
+</p>
+<pre><code class="css">
+@import "subs.css";
+@import "print-main.css" print;
+@media print {
+  body { font-size: 10pt }
+}
+h1 {color: blue }
+</code></pre>
+
+</div>
+
+<h3>4.1.6 <a name="block">ブロック</a></h3>
+
+<p> <a name="x12"><span class="index-inst" title="block"><em>ブロック</em></span></a>は、左波括弧（{）で始まり、対応する右波括弧（}）で終わる。丸括弧（()）、角括弧（[]）、および波括弧（{}）が常に一致するペアで出現しなければならないこと以外に、その間に任意のトークンが存在してもよく、入れ子にしてもよい。シングルクォート（'）およびダブルクォート（"）もまた一致するペアで出現しなければならず、その間の文字は、<a name="x13"><span class="index-inst" title="string">文字列</span></a>として解析される。文字列の定義については、上記の<a href="#tokenization">トークン化</a>を参照のこと。
+</p>
+
+<div class="illegal-example"><P style="display:none">不正な例：</P>
+<p> ここにブロックの例がある。ダブルクォートの間の右波括弧は、ブロックの開波括弧と一致せず、また2つ目のシングルクォートは<a href="#escaped-characters">エスケープ文字</a>であり、1つ目のシングルクォートと一致しないことに注意する。
+</p>
+<pre><code>
+{ causta: "}" + ({7} * '\'') }
+</code></pre>
+
+<p>上記の規則は妥当なCSS 2.1ではないが、上記で定義されたブロックではあることに注意する。
+</p>
+</div>
+
+<h3>4.1.7 <a name="rule-sets">規則集合、宣言ブロック、セレクタ</a></h3>
+
+<p> 規則集合（または"規則"と呼ばれる）は、セレクタとそれに続く宣言ブロックから構成される。
+</p>
+<p> <a name="x14"><span class="index-def"
+title="declaration block"><dfn>宣言ブロック</dfn></span></a>は、左波括弧（{）で始まり、対応する右波括弧（}）で終わる。宣言の間には、0個以上のセミコロン区切り（;）のリストが存在しなければならない。
+</p>
+<p><a name="x15"><span class="index-def"
+title="selector"><em>セレクタ</em></span></a>は、（自身を含まない）最初の左波括弧（{）までのすべてのもので構成される（<a
+href="selector.html">セレクタ</a>の節も参照）。セレクタは常に宣言ブロックを伴う。ユーザーエージェントがセレクタを解析できない場合（すなわち、妥当なCSS 2.1でない）、セレクタおよび（もしあれば）次に続く宣言ブロックを<span class="index-inst" title="ignore"><a name="x16"
+href="#ignore">無視</a></span>しなければならない。
+</p>
+<p>CSS 2.1は、セレクタ内のコンマ（,）に特別な意味を与える。しかし、コンマがCSSの将来の更新で他の意味を獲得してもよいかどうかはわからない。よって、セレクタのどこかにエラーがあって、セレクタの残りの部分がCSS 2.1として筋が通ったように見える場合であっても、文全体を<span class="index-inst" title="ignore"><a name="x17"
+href="#ignore">無視</a></span>すべきである。
+</p>
+<div class=illegal-example><P style="display:none">不正な例：</P>
+<p>たとえば、"&amp;"はCSS 2.1のセレクタとして妥当なトークンではないので、CSS 2.1のユーザーエージェントは、二行目の全体を<span class="index-inst" title="ignore"><a name="x18" href="#ignore">無視</a></span>し、H3の色を赤に設定することはない：
+</p>
+<pre><code>
+h1, h2 {color: green }
+h3, h4 &amp; h5 {color: red }
+h6 {color: black }
+</code></pre>
+</div>
+
+<div class="example"><P style="display:none">例：</P>
+<p>より複雑な例を示す。最初の波括弧の2つのペアが文字列の内部に存在するが、セレクタの末尾をマークしない。これは、妥当なCSS 2.1の規則である。
+</p>
+<pre><code class="css">
+p[example="public class foo\
+{\
+    private int x;\
+\
+    foo(int x) {\
+        this.x = x;\
+    }\
+\
+}"] { color: red }
+</code></pre>
+</div>
+
+<h3>4.1.8 <a name="declaration">宣言</a>と<a
+name="properties">プロパティ</a></h3>
+
+<p> <a name="x19"><span class="index-def"
+title="declaration"><dfn>宣言</dfn></span></a>は、空である、または<a name="x20"><span class="index-inst"
+title="property">プロパティ名</span></a>の後に、コロン（:）が続き、その後にプロパティ値のいずれかで構成される。宣言の前後に<a
+href="#whitespace">空白</a>が出現してもよい。
+</p>
+<p>セレクタの動作方法のために、同じセレクタに対する複数の宣言は、セミコロン（;）区切りのグループに整理してもよい。</p>
+
+<div class="example"><P style="display:none">例：</P><p>
+したがって、以下の規則は：</p>
+<pre><code class="css">
+h1 { font-weight: bold }
+h1 { font-size: 12px }
+h1 { line-height: 14px }
+h1 { font-family: Helvetica }
+h1 { font-variant: normal }
+h1 { font-style: normal }
+</code></pre>
+
+<p>以下と同等である：</p>
+
+<pre><code class="css">
+h1 {
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 14px;
+  font-family: Helvetica;
+  font-variant: normal;
+  font-style: normal
+}
+</code></pre>
+</div>
+
+<p>プロパティ名は<a
+href="#value-def-identifier">識別子</a>である。任意のトークンは、プロパティ値で出現してもよい。丸括弧（"()"）、角括弧（"[]"）、波括弧（"{}"）、シングルクォート（'）、およびダブルクォート（"）は一致するペアで出現しなければならず、文字列でないセミコロンは<a
+href="#escaped-characters">エスケープ</a>しなければならない。丸括弧、角括弧、大括弧は、入れ子にしてもよい。引用符の内側の文字は、文字列として解析される。
+</p>
+<p><a name="x21"><span class="index-def" title="value">値</span></a>の構文は各プロパティごとに個別に指定される。しかし、値はいかなる場合でも、識別子、文字列、数値、長さ、パーセンテージ、URI、色、その他から組み立てられる。
+</p>
+<p>ユーザーエージェントは、不正なプロパティ名または値の宣言を<span class="index-inst" title="ignore"><a name="x22"
+href="#ignore">無視</a></span>しなければならない。すべてのCSSプロパティは、対応する値に構文上および意味上の制約がある。
+</p>
+<div class="illegal-example"><P style="display:none">不正な例：</P><p>
+たとえば、CSS 2.1パーサが次のスタイルシートに遭遇すると仮定する：
+</p>
+<pre><code>
+h1 { color: red; font-style: 12pt }  /* 不正な値: 12pt */
+p { color: blue;  font-vendor: any;  /* 不正なプロパティ: font-vendor */
+    font-variant: small-caps }
+em em { font-style: normal }
+</code></pre>
+
+<p> 1行目の2つ目の宣言は、不正な値'12pt'を含む。2行目の2つ目の宣言は、未定義のプロパティ'font-vender'を含む。CSS 2.1パーサはこれらの宣言を<span
+class="index-inst" title="ignore"><a name="x23" href="#ignore">無視</a></span>し、事実上スタイルシートを単純化する：
+</p>
+<pre class="example"><code class="css">
+h1 { color: red; }
+p { color: blue;  font-variant: small-caps }
+em em { font-style: normal }
+</code></pre>
+</div>
+
+<h3>4.1.9 <a name="comments">コメント</a></h3>
+
+<p><a name="x24"><span class="index-inst" title="comments">コメント</span></a>は文字"/*"で始まり、文字"*/"で終わる。コメントは他のトークン以外のどこにでも出現してもよく、そのコンテンツがレンダリングに影響することはない。コメントは入れ子にすることはできない。
+</p>
+<p>CSSはまた、文法で定義された特定の場所でSGMLのコメント区切り子("&lt;!--"および"--&gt;")を許すが、CSSのコメントを区切るものではない。これらは、HTMLソース文書において（STYLE要素内の）スタイル規則が出現してもよいように、HTML 3.2以前のユーザーエージェントから隠すためのものである。詳細については、HTML 4の仕様を参照のこと（<a href="refs.html#ref-HTML4" rel="biblioentry" class="noxref"><span class="informref">[HTML4]</span></a>）。
+</p>
+
+<h2>4.2 <a name="parsing-errors">構文解析エラーの処理規定</a></h2>
+
+<p>場合によっては、ユーザーエージェントは不正なスタイルシートの一部を無視しなければならない。この仕様は<span class="index-def"
+title="ignore"><a name="ignore"><dfn>無視</dfn></a></span>の意味を、ユーザーエージェントが不正な部分（の先頭と末尾を検出するために）を解析するが、不正な部分が存在しないかのように振る舞う、と定義する。CSS 2.1はCSSの全プロパティの将来における更新のためにダッシュまたはアンダースコアで始まる識別子を含まない値の組み合わせおよび@キーワードを予約する。実装は、（CSSの将来の更新で導入されたもの以外の）そのような組み合わせを無視しなければならない。
+</p>
+
+
+<p>新規のプロパティを保証するため、および既存のプロパティに新規の値を追加するために、ユーザーエージェントは、以下のシナリオに遭遇した場合の各規則に従う必要がある。</p>
+
+<ul>
+<li><strong>未知のプロパティ。</strong> ユーザーエージェントは、未知のプロパティを含む<a
+href="syndata.html#declaration">宣言</a>を<span
+class="index-inst" title="ignore"><a name="x26" href="#ignore">無視</a></span>しなければならない。たとえば、このようなスタイルシートがある場合：
+
+<pre class="illegal-example">
+h1 { color: red; rotation: 70minutes }
+</pre>
+
+<p> ユーザーエージェントはスタイルシートをこのように処理する
+</p>
+<pre class="example"><code class="css">
+h1 { color: red }
+</code></pre>
+</li>
+<li id="illegalvalues"><strong>不正な値。</strong> ユーザーエージェントは不正な値を含む宣言を無視しなければならない。たとえば：
+
+<pre class="illegal-example"><code>
+img { float: left }       /* 正しいCSS&nbsp;2.1 */
+img { float: left here }  /* "here"は'float'の値には存在しない */
+img { background: "red" } /* キーワードを引用符でくくってはならない */
+img { border-width: 3 }   /* 長さの値には単位が必要 */
+</code></pre>
+
+CSS&nbsp;2.1パーサは1つ目の規則を引き受けて残りを<span class="index-inst" title="ignore"><a name="x27" href="#ignore">無視</a></span>するので、スタイルシートはこのようになる：
+
+<pre class="example"><code class="css">
+img { float: left }
+img { }
+img { }
+img { }
+</code></pre>
+
+<p>将来のCSS仕様に準拠したユーザーエージェントは、他の規則の1つ以上を受け入れてもよい。</p>
+</li>
+<li><strong>不正な形式の宣言。</strong> ユーザーエージェントは、()、[]、{}、""、''のペア、および正確なエスケープ処理と一致する規則を維持しつつ、宣言の最後まで読むことで、宣言の解析中に遭遇した予期しないトークンを処理しなければならない。たとえば、不正な形式の宣言は、プロパティ名、コロン（:）またはプロパティ値を除外してもよい。以下はすべて等価である：
+
+
+<pre class="example"><code>
+p { color:green }
+p { color:green; color }  /* ':'と値が欠落した不正な形式の宣言 */
+p { color:red;   color; color:green }  /* 予期する回復に一致 */
+p { color:green; color: } /* 値の欠落した不正な形式の宣言 */
+p { color:red;   color:; color:green } /* 予期する回復に一致 */
+p { color:green; color{;color:maroon} } /* 予期しないトークン { } */
+p { color:red;   color{;color:maroon}; color:green } /* 回復に一致 */
+</code></pre>
+
+</li>
+
+
+<li><strong>不正な形式の文。</strong> ユーザーエージェントは、()、[]、{}、""、''のペア、および正確なエスケープ処理と一致する規則を維持しつつ、文の最後まで読むことで、文の解析中に遭遇した予期しないトークンを処理しなければならない。たとえば、不正な形式の文は、予期しない閉じ括弧または@キーワードを含んでもよい。以下はすべて不正な例である：
+
+
+
+<pre>
+p @here {color: red}     /* 予期しない@キーワード"@here"をもつ規則集合 */
+@foo @bar;               /* 予期しない@キーワード"@bar"をもつ@規則 */
+}} {{ - }}               /* 予期しない右括弧をもつ規則集合 */
+) ( {} ) p {color: red } /* 予期しない右括弧をもつ規則集合 */
+</pre>
+
+
+
+</li><li><strong>未知の@キーワードをもつ@規則。</strong>ユーザーエージェントは、妥当でない@キーワードとその後に続くすべてのもの、妥当でない@キーワードを含むブロックの終端、次のセミコロン（;）を含むもの、次のブロック（{...}）を含むもののいずれか早い方を<span
+class="index-inst" title="ignore"><a name="x28" href="#ignore">無視</a></span>しなければならない。たとえば、以下を考える：
+
+<pre class="illegal-example"><code>
+@three-dee {
+  @background-lighting {
+    azimuth: 30deg;
+    elevation: 190deg;
+  }
+  h1 { color: red }
+}
+h1 { color: blue }
+</code></pre>
+
+<p> '@three-dee'規則はCSS&nbsp;2.1の一部ではない。したがって、（3つ目の右波括弧までを含む）@規則全体は<span
+class="index-inst" title="ignore"><a name="x29" href="#ignore">無視</a></span>される。CSS&nbsp;2.1ユーザーエージェントはこれを<span class="index-inst" title="ignore"><a name="x30"
+href="#ignore">無視</a></span>し、事実上スタイルシートは単純化される：</p>
+
+<pre class="example"><code class="css">
+h1 { color: blue }
+</code></pre>
+
+<p>たとえば@media規則内の妥当でない宣言のような、妥当でないために無視される@規則内部のものが、@規則の全体を非妥当にすることはない。
+</p>
+
+</li>
+
+<li id=unexpected-eof><strong>予期しないスタイルシートの終了。</strong>
+<p>
+ユーザーエージェントは、すべての開いた構成物（たとえば:ブロック、括弧、規則、コメント）をスタイルシートの終端で閉じなければならない。たとえば：
+</p>
+<pre class="illegal-example"><code>
+  @media screen {
+    p:before { content: 'Hello
+</code></pre>
+<p>
+これは以下と同様に処理する：
+</p>
+<pre class="example"><code class="css">
+  @media screen {
+    p:before { content: 'Hello'; }
+  }
+</code></pre>
+<p>
+適合ユーザーエージェントにおいてこのようになる。
+</p>
+</li>
+<li><strong>予期しない文字列の終了。</strong>
+<p>
+   ユーザーエージェントは、行（すなわち、エスケープされていない改行、復帰、書式送り文字の前）の終わりに達した時点で文字列を閉じなければならないが、その一方で文字列が検出された構成物（宣言または規則）を削除しなければならない。たとえば：
+</p>
+<pre><code>
+      p {
+        color: green;
+        font-family: 'Courier New Times
+        color: red;
+        color: green;
+      }
+</code></pre>
+<p>
+   これは以下と同様に処理する：
+</p>
+<pre><code class="css">
+      p { color: green; color: green; }
+</code></pre>
+<p>
+   2番目の宣言（'font-family'から'color: red'の後のセミコロンまで)は妥当でないため、削除される。
+</p>
+</li>
+<li>宣言ブロックの解析規則については<a href="#rule-sets">規則集合、宣言ブロック、セレクタ</a>も参照のこと。
+</li>
+</ul>
+
+
+
+<h2>4.3 <a name="values">値</a></h2>
+
+<h3>4.3.1 <a name="numbers">整数値と実数値</a></h3>
+
+<p>ある値の種類は、整数値（<span
+class="index-def" title="&lt;integer&gt;::definition of"><a
+name="value-def-integer" class="value-def">&lt;integer&gt;</a></span>で示される）または実数値（<span class="index-def"
+title="&lt;number&gt;::definition of"><a name="value-def-number"
+class="value-def">&lt;number&gt;</a></span>で示される）を取ってもよい。実数および整数は、10進数のみを規定する。&lt;integer&gt;は、1つ以上の"0"から"9"までの数字で構成される。&lt;number&gt;は、&lt;integer&gt;もしくは0個以上の数字の後に、ドット（.）が続き、1つ以上の数字が続くものである。整数値と実数値のどちらも、符号を示す"-"または"+"を直前に先行させてもよい。-0は0と等価であって、負の数ではない。</p>
+
+<p>整数値や実数値を取る多くのプロパティは、実際にはある範囲、もっぱら負でない値に制限されることに注意する。
+</p>
+
+<h3>4.3.2 <a name="length-units">長さ</a></h3>
+
+<p>長さは、距離の寸法を参照する。</p>
+
+<p> 長さの値の形式（この仕様において<span class="index-def"
+title="&lt;length&gt;::definition of"><a name="value-def-length"
+class="value-def">&lt;length&gt;</a></span>で示される）は、（小数点の有無に関係なく）<a href="syndata.html#value-def-number" class="noxref"><span
+class="value-inst-number">&lt;number&gt;</span></a>の直後に単位識別子（たとえばpx、emなど）が続くものである。0長さの後ろの単位識別子は任意である。
+</p>
+<p> 一部のプロパティは負の長さの値を許可するが、これは整形モデルを複雑にしてもよく、実装特有の限界があってもよい。負の長さの値をサポートできない場合、値をサポートできる最も近い値に変換すべきである。
+</p>
+<p>負の長さの値を許可しないプロパティにその値が設定される場合、宣言は無視される。
+</p>
+
+<p><a href="cascade.html#usedValue">使用される</a>長さがサポートできない場合、ユーザーエージェントは<a href="cascade.html#actual-value">実効値</a>で近似しなければならない。
+
+<p><a name="absrel-units">長さの単位には、相対と絶対の2種類がある。</a><a name="x34"><span class="index-def" title="relative
+units"><em>相対長さ</em></span></a>の単位は、別の長さのプロパティに対して相対的な長さを指定する。相対単位を使用するスタイルシートは、より簡単に1つの出力環境から別のものに拡張できる。
+</p>
+<p>相対単位は以下のものがある：</p>
+<ul>
+<li><strong>em</strong>：関連するフォントの<a href="fonts.html#propdef-font-size" class="noxref"><span class="propinst-font-size">'font-size'</span></a></li>
+<li><strong>ex</strong>：関連するフォントの<span class="descinst">'x-height'</span></li>
+
+</ul>
+
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+h1 { margin: 0.5em }      /* em */
+h1 { margin: 1ex }        /* ex */
+</code></pre>
+</div>
+
+<p><span class="index-def" title="em (unit)|quad width"><a
+name="em-width">'em'</a></span>単位は、その単位が使われた要素の<a href="fonts.html#propdef-font-size" class="noxref"><span class="propinst-font-size">'font-size'</span></a>プロパティの算出値に等しい。例外は'em'が'font-size'プロパティ自身の値に出現した時であり、この場合は親要素のフォントサイズを参照する。この単位は縦または横の寸法に用いてもよい。（この単位は、印刷テキストでクワタ幅と呼ぶこともある。）
+</p>
+<p><span class="index-def" title="x-height|ex (unit)"><a
+name="ex">'ex'</a></span>単位は、要素の最初の利用可能なフォントによって定義される。例外は'ex'が<a href="fonts.html#propdef-font-size" class="noxref"><span
+class="propinst-font-size">'font-size'</span></a>プロパティ自身の値に出現した時であり、この場合は親要素の'ex'を参照する。
+
+<p><span class="descinst-x-height">'x-height'</span>は、小文字の"x"の高さに等しくなることが多いことからこう呼ばれる。しかし、'ex'は"x"を含まないフォントに対しても定義される。</p>
+<p>フォントの-heightは、別の方法で見つけることができる。一部のフォントは、x-heightの信頼できる測定基準を含む。信頼できるフォント測定基準が利用できない場合、ユーザーエージェントは小文字グリフの高さからx-heightを決定してもよい。1つの実行可能なヒューリスティックは、小文字の"o"のグリフを下ベースラインまで広げ、境界ボックスの上ベースラインから値を減算し、その長さを調べることである。x-heightを測定することが不可能または非現実的である場合、0.5emの値を使用すべきである。</p>
+<div class="example"><P style="display:none">例：</P>
+<p>規則：
+</p>
+<pre><code class="css">
+h1 { line-height: 1.2em }
+</code></pre>
+
+<p>これは"h1"要素の行の高さがフォントサイズの20%増しであることを意味する。一方：
+</p>
+<pre><code class="css">
+h1 { font-size: 1.2em }
+</code></pre>
+
+<p>これは"h1"要素のフォントサイズが継承値の20%増しであることを意味する。</p>
+</div>
+
+<p><a href="conform.html#doctree">文書ツリー</a>のルート（たとえば、HTMLであれば"HTML"）に指定された場合、'em'と'ex'はプロパティの<a href="about.html#initial-value">初期値</a>を参照する。
+</p>
+
+<p>子要素は特定の親の相対値を継承しない。<a
+href="cascade.html#computed-value">算出値</a>を継承するのである。</p>
+
+<div class="example"><P style="display:none">例：</P><p> 
+次の規則において、"h1"が"body"要素の子であれば、"h1"の要素の<a href="text.html#propdef-text-indent" class="noxref"><span
+class="propinst-text-indent">'text-indent'</span></a>の算出値は45pxではなく36pxとなる。
+</p>
+<pre><code class="css">
+body {
+  font-size: 12px;
+  text-indent: 3em;  /* すなわち、36px */
+}
+h1 { font-size: 15px }
+</code></pre>
+</div>
+
+<p><a name="x39"><span class="index-def" title="絶対値"><em>絶対長さ</em></span></a>単位は、相互に関連して一定である。これは、主に出力環境が既知の場合に有用である。絶対単位は物理単位（in、cm、mm、pt、pc）とpx単位で構成される：
+
+</p>
+<ul>
+<li><strong>in</strong>：インチ―1inは2.54cmに等しい。</li>
+<li><strong>cm</strong>：センチメートル</li>
+<li><strong>mm</strong>：ミリメートル</li>
+<li><strong>pt</strong>：ポイント―CSSで用いるポイントは1inの1/72に等しい。 </li>
+<li><strong>pc</strong>：パイカ―1pcは12ptに等しい。</li>
+<li><strong>px</strong>：ピクセル―1pxは0.75ptに等しい。</li>
+</ul>
+
+
+<p>CSSデバイスの場合、これらの大きさは、(1) 物理的寸法に物理単位を関連付けること、または(2) <i>参照画素</i>に画素部を関連付けることのいずれかによって固定される。印刷媒体と同様の高解像度デバイスの場合、固定単位は標準的な物理単位の1つ（インチ、センチメートルなど）となるべきである。低解像度のデバイスおよび独自の視聴距離を伴うデバイスの場合、固定単位は代わりにピクセル単位が推奨される。そのようなデバイスの場合、画素単位で最適な参照画素を近似するデバイスピクセルの整数を参照することを推奨する。
+
+<p class="note">固定単位がピクセル単位の場合、物理単位は、物理的な測定結果と一致するとは限らないことに注意する。あるいは固定単位が物理単位の場合、ピクセル単位は、デバイスピクセルの整数に変換されないことがある。</p>
+
+<p class="note">このピクセル単位と物理単位の定義は、CSSの以前のバージョンとは異なることに注意する。特に、ピクセル単位と物理単位が固定比で関連しないとされた以前のCSSバージョンにおいて、ピクセル単位が最も近い基準画素と一致するように変化する一方で、物理単位は常に物理的な測定に結びつけられる。（この変更は、あまりにも多くの既存のコンテンツが96dpiの仮定に依存するために行われた。この前提を壊すことはコンテンツを壊すことになる。）
+
+<p><a name="x40"><span class="index-def" title="reference pixel|pixel"><em>基準画素</em></span></a>とは、腕の長さのデバイスからの距離と96dpiのピクセル密度におけるデバイス上の1ピクセルとの視角である。名目の腕の長さが28インチの場合、視角は約0.0213度である。距離をおいて読むために、1pxは約0.26mm（1/96インチ）に対応する。
+</p>
+
+<p>下の画像は、参照ピクセルの大きさで距離を見ることの効果を示している：71cm（28インチ）の読み取り距離では基準画素が0.26mmで、3.5m（12フィート）では1.3mmの参照画素となる。
+</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/pixel1.png" alt="閲覧距離の増大に伴ってピクセルが大きくなる"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-pixel1" href="http://www.w3.org/TR/CSS2/images/longdesc/pixel1-desc.html" title="ピクセルを定義した図の解説">[D]</A></SPAN></p>
+</div>
+
+<p>次の図は、ピクセル単位でのデバイスの解像度の効果を示している：低解像度のデバイス（たとえば、典型的なコンピュータ画面）では1px平方の領域が単独の画素で覆われてしまうのに対し、高解像度のデバイス（レーザープリンタなど）では1pxの領域に16個もの画素が入ることがわかる。
+</p>
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/pixel2.png" alt="デバイスが高解像度になるほど1px平方を覆うのに必要な画素の数は増加する"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-pixel2" href="http://www.w3.org/TR/CSS2/images/longdesc/pixel2-desc.html" title="参照ピクセル数と実画素数の相関関係を示す図の解説">[D]</A></SPAN></p>
+</div>
+
+
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+h1 { margin: 0.5in }      /* インチ */
+h2 { line-height: 3cm }   /* センチ */
+h3 { word-spacing: 4mm }  /* ミリ */
+h4 { font-size: 12pt }    /* ポイント */
+h4 { font-size: 1pc }     /* パイカ */
+p  { font-size: 12px }    /* ピクセル */
+</code></pre>
+</div>
+
+<h3>4.3.3 <a name="percentage-units">パーセント値</a></h3>
+
+<p> パーセント値の形式（<span
+class="index-def" title="&lt;percentage&gt;::definition of"><a
+name="value-def-percentage"
+class="value-def">&lt;percentage&gt;</a></span>で示される）は、<span class="index-inst"
+title="&lt;number&gt;"><a name="x43" href="syndata.html#value-def-number" class="noxref"><span
+class="value-inst-number">&lt;number&gt;</span></a></span>の直後に'%'が続くものである。
+</p>
+<p> パーセント値は、たとえば長さなど、常に他の値に対する相対値となる。パーセント値をとることのできる各プロパティは、参照先の値も定義する。その値は、同じ要素の別のプロパティ、祖先要素のプロパティ、または整形コンテキストに関わる値（たとえば、<a
+href="visuren.html#containing-block">包含ブロック</a>の幅）であってもよい。パーセント値が<a
+href="conform.html#root">ルート</a>要素のプロパティに指定されており、かつあるプロパティの継承値を参照するものとして定義される場合、値はそのプロパティの<a
+href="about.html#initial-value">初期値</a>のパーセント倍する。
+</p>
+<div class="example"><P style="display:none">例：</P><p> 
+（一般に）子要素は親の<a
+href="cascade.html#computed-value">算出値</a>を継承するので、次の例では、P要素の子が継承する<a href="visudet.html#propdef-line-height" class="noxref"><span
+class="propinst-line-height">'line-height'</span></a>の値はパーセント値（120%）ではなく12pxとなる：
+</p>
+<pre><code class="css">
+p { font-size: 10px }
+p { line-height: 120% }  /* 'font-size'の120% */
+</code></pre>
+</div>
+
+<h3>4.3.4 <a name="uri">URLおよびURI</a></h3>
+
+<p>この仕様においてURI（統一資源識別子のこと。URLやURNを含むものである。<a href="refs.html#ref-RFC3986" rel="biblioentry" class="noxref"><span class="normref">[RFC3986]</span></a>を参照）値は<span
+class="index-def" title="&lt;uri&gt;::definition of"><a
+name="value-def-uri" class="value-def">&lt;uri&gt;</a></span>として示される。プロパティ値でURIを指定するために用いる関数表記は、次に示すように"url()"となる：
+</p>
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+body { background: url("http://www.example.com/pinkish.png") }
+</code></pre>
+</div>
+
+<p> URI値の形式は、'url()'関数の括弧内にURIを記述する。URIはシングルクォート（'）またはダブルクォート（"）でくくってもよく、また<a
+href="#whitespace">空白</a>を任意に挿入してもよい。2つの引用符は同じでなければならない。
+</p>
+<div class="example"><P style="display:none">例：</P><p>引用符が無い例：
+</p>
+<pre><code>
+li { list-style: url(http://www.example.com/redball.png) disc }
+</code></pre>
+</div>
+
+<p>
+引用符で囲まれていないURIにおいて、括弧、空白文字、シングルクォート（'）とダブルクォート（"）の文字は、結果として得られるURI値がURIトークンになるようバックスラッシュでエスケープしなければならない：'\(''、'\)'。
+</p> 
+<p>URIの種類によっては、上記の文字を<a href="refs.html#ref-RFC3986" rel="biblioentry" class="noxref"><span class="normref">[RFC3986]</span></a>で説明されるようにURIエスケープ（ "(" = %28、 ")" = %29、など）として記述可能かもしれない。
+</p>
+<div class=note>
+<p><em>COMMENTトークンは、他のトークン内で出現できないことに注意する：したがって、"url(/*x*/pic.png)"はURI"/*x*/pic.png"を表し、"pic.png"ではない。</em>
+</div>
+
+<p> リソースの絶対位置に依存しないモジュラー・スタイルシートを作成するために、著者は、相対URIを使用してもよい。相対URI（<a href="refs.html#ref-RFC3986" rel="biblioentry" class="noxref"><span class="normref">[RFC3986]</span></a>で定義される）は、基底URIを用いて完全なURIに解決される。RFC&nbsp;3986の5章は、この処理に用いる標準的なアルゴリズムを定義する。CSSスタイルシートでは、基底URIはソース文書のURIではなく、スタイルシートのURIである。
+</p>
+<div class="example"><P style="display:none">例：</P>
+<p>たとえば、以下の規則を考える：</p>
+
+<pre><code class="css">
+body { background: url("yellow") }
+</code></pre>
+
+<p>URIで指定されたスタイルシート：</p>
+
+<pre>http://www.example.org/style/basic.css</pre>
+
+<p>ソース文書のBODYの背景は、URIで指定されたリソースによって記述される画像でタイル状に表示される：
+</p>
+<pre>http://www.example.org/style/yellow</pre>
+</div>
+
+<p>ユーザーエージェントは、妥当でないURI、またはURIが利用できないか不適当なリソースを指定する場合の処理方法が異ってもよい。
+</p>
+<h3>4.3.5 <a name="counter">カウンタ</a></h3>
+
+<p><span class="index-def" title="&lt;counter&gt;, definition of"><a
+name="value-def-counter">カウンタ</a></span>は、大文字・小文字区別な識別子で表される（<a href="generate.html#propdef-counter-increment" class="noxref"><span
+class="propinst-counter-increment">'counter-increment'</span></a>と<a href="generate.html#propdef-counter-reset" class="noxref"><span class="propinst-counter-reset">'counter-reset'</span></a>を参照）。カウンタの値を参照するために、トークンを区切る任意の空白をもつ表記法<a name="x46"><span class="index-def" title="counter()">'counter(&lt;identifier&gt;)'</span></a>または'counter(&lt;identifier&gt;, &lt;'list-style-type&gt;)'を使用する。デフォルトのスタイルは'decimal'である。
+</p>
+<p>同じ名前の入れ子にされたカウンタの順序を参照するために、表記法は、トークンを区切る任意の空白をもつ'counters(&lt;identifier&gt;, &lt;string&gt;)'または'counters(&lt;identifier&gt;, &lt;string&gt;, &lt;'list-style-type'&gt;)'となる。
+</p>
+<p>どのようにしてユーザーエージェントが値またはカウンタの値を決定しなければならないかについては、<a href="generate.html">生成コンテンツ</a>の章の<a href="generate.html#scope">"カウンタの入れ子と範囲"</a>を参照のこと。どのようにしてこれらの値を文字列に変換しなければならないかについては、<a href="generate.html#propdef-content" class="noxref"><span
+class="propinst-content">'content'</span></a>プロパティのカウンタ値の定義を参照のこと。
+</p>
+<p>CSS 2.1において、<a href="generate.html#propdef-content" class="noxref"><span
+class="propinst-content">'content'</span></a>プロパティからのみカウンタの値を参照できる。 'none'は&lt;list-style-type&gt;に可能であることに注意すること。'counter(x, none)'は空の文字列をもたらす。
+</p>
+<div class="example"><P style="display:none">例：</P>
+<p>これは各章（h1）の段落（p）を数えるスタイルシートである。各段落にはローマ数字で番号が振られ、ピリオドとスペースが後に続く：
+</p>
+<pre><code class="css">
+p {counter-increment: par-num}
+h1 {counter-reset: par-num}
+p:before {content: counter(par-num, upper-roman) ". "}
+</code></pre>
+</div>
+
+<h3>4.3.6 <a name="color-units">色</a></h3>
+<p>
+<span class="index-def" title="&lt;color&gt;::definition of"><a
+name="value-def-color" class="value-def">&lt;color&gt;</a></span>は、キーワードまたは数値RGBのいずれかである。
+</p>
+<p> 色キーワードのリストは、aqua、black、blue、fuchsia、gray、green、lime、maroon、navy、olive、orange、purple、red、silver、teal、white、yellowである。この17色は以下の値をもつ。
+</p>
+
+<div class="colordiagram" id="TanteksColorDiagram20020613">
+<div class="diagramrow">
+<span class="colorsquare" style="background:maroon;color:white"><span class="colorname">maroon</span> #800000
+</span><span class="colorsquare" style="background:red"><span class="colorname">red</span> #ff0000
+</span><span class="colorsquare" style="background:orange"><span class="colorname">orange</span> #ffA500
+</span><span class="colorsquare" style="background:yellow"><span class="colorname">yellow</span> #ffff00
+</span><span class="colorsquare" style="background:olive;color:white"><span class="colorname">olive</span> #808000</span>
+</div>
+<div class="diagramrow">
+<span class="colorsquare" style="background:purple;color:white"><span class="colorname">purple</span> #800080</span>
+<span class="colorsquare" style="background:fuchsia"><span class="colorname">fuchsia</span> #ff00ff</span>
+<span class="colorsquare" style="background:white"><span class="colorname">white</span> #ffffff</span>
+<span class="colorsquare" style="background:lime"><span class="colorname">lime</span> #00ff00</span>
+<span class="colorsquare" style="background:green;color:white"><span class="colorname">green</span> #008000</span>
+</div>
+<div class="diagramrow" style="padding:0 2.5em">
+<span class="colorsquare" style="background:navy;color:white"><span class="colorname">navy</span> #000080</span>
+<span class="colorsquare" style="background:blue"><span class="colorname">blue</span> #0000ff</span>
+<span class="colorsquare" style="background:aqua"><span class="colorname">aqua</span> #00ffff</span>
+<span class="colorsquare" style="background:teal;color:white"><span class="colorname">teal</span> #008080</span>
+</div>
+<div class="diagramrow" style="padding:0 5em">
+<span class="colorsquare" style="background:black;color:white"><span class="colorname">black</span> #000000</span>
+<span class="colorsquare" style="background:silver"><span class="colorname">silver</span> #c0c0c0</span>
+<span class="colorsquare" style="background:gray;color:white"><span class="colorname">gray</span> #808080</span>
+</div>
+</div>
+
+<p>
+この色キーワードに加えて、ユーザーは、ユーザー環境において特定のオブジェクトによって使用される色に対応するキーワードを指定してもよい。詳細については、<a
+href="./ui.html#system-colors">システム色</a>の節を参照のこと。
+</p>
+
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+body {color: black; background: white }
+h1 { color: maroon }
+h2 { color: olive }
+</code></pre>
+</div>
+
+<p>数値色仕様においてRGB色モデルは使用される。この例はすべて同じ色を指定している：
+</p>
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+em { color: #f00 }              /* #rgb */
+em { color: #ff0000 }           /* #rrggbb */
+em { color: rgb(255,0,0) }      
+em { color: rgb(100%, 0%, 0%) } 
+</code></pre>
+</div>
+
+<p> 16進表記のRGB値の形式は、'#'の直後に3桁または6桁の16進数のいずれかが続くものである。3桁のRGB表記（#rgb）は6桁の形式（#rrggbb）に変換される。これは桁を繰り返したものであって、0を付け足したものではない。たとえば、#fb0は#ffbb00に展開する。これは、白（#ffffff）が簡略記法（#fff）として指定でき、ディスプレイの色深度に依存を除去することを保証する。
+</p>
+<p> 関数表記におけるRGB値の形式は、'rgb('の直後に3つの数値のコンマ区切りリスト（3つの整数値または3つのパーセント値のいずれか）が続き、')'が続くものである。整数値255は、100%、および16進数表記でFまたはFFに対応する。すなわち、rgb(255,255,255) = rgb(100%,100%,100%) = #FFF。<a href="#whitespace">空白</a>文字は数値の前後に許可される。
+</p>
+<p>すべてのRGB色は、sRGB色空間で指定される（<a href="refs.html#ref-SRGB" rel="biblioentry" class="noxref"><span class="normref">[SRGB]</span></a>参照）。ユーザーエージェントは、これらの色再現が異なってもよいが、sRGBの使用は、明確で客観的に測定可能な色のあるべき定義を提供する。これは、国際標準との関連が得られる（<a href="refs.html#ref-COLORIMETRY" rel="biblioentry" class="noxref"><span class="normref">[COLORIMETRY]</span></a>参照）。
+</p>
+<p><a href="conform.html#conformance">適合ユーザーエージェント</a>は、ガンマ補正処理の試みをこれらの色表示に限定してもよい。sRGBは、指定の閲覧環境のもとで2.2の表示ガンマを規定する。ユーザーエージェントは、出力デバイスの"自然な"表示ガンマと組み合わせた、効果的な表示ガンマ2.2が生成される、というようなCSSで与えられた色を調整すべきである。CSSで指定された色のみが影響を受けることに注意すること。たとえば、画像は独自の色情報を持つことが予期される。
+</p>
+<p>色域が既知である場合、デバイスの色域外の値は切り取られるまたは変換されるべきである。赤、緑、および青の値は、デバイスでサポートされる範囲内に収まるように変換されなければならない。ユーザーエージェントは、ある色域から別の高品質な色域に変換してもよい。デバイス色域がsRGBと同一である典型的なCRTモニタの場合、以下の4つの規則は等価である：
+</p>
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+em { color: rgb(255,0,0) }       /* 整数の範囲0-255 */
+em { color: rgb(300,0,0) }       /* rgb(255,0,0)に切り取られる */
+em { color: rgb(255,-10,0) }     /* rgb(255,0,0)に切り取られる */
+em { color: rgb(110%, 0%, 0%) }  /* rgb(100%,0%,0%)に切り取られる */
+</code></pre>
+</div>
+
+<p>プリンタなどの他のデバイスは、sRGBと異なる色域を持つ：0..255のsRGB範囲外の色が（デバイスの色域内に）表現されることもある一方で、0..255のsRGB範囲内の色がデバイスの色域の範囲外になるために変換されることもある。
+</p>
+<div class=note><p><em><strong>注。</strong>カラー値の切り取りまたは変換は、実際のデバイスの色域が既知の場合（0..255より大きいまたは小さい）に行われるべきである。</em>
+</div>
+
+<h3>4.3.7 <a name="strings">文字列</a></h3>
+
+<p><span class="index-def" title="&lt;string&gt;, definition of"><a
+name="value-def-string">文字列</a></span>は、シングルクォートまたはダブルクォートで記述される。ダブルクォートは、エスケープされない限りダブルクォートの内部に出現することはできない（たとえば、'\"'または'\22'）。シングルクォートも同様である（たとえば、"\'"または"\27"）。 
+</p>
+<div class="example"><P style="display:none">例：</P>
+<pre>
+"this is a 'string'"
+"this is a \"string\""
+'this is a "string"'
+'this is a \'string\''
+</pre>
+</div>
+
+<p>文字列は、<a name="x49"><span class="index-inst"
+title="newline">改行</span></a>を直接含むことはできない。文字列に改行を含むために、"\A"または"\00000a"のようなISO 10646で改行文字（U+000A）を表すエスケープを使用する。この文字は、CSSで"改行"の一般概念を表わす。使用例については<a href="generate.html#propdef-content" class="noxref"><span
+class="propinst-content">'content'</span></a>プロパティを参照のこと。
+</p>
+<p>見栄えまたはその他の理由で、複数行にわたって文字列を分割することは可能だが、そのような場合には改行文字自身をバックスラッシュ（\）でエスケープする必要がある。たとえば、以下の2つのセレクタは厳密に等価である：
+</p>
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+a[title="a not s\
+o very long title"] {/*...*/}
+a[title="a not so very long title"] {/*...*/}
+</code></pre>
+</div>
+
+<h3>4.3.8 <a name="unsupported-values">サポートしない値</a></h3>
+
+<p>ユーザーエージェントが特定の値をサポートしていない場合、あたかもその値が<a href="#illegalvalues">不正な値</a>であるかのように、スタイルシートを解析する際にその値を<em>無視</em>すべきである。たとえば：
+</p>
+<div class="example"><P style="display:none">例：</P>
+<pre><code class="css">
+  h3 {
+    display: inline;
+    display: run-in;
+  }
+</code></pre>
+</div>
+<p>  
+'display'プロパティに対して'run-in'値をサポートするユーザーエージェントは、最初の表示の宣言を受け入れてから、2番目のdisplayの宣言と値で"上書き"される。'run-in'値をサポートしないユーザーエージェントは、最初の表示の宣言を処理し、2番目のdisplayの宣言を無視する。
+</p>
+
+
+<h2>4.4 <a name="charset">CSSスタイルシートの表現</a></h2>
+
+<p>CSSスタイルシートは、国際文字集合からの文字シーケンスである（<a href="refs.html#ref-ISO10646" rel="biblioentry" class="noxref"><span class="normref">[ISO10646]</span></a>を参照）。通信および保存のために、これらの文字は、US-ASCIIで利用可能な文字集合をサポートする文字エンコーディング（たとえば、UTF-8、ISO 8859-x、SHIFT JISなど）で<a name="x50"><span class="index-def"
+title="character encoding">エンコード</span></a>されなければならない。文字集合と文字エンコーディングへの役立つ手引きついては、HTML 4仕様を参照のこと（<a href="refs.html#ref-HTML4" rel="biblioentry" class="noxref"><span class="informref">[HTML4]</span></a>、5章）。またXML 1.0仕様も参照のこと（<a href="refs.html#ref-XML10" rel="biblioentry" class="noxref"><span class="informref">[XML10]</span></a>、2.2節、4.3.3節および付録F）。
+</p>
+<p>HTMLのSTYLE要素または"style"属性内のように、別の文書にスタイルシートが埋め込まれている場合、スタイルシートは文書全体の文字エンコーディングを共有する。
+</p>
+<p>スタイルシートが別ファイルに存在する場合、ユーザーエージェントは、スタイルシートの<a name="x52"><span class="index-inst" title="character
+encoding::default|default::character encoding">文字エンコーディング</span></a>を決定する際に、以下の（高いものから低いものへ）<a name="x51"><span class="index-inst" title="character
+encoding::user agent's determination of">優先順位</span></a>を遵守しなければならない：
+</p>
+<ol>
+<li>HTTPプロトコルにおける"Content-Type"フィールドの"charset"パラメータ（または他のプロトコルにおける類似のパラメータ）</li>
+<li><a name="x54"><span class="index-inst">BOM</span></a>と<a name="x55"><span
+class="index-inst">@charset</span></a>の両方またはいずれか一方（以下参照）</li>
+<li><code>&lt;link charset=""&gt;</code>または（もしあれば）リンクの機構による他のメタデータ</li>
+<li>スタイルシートまたは文書を参照する文字集合（もしあれば）</li>
+<li>UTF-8を仮定する</li>
+</ol>
+
+<p><a name="x56"><span class="index-inst">@charset</span></a>規則を使用する著者は、一切の文字を先行させることなく、スタイルシートの最初に規則を設置しなければならない。（バイトオーダーマークが使用されるエンコードに対して適切な場合、@charset規則に先行してもよい。）
+</p>
+
+<p><a name="x57"><span class="index-def">"@charset"</span></a>の後に、著者は文字エンコーディング名を（引用符内に）指定する。たとえば：
+</p>
+
+<pre class="example"><code class="css">@charset "ISO-8859-1";</code></pre>
+
+<p>@charsetはリテラルに記述しなければならない。すなわち、'@charset "'（小文字でバックスラッシュエスケープなしで）10文字、その直後にエンコーディング名、その直後に'";'とする。
+</p>
+
+<p>エンコーディング名は、IANAレジストリに記載された文字集合名でなければならない。文字集合の完全な一覧については<a href="refs.html#ref-CHARSETS" rel="biblioentry" class="noxref"><span class="informref">[CHARSETS]</span></a>を参照のこと。著者は、IANAレジストリにおいて"preferred MIME name"とマークされた文字集合名を使用すべきである。
+</p>
+
+<p>ユーザーエージェントは、少なくとも<a name="x58"><span
+class="index-inst">UTF-8</span></a>エンコーディングをサポートしなければならない。
+</p>
+
+<p>上記の規則1（HTTP "charset" パラメータまたは類似のもの）が文字エンコーディングをもたらし、かつUTF-8、UTF-16またはUTF-32のいずれかである場合、もしあれば、ファイルの先頭のBOMは、以下のように文字エンコーディングを上書きする：
+
+<table>
+<thead>
+<tr><th>先頭バイト（16進数）  </th><th>エンコーディングの結果
+<tbody>
+</th></tr><tr><td>00 00 FE FF    </td><td>UTF-32、ビッグエンディアン
+</td></tr><tr><td>FF FE 00 00    </td><td>UTF-32、リトルエンディアン
+</td></tr><tr><td>FE FF                </td><td>UTF-16、ビッグエンディアン
+</td></tr><tr><td>FF FE                </td><td>UTF-16、リトルエンディアン
+</td></tr><tr><td>EF BB BF          </td><td>UTF-8
+
+</td></tr></table>
+
+<p>規則1がUTF-16BE、UTF-16LE、UTF-32BEまたはUTF-32LEの文字エンコーディングをもたらす場合、ファイルがBOMで開始するならばエラーとなる。CSSユーザーエージェントは、指定された文字エンコーディングを無視し、上記テーブルを使用することによって回復されなければならない。
+
+<p class=note>UTF-16BE、UTF-16LE、UTF-32BEまたはUTF-32LEにおいてファイルの先頭でBOMがエラーとなるという事実は、<a href="refs.html#ref-UNICODE" rel="biblioentry" class="noxref"><span class="normref">[UNICODE]</span></a>に明示されていることに注意すること。
+
+<p>ユーザーエージェントはスタイルシートの冒頭にないすべての@charset規則を無視しなければならない。ユーザーエージェントがBOMと@charset規則の両方またはいずれか一方を用いて文字エンコーディングを検出する場合、ユーザーエージェントは以下の規則に従うべきである：
+</p>
+
+<ul>
+
+<li>この規則で指定された場合を除き、すべての@charset規則は無視される。</li>
+
+<li>エンコーディングは、スタイルシートの開始バイト列に基づいて検出される。次の表は、（16進数で書かれた）初期バイト列の可能性のある集合を与える。スタイルシートの先頭に一致する最初の行は、BOMと@charset規則の両方またはいずれか一方に基づいて、エンコーディング検出の結果が得られる。一致する行がない場合、エンコーディングはBOMと@charset規則の両方またはいずれか一方に基づいて検出されない。最長一致の表記(...)*は、1回以上のできるだけ少ない回数の繰り返しを示す。"XX"とマークされているバイトは、ASCII文字のシーケンスとして所定の順序により処理することで、エンコーディング名の決定に使用されるものである。"YY"とマークされたバイトも同様だが、前述したようにASCIIにコード変換する必要がある。ユーザーエージェントがエントリに関連する一切のエンコーディングをサポートしない場合、ユーザーエージェントはテーブル内のエントリを無視してもよい。
+
+<table border="1"
+  summary="スタイルシートの初期バイト列と選択されたエンコーディングとの関係">
+<tr><th scope="col">初期バイト列</th><th scope="col">結果</th></tr>
+<tr><td>EF BB BF 40 63 68 61 72 73 65 74 20 22 (XX)* 22 3B</td><td>指定される</td></tr>
+<tr><td>EF BB BF</td><td>UTF-8</td></tr>
+<tr><td>40 63 68 61 72 73 65 74 20 22 (XX)* 22 3B</td><td>指定される</td></tr>
+<tr><td>FE FF 00 40 00 63 00 68 00 61 00 72 00 73 00 65 00 74 00 20 00 22 (00 XX)* 00 22 00 3B</td><td>指定される（ビッグエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>00 40 00 63 00 68 00 61 00 72 00 73 00 65 00 74 00 20 00 22 (00 XX)* 00 22 00 3B</td><td>指定される（ビッグエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>FF FE 40 00 63 00 68 00 61 00 72 00 73 00 65 00 74 00 20 00 22 00 (XX 00)* 22 00 3B 00</td><td>指定される（リトルエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>40 00 63 00 68 00 61 00 72 00 73 00 65 00 74 00 20 00 22 00 (XX 00)* 22 00 3B 00</td><td>指定される（リトルエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>00 00 FE FF 00 00 00 40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 (00 00 00 XX)* 00 00 00 22 00 00 00 3B</td><td>指定される（ビッグエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>00 00 00 40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 (00 00 00 XX)* 00 00 00 22 00 00 00 3B</td><td>指定される（ビッグエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>00 00 FF FE 00 00 40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 00 (00 00 XX 00)* 00 00 22 00 00 00 3B 00</td><td>指定される（2143のバイトオーダーで指定されない場合）</td></tr>
+<tr><td>00 00 40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 00 (00 00 XX 00)* 00 00 22 00 00 00 3B 00</td><td>指定される（2143のバイトオーダーで指定されない場合）</td></tr>
+<tr><td>FE FF 00 00 00 40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 00 00 (00 XX 00 00)* 00 22 00 00 00 3B 00 00</td><td>指定される（3412のバイトオーダーで指定されない場合）</td></tr>
+<tr><td>00 40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 00 00 (00 XX 00 00)* 00 22 00 00 00 3B 00 00</td><td>指定される（3412のバイトオーダーで指定されない場合）</td></tr>
+<tr><td>FF FE 00 00 40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 00 00 00 (XX 00 00 00)* 22 00 00 00 3B 00 00 00</td><td>指定される（リトルエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>40 00 00 00 63 00 00 00 68 00 00 00 61 00 00 00 72 00 00 00 73 00 00 00 65 00 00 00 74 00 00 00 20 00 00 00 22 00 00 00 (XX 00 00 00)* 22 00 00 00 3B 00 00 00</td><td>指定される（リトルエンディアンのバイトオーダーで指定されない場合）</td></tr>
+<tr><td>00 00 FE FF</td><td>UTF-32-BE</td></tr>
+<tr><td>FF FE 00 00</td><td>UTF-32-LE</td></tr>
+<tr><td>00 00 FF FE</td><td>UTF-32-2143</td></tr>
+<tr><td>FE FF 00 00</td><td>UTF-32-3412</td></tr>
+<tr><td>FE FF</td><td>UTF-16-BE</td></tr>
+<tr><td>FF FE</td><td>UTF-16-LE</td></tr>
+<tr><td>7C 83 88 81 99 A2 85 A3 40 7F (YY)* 7F 5E</td><td>EBCDICからASCIIへのコード変換として指定される</td></tr>
+<tr><td>AE 83 88 81 99 A2 85 A3 40 FC (YY)* FC 5E</td><td>IBM1026からASCIIへのコード変換として指定される</td></tr>
+<tr><td>00 63 68 61 72 73 65 74 20 22 (YY)* 22 3B</td><td>GSM 03.38からASCIIへのコード変換として指定される</td></tr>
+<tr><td>類似のパターン</td><td>ユーザーエージェントがこのパターンによって処理されないエンコーディングをサポートしている場合、ユーザーエージェントは追加で類似したパターンをサポートしてもよい。</td></tr>
+</table>
+
+</li>
+
+<li>エンコーディングが上記の表で"指定される"とマークされている1つに基づき検出された場合において、ユーザーエージェントは、たとえ選択された@charsetでのデコードの結果による文字列で開始された適切な@charset規則を解析しないとしても、スタイルシートを無視する。これは、次のことが保証される：
+  <ul>
+    <li>@charset規則は、スタイルシートのエンコーディングにおいてのみ機能すべきであり、</li>
+    <li>バイトオーダーマークは、バイトオーダーマークをサポートするエンコーディングにのみ無視され、</li>
+    <li>エンコーディング名は改行を含めることはできない。</li>
+  </ul>
+</li>
+
+</ul>
+
+<p>ユーザーエージェントは、未知のエンコーディングのスタイルシートを無視しなければならない。</p>
+
+<h3>4.4.1 <a name="escaping">文字符号化で表現できない文字を参照する</a></h3>
+
+<p>スタイルシートは、現在の文字エンコーディングで表現できない文字を参照する必要があってもよい。この文字は、ISO 10646文字を参照する<a href="#escaped-characters">エスケープ</a>として記述しなければならない。このエスケープは、HTMLやXML文書の数値文字参照と同じ役割を果たす（<a href="refs.html#ref-HTML4" rel="biblioentry" class="noxref"><span class="normref">[HTML4]</span></a>の5章および25章を参照のこと）。
+</p>
+<p>文字エスケープ機構は、ごくわずかの文字をエスケープ文字として表現しなければならない場合にのみ使用すべきである。スタイルシートの大部分がエスケープを必要とする場合、著者はより適切なエンコーディングでエンコードすべきである（たとえば、スタイルシートがギリシャ文字を大量に含む場合、著者は"ISO-8859-7"または"UTF-8"を使用するだろう）。
+</p>
+<p>異なる文字エンコーディングを使用する中間プロセッサは、エスケープシーケンスをエンコーディングのバイトシーケンスに変換してもよい。その一方で、中間プロセッサは、ASCII文字の特別な意味を相殺するエスケープシーケンスを変更してはならない。
+</p>
+<p><a href="conform.html#conformance">適合ユーザーエージェント</a>は、認識する任意の文字エンコーディングにおいてISO-10646の全文字を正確に変対応づけなければならない（またはそうであるかのように振る舞わなければならい）。
+</p>
+<p>たとえば、ISO-8859-1（Latin-1）として送信されるスタイルシートは、ギリシャ文字を直接含めることができない："κουρος"（ギリシャ語："kouros"）は"\3BA\3BF\3C5\3C1\3BF\3C2"として記述される必要がある。
+</p>
+<div class="note"><p>
+<em><strong>注。</strong> HTML 4において、"style"属性値における数値実体参照は解釈されるが、STYLE要素のコンテンツは解釈されない。この非対称性のため、著者は"style"属性とSTYLE要素の両方で数値文字参照よりもCSSの文字エスケープ機構を使用することを推奨する。たとえば、以下のものが推奨される：</em></p>
+
+<pre class="html-example"><code class="html">
+&lt;SPAN style="font-family: L\FC beck"&gt;...&lt;/SPAN&gt;
+</code></pre>
+
+<p><em>以下のものではなく：</em></p>
+
+<pre class="html-example"><code class="html">
+&lt;SPAN style="font-family: L&amp;#252;beck"&gt;...&lt;/SPAN&gt;
+</code></pre>
+</div>
+
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="conform.html">前章</a> &nbsp; <a href="selector.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</body>
+</html>
+
+
