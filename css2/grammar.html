@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+
+<HEAD>
+<TITLE>Grammar of CSS&nbsp;2.1</TITLE>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="propidx.html">
+<link rel="next" href="leftblank.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+</HEAD>
+<BODY>
+<div class="navbar">
+<p><a href="propidx.html">前章</a> &nbsp; <a href="leftblank.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+<H1><a name="q0">付録 G. CSS2.1の文法</a></H1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="grammar.html#grammar" class="tocxref">G.1 文法</a>
+    </li><li class="tocline2"><a href="grammar.html#scanner" class="tocxref">G.2 語彙スキャナ</a>
+    </li><li class="tocline2"><a href="grammar.html#tokenizer-diffs" class="tocxref">G.3 CSS2.1とCSS1のトークン化の比較</a>
+    </li><li class="tocline2"><a href="grammar.html#q4" class="tocxref">G.4 実装ノート</a>
+  </li></ul>
+</div>
+
+<p>この付録は非規範的である。
+
+<P>以下の文法は、CSS 2.1の構文を定義する。しかし、この文法はある意味でCSS 2.1のスーパーセットであり、この仕様書で文法で表現されていない追加の意味制約を課している。適合ユーザーエージェントは、また、<a href="./syndata.html#syntax"> 前方互換な構文解析規則</a>、セレクタ記法、<a
+href="./about.html#property-defs">プロパティと値の表記</a>、単位表記に準拠しなければならない。ただし、文書言語はCSSに含まれない制限を課すかもしれないので、すべての構文的に正しいCSSは効果を取ることができる。たとえば、HTMLは "class"属性の取りうる値に制限を課している。
+
+<h2>G.1 <a name="grammar">文法</a></h2>
+
+<P> 以下の文法は、<a name="x0"><span class="index-inst"
+title="LALR(1)">LALR(1)</span></a>である（これは、CSS 2.1構文のみを<a
+href="syndata.html#parsing-errors">解析規則</a>を表現したものにすぎないため、ほとんどのユーザーエージェントは、直接使用すべきでないことに注意する）。生成規則の形式は、人間の使い勝手に最適化され、Yacc（<a href="refs.html#ref-YACC" rel="biblioentry" class="noxref"><span class="normref">[YACC]</span></a>）を超えた一部の簡略表記法が使用される。</P>
+
+<ul>
+<li><strong>*</strong>: 0回以上の繰り返し
+</li><li><strong>+</strong>: 1回以上の繰り返し
+</li><li><strong>?</strong>: 0または1回 
+</li><li><strong>|</strong>: 選択肢の区切り 
+</li><li><strong>[&nbsp;]</strong>: グループ化
+</li></ul>
+
+<p>生成規則は以下の通り:
+
+<pre>
+stylesheet
+  : [ CHARSET_SYM STRING ';' ]?    [S|CDO|CDC]* [ import [ CDO S* | CDC S* ]* ]*
+    [ [ ruleset | media | page ] [ CDO S* | CDC S* ]* ]*
+  ;
+import
+  : IMPORT_SYM S*
+    [STRING|URI] S* media_list?';' S*
+  ;
+media
+  : MEDIA_SYM S* media_list '{' S* ruleset* '}' S*
+  ;
+media_list
+  : medium [ COMMA S* medium]*
+  ;
+medium
+  : IDENT S*
+  ;
+page
+  : PAGE_SYM S* pseudo_page?    '{' S* declaration?[ ';' S* declaration?]* '}' S*
+  ;
+pseudo_page
+  : ':' IDENT S*
+  ;
+operator
+  : '/' S* | ',' S*
+  ;
+combinator
+  : '+' S*
+  | '&gt;' S*
+  ;
+property
+  : IDENT S*
+  ;
+ruleset
+  : selector [ ',' S* selector ]*
+    '{' S* declaration?[ ';' S* declaration?]* '}' S*
+  ;
+<a name="x1"><span class="index-inst" title="selector">selector</span></a>
+  : simple_selector [ combinator selector | S+ [ combinator?selector ]?]?  ;
+simple_selector
+  : element_name [ HASH | class | attrib | pseudo ]*
+  | [ HASH | class | attrib | pseudo ]+
+  ;
+class
+  : '.' IDENT
+  ;
+element_name
+  : IDENT | '*'
+  ;
+attrib
+  : '[' S* IDENT S* [ [ '=' | INCLUDES | DASHMATCH ] S*
+    [ IDENT | STRING ] S* ]?']'
+  ;
+pseudo
+  : ':' [ IDENT | FUNCTION S* [IDENT S*]?')' ]
+  ;
+declaration
+  : property ':' S* expr prio?  ;
+prio
+  : IMPORTANT_SYM S*
+  ;
+expr
+  : term [ operator?term ]*
+  ;
+term
+  : [ NUMBER S* | PERCENTAGE S* | LENGTH S* | EMS S* | EXS S* | ANGLE S* |
+      TIME S* | FREQ S* ]
+  | STRING S* | IDENT S* | URI S* | hexcolor | function
+  ;
+function
+  : FUNCTION S* expr ')' S*
+  ;
+/*
+ * There is a constraint on the <a name="x2"><span class="index-inst" title="color">color</span></a> that it must
+ * have either 3 or 6 hex-digits (i.e., [0-9a-fA-F])
+ * after the "#"; e.g., "#000" is OK, but "#abcd" is not.
+ */
+hexcolor
+  : HASH S*
+  ;
+</pre>
+
+<h2>G.2 <a name="scanner">語彙スキャナ</a></h2>
+
+<p> 以下は、Flex記法（<a href="refs.html#ref-FLEX" rel="biblioentry" class="noxref"><span class="normref">[FLEX]</span></a>参照）で書かれた、<a name="x3"><span class="index-def"
+title="tokenizer">トークナイザ</span></a>である。トークナイザは大文字と小文字を区別しない。
+
+<p>"\377"は、Flexの最新版（10進の255）で処理できる文字コードの最大値を表す。これは<a name="x4"><span class="index-inst"
+title="unicode">Unicode</span></a>/<a name="x5"><span class="index-inst"
+title="iso-10646">ISO-10646</span></a>の最大コードポイントである、"\4177777"（10進1114111）として読まれるべきである。
+
+<pre>
+%option case-insensitive
+
+h		[0-9a-f]
+nonascii	[\240-\377]
+unicode		\\{h}{1,6}(\r\n|[ \t\r\n\f])?
+escape		{unicode}|\\[^\r\n\f0-9a-f]
+nmstart		[_a-z]|{nonascii}|{escape}
+nmchar		[_a-z0-9-]|{nonascii}|{escape}
+string1		\"([^\n\r\f\\"]|\\{nl}|{escape})*\"
+string2		\'([^\n\r\f\\']|\\{nl}|{escape})*\'
+badstring1      \"([^\n\r\f\\"]|\\{nl}|{escape})*\\?
+badstring2      \'([^\n\r\f\\']|\\{nl}|{escape})*\\?
+badcomment1     \/\*[^*]*\*+([^/*][^*]*\*+)*
+badcomment2     \/\*[^*]*(\*+[^/*][^*]*)*
+baduri1         {U}{R}{L}\({w}([!#$%&amp;*-\[\]-~]|{nonascii}|{escape})*{w}
+baduri2         {U}{R}{L}\({w}{string}{w}
+baduri3         {U}{R}{L}\({w}{badstring}
+comment		\/\*[^*]*\*+([^/*][^*]*\*+)*\/
+ident		-?{nmstart}{nmchar}*
+name		{nmchar}+
+num		[-+]?[0-9]+|[-+]?[0-9]*"."[0-9]+
+string		{string1}|{string2}
+badstring       {badstring1}|{badstring2}
+badcomment      {badcomment1}|{badcomment2}
+baduri          {baduri1}|{baduri2}|{baduri3}
+url		([!#$%&amp;*-~]|{nonascii}|{escape})*
+s		[ \t\r\n\f]+
+w		{s}?
+nl		\n|\r\n|\r|\f
+
+A		a|\\0{0,4}(41|61)(\r\n|[ \t\r\n\f])?
+C		c|\\0{0,4}(43|63)(\r\n|[ \t\r\n\f])?
+D		d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?
+E		e|\\0{0,4}(45|65)(\r\n|[ \t\r\n\f])?
+G		g|\\0{0,4}(47|67)(\r\n|[ \t\r\n\f])?|\\g
+H		h|\\0{0,4}(48|68)(\r\n|[ \t\r\n\f])?|\\h
+I		i|\\0{0,4}(49|69)(\r\n|[ \t\r\n\f])?|\\i
+K		k|\\0{0,4}(4b|6b)(\r\n|[ \t\r\n\f])?|\\k
+L               l|\\0{0,4}(4c|6c)(\r\n|[ \t\r\n\f])?|\\l
+M		m|\\0{0,4}(4d|6d)(\r\n|[ \t\r\n\f])?|\\m
+N		n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n
+O		o|\\0{0,4}(4f|6f)(\r\n|[ \t\r\n\f])?|\\o
+P		p|\\0{0,4}(50|70)(\r\n|[ \t\r\n\f])?|\\p
+R		r|\\0{0,4}(52|72)(\r\n|[ \t\r\n\f])?|\\r
+S		s|\\0{0,4}(53|73)(\r\n|[ \t\r\n\f])?|\\s
+T		t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t
+U               u|\\0{0,4}(55|75)(\r\n|[ \t\r\n\f])?|\\u
+X		x|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\x
+Z		z|\\0{0,4}(5a|7a)(\r\n|[ \t\r\n\f])?|\\z
+
+%%
+
+{s}			{return S;}
+
+\/\*[^*]*\*+([^/*][^*]*\*+)*\/		/* ignore comments */
+{badcomment}                         /* unclosed comment at EOF */
+
+"&lt;!--"		{return CDO;}
+"--&gt;"			{return CDC;}
+"~="			{return INCLUDES;}
+"|="			{return DASHMATCH;}
+
+{string}		{return STRING;}
+{badstring}             {return BAD_STRING;}
+
+{ident}			{return IDENT;}
+
+"#"{name}		{return HASH;}
+
+@{I}{M}{P}{O}{R}{T}	{return IMPORT_SYM;}
+@{P}{A}{G}{E}		{return PAGE_SYM;}
+@{M}{E}{D}{I}{A}	{return MEDIA_SYM;}
+"@charset "		{return CHARSET_SYM;}
+
+"!"({w}|{comment})*{I}{M}{P}{O}{R}{T}{A}{N}{T}	{return IMPORTANT_SYM;}
+
+{num}{E}{M}		{return EMS;}
+{num}{E}{X}		{return EXS;}
+{num}{P}{X}		{return LENGTH;}
+{num}{C}{M}		{return LENGTH;}
+{num}{M}{M}		{return LENGTH;}
+{num}{I}{N}		{return LENGTH;}
+{num}{P}{T}		{return LENGTH;}
+{num}{P}{C}		{return LENGTH;}
+{num}{D}{E}{G}		{return ANGLE;}
+{num}{R}{A}{D}		{return ANGLE;}
+{num}{G}{R}{A}{D}	{return ANGLE;}
+{num}{M}{S}		{return TIME;}
+{num}{S}		{return TIME;}
+{num}{H}{Z}		{return FREQ;}
+{num}{K}{H}{Z}		{return FREQ;}
+{num}{ident}		{return DIMENSION;}
+
+{num}%			{return PERCENTAGE;}
+{num}			{return NUMBER;}
+
+{U}{R}{L}"("{w}{string}{w}")" {return URI;}
+{U}{R}{L}"("{w}{url}{w}")"    {return URI;}
+{baduri}                {return BAD_URI;}
+
+{ident}"("		{return FUNCTION;}
+
+.			{return *yytext;}
+</pre>
+
+<h2>G.3 <a name="tokenizer-diffs">CSS2.1とCSS1のトークン化の比較</a></h2>
+
+<p>CSS1勧告（<a href="refs.html#ref-CSS1" rel="biblioentry" class="noxref"><span class="informref">[CSS1]</span></a>）で規定された構文と上記の構文は、多少の相違点が存在する。相違点のほとんどは、CSS1に存在しなかったCSS2の新しいトークンによるものである。その他は文法が読みやすくなるように書き直されているためである。しかし、CSS1の構文でエラーであると感じた一部の互換性のない変更が存在する。これら変更点を以下で説明する。
+
+<ul>
+<li>CSS1スタイルシートは、ASCIIやISO-8859-1といった1バイト文字エンコーディングのみが可能であった。CSS 2.1はそのような制限はありません。実際には、CSS1トークナイザを外挿することはまったく困難ではなく、一部のユーザーエージェントは2バイトエンコーディングを受け入れている。
+
+</li><li>CSS1はUnicode文字を参照するためにバックスラッシュ（\）の後に4桁の16進数のみ許可されたが、CSS2は<a
+href="syndata.html#escaped-characters">6桁が許可される</a>。また、CSS2は空白文字がエスケープシーケンスを区切ることができる。たとえば、CSS1に従うと、文字列"\abcdef"は3文字（\ABCD、E、F）を持つが、CSS2に従うと、1つだけ（\ABCDEF）を持つ。
+
+</li><li>タブ文字（ASCII 9）は文字列に許可されなかった。しかし、CSS1の文字列はフォント名とURLのためにのみ使用されたので、CSS1とCSS2との間の非互換性につながるとすれば、スタイルシートがその名前の中にタブを持っているフォントファミリが含まれている場合に限られる。
+
+</li><li>同様に、（<a href="syndata.html#strings">バックスラッシュでエスケープされた</a>）改行はCSS1の文字列で許可されていなかった。
+
+</li><li>CSS2は、数字の直後に続く識別子はDIMENSIONトークンとして解析する（すなわち、未知の単位）が、CSS1は数字と識別子として解析された。CSS1では、宣言'font: 10pt/1.2serif'が、'10pt/12pt serif'として正しく解析されたが、CSS2では、"serif"の前にスペースが要求される。（一部のユーザーエージェントは、最初の例を受け入れたが、2番目を受け入れなかった。）
+
+</li><li>CSS1では、寸法でない限り（".55in"）、クラス名は数字で開始可能であった（".55ft"）。CSS2では、このようなクラスは未知の次元として解析される（将来の新しい単位の追加を可能にするために）。".55ft"を妥当なクラスにするために、CSS2は最初の数字のエスケープを要求する（ "\35 5ft"）。
+</li></ul>
+
+<h2><a name="q4">G.4 実装ノート</a></h2>
+
+<p><a
+href="syndata.html#tokenization">4.1.1節</a>でCSSのコア構文の語彙スキャナは、バックアップせずにスキャナとして実装可能である。Lexの表記では、以下のパターンの追加を必要する（スキャナの効率のみを考え、返されたトークンを変更しない）:
+
+<pre>
+{ident}/\\          return IDENT;
+#{name}/\\          return HASH;
+@{ident}/\\         return ATKEYWORD;
+#/\\                return DELIM;
+@/\\                return DELIM;
+@/-                 return DELIM;
+@/-\\               return DELIM;
+-/\\                return DELIM;
+-/-                 return DELIM;
+\&lt;/!                return DELIM;
+\&lt;/!-               return DELIM;
+{num}{ident}/\\     return DIMENSION;
+{num}/\\            return NUMBER;
+{num}/-             return NUMBER;
+{num}/-\\           return NUMBER;
+[0-9]+/\.           return NUMBER;
+u/\+                return IDENT;
+u\+[0-9a-f?]{1,6}/- return UNICODE_RANGE;
+</pre>
+
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="propidx.html">前章</a> &nbsp; <a href="leftblank.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</body>
+</html>
+
