@@ -1,0 +1,723 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+
+<head>
+<title>フォント</title>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="colors.html">
+<link rel="next" href="text.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+<style type="text/css">
+#AutoNumber2 td { text-align:center }
+</style>
+<style type="text/css">
+.current,.proposed,span.delcurrent { background:#feb }
+ins.proposed,span.insproposed { background:#bfb }
+del.proposed,span.delproposed { background:#fbb }
+span.insproposed { text-decoration:underline }
+span.delproposed,span.delcurrent { text-decoration:line-through }
+body>del,body>ins {display:block}
+</style>
+</head>
+<body>
+<div class="navbar">
+<p><a href="colors.html">前章</a> &nbsp; <a href="text.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+
+<h1><a name="q0">15 フォント</a></h1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="fonts.html#fonts-intro" class="tocxref">15.1 概論</a>
+    </li><li class="tocline2"><a href="fonts.html#algorithm" class="tocxref">15.2 フォントのマッチングアルゴリズム</a>
+    </li><li class="tocline2"><a href="fonts.html#font-family-prop" class="tocxref">15.3 フォントファミリ: <span class="propinst-font-family">'font-family'</span>プロパティ</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="fonts.html#generic-font-families" class="tocxref">15.3.1 総称フォントファミリ</a>
+      <ul class="toc">
+        <li class="tocline4"><a href="fonts.html#serif-def" class="tocxref">15.3.1.1 <span class="index-def" title="serif, definition of"><dfn>serif</dfn></span></a>
+        </li><li class="tocline4"><a href="fonts.html#sans-serif-def" class="tocxref">15.3.1.2 <span class="index-def" title="sans-serif, definition of"> <dfn>sans-serif</dfn></span></a>
+        </li><li class="tocline4"><a href="fonts.html#cursive-def" class="tocxref">15.3.1.3 <span class="index-def" title="cursive, definition of"> <dfn>cursive</dfn></span></a>
+        </li><li class="tocline4"><a href="fonts.html#fantasy-def" class="tocxref">15.3.1.4 <span class="index-def" title="fantasy, definition of"> <dfn>fantasy</dfn></span></a>
+        </li><li class="tocline4"><a href="fonts.html#monospace-def" class="tocxref">15.3.1.5 <span class="index-def" title="monospace, definition of"> <dfn>monospace</dfn></span></a>
+      </li></ul>
+    </li></ul>
+    </li><li class="tocline2"><a href="fonts.html#font-styling" class="tocxref">15.4 フォントスタイル: <span class="propinst-font-style">'font-style'</span>プロパティ</a>
+    </li><li class="tocline2"><a href="fonts.html#small-caps" class="tocxref">15.5 スモールキャップ: <span class="propinst-font-variant">'font-variant'</span>プロパティ</a>
+    </li><li class="tocline2"><a href="fonts.html#font-boldness" class="tocxref">15.6 フォントの太さ: <span class="propinst-font-weight">'font-weight'</span>プロパティ</a>
+    </li><li class="tocline2"><a href="fonts.html#font-size-props" class="tocxref">15.7 フォントの大きさ: <span class="propinst-font-size">'font-size'</span>プロパティ</a>
+    </li><li class="tocline2"><a href="fonts.html#font-shorthand" class="tocxref">15.8 フォントの簡略プロパティ: <span class="propinst-font">'font'</span>プロパティ</a>
+  </li></ul>
+</div>
+
+<h2>15.1 <a name="fonts-intro">概論</a></h2>
+
+<p>フォントプロパティの設定は、スタイルシートの最も一般的な用途の中の1つである。残念ながら、フォントを分類するための明確に定義された普遍的に受け入れる分類は存在せず、1つのフォントファミリに適用される条件は、他のフォントファミリに適切でないかもしれない。たとえば、'itaric'は一般に傾斜したテキストを分類するために使用されるが、傾斜したテキストは、<em>Oblique、Slanted、Incline、Cursive</em>、<em>Kursiv</em>と名付けられてもよい。したがって、特定のフォントに標準的なフォント選択プロパティを配置することは単純な問題ではない。
+</p>
+
+<h2>15.2 <a name="algorithm">フォントのマッチングアルゴリズム</a></h2>
+
+<p>フォントプロパティの普遍的な分類で一般に認められたものはないので、フォント書体へのプロパティの一致は慎重に行わなければならない。プロパティは、このマッチング処理の結果がユーザーエージェントを横断してできるだけ一貫していることを保証するために十分に定義された順序で照合される（フォント書体の同じライブラリがそれらの各々に提示されると仮定する）。
+</p>
+
+<ol>
+
+<li>ユーザーエージェントは、認識するすべてのフォントの関連CSS 2.1のプロパティのデータベースを作成する（またはアクセスする）。2つのフォントがまったく同じ特性を持つ場合、ユーザーエージェントはフォントの1つを選択する。
+</li>
+<li>与えられた要素で、その要素内の各文字に対して、ユーザーエージェントはその要素に適用されるフォントのプロパティを翻訳する。プロパティの完全なセットを使用して、ユーザーエージェントは仮のフォントファミリを選択するために'font-family'プロパティを使用する。残りのプロパティは、各プロパティで記述マッチングの基準に従ってそのフォントファミリに対して検証される。残りのすべてのプロパティの一致がある場合、その特定の要素または文字に一致するフォントとなる。
+</li>
+<li>ステップ2によって処理される'font-family'内に一致するフォント書体が存在せず、フォントセット内の次の選択肢の'font-family'がある場合は、次の代替'font-family'とともにステップ2を繰り返す。
+</li>
+<li>マッチングフォント書体があるが、フォントは現在の文字のグリフを含んでおらず、フォントセットの次の選択肢の'font-family'がある場合、次の代替'font-family'とともにステップ2を繰り返す。
+</li>
+<li>2で選択したファミリ内にフォントが存在しない場合、ユーザーエージェント依存のデフォルトの'font-family'を使用し、手順2を繰り返し、デフォルトのフォントの中で得ることができる最良の一致を使用する。特定の文字がこのフォントを用いて表示できない場合、ユーザーエージェントはその文字に適したフォントを決定するために他の手段を使用してもよい。ユーザーエージェントは、選択した可視シンボルへの適切なフォントを持たない各文字をマップをすべきである。その文字はユーザーエージェントに利用可能なフォント書体のいずれかからできれば"欠落文字"のグリフである。
+</li>
+</ol>
+
+<p>（上記のアルゴリズムは、各文字のCSS 2.1プロパティを再考することを避けるために最適化することが可能である。）
+</p>
+<p>上記の（2）から、プロパティごとの一致規則は次のとおり:
+
+</p>
+<ol>
+
+<li><a href="fonts.html#propdef-font-style" class="noxref"><span class="propinst-font-style">'font-style'</span></a>を最初に試みる。CSSキーワード'italic'（推奨）または'oblique'に分類されたユーザーエージェントのフォントデータベース内の書体でどちらかがあれば、'Italic'が満たされる。そうでなければ、値は正確に一致しなければならないか、font-styleは失敗する。
+</li>
+<li><a href="fonts.html#propdef-font-variant" class="noxref"><span class="propinst-font-variant">'font-variant'</span></a>を次に試みる。'small-caps'は、（1）'small-caps'と分類されたフォント、（2）スモールキャップが合成されたフォント、（3）すべての小文字が大文字に置き換えられたフォント、と一致する。スモールキャップフォントは通常のフォントからコンピュータ上でスケーリングした大文字で合成してもよい。'normal'は通常の（非スモールキャップの）変体が一致する。フォントは、通常の変体を持つために失敗するはずはない。唯一のスモールキャップとして使用可能なフォントは、'normal'書体または'small-caps'書体のいずれかとして選択されなければならない。
+
+</li>
+<li><a href="fonts.html#propdef-font-weight" class="noxref"><span class="propinst-font-weight">'font-weight'</span></a>は次で一致され、決して失敗することはない。（'font-weight'は下記を参照のこと。）
+</li>
+<li><a href="fonts.html#propdef-font-size" class="noxref"><span class="propinst-font-size">'font-size'</span></a>は、許容範囲のユーザーエージェント依存なマージン内で一致されなければならない。（通常、ビットマップフォントの許容範囲は20%だが、スケーラブルフォントのサイズは最も近い整数ピクセルに丸められる。）たとえば、他のプロパティで'em'の値によっての追加的な計算は、'font-size'の算出値に基づく。
+</li>
+
+</ol>
+
+<h2>15.3 <a name="font-family-prop">フォントファミリ</a>: <a href="fonts.html#propdef-font-family" class="noxref"><span
+class="propinst-font-family">'font-family'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'font-family'"><a name="propdef-font-family" class="propdef-title"><strong>'font-family'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>[[ <a href="fonts.html#value-def-family-name" class="noxref"><span class="value-inst-family-name">&lt;family-name&gt;</span></a> | <a href="fonts.html#value-def-generic-family" class="noxref"><span class="value-inst-generic-family">&lt;generic-family&gt;</span></a> ] [, [ <a href="fonts.html#value-def-family-name" class="noxref"><span class="value-inst-family-name">&lt;family-name&gt;</span></a>| <a href="fonts.html#value-def-generic-family" class="noxref"><span class="value-inst-generic-family">&lt;generic-family&gt;</span></a>] ]* ] | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>ユーザーエージェントに依存
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>プロパティ値は、フォントファミリ名と<a href="#generic-font-families">総称ファミリ名</a>の両方またはいずれか一方の優先順位のリストである。
+</p>
+<pre>
+body { font-family: Gill, Helvetica, sans-serif }
+</pre>
+
+<p>多くのフォントは"欠落文字"のグリフ、典型的には四角を提供するが、その名前が示すように、これはフォントの見つからない文字に一致すると考えるべきではない。（しかし、これは、"欠落文字"の文字コードポイントU+FFFDに一致すると見なされるべきである）。
+</p>
+<p>フォントファミリ名には2種類ある:
+</p>
+<dl>
+
+<dt><a name="value-def-family-name">&lt;family-name&gt;</a>
+</dt>
+<dd>最適なフォントファミリの名称。上記の例では、"Gill"と"Helvetica"はフォントファミリである。
+</dd>
+<dt><a name="value-def-generic-family">&lt;generic-family&gt;</a>
+</dt>
+<dd>上記の例では、最後の値は総称ファミリ名である。以下の総称ファミリが定義されている:
+
+<ul>
+
+<li>'serif'（たとえば、Times）</li>
+
+<li>'sans-serif'（たとえば、 Helvetica）</li>
+
+<li>'cursive'（たとえば、Zapf-Chancery）</li>
+
+<li>'fantasy'（たとえば、Western）</li>
+
+<li>'monospace'（たとえば、Courier）</li>
+
+</ul>
+
+<p>スタイルシートの設計者は、最後の代替手段として総称フォントファミリを提示することが奨励される。総称フォントファミリ名はキーワードであり、引用符で囲んではならない。
+</p>
+</dd>
+</dl>
+
+<p>フォントファミリ名は、<a
+href="syndata.html#strings">文字列</a>として与えられ引用符で囲まれる、または1つ以上の<a
+href="syndata.html#value-def-identifier">識別子</a>のシーケンスとして引用符なしのいずれかでなければならない。これは、各トークンの開始時にほとんどの句読点と数字が、引用符なしのフォントファミリ名にエスケープされなければならないことを意味する。
+
+<p>たとえば、以下の宣言は妥当でない:
+
+<pre>
+font-family: Red/Black, sans-serif;
+font-family: "Lucida" Grande, sans-serif;
+font-family: Ahem!, sans-serif;
+font-family: test@foo, sans-serif;
+font-family: #POUND, sans-serif;
+font-family: Hawaii 5-0, sans-serif;
+</pre>
+
+<p>識別子のシーケンスがフォントファミリ名として指定される場合、算出値は単一のスペースによりシーケンス内のすべての識別子を結合することによって文字列に変換される名前となる。
+
+<p>エスケープのミスを避けるために、空白、数字、またはハイフン以外の句読点を含むフォントファミリの名前を引用符で囲むことを推奨する。
+
+<pre>
+body { font-family: "New Century Schoolbook", serif }
+
+&lt;BODY STYLE="font-family: '21st Century', fantasy"&gt;
+</pre>
+
+<p>キーワード値'inherit'、'default'、'initial'、または汎用フォントキーワード（'serif'、'sans-serif'、'monospace'、'fantasy'、'cursive'）と偶然同じになる引用符で囲まれていないフォントファミリ<em>名</em>は、'&lt;family-name&gt;'型とマッチしない。これらの名前は同じ名前を持つキーワードとの混乱を防ぐために、引用符で囲まなければならない。したがって、'font-family: Times, inherit'は無効な宣言であることに注意する。なぜなら、その位置に'inherit'は妥当なキーワードでも妥当なフォントファミリ名でもないからである。
+
+
+<h3>15.3.1 <a name="generic-font-families">総称フォントファミリ</a></h3>
+
+<p>総称フォントファミリは、フォールバックメカニズムである。これは指定したフォントのいずれも選択することはできないという最悪の場合において、スタイルシートの作成者の意図の一部を維持するための手段である。最適な印刷制御のために、特定の名前付きのフォントはスタイルシートで使用すべきである。
+
+
+<p><a name="defined-to-exist">すべての5つの汎用フォントファミリは、</a>すべてのCSSの実装内に存在するように定義される（5つの異なる実際のフォントには必ずしも対応させる必要はない）。
+
+ユーザーエージェントは、各ファミリの特性だけでなく、可能な限り基本的な技術で許される限度内で表現する総称フォントファミリのために合理的なデフォルトの選択肢を提供すべきである。
+
+<p>ユーザーエージェントは、ユーザーが総称フォントの代替選択肢を選択できるようにすることを奨励する。
+
+<h4>15.3.1.1 <span class="index-def" title="serif, definition of"><a name="serif-def"><dfn>serif</dfn></a></span></h4>
+
+<p>CSSで使用される用語serif（セリフ）フォントのグリフは、ストローク仕上げている、フレア、または先細り端を持つ傾向にある、または実際にセリフ先端を持つ（スラブセリフを含む）。serifフォントは一般的にはプロポーショナルフォントである。serifフォントしばしば'sans-serif'総称フォントファミリが提供するフォントよりも線の太さに大きな違いを表す。Mincho（日本語）、SungまたはSong（中国語）、TotumまたはKodig（韓国語）などの特定のスクリプト名がより身近かもしれないが、CSSは任意のスクリプトフォントに適用する用語'serif'を使用する。このように説明される任意のフォントは、一般的な'serif'ファミリを表すために使用されてもよい。
+
+<p>この記述に適合するフォントの例は次のとおり:</p>
+
+<table>
+<tr><td>ラテン語フォント
+  </td><td>Times New Roman, Bodoni,
+Garamond, Minion Web, ITC Stone Serif, MS Georgia, Bitstream Cyberbit
+
+</td></tr><tr><td>ギリシャ語フォント
+  </td><td>Bitstream Cyberbit
+
+</td></tr><tr><td>キリル文字フォント
+  </td><td>Adobe Minion Cyrillic, Excelsior Cyrillic Upright,
+Monotype Albion 70, Bitstream Cyberbit, ER Bukinist
+
+</td></tr><tr><td>ヘブライ語フォント
+  </td><td>New Peninim, Raanana, Bitstream Cyberbit
+
+</td></tr><tr><td>日本語フォント
+  </td><td>Ryumin Light-KL, Kyokasho ICA, Futo Min A101
+
+</td></tr><tr><td>アラビア語フォント
+  </td><td>Bitstream Cyberbit
+
+</td></tr><tr><td>チェロキー語フォント
+  </td><td>Lo Cicero Cherokee
+
+</td></tr></table>
+
+<h4>15.3.1.2 <span class="index-def" title="sans-serif, definition of">
+<a name="sans-serif-def"><dfn>sans-serif</dfn></a></span></h4>
+
+<p>CSSで使用される用語sans-serif（サンセリフ）フォントのグリフはプレーンなストローク端を持つ傾向がある。ほとんどフレア、クロスストローク、他の装飾はない。sans-serifフォントは一般的にはプロポーショナルフォントである。sans-serifフォントはしばしば'serif'ファミリの提供するフォントに比べて、線の太さの変化はほとんどない。Gothic（日本語）、Kai（中国語）、またはPathang（韓国語）などの特定のスクリプト名がより身近かもしれないが、CSS は任意のスクリプトフォントに適用する用語'sans-serif'を使用する。このように説明される任意のフォントは、一般的な'sans-serif'ファミリを表すために使用されてもよい。
+
+<p>この記述に適合するフォントの例は次のとおり:</p>
+
+<table>
+<tr><td>ラテン語フォント
+  </td><td>MS Trebuchet, ITC Avant Garde Gothic, MS Arial, MS Verdana, Univers,
+Futura, ITC Stone Sans, Gill Sans, Akzidenz Grotesk, Helvetica
+
+</td></tr><tr><td>ギリシャ語フォント
+  </td><td>Attika, Typiko New Era, MS Tahoma, Monotype Gill Sans 571, Helvetica Greek
+
+</td></tr><tr><td>キリル文字フォント
+  </td><td>Helvetica Cyrillic, ER Univers, Lucida Sans Unicode, Bastion
+
+</td></tr><tr><td>ヘブライ語フォント
+  </td><td>Arial Hebrew, MS Tahoma
+
+</td></tr><tr><td>日本語フォント
+  </td><td>Shin Go, Heisei Kaku Gothic W5
+
+</td></tr><tr><td>アラビア語フォント
+  </td><td>MS Tahoma
+
+</td></tr></table>
+
+<h4>15.3.1.3 <span class="index-def" title="cursive, definition of">
+<a name="cursive-def"><dfn>cursive</dfn></a></span></h4>
+
+<p>CSSで使用される用語cursive（カーシヴ）フォントのグリフは、一般的にイタリック体の書体を超えてストローク接合または他の筆記体の特性のいずれかを持つ。グリフは部分的または完全に接続され、その結果多くの印刷されたletterworkよりも手書きのペンや毛筆のように見える。アラビア語など、いくつかのスクリプト用のフォントは、ほとんどがcursiveである。Chancery、Brush、Swing、Scriptなどの他の名前もフォント名に使用されるが、CSSは任意のスクリプトのフォントに適用する用語'cursive'を使用する。
+
+<p>この記述に適合するフォントの例は次のとおり:</p>
+
+<table>
+<tr><td>ラテン語フォント
+  </td><td>Caflisch Script, Adobe Poetica, Sanvito, Ex Ponto, Snell Roundhand,
+Zapf-Chancery
+
+</td></tr><tr><td>キリル文字フォント
+  </td><td>ER Architekt
+
+</td></tr><tr><td>ヘブライ語フォント
+  </td><td>Corsiva
+
+</td></tr><tr><td>アラビア語フォント
+  </td><td>DecoType Naskh, Monotype Urdu 507
+
+</td></tr></table>
+
+<h4>15.3.1.4 <span class="index-def" title="fantasy, definition of">
+<a name="fantasy-def"><dfn>fantasy</dfn></a></span></h4>
+
+
+<p>CSSで使用されるFantasyフォントは、文字の表現を含むようにしながら、主に装飾的である（文字を表すものでない、パイフォントまたはピクチャフォントとは対照的）。例を以下に示す:</p>
+
+<table>
+<tr><td>ラテン語フォント
+  </td><td>Alpha Geometrique, Critter, Cottonwood, FB Reactor, Studz
+
+</td></tr></table>
+
+
+<h4>15.3.1.5 <span class="index-def" title="monospace, definition of">
+<a name="monospace-def"><dfn>monospace</dfn></a></span></h4>
+
+
+<p>monospaceフォントの唯一の基準は、すべてのグリフが同じ固定幅を持つことである。（これは、アラビア語などのいくつかのスクリプトをこの上なく奇妙に見えるようにすることになる。）その効果は手動タイプライターに似ており、多くの場合コンピュータコードのサンプルを設定するために使用される。
+
+<p>
+この記述に適合するフォントの例は次のとおり:
+
+<table>
+<tr><td>ラテン語フォント
+  </td><td>Courier, MS Courier New, Prestige, Everson Mono
+
+</td></tr><tr><td>ギリシャ語フォント
+  </td><td>MS Courier New, Everson Mono
+
+</td></tr><tr><td>キリル文字フォント
+  </td><td>ER Kurier, Everson Mono
+
+</td></tr><tr><td>日本語フォント
+  </td><td>Osaka Monospaced
+
+</td></tr><tr><td>チェロキー語フォント
+  </td><td>Everson Mono
+
+</td></tr></table>
+
+
+<h2>15.4 <a name="font-styling">フォントスタイル</a>: <a href="fonts.html#propdef-font-style" class="noxref"><span class="propinst-font-style">'font-style'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'font-style'"><a name="propdef-font-style" class="propdef-title"><strong>'font-style'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>normal | italic | oblique | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>normal
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>'font-style'プロパティは、フォントファミリの通常体（"roman"や"upright"とも呼ばれる）、イタリック体、オブリーク体の書体から選択する。
+</p>
+<p>'oblique'は'oblique'と分類されるフォントを選択する一方、'normal'の値は、ユーザーエージェントのフォントデータベースで'normal'として分類されるフォントを選択する。'italic'の値は'italic'と分類された、または'italic'が利用できない場合は、'oblique'と分類されたフォントを選択する。
+</p>
+<p>ユーザーエージェントのフォントデータベースで'oblique'と分類されたフォントは、実際にはコンピュータ上で通常のフォントを斜めにして生成したものであってもよい。
+</p>
+<p>一般的に、Oblique、Slanted、Inclineの名前を持つフォントは、ユーザーエージェントのフォントデータベースで'oblique'と分類される。一般的に、<em>Italic、Cursive</em>、<em>Kursiv</em>の名前を持つフォントは、'italic'と分類される。
+</p>
+<pre>
+h1, h2, h3 { font-style: italic }
+h1 em { font-style: normal }
+</pre>
+
+<p>上記の例では、'H1'内の強調テキストは、通常の書体として表示される。
+</p>
+<h2>15.5 <a name="small-caps">スモールキャップ</a>: <a href="fonts.html#propdef-font-variant" class="noxref"><span class="propinst-font-variant">'font-variant'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'font-variant'"><a name="propdef-font-variant" class="propdef-title"><strong>'font-variant'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>normal | small-caps | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>normal
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>フォントファミリ内の変異のもう一つの種類は、スモールキャップである。スモールキャップフォントでの小文字は大文字に似ているが、わずかに異なる縦横比を持つ。'font-variant'プロパティは、そのフォントを選択する。
+</p>
+<p>'normal'の値は、スモールキャップフォントでないフォントを選択し、'small-caps'は、スモールキャップフォントを選択する。スモールキャップフォントは通常のフォントを取得し、スケーリングされた大文字で小文字に置き換えることによって作成された場合、CSS 2.1で仕様を満たす（要求はされない）。最後の手段として、大文字がスモールキャップフォントの代替として使用される。
+</p>
+<p>以下の例は、強調を斜体で、'H3'要素をスモールキャップで、'H3'要素の強調をスモールキャップと斜体で表す:
+</p>
+<pre>
+h3 { font-variant: small-caps }
+em { font-style: oblique }
+</pre>
+
+<p>古いスタイルの数字、スモールキャップの数字、縮小や拡大された文字などのフォントのような、フォントファミリの別の亜種があってもよい。CSS 2.1はそれらを選択するプロパティを持たない。
+</p>
+<p><em>注:</em> このプロパティがテキストを大文字に変換をもたらす場合、<a href="text.html#propdef-text-transform" class="noxref"><span
+class="propinst-text-transform">'text-transform'</span></a>が適用される場合と同じ結果となる。
+</p>
+<h2>15.6 <a name="font-boldness">フォントの太さ</a>: <a href="fonts.html#propdef-font-weight" class="noxref"><span class="propinst-font-weight">'font-weight'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'font-weight'"><a name="propdef-font-weight" class="propdef-title"><strong>'font-weight'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 |
+600 | 700 | 800 | 900 | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>normal
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>テキスト参照
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>'font-weight'プロパティは、フォントの太さを選択する。'100'から'900'までの値は、各数値が少なくとも濃さのウェイトを指示する順番に並べたものである。キーワード'normal'は'400'と同義であり、'bold'は'700'と同義である。'normal'と'bold'以外のキーワードは、フォント名と数値尺度とがしばしば混同されることが示され、したがって9つの値リストが選ばれた。
+</p>
+<pre>
+p { font-weight: normal }   /* 400 */
+h1 { font-weight: 700 }     /* bold */
+</pre>
+
+<p>'bolder'および'lighter'値は、親から継承されたウェイトを基準にしてフォントの太さを選択する:
+</p>
+<pre>
+strong { font-weight: bolder }
+</pre>
+
+<p>フォント（フォントデータ）は、通常、フォントの"weight"の記述をもつ名前が値である、1つ以上のプロパティを持つ。これらのウェイトの名前に容認された普遍的な意味は存在しない。これらの主な役割は、単一のフォントファミリ内の濃さの異なる書体を区別することである。フォントファミリにわたって慣用法は非常に異なる。たとえば、太字であると考えられるフォントは、フォントの"normal"書体がデザインでどの程度黒いかによって決まり、<em>Regular、Roman、Book、Medium、Semi-</em>、<em>DemiBold、Bold</em>、<em>Black</em>として表されるかもしれない。名前の標準的な使用法がないため、CSS 2.1のウェイトプロパティの値は、値'400'（または'normal'）がそのファミリに'normal'テキスト書体に相当する数値のスケールで与えられる。通常、その書体に関連付けられたウェイト名は、<em>Book、Regular、Roman、Normal</em>、<em>Medium</em>となる。
+</p>
+
+<p>数値のウェイト値へのファミリ内の他のウェイトの関連は、そのファミリ内の濃さの順序を維持するためのみに意図される。ただし、以下の経験則は、この場合の割り当てをどのように行うかを伝える。
+
+<ul>
+<li>フォントファミリがすでに9つの値で数値スケールを使用している（たとえば、OpenType がそうしている）場合、フォントのウェイトを直接マッピングすべきである。
+
+</li><li><em>Medium</em>分類される書体および<em>Book、Regular、Roman</em>に分類されるものが1つまたは<em>Normal</em>の両方がある場合、<em>Medium</em>は通常'500'に割り当てられる。
+
+</li><li>"Bold"と分類されるフォントは、多くの場合、ウェイト値が'700'に対応する。
+</li></ul>
+
+<p>フォントファミリのウェイトは、CSSのスケールにマッピングされると、不足したウェイトは次のように選択される。
+
+<ul>
+<li>所望のウェイトが400未満である場合、所望のウェイト以下のウェイトが一致するものが見つかるまで、昇順で所望のウェイトを上記のウェイトに続いて降順にチェックされる。
+
+</li><li>所望のウェイトが500より大きい場合、一致するものが見つかるまで、所望のウェイト以上のウェイトは、降順で所望のウェイト以下のウェイトに続いて昇順にチェックされる。
+
+</li><li>所望のウェイトが400であれば、500は最初にチェックされ、目的のウェイトのための規則は、400未満が使用される。
+
+</li><li>所望のウェイトが500であれば、400が最初にチェックされ、目的のウェイトのための規則は、400未満が使用される。
+</li></ul>
+
+<p>次の2つの例は、典型的なマッピングを示している。</p>
+
+<div class="html-example">
+<p>"Rattlesnake"ファミリで、薄いものから濃いものへ4つのウェイトを想定: <em>Regular、Medium、Bold、Heavy</em>。</p>
+<table border=1 summary="フォントウェイトのマッピング例">
+<caption>フォントウェイトのマッピング例(1)</caption>
+
+<thead>
+<tr><th>利用可能な書体 </th><th>割り当て </th><th>空きの埋め方</th></tr>
+</thead>
+<tr><td>"Rattlesnake Regular"</td><td>  400          </td><td>  100, 200, 300</td></tr>
+<tr><td>"Rattlesnake Medium"  </td><td>  500          </td><td>&nbsp;</td></tr>
+<tr><td>"Rattlesnake Bold"      </td><td>  700          </td><td>  600</td></tr>
+<tr><td>"Rattlesnake Heavy"    </td><td>  800          </td><td>  900</td></tr>
+</table>
+</div>
+
+<div class="html-example">
+<p>"Ice Prawn"ファミリで6つのウェイトを仮定する: <em>Book、Medium、Bold、Heavy、Black、ExtraBlack.</em> この場合、ユーザーエージェントは"Ice Prawn ExtraBlack"に数値の割り当てを決め<em>ない</em>ことに注意する。</p>
+
+<table border=1 summary="フォントウェイトのマッピング例Note
+                that ExtraBlack is not mapped to a value.">
+<caption>フォントウェイトのマッピング例(2)</caption>
+<thead>
+<tr><th>利用可能な書体 </th><th>割り当て </th><th>空きの埋め方</th></tr>
+</thead>
+<tr><td>"Ice Prawn Book"    </td><td>  400          </td><td>  100, 200, 300</td></tr>
+<tr><td>"Ice Prawn Medium"</td><td>  500          </td><td>&nbsp;</td></tr>
+<tr><td>"Ice Prawn Bold"    </td><td>  700          </td><td>  600</td></tr>
+<tr><td>"Ice Prawn Heavy"  </td><td>  800          </td><td>&nbsp;</td></tr>
+<tr><td>"Ice Prawn Black"  </td><td>  900          </td><td>&nbsp;</td></tr>
+<tr><td>"Ice Prawn ExtraBlack"</td><td>  (none)    </td><td>&nbsp;</td></tr>
+</table>
+</div>
+
+<p>'bolder'と'lighter'値は親要素のウェイトに対する相対値を示す。継承されたウェイト値に基づいて、使用するウェイトは下記のテーブルを使用して計算される。子要素は計算されたウェイトではなく、'bolder'または'lighter'の値を継承する。
+
+<table summary="The keywords bolder and lighter stand for a specific
+weight as a function of the inherited weight, as defined by this
+table.">
+<caption>'bolder'と'lighter'の意味</caption>
+<thead>
+<tr><th>継承値   </th><th>bolder    </th><th>lighter
+
+<tbody>
+</th></tr><tr><td>100                              </td><td>400          </td><td>100
+
+</td></tr><tr><td>200                              </td><td>400          </td><td>100
+
+</td></tr><tr><td>300                              </td><td>400          </td><td>100
+
+</td></tr><tr><td>400                              </td><td>700          </td><td>100
+
+</td></tr><tr><td>500                              </td><td>700          </td><td>100
+
+</td></tr><tr><td>600                              </td><td>900          </td><td>400
+
+</td></tr><tr><td>700                              </td><td>900          </td><td>400
+
+</td></tr><tr><td>800                              </td><td>900          </td><td>700
+
+</td></tr><tr><td>900                              </td><td>900          </td><td>700
+
+</td></tr></table>
+
+<p>上記の表は　薄い書体と濃い書体とともにnormalとbold書体を含むフォントファミリを指定し、次の相対的なbolderまたはlighter書体を選択することと同じである。与えられた要素に使用される正確なウェイト値をより細かく制御を希望する著者は、相対的なウェイトの数値を使用すべきである。
+
+<p>'font-weight'値のそれぞれにより重いウェイトがあることを保証するものではない。たとえば、一部のフォントはnormalとbold書体のみを持つ一方、8つの書体のウェイトを持つものもある。ユーザーエージェントがウェイトの値にファミリ内のフォント書体にどのようにマッピングするかを保証しない。唯一の保証は与えられた値の書体が、より薄い書体よりも小さいウェイトを持たないことである。
+</p>
+
+
+
+<h2>15.7 <a name="font-size-props">フォントの大きさ</a>: <a href="fonts.html#propdef-font-size" class="noxref"><span
+class="propinst-font-size">'font-size'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'font-size'"><a name="propdef-font-size" class="propdef-title"><strong>'font-size'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="fonts.html#value-def-absolute-size" class="noxref"><span class="value-inst-absolute-size">&lt;absolute-size&gt;</span></a> | <a href="fonts.html#value-def-relative-size" class="noxref"><span class="value-inst-relative-size">&lt;relative-size&gt;</span></a> | <a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> | <a href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage">&lt;percentage&gt;</span></a> | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>medium
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>継承されたフォントサイズを参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>絶対値
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>フォントサイズは、活版印刷で使用されているem正方形の概念に相当する。特定のグリフがem正方形の外側にあふれるかもしれないことに注意する。値の意味は次のとおり：</p>
+
+<dl>
+<dt><b><a name="value-def-absolute-size">&lt;absolute-size&gt;</a></b>
+</dt>
+<dd>&lt;absolute-size&gt;キーワードは、ユーザーエージェントによって計算・保持されるフォントサイズテーブルへのインデックスである。可能な値は以下の通り:
+<p>  [ xx-small | x-small | small | medium | large | x-large | xx-large ]</p>
+<p>次の表は、HTMLの見出しと絶対フォントサイズのマッピングのためのユーザーエージェントのガイドラインを提供する。'medium'値は、ユーザの推奨フォントサイズであり、基準の中間値として使用される。</p>
+
+<table border="1" style="border-collapse: collapse" width="73%" id="AutoNumber2">
+  <tr>
+    <th style="width:16%">CSS絶対サイズ値</th>
+    <td style="width:12%">xx-small</td>
+    <td style="width:9%">x-small</td>
+    <td style="width:10%">small</td>
+    <td style="width:11%">medium</td>
+    <td style="width:11%">large</td>
+    <td style="width:12%">x-large</td>
+    <td style="width:11%">xx-large</td>
+    <td style="width:8%">&nbsp;</td>
+  </tr>
+  <tr>
+    <th>HTMLフォントサイズ</th>
+    <td>1</td>
+    <td>&nbsp;</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+  </tr>
+</table>
+
+<p>実装者は、'medium'フォントサイズ、特定のデバイスとその特性（例えば、デバイスの解像度）からの相対パス、絶対サイズのキーワードのスケーリング係数のテーブルを構築すべきである。
+</p>
+
+<p>
+異なるメディアは異なるスケーリング係数を必要としてもよい。また、テーブルを計算するときにも、ユーザーエージェントはフォントの品質と可用性を考慮に入れるべきである。テーブルは、フォントファミリごとに異なってもよい。
+</p>
+
+<p class="note"><em><strong>注1。</strong> 読みやすさの維持のために、このガイドラインを適用するユーザーエージェントは、それでもなお、コンピュータのディスプレイ上にem単位で9px未満の結果となるfont-sizeの作成を避けるべきである。</em></p>
+
+<p class="note"><em><strong>注2。</strong> CSS1では、隣接するインデックス間の推奨スケーリング係数は1.5であったが、ユーザーエクスペリエンスから大きすぎることが判明した。CSS2では、隣接したインデックスの間のコンピュータの画面のために提案されたスケーリング係数は1.2であったが、まだ小さいサイズの問題を作成している。実装の経験は、隣接する絶対的なサイズのキーワードの間に固定比率が問題であることを実証しており、本仕様はそのような固定比率を推奨<em>しない</em>。</em></p>
+
+</dd>
+<dt><b><a name="value-def-relative-size">&lt;relative-size&gt;</a></b>
+</dt>
+<dd>&lt;relative-size&gt;キーワードは、フォントサイズや親要素のフォントサイズのテーブルに対して相対的に解釈される。可能な値は次のとおり: [ larger | smaller ]たとえば、親要素が'medium'のフォントサイズを持つ場合、'larger'の値は現在の要素のフォントサイズを'large'にする。親要素のサイズがテーブルのエントリに近くない場合、ユーザーエージェントはテーブルのエントリとの間を補間する、または最も近いものに丸めるのも自由である。数値がキーワードを超えた場合、ユーザーエージェントはテーブル値を推定してもよい。
+</dd>
+</dl>
+
+<p>要素のフォントサイズを計算する場合、長さとパーセンテージの値はフォントサイズ表を考慮すべきではない。
+</p>
+<p>負の値は許可されない。
+</p>
+<p>他のすべてのプロパティで、'em'と'ex'長さの値は、現在の要素の計算されたフォントサイズを参照する。'font-size'プロパティでは、これらの長さの単位は親要素の計算されたフォントサイズを参照する。
+</p>
+<p>アプリケーションは、コンテキストに応じて明示的なサイズを再解釈してもよいことに注意する。たとえば、VRシーン内でのフォントための射影歪みの異なるサイズを得ることができる。
+</p>
+<p>例:
+</p>
+<pre>
+p { font-size: 16px; }
+@media print {
+	p { font-size: 12pt; }
+}
+blockquote { font-size: larger }
+em { font-size: 150% }
+em { font-size: 1.5em }
+</pre>
+
+<h2>15.8 <a name="font-shorthand">フォントの簡略プロパティ</a>: <a href="fonts.html#propdef-font" class="noxref"><span class="propinst-font">'font'</span></a>プロパティ</h2>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'font'"><a name="propdef-font" class="propdef-title"><strong>'font'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>[ [ <a href="fonts.html#propdef-font-style" class="noxref"><span class="propinst-font-style">&lt;'font-style'&gt;</span></a> || <a href="fonts.html#propdef-font-variant" class="noxref"><span class="propinst-font-variant">&lt;'font-variant'&gt;</span></a> || <a href="fonts.html#propdef-font-weight" class="noxref"><span class="propinst-font-weight">&lt;'font-weight'&gt;</span></a> ]?
+<a href="fonts.html#propdef-font-size" class="noxref"><span class="propinst-font-size">&lt;'font-size'&gt;</span></a> [ / <a href="visudet.html#propdef-line-height" class="noxref"><span class="propinst-line-height">&lt;'line-height'&gt;</span></a> ]? <a href="fonts.html#propdef-font-family" class="noxref"><span class="propinst-font-family">&lt;'font-family'&gt;</span></a> ] | caption | icon | menu | message-box | small-caption | status-bar | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>個々のプロパティを参照
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>すべての要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>個々のプロパティを参照
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>個々のプロパティを参照
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>
+<a href="fonts.html#propdef-font" class="noxref"><span class="propinst-font">'font'</span></a>プロパティは、<a href="#almost">下記</a>の場合を除き、<a href="fonts.html#propdef-font-style" class="noxref"><span class="propinst-font-style">'font-style'</span></a>、<a href="fonts.html#propdef-font-variant" class="noxref"><span class="propinst-font-variant">'font-variant'</span></a>、<a href="fonts.html#propdef-font-weight" class="noxref"><span class="propinst-font-weight">'font-weight'</span></a>、<a href="fonts.html#propdef-font-size" class="noxref"><span class="propinst-font-size">'font-size'</span></a>、<a href="visudet.html#propdef-line-height" class="noxref"><span class="propinst-line-height">'line-height'</span></a>、<a href="fonts.html#propdef-font-family" class="noxref"><span class="propinst-font-family">'font-family'</span></a>をスタイルシートの同じ場所で設定する簡略プロパティである。このプロパティの構文は、フォントに関連する複数のプロパティを設定する伝統的な活版印刷の簡略表記法に基づくものである。
+</p>
+<p>すべてのフォント関連のプロパティは、最初に前項に掲げるものを含む彼らの初期値にリセットされる。次に、<a href="fonts.html#propdef-font" class="noxref"><span class="propinst-font">'font'</span></a>簡略記法で明示的な値を与えられているプロパティは、その値に設定される。許可される値と初期値の定義については、以前に定義されたプロパティを参照のこと。
+</p>
+<pre>
+p { font: 12px/14px sans-serif }
+p { font: 80% sans-serif }
+p { font: x-large/110% "New Century Schoolbook", serif }
+p { font: bold italic large Palatino, serif }
+p { font: normal small-caps 120%/120% fantasy }
+</pre>
+
+<p>2番目の規則で、フォントサイズのパーセント値（'80%'）は親要素のフォントサイズを参照する。3番目の規則で、行の高さのパーセンテージは、要素自体のフォントサイズを参照する。
+</p>
+<p>最初の3つの規則では、'font-style'、'font-variant'、'font-weight'が明示的に言及されず、これらは初期値（'normal'）が3つすべてに設定されることを意味する。4番目の規則は、'font-weight'を'bold'、'font-style'を'italic'に設定し、暗黙的に'font-variant'を'normal'に設定する。
+</p>
+<p>5番目の規則は、'font-variant'（'small-caps'）、'font-size'（親のフォントの120%）、'line-height'（フォントサイズの120%）、'font-family'（'fantasy'）に設定する。残りの2つのプロパティ'font-style'と'font-weight'に、キーワード'normal'が適用される。
+</p>
+<p>次の値は、<a name="x11"><span class="index-def" title="system fonts">システムフォント</span></a>を参照する:</p>
+
+<dl>
+<dt>caption</dt>
+<dd>キャプションのコントロールに使用されるフォント（たとえば、ボタン、ドロップダウンなど）。</dd>
+<dt>icon</dt>
+<dd>アイコンの表示に使用されるフォント。</dd>
+<dt>menu</dt>
+<dd>メニューに使用されるフォント（たとえば、ドロップダウンメニューやメニューリスト）。</dd>
+<dt>message-box</dt>
+<dd>ダイアログボックスに用いるフォント</dd>
+<dt>small-caption</dt>
+<dd>小さなコントロールの表示に使用するフォント</dd>
+<dt>status-bar</dt>
+<dd>ステータスバーに用いるフォント</dd>
+</dl>
+
+<p>システムフォントのみが、まとめて設定されてもよい。フォントファミリ、サイズ、ウェイト、スタイルなどは、同時にすべて設定される。必要に応じて、これらの値は個別に変更してもよい。指定された特性を持つフォントが指定されたプラットフォーム上に存在しない場合、ユーザーエージェントは、インテリジェントな代替（たとえば、'caption'フォントの小型版は'small-caption'フォントに使用されるかもしれない）、またはユーザーエージェントのデフォルトフォントのいずれかに置き換えるべきである。システムフォントの個々のプロパティのいずれかがオペレーティングシステムの使用可能なユーザー設定の一部ではない場合、正常ななフォントとして、それらのプロパティは初期値に設定されるべきである。
+</p>
+<p id="almost">このプロパティが"ほぼ"簡略化プロパティであるその理由は: システムフォントは<a href="fonts.html#propdef-font-family" class="noxref"><span
+class="propinst-font-family">'font-family'</span></a>自体でなく、このプロパティのみで指定可能であるので、<a href="fonts.html#propdef-font" class="noxref"><span
+class="propinst-font">'font'</span></a>は著者が、そのサブプロパティ以上の操作を行うことができるためである。しかし、<a href="fonts.html#propdef-font-weight" class="noxref"><span class="propinst-font-weight">'font-weight'</span></a>などのような個々のプロパティは、まだシステムフォントから取得した値を独立して変化させることができる。</p>
+
+<div class="example"><P style="display:none">例：</P>
+<pre>
+button { font: 300 italic 1.3em/1.7em "FB Armada", sans-serif }
+button p { font: menu }
+button p em { font-weight: bolder }
+</pre>
+
+<p>特定のシステム上のドロップダウンメニューに使用するフォントが、たとえば、9ptのCharcoalで600ウェイトの場合、あたかもこの規則が有効であったかのようにBUTTONの子孫のP要素は表示される:
+</p>
+<pre>
+button p { font: 600 9px Charcoal }
+</pre>
+
+<p><a href="fonts.html#propdef-font" class="noxref"><span class="propinst-font">'font'</span></a>簡略プロパティは、明示的に初期値に値を与えられていないプロパティをリセットするので、これは以下の宣言と同じ効果がある。
+</p>
+<pre>
+button p {
+  font-family: Charcoal;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 9px;
+  line-height: normal;
+}
+</pre>
+
+</div>
+
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="colors.html">前章</a> &nbsp; <a href="text.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</body>
+</html>
+
