@@ -1,0 +1,1095 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ja">
+
+<head>
+<title>テーブル</title>
+<link rel="stylesheet" href="style/default.css" type="text/css">
+<link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" type="text/css">
+<link rel="prev" href="text.html">
+<link rel="next" href="ui.html">
+<link rel="contents" href="cover.html#minitoc">
+<link rel="CSS-properties" href="propidx.html" title="properties">
+<link rel="index" href="indexlist.html" title="index">
+<link rel="first" href="cover.html">
+
+</head>
+<body>
+<div class="navbar">
+<p><a href="text.html">前章</a> &nbsp; <a href="ui.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+<hr class="navbar">
+
+<h1><a name="q0">17 テーブル</a></h1>
+<div class="subtoc">
+<p><strong>目次</strong>
+  <ul class="toc">
+    <li class="tocline2"><a href="tables.html#tables-intro" class="tocxref">17.1 テーブル概論</a>
+    </li><li class="tocline2"><a href="tables.html#table-display" class="tocxref">17.2 CSSテーブルモデル</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="tables.html#anonymous-boxes" class="tocxref">17.2.1 匿名テーブルオブジェクト</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="tables.html#columns" class="tocxref">17.3 列</a>
+    </li><li class="tocline2"><a href="tables.html#model" class="tocxref">17.4 視覚整形モデルにおけるテーブルの扱い</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="tables.html#caption-position" class="tocxref">17.4.1 キャプションの位置と端揃え</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="tables.html#table-layout" class="tocxref">17.5 テーブルの内容の視覚レイアウト</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="tables.html#table-layers" class="tocxref">17.5.1 テーブルのレイヤーとその透過性</a>
+      </li><li class="tocline3"><a href="tables.html#width-layout" class="tocxref">17.5.2 テーブルの幅のアルゴリズム: <span class="propinst-table-layout">'table-layout'</span>プロパティ</a>
+      <ul class="toc">
+        <li class="tocline4"><a href="tables.html#fixed-table-layout" class="tocxref">17.5.2.1 固定テーブルレイアウト</a>
+        </li><li class="tocline4"><a href="tables.html#auto-table-layout" class="tocxref">17.5.2.2 自動テーブルレイアウト</a>
+      </li></ul>
+      </li><li class="tocline3"><a href="tables.html#height-layout" class="tocxref">17.5.3 テーブルの高さのアルゴリズム</a>
+      </li><li class="tocline3"><a href="tables.html#column-alignment" class="tocxref">17.5.4 列での水平位置揃え</a>
+      </li><li class="tocline3"><a href="tables.html#dynamic-effects" class="tocxref">17.5.5 行や列の動的効果</a>
+    </li></ul>
+    </li><li class="tocline2"><a href="tables.html#borders" class="tocxref">17.6 ボーダー</a>
+    <ul class="toc">
+      <li class="tocline3"><a href="tables.html#separated-borders" class="tocxref">17.6.1 分離ボーダーモデル</a>
+      <ul class="toc">
+        <li class="tocline4"><a href="tables.html#empty-cells" class="tocxref">17.6.1.1 空セル周りのボーダーと背景: <span class="propinst-empty-cells">'empty-cells'</span>プロパティ</a>
+      </li></ul>
+      </li><li class="tocline3"><a href="tables.html#collapsing-borders" class="tocxref">17.6.2 結合ボーダーモデル</a>
+      <ul class="toc">
+        <li class="tocline4"><a href="tables.html#border-conflict-resolution" class="tocxref">17.6.2.1 ボーダーの競合の解決</a>
+      </li></ul>
+      </li><li class="tocline3"><a href="tables.html#table-border-styles" class="tocxref">17.6.3 ボーダーの種類</a>
+    </li></ul>
+  </li></ul>
+</div>
+<h2>17.1 <a name="tables-intro">テーブル概論</a></h2>
+
+<p>この章は、CSSでテーブルの処理モデルを定義する。この処理モデルの一部はレイアウトになる。この章では、レイアウトのたの2つのアルゴリズムを紹介する。1つ目の固定テーブルレイアウトアルゴリズムはよく定義されているが、2つ目の自動テーブルレイアウトアルゴリズムは完全にこの仕様で定義されない。
+
+<p>自動テーブルレイアウトアルゴリズムのために、一部の広く採用されている実装では、比較的近い相互運用性を実現する。
+
+<p><a name="x0"><span class="index-def" title="tables">テーブル</span></a>レイアウトは、データ間で、テーブル形式の関係を表すために使用することができる。著者は、<a href="conform.html#doclanguage">文書言語</a>でこれらの関係を指定し、CSS 2.1を使用して<em>見栄え</em>を指定できる。
+
+<p>視覚メディアでは、CSSテーブルは特定のレイアウトを達成するために使用できる。この場合、著者は文書言語のテーブル関連要素を使うべきではないが、必要なレイアウトを実現するために関連する構造要素にCSSを適用すべきである。
+
+<p>著者は、セルの矩形格子としてテーブルの視覚的な書式を指定してもよい。セルの行や列は、行グループや列グループで構成されてもよい。行、列、行グループ、列グループ、およびセルは周りに描かれたボーダーを持ってもよい（CSS 2.1において2つのボーダーモデルがある）。著者は、セル内で垂直方向または水平方向にデータを配置し、行または列のすべてのセルにデータを整列してもよい。
+
+<div class="example"><P style="display:none">例：</P><p>
+HTML 4で表される単純な3行3列のテーブルは次のとおり:
+
+<pre class="html-example">
+&lt;TABLE&gt;
+&lt;CAPTION&gt;This is a simple 3x3 table&lt;/CAPTION&gt;
+&lt;TR id="row1"&gt;
+   &lt;TH&gt;Header 1  &lt;TD&gt;Cell 1  &lt;TD&gt;Cell 2
+&lt;TR id="row2"&gt;
+   &lt;TH&gt;Header 2  &lt;TD&gt;Cell 3  &lt;TD&gt;Cell 4
+&lt;TR id="row3"&gt;
+   &lt;TH&gt;Header 3  &lt;TD&gt;Cell 5  &lt;TD&gt;Cell 6
+&lt;/TABLE&gt;
+</pre>
+
+<p>このコードは、1つのテーブル（TABLE要素）、3つの行（TR要素）、3つのヘッダセル（TH要素）、および6つのデータセル（TD要素）を作成する。この例の3列は暗黙的に指定されていることに注意する。ヘッダとデータセルによりテーブルに必要に応じて列が存在する。
+
+<p>次のCSS規則は、ヘッダセルのテキストを水平に中央揃えにし、ヘッダセルのテキストのボールド体の重みを示す:
+
+<pre>
+th { text-align: center; font-weight: bold }
+</pre>
+
+<p>次の規則は、ヘッダセルのテキストをベースライン上に揃え、垂直方向の中央に各データセル内のテキストを揃える:
+
+<pre>
+th { vertical-align: baseline }
+td { vertical-align: middle }
+</pre>
+
+<p>次の規則は、一番上の行が3pxの青の実線ボーダーで囲まれ、他の行が1pxの黒の実線ボーダーで囲まれるよう指定する:
+
+<pre>
+table   { border-collapse: collapse }
+tr#row1 { border: 3px solid blue }
+tr#row2 { border: 1px solid black }
+tr#row3 { border: 1px solid black }
+</pre>
+
+<p>ただし、行同士が接触する行の周囲でボーダーが重なることに注意する。row1とrow2の間のボーダーはどのような色（黒または青）と太さ（1pxまたは3px）になるか？これについては<a href="#border-conflict-resolution">ボーダーの競合の解決</a>の節で議論する。
+
+<p>次のルールは、テーブルの上にテーブルのキャプションを置く：
+
+<pre>
+caption { caption-side: top }
+</pre>
+
+</div>
+
+<p>前述の例では、CSSがHTML 4の要素とどのように動作するかを示している。HTML 4には、さまざまなテーブル要素（TABLE、CAPTION、THEAD、TBODY、TFOOT、COL、COLGROUP、TH、TD）の意味が明確に定義されている。他の文書言語（XMLアプリケーションなど）では、事前に定義されたテーブルの要素がないかもしれない。したがって、CSS 2.1の著者は文書言語の要素に<a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>プロパティを通してテーブル要素に<a name="x1"><span class="index-inst" title="mapping elements to table
+parts">"割り当て"</span></a>ることができる。たとえば、次の規則は、FOO要素にHTMLのTABLE要素のような役割を、BAR要素にCAPTION要素のような役割を与える。</p>
+
+<PRE class="example">
+FOO { display : table }
+BAR { display : table-caption }
+</pre>
+
+<p><a name="internal"></a> 以下の節でさまざまなテーブルの要素について説明する。本仕様において、<a name="x2"><span class="index-def" title="table
+element"><dfn>テーブル要素</dfn></span></a>とはテーブルの作成に関与する任意の要素を指す。<a name="x3"><span class="index-def"
+title="internal table element|table element::internal"><dfn id="internal-table-element">内部のテーブル要素</dfn></span></a>とは、行、行グループ、列、列グループ、またはセルを生成する要素である。
+
+<h2>17.2 <a name="table-display">CSSテーブルモデル</a></h2>
+
+<p>CSSのテーブルモデルは、テーブルの構造がテーブルの視覚的なレイアウトと極めて類似するHTML 4のテーブルモデルに基づく。このモデルでは、テーブルは任意の説明文と任意の行数のセルで構成される。テーブルモデルは、著者が文書言語で明示的に列ではなく行を指定するので"行中心"と言われる。いったんすべての行が指定されると列が導出される―各行の最初のセルは最初の列、第2列には2番目のセルなどに属す。行と列は構造的にグループ化されてよく、このグループ化は見栄えに反映される（たとえば、ボーダーは行グループの周りに描画されるかもしれない）。
+
+<p>したがって、テーブルモデルは、テーブル、キャプション、行、<a name="x5"><span
+class=index-def>行グループ</span></a>（ヘッダーとフッターグループグループを含む）、列、列グループ、セルで構成される。
+
+<p>CSSモデルは、<a
+href="conform.html#doclanguage">文書言語</a>がこれらの各構成要素に対応する要素を含むことを要求しない。事前定義されたテーブルの要素を持たない文書言語（XMLアプリケーションなど）について、著者は、文書言語の要素をテーブル要素に割り当てなければならない。これは<a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>プロパティを用いて行われる。次の<a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>の値は、任意の要素にテーブルの書式設定規則を割り当てる:
+
+<dl>
+  <dt><strong><span class="index-def" title="table"><a
+  class="value-def" name="value-def-table">table</a></span></strong>（HTMLでTABLE） <dd>指定要素が<a
+  href="visuren.html#block-level">ブロックレベル</a>のテーブルを定義する: <a
+  href="visuren.html#block-formatting">ブロック整形コンテキスト</a>に参加する矩形のブロックとなる。
+
+  <dt><strong><span class="index-def" title="inline-table"><a
+  class="value-def"
+  name="value-def-inline-table">inline-table</a></span></strong>（HTMLでTABLE） <dd>指定要素が<a
+  href="visuren.html#inline-level">インラインレベル</a>のテーブルを定義する: <a
+  href="visuren.html#inline-formatting">インライン整形コンテキスト</a>に参加する矩形のブロックとなる。
+
+  <dt><strong><span class="index-def" title="table-row"><a
+  class="value-def"
+  name="value-def-table-row">table-row</a></span></strong>（HTMLでTR） <dd>指定要素はセルの行となる。
+
+  <dt><strong><span class="index-def" title="table-row-group"><a
+  class="value-def"
+  name="value-def-table-row-group">table-row-group</a></span></strong>（HTMLでTBODY） <dd>指定要素グループが1つ以上の行となる。
+
+  <dt><strong><span class="index-def" title="table-header-group"><a
+  class="value-def"
+  name="value-def-table-header-group">table-header-group</a></span></strong>（HTMLでTHEAD） <dd>'table-row-group'と同様だが視覚整形において、行グループは、常にすべての行と行のグループの前に、かつ任意の上部のキャプションの後に表示される。印刷ユーザーエージェントはテーブルによって広げられる各ページのヘッダ行を繰り返してもよい。テーブルが'display: table-header-group'をもつ複数の要素を含む場合、1行目のみヘッダとして描画される。他の行はあたかも'display: table-row-group'を持つかのように扱われる。
+
+  <dt><strong><span class="index-def" title="table-footer-group"><a
+  class="value-def"
+  name="value-def-table-footer-group">table-footer-group</a></span></strong>（HTMLでTFOOT） <dd>'table-row-group'と同様だが視覚整形において、行グループは、常にすべての行と行のグループの後に、かつ任意の下部のキャプションの前に表示される。印刷ユーザーエージェントは、テーブルが複数ページにわたる場合、各ページのフッタ行を繰り返してもよい。テーブルが'display: table-footer-group'をもつ複数の要素を含む場合、1行目のみフッタとして描画される。他の行はあたかも'display: table-row-group'を持つかのように扱われる。
+
+  <dt><strong><span class="index-def" title="table-column"><a
+  class="value-def"
+  name="value-def-table-column">table-column</a></span></strong>（HTMLでCOL） <dd>指定要素は、セルの列を記述する。
+
+  <dt><strong><span class="index-def" title="table-column-group"><a
+  class="value-def"
+  name="value-def-table-column-group">table-column-group</a></span></strong>（HTMLでCOLGROUP） <dd>要素グループは、1つまたは複数の列があることを指定する。
+
+  <dt><strong><span class="index-def" title="table-cell"><a
+  class="value-def"
+  name="value-def-table-cell">table-cell</a></span></strong>(HTMLでTD、TH） <dd>要素がテーブルのセルを表すことを指定する。
+
+  <dt><strong><span class="index-def" title="table-caption"><a
+  class="value-def"
+  name="value-def-table-caption">table-caption</a></span></strong>（HTMLでCAPTION） <dd>テーブルの説明文を指定する。'display: table-caption'をもつすべての要素は、<a href="#model">17.4節</a>で説明されるように描画されなければならない。
+</dl>
+
+<p>これらの<a href="visuren.html#propdef-display" class="noxref"><span
+class="propinst-display">'display'</span></a>値をもつ置換要素は、レイアウト中にその指定されたdisplay型として扱われる。たとえば、'display: table-cell'に設定される画像は使用可能なセル空間を埋め、その寸法は通常のセルと同様に、テーブルのサイズアルゴリズムに貢献するかもしれない。
+
+<p>'table-column'または'table-column-group'に設定される<a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>をもつ要素は、レンダリングされない（'display: none'をもつ場合とまったく同じである）が、それらが表す特定の列のスタイルを風洞する属性を持つかもしれないので、有用である。
+
+<p>付録の<a href="sample.html">HTML4のデフォルトスタイルシート</a>は、HTML4のためのこれらの値の使用方法を示している:
+
+<pre class="example">
+table    { display: table }
+tr       { display: table-row }
+thead    { display: table-header-group }
+tbody    { display: table-row-group }
+tfoot    { display: table-footer-group }
+col      { display: table-column }
+colgroup { display: table-column-group }
+td, th   { display: table-cell }
+caption  { display: table-caption }
+</pre>
+
+<p>HTMLテーブルは、下位互換性のあるレンダリングのために意図とは別のアルゴリズムを用いてレンダリングしてもよいため、ユーザーエージェントは、HTMLテーブル要素のためにこれらの<a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>プロパティの値を<a href="syndata.html#ignore">無視</a>してよい。しかし、これはHTML内の他の非テーブル要素に'display: table'の使用を阻止するものではない。
+
+<h3>17.2.1 <a name="anonymous-boxes">匿名テーブルオブジェクト</a></h3> 
+
+<p>HTML以外の文書言語は、CSS 2.1のテーブルモデルの要素をすべて含むとは限らない。この場合、"欠落" の要素が動作するようテーブルモデルにおいて仮定しなければならない。任意のテーブル要素は自動的に'table'または'inline-table'要素、'table-row'要素、および'table-cell'の要素に対応する少なくとも3つの入れ子にされたオブジェクトで構成された、必要な匿名テーブルオブジェクトを自体の周りに生成する。不足要素は、以下の規則に従って<a
+href="visuren.html#anonymous">匿名</a>オブジェクト（例えば、視覚テーブルレイアウトでの匿名ボックス）を生成する:
+
+<p>これらの規則の目的に対して、次の用語が定義される:
+<dl>
+  <dt><a name="x16"><span class="index-def">行グループボックス</span></a>
+    <dd>'table-row-group'、'table-header-group'、または'table-footer-group'
+
+  <dt><a name="x17"><span class="index-def">適切なテーブルの子</span></a>
+    <dd>'table-row'ボックス、行グループボックス、'table-column'ボックス、'table-column-group'ボックス、または'table-caption'ボックス。
+
+  <dt><a name="x18"><span class="index-def">適切なテーブル行の親</span></a>
+    <dd>'table'または'inline-table'または行グループボックス
+
+  <dt><a name="x19"><span class="index-def">内部テーブルボックス</span></a>
+    <dd>'table-cell'ボックス、'table-row'ボックス、行グループボックス、'table-column'ボックス、または'table-column-group'ボックス。
+
+  <dt id="tabular-container"><a name="x20"><span class="index-def">テーブルコンテナ</span></a>
+    <dd>'table-row'ボックスまたは適切なテーブル行の親
+
+  <dt><a name="x21"><span class="index-def">連続的な</span></a>
+    <dd>任意な空白のみを含む匿名インライン以外の兄弟を介在しない場合、二つの兄弟ボックスは連続的である。シーケンス内の各ボックスがそのシーケンスでその前の1つに連続的な場合、兄弟ボックスのシーケンスは連続的である。
+</dl>
+<p>これらの規則の目的に対して、フロー外の要素はゼロ幅とゼロ高さのインライン要素として表される。それらの包含ブロックは適宜選択される。
+
+<p>3段階で次の手順が実行される。
+<ol>
+  <li>不適切なボックスを削除する:
+    <ol>
+      <li>'table-column'の親のすべての子ボックスは、あたかも'display: none'を持つかのように扱われる。
+
+      </li><li>'table-column-group'の親の子<var>C</var>が'table-column'ボックスでない場合、あたかもCは'display: none'を持つかのように扱われる。
+
+      </li><li>テーブルコンテナ<var>P</var>の子<var>C</var>が空白のみを含む匿名インラインボックスであり、その直前および直後に続く兄弟が、もしあれば、<var>P</var>の適切なテーブルの子孫であり、かつ'table-caption'または内部テーブルボックスのいずれかである場合、あたかも'display: none'を持つかのように扱われる。任意の介在する'table'または'inline-table'ボックスの生成を引き起こすことなく、<var>D</var>が<var>A</var>の子孫であることができれば、ボックス<var>D</var>は<var>A</var>の適切なテーブルの子孫である。
+
+      </li><li>ボックス<var>B</var>が空白のみを含む匿名インラインであり、内部テーブルボックスまたは'table-caption'ボックスのどちらかで、それぞれ2つの直近の兄弟の間にある場合、<var>B</var>はあたかも'display: none'を持つかのように扱われる。
+    </li></ol>
+
+  </li><li>欠落した子ラッパーを生成する:
+    <ol>
+      <li>'table'または'inline-table'ボックスの子<var>C</var>が適切なテーブルの子でない場合、<var>C</var>の周りに匿名の'table-row'ボックスを生成し、適切なテーブルの子供でない<var>C</var>のすべての連続した兄弟を生成する。
+
+      </li><li>行グループボックスの子<var>C</var>が'table-row'ボックスでない場合、<var>C</var>の周りに匿名の'table-row'ボックスを生成し、'table-row'ボックスでない<var>C</var>のすべての連続した兄弟を生成する。
+
+      </li><li>'table-row'ボックスの子<var>C</var>が'table-cell'でない場合、<var>C</var>の周りに匿名の'table-cell'ボックスを生成し、'table-cell'ボックスでない<var>C</var>のすべての連続した兄弟を生成する。
+    </li></ol>
+
+  </li><li>欠落した親を生成する:
+    <ol>
+       <li>連続的な内部テーブルのシーケンス内の各'table-cell'ボックスの<var>C</var>および各'table-caption'兄弟に対して、<var>C</var>の親が'table-row'でない場合、<var>C</var>の周りに匿名'table-row'ボックスを生成し、'table-cell'ボックスである<var>C</var>のすべての連続的な兄弟を生成する。
+
+       </li><li>連続的な適切なテーブルの子供のシーケンス内の各適切なテーブルの子<var>C</var>に対して、<var>C</var>が親の役目を果たさない場合、<var>C</var>の周りに匿名の'table'または'inline-table'ボックス<var>T</var>を生成し、適切なテーブルの子である<var>C</var>のすべての連続した兄弟を生成する。（Cの親が'inline'ボックスである場合、<var>T</var>は'inline-table'ボックスでなければならない。それ以外の場合は、'table'ボックスでなければならない。）
+           <ul>
+             <li>親が、行グループボックスでも'table'または'inline-table'ボックスでもない場合、'table-row'は親の役目を果たさない。
+             </li><li>親が'table-column-group'ボックスでも'table'または'inline-table'ボックスでもない場合、'table-column'ボックスは親の役目を果たさない。
+
+             </li><li>親が'table'でも'inline-table'ボックスでもない場合、行グループボックス、'table-column-group'ボックスは親の役目を果たさない。
+           </li></ul>
+    </li></ol>
+</li></ol>
+
+<div class="example"><P style="display:none">例：</P>
+<p>このXMLの例では、'table'要素は、HBOX要素が含まれていると仮定される:
+
+<pre class="xml-example">
+&lt;HBOX&gt;
+  &lt;VBOX&gt;George&lt;/VBOX&gt;
+  &lt;VBOX&gt;4287&lt;/VBOX&gt;
+  &lt;VBOX&gt;1998&lt;/VBOX&gt;
+&lt;/HBOX&gt;
+</pre>
+
+<p>なぜなら、関連付けられたスタイルシートが以下のようになるためである:
+
+<pre class="example">
+HBOX { display: table-row }
+VBOX { display: table-cell }
+</pre>
+</div>
+
+<div class="example"><P style="display:none">例：</P>
+<p>この例では、3つの'table-cell'要素は、ROWのテキストを含むと仮定される。<a
+href="visuren.html#anonymous">視覚整形モデル</a>で説明されるように、テキストはさらに匿名インラインボックス内でカプセル化されることに注意する。
+
+<pre class="xml-example">
+&lt;STACK&gt;
+  &lt;ROW&gt;This is the &lt;D&gt;top&lt;/D&gt; row.&lt;/ROW&gt;
+  &lt;ROW&gt;This is the &lt;D&gt;middle&lt;/D&gt; row.&lt;/ROW&gt;
+  &lt;ROW&gt;This is the &lt;D&gt;bottom&lt;/D&gt; row.&lt;/ROW&gt;
+&lt;/STACK&gt;
+</pre>
+
+<p>スタイルシートは:
+
+<pre class="example">
+STACK { display: inline-table }
+ROW   { display: table-row }
+D     { display: inline; font-weight: bolder }
+</pre>
+</div>
+
+<h2>17.3 <a name="columns">列</a></h2>
+
+<p>テーブルのセルは、行と列の2つのコンテキストに属してもよい。ただし、ソース内の文書のセルは、行の子孫であって、決して列ではない。それにもかかわらず、セルは列のプロパティを設定することによって操作可能な面がある。
+
+<p>以下のプロパティは、列と列グループ要素に適用される:
+
+<dl>
+  <dt><a href="box.html#propdef-border" class="noxref"><span class="propinst-border">'border'</span></a>
+
+    <dd><a href="tables.html#propdef-border-collapse" class="noxref"><span
+    class="propinst-border-collapse">'border-collapse'</span></a>がtable要素の'collapse'に設定される場合のみ、様々なボーダーのプロパティが列に適用される。この場合、列と列グループに設定されたボーダーはすべてのセル辺でボーダーのスタイルを選択する<a
+    href="#border-conflict-resolution">競合解決アルゴリズム</a>に入力される。
+
+  <dt><a href="colors.html#propdef-background" class="noxref"><span class="propinst-background">'background'</span></a>
+
+    <dd>背景プロパティは列内のセルの背景を設定するが、セルと行の両方が透明な背景を持っている場合に限る。<a href="#table-layers">"テーブルのレイヤーと透過性"</a>を参照のこと。
+
+  <dt><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>
+
+    <dd><a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティは、列の最小幅を指定する。
+
+  <dt><a href="visufx.html#propdef-visibility" class="noxref"><span class="propinst-visibility">'visibility'</span></a>
+
+    <dd>列の'visibility'が'collapse'に設定される場合、その列のセルはレンダリングされず、他の列にまたがるセルは切り取られる。さらに、テーブルの幅は列が取り込まれた幅だけ短くなる。以下の<a
+    href="#dynamic-effects">"動的効果"</a>を参照のこと。'visibility'への他の値は影響を与えない。
+</dl>
+
+<div class="example"><P style="display:none">例：</P>
+<p>列のプロパティを設定するスタイル規則の例を示す。最初の2つの規則は、"cols"の値をもつHTML 4の"rules" 属性を一緒に実装している。3番目の規則は、"totals"列を青にし、最後の2つの規則は、<a href="#fixed-table-layout">固定レイアウトアルゴリズム</a>を用いて、列の固定サイズを作成する方法を示す。
+
+<pre>
+col { border-style: none solid }
+table { border-style: hidden }
+col.totals { background: blue }
+table { table-layout: fixed }
+col.totals { width: 5em }
+</pre>
+</div>
+
+<h2>17.4 <a name="model">視覚整形モデルにおけるテーブルの扱い</a></h2>
+
+<p>視覚整形モデルの観点では、テーブルは、<a href="visuren.html#block-level">ブロックレベル</a>（'display: table'）または<a href="visuren.html#inline-level">インラインレベル</a>（'display: inline-table'）のように振る舞うことができる。
+
+<p>In both cases, the table generates a principal block container box called the <span class="index-def" title="table wrapper box"><a
+name="table-wrapper-box"><dfn>table wrapper box</dfn></a></span> that contains the table box itself and any caption boxes (in document order). The <span class="index-def" title="table box"><a
+name="table-box"><dfn>table box</dfn></a></span> is a block-level box that contains the table's internal table boxes. The caption boxes are principal block-level boxes that retain their own content, padding, margin, and border areas, and are rendered as normal block boxes inside the table wrapper box. キャプションボックスは、以下のように、テーブルボックスの前または後に配置されるかどうかを'caption-side'プロパティによって決定する。
+
+<p>The table wrapper box is block-level for 'display: table', and inline-level; for 'display: inline-table'. The table wrapper box establishes a block formatting context, and the table box establishes a table formatting context. 'インラインテーブル'のベースラインの垂直方向の配置を行うとき、テーブルボックス（テーブルのラッパーボックス）が使用される。17.5.2節で説明されるようにテーブルのラッパーボックスの幅は、その内部テーブルボックスのボーダー辺の幅である。テーブルの'width'と'height'のパーセンテージは、テーブルのラッパーボックスの包含ブロックではなく、テーブルのラッパーボックス自身を基準にする。
+
+<p>プロパティ'position'、'float'、'margin-*'、'top'、'right'、'bottom'、'left'の算出値は、テーブルボックスではなく、テーブルのラッパーボックスを用いる。非継承プロパティの他のすべての値は、テーブルのラッパーボックスではなく、テーブルボックスを使用する。（ここでテーブル要素の値はテーブルとテーブルのラッパーボックスを使用せず、代わりに初期値が使用される。）
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/table_container.png" alt="A table with a caption above
+it">
+
+<p class="caption">上部にキャプションをもつテーブル
+</div>
+
+<h3>17.4.1 <a name="caption-position">キャプションの位置と端揃え</a></h3>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'caption-side'"><a name="propdef-caption-side" class="propdef-title"><strong>'caption-side'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>top | bottom | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>top
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>'table-caption' elements
+
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティは、テーブルボックスに対するキャプションボックスの位置を指定する。値の意味は次のとおり：
+
+<dl>
+  <dt><strong>top</strong> <dd>テーブルボックスの上にキャプションボックスを配置する。
+
+  <dt><strong>bottom</strong> <dd>テーブルボックスの下にキャプションボックスを配置する。
+</dl>
+
+<div class=note>
+<p><em><strong>注:</strong> CSS2は、異なる幅と水平方向の配置の振る舞いを表現する。その動作は、このプロパティに値'top-outside'と'bottom-outside'を用いてCSS3で導入される。</em>
+</div>
+
+<p>キャプションボックス内で水平方向にキャプションの内容を整列するには、<a href="text.html#propdef-text-align" class="noxref"><span class="propinst-text-align">'text-align'</span></a>プロパティを使用する。
+
+<div class="example"><P style="display:none">例：</P>
+<p>この例では、<a href="tables.html#propdef-caption-side" class="noxref"><span
+class="propinst-caption-side">'caption-side'</span></a>プロパティはテーブルの下にキャプションを配置する。キャプションはテーブルの親と同じ幅になり、キャプションテキストは左揃えになる。
+
+<pre>
+caption { caption-side: bottom; 
+          width: auto;
+          text-align: left }
+</pre>
+</div>
+
+<h2>17.5 <a name="table-layout">テーブルの内容の視覚レイアウト</a></h2>
+
+<p>Internal table elements generate rectangular <a
+href="box.html#box-dimensions">boxes</a> which participate in the table formatting context established by the table box. These boxes have content and borders and cells have padding as well. 内部テーブルの要素は、マージンを持たない。
+
+<p>これらのボックスの視覚レイアウトは、行と列の不規則な矩形格子によって制御される。各ボックスは、以下の規則に従って決定される整数個のグリッドセルを占める。これらの規則は、HTML 4とそれ以前のHTMLのバージョンには適用されない。HTMLは、行と列のスパンに独自の制限を課している。
+
+<ol>
+  <li>各行ボックスは、グリッドセルの1行を占有する。同時に、行ボックスはソース文書に登場する順番に上から下へテーブルを埋める（すなわち、テーブルは行要素と同数の格子を占有する）。
+
+  </li><li>行グループは、含まれる行と同じグリッドセルを占有する。
+
+  </li><li>列ボックスは、格子セルの1つ以上の列を占有する。列ボックスは、出現する順に隣同士に配置される。最初の列のボックスは、テーブルの<a href="visuren.html#propdef-direction" class="noxref"><span
+  class="propinst-direction">'direction'</span></a>プロパティの値に応じて、左右のどちらかにあってもよい。
+
+  </li><li>列グループボックスは、含まれる列と同じ格子セルを占有する。
+
+  </li><li>セルは複数の行や列にまたがってもよい。 （CSS 2.1はまたがる行または列の数がどのように決定されるかを定義しないが、ユーザーエージェントはソース文書に関する特別な情報を持ってもよい。CSSの将来の改訂は、CSS構文でこの情報を表現する方法を提供してもよい。）したがって、各セルは1つ以上の格子セル幅と高さの矩形ボックスとなる。この矩形の一番上の行は、セルの親で指定された行に含まれる。矩形はできるだけ左になければならないが、その矩形が占める最初の列のセルの一部は、他のセルボックス（すなわち、前の行で始まる行にまたがるセル）と重複してならず、かつセルはソース文書内の前の同一行ですべてのセルの右側になければならない。この位置が前の行から行にまたがるセルを重ねるために、列にまたがるセルの原因となる場合、CSSはその結果を定義しない。実装は、いずれかのセルを重ねてもよい（多くのHTMLの実装で行われているように）、またはそれ以降のセルをそのような重複を避けるために右にシフトしてもよい。（テーブルの'direction'プロパティが'ltr'の場合、この制約は保持する。'direction'が'rtl'である場合、前の2つの文で左右を入れ替える。）
+
+  </li><li>セルボックスは、テーブルまたは行グループの最後の行ボックスを超えて拡張することはできない。セルボックスが合うまでユーザーエージェントはセルボックスを短くしなければならない。
+</li></ol>
+
+<p><a href="#collapsing-borders">結合ボーダーモデル</a>の行、列、行グループと列グループの辺は、セルのボーダー線がセンタリングされる架空のグリッド線に一致する。(And thus, in this model, the rows together exactly cover the table, leaving no gaps; ditto for the columns.) In the <a
+href="#separated-borders">separated borders model,</a> the edges coincide with the <a href="box.html#border-edge">border edges</a> of cells. （そして、このモデルでは、<a href="tables.html#propdef-border-spacing" class="noxref"><span
+class="propinst-border-spacing">'border-spacing'</span></a>プロパティに対応する行、列、行グループまたは列グループの間にギャップがあってもよい。）
+
+<div class="note">
+<p><em><strong>注。</strong> <a href="visuren.html#dis-pos-flo">9.7節</a>の規則に従って、テーブルセルの配置と浮動は、もはやテーブルセルではない可能性がある。浮動が使用される場合、<a>匿名のテーブルオブジェクトでの規則</a>は、匿名のセルオブジェクトも同様に作成されてもよい。</em>
+</div>
+
+<div class="html-example">
+<p>規則5の例を示す。次のような不正な(X)HTML断片は、矛盾するセルを定義する:
+
+<pre>
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;1 &lt;/td&gt;&lt;td rowspan="2"&gt;2 &lt;/td&gt;&lt;td&gt;3 &lt;/td&gt;&lt;td&gt;4 &lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="2"&gt;5 &lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+
+<p>左図のように、視覚的にセルを重複するか、右図のように、視覚的な重複を避けるためにセルをシフトするか、ユーザーエージェントは自由である。
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/table-overlap.png" alt="セル同士が重なるテーブルと重ならないテーブル"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-table-overlap" href="http://www.w3.org/TR/CSS2/images/longdesc/table-overlap-desc.html" title="構造的にセル同士が重なってしまうテーブルの表示例について">[D]</A></SPAN> <p class="caption">誤りのあるHTMLテーブルの2つの可能なレンダリング。
+</div>
+</div>
+
+<h3>17.5.1 <a name="table-layers">テーブルのレイヤーと透過性</a></h3>
+
+<p>各テーブルセルの背景を理解する目的に対して、異なるテーブルの要素は6つの重ねたレイヤー上にあるものとして考えてもよい。その上のレイヤーが透明な背景を持つ場合、レイヤーのいずれかの要素に設定された背景のみが可視になる。
+
+<div class="figure">
+<p><img src="http://www.w3.org/TR/CSS2/images/tbl-layers.png" alt="テーブル階層のスキーマ"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-tbl-layers" href="http://www.w3.org/TR/CSS2/images/longdesc/tbl-layers-desc.html" title="セルの背景を決める例について">[D]</A></SPAN>
+
+<p class="caption">テーブルのレイヤーのスキーマ
+</div>
+
+<ol>
+  <li>最下位のレイヤーは、テーブルボックス自身を表す単一の平面である。すべてのボックスと同様に、透明であってもよい。
+
+  </li><li>次のレイヤーは列グループを含む。各列グループは、一番上の行のセルの上から下の行のセルの下まで、かつその左端の列の左辺から右端の列の右辺まで拡張する。たとえ背景が列グループの外側にまたがっても、背景は正確に列グループで由来するすべてのセルの全領域を覆うが、領域でのこの違いは背景画像の位置に影響しない。
+
+  </li><li>列グループの上は列ボックスを表す領域である。各列は、列グループと同じ高さであり、列の通常のセル（単一の列にまたがる）と同じ幅である。たとえ背景が列の外側にまたがっても、背景は正確に列で由来するすべてのセルの全領域を覆うが、領域でのこの違いは背景画像の位置に影響しない。
+
+  </li><li>次は、行グループを含むレイヤーである。各行グループは、最初の列の最上位のセルの左上隅から、最後の列のその一番下のセルの右下隅まで拡張する。
+
+  </li><li>最上位のレイヤーの下は、行を含む。各行は、行グループと同じ幅となり、行の通常のセル（1つの行にまたがる）と同じ高さである。列と同様に、たとえ背景が行の外側にまたがっても、背景は正確に行で由来するすべてのセルの全領域を覆うが、領域でのこの違いは背景画像の位置に影響しない。
+
+  </li><li>最上位のレイヤーは、セル自身を含む。図に示すように、すべての行が同じ数のセルを含むものの、必ずしもすべてのセルが指定されたコンテンツを持つとは限らない。<a href="#separated-borders">分離ボーダーモデル</a>（<a href="tables.html#propdef-border-collapse" class="noxref"><span class="propinst-border-collapse">'border-collapse'</span></a>が'separate'である）では、それらの<a href="tables.html#propdef-empty-cells" class="noxref"><span
+  class="propinst-empty-cells">'empty-cells'</span></a>プロパティの値が'hide'である場合、これらの"空"セルは、セル、行、行グループ、列、列グループの背景とを介して透過的であり、テーブルの背景が透けて見える。
+</li></ol>
+
+<p>"欠落したセル"は、要素または疑似要素によって占有されない行または列格子のセルである。匿名テーブルセルボックスは格子内でその位置を占有していたかのように、欠落したセルはレンダリングされる。
+
+<div class="html-example">
+<p>次の例では、1行目は4つの空でないセルを含むが、2行目は1つだけの空でないセルを含むため、1行目からセルがこの行にまたがる場合を除いて、テーブルの背景が現れる。次のHTMLコード及びスタイル規則
+
+<pre>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;TITLE&gt;Table example&lt;/TITLE&gt;
+    &lt;STYLE type="text/css"&gt;
+      TABLE  { background: #ff0; border: solid black;
+               empty-cells: hide }
+      TR.top { background: red }
+      TD     { border: solid black }
+    &lt;/STYLE&gt;
+  &lt;/HEAD&gt;
+  &lt;BODY&gt;
+    &lt;TABLE&gt;
+      &lt;TR CLASS="top"&gt;
+        &lt;TD&gt; 1 
+        &lt;TD rowspan="2"&gt; 2
+        &lt;TD&gt; 3 
+        &lt;TD&gt; 4 
+      &lt;TR&gt;
+        &lt;TD&gt; 5
+        &lt;TD&gt;
+    &lt;/TABLE&gt; 
+  &lt;/BODY&gt;
+&lt;/HTML&gt;
+</pre>
+
+<p>これは以下のように整形される:
+
+<div class="figure">
+  <p><img src="http://www.w3.org/TR/CSS2/images/tbl-empty.png" alt="下の行に3つの空セルが存在するテーブル
+  in bottom row"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-tbl-empty" href="http://www.w3.org/TR/CSS2/images/longdesc/tbl-layers-desc.html" title="背景の決定方法を説明する例について
+">[D]</A></SPAN>
+
+  <p class="caption">下の行に空セルを含むテーブル
+</div>
+</div>
+
+<p>テーブルが'border-collapse: separate'を持つ場合、<a href="tables.html#propdef-border-spacing" class="noxref"><span
+class="propinst-border-spacing">'border-spacing'</span></a>プロパティによって与えられる領域の背景は常にテーブルの背景であることに注意する。<a
+href="#separated-borders">分離ボーダーモデル</a>を参照のこと。
+
+<h3>17.5.2 <a name="width-layout">テーブルの幅のアルゴリズム</a> <a href="tables.html#propdef-table-layout" class="noxref"><span class="propinst-table-layout">'table-layout'</span></a>プロパティ</h3>
+
+<p>CSSは、テーブルに"最適な"レイアウトを定義しない。なぜなら、多くの場合、何が最適かは好みの問題である。CSSは、テーブルをレイアウトする際、ユーザーエージェントが尊重しなければならない制約を定義する。ユーザーエージェントは、"固定レイアウトアルゴリズム"が選択される場合を除き、望みの任意のアルゴリズムを使用してもよいし、精度上のレンダリング速度を優先するのも自由である。
+
+<p>この節は、<a
+href="visudet.html#Computing_widths_and_margins">10.3節</a>で説明したように幅を計算に適用する規則を上書きすることに注意する。特に、テーブルのマージンが'0'で幅が'auto'に設定された場合、テーブルは自動的にその包含ブロックを埋めるような大きさにならない。しかし、ひとたびテーブルの'width'の算出値が見つけられれば（適切な場合に、後述のアルゴリズムか、他の一部のユーザーエージェント依存のアルゴリズムを用いて）、10.3節の他の部分が適用される。したがって、たとえばテーブルは、左と右が'auto'のマージンを使用してセンタリング<em>可能</em>である。
+
+<p>CSSの将来の改訂は、自動的に包含ブロックに合わせてテーブルを作る方法を導入してもよい。
+
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'table-layout'"><a name="propdef-table-layout" class="propdef-title"><strong>'table-layout'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>auto | fixed | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>auto
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>'table'および'inline-table'要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>no
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p><a href="tables.html#propdef-table-layout" class="noxref"><span class="propinst-table-layout">'table-layout'</span></a>プロパティは、テーブルのセル、行、列をレイアウトするために用いるアルゴリズムを制御する。値は以下の意味を持つ:
+
+<dl>
+  <dt><strong>fixed</strong> <dd>固定テーブルレイアウトアルゴリズムを使用する
+
+  <dt><strong>auto</strong> <dd>任意の自動テーブルレイアウトアルゴリズムを使用する
+</dl>
+
+<p>2つのアルゴリズムを以下に記載する。
+
+<h4>17.5.2.1 <a name="fixed-table-layout">固定テーブルレイアウト</a></h4>
+
+<p>この（高速）アルゴリズムを用いたテーブルの水平方向のレイアウトは、セルの内容に依存しない。レイアウトはテーブルの幅、列の幅、ボーダーやセルの間隔にのみ依存する。
+
+<p>テーブルの幅は<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>プロパティで明示的に指定してもよい。'auto'（'display: table'と'display: inline-table'の両方に対して）の値は、<a
+href="#auto-table-layout">自動テーブルレイアウト</a>アルゴリズムの使用を意味する。ただし、テーブルが通常フローでブロックレベルテーブル（'display: table'）である場合、ユーザーエージェントは幅を計算するために<a
+href="visudet.html#blockwidth">10.3.3節</a>のアルゴリズムを使用してもよく（する必要はない）、たとえ指定幅が'auto'であっても、固定テーブルレイアウトを適用してもよい。
+
+<div class="example"><P style="display:none">例：</P>
+<p>'width'が'auto'であり、ユーザーエージェントは固定テーブルレイアウトをサポートする場合、次の規則は包含ブロックより4em狭くテーブルを作成する:
+
+<pre>
+table { table-layout: fixed;
+        margin-left: 2em;
+        margin-right: 2em }
+</pre>
+</div>
+
+<p>固定テーブルレイアウトのアルゴリズムでは、各列の幅は次のように決定される:
+
+<ol>
+  <li><a href="visudet.html#propdef-width" class="noxref"><span
+  class="propinst-width">'width'</span></a>プロパティが'auto'以外の値をもつ列要素は、その列幅を設定する。
+
+  </li><li>それ以外の場合、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティが'auto'以外の値をもつ最初の行のセルがその列幅を決定する。セルが複数列にまたがる場合、セル幅は列に対して分割される。
+
+  </li><li>残りの列は、残りの水平方向のテーブルスペースを（ボーダーまたはセルの間隔を差し引いて）等しく分割する。
+</li></ol>
+
+<p>テーブルの幅は、テーブル要素の<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティの値と、列の幅（セルの間隔やボーダーを加えた）の合計の大きい方となる。テーブルが列よりも広い場合、追加のスペースは列に分配されるべきである。
+
+<p>後続の行がテーブル列の要素によって決定される数と、最初の行によって決定される数より多くの列がある場合、追加の列がレンダリングされないかもしれない。追加の列がレンダリング<em>される</em>場合、CSS 2.1は、列とテーブルの幅を定義しない。'table-layout: fixed'を使用する場合、著者は最初の行から列を省略するべきではない。
+
+<p>このように、ユーザーエージェントは最初の行全体を受信した時点で、テーブルのレイアウトを開始可能である。後続の行のセルは列幅に影響しない。あふれる内容を持つ任意のセルは、その内容を切り抜くかどうかを決定するために、<a href="visufx.html#propdef-overflow" class="noxref"><span class="propinst-overflow">'overflow'</span></a>プロパティを使用する。
+
+<h4>17.5.2.2 <a name="auto-table-layout">自動テーブルレイアウト</a></h4>
+
+<p>このアルゴリズムでは（一般にわずか2つのパスを必要とする）、テーブルの幅はその列の幅（と間の<a href="#borders">ボーダー</a>）で与えられる。このアルゴリズムは、本仕様書の執筆時点で一般的なHTMLユーザーエージェントの動作を反映する。ユーザーエージェントは、<a href="tables.html#propdef-table-layout" class="noxref"><span
+class="propinst-table-layout">'table-layout'</span></a>が'auto'である場合、テーブルのレイアウトを決定するために、このアルゴリズムを実装する必要はない。たとえ異なる動作が発生した場合でも、ユーザーエージェントは他のアルゴリズムを使用可能である。
+
+<p>自動テーブルレイアウトへの入力のみが包含ブロックの幅と内容、設定された任意のCSSプロパティ、テーブルとその子孫のいずれかを含めなければならない。
+
+<div class=note>
+<p><em><strong>注。</strong> これはCSS3でより詳細に定義されるかもしれない。</em>
+</div>
+
+<p><em>この節の残りの部分は、非規範的である。</em>
+
+<p>このアルゴリズムは、最終的なレイアウトを決定する前にテーブル内のすべてのコンテンツへのアクセスを持つことをユーザーエージェントに要求し、1パス以上を要求するかもしれないため、非効率的かもしれない。
+
+<p>列幅は、次のように決定される:
+
+<ol>
+  <li><p>各セルの最小内容幅（MCW）を計算する。整形内容は任意の数行にわたってもよいが、セルボックスをはみ出してはならない。セルの指定の<a href="visudet.html#propdef-width" class="noxref"><span
+  class="propinst-width">'width'</span></a>（W）がMCWよりも大きい場合、Wは最小セル幅になる。'auto'の値は、MCWが最小セル幅であることを意味する。
+
+  <p>また、各セルの"最大"セル幅を計算する。明示的な改行が発生する場所以外で改行することなく内容を整形する。
+
+  </li><li><p>各列に対して、その列のみにまたがるセルから最大と最小の列幅を決定する。最小値は、その最大の最小セル幅（またはいずれか大きい方の列の<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>）とともにセルによって要求される。最大値は、最大セル幅のセル（またはいずれか大きい方の列の<a href="visudet.html#propdef-width" class="noxref"><span
+  class="propinst-width">'width'</span></a>）によって要求される。
+
+  </li><li><p>複数列にまたがるセルごとに、少なくとも同じセル幅になるように、またがる列の最小幅を増やす。最大幅も、同じ操作を行う。可能であれば、均等にすべてのまたがる列を広げる。
+
+  </li><li><p>'auto'以外の'width'をもつ各列グループ要素に対して、少なくとも同じ列グループの'width'なるように、またがる列の最小幅を増やす。
+
+</li></ol>
+
+<p>これが各列の最大値と最小幅を与える。
+
+<p>キャプションの幅の最小値（CAPMIN）は、各キャプションに"display: block"として整形されたキャプションを含む架空のテーブルセルのMCWとして、最小キャプションの外側の幅を計算することによって決定される。最小キャプションの外側の幅での最大は、CAPMINとなる。
+
+<p>列とキャプションの幅は、次のように最終のテーブル幅に影響する:
+
+<ol>
+  <li>'table'または'inline-table'要素の<a href="visudet.html#propdef-width" class="noxref"><span
+  class="propinst-width">'width'</span></a>プロパティが'auto'以外の算出値（W）を持つ場合、使用幅はW、CAPMIN、すべての列で必要とされる最小幅にセルの間隔またはボーダーを加えたもの（MIN）のうち、大きいものとする。使用幅がMINよりも大きい場合、余分な幅は列を通して分配すべきである。
+
+  </li><li>'table'または'inline-table'要素が'width: auto'を持つ場合、使用幅はテーブルの包含ブロックの幅、CAPMIN、およびMINのうち大きい方となる。しかし、CAPMINまたは列とセルの間隔またはボーダーで必要とされる最大幅（MAX）のいずれかが包含ブロックよりも小さい場合、max(MAX,CAPMIN)を使用する。
+</li></ol>
+
+<p>列幅のパーセント値は、テーブル幅を基準にする。テーブルが'width: auto'を持つ場合、パーセンテージは、ユーザーエージェントが満足するよう試みるべき列の幅の制約を表す。（もちろん、これは常に可能ではない。列の幅が'110%'であれば、制約を満たすことはできない。）
+
+<div class="note">
+<p><em><strong>注。</strong> このアルゴリズムでは、行（および行グループ）と列（および列のグループ）の制約の両方と、それらに含まれるセルの寸法によって制限される。列幅を設定すると、間接的に行の高さに影響を与える。またその逆もある。</em>
+</div>
+
+<h3>17.5.3 <a name="height-layout">テーブルの高さのアルゴリズム</a></h3>
+
+<p>テーブルの高さは、'table'または'inline-table'要素の<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>プロパティによって与えられる。'auto'の値は、高さが行の高さのと任意のセルの間隔またはボーダーの和であることを意味する。他の値は、最小の高さとして扱われる。CSS 2.1は、'height'プロパティが本来のテーブルよりも高い原因となる場合、追加のスペースをどのように分配するかを定義しない。
+
+<p class=note><em><strong>注。</strong> CSSの将来の改訂は、これをさらに規定できるようにするだろう。</em>
+
+<p>ひとたびユーザーエージェントが使用可能な行のすべてのセルを持つと、'table-row'要素のボックスの高さが計算される。それは、行の計算<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>と、行の各セルの計算<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>、セルに要求される最小高さ（MIN）の最大値である。'table-row'の'auto'の<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>値は、レイアウトに使用される行の高さがMINであることを意味する。MINはセルボックスの高さとセルボックスの揃え（<a href="visudet.html#line-height">行ボックス</a>の高さの計算に似ている）に依存する。 CSS 2.1は高さをパーセント値を用いて指定される場合、テーブルのセルとテーブルの行の高さがどのように計算されるかを定義しない。CSS 2.1は、行グループの<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>の意味を定義しない。
+
+<p>CSS 2.1では、セルボックスの高さは内容によって要求される最小の高さとなる。テーブルセルの<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a>プロパティは、行の高さに影響を与えることができる（上記参照）が、セルボックスの高さを増加しない。
+
+<p>関連する行の高さの合計が、行にまたがるセルを包含するのに十分大きくなければならないことを除いて、CSS 2.1は、複数行にまたがるセルが行の高さの計算にどのように影響するかを指定しない。
+
+<p>各テーブルのセルの <a href="visudet.html#propdef-vertical-align" class="noxref"><span class="propinst-vertical-align">'vertical-align'</span></a>プロパティは、行内の揃えを決定する。各セルの内容は、baseline、top、middle、bottomがある。行自身の場合も同様である。テーブルのコンテキストでは、<a href="visudet.html#propdef-vertical-align" class="noxref"><span
+class="propinst-vertical-align">'vertical-align'</span></a>の値の意味は次のとおり:
+
+<dl>
+  <dt><strong>baseline</strong>
+
+    <dd>セルのベースラインは、セルがまたがる行の最初のベースラインと同じ高さに置く（セルと行のベースラインの定義については下記参照）。
+
+  <dt><strong>top</strong>
+
+    <dd>セルボックスの上部は、セルがまたがる最初の行の上部に揃えられる。
+
+  <dt><strong>bottom</strong>
+
+    <dd>セルボックスの下部は、セルがまたがる最初の行の下部に揃えられる。
+
+  <dt><strong>middle</strong>
+
+    <dd>セルの中心は、セルがまたがる行の中央に揃えられる。
+
+  <dt><strong>sub, super, text-top, text-bottom, &lt;length&gt;,
+  &lt;percentage&gt;</strong>
+
+    <dd>これらの値はセルに適用しない。代わりにベースラインに揃えられる。
+</dl>
+
+<p>セルのベースラインは、セルの最初のフロー内<a
+href="visuren.html#line-box">行ボックス</a>、またはセルの最初のフロー内テーブル行でどちらか早い方のベースラインとなる。そのような行ボックスまたはテーブル行が存在しない場合、ベースラインはセルボックスの内容辺の下になる。ベースラインを見つける目的に対して、スクロール機構をもつフロー内ボックス（<a href="visufx.html#propdef-overflow" class="noxref"><span
+class="propinst-overflow">'overflow'</span></a>プロパティを参照）は、あたかもボックスの原点位置にスクロールしたかのように考慮されなければならない。セルのベースラインは、セルの下ボーダーの下になってもよいことに注意する。以下の<a
+href="#baseline-below">例</a>を参照のこと。
+
+<p>セルボックスの上部と'vertical-align: baseline'を持つすべてのセル上のベースライン間の最大距離は、行のベースラインを設定するために使用される。以下に例を示す。
+
+<div class="figure">
+  <p><img src="http://www.w3.org/TR/CSS2/images/cell-align.png" alt="セルを縦に揃える例
+  aligning the cells"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-cell-align" href="http://www.w3.org/TR/CSS2/images/longdesc/cell-align-desc.html" title="テーブルの行の高さを計算する方法と、セル同士を垂直方向に揃える方法を説明する例について">[D]</A></SPAN>
+
+  <p class="caption">セル要素に対する'vertical-align'の効果
+</div>
+
+<p>セルボックス1と2は、ベースラインで揃えられる。セルボックス2はベースライン上の最大の高さを持つので、その行のベースラインを決定する。
+
+<p>行がベースラインに揃えられるセルボックスを持たない場合、その行のベースラインは行の最小のセルの下内容辺となる。
+
+<p>あいまいな状況を避けるため、次の順序でセルの揃えを続行する:
+
+<ol>
+  <li>最初にベースラインに揃えられるセルが配置される。これは、行のベースラインを設置する。次に、'vertical-align: top'をもつセルが配置される。
+
+  </li><li>これまでのところ、行は上、おそらくベースライン、および配置されたセルの最小の上から下までの距離となる仮の高さを持つ。（下記のセルのパディングの条件を参照のこと。）
+
+  </li><li>下部または中央に揃えられた残りのセルのいずれかが、行の現在の高さより大きな高さを持つ場合、行の高さは下を下げることによってセルの最大値まで増加される。
+
+  </li><li>最後に、残りのセルが配置される。
+</li></ol>
+
+<p>行の高さよりも小さいセルボックスは、余分な上部または下部パディングを受ける。
+
+<div class=example id=baseline-below>
+<p>この例でセルは、セルの下ボーダーの下にベースラインを持つ:
+
+<pre>
+div { height: 0; overflow: hidden; }
+
+&lt;table&gt;
+ &lt;tr&gt;
+  &lt;td&gt;
+   &lt;div&gt; Test &lt;/div&gt;
+  &lt;/td&gt;
+ &lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+</div>
+
+
+<h3>17.5.4 <a name="column-alignment">列での水平位置揃え</a></h3>
+
+<p>セルボックス内のインラインレベルの内容の水平方向の配置は、セルの<a href="text.html#propdef-text-align" class="noxref"><span class="propinst-text-align">'text-align'</span></a>プロパティの値によって指定可能である。
+
+
+
+<h3>17.5.5 <a name="dynamic-effects">行や列の動的効果</a></h3>
+
+<p><a href="visufx.html#propdef-visibility" class="noxref"><span class="propinst-visibility">'visibility'</span></a>プロパティの値は行、行グループ、列、列グループ要素の'collapse'を取る。この値は、行または列全体を表示から削除され、スペースは通常、他のコンテンツを利用できるようにする行または列によって占められる。折りたたまれた列または行を横断する、行と列の内容が切り取られる。しかし、行または列の抑制は、他の方法でテーブルのレイアウトに影響しない。これは、動的な効果に、列の制約の潜在的変化を説明するためにテーブルの再レイアウトを強制することなくテーブルの行または列を削除することを認める。
+
+<h2>17.6 <a name="borders">ボーダー</a></h2>
+
+<p>CSSでは、テーブルのセルにボーダーを設定するための2つの異なるモデルがある。一つは、個々のセルの周りに最も適したいわゆる<a name="x26"><span class="index-inst"
+title="separated borders">分離ボーダー</span></a>であり、もう一方はテーブルの端から端まで連続するボーダーに適している。多くのボーダースタイルはどちらのモデルでも達成可能なので、多くの場合どちらを使うかは好みの問題である。
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'border-collapse'"><a name="propdef-border-collapse" class="propdef-title"><strong>'border-collapse'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>collapse | separate | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>separate
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>'table'および'inline-table'要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>このプロパティは、テーブルのボーダーモデルを選択する。値'separate'は分離ボーダーモデルを選択する。値'collapse'は結合ボーダーモデルを選択する。2つのモデルを以下に記載する。
+
+<h3>17.6.1 <a name="separated-borders">分離ボーダーモデル</a></h3>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'border-spacing'"><a name="propdef-border-spacing" class="propdef-title"><strong>'border-spacing'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td><a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a> <a href="syndata.html#value-def-length" class="noxref"><span class="value-inst-length">&lt;length&gt;</span></a>? | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>0
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>'table'および'inline-table'要素（*注参照）
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>2つの絶対長さ
+</td></tr></table>
+</dl>
+</div>
+
+
+<p class="note">*) 注：ユーザーエージェントは'frameset'要素の'border-spacing'プロパティに適用してもよい。どの要素が'frameset'要素かは本仕様で定義されず、文書言語次第である。たとえば、HTML4は&lt;FRAMESET&gt;要素を定義し、XHTML 1.0は&lt;frameset&gt;要素を定義する。'frameset'要素の'border-spacing'プロパティは、このように非標準の'framespacing'属性の有効な代替として使用可能である。
+
+<p>長さは、隣接するセルのボーダーを分離する距離を指定する。1つの長さが指定される場合、水平および垂直の両方の間隔を与える。2つが指定される場合、1つ目は水平間隔を、2つ目は垂直間隔を与える。長さは負であってはならない。
+
+<p>テーブルのボーダーとテーブルの端にあるセルのボーダー間の距離は、テーブル側面のパディングに加えて、関連するボーダーの間隔の距離となる。.たとえば右側では、距離は <var>padding-right</var> + <var>horizontal border-spacing</var> となる
+
+<p>テーブルの幅は、左内側のパディング辺から右内側のパディング辺（ボーダーの間隔を含むが、パディングとボーダーを除く）までの距離となる。
+
+<p>しかし、HTMLとXHTML1で、&lt;table&gt;要素の幅は、左ボーダー辺から右ボーダー辺までの距離である。
+
+<p class=note><strong>注:</strong> CSS3では、この特有の要件はユーザーエージェントのスタイルシートの規則と'box-sizing'プロパティに関して定義される。
+
+<p>このモデルでは、各セルは個々のボーダーを持つ。<a href="tables.html#propdef-border-spacing" class="noxref"><span
+class="propinst-border-spacing">'border-spacing'</span></a>プロパティは、隣接するセルのボーダー間の距離を指定する。In this space, the row, column, row group, and column group backgrounds are invisible, allowing the table background to show through. 行、列、行グループ、列グループはボーダーを持つことはない（すなわち、ユーザーエージェントはそれらの要素のボーダープロパティを<span class="index-inst" title="ignore"><a name="x29"
+href="syndata.html#ignore">無視</a></span>しなければならない）。
+
+<div class="example"><P style="display:none">例：</P>
+<p>下の図は、次のようなスタイルシートの結果である:
+
+<pre>
+table      { border: outset 10pt; 
+             border-collapse: separate;
+             border-spacing: 15pt }
+td         { border: inset 5pt }
+td.special { border: inset 10pt }  /* 左上のセル */
+</pre>
+
+<div class=figure>
+  <p><img src="images/tbl-spacing.png" alt="ボーダーが分離しているテーブル
+  border-spacing"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-tbl-spacing" href="images/longdesc/tbl-spacing-desc.html" title="分離ボーダーモデルの例について">[D]</A></SPAN>
+
+  <p class="caption"> <a href="tables.html#propdef-border-spacing" class="noxref"><span
+  class="propinst-border-spacing">'border-spacing'</span></a>に長さの値を指定したテーブル。各セルは、セル自身のボーダーを持ち、その上テーブルも分離ボーダーを持つことに注意する。
+</div>
+</div>
+
+<h4>17.6.1.1 <a name="empty-cells">空セル周りのボーダーと背景:</a> <a href="tables.html#propdef-empty-cells" class="noxref"><span
+class="propinst-empty-cells">'empty-cells'</span></a>プロパティ</h4>
+
+<div class="propdef">
+<dl><dt>
+<span class="index-def" title="'empty-cells'"><a name="propdef-empty-cells" class="propdef-title"><strong>'empty-cells'</strong></a></span>
+<dd>
+<table class="propinfo" cellspacing=0 cellpadding=0>
+<tr valign=baseline><td><em>値：</em>&nbsp;&nbsp;</td><td>show | hide | <a href="cascade.html#value-def-inherit" class="noxref"><span class="value-inst-inherit">inherit</span></a>
+</td></tr><tr valign=baseline><td><em>初期値：</em>&nbsp;&nbsp;</td><td>show
+
+</td></tr><tr valign=baseline><td><em>適用対象：</em>&nbsp;&nbsp;</td><td>'table-cell'要素
+</td></tr><tr valign=baseline><td><em>継承：</em>&nbsp;&nbsp;</td><td>yes
+
+</td></tr><tr valign=baseline><td><em>パーセンテージ：</em>&nbsp;&nbsp;</td><td>利用不可
+</td></tr><tr valign=baseline><td><em>メディア：</em>&nbsp;&nbsp;</td><td><a href="media.html#visual-media-group" class="noxref">visual</a>
+</td></tr><tr valign=baseline><td><em>算出値：</em>&nbsp;&nbsp;</td><td>指定される
+</td></tr></table>
+</dl>
+</div>
+
+
+<p>分離ボーダーモデルでは、このプロパティは可視内容を持たないセルの周りのボーダーや背景のレンダリングを制御する。空のセルと'hidden'に設定された<a href="visufx.html#propdef-visibility" class="noxref"><span
+class="propinst-visibility">'visibility'</span></a>プロパティを持つセルが可視内容を持たないと考えられる。セルは、次の1つ以上を含まない限り、空である。
+<ul>
+<li>浮動する内容（空要素を含む）
+</li><li><a href="text.html#propdef-white-space" class="noxref"><span
+class="propinst-white-space">'white-space'</span></a>プロパティの操作によって相殺されている空白以外のフロー内の内容（空要素を含む）。
+</li></ul>
+
+<p>このプロパティの値が'show'となる場合、ボーダーおよび背景が空のセル前後に描かれる（通常のセルのように）。
+
+<p>'hide'の値は、ボーダーや背景が空セルの周囲に描画されないことを意味する（<a
+href="#table-layers">17.5.1節</a>のポイント6を参照）。さらに、行のすべてのセルが'hide'を持ち、可視内容を持たない場合、その行はゼロ高さを持ち、行の片側だけに垂直なボーダーの間隔が存在する。
+
+<div class="example"><P style="display:none">例：</P>
+<p>次の規則は、全セルの周囲に描画されるボーダーと背景をもたらす:
+
+<pre>
+table { empty-cells: show }
+</pre>
+</div>
+
+<h3>17.6.2 <a name="collapsing-borders">結合ボーダーモデル</a></h3>
+
+<p>結合ボーダーモデルでは、セル、行、行グループ、列、列グループのすべてまたは一部を囲むボーダーを指定可能である。HTMLの"rules"属性のボーダーにこの方法を指定することができる。
+
+<p>ボーダーは、セル間のグリッド線を中心にされる。不連続単位（画面ピクセル、プリンタドット）の数が奇数の場合、ユーザーエージェントは、丸めの一貫した規則を満たさなければならない。
+
+<p>次の図は、テーブル幅、ボーダー、パディング、およびセル幅がどのように相互作用するかを示す。これらの関係は、テーブルの行ごとに保持し、次式で与えられる:
+
+<blockquote>
+<p><var>row-width</var> = (0.5 * <var>border-width</var><sub>0</sub>)
++ <var>padding-left</var><sub>1</sub> + <var>width</var><sub>1</sub> +
+<var>padding-right</var><sub>1</sub> +
+<var>border-width</var><sub>1</sub> +
+<var>padding-left</var><sub>2</sub> +...+
+<var>padding-right</var><sub><var>n</var></sub> + (0.5 *
+<var>border-width</var><sub><var>n</var></sub>)
+
+</blockquote>
+
+<p>ここで、<var>n</var>行のセルの数、<var>padding-left</var><sub><var>i</var></sub>および<var>padding-right</var><sub><var>i</var></sub>は<var>i</var>番目セルの左（右）パディングを参照し、<var>border-width</var><sub><var>i</var></sub>は<var>i</var>番目のセルと<var>i</var>+1番目のセルとの間のボーダーを参照する。
+
+<p>ユーザーエージェントは、テーブルの最初の行の最初と最後のセルを分析することによって、テーブルの最初の左と右のボーダーの幅を計算しなければならない。テーブルの左ボーダーの幅は、最初のセルの折りたたまれた左ボーダーの半分であり、テーブルの右ボーダーの幅は、最後のセルの折りたたまれた右のボーダーの半分である。後続の行が結合した左および右ボーダーより大きい場合、すべての超過はテーブルの余白領域に出る。
+
+<p>テーブルの上ボーダーの幅は、テーブルの上ボーダーとの上ボーダーを折りたたむすべてのセルを分析することによって計算される。テーブルの上ボーダーの幅は最も折りたたまれた上ボーダーの半分に等しい。下ボーダーの幅は、テーブルの下とともに下ボーダーをおりたたむすべてのセルを分析することによって計算される。下ボーダーの幅は最も折りたたまれた下ボーダーの半分に等しい。
+
+<p>テーブルがいくつかの祖先をあふれさせるかどうかを判断する場合（<a href="visufx.html#propdef-overflow" class="noxref"><span
+class="propinst-overflow">'overflow'</span></a>参照）、マージンに出る任意のボーダーが考慮される。</p>
+
+<div class="figure">
+  <p><img src="http://www.w3.org/TR/CSS2/images/tbl-width.png" alt="セル幅、ボーダー幅、パディング幅の相互関係を表すスキーマ
+  cells and borders and the padding of cells"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-tbl-width" href="http://www.w3.org/TR/CSS2/images/longdesc/tbl-width-desc.html" title="結合ボーダーモデルの例について">[D]</A></SPAN>
+
+  <p class="caption">セル幅、ボーダー幅、パディング幅の相互関係を表すスキーマ
+</div>
+
+<p>このモデルでは、テーブル幅がテーブルのボーダーの半分を含むことに注意する。また、このモデルでは、テーブルはパディングを持たない（ただし、マージンを持つ）。
+
+<p>CSS 2.1は、テーブル要素の背景の辺がどこに位置するかを定義しない。
+
+<h4>17.6.2.1 <a name="border-conflict-resolution">ボーダーの競合の解決</a></h4>
+
+<p>結合ボーダーモデルでは、セルごとの辺ごとのボーダーがその辺部（セル、行、行グループ、列、列グループ、およびテーブル自身）で接触するさまざまな要素にボーダープロパティによって指定されてもよく、これらのボーダーの幅、スタイル、色が異ってもよい。おおまかなやり方は、各辺で最も"目を引く"ボーダーの種類が選択されることである。ただし、スタイル'hidden'の出現は無条件にボーダーをオフにする。
+
+<p>次の規則は、ボーダーの種類が競合の場合に"勝つ"ものを決定する:
+
+<ol>
+  <li>'hidden'の<a href="box.html#propdef-border-style" class="noxref"><span
+  class="propinst-border-style">'border-style'</span></a>をもつボーダーは、他のすべての競合するボーダーより優先する。この値をもつ任意のボーダーはこの場所ですべてのボーダーを抑制する。
+
+  </li><li>'none'の種類をもつボーダーは最も低い優先度を持つ。この辺ですべての要素に接するボーダープロパティが'none'である場合に限り、ボーダーを削除する（ただし、'none'はボーダーの種類のデフォルト値であることに注意する）。
+
+
+  </li><li>すべての種類が'hidden'でなく、少なくとも1つが'none'でない場合、細いボーダーは広いボーダーを優先により破棄される。複数が同じ <a href="box.html#propdef-border-width" class="noxref"><span
+  class="propinst-border-width">'border-width'</span></a>をもつ場合、種類の優先順位は、'double'、'solid'、'dashed'、'dotted'、'ridge'、'outset'、'groove'、'inset'の順になる。
+
+  </li><li>ボーダーの種類が色のみ異なる場合、セルに設定された種類を取り込み、行グループ、列、列グループ、テーブルの順になる。同じ型の2つの要素が競合する場合、左のさらに1つ左（テーブルの方向が'ltr'である場合。'rtl'である場合は右）と、さらに上が勝つ。
+</li></ol>
+
+<div class="example"><P style="display:none">例：</P>
+<p>次の例は、これらの優先規則の適用を示す。このスタイルシートと:
+
+<pre>
+table          { border-collapse: collapse;
+                 border: 5px solid yellow; }
+*#col1         { border: 3px solid black; }
+td             { border: 1px solid red; padding: 1em; }
+td.cell5       { border: 5px dashed blue; }
+td.cell6       { border: 5px solid green; }
+</pre>
+
+<p>次のHTMLに適用すると:
+
+<pre class="html-example">
+&lt;TABLE&gt;
+&lt;COL id="col1"&gt;&lt;COL id="col2"&gt;&lt;COL id="col3"&gt;
+&lt;TR id="row1"&gt;
+    &lt;TD&gt; 1
+    &lt;TD&gt; 2
+    &lt;TD&gt; 3
+&lt;/TR&gt;
+&lt;TR id="row2"&gt;
+    &lt;TD&gt; 4 
+    &lt;TD class="cell5"&gt; 5
+    &lt;TD class="cell6"&gt; 6
+&lt;/TR&gt;
+&lt;TR id="row3"&gt;
+    &lt;TD&gt; 7
+    &lt;TD&gt; 8
+    &lt;TD&gt; 9
+&lt;/TR&gt;
+&lt;TR id="row4"&gt;
+    &lt;TD&gt; 10
+    &lt;TD&gt; 11
+    &lt;TD&gt; 12
+&lt;/TR&gt;
+&lt;TR id="row5"&gt;
+    &lt;TD&gt; 13
+    &lt;TD&gt; 14
+    &lt;TD&gt; 15
+&lt;/TR&gt;
+&lt;/TABLE&gt;
+</pre>
+
+<p>このようになる:
+
+<div class="figure">
+  <p><img src="http://www.w3.org/TR/CSS2/images/tbl-border-conflict.png" alt="An example of a
+  table with collapsed borders"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-tbl-border-conflict" href="http://www.w3.org/TR/CSS2/images/longdesc/tbl-border-conflict-desc.html" title="結合ボーダーモデルの優先度を説明する例について">[D]</A></SPAN>
+
+  <p class="caption">結合ボーダーモデルの例
+</div>
+</div>
+
+<div class="example"><P style="display:none">例：</P>
+<p>hiddenの結合ボーダーの例は次のとおり:
+
+<div class="figure">
+  <p><img src="http://www.w3.org/TR/CSS2/images/CSStbl3.png" alt="Table
+  with two omitted borders"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-CSStbl3" href="http://www.w3.org/TR/CSS2/images/longdesc/CSStbl3-desc.html" title="ボーダーを不可視にする例について">[D]</A></SPAN>
+
+  <p class="caption"> 内部のボーダーを取り払ったテーブル
+</div>
+
+<p>HTMLは以下のとおり:
+
+<pre class="html-example">
+&lt;TABLE style="border-collapse: collapse; border: solid;"&gt;
+&lt;TR&gt;&lt;TD style="border-right: hidden; border-bottom: hidden"&gt;foo&lt;/TD&gt;
+    &lt;TD style="border: solid"&gt;bar&lt;/TD&gt;&lt;/TR&gt;
+&lt;TR&gt;&lt;TD style="border: none"&gt;foo&lt;/TD&gt;
+    &lt;TD style="border: solid"&gt;bar&lt;/TD&gt;&lt;/TR&gt;
+&lt;/TABLE&gt;
+</pre>
+</div>
+
+<h3>17.6.3 <a name="table-border-styles">ボーダーの種類</a></h3>
+
+<p><span class="index-inst"
+title="&lt;border-style&gt;"><a name="x31" href="box.html#propdef-border-style" class="noxref"><span
+class="propinst-border-style">'border-style'</span></a></span>の値の一部は、他の要素と比べてテーブル内で異なる意味を持つ。以下のリストにそれらをアスタリスクでマークする。
+
+<dl>
+  <dt><a href="box.html#value-def-bo-none" class="noxref"><span class="value-inst-bo-none"><strong>none</strong></span></a>
+
+    <dd><a name="x32"><span class="index-inst" title="'none'::as border style">ボーダはない。</span></a>
+
+  <dt><strong>*<span class="index-inst" title="'hidden"><a name="x33" href="box.html#value-def-hidden" class="noxref"><span
+  class="value-inst-hidden">hidden</span></a></span></strong>
+
+    <dd>'none'と同じだが、<a
+    href="#collapsing-borders">結合ボーダーモデル</a>では、他のボーダーをを阻害する（<a
+    href="#border-conflict-resolution">ボーダーの競合</a>の節を参照）。
+
+  <dt><strong><span class="index-inst" title="'dotted'"><a name="x34" href="box.html#value-def-dotted" class="noxref"><span
+  class="value-inst-dotted">dotted</span></a></span></strong>
+
+    <dd>ボーダーを点線にする。
+
+  <dt><strong><span class="index-inst" title="'dashed'"><a name="x35" href="box.html#value-def-dashed" class="noxref"><span
+  class="value-inst-dashed">dashed</span></a></span></strong>
+
+    <dd>ボーダーを破線にする。
+
+  <dt><strong><span class="index-inst" title="'solid'"><a name="x36" href="box.html#value-def-solid" class="noxref"><span
+  class="value-inst-solid">solid</span></a></span></strong>
+
+    <dd>ボーダーを実線にする。
+
+   <dt><strong><span class="index-inst" title="'double'"><a name="x37" href="box.html#value-def-double" class="noxref"><span
+   class="value-inst-double">double</span></a></span></strong>
+
+    <dd>ボーダーを二重線にする。2本の実線とその間の空白との合計幅が<a href="box.html#propdef-border-width" class="noxref"><span
+    class="propinst-border-width">'border-width'</span></a>の値と等しくなる。
+
+  <dt><strong><span class="index-inst" title="'groove'"><a name="x38" href="box.html#value-def-groove" class="noxref"><span
+  class="value-inst-groove">groove</span></a></span></strong>
+
+    <dd>キャンバスの窪みとしてボーダーを表示する。
+
+  <dt><strong><span class="index-inst" title="'ridge'"><a name="x39" href="box.html#value-def-ridge" class="noxref"><span
+  class="value-inst-ridge">ridge</span></a></span></strong>
+
+    <dd>'groove'の逆で、キャンバスの隆起としてボーダーを表示する。
+
+  <dt><strong>*<span class="index-inst" title="'inset'"><a name="x40" href="box.html#value-def-inset" class="noxref"><span
+  class="value-inst-inset">inset</span></a></span></strong>
+
+    <dd><a href="#separated-borders">分離ボーダーモデル</a>では、ボーダーは、あたかもキャンバスに埋め込まれたかのように全体のボックスを見せる。<a
+    href="#collapsing-borders">結合ボーダーモデル</a>では、'ridge'と同じように描画される。
+
+  <dt><strong>*<span class="index-inst" title="'outset'"><a name="x41" href="box.html#value-def-outset" class="noxref"><span
+  class="value-inst-outset">outset</span></a></span></strong>
+
+    <dd><a href="#separated-borders">分離ボーダーモデル</a>では、ボーダーはあたかもキャンバスから出てきたかのように全体のボックスを見せる。<a
+    href="#collapsing-borders">結合ボーダーモデル</a>では、'groove'と同じように描画される。
+</dl>
+
+<hr class="navbar">
+
+<div class="navbar">
+<p><a href="text.html">前章</a> &nbsp; <a href="ui.html">次章</a> &nbsp; <a href="cover.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+</div>
+</body>
+</html>
+
