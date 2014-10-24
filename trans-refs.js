@@ -178,7 +178,7 @@ XSLT10: [ 'http://www.y-adagio.com/public/standards/tr_xslt10/toc.htm',
 
 		for(id in refList){	// リストを巡回
 			if(refList.hasOwnProperty(id)){	// "おまじない"
-				if(dd = document.getElementById("refs" + id) || dd = document.getElementById("bib" + id)) {	// 当該 ID を持つ要素があることを最初に確認
+				if(dd = document.getElementById("refs" + id)) {	// 当該 ID を持つ要素があることを最初に確認
 					urlType = typeof refList[id];
 
 					if(urlType === typeof ""){	// URL が1個だけのとき
