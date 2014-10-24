@@ -52,7 +52,7 @@ HTMLALTTECHS: 'http://momdo.github.io/html-alt-techniques/',
 HTMLDIFF: 'http://momdo.github.io/html5-diff/',
 //HTMLDIFF: ['http://www.html5.jp/trans/w3c_differences.html', //obs.
 //'http://standards.mitsue.co.jp/resources/w3c/TR/html5-diff/', //obs.
-],
+//],
 HTTP: [ 'http://www.hcn.zaq.ne.jp/___/WEB/RFC2616-ja.html',
 'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202616'
 ], //RFC2616 - old version.
