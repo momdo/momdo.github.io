@@ -32,6 +32,9 @@ CSSFONTS: 'http://www.hcn.zaq.ne.jp/___/WEB/css-fonts-ja.html',
 CSSIMAGES: 'http://momdo.s35.xrea.com/web-html-test/spec/CR-css3-images-20120417.html',
 CSSOM: 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html',
 CSSOMVIEW: 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-view-ja.html',
+CSSWM: [ 'http://www.hcn.zaq.ne.jp/___/WEB/css-writing-modes-ja.html',
+	'http://suzukima.github.io/css-ja/css3-writing-modes/', //writing modes
+],
 CSSTRANSITIONS: 'http://www.hcn.zaq.ne.jp/___/WEB/css-transitions-ja.html',
 CSSSCOPED: 'http://www.hcn.zaq.ne.jp/___/WEB/css-cascade-ja.html', //そのうち削除するかも
 CSSVALUES: [ 'http://momdo.s35.xrea.com/web-html-test/spec/CR-css3-values-20130404.html',
@@ -39,18 +42,20 @@ CSSVALUES: [ 'http://momdo.s35.xrea.com/web-html-test/spec/CR-css3-values-201304
 ],
 CSSUI: 'http://momdo.s35.xrea.com/web-html-test/spec/WD-css3-ui-20120117.html',
 DOM: 'http://www.hcn.zaq.ne.jp/___/WEB/DOM4-ja.html',
+DOMEVENTS: 'http://www.y-adagio.com/public/standards/tr_dom2_events/expanded-toc.html', //DOM2 Event
 ECMA262: 'http://tsofthome.appspot.com/ecmascript.html',
 ENCODING: 'http://www.hcn.zaq.ne.jp/___/WEB/Encoding-ja.html',
 FILEAPI:  'http://www.hcn.zaq.ne.jp/___/WEB/File_API-ja.html',
 HTML4: 'http://www.asahi-net.or.jp/~sd5a-ucd/rec-html401j/cover.html',
 HTML5: 'http://momdo.github.io/html5/Overview.html',
 HTMLALTTECHS: 'http://momdo.github.io/html-alt-techniques/',
-HTMLDIFF: ['http://www.html5.jp/trans/w3c_differences.html',
-'http://standards.mitsue.co.jp/resources/w3c/TR/html5-diff/',
+HTMLDIFF: 'http://momdo.github.io/html5-diff/',
+//HTMLDIFF: ['http://www.html5.jp/trans/w3c_differences.html', //obs.
+//'http://standards.mitsue.co.jp/resources/w3c/TR/html5-diff/', //obs.
 ],
-HTTP: [ 'http://www.studyinghttp.net/rfc_ja/rfc2616',
+HTTP: [ 'http://www.hcn.zaq.ne.jp/___/WEB/RFC2616-ja.html',
 'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202616'
-], //RFC2616
+], //RFC2616 - old version.
 HTTPS:[ 'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202818',
         'http://www.ipa.go.jp/security/rfc/RFC2818JA.html',
         'http://www.studyinghttp.net/rfc_ja/rfc2818'
@@ -63,7 +68,7 @@ ORIGIN:[ 'http://www.hcn.zaq.ne.jp/___/WEB/RFC6454-ja.html',
  'http://www.ipa.go.jp/security/rfc/RFC6454JA.html'
 ], //RFC6454
 PNG: 'http://www.milk-island.net/document/png/',
-POLYGLOT: 'http://standards.mitsue.co.jp/resources/w3c/TR/html-polyglot/',
+POLYGLOT: 'http://momdo.s35.xrea.com/web-html-test/spec/CR-html-polyglot-20140717.html',
 RFC1034:  'http://srgia.com/docs/rfc1034j.html',
 RFC1123:[ 'http://hp.vector.co.jp/authors/VA002682/rfc1123j.htm',
           'http://www2s.biglobe.ne.jp/~hig/tcpip/HostReq_Appl.html'
@@ -134,7 +139,7 @@ SDPOFFERANSWER: 'http://www.softfront.co.jp/tech/ietfdoc/trans/rfc3264j.txt', //
 SELECTORS: [ 'http://www.hcn.zaq.ne.jp/___/WEB/selectors4-ja.html',
              'http://www.y-adagio.com/public/standards/css3-selectors/',
 ],
-SVG: 'http://www.hcn.zaq.ne.jp/___/SVGTiny12/',
+SVG: 'http://www.hcn.zaq.ne.jp/___/SVG11-2nd/',
 TYPEDARRAY: 'http://www.hcn.zaq.ne.jp/___/WEB/TypedArray-ja.html',
 URL: 'http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html',
 UTF7: 'http://soft.bko.to/rfc/rfc2152jp.txt', //RFC2152
