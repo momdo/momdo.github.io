@@ -43,8 +43,8 @@ ECMA262: 'http://tsofthome.appspot.com/ecmascript.html',
 ENCODING: 'http://www.hcn.zaq.ne.jp/___/WEB/Encoding-ja.html',
 FILEAPI:  'http://www.hcn.zaq.ne.jp/___/WEB/File_API-ja.html',
 HTML4: 'http://www.asahi-net.or.jp/~sd5a-ucd/rec-html401j/cover.html',
-HTML5: 'http://momdo.s35.xrea.com/web-html-test/spec/html5-dev/Overview.html',
-HTMLALTTECHS: 'http://momdo.s35.xrea.com/web-html-test/spec/WD-html-alt-techniques-20121025.html',
+HTML5: 'http://momdo.github.io/html5/Overview.html',
+HTMLALTTECHS: 'http://momdo.github.io/html-alt-techniques/',
 HTMLDIFF: ['http://www.html5.jp/trans/w3c_differences.html',
 'http://standards.mitsue.co.jp/resources/w3c/TR/html5-diff/',
 ],
@@ -138,7 +138,8 @@ SVG: 'http://www.hcn.zaq.ne.jp/___/SVGTiny12/',
 TYPEDARRAY: 'http://www.hcn.zaq.ne.jp/___/WEB/TypedArray-ja.html',
 URL: 'http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html',
 UTF7: 'http://soft.bko.to/rfc/rfc2152jp.txt', //RFC2152
-WCAG: 'http://www.jsa.or.jp/stdz/instac/commitee-acc/W3C-WCAG/WCAG20/',
+WCAG: 'http://waic.jp/docs/WCAG20/Overview.html', //WCAG20
+WCAG20: 'http://waic.jp/docs/WCAG20/Overview.html',
 WEBSOCKET:[ 'http://www.hcn.zaq.ne.jp/___/WEB/WebSocket-ja.html',
             'http://www.html5.jp/trans/w3c_websockets.html'
 ],
@@ -178,13 +179,24 @@ XSLT10: [ 'http://www.y-adagio.com/public/standards/tr_xslt10/toc.htm',
 
 		for(id in refList){	// リストを巡回
 			if(refList.hasOwnProperty(id)){	// "おまじない"
-				if(dd = document.getElementById("refs" + id)) {	// 当該 ID を持つ要素があることを最初に確認
+				if(dd = document.getElementById("refs" + id) ) {	// 当該 ID を持つ要素があることを最初に確認
 					urlType = typeof refList[id];
 
 					if(urlType === typeof ""){	// URL が1個だけのとき
 						insertA(dd, refList[id], "日本語訳");
 					}else if(urlType === typeof []){	// URL が複数あるとき
 						refList[id].forEach(function(url, key){	// URL の複数指定を巡回
+							insertA(dd, url, "日本語訳" + (key + 1).toString());
+						});
+					}
+				}
+				else if(dd = document.getElementById("bib-" + id)) { // もっとマシなやり方なかったのかこれorz
+					urlType = typeof refList[id];
+					
+					if(urlType === typeof ""){
+						insertA(dd, refList[id], "日本語訳");
+					}else if(urlType === typeof []){
+						refList[id].forEach(function(url, key){
 							insertA(dd, url, "日本語訳" + (key + 1).toString());
 						});
 					}
