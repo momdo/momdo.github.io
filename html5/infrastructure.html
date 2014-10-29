@@ -27,7 +27,6 @@ body {line-height:1.5;}
      #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
      #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
      #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
-     #table-example-1 tbody td:first-child::after { content: leader(". "); }
      #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
      #table-example-1 tbody td:first-child + td { width: 10em; }
      #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
@@ -38,7 +37,6 @@ body {line-height:1.5;}
      .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
      .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
      .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
-     .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
      .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
      .apple-table-examples td { text-align: right; vertical-align: top; }
      .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
@@ -347,7 +345,7 @@ body {line-height:1.5;}
      color: white;
    }
 
-  </style><!-- style switcher script by Stommepoes  --><link href="http://www.w3.org/StyleSheets/TR/W3C-PR" rel="stylesheet" type="text/css"><link href="switcher/author-view.css" id="author-view" rel="alternate stylesheet" title="Author documentation only"><script src="switcher/authorstylesheet.js"></script><link href="introduction.html" rel="prev" title="1 Introduction">
+  </style><!-- style switcher script by Stommepoes  --><link href="http://www.w3.org/StyleSheets/TR/W3C-REC" rel="stylesheet" type="text/css"><link href="switcher/author-view.css" id="author-view" rel="alternate stylesheet" title="Author documentation only"><script src="switcher/authorstylesheet.js"></script><link href="introduction.html" rel="prev" title="1 Introduction">
   <link href="Overview.html#contents" rel="contents" title="目次">
   <link href="dom.html" rel="next" title="3 Semantics, structure, and APIs of HTML documents">
   <body class="split chapter" onload="fixBrokenLink();"><div class="head" id="head">
@@ -356,7 +354,7 @@ body {line-height:1.5;}
 
     <h1 id="big-title">HTML5日本語訳</h1>
     <p class="no-num no-toc subline">HTMLとXHTMLのための語彙と関連API</p>
-   <h2 class="no-num no-toc" id="w3c-proposed-recommendation-16-september-2014">W3C Proposed Recommendation 16 September 2014</h2>
+   <h2 class="no-num no-toc" id="w3c-recommendation-28-october-2014">W3C Recommendation 28 October 2014</h2>
    </header></div>
   
 
@@ -401,7 +399,7 @@ body {line-height:1.5;}
   </div><!-- should find somewhere more appropriate to put this -->
 
   
-  <p>用語"透明な黒"は、赤、緑、青、およびアルファチャンネルをすべてゼロに設定した色を指す。</p>
+  <p>用語"透明な黒"は、赤、緑、青、およびアルファチャンネルをすべて0に設定した色を指す。</p>
 
 
   <h4 id="resources"><span class="secno">2.1.1</span> リソース</h4>
@@ -865,6 +863,11 @@ body {line-height:1.5;}
     </li></ul><p class="note">The <a href="#utf-8-decoder">UTF-8 decoder</a> is distinct from the <i>UTF-8 decode
     algorithm</i>. The latter first strips a Byte Order Mark (BOM), if any, and then invokes the
     former.</p>
+    
+    <p>
+      The <a href="#decoder">decoder</a> algorithm may produce an error, referred to in this specification as
+      a <dfn id="decoder-error">decoder error</dfn>.
+    </p>
 
     <p>For readability, character encodings are sometimes referenced in this specification with a
     case that differs from the canonical case given in the encoding standard. (For example,
@@ -895,7 +898,7 @@ body {line-height:1.5;}
      </li><li><dfn id="relative-url">Relative URL</dfn>
      </li><li><dfn data-anolis-xref="concept-url-scheme-relative" id="concept-url-scheme-relative">Relative schemes</dfn>
      </li><li>The <dfn id="url-parser">URL parser</dfn>
-     </li><li><dfn id="parsed-url">Parsed URL</dfn>
+     </li><li><dfn id="parsed-url">Parsed URL</dfn>, which is the result of processing a URL through the <dfn id="url-parser-0">URL parser</dfn>
      </li><li>The <dfn data-anolis-xref="concept-url-scheme" id="concept-url-scheme">scheme</dfn> component of a <a href="#parsed-url">parsed URL</a>
      </li><li>The <dfn data-anolis-xref="concept-url-scheme-data" id="concept-url-scheme-data">scheme data</dfn> component of a <a href="#parsed-url">parsed URL</a>
      </li><li>The <dfn data-anolis-xref="concept-url-username" id="concept-url-username">username</dfn> component of a <a href="#parsed-url">parsed URL</a>
@@ -905,13 +908,12 @@ body {line-height:1.5;}
      </li><li>The <dfn data-anolis-xref="concept-url-path" id="concept-url-path">path</dfn> component of a <a href="#parsed-url">parsed URL</a>
      </li><li>The <dfn data-anolis-xref="concept-url-query" id="concept-url-query">query</dfn> component of a <a href="#parsed-url">parsed URL</a>
      </li><li>The <dfn data-anolis-xref="concept-url-fragment" id="concept-url-fragment">fragment</dfn> component of a <a href="#parsed-url">parsed URL</a>
-     </li><li><dfn data-anolis-xref="concept-url-parse-error" id="concept-url-parse-error">Parse errors</dfn> from the <a href="#url-parser">URL parser</a>
+     </li><li><dfn data-anolis-xref="concept-url-parse-error" id="concept-url-parse-error">Parse errors</dfn> from the <a href="#url-parser-0">URL parser</a>
      </li><li>The <dfn data-anolis-xref="concept-url-serializer" id="concept-url-serializer">URL serializer</dfn>
      </li><li><dfn id="default-encode-set">Default encode set</dfn>
      </li><li><dfn id="percent-encode">Percent encode</dfn>
      </li><li><dfn id="utf-8-percent-encode">UTF-8 percent encode</dfn>
      </li><li><dfn id="percent-decode">Percent decode</dfn>
-     </li><li><dfn id="decoder-error">Decoder error</dfn>
      </li><li><dfn id="urlutils"><code>URLUtils</code></dfn> interface
      </li><li><dfn data-anolis-xref="dom-url-href" id="dom-url-href"><code>href</code> attribute</dfn>
      </li><li><dfn data-anolis-xref="dom-url-protocol" id="dom-url-protocol"><code>protocol</code> attribute</dfn>
@@ -3847,11 +3849,11 @@ body {line-height:1.5;}
 
    </li>
 
-   <li><p>Apply the <a href="#url-parser">URL parser</a> to <var data-anolis-xref="">url</var>, with <var data-anolis-xref="">base</var> as the base URL, with <var data-anolis-xref="">encoding</var> as the encoding.</li>
+   <li><p>Apply the <a href="#url-parser-0">URL parser</a> to <var data-anolis-xref="">url</var>, with <var data-anolis-xref="">base</var> as the base URL, with <var data-anolis-xref="">encoding</var> as the encoding.</li>
 
    <li><p>If this returns failure, then abort these steps with an error.</li>
 
-   <li><p>Let <var data-anolis-xref="">parsed URL</var> be the result of the <a href="#url-parser">URL parser</a>.</li>
+   <li><p>Let <var data-anolis-xref="">parsed URL</var> be the result of the <a href="#url-parser-0">URL parser</a>.</li>
 
    <li><p>Let <var data-anolis-xref="">serialized URL</var> be the result of apply the <a data-anolis-xref="concept-url-serializer" href="#concept-url-serializer">URL
    serializer</a> to <var data-anolis-xref="">parsed URL</var>.</li>
@@ -4027,7 +4029,7 @@ body {line-height:1.5;}
 
    <li>
 
-    <p><i>Clean referrer</i>: Apply the <a href="#url-parser">URL parser</a> to <var data-anolis-xref="">referrer</var> and let <var data-anolis-xref="">parsed referrer</var> be the <a href="#resulting-parsed-url">resulting parsed URL</a>.</p>
+    <p><i>Clean referrer</i>: Apply the <a href="#url-parser-0">URL parser</a> to <var data-anolis-xref="">referrer</var> and let <var data-anolis-xref="">parsed referrer</var> be the <a href="#resulting-parsed-url">resulting parsed URL</a>.</p>
 
    </li>
 

@@ -27,7 +27,6 @@ body {line-height:1.5;}
      #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
      #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
      #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
-     #table-example-1 tbody td:first-child::after { content: leader(". "); }
      #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
      #table-example-1 tbody td:first-child + td { width: 10em; }
      #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
@@ -38,7 +37,6 @@ body {line-height:1.5;}
      .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
      .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
      .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
-     .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
      .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
      .apple-table-examples td { text-align: right; vertical-align: top; }
      .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
@@ -347,7 +345,7 @@ body {line-height:1.5;}
      color: white;
    }
 
-  </style><!-- style switcher script by Stommepoes  --><link href="http://www.w3.org/StyleSheets/TR/W3C-PR" rel="stylesheet" type="text/css"><link href="switcher/author-view.css" id="author-view" rel="alternate stylesheet" title="Author documentation only"><script src="switcher/authorstylesheet.js"></script><link href="browsers.html" rel="prev" title="5 Loading Web pages">
+  </style><!-- style switcher script by Stommepoes  --><link href="http://www.w3.org/StyleSheets/TR/W3C-REC" rel="stylesheet" type="text/css"><link href="switcher/author-view.css" id="author-view" rel="alternate stylesheet" title="Author documentation only"><script src="switcher/authorstylesheet.js"></script><link href="browsers.html" rel="prev" title="5 Loading Web pages">
   <link href="Overview.html#contents" rel="contents" title="目次">
   <link href="editing.html" rel="next" title="7 User interaction">
   <body class="split chapter" onload="fixBrokenLink();"><div class="head" id="head">
@@ -356,7 +354,7 @@ body {line-height:1.5;}
 
     <h1 id="big-title">HTML5日本語訳</h1>
     <p class="no-num no-toc subline">HTMLとXHTMLのための語彙と関連API</p>
-   <h2 class="no-num no-toc" id="w3c-proposed-recommendation-16-september-2014">W3C Proposed Recommendation 16 September 2014</h2>
+   <h2 class="no-num no-toc" id="w3c-recommendation-28-october-2014">W3C Recommendation 28 October 2014</h2>
    </header></div>
   
 
@@ -2408,7 +2406,16 @@ interface <dfn id="windowbase64">WindowBase64</dfn> {
 
     <p>一般に、与えられた文字列を<code><a href="dom.html#document">Document</a></code>の入力ストリームに加える。</p>
 
-    <p class="warning">このメソッドは非常に特異な振る舞いを持つ。一部の場合において、このメソッドは、パーサが実行されている間、<a href="syntax.html#html-parser">HTMLパーサ</a>の状態に影響を与えることができる。その結果、文書のソースに対応しないDOMをもたらす（たとえば、記述された文字列が、文字列"<code data-anolis-xref="">&lt;plaintext&gt;</code>"または"<code data-anolis-xref="">&lt;!--</code>"である場合）。他の例では、あたかも<code data-anolis-xref="dom-document-open"><a href="#dom-document-open">document.open()</a></code>が呼び出されていたかのように、呼び出しが最初に現在のページをクリアできる。さらに多くの例では、メソッドは単に無視されるか、または例外を投げる。さらに悪いことに、このメソッドの正確な動作は、いくつかのケースにおいて、デバッグに非常に困難な障害を招く可能性がある、ネットワークレイテンシに依存するかもしれない。<strong>これらすべての理由から、このメソッドの使用を強く推奨しない。</strong></p>
+    <p class="warning">このメソッドは非常に特異な振る舞いを持つ。一部の場合において、このメソッドは、パーサが実行されている間、<a href="syntax.html#html-parser">HTMLパーサ</a>の状態に影響を与えることができる。その結果、文書のソースに対応しないDOMをもたらす（たとえば、記述された文字列が、文字列"<code data-anolis-xref="">&lt;plaintext&gt;</code>"または"<code data-anolis-xref="">&lt;!--</code>"である場合）。他の例では、あたかも<code data-anolis-xref="dom-document-open"><a href="#dom-document-open">document.open()</a></code>が呼び出されていたかのように、呼び出しが最初に現在のページをクリアできる。さらに多くの例では、メソッドは単に無視されるか、または例外を投げる。さらに悪いことに、このメソッドの正確な動作は、いくつかのケースにおいて、デバッグに非常に困難な障害を招く可能性がある、ネットワークレイテンシに依存するかもしれない。<!--
+
+     Namely, in the following case:
+
+        <script>
+         document.write('<link rel=stylesheet href=foo.css><script></script>x');
+         // at this point, whether the DOM contains an "x" or not depends on how quickly the foo.css file could be processed
+        </script>
+
+    -->, which can lead to failures that are very hard to debug. <strong>これらすべての理由から、このメソッドの使用を強く推奨しない。</strong></p>
 
     <p>このメソッドは、<a href="infrastructure.html#xml-documents">XML文書</a>で呼び出さた場合、<code><a href="infrastructure.html#invalidstateerror">InvalidStateError</a></code>例外を投げる。</p>
 
