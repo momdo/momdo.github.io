@@ -1204,46 +1204,34 @@ http://florian.rivoal.net/csswg/outline.html">transformed outline test case</a>)
    <p class="note" role="note">注：リサイズメカニズムは、スクロールメカニズムと同じではない。スクロールメカニズムは、ユーザーにどの要素のコンテンツの一部を表示するかの決定を可能にする。リサイズメカニズムは、ユーザーに要素のサイズの決定を可能にする。</p>
 
 
-   <p>The <a class="property" data-link-type="propdesc" href="#propdef-resize">resize</a> property applies to elements
-whose computed <a class="property" data-link-type="propdesc" href="http://dev.w3.org/csswg/css-overflow-3/#propdef-overflow">overflow</a> value
-is something other than <a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-overflow-3/#valdef-overflow-visible">visible</a>.</p>
+   <p><a class="property" data-link-type="propdesc" href="#propdef-resize">resize</a>プロパティーは、算出された<a class="property" data-link-type="propdesc" href="http://dev.w3.org/csswg/css-overflow-3/#propdef-overflow">overflow</a>の値が<a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/css-overflow-3/#valdef-overflow-visible">visible</a>以外である要素に適用する。</p>
 
 
    <p><a href="https://wiki.csswg.org/spec/css3-ui#issue-52">Open issue 52</a>: Implementation handling of <a class="property" data-link-type="propdesc" href="#propdef-resize">resize</a> on ::before generated content is buggy and not interoperable (See: <a href="http://dabblet.com/gist/ab432c3f6a8f672cd077">resize on :before test case</a>). A few possible resolutions: explicitly specify :resize does not apply to generated content (result undefined), (result no effect - would be at risk) or that it does apply (not interop, would be at risk).</p>
 
 
-   <p>When an element is resized by the user, the user agent uses a resize function based on the unresized computed width and height as part of determining the used width and height. 要素のコンテンツ（および周辺）は必要に応じて再整形される。</p>
+   <p>要素がユーザーによってリサイズされる場合、ユーザーエージェントは、使用幅と高さを決定するための一部としてリサイズされない算出幅と高さを基にするリサイズ関数を使用する。要素のコンテンツ（および周辺）は必要に応じて再整形される。</p>
 
 
-   <p>The resize function introduces a step in width/height calculations and formatting as described in <a href="http://momdo.github.io/css2/visudet.html">chapter 10 of CSS2.1</a>. 具体的に以下のステップが、CSS2.1 <a data-link-type="biblio" href="#biblio-css21">[CSS21]</a>における<a href="http://momdo.github.io/css2/visudet.html#min-max-widths">10.4節</a>および<a href="http://momdo.github.io/css2/visudet.html#min-max-heights">10.7節</a>でアルゴリズムのステップ1と2との間に挿入される。ここで、[次元]は10.4の<a class="property" data-link-type="propdesc" href="http://momdo.github.io/css2/visudet.html#propdef-width">width</a>および10.7の<a class="property" data-link-type="propdesc" href="http://momdo.github.io/css2/visudet.html#propdef-height">height</a>である。</p>
+   <p>リサイズ関数は、<a href="http://momdo.github.io/css2/visudet.html">CSS2.1 10章</a>で説明されるように幅また高さの計算および整形のステップを導入する。具体的に以下のステップが、CSS2.1 <a data-link-type="biblio" href="#biblio-css21">[CSS21]</a>における<a href="http://momdo.github.io/css2/visudet.html#min-max-widths">10.4節</a>および<a href="http://momdo.github.io/css2/visudet.html#min-max-heights">10.7節</a>でアルゴリズムのステップ1と2との間に挿入される。ここで、[次元]は10.4の<a class="property" data-link-type="propdesc" href="http://momdo.github.io/css2/visudet.html#propdef-width">width</a>および10.7の<a class="property" data-link-type="propdesc" href="http://momdo.github.io/css2/visudet.html#propdef-height">height</a>である。</p>
 
    <blockquote>
     <p style="text-indent:-2em">
-
-1b. If the resize [dimension] function is in use,
- then the tentative used [dimension] is computed with that function,
- and the rules above are applied again,
- but this time using the result of that function as the computed value for '[dimension]'.
-
+1b. リサイズ[次元]関数が使用される場合、仮使用[次元]はその関数で算出され、上記の規則が再度適用されるが、今回は[次元]の計算値としてその関数の結果を使用する。
 </p></blockquote>
 
 
    <p><a href="https://wiki.csswg.org/spec/css3-ui#issue-47">Open issue 47</a>: There is evidence that implementations support resize by setting inline style width and height on the element, and there is <a href="http://lists.w3.org/Archives/Public/www-style/2014Dec/0177.html">a proposal to specify that behavior explicitly</a> (<a href="https://lists.w3.org/Archives/Public/www-style/2014Dec/0063.html">previous proposal</a>).</p>
 
 
-   <p>With regard to interactivity and the Document Object Model (DOM),
-the resize function on an element lasts the lifetime of the element,
-however, if the computed <a class="property" data-link-type="propdesc" href="#propdef-resize">resize</a> property itself is altered
-(e.g. via pseudo-class change or via DOM manipulation),
-then the resize function is reset to 
-using the element’s unresized computed width and height.</p>
+   <p>しかし、<a class="property" data-link-type="propdesc" href="#propdef-resize">resize</a>プロパティー自身が変更される場合（疑似クラスの変化を介して、またはDOMの操作を介してなど）、インタラクティビティーとドキュメントオブジェクトモデル（DOM）に関しては、要素のサイズ変更関数は要素の寿命を持続させ、その後リサイズ関数は要素のリサイズされない計算幅および高さを使用してリセットされる。</p>
 
 
 
    <p>リサイズの正確な方向（すなわち、要素の左上を変更する、または右下を変更するか）は、要素が絶対配置されるかどうか、<a class="property" data-link-type="propdesc" href="http://dev.w3.org/csswg/css-position-3/#propdef-right">right</a>および<a class="property" data-link-type="propdesc" href="http://dev.w3.org/csswg/css-position-3/#propdef-bottom">bottom</a>プロパティーを使用して配置されるかどうか、要素の言語が右から左へであるかどうかなどを含めて多くの要因に依存してもよい。リサイズの正確な方向は、プラットフォームに対して適切に決定するためにユーザーエージェントに委ねられる。</p>
 
 
-   <p>The user agent should allow the user to resize the element with no other constraints than what is imposed by min-width and max-width (at risk due since <a href="http://lists.w3.org/Archives/Public/www-style/2014Dec/0063.html">only Firefox currently supports this</a>. Related: <a href="https://wiki.csswg.org/spec/css3-ui#issue-53">Issue 53</a>).</p>
+   <p>ユーザーエージェントは、ユーザーにmin-widthとmax-widthによって課されるものを超えない他の制約をもつ要素のリサイズを可能にする（<a href="http://lists.w3.org/Archives/Public/www-style/2014Dec/0063.html">Firefoxのみが現在これをサポートする</a>ために不安定である。Related: <a href="https://wiki.csswg.org/spec/css3-ui#issue-53">Issue 53</a>）。</p>
 
 
    <p>ユーザーエージェントは、たとえば要素の元の整形サイズとすべての要素のコンテンツを包含するのに十分な大きさのものの間など、適切なリサイズの範囲を制限してもよい。</p>
@@ -1359,7 +1347,7 @@ ellipsis |
 <a href="https://www.w3.org/wiki/CSS3-UI#Issue_32">resolved issue 32</a>.</p>
 
 
-   <p>Text can overflow for example when it is prevented from wrapping (e.g. due to '<code class="lang-css">white-space: nowrap</code>' or a single word is too long to fit). 値が持つ意味は次のとおり：</p>
+   <p>テキストが折り返しを防ぐ場合に、テキストはオーバーフローすることができる（'<code class="lang-css">white-space: nowrap</code>'または1つの単語が長すぎて収まらないなど）。値が持つ意味は次のとおり：</p>
 
 
    <dl class="valuedef">
@@ -1398,7 +1386,7 @@ ellipsis |
    <p>省略記号および文字列値について、実装は、省略記号/文字列に合わせるために必要に応じて行の適用可能な端で文字および<a href="http://momdo.github.io/css2/visuren.html#inline-boxes">分割不能なインラインレベル要素</a>を非表示にしなければならない。省略記号/文字列は残りのインラインコンテンツの適用可能な端にすぐに隣接よう配置する。行の最初の文字または<a href="http://momdo.github.io/css2/visuren.html#inline-boxes">分割不能なインラインレベル要素</a>は省略でなく、切り取られなければならない。</p>
 
 
-   <p>Implementations may ellipse at a text wrap opportunity that occurs before a character boundary where an ellipsis is required.</p>
+   <p>実装は、省略記号が要求される文字境界の前に発生するテキストの回り込み機会で省略してもよい。</p>
 
 
    <h4 class="no-num no-toc heading settled" id="ellipsing-details"><span class="content">省略詳細</span><a class="self-link" href="#ellipsing-details"></a></h4>
