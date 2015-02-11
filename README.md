@@ -1,1 +1,1 @@
-See [momdo.github.io](http://momdo.github.io/).
+See [Wiki](https://github.com/momdo/momdo.github.io/wiki).
