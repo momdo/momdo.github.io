@@ -350,49 +350,27 @@ URL Modifiers</span></a>
    <p>また、一部のプロパティ値の定義は、リテラルにスラッシュ（/）、カンマ（,）および/または丸括弧を含む。これらは、対応するトークンを表す。“+”のような、コンポーネント値で出現してもよいその他のキーワードは、一重引用符で囲まれて書かなければならない。</p>
 
 
-   <p><dfn data-dfn-type="grammar" data-export="" data-lt="," id="comb-comma">Commas<a class="self-link" href="#comb-comma"></a></dfn> specified in the grammar are <strong>implicitly omittable</strong> in some circumstances,
-	when used to separate optional terms in the grammar.
-	Within a top-level list in a property or other CSS value,
-	or a function’s argument list,
-	a comma specified in the grammar must be omitted if:</p>
+   <p>文法においてオプションの項を区切るために使用する場合、文法で指定される<dfn data-dfn-type="grammar" data-export="" data-lt="," id="comb-comma">コンマ<a class="self-link" href="#comb-comma"></a></dfn>は、状況次第で<strong>暗黙的に省略可能</strong>である。プロパティーまたは他のCSS値におけるトップレベルリスト、または関数の引数リストの中で、文法で指定されるコンマは次の場合に省略されなければならない：</p>
 
 	
    <ul>
 		
     <li>
-			
-			all items preceding the comma have been omitted
-
-		
-    
+			コンマに先行するすべての項目が省略されている
 
 		
     </li><li>
-			
-			all items following the comma have been omitted
-
-		
-    
+			コンマに後続するすべての項目が省略されている
 
 		
     </li><li>
-			
-			multiple commas would be adjacent (ignoring whitespace/comments),
-			due to the items between the commas being omitted.
-	
-   
+			コンマの間の項目の省略により、複数のコンマが（空白/コメントを無視して）隣接する
 	
    </li></ul>
 
 	
    <div class="example">
-		
-		For example, if a function can accept three arguments in order,
-		but all of them are optional,
-		the grammar can be written like:
-
-		
-    
+		たとえば、関数が順番に3つの引数を受け入れることができるが、そのすべてがオプションである場合、文法はこのように書くことができる：
 
 		
     <pre class="prod">example( first<a data-link-type="grammar" href="#mult-opt">?</a> <a data-link-type="grammar" href="#comb-comma">,</a> second<a data-link-type="grammar" href="#mult-opt">?</a> <a data-link-type="grammar" href="#comb-comma">,</a> third<a data-link-type="grammar" href="#mult-opt">?</a> )
@@ -400,20 +378,11 @@ URL Modifiers</span></a>
     
 
 
-    <p>Given this grammar,
-		writing <span class="css">example(first, second, third)</span> is valid,
-		as is <span class="css">example(first, second)</span> or <span class="css">example(first, third)</span> or <span class="css">example(second)</span>.
-		However, <span class="css">example(first, , third)</span> is invalid, as one of those commas are no longer separating two options;
-		similarly, <span class="css">example(,second)</span> and <span class="css">example(first,)</span> are invalid.
-		<span class="css">example(first second)</span> is also invalid,
-		as commas are still required to actually separate the options.</p>
+    <p>文法によると、<span class="css">example(first, second, third)</span>は妥当であり、<span class="css">example(first, second)</span>、<span class="css">example(first, third)</span>、<span class="css">example(second)</span>も同様である。しかし、<span class="css">example(first, , third)</span>は、コンマの1つがもはや2つのオプションを分けないので、無効である。同様に、<span class="css">example(,second)</span>および<span class="css">example(first,)</span>は無効である。コンマは依然としてオプションを実際に分けることを要求されるため、<span class="css">example(first second)</span>もまた無効である。</p>
     
 
 
-    <p>If commas were not implicitly omittable,
-		the grammar would have to be much more complicated
-		to properly express the ways that the arguments can be omitted,
-		greatly obscuring the simplicity of the feature.</p>
+    <p>コンマが暗黙的に省略可能でなかったなら、省略できる引数を厳密に表記するための文法はより複雑になり、その機能の単純性も損なわれることになるだろう。</p>
     
 	
    </div>
@@ -454,7 +423,7 @@ URL Modifiers</span></a>
 </pre>
 
 
-   <p>For re-orderable combinators (||, &amp;&amp;), ordering of the grammar does not matter: components in the same grouping may be interleaved in any order. したがって、次の2行は等価である：</p>
+   <p>再並び替え可能な結合子（||, &amp;&amp;）に対して、文法の順序付けは重要でない。同じグループにおける成分は、任意の順序で配置されてもよい。したがって、次の2行は等価である：</p>
 
 	
    <pre>a || b || c
@@ -488,12 +457,7 @@ b || a || c
     </li><li>ハッシュマーク（<dfn data-dfn-type="grammar" data-export="" id="mult-comma">#<a class="self-link" href="#mult-comma"></a></dfn>）は、コンマトークンによって区切られる（これは空白文字および/またはコメントによって囲まれてもよい）、先行する型、ワード、またはグループが1回以上出現することを示す。正確に何回繰り返しが発生するかを示すために、<span class="css">&lt;length&gt;#{1,4}</span>のように、上記の中括弧の形式が続いてもよい。
 
 		
-    </li><li>An exclamation point (<dfn data-dfn-type="grammar" data-export="" id="mult-req">!<a class="self-link" href="#mult-req"></a></dfn>) after a group indicates that the group is required
-			and must produce at least one value;
-			even if the grammar of the items within the group would otherwise allow the entire contents to be omitted,
-			at least one component value must not be omitted.
-	
-   
+    </li><li>グループの後の感嘆符（<dfn data-dfn-type="grammar" data-export="" id="mult-req">!<a class="self-link" href="#mult-req"></a></dfn>）は、そのグループが必須であり、1つ以上の値を生成しなければならないことを示す。たとえグループ内の各項目の文法が全体のコンテンツに省略を許すとしても、少なくとも1つの成分値は省略されてはならない。
 	
    </li></ul>
 
@@ -501,18 +465,13 @@ b || a || c
    <p>繰り返しのコンポーネントの値（<span class="css">*</span>、<a class="css" data-link-type="maybe" href="http://dev.w3.org/csswg/selectors-4/#selectordef-adjacent">+</a>、または<span class="css">#</span>で示される）の場合、ユーザーエージェントは、少なくとも20回の繰り返しのコンポーネントをサポートしなければならない。プロパティの値が繰り返しでサポートされている数よりも多く含まれる場合、それが無効であったかのように、宣言は無視されなければならない。</p>
 
 
-   <h3 class="heading settled" data-level="2.4" id="combinator-multiplier-patterns"><span class="secno">2.4. </span><span class="content">
-Combinator and Multiplier Patterns</span><a class="self-link" href="#combinator-multiplier-patterns"></a></h3>
+   <h3 class="heading settled" data-level="2.4" id="combinator-multiplier-patterns"><span class="secno">2.4. </span><span class="content"> 結合子および量指定子のパターン</span><a class="self-link" href="#combinator-multiplier-patterns"></a></h3>
 
 
-   <p>There are a small set of common ways to combine multiple independent <a data-link-type="dfn" href="http://dev.w3.org/csswg/css-syntax-3/#component-value">component values</a> in particular numbers and orders.
-	In particular, it’s common to want to express that,
-	from a set of component value,
-	the author must select zero or more, one or more, or all of them,
-	and in either the order specified in the grammar or in any order.</p>
+   <p>特定の数および順序で複数の独立な<a data-link-type="dfn" href="http://dev.w3.org/csswg/css-syntax-3/#component-value">成分値</a>を組み合わせるための共通の方法の小さなセットがある。具体的に、著者は、成分値の集合から、文法で指定される順序か任意の順序のいずれかで、0個以上、1つ以上、すべてを選択しなければならないことを表現したいことは、一般的である。</p>
 
 
-   <p>All of these can be easily expressed using simple patterns of <a href="#component-combinators">combinators</a> and <a href="#component-multipliers">multipliers</a>:</p>
+   <p>このすべては、<a href="#component-combinators">結合子</a>および<a href="#component-multipliers">量指定子</a>の単純なパターンを利用して容易に表記することができる：</p>
 
 	
    <table class="data">
@@ -523,21 +482,15 @@ Combinator and Multiplier Patterns</span><a class="self-link" href="#combinator-
 				
       <th>
 				
-      </th><th>in order
+      </th><th>指定順
 				
-      
-				
-      </th><th>any order
-		
-    
+      </th><th>任意の順
 		
     <tbody>
 			
      </th></tr><tr>
 				
-      <th>zero or more
-				
-      
+      <th>0個以上
 				
       <td>
        <pre>A? B? C?</pre>
@@ -550,9 +503,7 @@ Combinator and Multiplier Patterns</span><a class="self-link" href="#combinator-
 			
      </td></th></tr><tr>
 				
-      <th>one or more
-				
-      
+      <th>1つ以上
 				
       <td>
        <pre> [ A? B? C? ]!</pre>
@@ -565,9 +516,7 @@ Combinator and Multiplier Patterns</span><a class="self-link" href="#combinator-
 			
      </td></th></tr><tr>
 				
-      <th>all
-				
-      
+      <th>すべて
 				
       <td>
        <pre>A B C </pre>
@@ -580,8 +529,7 @@ Combinator and Multiplier Patterns</span><a class="self-link" href="#combinator-
    </td></th></tr></table>
 
 
-   <p>Note that all of the "any order" possibilities are expressed using combinators,
-	while the "in order" possibilities are all variants on juxtaposition.</p>
+   <p>"指定順"のものは、並記ですべての変形である一方で、"任意の順"のものは、結合子を用いて表記されることに注意する。</p>
 
 
    <h3 class="heading settled" data-level="2.5" id="component-whitespace"><span class="secno">2.5. </span> <span class="content">コンポーネント値と空白</span><a class="self-link" href="#component-whitespace"></a></h3>
