@@ -355,11 +355,11 @@ col.totals { width: 5em }
 
 <p>視覚整形モデルの観点では、テーブルは、<a href="visuren.html#block-level">ブロックレベル</a>（'display: table'）または<a href="visuren.html#inline-level">インラインレベル</a>（'display: inline-table'）のように振る舞うことができる。
 
-<p>In both cases, the table generates a principal block container box called the <span class="index-def" title="table wrapper box"><a
-name="table-wrapper-box"><dfn>table wrapper box</dfn></a></span> that contains the table box itself and any caption boxes (in document order). The <span class="index-def" title="table box"><a
-name="table-box"><dfn>table box</dfn></a></span> is a block-level box that contains the table's internal table boxes. The caption boxes are principal block-level boxes that retain their own content, padding, margin, and border areas, and are rendered as normal block boxes inside the table wrapper box. キャプションボックスは、以下のように、テーブルボックスの前または後に配置されるかどうかを'caption-side'プロパティによって決定する。
+<p>どちらの場合も、テーブルボックス自身とキャプションボックス（文書順に）を含む<span class="index-def" title="table wrapper box"><a
+name="table-wrapper-box"><dfn>テーブルラッパーボックス</dfn></a></span>と呼ばれる主要ブロックボックスをテーブルは生成する。<span class="index-def" title="table box"><a
+name="table-box"><dfn>テーブルボックス</dfn></a></span>はテーブルの内部テーブルボックスを含むブロックレベルボックスである。キャプションボックスは、独自のコンテンツ、パディング、マージン、およびボーダー領域を保持する主要ブロックレベルボックスであり、そしてテーブルのラッパーボックス内の通常ブロックボックスとしてレンダリングされる。キャプションボックスは、以下のように、テーブルボックスの前または後に配置されるかどうかを'caption-side'プロパティによって決定する。
 
-<p>The table wrapper box is block-level for 'display: table', and inline-level; for 'display: inline-table'. The table wrapper box establishes a block formatting context, and the table box establishes a table formatting context. 'インラインテーブル'のベースラインの垂直方向の配置を行うとき、テーブルボックス（テーブルのラッパーボックス）が使用される。17.5.2節で説明されるようにテーブルのラッパーボックスの幅は、その内部テーブルボックスのボーダー辺の幅である。テーブルの'width'と'height'のパーセンテージは、テーブルのラッパーボックスの包含ブロックではなく、テーブルのラッパーボックス自身を基準にする。
+<p>テーブルラッパーボックスは、'display: table'およびinline-levelに対するブロックレベル、'display: inline-table'である。テーブルラッパーボックスは、ブロック整形コンテキストを設置し、そしてテーブルボックスはテーブル整形コンテキストを設置する。'インラインテーブル'のベースラインの垂直方向の配置を行うとき、テーブルボックス（テーブルのラッパーボックス）が使用される。17.5.2節で説明されるようにテーブルのラッパーボックスの幅は、その内部テーブルボックスのボーダー辺の幅である。テーブルの'width'と'height'のパーセンテージは、テーブルのラッパーボックスの包含ブロックではなく、テーブルのラッパーボックス自身を基準にする。
 
 <p>プロパティ'position'、'float'、'margin-*'、'top'、'right'、'bottom'、'left'の算出値は、テーブルボックスではなく、テーブルのラッパーボックスを用いる。非継承プロパティの他のすべての値は、テーブルのラッパーボックスではなく、テーブルボックスを使用する。（ここでテーブル要素の値はテーブルとテーブルのラッパーボックスを使用せず、代わりに初期値が使用される。）
 
@@ -419,8 +419,8 @@ caption { caption-side: bottom;
 
 <h2>17.5 <a name="table-layout">テーブルの内容の視覚レイアウト</a></h2>
 
-<p>Internal table elements generate rectangular <a
-href="box.html#box-dimensions">boxes</a> which participate in the table formatting context established by the table box. These boxes have content and borders and cells have padding as well. 内部テーブルの要素は、マージンを持たない。
+<p>内部テーブル要素は、テーブルボックスによって設置されるテーブル整形コンテキストに参加する矩形<a
+href="box.html#box-dimensions">ボックス</a>を生成する。このボックスは、コンテンツおよびボーダーを持ち、そしてボーダーおよびセルは、同様にパディングを持つ。内部テーブルの要素は、マージンを持たない。
 
 <p>これらのボックスの視覚レイアウトは、行と列の不規則な矩形格子によって制御される。各ボックスは、以下の規則に従って決定される整数個のグリッドセルを占める。これらの規則は、HTML 4とそれ以前のHTMLのバージョンには適用されない。HTMLは、行と列のスパンに独自の制限を課している。
 
@@ -434,13 +434,13 @@ href="box.html#box-dimensions">boxes</a> which participate in the table formatti
 
   </li><li>列グループボックスは、含まれる列と同じ格子セルを占有する。
 
-  </li><li>セルは複数の行や列にまたがってもよい。 （CSS 2.1はまたがる行または列の数がどのように決定されるかを定義しないが、ユーザーエージェントはソース文書に関する特別な情報を持ってもよい。CSSの将来の改訂は、CSS構文でこの情報を表現する方法を提供してもよい。）したがって、各セルは1つ以上の格子セル幅と高さの矩形ボックスとなる。この矩形の一番上の行は、セルの親で指定された行に含まれる。矩形はできるだけ左になければならないが、その矩形が占める最初の列のセルの一部は、他のセルボックス（すなわち、前の行で始まる行にまたがるセル）と重複してならず、かつセルはソース文書内の前の同一行ですべてのセルの右側になければならない。この位置が前の行から行にまたがるセルを重ねるために、列にまたがるセルの原因となる場合、CSSはその結果を定義しない。実装は、いずれかのセルを重ねてもよい（多くのHTMLの実装で行われているように）、またはそれ以降のセルをそのような重複を避けるために右にシフトしてもよい。（テーブルの'direction'プロパティが'ltr'の場合、この制約は保持する。'direction'が'rtl'である場合、前の2つの文で左右を入れ替える。）
+  </li><li>セルは複数の行や列にまたがってもよい。（CSS 2.1はまたがる行または列の数がどのように決定されるかを定義しないが、ユーザーエージェントはソース文書に関する特別な情報を持ってもよい。CSSの将来の改訂は、CSS構文でこの情報を表現する方法を提供してもよい。）したがって、各セルは1つ以上の格子セル幅と高さの矩形ボックスとなる。この矩形の一番上の行は、セルの親で指定された行に含まれる。矩形はできるだけ左になければならないが、その矩形が占める最初の列のセルの一部は、他のセルボックス（すなわち、前の行で始まる行にまたがるセル）と重複してならず、かつセルはソース文書内の前の同一行ですべてのセルの右側になければならない。この位置が前の行から行にまたがるセルを重ねるために、列にまたがるセルの原因となる場合、CSSはその結果を定義しない。実装は、いずれかのセルを重ねてもよい（多くのHTMLの実装で行われているように）、またはそれ以降のセルをそのような重複を避けるために右にシフトしてもよい。（テーブルの'direction'プロパティが'ltr'の場合、この制約は保持する。'direction'が'rtl'である場合、前の2つの文で左右を入れ替える。）
 
   </li><li>セルボックスは、テーブルまたは行グループの最後の行ボックスを超えて拡張することはできない。セルボックスが合うまでユーザーエージェントはセルボックスを短くしなければならない。
 </li></ol>
 
-<p><a href="#collapsing-borders">結合ボーダーモデル</a>の行、列、行グループと列グループの辺は、セルのボーダー線がセンタリングされる架空のグリッド線に一致する。(And thus, in this model, the rows together exactly cover the table, leaving no gaps; ditto for the columns.) In the <a
-href="#separated-borders">separated borders model,</a> the edges coincide with the <a href="box.html#border-edge">border edges</a> of cells. （そして、このモデルでは、<a href="tables.html#propdef-border-spacing" class="noxref"><span
+<p><a href="#collapsing-borders">結合ボーダーモデル</a>の行、列、行グループと列グループの辺は、セルのボーダー線がセンタリングされる架空のグリッド線に一致する。（このようにこのモデルにおいて、列はいかなるギャップも残さずにぴったりテーブルを覆う。行も同様である。）<a
+href="#separated-borders">分離ボーダーモデル</a>において、辺はセルの<a href="box.html#border-edge">ボーダー辺</a>と一致する。（そして、このモデルでは、<a href="tables.html#propdef-border-spacing" class="noxref"><span
 class="propinst-border-spacing">'border-spacing'</span></a>プロパティに対応する行、列、行グループまたは列グループの間にギャップがあってもよい。）
 
 <div class="note">
@@ -822,7 +822,7 @@ title="separated borders">分離ボーダー</span></a>であり、もう一方�
 <p class=note><strong>注:</strong> CSS3では、この特有の要件はユーザーエージェントのスタイルシートの規則と'box-sizing'プロパティに関して定義される。
 
 <p>このモデルでは、各セルは個々のボーダーを持つ。<a href="tables.html#propdef-border-spacing" class="noxref"><span
-class="propinst-border-spacing">'border-spacing'</span></a>プロパティは、隣接するセルのボーダー間の距離を指定する。In this space, the row, column, row group, and column group backgrounds are invisible, allowing the table background to show through. 行、列、行グループ、列グループはボーダーを持つことはない（すなわち、ユーザーエージェントはそれらの要素のボーダープロパティを<span class="index-inst" title="ignore"><a name="x29"
+class="propinst-border-spacing">'border-spacing'</span></a>プロパティは、隣接するセルのボーダー間の距離を指定する。このスペースで、列、行、列グループ、および行グループの背景は不可視であり、テーブルの背景を透けて見えようにする。行、列、行グループ、列グループはボーダーを持つことはない（すなわち、ユーザーエージェントはそれらの要素のボーダープロパティを<span class="index-inst" title="ignore"><a name="x29"
 href="syndata.html#ignore">無視</a></span>しなければならない）。
 
 <div class="example"><P style="display:none">例：</P>
@@ -837,8 +837,8 @@ td.special { border: inset 10pt }  /* 左上のセル */
 </pre>
 
 <div class=figure>
-  <p><img src="images/tbl-spacing.png" alt="ボーダーが分離しているテーブル
-  border-spacing"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-tbl-spacing" href="images/longdesc/tbl-spacing-desc.html" title="分離ボーダーモデルの例について">[D]</A></SPAN>
+  <p><img src="http://www.w3.org/TR/CSS2/images/tbl-spacing.png" alt="ボーダーが分離しているテーブル
+  border-spacing"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-tbl-spacing" href="http://www.w3.org/TR/CSS2/images/longdesc/tbl-spacing-desc.html" title="分離ボーダーモデルの例について">[D]</A></SPAN>
 
   <p class="caption"> <a href="tables.html#propdef-border-spacing" class="noxref"><span
   class="propinst-border-spacing">'border-spacing'</span></a>に長さの値を指定したテーブル。各セルは、セル自身のボーダーを持ち、その上テーブルも分離ボーダーを持つことに注意する。
