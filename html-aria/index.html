@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr" typeof="bibo:Document " prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head><meta property="dc:language" content="ja" lang="">
+    <title>ARIA in HTML 日本語訳</title>
+    <meta charset="utf-8">
+<script src="https://specs.webplatform.org/html-aria/webspecs/master/details-summary/jquery-2.1.1.min.js"></script>
+
+    
+     <style>
+	.note-title {padding-left:1.5em}
+	
+tr:nth-child(2n+1) {
+    background-color: #ebebeb;
+}
+
+summary {
+    background: url("https://specs.webplatform.org/assets/css/../img/rightArrow.png") no-repeat scroll 0.5em center #fff;
+    padding: 0.25em 0.25em 0.25em 2em;
+}
+
+summary:hover, summary:focus, details[open] summary:hover, details[open] summary:focus {
+    background-color: #eee;
+}
+details, summary {
+    display: block;
+}
+
+p.note::before {
+    content: "Note: ";
+    font-weight: bolder;
+}
+p.note, div.note {
+    padding: 0.5em 2em;
+}
+.note {
+    background: none repeat scroll 0 0 #e9fbe9;
+    border-color: #52e052;
+    border-left: 0.25em solid #52e052;
+}
+
+
+.example {
+    background: none repeat scroll 0 0 #fcfcfc;
+    border-color: #c0c0c0;
+    border-left: 0.25em solid #c0c0c0;
+    color: #222222;
+    display: block;
+    margin-left: 1em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+}
+
+	</style>
+   <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style>
+<style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title , div.warning-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.warning-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue, div.warning {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note , div.warning {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue, span.warning { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+.warning {
+    border-color: #f11;
+    border-right-width: .2em;
+    border-top-width: .2em;
+    border-bottom-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
+
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}
+</style><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--><link href="https://www.w3.org/StyleSheets/TR/W3C-WD" rel="stylesheet"></head>
+<body id="respecDocument" role="document" class="h-entry">
+<aside style="border-radius: 20px; border: solid lightpink 3px; padding: 0 1em;">
+<p>この文書は、この文書は「<a href="http://www.w3.org/TR/2015/WD-html-aria-20150414/">ARIA in HTML</a>（First Public Working Draft <time>2015-04-17</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳に誤りがありえます。</p>
+<p>訳者への連絡先、他の仕様の翻訳等については、<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照ください。  </p>
+</aside>
+
+<div id="respecHeader" role="contentinfo" class="head">
+  <p>
+      
+        
+            <a href="http://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a>
+        
+      
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title"><abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTML 日本語訳</h1>
+  
+  <h2 id="w3c-first-public-working-draft-14-april-2015"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time property="dcterms:issued" class="dt-published" datetime="2015-04-14">14 April 2015</time></h2>
+  <dl>
+    
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2015/WD-html-aria-20150414/">http://www.w3.org/TR/2015/WD-html-aria-20150414/</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/html-aria/">http://www.w3.org/TR/html-aria/</a></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt>Editor:</dt>
+    <dd class="p-author h-card vcard" property="bibo:editor" resource="_:editor0"><span property="rdf:first" typeof="foaf:Person"><meta property="foaf:name" content="Steve Faulkner"><a class="u-url url p-name fn" property="foaf:homepage" href="http://www.paciellogroup.com">Steve Faulkner</a>, <a property="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.paciellogroup.com">The Paciello Group</a></span>
+<span property="rdf:rest" resource="rdf:nil"></span>
+</dd>
+
+    
+    
+  </dl>
+  
+  
+  
+  
+    
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2015
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). 
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+      
+      </p>
+    
+  
+  <hr>
+</div>
+	
+<section property="dc:abstract" class="introductory" id="abstract"><h2 resource="#h-abstract" id="h-abstract"><span property="xhv:role" resource="xhv:heading">概要</span></h2><p>この仕様は、[<cite><a href="#bib-HTML51" class="bibref">HTML51</a></cite>]要素の[<cite><a href="#bib-wai-aria-1.1" class="bibref">wai-aria-1.1</a></cite>]属性の使用に対するウェブ開発者の規則（著者適合性要件）を定義する。また、適合チェックツールに対する要件も定義する。 </p></section><section id="sotd" class="introductory"><h2 resource="#h-sotd" id="h-sotd"><span property="xhv:role" resource="xhv:heading">この文書の位置付け</span></h2>
+  
+    
+      
+        <p>
+          <em>この節は、公開時点におけるこの文書のステータスについて説明する。他の文書がこの文書に取って代わるかもしれない。<abbr title="World Wide Web Consortium">W3C</abbr>が現在公開しているリストとテクニカルレポートの最新版は、 <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at http://www.w3.org/TR/で見つけることができる。</em>
+        </p>
+        
+        <p><abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLは、[<cite><a href="#bib-HTML51" class="bibref">HTML51</a></cite>]仕様のモジュールである。この仕様モジュールが参照するが明示的に定義されない、すべてのHTML機能、適合性要件、または用語は、[<cite><a href="#bib-HTML51" class="bibref">HTML51</a></cite>]仕様で定義される。</p>
+<p>あらゆるバグレポートを歓迎する。<a href="https://github.com/webspecs/html-aria/issues">バグを送信する</a>。</p>
+
+        
+        <p>
+          この文書は、First Public Working DraftとしてHTMLワーキンググループによって発行された。この文書は、<abbr title="World Wide Web Consortium">W3C</abbr>勧告になることを意図する。この文書に関するコメントを作成したい場合、<a href="mailto:public-html@w3.org">public-html@w3.org</a>（<a href="mailto:public-html-request@w3.org?subject=subscribe">購読</a>、<a href="http://lists.w3.org/Archives/Public/public-html/">アーカイブ</a>）に送信されたい。あらゆるコメントを歓迎する。
+            
+          
+        </p>
+        
+        
+        
+          <p>
+            First Public Working Draftとしての公開は、<abbr title="World Wide Web Consortium">W3C</abbr>メンバーの支持を意味するものではない。この文書は草案であり、いつでも更新、他の文書による置き換えや廃止扱いにされうる。進行中の作業以外のものとしてこの文書を引用することは不適切である。
+          </p>
+        
+        
+        
+        <p>
+          
+            この文書は<a id="sotd_patent" property="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">2004年2月6日の<abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシー</a>の下で活動するグループによって作成された。<abbr title="World Wide Web Consortium">W3C</abbr>は、グループの成果物に関する<a href="http://www.w3.org/2004/01/pp-impl/40318/status" rel="disclosure">あらゆる開示特許の公開リスト</a>を管理する。ここには、特許開示にあたっての指示も含まれている。特許について十分に知識のある人物が、仕様に<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a>が認められると判断した場合は、<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシーの第6章</a>に従い情報を開示する必要がある。
+          
+          
+        </p>
+        
+          <p>この文書は、<a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">2014年8月1日の<abbr title="World Wide Web Consortium">W3C</abbr>プロセス文書</a>によって管理される。
+          </p>
+        
+        
+      
+    
+  
+</section><section id="toc"><h2 resource="#h-toc" id="h-toc" class="introductory"><span property="xhv:role" resource="xhv:heading">目次</span></h2><ul id="respecContents" role="directory" class="toc"><li class="tocline"><a class="tocxref" href="#web-developer-requirements-for-use-of-aria-in-html"><span class="secno">1. </span> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対するウェブ開発者の要件</a></li><li class="tocline"><a class="tocxref" href="#document-conformance-requirements-for-use-of-aria-attributes-in-html"><span class="secno">2. </span> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対する文書適合性要件</a></li><li class="tocline"><a class="tocxref" href="#allowed-aria-roles-states-and-properties-1"><span class="secno">3. </span> 許可される<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティー</a></li><li class="tocline"><a class="tocxref" href="#requirements-for-implementers"><span class="secno">4. </span> 実装に対する要件</a><ul class="toc"></ul></li><li class="tocline"><a class="tocxref" href="#conformance-requirements"><span class="secno">5. </span> 適合性要件</a></li><li class="tocline"><a class="tocxref" href="#references"><span class="secno">A. </span> 参考文献</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><span class="secno">A.1 </span> 標準情報</a></li></ul></li></ul></section>
+
+<p class="advisement">この文書は草案であり、コンテンツは予告なし変更されることがある。</p><!--OddPage-->	
+
+<section property="bibo:hasPart" resource="#web-developer-requirements-for-use-of-aria-in-html" typeof="bibo:Chapter" id="web-developer-requirements-for-use-of-aria-in-html"><h2 resource="#rules-wd" id="rules-wd"><span property="xhv:role" resource="xhv:heading"><span class="secno">1. </span> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対するウェブ開発者の要件</span></h2>
+
+	  <p>著者は、<dfn id="dfn-strong-native-semantics"><a href="http://www.w3.org/TR/html/infrastructure.html#strong-native-semantics">強いネイティヴセマンティック&lt;</a></dfn>と衝突するまたは与えられるHTML要素の<dfn id="dfn-default-implicit-aria-semantics"><a href="http://www.w3.org/TR/html/infrastructure.html#default-implicit-aria-semantics">デフォルトの暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティック</a></dfn>と等価である場合を除いた、[<cite><a href="#bib-wai-aria-1.1" class="bibref">wai-aria-1.1</a></cite>]で説明される要求にしたがって、<a href="http://www.w3.org/TR/html/index.html#elements-1">HTML要素</a>の<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および<code>aria-*</code>属性を使用<em title="MAY" class="rfc2119">してもよい</em>。この制約は、開発者が文書の実際のUIを表すことのない無意味なユーザーインターフェース情報（UI）を支援技術製品に報告させることから防ぐことを意図する。 </p>
+	  <p>ウェブ開発者は、<a href="#docconformance">HTMLにおける<abbr title="Accessible Rich Internet Applications">ARIA</abbr>属性の使用に対する文書適合性</a>の表に示されるセマンティックと矛盾する方法で<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および<code>aria-*</code>属性を使用<em title="MUST NOT" class="rfc2119">してはならない</em>。ウェブ開発者は、表に定義されるデフォルトの暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックと一致する値に<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および<code>aria-*</code>属性を設定<em title="SHOULD NOT" class="rfc2119">すべきでない</em>。</p>
+	  <div class="example">
+      次は、<code>button</code>要素で<code>role=heading</code>を使用する。<code>button</code>要素はheadingロールと衝突するデフォルト特性を持つため、これは許可されない。
+      
+      <pre>      &lt;button role="heading"&gt;search&lt;/button&gt;
+      </pre>
+     
+     <details role="group" id="details-id-0"><summary tabindex="0" style="-moz-user-select: none;" aria-controls="details-id-0" role="button" aria-expanded="false">適合性チェックに対する文書例</summary>
+     <p style="display: none;"><a href="http://validator.w3.org/nu/">適合性チェッカー</a>を使用して<a href="http://validator.w3.org/nu/?doc=https%3A%2F%2Fspecs.webplatform.org%2Fhtml-aria%2Fwebspecs%2Fmaster%2Fexamples%2Fnonconforming1.html" target="_blank">このファイルをチェックする</a>と、エラーが表示される。</p>
+     <p style="display: none;"><a href="https://specs.webplatform.org/html-aria/webspecs/master/examples/nonconforming1.html">適合しない<abbr title="Accessible Rich Internet Applications">ARIA</abbr>使用例</a>：</p>
+     <iframe style="width: 100%; height: 300px; display: none;" src="https://specs.webplatform.org/html-aria/webspecs/master/examples/nonconforming1.html"></iframe>
+     </details>
+      </div>
+ </section>
+
+	  <h3 id="sec-strong-native-semantics">デフォルトの暗黙<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティック</h3>
+	  
+	
+	  <p>次の表は、<a href="http://rawgit.com/w3c/aria/master/html-aam/html-aam.html">HTML Accessibility API Mappings</a>使用で定義されるように<a href="http://www.w3.org/TR/html/dom.html#elements">HTML要素</a>に適用する<span>デフォルトの暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティック</span>を記述する。1列目のセルでそれぞれの言語機能（要素または属性）は同じ行の2列目のセルで与えられるARIAセマンティック（ロール、ステート、およびプロパティー）を意味する。 </p>
+	
+	 
+	 <div class="note"><div id="h-note1" role="heading" aria-level="2" class="note-title"><span>注</span></div><p class="" id="aria-usage-note"><span>デフォルトの暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティック</span>と一致する<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および/または<code>aria-*</code>属性の設定は不要であり、かつこのプロパティーが既にブラウザーで設定されるので<em title="NOT RECOMMENDED" class="rfc2119">推奨されない</em>。</p></div><!--OddPage-->
+	
+     
+    <section property="bibo:hasPart" resource="#document-conformance-requirements-for-use-of-aria-attributes-in-html" typeof="bibo:Chapter" id="document-conformance-requirements-for-use-of-aria-attributes-in-html">
+	
+<h2 resource="#docconformance" id="docconformance"><span property="xhv:role" resource="xhv:heading"><span class="secno">2. </span> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対する文書適合性要件</span></h2>
+ <table>
+		  <caption>
+		  HTML言語の機能による<abbr title="Accessible Rich Internet Applications">ARIA</abbr>属性利用の規則
+	</caption>
+	
+			<tbody><tr>
+			  <th>HTML言語の機能 </th>
+			  <th>デフォルトの暗黙<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティック - 使用<em title="SHOULD NOT" class="rfc2119">すべきでない</em></th>
+			  <th>使用<em title="MAY" class="rfc2119">してもよい</em><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティー</th>
+			</tr>
+			<tr id="ahref" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-hyperlink-href"><code>href</code></a>をもつ<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-a-element"><code>a</code></a>要素</td>
+			  <td><code>role=<a href="#index-aria-link">link</a></code></td>
+			  <td><p>ロール：<code><a href="#index-aria-button">button</a>, <a href="#index-aria-checkbox">checkbox</a>, <a href="#index-aria-menuitem"> menuitem</a>, <a href="#index-aria-menuitemcheckbox">menuitemcheckbox</a>, <a href="#index-aria-menuitemradio">menuitemradio</a>, <a href="#index-aria-tab">tab</a>, </code>または<code> <a href="#index-aria-treeitem">treeitem</a></code> </p>
+				
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr id="anohref" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-hyperlink-href"><code>href</code></a>をもたない<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-a-element"><code>a</code></a>要素</td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong>すべての</strong><code>role</code></p>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p>
+			  </td>
+			</tr>
+			<tr id="address" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-address-element"><code>address</code></a> 
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：<a href="#index-aria-contentinfo"><code>contentinfo</code></a><br><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr id="areahref" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-hyperlink-href"><code>href</code></a>をもつ<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-area-element"><code>area</code></a>要素</td>
+			  <td><code>role=<a href="#index-aria-link">link</a></code></td>
+			  <td><p><code><a href="#index-aria-link">link</a></code>ロールに受け入れ可能なすべての<code>aria-*</code>属性。すべての<a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr id="article" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-article-element">article</a></code></td>
+			  <td><code>role=<a href="#index-aria-article">article</a></code></td>
+			  <td><p>ロール：<code>presentation, document, application, main, region</code>。<br><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールで受け入れ可能なすべての<code>aria-*</code>属性</p>
+			  </td>
+			</tr>
+			<tr id="aside" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-aside-element">aside</a> </code></td>
+			  <td><code>role=<a href="#index-aria-complementary">complementary</a></code></td>
+		      <td><p>ロール：<code> <a href="#index-aria-note">note</a>, <a href="#index-aria-region">region</a></code>, <a href="#index-aria-search"><code>search</code></a>。</p>
+				<p>
+				  <a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr id="audio" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-audio-element">audio</a> </code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：<a href="#index-aria-application"><code>application</code></a> <br><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<a href="#index-aria-application"><code>application</code></a>ロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+		  </tbody><tbody>
+			<tr id="base" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-base-element">base</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr id="body" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-body-element"><code>body</code></a></td>
+			  <td><code>role=<a href="#index-aria-document">document</a></code></td>
+			  <td><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a> </td>
+			</tr>
+			<tr id="button" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-button-element">button</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-button">button</a></code></td>
+			  <td><p>ロール：<code><a href="#index-aria-link">link</a>, <a href="#index-aria-menuitem">menuitem</a>, <a href="#index-aria-menuitemcheckbox">menuitemcheckbox</a>, <a href="#index-aria-menuitemradio">menuitemradio</a>, <a href="#index-aria-radio">radio</a></code>. <br><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性
+			  </p></td>
+			</tr>
+			<tr id="typemenu" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-button-element">button</a> <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-button-type-menu-state">type="menu"</a></code>
+			  </td><td><code>role=<a href="#index-aria-button">button</a></code></td>
+			  <td><p>ロール：<code><a href="#index-aria-link">link</a>, <a href="#index-aria-menuitem">menuitem</a>, <a href="#index-aria-menuitemcheckbox">menuitemcheckbox</a>, <a href="#index-aria-menuitemradio">menuitemradio</a>, <a href="#index-aria-radio">radio</a></code>. <br><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性
+				</p></td>
+			</tr>
+			<tr id="caption" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-caption-element"><code>caption</code></a>            
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></td>
+			</tr>
+			<tr id="col-colgroup" tabindex="-1">
+			  <td>
+				<p><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-col-element"><code>col</code></a><code>, <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-colgroup-element">colgroup</a></code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-colgroup-element"></a></p>
+				<p></p>            
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr id="datalist" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-datalist-element">datalist</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-listbox">listbox</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>listbox</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性
+	
+	</p></td>
+			</tr>
+			<tr id="dd-dt" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-dd-element"><code>dd</code></a>, <code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-dt-element">dt</a></code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></td>
+			</tr>
+			<tr id="details" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-details-element">details</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-group">group</a></code></td>
+			  <td><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>group</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性</td>
+			</tr>
+			<tr id="dialog" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-dialog-element"><code>dialog</code></a></td>
+			  <td><code>role=<a href="#index-aria-dialog">dialog</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>dialog</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr id="div" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-div-element"><code>div</code> </a>     
+			  </td><td>ロールなし</td>
+			  <td><p><strong>すべての</strong><code>role</code></p>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr id="dl" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-dl-element"><code>dl</code></a>      
+			  </td><td><code>role=<a href="#index-aria-list">list</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr id="embed" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-embed-element">embed</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td> <p>ロール：<code>application, document, presentation</code>,<code> img </code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr id="figure" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-figure-element"><code>figure  </code></a>      
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong>すべての</strong><code>role</code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr id="footer" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-footer-element">footer</a> 
+				</code>
+			  </td><td><code>article</code>または<code>section</code>要素の子孫でない<code>role=<a href="#index-aria-contentinfo">contentinfo</a></code>、そうでなければ<a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a> </p></td>
+			</tr>
+			<tr id="form" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-form-element">form</a></code></td>
+			  <td><code>role=<a href="#index-aria-form">form</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr id="p-pre-blockquote" tabindex="-1">
+			  <td><p>他の場所で記載されないグループコンテンツ：</p>
+			  <p><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-p-element"><code>p</code></a><code>, <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-pre-element">pre</a>, <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-blockquote-element">blockquote</a></code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-blockquote-element"></a></p></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport">すべての<code>role</code></strong></p>
+				
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr id="h1-h6" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements"><code>h1</code></a> - <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements"><code>h6</code></a>要素</td>
+			  <td><code>aria-level</code> = 正の整数をもつ、<code>role=<a href="#index-aria-heading">heading</a></code></td>
+			  <td><span><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a> </span></td>
+			</tr>
+			<tr id="head" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-head-element">head</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr id="header" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-header-element"><code>header</code></a>
+			  </td><td><code>article</code>または<code>section</code>要素の子孫でない<code>role=<a href="#index-aria-banner">banner</a></code>、そうでなければ<a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td>
+			  <p>グローバル<a href="#index-aria-global"> <code>aria-*</code>属性</a> </p></td>
+			</tr>
+					<tr id="hr" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-hr-element">hr</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-separator">separator</a></code></td>
+			  <td>グローバル<code>aria-*</code>属性および<code>separator</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性</td>
+			</tr>
+			<tr id="html" tabindex="-1">
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-html-element">html</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr id="iframe" tabindex="-1">
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-iframe-element"><code>iframe</code></a>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：<code>application, document, </code><code>img </code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+	 <tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-iframe-element"><code>iframe (seamless)</code></a>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：<code>application, document, </code><code>img </code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-img-alt">alt</a>=""をもつ<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-img-element">img</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-img-alt">alt</a>="<em>テキスト</em>"をもつ<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-img-element">img</a></code></td>
+			  <td><code>role=<a href="#index-aria-img">img</a></code></td>
+			  <td><p><strong>すべての</strong><code>role</code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code>input type= </code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#button-state-(type=button)"><code>button
+			  </code></a></td>
+			  <td><code>role=<a href="#index-aria-button">button</a></code></td>
+			  <td><p>ロール：<code>link, menuitem, menuitemcheckbox, menuitemradio, radio </code></p>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性				</p></td>
+			</tr>
+			<tr>
+			  <td><code>input type= <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#checkbox-state-(type=checkbox)">checkbox</a></code>
+			  </td>
+			  <td>
+			    <p><code>role=<a href="#index-aria-checkbox">checkbox</a></code></p></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#color-state-(type=color)">color</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p>
+              <p><a href="#index-aria-global"></a></p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#date-state-(type=date)">date</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p>
+			  </td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#date-and-time-state-(type=datetime)">datetime</a>
+			  </code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p>
+
+			  </td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-input-list"><code>list</code></a>属性のない<code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#e-mail-state-(type=email)">email</a></code></td>
+			  <td><code>role=<a href="#index-aria-checkbox">textbox</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>textbox</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性</p>
+				
+			  </td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#file-upload-state-(type=file)">file</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#hidden-state-(type=hidden)">hidden</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr>
+			  <td><code>input type= </code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#image-button-state-(type=image)"><code>image
+			  </code></a></td>
+			  <td><code>role=<a href="#index-aria-button">button</a></code></td>
+			  <td><p>ロール：<code>link, menuitem, menuitemcheckbox, menuitemradio, radio </code></p>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性				</p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#month-state-(type=month)">month</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#number-state-(type=number)">number</a></code></td>
+			  <td><code>role=<a href="#index-aria-spinbutton">spinbutton</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>spinbutton</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性
+	
+			  </p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#password-state-(type=password)" title="attr-input-type-password">password</a></code></td>
+			  <td><code>role=<a href="#index-aria-textbox">textbox</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#radio-button-state-(type=radio)" title="attr-input-type-radio">radio</a></code></td>
+			  <td><code>role=<a href="#index-aria-radio">radio</a></code></td>
+			  <td><p><code>role</code>: <code>menuitemradio</code></p>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>menuitemradio</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#range-state-(type=range)" title="attr-input-type-range">range</a></code></td>
+			  <td><code>role=<a href="#index-aria-slider">slider</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>slider</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性
+			  </p></td>
+			</tr>
+			<tr>
+			  <td><code>input type= <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#reset-button-state-(type=reset)" title="attr-input-type-reset">reset</a></code></td>
+			  <td><code>role=<a href="#index-aria-button">button</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>button</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-input-list"><code>list</code></a>属性のない<code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#text-(type=text)-state-and-search-state-(type=search)" title="attr-input-type-search">search</a></code></td>
+			  <td><code>role=<a href="#index-aria-textbox">textbox</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a> </p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#submit-button-state-(type=submit)" title="attr-input-type-submit">submit </a></code></td>
+			  <td><code>role=<a href="#index-aria-button">button</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>button</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-input-list"><code>list</code></a>属性のない<code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#telephone-state-(type=tel)" title="attr-input-type-tel">tel</a></code></td>
+			  <td><code>role=<a href="#index-aria-textbox">textbox</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a> </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-input-list" title="concept-input-list"><code>list</code></a>属性のない<code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#text-(type=text)-state-and-search-state-(type=search)">text</a></code></td>
+			  <td><code>role=<a href="#index-aria-textbox">textbox</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a> </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-input-list"><code>list</code></a>属性をもつ<code>input type =</code> <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#text-(type=text)-state-and-search-state-(type=search)" title="attr-input-type-text"><code>text</code></a><code>, <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#text-(type=text)-state-and-search-state-(type=search)" title="attr-input-type-search">search</a>, <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#telephone-state-(type=tel)" title="attr-input-type-tel">tel</a>, <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#url-state-(type=url)" title="attr-input-type-url">url</a></code>または<code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#e-mail-state-(type=email)" title="attr-input-type-email">email</a></code></td>
+			  <td><code>role=<a href="#index-aria-combobox">combobox</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+			    <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>combobox</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性
+				
+		      </p></td>
+			</tr>
+			<tr>
+			  <td><code>input  type= <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#time-state-(type=time)" title="attr-input-type-time">time</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/single-page.html#concept-input-list" title="concept-input-list"><code>list</code></a>属性のない<code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#url-state-(type=url)">url</a></code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#url-state-(type=url)" title="attr-input-type-url"></a></td>
+			  <td><code>role=<a href="#index-aria-textbox">textbox</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code>input type = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#week-state-(type=week)">week</a></code></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><p><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-ins-element">ins</a>および<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-del-element">del</a></p>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport">すべての<code>role</code></strong></p>
+			    <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-keygen-element"><code>keygen</code></a> 
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-label-element"><code>label</code></a> 
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td>親が<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-ol-element"><code>ol</code></a>または<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-ul-element"><code>ul</code></a>要素である<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-li-element"><code>li</code></a>要素
+			  </td><td><code>role=<a href="#index-aria-listitem">listitem</a></code></td>
+			  <td><p>ロール：<code>listitem, menuitem, menuitemcheckbox, menuitemradio, option, separator, tab</code>または<code>treeitem</code></p>
+			 </td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-link-href"><code>href</code></a>をもつ<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-link-element"><code>link</code></a>要素</td>
+			  <td><code>role=<a href="#index-aria-link">link</a></code></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+		   <tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-main-element"><code>main</code></a></td>
+			  <td><code>role=<a href="#index-aria-main">main</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr> 
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-map-element"><code>map</code></a></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#mathml"><code>math</code></a></td>
+			  <td><code>role=</code><code><a href="#index-aria-math">math</a></code></td>
+			  <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
+                <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr><!--
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-menu-element">menu</a> <a 
+			  href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menu-type">type</a> = <a 
+			  href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#context-menu-state" title="context menu state"> popup menu</a></code>
+			  </td>
+			  <td><code>role=menu</code> with <code>aria-haspopup=&quot;true&quot;</code></td>
+			  <TD class="nosupport"><strong>NO</strong> <strong><sup><a href="#note6">note 6</a></sup></strong></TD>
+			  <td><p><a id="note6" tabindex="-1">Note 6:<strong> <span class="support">YES</span></strong></a> if <code>menu </code>element is being used 
+			  in a <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">scripted polyfill</a>.</p>
+				<p><a href="#index-aria-global">global <code>aria-*</code> attributes</a> and any <code>aria-*</code> attributes applicable to the
+				<code> toolbar </code>role. </p>
+			  <p><strong>Not</strong> <code>role=presentation</code></p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-menu-element">menu</a> <a 
+			  href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menu-type">type</a> = <a 
+			  href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#list-state" title="list state">list</a></code></td>
+			  <td><code>role=menu</code></td>
+			  <td class="nosupport"><strong>NO <sup><a href="#note6">note 6</a></sup></strong></td>
+			  <td><p><a id="note6" tabindex="-1">Note 6<strong>: <span class="support">YES</span></strong></a> if<code> menu </code>element is being used 
+			  in a <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">scripted polyfill</a>.</p>
+				<p><a href="#index-aria-global">global <code>aria-*</code> attributes</a> and any <code>aria-*</code> attributes applicable to the
+				<code> menu </code>role. </p>
+			  <p><strong>Not</strong> <code>role=presentation</code></p></td>
+			</tr>
+			-->
+			
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-menu-element">menu</a> <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menu-type">type</a> = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#toolbar-state">toolbar</a></code></td>
+			  <td><code>role=<a href="#index-aria-toolbar">toolbar</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>toolbar</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-menuitem-element"><code>menuitem</code></a>          
+				<code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menuitem-type">type</a> = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menuitem-type-state-command">command</a></code>
+			  </td><td><code>role=<a href="#index-aria-menuitem">menuitem</a></code></td>
+			  <td>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>menuitem</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-menuitem-element"><code>menuitem</code></a> <code>
+			  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menuitem-type">type</a> = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menuitem-type-state-checkbox">checkbox</a></code>
+			  </td><td><code>role=<a href="#index-aria-menuitemcheckbox">menuitemcheckbox</a></code></td>
+			  <td>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>menuitemcheckbox</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-menuitem-element"><code>menuitem</code></a> <code>
+			  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menuitem-type">type</a> = <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-menuitem-type-state-radio">radio</a></code>
+			  </td><td><code>role=<a href="#index-aria-menuitemradio">menuitemradio</a></code></td>
+			  <td>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>menuitemradio</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-meta-element">meta</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-meter-element">meter</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-progressbar">progressbar</a></code></td>
+			  <td><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/TR/html51/semantics.html#the-nav-element">nav</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-navigation">navigation</a></code></td>
+			  <td><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-noscript-element">noscript</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-object-element"><code>object</code></a><code>
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：<code>application, document, </code><code>img </code></p>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-ol-element">ol</a> </code>
+			  </td><td><code>role=<a href="#index-aria-list">list</a></code></td>
+			  <td><p>ロール：<code>directory, group, listbox, menu, menubar, tablist, toolbar</code>または<code>tree</code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-optgroup-element"><code>optgroup</code></a> 
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#concept-select-option-list">オプションリスト</a>で存在するまたは<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-datalist-element">datalist</a>要素で提案を表す<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-option-element">option</a>要素 
+			  </td><td><code>role=<a href="#index-aria-option">option</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-output-element">output</a>
+				</code>
+			  </td><td><code>role=</code><code><a href="#index-aria-status">status</a></code></td>
+			  <td><p><strong>すべての</strong><code>role</code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-param-element">param</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+			  <td><code><a href="http://picture.responsiveimages.org/">picture</a> </code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-progress-element">progress</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-progressbar">progressbar</a></code></td>
+			  <td>
+	
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>progressbar</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-script-element">script</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+		   <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-section-element"><code>section</code></a>
+			  </td><td><code>role=<a href="#index-aria-region">region</a></code></td>
+			  <td><p>ロール：<code>alert, alertdialog, application, contentinfo, dialog, document, log, marquee, search</code>または<code>status </code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-select-element"><code>select</code></a></td>
+			  <td><code>role=<a href="#index-aria-listbox">listbox</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-source-element">source</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-span-element"><code>span</code></a>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p><strong>すべての</strong><code>role</code></p>
+				<p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-style-element">style</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#svg">SVG</a></code>        
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：<code>application, document, </code><code>img </code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-summary-element">summary</a> 
+				</code>
+			  </td><td><code>role=<a href="#index-aria-button">button</a></code></td>
+			  <td><p>ロール：親（<code>details</code>）要素の<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-details-open"><code>open</code></a>属性が存在する場合は<code>aria-expanded="true"</code>をもつ<code>button</code>、そうでなければ<code>aria-expanded="false"</code>。 </p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>button</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-table-element"><code>table</code></a>            
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：すべて
+			  </p>
+			    <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-template-element">template</a> </code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-textarea-element">textarea</a> </code>
+			  </td><td><code>role=<a href="#index-aria-textbox">textbox</a></code></td>
+			  <td><p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><p><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-tbody-element"><code>tbody</code></a>, <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-thead-element"><code>thead</code></a>, 
+	  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-tfoot-element"><code>tfoot</code></a></p></td>          
+			  <td><code>role=<a href="#index-aria-rowgroup">rowgroup</a></code></td>
+			  <td><p>ロール：すべて 
+	
+			  </p>
+		      <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a></p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-title-element">title</a> 
+				</code>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-td-element">td</a></code>            
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：すべて
+			  </p>
+			    <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td>   <p>他の場所で記載されないテキストセマンティック要素：</p>
+				<p><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-em-element"><code>em</code></a><code>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-strong-element">strong</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-small-element">small</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-s-element">s</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-cite-element">cite</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-q-element">q</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-dfn-element">dfn</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-abbr-element">abbr</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-time-element">time</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-code-element">code</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-var-element">var</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-samp-element">samp</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-kbd-element">kbd</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-sub-and-sup-elements">sub and sup</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-i-element">i</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-b-element">b</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-u-element">u</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-mark-element">mark </a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-ruby-element">ruby</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-rt-element">rt</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-rp-element">rp</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-bdi-element">bdi</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-bdo-element">bdo</a>, 
+				  <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-br-element">br</a>, 
+				<a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-wbr-element">wbr</a> </code></p></td>
+			  <td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td>ロール：すべて
+			    <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-th-element">th</a></code><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-th-element"></a>      
+			  </td><td><code>role=<a href="#index-aria-columnheader">columnheader</a></code>または<code><a href="#index-aria-rowheader">rowheader</a></code></td>
+			  <td><p>ロール：すべて
+			  </p>
+			    <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><p><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-tr-element"><code>tr</code></a></p>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><p>ロール：すべて
+			  </p>
+			    <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-track-element"><code>track</code></a>            
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td><strong class="nosupport"><code>role</code>または<code>aria*</code>属性なし</strong></td>
+		    </tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-ul-element"><code>ul</code></a>
+			  </td><td><code>role=<a href="#index-aria-list">list</a></code></td>
+			  <td><p>ロール：<code>directory, group, listbox, menu, menubar, tablist, toolbar, tree, presentation </code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可されるロールに受け入れ可能なすべての<code>aria-*</code>属性</p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-video-element"><code>video</code></a>
+			  </td><td><a class="internalDFN" href="#dfn-none">NONE</a></td>
+			  <td> <p>ロール：<code>application</code></p>
+			  <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>application</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性 </p></td>
+			</tr>
+	
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-fe-disabled"><code>disabled</code></a>属性をもつ要素
+			  </td>
+			  <td><code>aria-disabled="true"</code></td>
+			  <td><p>HTML5で<a href="http://www.w3.org/html/wg/drafts/html/master/single-page.html#attributes-1">許可される<code>disabled</code>属性</a>であるすべての要素上の<code>disabled</code>属性を使用する。 
+			  </p>
+			  <p>HTML5で<code>disabled</code>属性を持つことが<strong>許可されない</strong>要素に対してのみ<code>aria-disabled</code>属性を使用する
+			  </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#attr-input-required"><code>required</code></a>属性をもつ要素</td>
+			  <td><code>aria-required="true"</code></td>
+			  <td><p>HTML5で<a href="http://www.w3.org/html/wg/drafts/html/master/index.html#attributes-1">許可される<code>required</code>属性</a>であるすべての要素上の<code>aria-required</code>属性を使用する。 
+			  </p>
+			  <p><code>aria-required</code>属性を許可する付属<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロールを持つ要素に対して使用<em title="MAY" class="rfc2119">してもよい</em></p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-readonly-attribute"><code>readonly</code></a>属性をもつ要素 </td>
+			  <td><code>aria-readonly="true"</code></td>
+			  <td><p>HTML5で<a href="http://www.w3.org/html/wg/drafts/html/master/index.html#attributes-1">許可される<code>readonly</code>属性</a>であるすべての要素上の<code>readonly</code>属性を使用する。 
+			  </p>
+			  <p>HTML5で<code>readonly</code>属性を持つことが<em>許可されない</em>要素に対してのみ<code>aria-readonly</code>属性を使用する
+			  </p></td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-hidden-attribute"><code>hidden</code></a>属性をもつ要素 </td>
+			  <td><code>aria-hidden="true"</code></td>
+			  <td>&nbsp;</td>
+			</tr>
+			<tr>
+			  <td><a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#candidate-for-constraint-validation">制約の検証のための候補</a>であるが、<a data-anolis-xref="concept-fv-valid" href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#concept-fv-valid">その制約を満た</a>さない要素</td>
+			  <td><code>aria-invalid="true"</code></td>
+			  <td><p>HTML5で<code>readonly</code>属性を持つことが<em>許可されない</em>要素に対してのみ<code>aria-invalid</code>属性を使用する </p>
+	</td>
+			</tr>
+</tbody></table>
+          
+          <p>表の2列目の<dfn id="dfn-none">NONE</dfn>でマークされる要素は、一切の<a class="internalDFN" href="#dfn-default-implicit-aria-semantics">デフォルトの暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティック</a>を持たないが、意味を持ち、かつこの意味は<abbr title="Accessible Rich Internet Applications">ARIA</abbr>によって提供されないロール、ステートおよびプロパティーで表されてもよく、アクセシビリティーAPIを経由して支援技術のユーザーに公開される。したがって、ウェブ開発者は、記載される要素のセマンティックを上書きするよりも、<code>div</code>または<code>span</code>などの意味的に中立な要素に<code>role</code>属性を追加することを推奨する。    </p>
+      <div class="note"><div id="h-note2" role="heading" aria-level="3" class="note-title"><span>注</span></div><div class="">
+    <p>著者は、ここで提供されるものを超えたHTMLにおける<abbr title="Accessible Rich Internet Applications">ARIA</abbr>の使用に関するガイダンスのために、以下の文書の利用を推奨する：</p>
+
+    <ul>
+      <li><a href="http://w3c.github.io/aria-in-html/">Using <abbr title="Accessible Rich Internet Applications">WAI-ARIA</abbr> in HTML</a> - アクセシブル・リッチ・インターネット・アプリケーション仕様[<cite><a href="#bib-wai-aria" class="bibref">wai-aria</a></cite>]を使用してHTML要素にアクセシビリティ情報を追加する方法についての開発者のための実用的なガイド。      </li>
+
+      <li><a href="http://www.w3.org/WAI/PF/aria-practices/">WAI-<abbr title="Accessible Rich Internet Applications">ARIA</abbr> 1.0 Authoring Practices</a> - アクセシブル・リッチ・インターネット・アプリケーションを理解して実装する著者のガイド。</li>
+    </ul>
+    </div></div>
+
+    <div class="example">
+
+   <p>アクセシビリティツールにより便利な方法でユーザーにコンテンツをレンダリングさせるためにこれらの機能を使用できる。たとえば、実際には画像であるASCIIアートは、テキストのように見え、かつ適切な注釈が存在しない場合、非常に苦痛な多数の中断のある読み上げとして、スクリーンリーダーによって結局レンダリングされてしまっているだろう。この節で説明される機能を使用すると、支援技術にASCIIアートを飛ばさせ、代わりにキャプションのみを読むことができる：</p>
+
+   <pre>&lt;figure <strong>role="img" aria-labelledby="fish-caption"</strong>
+   &lt;pre&gt;
+   o           .'`/
+     '      /  (
+   O    .-'` ` `'-._      .')
+      _/ (o)        '.  .' /
+      )       )))     &gt;&lt;  &lt;
+      `\  |_\      _.'  '. \
+        '-._  _ .-'       '.)
+    jgs     `\__\
+   &lt;/pre&gt;
+   &lt;figcaption <strong>id="fish-caption"</strong>&gt;
+    Joan G. Stark, "&lt;cite&gt;fish&lt;/cite&gt;".
+    October 1997. ASCII on electrons. 28×8.
+   &lt;/figcaption&gt;
+   &lt;/figure&gt;
+   </pre><!-- source: http://www.geocities.com/SoHo/7373/aquatic.htm#fish -->
+
+   
+
+	</div><!--OddPage-->
+    </section>
+  <section property="bibo:hasPart" resource="#allowed-aria-roles-states-and-properties-1" typeof="bibo:Chapter" id="allowed-aria-roles-states-and-properties-1">
+	<h2 resource="#allowed-aria-roles-states-and-properties" id="allowed-aria-roles-states-and-properties"><span property="xhv:role" resource="xhv:heading"><span class="secno">3. </span> 許可される<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティー</span></h2>
+	<p><em>この節は非規範的である。</em></p>
+	<div class="note"><div id="h-note3" role="heading" aria-level="3" class="note-title"><span>注</span></div><p class="">以下の表は、HTMLで使用するために認められるARIAロール、ステートおよびプロパティーに参考情報を提供する。すべての<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティーは[<cite><a href="#bib-wai-aria" class="bibref">wai-aria</a></cite>]仕様で規範的に定義されている。表における<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティーへのリンクは、規範[<cite><a href="#bib-wai-aria" class="bibref">wai-aria</a></cite>]定義を参照する。</p></div>
+	<table>
+	<caption><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティー</caption>
+	<thead>
+	<tr>
+	<th>ロール</th>
+	<th>説明</th>
+	<th>必須プロパティー</th>
+	<th>サポートされるプロパティー</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr><td tabindex="-1" id="index-aria-global">すべて</td>
+	<td><abbr title="Accessible Rich Internet Applications">ARIA</abbr><dfn id="dfn-global-states-and-properties">グローバルステートおよびプロパティー</dfn>は、任意のHTML要素で使用できる。</td>
+	<td>なし</td>
+	<td>
+	<ul>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-atomic">aria-atomic</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-busy">aria-busy（ステート）</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-controls">aria-controls</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-describedby">aria-describedby</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-disabled">aria-disabled（ステート）</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-dropeffect">aria-dropeffect</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-flowto">aria-flowto</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-grabbed">aria-grabbed（ステート）</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-haspopup">aria-haspopup</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-hidden">aria-hidden（ステート）</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-invalid">aria-invalid（ステート）</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-label">aria-label</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-labelledby">aria-labelledby</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-live">aria-live</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-owns">aria-owns</a></code></li>
+	<li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-relevant">aria-relevant</a></code></li>
+	</ul>
+	</td></tr><tr><td tabindex="-1" id="index-aria-alert"><code><a href="http://momdo.github.io/wai-aria-1.1/#alert">alert</a></code></td>
+	<td>重要、かつ通常は時間依存な情報を伴うメッセージ。関連する<code>alertdialog</code>と<code>status</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-alertdialog"><code><a href="http://momdo.github.io/wai-aria-1.1/#alertdialog">alertdialog</a></code></td>
+	  <td>初期のフォーカスがダイアログ内の要素に移動する場合、警告メッセージを含むダイアログの種類。関連する<code>alert</code>と<code>dialog</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-application"><code><a href="http://momdo.github.io/wai-aria-1.1/#application">application</a></code></td>
+	<td>ウェブ文書とは対照的に、ウェブアプリケーションとして宣言される領域。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-article"><code><a href="http://momdo.github.io/wai-aria-1.1/#article">article</a></code></td>
+	<td>文書、ページ、またはサイトの独立した部分を形成する構成物から成るページのセクション。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-banner"><code><a href="http://momdo.github.io/wai-aria-1.1/#banner">banner</a></code></td>
+	<td>ページ固有のコンテンツよりもむしろ、主にサイト中心のコンテンツが含まれる領域。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-button"><code><a href="http://momdo.github.io/wai-aria-1.1/#button">button</a></code></td>
+	<td>クリックされるまたは押される際に、ユーザートリガーアクションを可能にする入力。関連する<code>link</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-pressed">aria-pressed（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-checkbox"><code><a href="http://momdo.github.io/wai-aria-1.1/#checkbox">checkbox</a></code></td>
+	<td>true、false、またはmixedの3つの取りうる値を持つチェック可能な入力。</td>
+	<td><ul>
+	 <li><a href="http://momdo.github.io/wai-aria-1.1/#aria-checked"><code>aria-checked（ステート）</code></a></li>
+	</ul></td>
+	<td><code></code></td></tr>
+	<tr><td tabindex="-1" id="index-aria-columnheader"><code><a href="http://momdo.github.io/wai-aria-1.1/#columnheader">columnheader</a></code></td>
+	<td>列のヘッダー情報を含むセル。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-sort">aria-sort</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-readonly">aria-readonly</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-combobox"><code><a href="http://www.w3.org/TR/wai-aria-1.1/#combobox">combobox</a></code></td>
+	<td>選択のプレゼンテーション、ユーザーがオプションを選択する前に打ち込めるか、リストで新しい項目として任意のテキストを入力するために打ち込める場合、テキストボックスに通常似ている。関連する<code>listbox</code>を参照のこと。</td>
+	<td><ul>
+	 <li><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded"><code>aria-expanded（ステート）</code></a></li>
+	</ul></td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-autocomplete">aria-autocomplete</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-complementary"><code><a href="http://momdo.github.io/wai-aria-1.1/#complementary">complementary</a></code></td>
+	<td>主コンテンツから分離される際、DOM階層における同等のレベルで主コンテンツに相補的であるように設計されているが、意味のある文書のサポートするセクション。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-contentinfo"><code><a href="http://momdo.github.io/wai-aria-1.1/#contentinfo">contentinfo</a></code></td>
+	<td>親文書に関する情報を含む大きな認知できる領域。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-definition"><code><a href="http://momdo.github.io/wai-aria-1.1/#definition">definition</a></code></td>
+	<td>用語または概念の定義。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-dialog"><code><a href="http://momdo.github.io/wai-aria-1.1/#dialog">dialog</a></code></td>
+	<td>ダイアログボックスは、情報を入力する、または応答を要求するようユーザーに促すために、アプリケーションの現在の処理を中断するように設計されるアプリケーションウィンドウである。関連する<code>alertdialog</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-directory"><code><a href="http://momdo.github.io/wai-aria-1.1/#directory">directory</a></code></td>
+	<td>静的なコンテンツの表などの、グループのメンバーへの参照リスト。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-document"><code><a href="http://momdo.github.io/wai-aria-1.1/#document">document</a></code></td>
+	<td>ウェブアプリケーションとは対照的に、文書コンテンツとして宣言される関連情報を含む領域。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-form"><code><a href="http://momdo.github.io/wai-aria-1.1/#form">form</a></code></td>
+	<td>全体として、フォームを作成するために組み合わせる、項目およびオブジェクトのコレクションを含む目印領域。関連する<code>search</code>を参照のこと。
+	</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-grid"><code><a href="http://momdo.github.io/wai-aria-1.1/#grid">grid</a></code></td>
+	<td>表のように、行と列に配列された表形式のデータセルを含むインタラクティブなコントロールであるグリッド。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-level">aria-level</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-multiselectable">aria-multiselectable</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-readonly">aria-readonly</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-gridcell"><code><a href="http://momdo.github.io/wai-aria-1.1/#gridcell">gridcell</a></code></td>
+	<td>グリッドまたはツリーグリッドにおけるセル。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-readonly">aria-readonly</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-group"><code><a href="http://momdo.github.io/wai-aria-1.1/#group">group</a></code></td>
+	<td>支援技術によってページ概要または目次に含まれることを意図されないユーザーインターフェイスオブジェクトの集合。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-heading"><code><a href="http://momdo.github.io/wai-aria-1.1/#heading">heading</a></code></td>
+	<td>ページのセクションに対する見出し。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-level">aria-level</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-img"><code><a href="http://momdo.github.io/wai-aria-1.1/#img">img</a></code></td>
+	<td>画像を形成する要素のコレクションに対するコンテナ。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-link"><code><a href="http://momdo.github.io/wai-aria-1.1/#link">link</a></code></td>
+	<td>活性化された場合、ユーザーエージェントにそのリソースに移動させる、内部または外部のリソースへのインタラクティブな参照。関連する<code>button</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-list"><code><a href="http://momdo.github.io/wai-aria-1.1/#list">list</a></code></td>
+	<td>非対話型リスト項目のグループ。関連する<code>listbox</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-listbox"><code><a href="http://momdo.github.io/wai-aria-1.1/#listbox">listbox</a></code></td>
+	<td>ユーザーが選択肢のリストから1つ以上の項目を選択できるウィジェット。関連する<code>combobox</code>と<code>list</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-multiselectable">aria-multiselectable</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-listitem"><code><a href="http://momdo.github.io/wai-aria-1.1/#listitem">listitem</a></code></td>
+	<td><code>list</code>または<code>directory</code>における1つの項目。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-level">aria-level</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-posinset">aria-posinset</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-setsize">aria-setsize</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-log"><code><a href="http://momdo.github.io/wai-aria-1.1/#log">log</a></code></td>
+	<td>新しい情報が意味のある順序で追加され、かつ古い情報が消滅する場合のlive regionの種類。関連する<code>marquee</code>を参照のこと。
+	</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-main"><code><a href="http://momdo.github.io/wai-aria-1.1/#main">main</a></code></td>
+	<td>文書の主コンテンツ。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-marquee"><code><a href="http://momdo.github.io/wai-aria-1.1/#marquee">marquee</a></code></td>
+	<td>必須でない情報が頻繁に変更されるライブ領域の種類。関連する<code>log</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-math"><code><a href="http://momdo.github.io/wai-aria-1.1/#math">math</a></code></td>
+	<td>数式を表すコンテンツ。 </td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-menu"><code><a href="http://momdo.github.io/wai-aria-1.1/#menu">menu</a></code></td>
+	<td>ユーザーに選択肢のリストを提供するウィジェットの種類。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-menubar"><code><a href="http://momdo.github.io/wai-aria-1.1/#menubar">menubar</a></code></td>
+	<td>一般に表示されたままでかつ水平に提示される、メニューの表示。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-menuitem"><code><a href="http://momdo.github.io/wai-aria-1.1/#menuitem">menuitem</a></code></td>
+	<td><code>menu</code>や<code>menubar</code>に含まれる選択肢のグループ内のオプション。</td>
+	<td>なし</td>
+	<td><code></code></td></tr>
+	<tr><td tabindex="-1" id="index-aria-menuitemcheckbox"><code><a href="http://momdo.github.io/wai-aria-1.1/#menuitemcheckbox">menuitemcheckbox</a>
+	</code></td>
+	<td>true、false、mixedの、3つの取りうる値を持つチェック可能メニュー項目。</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-checked">aria-checked（ステート）</a></code></li>
+	</ul></td>
+	<td><code></code></td></tr>
+	<tr><td tabindex="-1" id="index-aria-menuitemradio"><code><a href="http://momdo.github.io/wai-aria-1.1/#menuitemradio">menuitemradio</a></code></td>
+	<td>一度に1つのみがチェックできる、<code>menuitemradio</code>ロールのグループにおいてチェック可能なメニュー項目。</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-checked">aria-checked（ステート）</a></code></li>
+	</ul></td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-posinset">aria-posinset</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-setsize">aria-setsize</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-navigation"><code><a href="http://momdo.github.io/wai-aria-1.1/#navigation">navigation</a></code></td>
+	<td>文書または関連する文書をナビゲートするためのナビゲーション要素（通常はリンク）のコレクション。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-note"><code><a href="http://momdo.github.io/wai-aria-1.1/#note">note</a></code></td>
+	<td>リソースの主コンテンツに挿入的または付随的であるコンテンツのセクション。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-option"><code><a href="http://momdo.github.io/wai-aria-1.1/#option">option</a></code></td>
+	<td>選択リスト内の選択可能な項目。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-checked">aria-checked（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-posinset">aria-posinset</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-setsize">aria-setsize</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-presentation"><code><a href="http://momdo.github.io/wai-aria-1.1/#presentation">presentation</a></code></td>
+	<td>暗黙のネイティヴロールセマンティックがアクセシビリティーAPIにマッピングされない要素。</td>
+	<td>なし</td>
+	<td><code></code></td></tr>
+	<tr><td tabindex="-1" id="index-aria-progressbar"><code><a href="http://momdo.github.io/wai-aria-1.1/#progressbar">progressbar</a></code></td>
+	<td>長時間かかるタスクの進捗状況を表示する要素。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemax">aria-valuemax</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemin">aria-valuemin</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuenow">aria-valuenow</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuetext">aria-valuetext</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-radio"><code><a href="http://momdo.github.io/wai-aria-1.1/#radio">radio</a></code></td>
+	<td>一度に1つのみがチェックできる、radioロールのグループでチェック可能な入力。</td>
+	<td><ul>
+	 <li><a href="http://momdo.github.io/wai-aria-1.1/#aria-checked"><code>aria-checked（ステート）</code></a></li>
+	</ul></td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-posinset">aria-posinset</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-setsize">aria-setsize</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-radiogroup"><code><a href="http://momdo.github.io/wai-aria-1.1/#radiogroup">radiogroup</a></code></td>
+	<td>ラジオボタンのグループ。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-region"><code><a href="http://momdo.github.io/wai-aria-1.1/#region">region</a></code></td>
+	<td>たとえば、ライブスポーツイベントの統計情報を含むページ領域など、著者がページ概要または目次に含まれるのに十分重要であると思うウェブページまたは文書の大きな知覚可能なセクション。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-row"><code><a href="http://momdo.github.io/wai-aria-1.1/#row">row</a></code></td>
+	<td>グリッド内のセルの行。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-level">aria-level</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-rowgroup"><code><a href="http://momdo.github.io/wai-aria-1.1/#rowgroup">rowgroup</a></code></td>
+	<td>グリッド内の1つ以上の行要素を含むグループ。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-rowheader"><code><a href="http://momdo.github.io/wai-aria-1.1/#rowheader">rowheader</a></code></td>
+	<td>グリッド内の行に対するヘッダー情報を含むセル。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-sort">aria-sort</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-readonly">aria-readonly</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-scrollbar"><code><a href="http://momdo.github.io/wai-aria-1.1/#scrollbar">scrollbar</a></code></td>
+	<td>表示領域内でコンテンツが完全に表示されるかどうかに関わらず、表示領域内でコンテンツのスクロールを制御するグラフィカルオブジェクト。</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-controls">aria-controls</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-orientation">aria-orientation</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemax">aria-valuemax</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemin">aria-valuemin</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuenow">aria-valuenow</a></code></li>
+	</ul></td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-search"><code><a href="http://momdo.github.io/wai-aria-1.1/#search">search</a></code></td>
+	<td>全体として、検索機能を作成するために組み合わせる、項目およびオブジェクトのコレクションを含む目印領域。関連する<code>form</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-orientation">aria-orientation</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-separator"><code><a href="http://momdo.github.io/wai-aria-1.1/#separator">separator</a></code></td>
+	<td>メニュー項目のコンテンツまたはグループのセクションを分離して区別する仕切り。</td>
+	<td><ul>
+	 <li>なし</li>
+	</ul></td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuetext">aria-valuetext</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-slider"><code><a href="http://momdo.github.io/wai-aria-1.1/#slider">slider</a></code></td>
+	<td>ユーザーが与えられた範囲内から値を選択する場合の、ユーザーの入力。</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemax">aria-valuemax</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemin">aria-valuemin</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuenow">aria-valuenow</a></code></li>
+	</ul></td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-orientation">aria-orientation</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuetext">aria-valuetext</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-spinbutton"><code><a href="http://momdo.github.io/wai-aria-1.1/#spinbutton">spinbutton</a></code></td>
+	<td>ユーザーが個別の選択肢の中から選択するように期待する範囲のフォーム。</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemax">aria-valuemax</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuemin">aria-valuemin</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuenow">aria-valuenow</a></code></li>
+	</ul></td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-valuetext">aria-valuetext</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-status"><code><a href="http://momdo.github.io/wai-aria-1.1/#status">status</a></code></td>
+	<td>ユーザーのための助言情報だが、通知を正当化するほど重要ではなく、多くの場合ステータスバーとして必ずしも表示されないコンテンツのコンテナ。関連する<code>alert</code>を参照のこと。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-tab"><code><a href="http://momdo.github.io/wai-aria-1.1/#tab">tab</a></code></td>
+	<td>ユーザーにレンダリングされるタブコンテンツを選択するためのメカニズムを提供するグループ化ラベル。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-tablist"><code><a href="http://momdo.github.io/wai-aria-1.1/#tablist">tablist</a></code></td>
+	<td>タブパネル要素への参照である、タブ要素のリスト。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-level">aria-level</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-tabpanel"><code><a href="http://momdo.github.io/wai-aria-1.1/#tabpanel">tabpanel</a></code></td>
+	<td>各<code>tab</code>が<code>tablist</code>に含まれる場合、<code>tab</code>に関連付けられたリソースのコンテナ。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-textbox"><code><a href="http://momdo.github.io/wai-aria-1.1/#textbox">textbox</a></code></td>
+	<td>入力値として自由形式のテキストを許可する入力。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-autocomplete">aria-autocomplete</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-multiline">aria-multiline</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-readonly">aria-readonly</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-timer"><code><a href="http://momdo.github.io/wai-aria-1.1/#timer">timer</a></code></td>
+	<td>始点からの経過時間または終点までの残り時間を示す数値カウンタを含むライブ領域の種類。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-toolbar"><code><a href="http://momdo.github.io/wai-aria-1.1/#toolbar">toolbar</a></code></td>
+	<td>コンパクトな見た目で示した一般的に使用される機能ボタンのコレクション。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-tooltip"><code><a href="http://momdo.github.io/wai-aria-1.1/#tooltip">tooltip</a></code></td>
+	<td>要素の説明を表示するコンテキストポップアップ。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-tree"><code><a href="http://momdo.github.io/wai-aria-1.1/#tree">tree</a></code></td>
+	<td>折りたたみおよび展開することができるサブレベルのネストされたグループを含むことができるリストの種類。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-multiselectable">aria-multiselectable</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-treegrid"><code><a href="http://momdo.github.io/wai-aria-1.1/#treegrid">treegrid</a></code></td>
+	<td>ツリーと同様に展開または折り畳むことができる行のグリッド。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-level">aria-level</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-multiselectable">aria-multiselectable</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-readonly">aria-readonly</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-activedescendant">aria-activedescendant</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-required">aria-required</a></code></li>
+	</ul></td></tr>
+	<tr><td tabindex="-1" id="index-aria-treeitem"><code><a href="http://momdo.github.io/wai-aria-1.1/#treeitem">treeitem</a></code></td>
+	<td>ツリーのオプション項目。ツリー項目のサブレベルグループを含む場合、これは展開または折りたたみできるツリー内の要素である。</td>
+	<td>なし</td>
+	<td><ul>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-level">aria-level</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-posinset">aria-posinset</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-setsize">aria-setsize</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-expanded">aria-expanded（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-checked">aria-checked（ステート）</a></code></li>
+	 <li><code><a href="http://momdo.github.io/wai-aria-1.1/#aria-selected">aria-selected（ステート）</a></code></li>
+	</ul></td></tr>
+	</tbody>
+	</table><!--OddPage-->
+    </section>
+    <section property="bibo:hasPart" resource="#requirements-for-implementers" typeof="bibo:Chapter" id="requirements-for-implementers">
+	<h2 resource="#for-implementers" id="for-implementers"><span property="xhv:role" resource="xhv:heading"><span class="secno">4. </span> 実装に対する要件</span></h2>
+	<section property="bibo:hasPart" resource="" typeof="bibo:Chapter"><div class="impl">
+	  <h3 id="checker-implementers">適合性チェッカー実装</h3>
+	  <p><abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLのチェックに対するサポートを主張する適合チェッカーは、この仕様で定義されるようにHTML要素の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>の<code>role</code>および<code>aria-*</code>属性の使用のための文書適合性要件に対するチェックを実装<em title="MUST" class="rfc2119">しなければならない</em>。　</p>
+	<p>文書は、（もしあれば）3列目でその要素に記載されるような対応するロール値以外、<em title="SHOULD NOT" class="rfc2119">使用すべきでない</em>2列目に示したもの以外、<a href="#docconformance">HTMLテーブルにおける<abbr title="Accessible Rich Internet Applications">ARIA</abbr>属性の使用に対する文書の適合性要件</a>における要素をもつ任意の<code data-x="attr-aria-role">role</code>値を使用してはならない。</p>
+	
+	  <p>適合性チェッカーは、開発者がアクセシビリティー情報を削除するよりもむしろより適切な要素を使用することが勧められるように、エラーを表すことが勧められる。たとえば、<code>a</code>要素が<code>button</code>ロールを持つものとしてマークされる場合、適合チェッカーは「<code>button</code>ロールは<code>a</code>要素と一緒に使用すべきでない」ではなく、「ボタンを表すために、たとえば<code>button</code>要素や<code>input</code>要素などより適切な要素を使用する」と言うことができる。</p>
+	</div><!--OddPage--></section>
+    </section>
+    <section property="bibo:hasPart" resource="#conformance-requirements" typeof="bibo:Chapter" id="conformance-requirements">
+    <h2 resource="#h-conformance-requirements" id="h-conformance-requirements"><span property="xhv:role" resource="xhv:heading"><span class="secno">5. </span> 適合性要件</span></h2>
+    <p>この仕様において、すべての図、例、注は非規範的であり、非規範的と明示された節も同様である。この仕様におけるその他すべては規範的である。</p>
+  <p>この文書の規範部分においてキーワード"<em title="MUST" class="rfc2119">MUST</em>"、"<em title="MUST NOT" class="rfc2119">MUST NOT</em>"、"<em title="REQUIRED" class="rfc2119">REQUIRED</em>"、"<em title="SHALL" class="rfc2119">SHALL</em>"、"<em title="SHALL NOT" class="rfc2119">SHALL NOT</em>"、"<em title="SHOULD" class="rfc2119">SHOULD</em>"、"<em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em>"、"<em title="RECOMMENDED" class="rfc2119">RECOMMENDED</em>"、"<em title="NOT RECOMMENDED" class="rfc2119">NOT RECOMMENDED</em>"、"<em title="MAY" class="rfc2119">MAY</em>"、"<em title="OPTIONAL" class="rfc2119">OPTIONAL</em>"は、RFC 2119で示されたとおりに解釈される。この文書の規範部分でのキーワード"OPTIONALLY"は、"<em title="MAY" class="rfc2119">MAY</em>"または"<em title="OPTIONAL" class="rfc2119">OPTIONAL</em>"としての意味と同一に解釈される。読みやすさのために、これらの単語は本仕様において大文字のみで出現しない。[<cite><a href="#bib-RFC2119" class="bibref">RFC2119</a></cite>]</p>
+    </section>
+<script src="https://specs.webplatform.org/html-aria/webspecs/master/details-summary/jquery.details.min.js"></script>
+<script> $(function() {$('details').details();}); </script><!--OddPage-->	
+
+
+
+<section property="bibo:hasPart" resource="#references" typeof="bibo:Chapter" id="references" class="appendix"><h2 resource="#h-references" id="h-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">A. </span> 参考文献</span></h2><section property="bibo:hasPart" resource="#normative-references" typeof="bibo:Chapter" id="normative-references"><h3 resource="#h-normative-references" id="h-normative-references"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.1 </span> 標準情報</span></h3><dl resource="" class="bibliography"><dt id="bib-HTML51">[HTML51]</dt><dd>Ian Hickson; Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Tab Atkins Jr.; Simon Pieters; Yoav Weiss; Marcos Caceres; Mathew Marquis. <a property="dc:requires" href="http://www.w3.org/TR/html51/"><cite>HTML 5.1</cite></a>. 23 March 2015. W3C Working Draft. URL: <a property="dc:requires" href="http://www.w3.org/TR/html51/">http://www.w3.org/TR/html51/</a>
+</dd><dt id="bib-RFC2119">[RFC2119]</dt><dd>S. Bradner. <a property="dc:requires" href="https://tools.ietf.org/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a property="dc:requires" href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+</dd><dt id="bib-wai-aria">[wai-aria]</dt><dd>James Craig; Michael Cooper et al. <a property="dc:requires" href="http://www.w3.org/TR/wai-aria/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.0</cite></a>. 20 March 2014. W3C Recommendation. URL: <a property="dc:requires" href="http://www.w3.org/TR/wai-aria/">http://www.w3.org/TR/wai-aria/</a>
+</dd><dt id="bib-wai-aria-1.1">[wai-aria-1.1]</dt><dd>James Craig; Michael Cooper; Shane McCarron. <a property="dc:requires" href="http://www.w3.org/TR/wai-aria-1.1/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.1</cite></a>. 11 December 2014. W3C Working Draft. URL: <a property="dc:requires" href="http://www.w3.org/TR/wai-aria-1.1/">http://www.w3.org/TR/wai-aria-1.1/</a>
+</dd></dl></section></section></body></html>
