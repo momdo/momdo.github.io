@@ -211,10 +211,10 @@ caption  { display: table-caption }
 
 <h3>17.2.1 <a name="anonymous-boxes">匿名テーブルオブジェクト</a></h3> 
 
-<p>HTML以外の文書言語は、CSS 2.1のテーブルモデルの要素をすべて含むとは限らない。この場合、"欠落" の要素が動作するようテーブルモデルにおいて仮定しなければならない。任意のテーブル要素は自動的に'table'または'inline-table'要素、'table-row'要素、および'table-cell'の要素に対応する少なくとも3つの入れ子にされたオブジェクトで構成された、必要な匿名テーブルオブジェクトを自体の周りに生成する。不足要素は、以下の規則に従って<a
-href="visuren.html#anonymous">匿名</a>オブジェクト（例えば、視覚テーブルレイアウトでの匿名ボックス）を生成する:
+<p>HTML以外の文書言語は、CSS 2.1のテーブルモデルの要素をすべて含まなくてもよい。この場合、"欠落"要素が動作するようテーブルモデルにおいて仮定しなければならない。任意のテーブル要素は、'table'または'inline-table'要素、'table-row'要素、および'table-cell'の要素に対応する少なくとも3つのネストされたオブジェクトで構成する、必要な匿名テーブルオブジェクトを自身の周りに自動的に生成する。欠落要素は、以下の規則に従って<a
+href="visuren.html#anonymous">匿名</a>オブジェクト（例えば、視覚テーブルレイアウトでの匿名ボックス）を生成する：
 
-<p>これらの規則の目的に対して、次の用語が定義される:
+<p>この規則に対して、次の用語が定義される：
 <dl>
   <dt><a name="x16"><span class="index-def">行グループボックス</span></a>
     <dd>'table-row-group'、'table-header-group'、または'table-footer-group'
@@ -232,48 +232,47 @@ href="visuren.html#anonymous">匿名</a>オブジェクト（例えば、視覚�
     <dd>'table-row'ボックスまたは適切なテーブル行の親
 
   <dt><a name="x21"><span class="index-def">連続的な</span></a>
-    <dd>任意な空白のみを含む匿名インライン以外の兄弟を介在しない場合、二つの兄弟ボックスは連続的である。シーケンス内の各ボックスがそのシーケンスでその前の1つに連続的な場合、兄弟ボックスのシーケンスは連続的である。
+    <dd>任意な、空白のみを含む匿名インライン以外の兄弟を介在しない場合、2つの兄弟ボックスは連続的である。シーケンス内の各ボックスがそのシーケンスでその前の1つに連続的な場合、兄弟ボックスのシーケンスは連続的である。
 </dl>
-<p>これらの規則の目的に対して、フロー外の要素はゼロ幅とゼロ高さのインライン要素として表される。それらの包含ブロックは適宜選択される。
+<p>この規則に対して、フロー外の要素は、ゼロ幅とゼロ高さのインライン要素として表される。フロー外の要素の包含ブロックは適宜選択される。
 
 <p>3段階で次の手順が実行される。
 <ol>
-  <li>不適切なボックスを削除する:
+  <li>不適切なボックスを削除する：
     <ol>
       <li>'table-column'の親のすべての子ボックスは、あたかも'display: none'を持つかのように扱われる。
 
-      </li><li>'table-column-group'の親の子<var>C</var>が'table-column'ボックスでない場合、あたかもCは'display: none'を持つかのように扱われる。
+      </li><li>'table-column-group'の親の子<var>C</var>が'table-column'ボックスでない場合、あたかもCは'display: none'を持ったかのように扱われる。
 
-      </li><li>テーブルコンテナ<var>P</var>の子<var>C</var>が空白のみを含む匿名インラインボックスであり、その直前および直後に続く兄弟が、もしあれば、<var>P</var>の適切なテーブルの子孫であり、かつ'table-caption'または内部テーブルボックスのいずれかである場合、あたかも'display: none'を持つかのように扱われる。任意の介在する'table'または'inline-table'ボックスの生成を引き起こすことなく、<var>D</var>が<var>A</var>の子孫であることができれば、ボックス<var>D</var>は<var>A</var>の適切なテーブルの子孫である。
+      </li><li>テーブルコンテナ<var>P</var>の子<var>C</var>が空白のみを含む匿名インラインボックスであり、かつその直前および直後の兄弟が、もしあれば、<var>P</var>の適切なテーブルの子孫であり、かつ'table-caption'または内部テーブルボックスのいずれかである場合、あたかも'display: none'を持ったかのように扱われる。任意の介在する'table'または'inline-table'ボックスの生成をもたらすことなく<var>D</var>が<var>A</var>の子孫であることができる場合、ボックス<var>D</var>は<var>A</var>の適切なテーブルの子孫である。
 
-      </li><li>ボックス<var>B</var>が空白のみを含む匿名インラインであり、内部テーブルボックスまたは'table-caption'ボックスのどちらかで、それぞれ2つの直近の兄弟の間にある場合、<var>B</var>はあたかも'display: none'を持つかのように扱われる。
+      </li><li>ボックス<var>B</var>が空白のみを含む匿名インラインであり、かつ内部テーブルボックスまたは'table-caption'ボックスのいずれかの、それぞれ2つの直近の兄弟の間にある場合、<var>B</var>はあたかも'display: none'を持ったかのように扱われる。
     </li></ol>
 
-  </li><li>欠落した子ラッパーを生成する:
+  </li><li>欠落した子ラッパーを生成する：
     <ol>
-      <li>'table'または'inline-table'ボックスの子<var>C</var>が適切なテーブルの子でない場合、<var>C</var>の周りに匿名の'table-row'ボックスを生成し、適切なテーブルの子供でない<var>C</var>のすべての連続した兄弟を生成する。
+      <li>'table'または'inline-table'ボックスの子<var>C</var>が適切なテーブルの子でない場合、<var>C</var>の周りに匿名の'table-row'ボックスを生成し、かつ適切なテーブルの子供でない<var>C</var>のすべての連続的な兄弟を生成する。
 
-      </li><li>行グループボックスの子<var>C</var>が'table-row'ボックスでない場合、<var>C</var>の周りに匿名の'table-row'ボックスを生成し、'table-row'ボックスでない<var>C</var>のすべての連続した兄弟を生成する。
+      </li><li>行グループボックスの子<var>C</var>が'table-row'ボックスでない場合、<var>C</var>の周りに匿名の'table-row'ボックスを生成し、かつ'table-row'ボックスでない<var>C</var>のすべての連続的な兄弟を生成する。
 
-      </li><li>'table-row'ボックスの子<var>C</var>が'table-cell'でない場合、<var>C</var>の周りに匿名の'table-cell'ボックスを生成し、'table-cell'ボックスでない<var>C</var>のすべての連続した兄弟を生成する。
+      </li><li>'table-row'ボックスの子<var>C</var>が'table-cell'でない場合、<var>C</var>の周りに匿名の'table-cell'ボックスを生成し、かつ'table-cell'ボックスでない<var>C</var>のすべての連続的な兄弟を生成する。
     </li></ol>
 
-  </li><li>欠落した親を生成する:
+  </li><li>欠落した親を生成する：
     <ol>
-       <li>連続的な内部テーブルのシーケンス内の各'table-cell'ボックスの<var>C</var>および各'table-caption'兄弟に対して、<var>C</var>の親が'table-row'でない場合、<var>C</var>の周りに匿名'table-row'ボックスを生成し、'table-cell'ボックスである<var>C</var>のすべての連続的な兄弟を生成する。
+       <li>連続的な内部テーブルおよび各'table-caption'兄弟のシーケンスにおける各'table-cell'ボックス<var>C</var>に対して、<var>C</var>の親が'table-row'でない場合、<var>C</var>の周りに匿名'table-row'ボックスを生成し、'table-cell'ボックスである<var>C</var>のすべての連続的な兄弟を生成する。
 
-       </li><li>連続的な適切なテーブルの子供のシーケンス内の各適切なテーブルの子<var>C</var>に対して、<var>C</var>が親の役目を果たさない場合、<var>C</var>の周りに匿名の'table'または'inline-table'ボックス<var>T</var>を生成し、適切なテーブルの子である<var>C</var>のすべての連続した兄弟を生成する。（Cの親が'inline'ボックスである場合、<var>T</var>は'inline-table'ボックスでなければならない。それ以外の場合は、'table'ボックスでなければならない。）
+       </li><li>連続的な適切なテーブルの子のシーケンスにおける各適切なテーブルの子<var>C</var>に対して、<var>C</var>が親にならない場合、<var>C</var>の周りに匿名の'table'または'inline-table'ボックス<var>T</var>を生成し、かつ適切なテーブルの子である<var>C</var>のすべての連続的な兄弟を生成する。（Cの親が'inline'ボックスである場合、<var>T</var>は'inline-table'ボックスでなければならない。それ以外の場合は、'table'ボックスでなければならない。）
            <ul>
-             <li>親が、行グループボックスでも'table'または'inline-table'ボックスでもない場合、'table-row'は親の役目を果たさない。
-             </li><li>親が'table-column-group'ボックスでも'table'または'inline-table'ボックスでもない場合、'table-column'ボックスは親の役目を果たさない。
-
-             </li><li>親が'table'でも'inline-table'ボックスでもない場合、行グループボックス、'table-column-group'ボックスは親の役目を果たさない。
+             <li>親が行グループボックスでも'table'または'inline-table'ボックスでもない場合、'table-row'は親にならない。
+             </li><li>親が'table-column-group'ボックスでも'table'または'inline-table'ボックスでもない場合、'table-column'ボックスは親にならない。
+             </li><li>親が'table'でも'inline-table'ボックスでもない場合、行グループボックス、'table-column-group'ボックスは親にならない。
            </li></ul>
     </li></ol>
 </li></ol>
 
 <div class="example"><P style="display:none">例：</P>
-<p>このXMLの例では、'table'要素は、HBOX要素が含まれていると仮定される:
+<p>このXMLの例において、'table'要素はHBOX要素を含むと仮定される：
 
 <pre class="xml-example">
 &lt;HBOX&gt;
@@ -283,7 +282,7 @@ href="visuren.html#anonymous">匿名</a>オブジェクト（例えば、視覚�
 &lt;/HBOX&gt;
 </pre>
 
-<p>なぜなら、関連付けられたスタイルシートが以下のようになるためである:
+<p>なぜなら、関連付けられたスタイルシートは次のようになるためである：
 
 <pre class="example">
 HBOX { display: table-row }
@@ -292,7 +291,7 @@ VBOX { display: table-cell }
 </div>
 
 <div class="example"><P style="display:none">例：</P>
-<p>この例では、3つの'table-cell'要素は、ROWのテキストを含むと仮定される。<a
+<p>この例において、3つの'table-cell'要素は、ROWでテキストを含むと仮定される。<a
 href="visuren.html#anonymous">視覚整形モデル</a>で説明されるように、テキストはさらに匿名インラインボックス内でカプセル化されることに注意する。
 
 <pre class="xml-example">
@@ -303,7 +302,7 @@ href="visuren.html#anonymous">視覚整形モデル</a>で説明されるよう�
 &lt;/STACK&gt;
 </pre>
 
-<p>スタイルシートは:
+<p>スタイルシートは次のとおり：
 
 <pre class="example">
 STACK { display: inline-table }
