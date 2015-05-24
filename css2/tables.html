@@ -575,15 +575,15 @@ href="visudet.html#Computing_widths_and_margins">10.3節</a>で説明される�
 
 <h4>17.5.2.1 <a name="fixed-table-layout">固定テーブルレイアウト</a></h4>
 
-<p>この（高速）アルゴリズムを用いたテーブルの水平方向のレイアウトは、セルの内容に依存しない。レイアウトはテーブルの幅、列の幅、ボーダーやセルの間隔にのみ依存する。
+<p>この（高速）アルゴリズムを用いたテーブルの水平方向のレイアウトは、セルのコンテンツに依存しない。水平方向のレイアウトはテーブルの幅、列の幅、ボーダーおよびセルの間隔にのみ依存する。
 
 <p>テーブルの幅は<a href="visudet.html#propdef-width" class="noxref"><span
-class="propinst-width">'width'</span></a>プロパティーで明示的に指定してもよい。'auto'（'display: table'と'display: inline-table'の両方に対して）の値は、<a
-href="#auto-table-layout">自動テーブルレイアウト</a>アルゴリズムの使用を意味する。ただし、テーブルが通常フローでブロックレベルテーブル（'display: table'）である場合、ユーザーエージェントは幅を計算するために<a
-href="visudet.html#blockwidth">10.3.3節</a>のアルゴリズムを使用してもよく（する必要はない）、たとえ指定幅が'auto'であっても、固定テーブルレイアウトを適用してもよい。
+class="propinst-width">'width'</span></a>プロパティーで明示的に指定してもよい。（'display: table'と'display: inline-table'の両方に対して）'auto'の値は、<a
+href="#auto-table-layout">自動テーブルレイアウト</a>アルゴリズムの使用を意味する。しかし、テーブルが通常フローでブロックレベルテーブル（'display: table'）である場合、たとえ指定幅が'auto'であっても、ユーザーエージェントは幅を計算するために<a
+href="visudet.html#blockwidth">10.3.3節</a>のアルゴリズムを使用してもよく（する必要はない）、固定テーブルレイアウトを適用してもよい。
 
 <div class="example"><P style="display:none">例：</P>
-<p>'width'が'auto'であり、ユーザーエージェントは固定テーブルレイアウトをサポートする場合、次の規則は包含ブロックより4em狭くテーブルを作成する:
+<p>ユーザーエージェントが固定テーブルレイアウトをサポートする場合、'width'が'auto'である際に、次の規則はテーブルの包含ブロックより4em狭いテーブルを作成する：
 
 <pre>
 table { table-layout: fixed;
@@ -592,22 +592,22 @@ table { table-layout: fixed;
 </pre>
 </div>
 
-<p>固定テーブルレイアウトのアルゴリズムでは、各列の幅は次のように決定される:
+<p>固定テーブルレイアウトのアルゴリズムにおいて、各列の幅は次のように決定される：
 
 <ol>
   <li><a href="visudet.html#propdef-width" class="noxref"><span
-  class="propinst-width">'width'</span></a>プロパティーが'auto'以外の値をもつ列要素は、その列幅を設定する。
+  class="propinst-width">'width'</span></a>プロパティーに対して'auto'以外の値をもつ列要素は、その列に対する幅を設定する。
 
-  </li><li>それ以外の場合、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティーが'auto'以外の値をもつ最初の行のセルがその列幅を決定する。セルが複数列にまたがる場合、セル幅は列に対して分割される。
+  </li><li>そうでなければ、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティーに対して'auto'以外の値をもつ最初の行におけるセルがその列に対する幅を決定する。セルが複数列にまたがる場合、幅は列に対して分割される。
 
   </li><li>残りの列は、残りの水平方向のテーブルスペースを（ボーダーまたはセルの間隔を差し引いて）等しく分割する。
 </li></ol>
 
-<p>テーブルの幅は、テーブル要素の<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティーの値と、列の幅（セルの間隔やボーダーを加えた）の合計の大きい方となる。テーブルが列よりも広い場合、追加のスペースは列に分配されるべきである。
+<p>テーブルの幅は、テーブル要素に対する<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティーの値より大きく、かつ（セルの間隔やボーダーを加えた）列の幅の合計となる。テーブルが列よりも広い場合、追加のスペースは列に分配されるべきである。
 
-<p>後続の行がテーブル列の要素によって決定される数と、最初の行によって決定される数より多くの列がある場合、追加の列がレンダリングされないかもしれない。追加の列がレンダリング<em>される</em>場合、CSS 2.1は、列とテーブルの幅を定義しない。'table-layout: fixed'を使用する場合、著者は最初の行から列を省略するべきではない。
+<p>後続の行がテーブル列の要素によって決定される数および最初の行によって決定される数より多くの列を持つ場合、追加の列はレンダリングされなくてもよい。追加の列がレンダリング<em>される</em>場合、CSS 2.1は、列とテーブルの幅を定義しない。'table-layout: fixed'を使用する場合、著者は最初の行から列を省略すべきではない。
 
-<p>このように、ユーザーエージェントは最初の行全体を受信した時点で、テーブルのレイアウトを開始可能である。後続の行のセルは列幅に影響しない。あふれる内容を持つ任意のセルは、その内容を切り抜くかどうかを決定するために、<a href="visufx.html#propdef-overflow" class="noxref"><span class="propinst-overflow">'overflow'</span></a>プロパティーを使用する。
+<p>このように、ユーザーエージェントは最初の行全体を受信した時点で、テーブルのレイアウトを開始することができる。後続の行におけるセルは、列幅に影響しない。あふれるコンテンツを持つ任意のセルは、そのコンテンツを切り抜くかどうかを決定するために、<a href="visufx.html#propdef-overflow" class="noxref"><span class="propinst-overflow">'overflow'</span></a>プロパティーを使用する。
 
 <h4>17.5.2.2 <a name="auto-table-layout">自動テーブルレイアウト</a></h4>
 
