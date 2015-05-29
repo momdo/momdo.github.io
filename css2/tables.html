@@ -35,14 +35,14 @@
     </li></ul>
     </li><li class="tocline2"><a href="tables.html#table-layout" class="tocxref">17.5 テーブルコンテンツの視覚レイアウト</a>
     <ul class="toc">
-      <li class="tocline3"><a href="tables.html#table-layers" class="tocxref">17.5.1 テーブルのレイヤーとその透過性</a>
+      <li class="tocline3"><a href="tables.html#table-layers" class="tocxref">17.5.1 テーブルのレイヤーおよび透過性</a>
       </li><li class="tocline3"><a href="tables.html#width-layout" class="tocxref">17.5.2 テーブルの幅のアルゴリズム：<span class="propinst-table-layout">'table-layout'</span>プロパティー</a>
       <ul class="toc">
         <li class="tocline4"><a href="tables.html#fixed-table-layout" class="tocxref">17.5.2.1 固定テーブルレイアウト</a>
         </li><li class="tocline4"><a href="tables.html#auto-table-layout" class="tocxref">17.5.2.2 自動テーブルレイアウト</a>
       </li></ul>
       </li><li class="tocline3"><a href="tables.html#height-layout" class="tocxref">17.5.3 テーブルの高さのアルゴリズム</a>
-      </li><li class="tocline3"><a href="tables.html#column-alignment" class="tocxref">17.5.4 列での水平位置揃え</a>
+      </li><li class="tocline3"><a href="tables.html#column-alignment" class="tocxref">17.5.4 列における水平位置揃え</a>
       </li><li class="tocline3"><a href="tables.html#dynamic-effects" class="tocxref">17.5.5 行や列の動的効果</a>
     </li></ul>
     </li><li class="tocline2"><a href="tables.html#borders" class="tocxref">17.6 ボーダー</a>
@@ -59,17 +59,18 @@
     </li></ul>
   </li></ul>
 </div>
+
 <h2>17.1 <a name="tables-intro">テーブル概論</a></h2>
 
 <p>この章は、CSSでテーブルの処理モデルを定義する。この処理モデルの一部はレイアウトになる。この章は、2つのレイアウトのアルゴリズムを紹介する。1つ目の固定テーブルレイアウトアルゴリズムはよく定義されているが、2つ目の自動テーブルレイアウトアルゴリズムはこの仕様で完全に定義されない。
 
 <p>自動テーブルレイアウトアルゴリズムのために、一部の広く採用される実装は、比較的厳密な相互運用性を実現している。
 
-<p><a name="x0"><span class="index-def" title="tables">テーブル</span></a>レイアウトは、データ間のテーブル形式の関係を表すために使用することができる。著者は、<a href="conform.html#doclanguage">文書言語</a>でこの関係を指定し、CSS&nbsp;2.1を使用して<em>見栄え</em>を指定できる。
+<p><a name="x0"><span class="index-def" title="tables">テーブル</span></a>レイアウトは、データ間のテーブル形式の関係を表すために使用することができる。Authors specify these relationships in the <a href="conform.html#doclanguage">document language</a> and can specify their <em>presentation</em> using CSS&nbsp;2.2.
 
 <p>視覚メディアにおいて、CSSテーブルは、特定のレイアウトを達成するためにも使用することができる。この場合、著者は文書言語においてテーブル関連要素を使うべきではないが、望ましいレイアウトを実現するために関連する構造要素にCSSを適用すべきである。
 
-<p>著者は、セルの矩形格子としてテーブルの視覚的な書式を指定してもよい。セルの行および列は、行グループおよび列グループで構成されてもよい。行、列、行グループ、列グループ、およびセルは周りに描かれたボーダーを持ってもよい（CSS 2.1において2つのボーダーモデルがある）。著者は、セル内で垂直方向または水平方向にデータを配置し、行または列のすべてのセルにデータを整列してもよい。
+<p>著者は、セルの矩形格子としてテーブルの視覚的な書式を指定してもよい。セルの行および列は、行グループおよび列グループで構成されてもよい。Rows, columns, row groups, column groups, and cells may have borders drawn around them (there are two border models in CSS&nbsp;2.2). 著者は、セル内で垂直方向または水平方向にデータを配置し、行または列のすべてのセルにデータを整列してもよい。
 
 <div class="example"><P style="display:none">例：</P><p>
 HTML 4で表される単純な3行3列のテーブルは次のとおり：
@@ -120,8 +121,8 @@ caption { caption-side: top }
 
 </div>
 
-<p>前述の例は、CSSがHTML 4の要素とともにどのように動作するかを示す。HTML 4において、さまざまなテーブル要素（TABLE、CAPTION、THEAD、TBODY、TFOOT、COL、COLGROUP、TH、TD）の意味が明確に定義される。他の文書言語（XMLアプリケーションなど）において、事前に定義されるテーブルの要素はないかもしれない。したがって、CSS&nbsp;2.1は、著者が文書言語の要素に<a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a>プロパティーを通してテーブル要素に<a name="x1"><span class="index-inst" title="mapping elements to table
-parts">"割り当て"</span></a>ることを可能にする。たとえば、次の規則は、FOO要素にHTMLのTABLE要素のような役割を、BAR要素にCAPTION要素のような役割を与える。</p>
+<p>前述の例は、CSSがHTML 4の要素とともにどのように動作するかを示す。HTML 4において、さまざまなテーブル要素（TABLE、CAPTION、THEAD、TBODY、TFOOT、COL、COLGROUP、TH、TD）の意味が明確に定義される。他の文書言語（XMLアプリケーションなど）において、事前に定義されるテーブルの要素はないかもしれない。Therefore, CSS&nbsp;2.2 allows authors to <a name="x1"><span class="index-inst" title="mapping elements to table
+parts">"map"</span></a> document language elements to table elements via the <a href="visuren.html#propdef-display" class="noxref"><span class="propinst-display">'display'</span></a> property. たとえば、次の規則は、FOO要素にHTMLのTABLE要素のような役割を、BAR要素にCAPTION要素のような役割を与える。</p>
 
 <PRE class="example">
 FOO { display : table }
@@ -211,7 +212,7 @@ caption  { display: table-caption }
 
 <h3>17.2.1 <a name="anonymous-boxes">匿名テーブルオブジェクト</a></h3> 
 
-<p>HTML以外の文書言語は、CSS 2.1のテーブルモデルの要素をすべて含まなくてもよい。この場合、"欠落"要素が動作するようテーブルモデルにおいて仮定しなければならない。任意のテーブル要素は、'table'または'inline-table'要素、'table-row'要素、および'table-cell'の要素に対応する少なくとも3つのネストされたオブジェクトで構成する、必要な匿名テーブルオブジェクトを自身の周りに自動的に生成する。欠落要素は、以下の規則に従って<a
+<p>Document languages other than HTML may not contain all the elements in the CSS&nbsp;2.21 table model. この場合、"欠落"要素が動作するようテーブルモデルにおいて仮定しなければならない。任意のテーブル要素は、'table'または'inline-table'要素、'table-row'要素、および'table-cell'の要素に対応する少なくとも3つのネストされたオブジェクトで構成する、必要な匿名テーブルオブジェクトを自身の周りに自動的に生成する。欠落要素は、以下の規則に従って<a
 href="visuren.html#anonymous">匿名</a>オブジェクト（例えば、視覚テーブルレイアウトでの匿名ボックス）を生成する：
 
 <p>この規則に対して、次の用語が定義される：
@@ -432,7 +433,7 @@ href="box.html#box-dimensions">ボックス</a>を生成する。このボック
 
   </li><li>列グループボックスは、列グループが含む列と同じグリッドセルを占有する。
 
-  </li><li>セルは複数の行や列にまたがってもよい。（CSS 2.1はまたがる行または列の数がどのように決定されるかを定義しないが、ユーザーエージェントはソース文書に関する特別な情報を持ってもよい。CSSの将来の改訂は、CSS構文でこの情報を表現する方法を提供してもよい。）したがって、各セルは1つ以上のグリッドセル幅と高さの矩形ボックスとなる。この矩形の一番上の行は、セルの親で指定された行に存在する。矩形はできるだけ左に存在しなければならないが、その矩形が占有する最初の列のセルの一部は、他のセルボックス（すなわち、前の行で始まる行にまたがるセル）と重複してならず、かつセルはソース文書における前の同一行ですべてのセルの右側に存在しなければならない。この位置が列をまたがるセルに前の行から行にまたがるセルを重複させる場合、CSSはその結果を定義しない。実装は、（多くのHTMLの実装で行われているように）セルを重ねるか、そのような重複を避けるためにそれ以降のセルを右にシフトするかのいずれかであってもよい。（テーブルの'direction'プロパティーが'ltr'の場合、この制約は保持する。'direction'が'rtl'である場合、前の2つの文で"左右"を入れ替える。）
+  </li><li>セルは複数の行や列にまたがってもよい。(Although CSS&nbsp;2.2 does not define how the number of spanned rows or columns is determined, a user agent may have special knowledge about the source document; a future update of CSS may provide a way to express this knowledge in CSS syntax.) Each cell is thus a rectangular box, one or more grid cells wide and high. この矩形の一番上の行は、セルの親で指定された行に存在する。矩形はできるだけ左に存在しなければならないが、その矩形が占有する最初の列のセルの一部は、他のセルボックス（すなわち、前の行で始まる行にまたがるセル）と重複してならず、かつセルはソース文書における前の同一行ですべてのセルの右側に存在しなければならない。この位置が列をまたがるセルに前の行から行にまたがるセルを重複させる場合、CSSはその結果を定義しない。実装は、（多くのHTMLの実装で行われているように）セルを重ねるか、そのような重複を避けるためにそれ以降のセルを右にシフトするかのいずれかであってもよい。（テーブルの'direction'プロパティーが'ltr'の場合、この制約は保持する。'direction'が'rtl'である場合、前の2つの文で"左右"を入れ替える。）
 
   </li><li>セルボックスは、テーブルまたは行グループの最後の行ボックスを超えて拡張することはできない。セルボックスが収まるまでユーザーエージェントはセルボックスを短くしなければならない。
 </li></ol>
@@ -462,7 +463,7 @@ class="propinst-border-spacing">'border-spacing'</span></a>プロパティーに
 </div>
 </div>
 
-<h3>17.5.1 <a name="table-layers">テーブルのレイヤーと透過性</a></h3>
+<h3>17.5.1 <a name="table-layers">テーブルのレイヤーおよび透過性</a></h3>
 
 <p>各テーブルセルの背景を見つけるために、異なるテーブル要素は、6つの多層レイヤー上にあるものとして考えてもよい。背景の上のレイヤーが透明な背景を持つ場合、レイヤーの1つの要素に設定される背景のみが可視になる。
 
@@ -534,7 +535,7 @@ class="propinst-border-spacing">'border-spacing'</span></a>プロパティーに
 class="propinst-border-spacing">'border-spacing'</span></a>プロパティーによって与えられる領域の背景は常にテーブルの背景であることに注意する。<a
 href="#separated-borders">分離ボーダーモデル</a>を参照のこと。
 
-<h3>17.5.2 <a name="width-layout">テーブルの幅のアルゴリズム</a> <a href="tables.html#propdef-table-layout" class="noxref"><span class="propinst-table-layout">'table-layout'</span></a>プロパティー</h3>
+<h3>17.5.2 <a name="width-layout">テーブルの幅のアルゴリズム：</a><a href="tables.html#propdef-table-layout" class="noxref"><span class="propinst-table-layout">'table-layout'</span></a>プロパティー</h3>
 
 <p>多くの場合、何が最適かは好みの問題であるため、CSSは、テーブルに"最適な"レイアウトを定義しない。テーブルをレイアウトする場合、CSSは、ユーザーエージェントが尊重しなければならない制約を定義する。ユーザーエージェントは、"固定レイアウトアルゴリズム"が選択される場合を除き、望みの任意のアルゴリズムを使用してもよいし、精度上のレンダリング速度を優先するのも自由である。
 
@@ -605,7 +606,7 @@ table { table-layout: fixed;
 
 <p>テーブルの幅は、テーブル要素に対する<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>プロパティーの値より大きく、かつ（セルの間隔やボーダーを加えた）列の幅の合計となる。テーブルが列よりも広い場合、追加のスペースは列に分配されるべきである。
 
-<p>後続の行がテーブル列の要素によって決定される数および最初の行によって決定される数より多くの列を持つ場合、追加の列はレンダリングされなくてもよい。追加の列がレンダリング<em>される</em>場合、CSS 2.1は、列とテーブルの幅を定義しない。'table-layout: fixed'を使用する場合、著者は最初の行から列を省略すべきではない。
+<p>後続の行がテーブル列の要素によって決定される数および最初の行によって決定される数より多くの列を持つ場合、追加の列はレンダリングされなくてもよい。CSS&nbsp;2.2 does not define the width of the columns and the table if they <em>are</em> rendered. 'table-layout: fixed'を使用する場合、著者は最初の行から列を省略すべきではない。
 
 <p>このように、ユーザーエージェントは最初の行全体を受信した時点で、テーブルのレイアウトを開始することができる。後続の行におけるセルは、列幅に影響しない。あふれるコンテンツを持つ任意のセルは、そのコンテンツを切り抜くかどうかを決定するために、<a href="visufx.html#propdef-overflow" class="noxref"><span class="propinst-overflow">'overflow'</span></a>プロパティーを使用する。
 
@@ -663,18 +664,22 @@ class="propinst-table-layout">'table-layout'</span></a>が'auto'である場合�
 <h3>17.5.3 <a name="height-layout">テーブルの高さのアルゴリズム</a></h3>
 
 <p>テーブルの高さは、'table'または'inline-table'要素の<a href="visudet.html#propdef-height" class="noxref"><span
-class="propinst-height">'height'</span></a>プロパティーによって与えられる。'auto'の値は、高さが行の高さに任意のセルの間隔またはボーダーを加えたものの和であることを意味する。その他の値は、最小の高さとして扱われる。CSS 2.1は、'height'プロパティーが本来のテーブルよりも高さをもたらす場合に、追加のスペースをどのように分配するかを定義しない。
+class="propinst-height">'height'</span></a>プロパティーによって与えられる。'auto'の値は、高さが行の高さに任意のセルの間隔またはボーダーを加えたものの和であることを意味する。その他の値は、最小の高さとして扱われる。CSS 2.2 does not define how extra space is distributed when the 'height' property causes the table to be taller than it otherwise would be.
 
 <p class=note><em><strong>注。</strong> CSSの将来の更新は、これをさらに規定するかもしれない。</em>
 
 <p>ひとたびユーザーエージェントが使用可能な行のすべてのセルを持つと、'table-row'要素のボックスの高さが計算される。高さは、行の計算<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>、行の各セルの計算<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>、およびセルに要求される最小高さ（MIN）の最大値である。'table-row'に対する'auto'の<a href="visudet.html#propdef-height" class="noxref"><span
-class="propinst-height">'height'</span></a>値は、レイアウトに使用される行の高さがMINであることを意味する。MINはセルボックスの高さおよびセルボックスの揃え（<a href="visudet.html#line-height">行ボックス</a>高さの計算によく似ている）に依存する。CSS&nbsp;2.1は、テーブルのセルとテーブルの行の高さがパーセント値を用いて指定される場合に、どのように計算されるかを定義しない。&nbsp;CSS 2.1は、行グループの<a href="visudet.html#propdef-height" class="noxref"><span
-class="propinst-height">'height'</span></a>の意味を定義しない。
+class="propinst-height">'height'</span></a>値は、レイアウトに使用される行の高さがMINであることを意味する。MINはセルボックスの高さおよびセルボックスの揃え（<a href="visudet.html#line-height">行ボックス</a>高さの計算によく似ている）に依存する。CSS&nbsp;2.2 does not define how the height of table cells and table rows is calculated when their height is specified using percentage values. CSS&nbsp;2.2 does not define the meaning of <a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a> on row groups.
 
-<p>CSS&nbsp;2.1において、セルボックスの高さはコンテンツによって要求される最小の高さとなる。テーブルセルの<a href="visudet.html#propdef-height" class="noxref"><span
+<p>In CSS&nbsp;2.2, the height of a cell box is the minimum height required by the content. テーブルセルの<a href="visudet.html#propdef-height" class="noxref"><span
 class="propinst-height">'height'</span></a>プロパティーは、行の高さに影響を与えることができる（上記参照）が、セルボックスの高さを増やさない。
 
-<p>関連する行の高さの合計が行にまたがるセルを包含するのに十分大きくなければならないことを除いて、CSS&nbsp;2.1は、複数行にまたがるセルが行の高さの計算にどのように影響するかを指定しない。
+<p>CSS&nbsp;2.2 does not specify how cells that span more than one row
+affect row height calculations except that the sum of the row heights
+involved must be great enough to encompass the cell spanning the rows.
+
+
 
 <p>各テーブルのセルの<a href="visudet.html#propdef-vertical-align" class="noxref"><span class="propinst-vertical-align">'vertical-align'</span></a>プロパティーは、行内の揃えを決定する。各セルのコンテンツは、baseline、top、middle、bottomを持ち、行自身の場合も同様である。テーブルのコンテキストにおいて、<a href="visudet.html#propdef-vertical-align" class="noxref"><span
 class="propinst-vertical-align">'vertical-align'</span></a>の値の意味は次のとおり：
@@ -751,7 +756,7 @@ div { height: 0; overflow: hidden; }
 </div>
 
 
-<h3>17.5.4 <a name="column-alignment">列での水平位置揃え</a></h3>
+<h3>17.5.4 <a name="column-alignment">列における水平位置揃え</a></h3>
 
 <p>セルボックス内のインラインレベルコンテンツの水平方向の配置は、セルの<a href="text.html#propdef-text-align" class="noxref"><span class="propinst-text-align">'text-align'</span></a>プロパティーの値によって指定することができる。
 
@@ -843,7 +848,7 @@ td.special { border: inset 10pt }  /* 左上のセル */
 </div>
 </div>
 
-<h4>17.6.1.1 <a name="empty-cells">空セル周りのボーダーと背景:</a> <a href="tables.html#propdef-empty-cells" class="noxref"><span
+<h4>17.6.1.1 <a name="empty-cells">空セル周りのボーダーと背景：</a> <a href="tables.html#propdef-empty-cells" class="noxref"><span
 class="propinst-empty-cells">'empty-cells'</span></a>プロパティー</h4>
 
 <div class="propdef">
@@ -923,7 +928,10 @@ class="propinst-overflow">'overflow'</span></a>参照）、マージンに出る
 
 <p>このモデルでは、テーブル幅がテーブルのボーダーの半分を含むことに注意する。また、このモデルでは、テーブルはパディングを持たない（ただし、マージンを持つ）。
 
-<p>CSS 2.1は、テーブル要素の背景の辺がどこに位置するかを定義しない。
+<p>CSS&nbsp;2.2 does not define where the edge of a background on a
+table element lies.
+
+
 
 <h4>17.6.2.1 <a name="border-conflict-resolution">ボーダーの競合の解決</a></h4>
 
