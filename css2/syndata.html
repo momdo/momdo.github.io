@@ -74,8 +74,8 @@ body>del,body>ins {display:block}
 
 <h2>4.1 <a name="syntax">構文</a></h2>
 
-<p>This section describes a grammar (and <a name="x0"><span class="index-def"
-title="forward-compatible parsing"><dfn>forward-compatible parsing</dfn></span></a> rules) common to any level of CSS (including CSS&nbsp;2.2). CSSの将来の改訂は、さらなる構文上の制約を追加するかもしれないが、このコア構文に忠実だろう。
+<p>この章では、（CSS&nbsp;2.2を含む）CSSの全レベルに共通の文法（および、<a name="x0"><span class="index-def"
+title="forward-compatible parsing"><dfn>前方互換な構文解析規則</dfn></span></a>）を説明する。CSSの将来の改訂は、さらなる構文上の制約を追加してもよいが、このコア構文に忠実である。
 </p>
 <p>以下の説明は規範的である。また、<a
 href="grammar.html">付録G</a>に示す規範的な文法規則により補完される。
@@ -197,9 +197,7 @@ unused      : block | ATKEYWORD S* | ';' S* | CDO S* | CDC S*;
 <p>上記の文法におけるトークンSは<a
 name="whitespace">空白</a>を表す。文字"スペース"（U+0020）、"タブ"（U+0009）、"改行"（U+000A）、"復帰"（U+000D）、"書式送り"（U+000C）のみが空白として出現する。"emスペース"（U+2003）や"全角スペース"（U+3000）のような他のスペースに似た文字は、決して空白の一部ではない。
 </p>
-<p>The meaning of input that cannot be tokenized or parsed is
-undefined in CSS&nbsp;2.2.
-
+<p>トークン化または解析できないデータの意味は、CSS&nbsp;2.2において未定義である。
 </p>
 
 <h3>4.1.2 <a name="keywords">キーワ－ド</a></h3>
@@ -234,7 +232,7 @@ background: "red";
 <p>CSSにおいて識別子は、'<code
 class="css">-</code>'（ダッシュ）または'<code
 class="css">_</code>'（アンダースコア）から始めてもよい。'<code class="css">-</code>'または'<code
-class="css">_</code>'で始まるキーワードと<a href="#properties">プロパティー名</a>は、ベンダー固有の拡張用に予約されている。このようなベンダー固有の拡張は、以下の形式のいずれかを持つべきである:
+class="css">_</code>'で始まるキーワードと<a href="#properties">プロパティー名</a>は、ベンダー固有の拡張用に予約されている。このようなベンダー固有の拡張は、以下の形式のいずれかを持つべきである：
 </p>
 <pre>
 '-' + ベンダー識別子 + '-' + 有意な名前
@@ -252,7 +250,7 @@ class="css">-xyz-border-east-color</span>として呼び出すだろう。
 </pre>
 </div>
 <p>最初のダッシュまたはアンダースコアは、CSSの現在または将来のレベルにおいて、プロパティーもしくはキーワードで決して使用されないことが保証されている。よって、典型的なCSSの実装はそのようなプロパティーを認識しなくてよく、<a
-href="#parsing-errors">構文解析エラーの処理規則</a>に従って、それらを無視してもよい。However, because the initial dash or underscore is part of the grammar, CSS&nbsp;2.2 implementers should always be able to use a CSS-conforming parser, whether or not they support any vendor-specific extensions.
+href="#parsing-errors">構文解析エラーの処理規則</a>に従って、それらを無視してもよい。ただし、最初のダッシュまたはアンダースコアは文法の一部であるため、任意のベンダー固有の拡張をサポートしているかどうかに関係なく、CSS&nbsp;2.2実装は常にCSS準拠のパーサを使用可能にするべきである。
 </p>
 
 <p>著者は、ベンダー固有の拡張を避けるべきである。</p>
@@ -295,20 +293,14 @@ href="#parsing-errors">構文解析エラーの処理規則</a>に従って、�
     <p>Unicodeは、コード・バイ・コードでISO 10646と等価であることに注意する（<a href="refs.html#ref-UNICODE" rel="biblioentry" class="noxref"><span class="normref">[UNICODE]</span></a>および<a href="refs.html#ref-ISO10646" rel="biblioentry" class="noxref"><span class="normref">[ISO10646]</span></a>参照）。
     </p>
 	</li>
-    <li>  In CSS&nbsp;2.2, a backslash (\) character can indicate one
-    of three types of <span class="index-def" title="backslash escapes
-     "> <a name="escaped-characters">character
-    escape.</a></span> Inside a CSS comment, a backslash stands for
-    itself, and if a backslash is immediately followed by the end of
-    the style sheet, it also stands for itself (i.e., a DELIM token).
-
-    
+    <li> CSS&nbsp;2.2においてバックスラッシュ（\）文字は、3種類の<span class="index-def" title="backslash escapes
+     "><a name="escaped-characters">文字エスケープ</a></span>のいずれかを示す。CSSのコメントの内側でバックスラッシュそのものを表し、また、バックスラッシュがスタイルシートの直後に末尾が続く場合もバックスラッシュそのものを表す（すなわち、DELIMトークン）。
 
     <p>第一に、<a href="#strings">文字列</a>の内側で、改行が続くバックスラッシュは無視される（すなわち、文字列はバックスラッシュや改行のいずれも含まれていないとみなす）。文字列の外に、改行が続くバックスラッシュはバックスラッシュそのものを表す（すなわち、改行が続くDELIM）。
 
     <p>第二に、バックスラッシュは特殊なCSS文字の意味を相殺する。（16進数字、改行、復帰、書式送りを除く）任意の文字は、その文字の特別な意味を除去するためにバックスラッシュでエスケープすることができる。たとえば、<samp>"\""</samp>は、1つのダブルクォートからなる文字列である。スタイルシートの意味を変更するため、スタイルシートのプリプロセッサは、スタイルシートからこれらバックスラッシュを削除してはならない。
 	</p>
-    <p>第三に、バックスラッシュエスケープは、著者が容易に文書内に挿入できない文字の参照を可能にする。この場合、バックスラッシュの後に最大で6桁の16進数（0..9A..F）を続ける。この数字は0でないISO 10646（<a href="refs.html#ref-ISO10646" rel="biblioentry" class="noxref"><span class="normref">[ISO10646]</span></a>）文字を表さなければならない。(It is undefined in CSS&nbsp;2.2 what happens if a style sheet <em>does</em> contain a character with Unicode codepoint zero.) If a character in the range [0-9a-fA-F] follows the hexadecimal number, the end of the number needs to be made clear. これには2つの方法がある：
+    <p>第三に、バックスラッシュエスケープは、著者が容易に文書内に挿入できない文字の参照を可能にする。この場合、バックスラッシュの後に最大で6桁の16進数（0..9A..F）を続ける。この数字は0でないISO 10646（<a href="refs.html#ref-ISO10646" rel="biblioentry" class="noxref"><span class="normref">[ISO10646]</span></a>）文字を表さなければならない。（スタイルシートがUnicodeコードポイント0をもつ文字を<em>含む</em>場合、CSS&nbsp;2.2において何が起こるか未定義である。）範囲[0-9a-fA-F]における文字が16進数の後に続く場合、数値の末尾を明確にする必要がある。これには2つの方法がある：
 	</p>
     <ol>
     <li>スペース（または他の空白文字）を伴う："\26 B"（"&amp;B"）。この場合、ユーザーエージェントは、"CR/LF"のペア（U+000D/U+000A）を単独の空白文字として処理すべきである。</li>
@@ -342,18 +334,15 @@ href="#value-def-identifier">識別子</a>である（たとえば、'@import'�
 <p> @規則は、次のセミコロン（;）または次の<a href="#block">ブロック</a>のいずれか早い方の終端まで含めたすべてで構成される。
 </p>
 
-<p>CSS&nbsp;2.2 user agents must <span class="index-inst" title="ignore"><a name="x9"
-href="#ignore">ignore</a></span> any <a
-href="cascade.html#at-import">'@import'</a> rule that occurs inside a <a
-href="#block">block</a> or after any non-ignored statement other than an <a name="x10"><span
-class="index-inst">@charset</span></a> or an @import rule.
-
+<p>CSS&nbsp;2.2ユーザーエージェントは、<a
+href="#block">ブロック</a>内部に出現するすべての<a
+href="cascade.html#at-import">'@import'</a>規則、または<a name="x10"><span
+class="index-inst">@charset</span></a>以外の後のすべての無視されない文、または@import規則を<span class="index-inst" title="ignore"><a name="x9"
+href="#ignore">無視</a></span>しなければならない。
 </p>
 
 <div class="illegal-example"><P style="display:none">不正な例：</P><p>
-
-Assume, for example, that a CSS&nbsp;2.2 parser encounters this style sheet:
-
+たとえば、CSS&nbsp;2.2パーサが次のスタイルシートに遭遇すると仮定する：
 </p>
 <pre><code>
 @import "subs.css";
@@ -361,10 +350,7 @@ h1 { color: blue }
 @import "list.css";
 </code></pre>
 
-<p>  The second '@import' is illegal according to CSS&nbsp;2.2. The CSS&nbsp;2.2 parser
-<span class="index-inst" title="ignore"><a name="x11" href="#ignore">ignores</a></span>
-the whole at-rule, effectively reducing the style sheet to:
-
+<p> 2番目の'@import'は、CSS&nbsp;2.2によれば不正である。CSS&nbsp;2.2パーサは@規則全体を<span class="index-inst" title="ignore"><a name="x11" href="#ignore">無視</a></span>し、事実上スタイルシートを減少させる：
 </p>
 <pre><code class="css">
 @import "subs.css";
@@ -408,9 +394,7 @@ h1 {color: blue }
 { causta: "}" + ({7} * '\'') }
 </code></pre>
 
-<p>Note that the above rule is not valid CSS&nbsp;2.2, but it is still
-a block as defined above.
-
+<p>上記の規則は妥当なCSS&nbsp;2.2ではないが、上記で定義されたブロックではあることに注意する。
 </p>
 </div>
 
@@ -423,24 +407,14 @@ title="declaration block"><dfn>宣言ブロック</dfn></span></a>は、左波�
 </p>
 <p><a name="x15"><span class="index-def"
 title="selector"><em>セレクタ</em></span></a>は、（自身を含まない）最初の左波括弧（{）までのすべてのもので構成される（<a
-href="selector.html">セレクタ</a>の節も参照）。セレクタは常に宣言ブロックを伴う。When a user agent cannot parse the selector (i.e., it is not valid CSS&nbsp;2.2), it must <span class="index-inst" title="ignore"><a name="x16"
-href="#ignore">ignore</a></span> the selector and the following declaration block (if any) as well.
+href="selector.html">セレクタ</a>の節も参照）。セレクタは常に宣言ブロックを伴う。ユーザーエージェントがセレクタを解析できない場合（すなわち、妥当なCSS&nbsp;2.2でない）、セレクタおよび（もしあれば）次に続く宣言ブロックを<span class="index-inst" title="ignore"><a name="x16"
+href="#ignore">無視</a></span>しなければならない。
 </p>
-<p>CSS&nbsp;2.2 gives a special meaning to the comma (,) in
-selectors. However, since it is not known if the comma may acquire
-other meanings in future updates of CSS, the whole statement should
-be <span class="index-inst" title="ignore"><a name="x17"
-href="#ignore">ignored</a></span> if there is an error anywhere in the
-selector, even though the rest of the selector may look reasonable in
-CSS&nbsp;2.2.
-
+<p>CSS&nbsp;2.2は、セレクタ内のコンマ（,）に特別な意味を与える。しかし、コンマがCSSの将来の更新で他の意味を獲得してもよいかどうかはわからない。よって、セレクタのどこかにエラーがあって、セレクタの残りの部分がCSS&nbsp;2.2として筋が通ったように見える場合であっても、文全体を<span class="index-inst" title="ignore"><a name="x17"
+href="#ignore">無視</a></span>すべきである。
 </p>
 <div class=illegal-example><P style="display:none">不正な例：</P>
-<p>For example, since the "&amp;" is not a valid token in a CSS&nbsp;2.2
-selector, a CSS&nbsp;2.2 user agent must
-<span class="index-inst" title="ignore"><a name="x18" href="#ignore">ignore</a></span>
-the whole second line, and not set the color of H3 to red:
-
+<p>たとえば、"&amp;"はCSS&nbsp;2.2のセレクタとして妥当なトークンではないので、CSS&nbsp;2.2のユーザーエージェントは、二行目の全体を<span class="index-inst" title="ignore"><a name="x18" href="#ignore">無視</a></span>し、H3の色を赤に設定することはない：
 </p>
 <pre><code>
 h1, h2 {color: green }
@@ -450,7 +424,7 @@ h6 {color: black }
 </div>
 
 <div class="example"><P style="display:none">例：</P>
-<p>より複雑な例を示す。最初の波括弧の2つのペアが文字列の内部に存在するが、セレクタの末尾をマークしない。This is a valid CSS&nbsp;2.2 rule.
+<p>より複雑な例を示す。最初の波括弧の2つのペアが文字列の内部に存在するが、セレクタの末尾をマークしない。これは、妥当なCSS&nbsp;2.2の規則である。
 </p>
 <pre><code class="css">
 p[example="public class foo\
@@ -510,9 +484,7 @@ href="#escaped-characters">エスケープ</a>しなければならない。丸�
 href="#ignore">無視</a></span>しなければならない。すべてのCSSプロパティーは、対応する値に構文上および意味上の制約がある。
 </p>
 <div class="illegal-example"><P style="display:none">不正な例：</P><p>
-
-For example, assume a CSS&nbsp;2.2 parser encounters this style sheet:
-
+たとえば、CSS&nbsp;2.2パーサが次のスタイルシートに遭遇すると仮定する：
 </p>
 <pre><code>
 h1 { color: red; font-style: 12pt }  /* 不正な値: 12pt */
@@ -521,8 +493,8 @@ p { color: blue;  font-vendor: any;  /* 不正なプロパティー: font-vendor
 em em { font-style: normal }
 </code></pre>
 
-<p> 1行目の2つ目の宣言は、不正な値'12pt'を含む。2行目の2つ目の宣言は、未定義のプロパティー'font-vender'を含む。The CSS&nbsp;2.2 parser will <span
-class="index-inst" title="ignore"><a name="x23" href="#ignore">ignore</a></span> these declarations, effectively reducing the style sheet to:
+<p> 1行目の2つ目の宣言は、不正な値'12pt'を含む。2行目の2つ目の宣言は、未定義のプロパティー'font-vender'を含む。CSS&nbsp;2.2パーサはこれらの宣言を<span
+class="index-inst" title="ignore"><a name="x23" href="#ignore">無視</a></span>し、事実上スタイルシートを単純化する：
 </p>
 <pre class="example"><code class="css">
 h1 { color: red; }
@@ -541,7 +513,7 @@ em em { font-style: normal }
 <h2>4.2 <a name="parsing-errors">構文解析エラーの処理規定</a></h2>
 
 <p>場合によっては、ユーザーエージェントは不正なスタイルシートの一部を無視しなければならない。この仕様は<span class="index-def"
-title="ignore"><a name="ignore"><dfn>無視</dfn></a></span>の意味を、ユーザーエージェントが不正な部分（の先頭と末尾を検出するために）を解析するが、不正な部分が存在しないかのように振る舞う、と定義する。CSS&nbsp;2.2 reserves for future updates of CSS all property:value combinations and @-keywords that do not contain an identifier beginning with dash or underscore. 実装は、（CSSの将来の更新で導入されたもの以外の）そのような組み合わせを無視しなければならない。
+title="ignore"><a name="ignore"><dfn>無視</dfn></a></span>の意味を、ユーザーエージェントが不正な部分（の先頭と末尾を検出するために）を解析するが、不正な部分が存在しないかのように振る舞う、と定義する。CSS&nbsp;2.2は、CSSの全プロパティーの将来における更新のためにダッシュまたはアンダースコアで始まる識別子を含まない値の組み合わせおよび@キーワードを予約する。実装は、（CSSの将来の更新で導入されたもの以外の）そのような組み合わせを無視しなければならない。
 </p>
 
 
@@ -571,13 +543,7 @@ img { background: "red" } /* keywords cannot be quoted */
 img { border-width: 3 }   /* a unit must be specified for length values */
 </code></pre>
 
-
-
-A CSS&nbsp;2.2 parser would honor the first rule and
-<span class="index-inst" title="ignore"><a name="x27" href="#ignore">ignore</a></span>
-the rest, as if the style sheet had been:
-
-
+CSS&nbsp;2.2パーサは1つ目の規則を引き受けて残りを<span class="index-inst" title="ignore"><a name="x27" href="#ignore">無視</a></span>するので、スタイルシートはこのようになる：
 
 <pre class="example"><code class="css">
 img { float: left }
@@ -631,12 +597,9 @@ class="index-inst" title="ignore"><a name="x28" href="#ignore">無視</a></span>
 h1 { color: blue }
 </code></pre>
 
-<p>  The '@three-dee' at-rule is not part of CSS&nbsp;2.2. Therefore, the whole
-at-rule (up to, and including, the third right curly brace) is <span
-class="index-inst" title="ignore"><a name="x29" href="#ignore">ignored.</a></span> A
-CSS&nbsp;2.2 user agent <span class="index-inst" title="ignore"><a name="x30"
-href="#ignore">ignores</a></span> it, effectively reducing the style sheet
-to:</p>
+<p> The '@three-dee' at-rule is not part of CSS&nbsp;2.2. したがって、（3つ目の右波括弧までを含む）@規則全体は<span
+class="index-inst" title="ignore"><a name="x29" href="#ignore">無視</a></span>される。CSS&nbsp;2.2ユーザーエージェントはこれを<span class="index-inst" title="ignore"><a name="x30"
+href="#ignore">無視</a></span>し、事実上スタイルシートは単純化される：</p>
 
 <pre class="example"><code class="css">
 h1 { color: blue }
@@ -649,7 +612,7 @@ h1 { color: blue }
 
 <li id=unexpected-eof><strong>予期しないスタイルシートの終了。</strong>
 <p>
-ユーザーエージェントは、すべての開いた構成物（たとえば:ブロック、括弧、規則、コメント）をスタイルシートの終端で閉じなければならない。たとえば：
+ユーザーエージェントは、すべての開いた構成物（たとえば、ブロック、括弧、規則、コメント）をスタイルシートの終端で閉じなければならない。たとえば：
 </p>
 <pre class="illegal-example"><code>
   @media screen {
@@ -814,7 +777,7 @@ h1 { font-size: 15px }
 <p><img src="http://www.w3.org/TR/CSS2/images/pixel1.png" alt="閲覧距離の増大に伴ってピクセルが大きくなる"><SPAN class="dlink">&nbsp;&nbsp;&nbsp;<A name="img-pixel1" href="http://www.w3.org/TR/CSS2/images/longdesc/pixel1-desc.html" title="ピクセルを定義した図の解説">[D]</A></SPAN></p>
 </div>
 
-<p>次の図は、ピクセル単位でのデバイスの解像度の効果を示している：低解像度のデバイス（たとえば、典型的なコンピュータ画面）では1px平方の領域が単独の画素で覆われてしまうのに対し、高解像度のデバイス（レーザープリンタなど）では1pxの領域に16個もの画素が入ることがわかる。
+<p>次の図は、ピクセル単位上のデバイスの解像度の効果を示している：低解像度のデバイス（たとえば、典型的なコンピュータ画面）では1px平方の領域が単独の画素で覆われてしまうのに対し、高解像度のデバイス（レーザープリンタなど）では1pxの領域に16個もの画素が入ることがわかる。
 </p>
 
 <div class="figure">
@@ -920,8 +883,8 @@ class="propinst-counter-increment">'counter-increment'</span></a>と<a href="gen
 <p>どのようにしてユーザーエージェントが値またはカウンタの値を決定しなければならないかについては、<a href="generate.html">生成コンテンツ</a>の章の<a href="generate.html#scope">"カウンタの入れ子と範囲"</a>を参照のこと。どのようにしてこれらの値を文字列に変換しなければならないかについては、<a href="generate.html#propdef-content" class="noxref"><span
 class="propinst-content">'content'</span></a>プロパティーのカウンタ値の定義を参照のこと。
 </p>
-<p>In CSS&nbsp;2.2, the values of counters can only be referred to from the <a href="generate.html#propdef-content" class="noxref"><span
-class="propinst-content">'content'</span></a> property. 'none'は&lt;list-style-type&gt;に可能であることに注意すること。'counter(x, none)'は空の文字列をもたらす。
+<p>CSS&nbsp;2.2において、<a href="generate.html#propdef-content" class="noxref"><span
+class="propinst-content">'content'</span></a>プロパティーからのみカウンタの値を参照できる。 'none'は&lt;list-style-type&gt;に可能であることに注意すること。'counter(x, none)'は空の文字列をもたらす。
 </p>
 <div class="example"><P style="display:none">例：</P>
 <p>これは各章（h1）の段落（p）を数えるスタイルシートである。各段落にはローマ数字で番号が振られ、ピリオドとスペースが後に続く：
@@ -1159,7 +1122,7 @@ class="index-inst">UTF-8</span></a>エンコーディングをサポートしな
 
 </li>
 
-<li>エンコーディングが上記の表で"指定される"とマークされている1つに基づき検出された場合において、ユーザーエージェントは、たとえ選択された@charsetでのデコードの結果による文字列で開始された適切な@charset規則を解析しないとしても、スタイルシートを無視する。これは、次のことが保証される：
+<li>エンコーディングが上記の表で"指定される"とマークされている1つに基づき検出された場合において、ユーザーエージェントは、たとえ選択された@charsetにおけるデコードの結果による文字列で開始された適切な@charset規則を解析しないとしても、スタイルシートを無視する。これは、次のことが保証される：
   <ul>
     <li>@charset規則は、スタイルシートのエンコーディングにおいてのみ機能すべきであり、</li>
     <li>バイトオーダーマークは、バイトオーダーマークをサポートするエンコーディングにのみ無視され、</li>
