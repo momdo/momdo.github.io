@@ -65,19 +65,20 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
 
 			a.setAttribute("href", href);
 			a.appendChild(document.createTextNode(text));
-			if(text.match(/訳$/) || text.match(/1$/)){ //最初だけ（強引に）マッチング
-            	span.appendChild(document.createElement("br"));
-			}
+
 			span.setAttribute("style", "margin-right:5px;");
 			span.appendChild(a);
-			return parent.nextElementSibling.appendChild(span); //parent.appendChild(span);
+
+			return parent.appendChild(span);
 		};
 
 		for(id in refList){	// リストを巡回
 			if(refList.hasOwnProperty(id)){	// "おまじない"
-				if(dd = document.getElementById("biblio-" + id)){	// 当該 ID を持つ要素があることを最初に確認
+				if(dd = document.getElementsByName("ref-" + id.toUpperCase())[0]){	// 当該 ID を持つ要素があることを最初に確認
+					dd = dd.parentNode.parentNode.nextElementSibling;
 					urlType = typeof refList[id];
 
+					dd.appendChild(document.createElement("br"));
 					if(urlType === typeof ""){	// URL が1個だけのとき
 						insertA(dd, refList[id], "日本語訳");
 					}else if(urlType === typeof []){	// URL が複数あるとき
