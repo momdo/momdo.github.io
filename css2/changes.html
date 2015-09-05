@@ -336,7 +336,7 @@ href="http://www.w3.org/TR/CSS21/changes.html" >CSS&nbsp;2.1の変更点セク�
     <blockquote>
      <p>Boxes in the normal flow belong to a <a name="x0"><span class="index-def"
      title="formatting context">formatting context</span></a>, which
-     <ins>in CSS&nbsp;2.2</ins> may be <ins>table,</ins> block or
+     <ins>in CSS&nbsp;2</ins> may be <ins>table,</ins> block or
      inline<del>, but not both simultaneously</del>. <ins>In future
      levels of CSS, other types of formatting context will be
      introduced.</ins> <a href="#block-level">Block-level</a> boxes
@@ -931,7 +931,7 @@ term
 
      <p><del>Except for table boxes, which are described in a later
       chapter, and replaced elements,</del> <ins>In
-      CSS&nbsp;2.2,</ins> a block-level box is also a block container
+      CSS&nbsp;2,</ins> a block-level box is also a block container
       box <ins>unless it is a table box or the principal box of a
       replaced element</ins>. A <dfn >block container box</dfn> either
       contains only block-level boxes or establishes an inline
@@ -1051,7 +1051,7 @@ term
 
      
 
-     <p><ins>しかし、キャンバスの背景に使用される要素の背景に対してどのボックスも生成されない場合、キャンバスの背景は透過である。（CSS&nbsp;2.2において、これは要素または祖先が'display: none'を持つ場合である。）</ins>
+     <p><ins>しかし、キャンバスの背景に使用される要素の背景に対してどのボックスも生成されない場合、キャンバスの背景は透過である。(in CSS&nbsp;2, that is the case when the element or an ancestor has 'display: none'.)</ins>
 
      <p><ins>要素が'visibility: hidden'を持つが'display: none'持たない場合、ボックスは要素に対して生成<em>され</em>かつその要素の背景はキャンバスに対して使用<em>される</em>ことに注意する。</ins>
     </blockquote>
@@ -1082,6 +1082,93 @@ term
 
     
     
+
+
+
+   </li><li id=s.4.1.1e class=change>
+    <p><span class=updated>[2015-09-05]</span> Malformed declarations
+     are handled differently when the start of the malformed
+     declaration conforms to the syntax of an at-rule. In that case,
+     parsing resumes not at the next semicolon or at the closing curly
+     brace of the enclosing block, but immediately after that
+     at-rule. This is expressed by adding the at-rule to the core
+     syntax for rulesets, as shown below.
+
+    
+
+    <p>In <a href="syndata.html#tokenization" >“4.1.1
+     Tokenization”,</a> change the production for ruleset as
+     follows:
+
+    
+
+    <blockquote>
+     <pre>
+<del>ruleset     : selector?'{' S* declaration?[ ';' S* declaration?]* '}' S*;</del>
+<ins>ruleset     : selector?'{' S* declaration-list '}' S*;
+declaration-list: declaration [ ';' S* declaration-list ]?
+              | at-rule declaration-list
+              | /* empty */;</ins></pre>
+    </blockquote>
+
+    <p>In <a href="syndata.html#rule-sets" >“4.1.7 Rule sets,
+     declaration blocks, and selectors”,</a> change the second
+     paragraph as follows:
+
+    
+
+    <blockquote>
+     <p>A declaration block starts with a left curly brace ({) and
+      ends with the matching right curly brace (}). In between there
+      must be a list of zero or more <del>semicolon-separated (;)
+      declarations</del> <ins>declarations and at-rules. Declarations
+      must end with a semicolon (;) unless they are last in the
+      list.</ins>
+
+     <p class=note><ins>注：CSS level&nbsp;2は、規則セット内に出現してもよい@規則を持たないが、そのような@規則は将来のレベルでで定義されてもよい。</ins>
+    </blockquote>
+
+    <p>In <a href="syndata.html#parsing-errors" >“4.2 Rules for
+     handling parsing errors”,</a> change the rule for malformed
+     declarations as follows:
+
+    
+
+    <blockquote>
+     <ul>
+      <li>
+       <p><strong>不正な形式の宣言。</strong> ユーザーエージェントは、()、[]、{}、""、''のペア、および正確なエスケープ処理と一致する規則を維持しつつ、宣言の最後まで読むことで、宣言の解析中に遭遇した予期しないトークンを処理しなければならない。たとえば、不正な形式の宣言は、プロパティー名、コロン（:）またはプロパティー値を除外してもよい。
+
+       <p><ins>ユーザーエージェントが宣言または@規則（すなわち、IDENTトークンまたはATKEYWORDトークン）の開始を期待するが、代わりに予期しないトークンを検出する場合、そのトークンは不正な形式の宣言の最初のトークンであると考えられる。すなわち、不正な形式の文よりもむしろ不正な形式の宣言のための規則が、そのような場合に無視できるトークンを決定するために使用される。</ins>
+
+       <p>以下はすべて等価である：
+
+       <pre class=example>
+<code>p { color:green }
+<ins>p { @foo { bar: baz } color:green }  /* unknown at-rule */</ins>
+p { color:green; color }  /* malformed declaration missing ':', value */
+p { color:red;   color; color:green }  /* same with expected recovery */
+p { color:green; color: } /* malformed declaration missing value */
+p { color:red;   color:; color:green } /* same with expected recovery */
+p { color:green; color{;color:maroon} } /* unexpected tokens { } */
+	 p { color:red;   color{;color:maroon}; color:green } /* same with recovery */</code></pre>
+       </li>
+     </ul>
+    </blockquote>
+
+    <p>And, finally, in <a href="page.html#page-box" >“13.2 Page
+     boxes: the @page rule”,</a> remove the following text, which
+     is now redundant:
+
+    
+
+    <blockquote>
+     <p><del>不正な形式の宣言、不正な形式の文、および@page内の不正な@規則を扱うための規則は、以下に加えて<a href="syndata.html#parsing-errors" >4.2節</a>で定義される。ユーザーエージェントが宣言または@規則の開始（すなわち、IDENTトークンまたはATKEYWORDトークン）を予期するが代わりに予期しないトークンを検出する場合、そのトークンは不正な形式の宣言の最初のトークンであると考えられる。すなわち、不正な形式の文よりもむしろ不正な形式の宣言のための規則が、そのような場合に無視できるトークンを決定するために使用される。</del>
+    </blockquote>
+
+    
+    
+
 
   </li></ul>
 

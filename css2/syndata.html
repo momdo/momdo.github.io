@@ -177,7 +177,10 @@ stylesheet  : [ CDO | CDC | S | statement ]*;
 statement   : ruleset | at-rule;
 at-rule     : ATKEYWORD S* any* [ block | ';' S* ];
 block       : '{' S* [ any | block | ATKEYWORD S* | ';' S* ]* '}' S*;
-ruleset     : selector? '{' S* declaration? [ ';' S* declaration? ]* '}' S*;
+ruleset     : selector?'{' S* declaration-list '}' S*;
+declaration-list: declaration [ ';' S* declaration-list ]?
+              | at-rule declaration-list
+              | /* empty */;
 selector    : any+;
 declaration : property S* ':' S* value;
 property    : IDENT;
@@ -403,7 +406,9 @@ h1 {color: blue }
 <p> 規則集合（または"規則"と呼ばれる）は、セレクタとそれに続く宣言ブロックから構成される。
 </p>
 <p> <a name="x14"><span class="index-def"
-title="declaration block"><dfn>宣言ブロック</dfn></span></a>は、左波括弧（{）で始まり、対応する右波括弧（}）で終わる。宣言の間には、0個以上のセミコロン区切り（;）のリストが存在しなければならない。
+title="declaration block"><dfn>宣言ブロック</dfn></span></a>は、左波括弧（{）で始まり、対応する右波括弧（}）で終わる。間に、0個以上の宣言および@規則のリストが存在しなければならない。宣言がリストの最後でない限り、宣言はセミコロン（;）で終了しなければならない。
+</p>
+<p class=note>注：CSS level&nbsp;2は、規則セット内に出現してもよい@規則を持たないが、そのような@規則は将来のレベルでで定義されてもよい。
 </p>
 <p><a name="x15"><span class="index-def"
 title="selector"><em>セレクタ</em></span></a>は、（自身を含まない）最初の左波括弧（{）までのすべてのもので構成される（<a
@@ -554,17 +559,21 @@ img { }
 
 <p>将来のCSS仕様に準拠したユーザーエージェントは、他の規則の1つ以上を受け入れてもよい。</p>
 </li>
-<li><strong>不正な形式の宣言。</strong> ユーザーエージェントは、()、[]、{}、""、''のペア、および正確なエスケープ処理と一致する規則を維持しつつ、宣言の最後まで読むことで、宣言の解析中に遭遇した予期しないトークンを処理しなければならない。たとえば、不正な形式の宣言は、プロパティー名、コロン（:）またはプロパティー値を除外してもよい。以下はすべて等価である：
+<li><strong>不正な形式の宣言。</strong> ユーザーエージェントは、()、[]、{}、""、''のペア、および正確なエスケープ処理と一致する規則を維持しつつ、宣言の最後まで読むことで、宣言の解析中に遭遇した予期しないトークンを処理しなければならない。たとえば、不正な形式の宣言は、プロパティー名、コロン（:）またはプロパティー値を除外してもよい。
 
+<p>ユーザーエージェントが宣言または@規則（すなわち、IDENTトークンまたはATKEYWORDトークン）の開始を期待するが、代わりに予期しないトークンを検出する場合、そのトークンは不正な形式の宣言の最初のトークンであると考えられる。すなわち、不正な形式の文よりもむしろ不正な形式の宣言のための規則が、そのような場合に無視できるトークンを決定するために使用される。
+
+<p>以下はすべて等価である：
 
 <pre class="example"><code>
 p { color:green }
-p { color:green; color }  /* ':'と値が欠落した不正な形式の宣言 */
-p { color:red;   color; color:green }  /* 予期する回復に一致 */
-p { color:green; color: } /* 値の欠落した不正な形式の宣言 */
-p { color:red;   color:; color:green } /* 予期する回復に一致 */
-p { color:green; color{;color:maroon} } /* 予期しないトークン { } */
-p { color:red;   color{;color:maroon}; color:green } /* 回復に一致 */
+p { @foo { bar: baz } color:green }  /* unknown at-rule */
+p { color:green; color }  /* malformed declaration missing ':', value */
+p { color:red;   color; color:green }  /* same with expected recovery */
+p { color:green; color: } /* malformed declaration missing value */
+p { color:red;   color:; color:green } /* same with expected recovery */
+p { color:green; color{;color:maroon} } /* unexpected tokens { } */
+p { color:red;   color{;color:maroon}; color:green } /* same with recovery */
 </code></pre>
 
 </li>
