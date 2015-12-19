@@ -164,25 +164,25 @@ on screen, on paper, in speech, etc.
       </li><li><a href="#orientation-desc"><span class="secno">5.9</span> <span class="content"><span class="property">orientation</span>記述子</span></a>
      </li></ul>
     </li><li>
-     <a href="#constraining"><span class="secno">6</span> <span class="content"> Constraining viewport descriptor values</span></a>
+     <a href="#constraining"><span class="secno">6</span> <span class="content">ビューポート記述子値の制約</span></a>
      <ul class="toc">
-      <li><a href="#constraining-defs"><span class="secno">6.1</span> <span class="content"> Definitions</span></a>
-      </li><li><a href="#constraining-procedure"><span class="secno">6.2</span> <span class="content"> The procedure</span></a>
+      <li><a href="#constraining-defs"><span class="secno">6.1</span> <span class="content">定義</span></a>
+      </li><li><a href="#constraining-procedure"><span class="secno">6.2</span> <span class="content">手順</span></a>
      </li></ul>
-    </li><li><a href="#media-queries"><span class="secno">7</span> <span class="content"> Media Queries</span></a>
+    </li><li><a href="#media-queries"><span class="secno">7</span> <span class="content">メディアクエリー</span></a>
     </li><li>
      <a href="#cssom"><span class="secno">8</span> <span class="content"> CSSOM</span></a>
      <ul class="toc">
-      <li><a href="#css-rule-interface"><span class="secno">8.1</span> <span class="content"> Interface <code>CSSRule</code></span></a>
-      </li><li><a href="#css-viewport-rule-interface"><span class="secno">8.2</span> <span class="content"> Interface <code>CSSViewportRule</code></span></a>
+      <li><a href="#css-rule-interface"><span class="secno">8.1</span> <span class="content">インターフェース<code>CSSRule</code></span></a>
+      </li><li><a href="#css-viewport-rule-interface"><span class="secno">8.2</span> <span class="content">インターフェース<code>CSSViewportRule</code></span></a>
      </li></ul>
     </li><li>
-     <a href="#viewport-meta"><span class="secno">9</span> <span class="content"> Viewport <code class="html">&lt;META&gt;</code> element</span></a>
+     <a href="#viewport-meta"><span class="secno">9</span> ビューポート<code class="html">META</code>要素</a>
      <ul class="toc">
-      <li><a href="#meta-properties"><span class="secno">9.1</span> <span class="content"> Properties</span></a>
-      </li><li><a href="#parsing-algorithm"><span class="secno">9.2</span> <span class="content"> Parsing algorithm</span></a>
+      <li><a href="#meta-properties"><span class="secno">9.1</span> <span class="content">プロパティー</span></a>
+      </li><li><a href="#parsing-algorithm"><span class="secno">9.2</span> <span class="content">解析アルゴリズム</span></a>
       </li><li><a href="#extend-to-zoom"><span class="secno">9.3</span> <span class="content"><span class="css">extend-to-zoom</span></span></a>
-      </li><li><a href="#translate-meta-to-at-viewport"><span class="secno">9.4</span> <span class="content"> Translation into <span class="css">@viewport</span> descriptors</span></a>
+      </li><li><a href="#translate-meta-to-at-viewport"><span class="secno">9.4</span> <span class="content"><span class="css">@viewport</span>記述子への変換</span></a>
      </li></ul>
     </li><li><a href="#handling-auto-zoom"><span class="secno">10</span> <span class="content"> Handling <span class="css">auto</span> for <span class="property">zoom</span></span></a>
     </li><li>
@@ -664,111 +664,63 @@ W    w|\\0{0,4}(57|77)(\r\n|[ \t\r\n\f])?|\\w
     <dt><dfn class="css" data-dfn-for="orientation" data-dfn-type="value" data-export="" id="valdef-orientation-landscape">landscape<a class="self-link" href="#valdef-orientation-landscape"></a></dfn>
     <dd> 文書は、横長表現で固定されるべきである。 
    </dl>
-   <h2 class="heading settled" data-level="6" id="constraining"><span class="secno">6. </span><span class="content"> Constraining viewport descriptor values</span><a class="self-link" href="#constraining"></a></h2>
-   <h3 class="heading settled" data-level="6.1" id="constraining-defs"><span class="secno">6.1. </span><span class="content"> Definitions</span><a class="self-link" href="#constraining-defs"></a></h3>
-   <p>For the procedure below:</p>
-   <p>Descriptors refer to the values resolved/constrained to at that point in
-the procedure. They are initially resolved to their computed values.</p>
-   <p><dfn data-dfn-type="dfn" data-noexport="" id="width"><code>width</code><a class="self-link" href="#width"></a></dfn> and <dfn data-dfn-type="dfn" data-noexport="" id="height"><code>height</code><a class="self-link" href="#height"></a></dfn> refer
-to the resolved viewport size and not the shorthand descriptors. They
-are both initially <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>.</p>
-   <p><code>MIN/MAX</code> computations where one of the arguments is <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a> resolve to the other argument. For instance, <code>MIN(0.25, <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>) = 0.25</code>, and <code>MAX(5, <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>) = 5</code>.</p>
-   <p><dfn data-dfn-type="dfn" data-noexport="" id="initial-width"><code>initial-width</code><a class="self-link" href="#initial-width"></a></dfn> is the width of the <span class="css">initial viewport</span> in pixels at zoom factor 1.0.</p>
-   <p><dfn data-dfn-type="dfn" data-noexport="" id="initial-height"><code>initial-height</code><a class="self-link" href="#initial-height"></a></dfn> is the height of the <span class="css">initial viewport</span> in pixels at zoom factor 1.0.</p>
-   <h3 class="heading settled" data-level="6.2" id="constraining-procedure"><span class="secno">6.2. </span><span class="content"> The procedure</span><a class="self-link" href="#constraining-procedure"></a></h3>
-   <p>The used values are resolved from the computed values going through
-the steps below.</p>
-   <p>User agents are expected, but not required, to re-run this procedure
-and re-layout the document, if necessary, in response to changes
-in the user environment, for example if the device is tilted from
-landscape to portrait mode or the window that forms the ''initial
-viewport'' is resized.</p>
-   <p>However, Media Queries and Device Adaption are <dfn data-dfn-type="dfn" data-lt="Specifications
+   <h2 class="heading settled" data-level="6" id="constraining"><span class="secno">6. </span> <span class="content">ビューポート記述子値の制約</span><a class="self-link" href="#constraining"></a></h2>
+   <h3 class="heading settled" data-level="6.1" id="constraining-defs"><span class="secno">6.1. </span><span class="content"> 定義</span><a class="self-link" href="#constraining-defs"></a></h3>
+   <p>次の手順の場合：</p>
+   <p>記述子は、手順におけるその時点で解決/制約される値を参照する。記述子は、記述子の計算値が初めに解決される。</p>
+   <p><dfn data-dfn-type="dfn" data-noexport="" id="width"><code>width</code><a class="self-link" href="#width"></a></dfn>および<dfn data-dfn-type="dfn" data-noexport="" id="height"><code>height</code><a class="self-link" href="#height"></a></dfn>は、略式記述子ではなく解決されたビューポートサイズを参照する。They are both initially <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>.</p>
+   <p>引数の一方が<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>である<code>MIN/MAX</code>の計算は、他方の引数を解決する。たとえば、<code>MIN(0.25, <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>) = 0.25</code>、<code>MAX(5, <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>) = 5</code>。</p>
+   <p><dfn data-dfn-type="dfn" data-noexport="" id="initial-width"><code>initial-width</code><a class="self-link" href="#initial-width"></a></dfn>は、倍率1.0でピクセル単位の<span class="css">初期ビューポート</span>の幅である。</p>
+   <p><dfn data-dfn-type="dfn" data-noexport="" id="initial-height"><code>initial-height</code><a class="self-link" href="#initial-height"></a></dfn>は、倍率1.0でピクセル単位の<span class="css">初期ビューポート</span>の夜笠である。</p>
+   <h3 class="heading settled" data-level="6.2" id="constraining-procedure"><span class="secno">6.2. </span> <span class="content">手順</span><a class="self-link" href="#constraining-procedure"></a></h3>
+   <p>使用値は、下記の手順を経由する算出値から解決される。</p>
+   <p>ユーザーエージェントは、たとえば、デバイスが横長モードから縦長モードに傾けられる、または''初期ビューポート''を形成するウィンドウがリサイズされる場合、必要ならば、ユーザー環境の変化に応じて、この手順の再実行するおよび文書の再レイアウトをすることが期待されるが、必須ではない。</p>
+   <p>しかし、メディアクエリーおよびDevice Adaptionは<dfn data-dfn-type="dfn" data-lt="Specifications
 whose evaluations are both affected by the same changes to the user
 environment, and so always must be evaluated together in order to
-ensure proper rendering." data-noexport="" id="specifications-whose-evaluations-are-both-affected-by-the-same-changes-to-the-user-environment-and-so-always-must-be-evaluated-together-in-order-to-ensure-proper-rendering">tethered specifications<a class="self-link" href="#specifications-whose-evaluations-are-both-affected-by-the-same-changes-to-the-user-environment-and-so-always-must-be-evaluated-together-in-order-to-ensure-proper-rendering"></a></dfn>. As a result,
-UAs that also
-support <a href="http://www.w3.org/TR/css3-mediaqueries/">Media Queries</a> must re-run this procedure and re-layout the document in all cases
-where changes in the user environment would cause them to re-evaluate
-Media Queries.</p>
-   <h4 class="no-num no-toc heading settled" id="constraining-min-max-zoom"><span class="content">  Resolve <code data-lt="min-zoom!!resolved">min-zoom</code> and <code data-lt="max-zoom!!resolved">max-zoom</code> values</span><a class="self-link" href="#constraining-min-max-zoom"></a></h4>
+ensure proper rendering." data-noexport="" id="specifications-whose-evaluations-are-both-affected-by-the-same-changes-to-the-user-environment-and-so-always-must-be-evaluated-together-in-order-to-ensure-proper-rendering">拘束される仕様<a class="self-link" href="#specifications-whose-evaluations-are-both-affected-by-the-same-changes-to-the-user-environment-and-so-always-must-be-evaluated-together-in-order-to-ensure-proper-rendering"></a></dfn>である。その結果、<a href="http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/">メディアクエリー</a>をサポートするユーザーエージェントはまた、ユーザー環境の変化がユーザーエージェントにメディアクエリーを再評価させる原因となるすべての場合において、この手順を再実行して文書を再レイアウトしなければならない。</p>
+   <h4 class="no-num no-toc heading settled" id="constraining-min-max-zoom"><span class="content"> <code data-lt="min-zoom!!resolved">min-zoom</code>および<code data-lt="max-zoom!!resolved">max-zoom</code>値を解決する</span><a class="self-link" href="#constraining-min-max-zoom"></a></h4>
    <ol>
-    <li>  If <code data-lt="min-zoom!!resolved">min-zoom</code> is not <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a> and <code data-lt="max-zoom!!resolved">max-zoom</code> is not <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>, set <code>max-zoom = MAX(min-zoom,
-        max-zoom)</code> 
+    <li> <code data-lt="min-zoom!!resolved">min-zoom</code>が<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>でなくかつ<code data-lt="max-zoom!!resolved">max-zoom</code>が<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>でない場合、<code>max-zoom = MAX(min-zoom, max-zoom)</code>を設定する 
    </li></ol>
-   <h4 class="no-num no-toc heading settled" id="constraining-zoom"><span class="content">  Constrain <code data-lt="zoom!!resolved">zoom</code> value to
-the <code>[min-zoom, max-zoom]</code> range</span><a class="self-link" href="#constraining-zoom"></a></h4>
+   <h4 class="no-num no-toc heading settled" id="constraining-zoom"><span class="content"> <code>[min-zoom, max-zoom]</code>の範囲に<code data-lt="zoom!!resolved">zoom</code>値を制約する</span><a class="self-link" href="#constraining-zoom"></a></h4>
    <ol id="ol2">
-    <li>  If <code data-lt="zoom!!resolved">zoom</code> is not <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>,
-        set <code>zoom = MAX(min-zoom, MIN(max-zoom,
-        zoom))</code> 
+    <li> <code data-lt="zoom!!resolved">zoom</code>が<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>でない場合、<code>zoom = MAX(min-zoom, MIN(max-zoom, zoom))</code>を設定する 
    </li></ol>
-   <h4 class="no-num no-toc heading settled" id="resolve-px"><span class="content">  Resolve non-<a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a> lengths to pixel lengths</span><a class="self-link" href="#resolve-px"></a></h4>
+   <h4 class="no-num no-toc heading settled" id="resolve-px"><span class="content"> 非<a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>長さをピクセル長さに解決する</span><a class="self-link" href="#resolve-px"></a></h4>
    <ol id="ol3">
-    <li>  Resolve absolute lengths and percentages to pixel values for the <a class="property" data-link-type="propdesc" href="#descdef-viewport-min-width">min-width</a>, <a class="property" data-link-type="propdesc" href="#descdef-viewport-max-width">max-width</a>, <a class="property" data-link-type="propdesc" href="#descdef-viewport-min-height">min-height</a>, and <a class="property" data-link-type="propdesc" href="#descdef-viewport-max-height">max-height</a> descriptors. 
-    
+    <li> 絶対長さおよびパーセンテージを<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-width">min-width</a>、<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-width">max-width</a>、<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-height">min-height</a>および<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-height">max-height</a>記述子に対するピクセル値に解決する。 
    </li></ol>
-   <h4 class="no-num no-toc heading settled" id="resolve-initial-width-height"><span class="content">  Resolve initial <code data-lt="width!!resolved">width</code> and <code data-lt="height!!resolved">height</code> from min/max
-descriptors</span><a class="self-link" href="#resolve-initial-width-height"></a></h4>
+   <h4 class="no-num no-toc heading settled" id="resolve-initial-width-height"><span class="content"> min/max記述子から初期<code data-lt="width!!resolved">width</code>および<code data-lt="height!!resolved">height</code>を解決する</span><a class="self-link" href="#resolve-initial-width-height"></a></h4>
    <ol id="ol4">
-    <li>  If <code data-lt="min-width!!resolved">min-width</code> or <code data-lt="max-width!!resolved">max-width</code> is not <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>, set <code>width = MAX(min-width, MIN(max-width,
-        initial-width))</code> 
-    </li><li>  If <code data-lt="min-height!!resolved">min-height</code> or <code data-lt="max-height!!resolved">max-height</code> is not <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>, set <code>height = MAX(min-height, MIN(max-height,
-        initial-height))</code> 
+    <li> <code data-lt="min-width!!resolved">min-width</code>または<code data-lt="max-width!!resolved">max-width</code>が<a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>でない場合、<code>width = MAX(min-width, MIN(max-width, initial-width))</code>を設定する 
+    </li><li> <code data-lt="min-height!!resolved">min-height</code>または<code data-lt="max-height!!resolved">max-height</code>が<a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>でない場合、<code>height = MAX(min-height, MIN(max-height, initial-height))</code>を設定する。 
    </li></ol>
-   <h4 class="no-num no-toc heading settled" id="resolve-width"><span class="content">  Resolve <code data-lt="width!!resolved">width</code> value</span><a class="self-link" href="#resolve-width"></a></h4>
+   <h4 class="no-num no-toc heading settled" id="resolve-width"><span class="content"> <code data-lt="width!!resolved">width</code>値を解決する</span><a class="self-link" href="#resolve-width"></a></h4>
    <ol id="ol6">
-    <li>  If <code data-lt="width!!resolved">width</code> and <code data-lt="height!!resolved">height</code> are both <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>, set <code>width = initial-width</code> 
-    </li><li>  If <code data-lt="width!!resolved">width</code> is <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>, set <code>width = height * (initial-width /
-        initial-height)</code>, or <code>width = initial-width</code> if <code class="index" data-lt="height!!initial">initial-height</code> is 0. 
-    
+    <li> <code data-lt="width!!resolved">width</code>および<code data-lt="height!!resolved">zoom</code>が両方<a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>である場合、<code>width = initial-width</code>を設定する 
+    </li><li> <code data-lt="width!!resolved">width</code>が<a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>である場合、<code>width = height * (initial-width / initial-height)</code>、または<code class="index" data-lt="height!!initial">initial-height</code>が0であるならば、<code>width = initial-width</code>を設定する。 
    </li></ol>
-   <h4 class="no-num no-toc heading settled" id="resolve-height"><span class="content">  Resolve <code data-lt="height!!resolved">height</code> value</span><a class="self-link" href="#resolve-height"></a></h4>
+   <h4 class="no-num no-toc heading settled" id="resolve-height"><span class="content"> <code data-lt="height!!resolved">height</code>値を解決する</span><a class="self-link" href="#resolve-height"></a></h4>
    <ol id="ol8">
-    <li>  If <code data-lt="height!!resolved">height</code> is <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>,
-        set <code>height = width * (initial-height /
-        initial-width)</code>, or <code>height = initial-height</code> if <code class="index" data-lt="width!!initial">initial-width</code> is 0. 
-    
+    <li> <code data-lt="height!!resolved">height</code>が<a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a>である場合、<code>height = width * (initial-height / initial-width)</code>、または<code class="index" data-lt="width!!initial">initial-width</code>が0であるならば、<code>height = initial-height</code>を設定する。 
    </li></ol>
-   <h2 class="heading settled" data-level="7" id="media-queries"><span class="secno">7. </span><span class="content"> Media Queries</span><a class="self-link" href="#media-queries"></a></h2>
-   <p>For several media features, the size of the initial containing block and
-the orientation of the device affects the result of a media query
-evaluation, which means that the effect of <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rules on
-media queries needs extra attention.</p>
-   <p>From the Media Queries specification <a data-link-type="biblio" href="#biblio-mediaq">[MEDIAQ]</a>:</p>
+   <h2 class="heading settled" data-level="7" id="media-queries"><span class="secno">7. </span> <span class="content">メディアクエリー</span><a class="self-link" href="#media-queries"></a></h2>
+   <p>複数のメディア機能に対して、初期包含ブロックのサイズおよびデバイスの方向は、メディアクエリー上の<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則の効果が特別な注意を必要とすることを意味する、メディアクエリー評価の結果に影響する。</p>
+   <p>メディアクエリー仕様<a data-link-type="biblio" href="#biblio-mediaq">[MEDIAQ]</a>より：</p>
    <blockquote>
-    <p>  “To avoid circular dependencies, it is never necessary
-        to apply the style sheet in order to evaluate expressions. For example,
-        the aspect ratio of a printed document may be influenced by a style sheet,
-        but expressions involving <a class="property" data-link-type="propdesc" href="http://www.w3.org/TR/mediaqueries-4/#descdef-device-aspect-ratio">device-aspect-ratio</a> will be based
-        on the default aspect ratio of the user agent.”  </p>
+    <p> “式を評価するためにスタイルを適用する必要はない。これは循環依存関係を避けるためである。たとえば、印刷された文書のアスペクト比はスタイルシートに影響されるだろうが、<a class="property" data-link-type="propdesc" href="http://www.w3.org/TR/mediaqueries-4/#descdef-device-aspect-ratio">device-aspect-ratio</a>に関わる式はユーザーエージェントが持つアスペクト比の規定値を基にする。” </p>
    </blockquote>
-   <p>The UA must however cascade <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rules separately with the <span class="css">initial viewport</span> size used for evaluating media feature
-expressions and other values that depend on the viewport size to avoid
-circular dependencies, but use the actual viewport size when cascading all other rules.</p>
-   <p>Procedure for applying CSS rules:</p>
+   <p>しかしユーザーエージェントは、　循環依存を回避するためにビューポートのサイズに依存するメディア機能式および他の値を評価するために使用される<span class="css">初期ビューポートサイズ</span>とは別に<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則をカスケードしなければならないが、他の規則すべてをカスケードする場合に実ビューポートサイズを使用しなければならない。</p>
+   <p>CSS規則を適用するための手順：</p>
    <ol>
-    <li>  Cascade all <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rules using the <span class="css">initial viewport</span> size for values and evaluations which rely on viewport size 
-     
-    </li><li>  Compute the <span class="css">actual viewport</span> from the cascaded viewport
-        descriptors 
-     
-    </li><li>  Cascade all other rules using the <span class="css">actual viewport</span> size 
-    
+    <li> ビューポートのサイズに依存する値および評価に対する<span class="css">初期ビューポート</span>のサイズを使用するすべての<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則をカスケードする 
+    </li><li> カスケードされたビューポートの記述子から<span class="css">実ビューポート</span>を計算する 
+    </li><li> <span class="css">実ビューポート</span>のサイズを使用する他の規則のすべてをカスケードする 
    </li></ol>
-   <p class="note" role="note">  The rationale for using the viewport descriptors obtained from applying
-    the <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rules for evaluating media queries for style
-    rules, is that media queries should match the <span class="css">actual viewport</span> that the document will be layed out in and not the initial or the
-    one specified in the UA stylesheet. Consider the example below
-    given that the UA stylesheet has a viewport width of 980px, but an <span class="css">initial viewport</span> width of 320px. The author has made separate
-    styles to make the document look good for initial containing block
-    widths above or below 400px. The <span class="css">actual viewport</span> used will be
-    320px wide, and in order to match the styles with the ''actual
-    viewport'' width, the viewport resulting from applying the <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rules should be used to evaluate the media queries.  </p>
+   <p class="note" role="note"> スタイル規則に対するメディアクエリーを評価するために<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則を適用することから得られるビューポート記述子を使用するための理論的解釈は、文書がレイアウトされかつ初期またはユーザーエージェントスタイルシートで指定されない<span class="css">実ビューポート</span>にメディアクエリーが一致すべきものである。ユーザーエージェントスタイルシートが980pxのビューポートの幅を持つが、320pxの<span class="css">初期ビューポート</span>の幅を持つものを与えられる以下の例を考えてみる。著者は、文書を400pxを境に初期包含ブロックの幅の見た目をよくさせるために別のスタイルを作成する。<span class="css">実ビューポート</span>は320pxの幅を使用し、そして''実ビューポート''幅にスタイルを一致させるために、<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則を適用する結果となるビューポートは、メディアクエリーの評価をするために使用されるべきである。 </p>
    <div class="example" id="example-ea2fc661">
-    <a class="self-link" href="#example-ea2fc661"></a>  Given an initial viewport width of 320px and a UA stylesheet viewport
-    width of 980px, the first media query will not match, but the second will. 
- 
+    <a class="self-link" href="#example-ea2fc661"></a> 320pxの初期ビューポート幅および980pxのユーザーエージェントスタイルシートのビューポート幅が与えられると、最初のメディアクエリーは一致しないが、次のものは一致する。 
 <pre>@viewport {
     width: auto;
 }
@@ -782,11 +734,9 @@ circular dependencies, but use the actual viewport size when cascading all other
 }
 </pre>
    </div>
-   <p>Another example:</p>
+   <p>他の例：</p>
    <div class="example" id="example-1dfcdcc7">
-    <a class="self-link" href="#example-1dfcdcc7"></a>  The media query below should match because the <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule
-    is applied before the media query is evaluated. 
- 
+    <a class="self-link" href="#example-1dfcdcc7"></a> <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則はメディアクエリーが評価する前に適用されるため、下記のメディアクエリーは一致すべきである。 
 <pre>@media screen and (width: 397px) {
     div { color: green; }
 }
@@ -796,12 +746,9 @@ circular dependencies, but use the actual viewport size when cascading all other
 }
 </pre>
    </div>
-   <p>Below is an example where an <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule relies on a media
-query affected by the viewport descriptors.</p>
+   <p>下記は、ビューポート記述子によって影響されるメディアクエリーに依存する<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則の例である。</p>
    <div class="example" id="example-6f88c5a1">
-    <a class="self-link" href="#example-6f88c5a1"></a>  The green color should be applied to a div because the <span class="css">initial viewport</span> width is used to evaluate the media query
-    for the second <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule, but the <span class="css">actual viewport</span> is used for evaluating the media query when applying style rules. 
- 
+    <a class="self-link" href="#example-6f88c5a1"></a> 緑色は、<span class="css">初期ビューポート</span>の幅は、2つ目の<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則に対するメディアクエリーを評価するために使用されるので、divに適用されるべきであるが、<span class="css">実ビューポート</span>は、スタイル規則を適用する際にメディアクエリーを評価するために使用される。 
 <pre>@viewport {
     width: 397px;
 }
@@ -817,56 +764,37 @@ query affected by the viewport descriptors.</p>
 }
 </pre>
    </div>
-   <p>It is recommended that authors do not write <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rules that
-rely on media queries whose evaluation is affected by viewport
-descriptors. Is is also recommended that the <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule(s) is
-placed as early in the document as possible to avoid unnecessary
-re-evaluation of media queries or reflows.</p>
+   <p>著者は、ビューポート記述子によって影響される評価をメディアクエリーに依存する<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則を記述しないことを推奨する。<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則は、メディアクエリーまたはリフローの不必要な再評価を避けるために可能な限り文書内の早くに配置されることも推奨される。</p>
    <h2 class="heading settled" data-level="8" id="cssom"><span class="secno">8. </span><span class="content"> CSSOM</span><a class="self-link" href="#cssom"></a></h2>
-   <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule is exposed to the CSSOM through a new CSSRule
-interface.</p>
-   <h3 class="heading settled" data-level="8.1" id="css-rule-interface"><span class="secno">8.1. </span><span class="content"> Interface <code>CSSRule</code></span><a class="self-link" href="#css-rule-interface"></a></h3>
-   <p>The following rule type is added to the <code>CSSRule</code> interface. It provides identification for the new viewport rule.</p>
-<pre class="idl">partial interface <a class="idl-code" data-link-type="interface" href="http://www.w3.org/TR/cssom/#cssrule">CSSRule</a> {
+   <p><a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則は、新しいCSSRuleインターフェースを通してCSSOMに公開される。</p>
+   <h3 class="heading settled" data-level="8.1" id="css-rule-interface"><span class="secno">8.1. </span><span class="content"> インターフェース<code>CSSRule</code></span><a class="self-link" href="#css-rule-interface"></a></h3>
+   <p>次の規則型は、<code>CSSRule</code>インターフェースに加えられる。これは、新しいビューポート規則に識別を提供する。</p>
+<pre class="idl">partial interface <a class="idl-code" data-link-type="interface" href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#the-cssrule-interface">CSSRule</a> {
     const unsigned short <dfn class="idl-code" data-dfn-for="CSSRule" data-dfn-type="const" data-export="" id="dom-cssrule-viewport_rule">VIEWPORT_RULE<a class="self-link" href="#dom-cssrule-viewport_rule"></a></dfn> = 15;
 };
 </pre>
-   <h3 class="heading settled" data-level="8.2" id="css-viewport-rule-interface"><span class="secno">8.2. </span><span class="content"> Interface <code>CSSViewportRule</code></span><a class="self-link" href="#css-viewport-rule-interface"></a></h3>
-   <p>The <dfn class="idl-code" data-dfn-type="interface" data-export="" id="cssviewportrule">CSSViewportRule<a class="self-link" href="#cssviewportrule"></a></dfn> interface represents the
-style rule for an <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule.</p>
-<pre class="idl">interface <a class="idl-code" data-link-type="interface" href="#cssviewportrule">CSSViewportRule</a> : <a data-link-type="idl-name" href="http://www.w3.org/TR/cssom/#cssrule">CSSRule</a> {
-    readonly attribute <a data-link-type="idl-name" href="http://www.w3.org/TR/cssom/#cssstyledeclaration">CSSStyleDeclaration</a> <a class="idl-code" data-link-type="attribute" data-readonly="" data-type="CSSStyleDeclaration " href="#dom-cssviewportrule-style">style</a>;
+   <h3 class="heading settled" data-level="8.2" id="css-viewport-rule-interface"><span class="secno">8.2. </span><span class="content"> インターフェース<code>CSSViewportRule</code></span><a class="self-link" href="#css-viewport-rule-interface"></a></h3>
+   <p><dfn class="idl-code" data-dfn-type="interface" data-export="" id="cssviewportrule">CSSViewportRule<a class="self-link" href="#cssviewportrule"></a></dfn>インターフェースは、<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則に対するスタイル規則を表す。</p>
+<pre class="idl">interface <a class="idl-code" data-link-type="interface" href="#cssviewportrule">CSSViewportRule</a> : <a data-link-type="idl-name" href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#the-cssrule-interface">CSSRule</a> {
+    readonly attribute <a data-link-type="idl-name" href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#cssstyledeclaration">CSSStyleDeclaration</a> <a class="idl-code" data-link-type="attribute" data-readonly="" data-type="CSSStyleDeclaration " href="#dom-cssviewportrule-style">style</a>;
 };
 </pre>
    <dl>
-    <dt><dfn class="idl-code" data-dfn-for="CSSViewportRule" data-dfn-type="attribute" data-export="" id="dom-cssviewportrule-style">style<a class="self-link" href="#dom-cssviewportrule-style"></a></dfn> <span> of type <a data-link-type="idl-name" href="http://www.w3.org/TR/cssom/#cssstyledeclaration">CSSStyleDeclaration</a>, readonly</span>
-    <dd>  This attribute represents the viewport descriptors associated
-        with this <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule. 
-    
+    <dt><dfn class="idl-code" data-dfn-for="CSSViewportRule" data-dfn-type="attribute" data-export="" id="dom-cssviewportrule-style">style<a class="self-link" href="#dom-cssviewportrule-style"></a></dfn> <span> of type <a data-link-type="idl-name" href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#cssstyledeclaration">CSSStyleDeclaration</a>, readonly</span>
+    <dd> この属性は、この<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則と関連するビューポート記述子を表す。 
    </dl>
-   <h2 class="heading settled" data-level="9" id="viewport-meta"><span class="secno">9. </span><span class="content"> Viewport <code class="html">&lt;META&gt;</code> element</span><a class="self-link" href="#viewport-meta"></a></h2>
+   <h2 class="heading settled" data-level="9" id="viewport-meta"><span class="secno">9. </span> <span class="content">ビューポート<code class="html">META</code>要素</span><a class="self-link" href="#viewport-meta"></a></h2>
    <p><em>この章は、規範的ではない。</em></p>
-   <p>This section describes a mapping from the content attribute of the
-viewport <code class="html">&lt;META&gt;</code> element, first
-implemented by Apple in the iPhone Safari browser, to the descriptors
-of the <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule described in this
-specification.</p>
-   <p>In order to match the Safari implementation, the following parsing
-algorithm and translation rules rely on the UA stylesheet below. See the
-section on <a href="#ua-stylesheet">UA stylesheets</a> for an elaborate
-description.</p>
+   <p>この章は、この仕様に記載される<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則の記述子へ、iPhoneのSafariブラウザーにAppleによって最初に実装された、ビューポート<code class="html">&lt;META&gt;</code>要素のコンテンツ属性からのマッピングを記述する。</p>
+   <p>Safariの実装と一致させるために、次の解析アルゴリズムおよび変換規則は、以下のユーザーエージェントスタイルシートに依存する。複雑な説明については<a href="#ua-stylesheet">ユーザーエージェントスタイルシート</a>を参照のこと。</p>
 <pre>@viewport {
     width: extend-to-zoom 980px;
     min-zoom: 0.25;
     max-zoom: 5;
 </pre>
-   <p class="note" role="note">  Note that these values might not fit well with all UAs. For
-    instance, with a min-zoom of 0.25 you will be able to fit the whole width
-    of the document inside the window for widths up to 1280px on a 320px wide
-    device like the original iPhone, but only 960px if you have a 240px
-    display (all widths being given in CSS pixel units).  </p>
-   <h3 class="heading settled" data-level="9.1" id="meta-properties"><span class="secno">9.1. </span><span class="content"> Properties</span><a class="self-link" href="#meta-properties"></a></h3>
-   <p>The recognized properties in the viewport <code class="html">&lt;META&gt;</code> element are:</p>
+   <p class="note" role="note"> これらの値は、すべて UA に十分に適合しないことに注意されたい。たとえば、0.25のmin-zoomとともに、元のiPhoneのように320px幅のデバイス上で1280px以下の幅に対するウィンドウの内側で文書の全体幅に適合することができるが、240pxディスプレイ（CSSピクセル単位で与えられている全ての幅）を持つ場合にちょうど960pxになる。 </p>
+   <h3 class="heading settled" data-level="9.1" id="meta-properties"><span class="secno">9.1. </span> <span class="content">プロパティー</span><a class="self-link" href="#meta-properties"></a></h3>
+   <p>ビューポート<code class="html">&lt;META&gt;</code>要素で認識されるプロパティーは：</p>
    <ul>
     <li><code class="index" data-lt="width!!viewport META">width</code>
     </li><li><code class="index" data-lt="height!!viewport META">height</code>
@@ -875,38 +803,20 @@ description.</p>
     </li><li><code class="index">maximum-scale</code>
     </li><li><code class="index">user-scalable</code>
    </li></ul>
-   <h3 class="heading settled" data-level="9.2" id="parsing-algorithm"><span class="secno">9.2. </span><span class="content"> Parsing algorithm</span><a class="self-link" href="#parsing-algorithm"></a></h3>
-   <p>Below is an algorithm for parsing the <code class="html">content</code> attribute of the <code class="html">&lt;META&gt;</code> tag produced
-from testing Safari on the iPhone. <span class="note" role="note"> The testing was
-done on an iPod touch running iPhone OS 4. The UA string of the
-browser: <code>"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X;
-en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5
-Mobile/8A293 Safari/6531.22.7"</code>.</span> The pseudo code notation
-used is based on the notation used in <a data-link-type="biblio" href="#biblio-algorithms">[Algorithms]</a>.</p>
-   <p>The whitespace class contains the following characters (ascii):</p>
+   <h3 class="heading settled" data-level="9.2" id="parsing-algorithm"><span class="secno">9.2. </span> <span class="content">解析アルゴリズム</span><a class="self-link" href="#parsing-algorithm"></a></h3>
+   <p>以下は、iPhoneのSafariのテストから生成される<code class="html">&lt;META&gt;</code>タグの<code class="html">content</code>属性を解析するためのアルゴリズムである。<span class="note" role="note">テストは、iPhone iOS 4を実行するiPod touch上で行われた。ブラウザーのユーザーエージェント文字列：<code>"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7"</code>。</span>使用される擬似コード表記は、<a data-link-type="biblio" href="#biblio-algorithms">[Algorithms]</a>で使用される表記に基づく。</p>
+   <p>空白クラスは、以下の文字（ascii）を含む：</p>
    <ul>
-    <li>Horizontal tab (0x09)
-    
-    </li><li>Line feed (0x0a)
-    
-    </li><li>Carriage return (0x0d)
-    
-    </li><li>Space (0x20)
-   
+    <li>水平タブ（0x09）
+    </li><li>ラインフィード（0x0a）
+    </li><li>キャリッジリターン（0x0d）
+    </li><li>スペース（0x20）
    </li></ul>
-   <p>The recognized separator between property/value pairs is comma for the
-Safari implementation. Some implementations have supported both commas
-and semicolons. Because of that, existing content use semicolons instead
-of commas. Authors should be using comma in order to ensure content works
-as expected in all UAs, but implementors may add support for both to ensure
-interoperability for existing content.</p>
-   <p>The separator class contains the following characters (ascii), with
-comma as the preferred separator and semicolon as optional:</p>
+   <p>プロパティーと値ペアとの間に認識されるセパレータは、Safariの実装に対してカンマである。一部の実装は、カンマとセミコロンの両方をサポートしている。そのために、既存のコンテンツは、コンマの代わりにセミコロンを使用する。著者は、すべてのユーザーエージェントで期待されるようなコンテンツ制作物を保証するためにカンマを使用すべきだが、実装者は既存のコンテンツの相互運用性を確保するために両方へのサポートを追加してもよい。</p>
+   <p>セパレータクラスは、優先としてコンマおよびオプションとしてセミコロンをともなう、次の文字（ASCII）を含む：</p>
    <ul>
-    <li>Comma (0x2c)
-    
-    </li><li>Semicolon (0x3b)
-   
+    <li>コンマ（0x2c）
+    </li><li>セミコロン（0x3b）
    </li></ul>
 <pre id="algorithm"><span class="method"><span class="method-name">Parse-Content</span>(<span class="variable">S</span>)</span>
 <span class="statement"><span class="variable">i</span> ← 1</span>
@@ -938,143 +848,83 @@ comma as the preferred separator and semicolon as optional:</p>
 <span class="statement"><span class="method-name">Set-Property</span>(<span class="variable">property-name</span>, <span class="variable">property-value</span>)</span>
 <span class="statement"><span class="keyword">return</span> <span class="variable">i</span></span>
 </pre>
-   <p><span class="method-name">Set-Property</span> matches the <a href="#meta-properties">listed property names</a> case-insensitively.
-The <code class="variable">property-value</code> strings are interpreted
-as follows:</p>
+   <p><span class="method-name">Set-Property</span>は、大文字・小文字不区別で<a href="#meta-properties">記載されたプロパティー名</a>に一致する。<code class="variable">property-value</code>文字列は、次のように解釈される：</p>
    <ol>
-    <li>  If a prefix of <code class="variable">property-value</code> can be converted to a number using <code>strtod</code>, the
-        value will be that number. The remainder of the string is
-        ignored. 
-     
-    </li><li>  If the value can not be converted to a number as described above,
-        the whole <code class="variable">property-value</code> string
-        will be matched with the following strings
-        case-insensitively: <code class="index">yes</code>, <code class="index">no</code>, <code class="index" data-lt="device-width!!viewport META">device-width</code>, <code class="index" data-lt="device-height!!viewport META">device-height</code> 
-    </li><li>  If the string did not match any of the known strings, the
-        value is unknown. 
-    
+    <li> <code class="variable">property-value</code>の接頭辞が<code>strtod</code>を使用する数に変換できる場合、値はその数になる。文字列の残りは無視される。 
+    </li><li> 値が上記のように数に変換することができない場合、全体の<code class="variable">property-value</code>文字列は、次の文字列と大文字・小文字不区別で一致される：<code class="index">yes</code>、<code class="index">no</code>、<code class="index" data-lt="device-width!!viewport META">device-width</code>、<code class="index" data-lt="device-height!!viewport META">device-height</code> 
+    </li><li> 文字列が既知の文字列のいずれにも一致しない場合、値は未知である。 
    </li></ol>
    <h3 class="heading settled" data-level="9.3" id="extend-to-zoom"><span class="secno">9.3. </span><span class="content"><span class="css">extend-to-zoom</span></span><a class="self-link" href="#extend-to-zoom"></a></h3>
-   <p>In order to be able to implement the functionality from <code class="html">&lt;META&gt;</code> viewport where the viewport width
-or height is extended to fill the viewing area at a given zoom level,
-we introduce a UA internal value to the list of <a class="production css" data-link-type="type" href="#typedef-viewport-length">&lt;viewport-length&gt;</a> values called <span class="css">extend-to-zoom</span>. It will be used in width and height
-declarations in the translation outlined in the section below.</p>
-   <p>This new value is necessary in order to implement the mapping for two
-reasons. First, whether resolving the width/height needs to extend the
-pixel length to the visible width/height for a given zoom factor depends
-on the current initial width/height. <code class="html">&lt;meta name="viewport" content="width=400, initial-scale=1"&gt;</code> yields a width of 400px for an initial-width of 320px, and 640px for an
-initial width of 640px. This can not be expressed as normative min/max
-descriptors that would constrain correctly when the initial width changes
-like for an orientation change.</p>
-   <p>Secondly, the extended width/height also relies on cascading viewport
-properties from different sources, including <a class="property" data-link-type="propdesc" href="#descdef-viewport-min-zoom">min-zoom</a> and <a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a> from the UA stylesheet. For instance, if the UA stylesheet
-has <code>max-zoom: 5</code>, and the initial width is 320px, <code class="html">&lt;meta name="viewport" content="width=10"&gt;</code> will resolve to 64px.</p>
-   <h4 class="no-num no-toc heading settled" id="resolve-extend-to-zoom"><span class="content">  Resolving '<code class="css" data-lt="extend-to-zoom">extend-to-zoom</code>'</span><a class="self-link" href="#resolve-extend-to-zoom"></a></h4>
-   <p>The '<code class="css" data-lt="extend-to-zoom">extend-to-zoom</code>'
-value is resolved to pixel or auto lengths as part of <a href="#resolve-px">step 3</a> of the <a href="#constraining-procedure">constraining procedure</a>. Since this
-is a <em>non-normative</em> descriptor value, the resolution is described
-here. Note that max-descriptors need to be resolved to pixel lengths <em>before</em> min-descriptors when
-'<code class="css" data-lt="extend-to-zoom">extend-to-zoom</code>'
-is a valid value.</p>
-   <p>Let <code>extend-zoom = MIN(zoom, max-zoom)</code></p>
-   <p>For non-<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a> <code>extend-zoom</code>, let:</p>
+   <p>ビューポートの幅または高さが所定のズームレベルで表示領域を埋めるように拡張される場所で<code class="html">&lt;META&gt;</code>ビューポートからの機能を実装することができるようにするために、我々は、<span class="css">extend-to-zoom</span>と呼ばれる<a class="production css" data-link-type="type" href="#typedef-viewport-length">&lt;viewport-length&gt;</a>値のリストにユーザーエージェント内部値を導入する。これは、以下の節で概説される変換で幅および高さの宣言に使用される。</p>
+   <p>この新しい値は、2つの理由のためのマッピングを実装するために必要である。まず、幅/高さを解決することが特定の倍率のために表示幅/高さへピクセル長さを延長する必要があるかどうかは、現在の初期幅/高さに依存する。<code class="html">&lt;meta name="viewport" content="width=400, initial-scale=1"&gt;</code>は、320pxのinitial-widthに対して400px、および640pxの初期幅に対して640pxの幅が得られる。これは、初期幅が向きの変更のように変化する際に正しく制約する規範的な最小/最大の記述子として表現することができない。</p>
+   <p>次に、拡張された幅/高さはまた、ユーザーエージェントスタイルシートから<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-zoom">min-zoom</a>および<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a>を含む、異なるソースからのビューポートのプロパティーのカスケードに依存する。たとえば、ユーザーエージェントスタイルシートが<code>max-zoom: 5</code>を持ち、かつ初期幅が320pxである場合、<code class="html">&lt;meta name="viewport" content="width=10"&gt;</code>は64pxに解決される。</p>
+   <h4 class="no-num no-toc heading settled" id="resolve-extend-to-zoom"><span class="content"> '<code class="css" data-lt="extend-to-zoom">extend-to-zoom</code>'を解決する</span><a class="self-link" href="#resolve-extend-to-zoom"></a></h4>
+   <p>'<code class="css" data-lt="extend-to-zoom">extend-to-zoom</code>'の値は、<a href="#constraining-procedure">拘束手順</a>の<a href="#resolve-px">手順3</a>の一部としてピクセルまたはauto長さに解決される。これは<em>非規範的</em>記述子の値であるため、解像度はここで説明される。'<code class="css" data-lt="extend-to-zoom">extend-to-zoom</code>'が妥当な値である場合、最大記述子は最小記述子の<em>前の</em>ピクセル長さに解決される必要があることに注意する。</p>
+   <p><code>extend-zoom = MIN(zoom, max-zoom)</code>とする</p>
+   <p>非<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a> <code>extend-zoom</code>の場合：</p>
 <pre>extend-width = initial-width / extend-zoom
 extend-height = initial-height / extend-zoom
 </pre>
-   <p>Then, resolve for <span class="css">extend-to-zoom</span> as follows:</p>
+   <p>その後、次のとおりに<span class="css">extend-to-zoom</span>を解決する：</p>
    <ul>
     <li>
-     
-     If <code>extend-zoom</code> is <a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>: 
-      
+     <code>extend-zoom</code>が<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>である場合： 
      <ol>
-      <li>  If <code data-lt="max-width!!resolved">max-width</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>max-width = <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a></code> 
-      </li><li>  If <code data-lt="max-height!!resolved">max-height</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>max-height = <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a></code> 
-      </li><li>  If <code data-lt="min-width!!resolved">min-width</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>min-width = max-width</code> 
-      </li><li>  If <code data-lt="min-height!!resolved">min-height</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>min-height = max-height</code> 
+      <li> <code data-lt="max-width!!resolved">max-width</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>max-width = <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a></code>を設定する 
+      </li><li> <code data-lt="max-height!!resolved">max-height</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>max-height = <a class="css" data-link-type="maybe" href="#valdef-viewport-length-auto">auto</a></code>を設定する 
+      </li><li> <code data-lt="min-width!!resolved">min-width</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>min-width = max-width</code>を設定する 
+      </li><li> <code data-lt="min-height!!resolved">min-height</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>min-height = max-height</code>を設定する 
      </li></ol>
     </li><li>
-      
-      If <code>extend-zoom</code> is non-<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>: 
-      
+      <code>extend-zoom</code>が非<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a>である場合： 
      <ol>
-      <li>  If <code data-lt="max-width!!resolved">max-width</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>max-width = extend-width</code> 
-      </li><li>  If <code data-lt="max-height!!resolved">max-height</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>max-height = extend-height</code> 
-      </li><li>  If <code data-lt="min-width!!resolved">min-width</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>min-width = MAX(extend-width, max-width)</code> 
-      </li><li>  If <code data-lt="min-height!!resolved">min-height</code> is
-                '<code class="css">extend-to-zoom</code>', set <code>min-height = MAX(extend-height, max-height)</code> 
+      <li> <code data-lt="max-width!!resolved">max-width</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>max-width = extend-width</code>を設定する 
+      </li><li> <code data-lt="max-height!!resolved">max-height</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>max-height = extend-height</code>を設定する 
+      </li><li> <code data-lt="min-width!!resolved">min-width</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>min-width = MAX(extend-width, max-width)</code>を設定する 
+      </li><li> <code data-lt="min-height!!resolved">min-height</code>が'<code class="css">extend-to-zoom</code>'である場合、<code>min-height = MAX(extend-height, max-height)</code>を設定する 
      </li></ol>
    </li></ul>
-   <h3 class="heading settled" data-level="9.4" id="translate-meta-to-at-viewport"><span class="secno">9.4. </span><span class="content"> Translation into <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> descriptors</span><a class="self-link" href="#translate-meta-to-at-viewport"></a></h3>
-   <p>The Viewport <code class="html">&lt;META&gt;</code> element is placed
-in the cascade as if it was a <code class="html">&lt;STYLE&gt;</code> element,
-in the exact same place in the dom, that only contains a single <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule.</p>
-   <p>Each of the property/value pair from the parsing in the
-previous section are translated, and added to that single at-rule
-as follows:</p>
-   <h4 class="no-num no-toc heading settled" id="unknown-properties"><span class="content">  Unknown properties</span><a class="self-link" href="#unknown-properties"></a></h4>
-   <p>Unknown properties are dropped.</p>
-   <h4 class="no-num no-toc heading settled" id="width-and-height-properties"><span class="content">  The <code class="index" data-lt="width!!viewport META">width</code> and <code class="index" data-lt="height!!viewport META">height</code> properties</span><a class="self-link" href="#width-and-height-properties"></a></h4>
-   <p>The <code class="index" data-lt="width!!viewport META">width</code> and <code class="index" data-lt="height!!viewport META">height</code> viewport <code class="html">&lt;META&gt;</code> properties are
-translated into <a class="property" data-link-type="propdesc" href="#descdef-viewport-width">width</a> and <a class="property" data-link-type="propdesc" href="#descdef-viewport-height">height</a> descriptors, setting the <a class="property" data-link-type="propdesc" href="#descdef-viewport-min-width">min-width</a>/<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-height">min-height</a> value to <span class="css">extend-to-zoom</span> and the <a class="property" data-link-type="propdesc" href="#descdef-viewport-max-width">max-width</a>/<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-height">max-height</a> value to the  length from the
-viewport <code class="html">&lt;META&gt;</code> property as follows:</p>
+   <h3 class="heading settled" data-level="9.4" id="translate-meta-to-at-viewport"><span class="secno">9.4. </span> <span class="content"><a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>記述子への翻訳</span><a class="self-link" href="#translate-meta-to-at-viewport"></a></h3>
+   <p>ビューポートの<code class="html">&lt;META&gt;</code>要素は、単一の<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則のみを含む、DOMと厳密に同じ場所で、あたかも<code class="html">&lt;STYLE&gt;</code>要素であったかようにカスケードで配置される。</p>
+   <p>先の節で解析されたプロパティ/値ペアのそれぞれは変換され、そして次のように単一の@規則に追加される：</p>
+   <h4 class="no-num no-toc heading settled" id="unknown-properties"><span class="content"> 未知のプロパティー</span><a class="self-link" href="#unknown-properties"></a></h4>
+   <p>未知のプロパティーは破棄される。</p>
+   <h4 class="no-num no-toc heading settled" id="width-and-height-properties"><span class="content"> <code class="index" data-lt="width!!viewport META">width</code>および<code class="index" data-lt="height!!viewport META">height</code>プロパティー</span><a class="self-link" href="#width-and-height-properties"></a></h4>
+   <p><code class="index" data-lt="width!!viewport META">width</code>および<code class="index" data-lt="height!!viewport META">height</code>のビューポート<code class="html">&lt;META&gt;</code>プロパティーは、<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-width">min-width</a>/<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-height">min-height</a>を<span class="css">extend-to-zoom</span>に設定し、<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-width">max-width</a>/<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-height">max-height</a>を次のとおりにビューポート<code class="html">&lt;META&gt;</code>プロパティーからの長さに設定する、<a class="property" data-link-type="propdesc" href="#descdef-viewport-width">width</a>および<a class="property" data-link-type="propdesc" href="#descdef-viewport-height">height</a>へ翻訳される：</p>
    <ol>
-    <li>  Non-negative number values are translated to pixel lengths, clamped to
-        the range: <code>[1px, 10000px]</code> 
-    </li><li>  Negative number values are dropped 
-     
-    </li><li> <code class="index" data-lt="device-width!!viewport META">device-width</code> and <code class="index" data-lt="device-height!!viewport META">device-height</code> translate to 100vw and 100vh respectively 
-     
-    </li><li>  Other keywords and unknown values translate to 1px 
-    
+    <li> 非負の数は、ピクセル長さに翻訳され、<code>[1px, 10000px]</code>の範囲で固定される 
+    </li><li> 負の数値は破棄される 
+    </li><li> <code class="index" data-lt="device-width!!viewport META">device-width</code>および<code class="index" data-lt="device-height!!viewport META">device-height</code>はそれぞれ100vwおよび100vhに翻訳される 
+    </li><li> 他のキーワードおよび未知の値は、1pxに翻訳する 
    </li></ol>
-   <p class="note" role="note">  Some existing UA implementations use device dimensions in CSS
-    pixels, and some use the window dimensions (CSS pixels) for device-width /
-    device-height. Above, we translate to 100vw / 100vh which are the window
-    dimensions. The rationale is that the device dimensions would not be what
-    the author intended for UAs where the window is resizable or does not fill
-    the screen of the device.  </p>
+   <p class="note" role="note"> 一部既存のユーザーエージェントの実装は、CSSピクセルでデバイスの次元を使用し、一部は、デバイス幅/デバイス高さに対してウィンドウの次元（CSSピクセル）を使用する。上記で、ウィンドウの次元を100vw / 100vhに翻訳する。理論的根拠は、デバイスの次元が、ウィンドウがサイズ変更可能であるまたはデバイスの画面を埋めない場合に著者がユーザーエージェントに意図したものではないことである。 </p>
    <div class="example" id="example-22a0c5dd">
     <a class="self-link" href="#example-22a0c5dd"></a> 
-    <p>This <code class="html">&lt;META&gt;</code> element:</p>
+    <p>この<code class="html">&lt;META&gt;</code>要素は：</p>
 <pre>&lt;meta name="viewport" content="width=500, height=600"&gt;
 </pre>
-    <p>translates into:</p>
+    <p>以下に翻訳する：</p>
 <pre>@viewport {
     width: extend-to-zoom 500px;
     height: extend-to-zoom 600px;
 }
 </pre>
    </div>
-   <p>For a viewport <code class="html">&lt;META&gt;</code> element that
-translates into an <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule with a non-<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a> <a class="property" data-link-type="propdesc" href="#descdef-viewport-zoom">zoom</a> declaration and no <a class="property" data-link-type="propdesc" href="#descdef-viewport-width">width</a> declaration:</p>
+   <p>非<a class="css" data-link-type="maybe" href="#valdef-zoom-auto">auto</a> <a class="property" data-link-type="propdesc" href="#descdef-viewport-zoom">zoom</a>宣言および<a class="property" data-link-type="propdesc" href="#descdef-viewport-width">width</a>宣言のない<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則に翻訳するビューポートの<code class="html">&lt;META&gt;</code>要素の場合：</p>
    <ul>
     <li>
-      
-      If it adds a '<code class="descriptor">height</code>'
-        descriptor, add: 
- 
+      '<code class="descriptor">height</code>'記述子を追加する場合： 
 <pre>width: auto;</pre>
     </li><li>
-      
-      Otherwise, add: 
- 
+      そうでなければ： 
 <pre>width: extend-to-zoom;</pre>
    </li></ul>
-   <p>to the <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule.</p>
+   <p>これを<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則に追加する。</p>
    <div class="example" id="example-0efe9d5c">
-    <a class="self-link" href="#example-0efe9d5c"></a>  This <code class="html">&lt;META&gt;</code> element: 
- 
+    <a class="self-link" href="#example-0efe9d5c"></a> この<code class="html">&lt;META&gt;</code>要素は： 
 <pre>&lt;meta name="viewport" content="initial-scale=1.0"&gt;
 </pre>
-    <p>translates into:</p>
+    <p>以下に翻訳する：</p>
 <pre>@viewport {
     zoom: 1.0;
     width: extend-to-zoom;
@@ -1082,12 +932,11 @@ translates into an <a class="css" data-link-type="maybe" href="#at-ruledef-viewp
 </pre>
    </div>
    <div class="example" id="example-acae2a27">
-    <a class="self-link" href="#example-acae2a27"></a>  This <code class="html">&lt;META&gt;</code> element: 
- 
+    <a class="self-link" href="#example-acae2a27"></a> この<code class="html">&lt;META&gt;</code>要素は： 
 <pre>&lt;meta name="viewport" content="initial-scale=2.0,
 height=device-width"&gt;
 </pre>
-    <p>translates into:</p>
+    <p>以下に翻訳する：</p>
 <pre>@viewport {
     zoom: 2.0;
     width: auto;
@@ -1095,47 +944,29 @@ height=device-width"&gt;
 }
 </pre>
    </div>
-   <h4 class="no-num no-toc heading settled" id="min-scale-max-scale"><span class="content">  The <code class="index">initial-scale</code>, <code class="index">minimum-scale</code>, and <code class="index">maximum-scale</code> properties</span><a class="self-link" href="#min-scale-max-scale"></a></h4>
-   <p>The properties are translated into
-'<code class="descriptor" data-lt="zoom!!descriptor">zoom</code>',
-'<code class="descriptor">min-zoom</code>',
-and '<code class="descriptor">max-zoom</code>'
-respectively with the following translations of values.</p>
+   <h4 class="no-num no-toc heading settled" id="min-scale-max-scale"><span class="content"> <code class="index">initial-scale</code>、<code class="index">minimum-scale</code>、<code class="index">maximum-scale</code>プロパティー</span><a class="self-link" href="#min-scale-max-scale"></a></h4>
+   <p>プロパティーは、それぞれ次の値の翻訳をもつ、'<code class="descriptor" data-lt="zoom!!descriptor">zoom</code>'、'<code class="descriptor">min-zoom</code>'および'<code class="descriptor">max-zoom</code>'に翻訳される。</p>
    <ol>
-    <li>  Non-negative number values are translated to &lt;number&gt; values,
-        clamped to the range <code>[0.1, 10]</code> 
-    </li><li>  Negative number values are dropped 
-     
-    </li><li> <code class="index">yes</code> is translated to 1 
-     
-    </li><li> <code class="index" data-lt="device-width!!viewport META">device-width</code> and <code class="index" data-lt="device-height!!viewport META">device-height</code> are translated to 10 
-     
-    </li><li> <code class="index">no</code> and unknown values are
-        translated to 0.1 
-    
+    <li> 非負の数値は、&lt;number&gt;値に翻訳され、<code>[0.1, 10]</code>の範囲で固定される 
+    </li><li> 負の数値は破棄される 
+    </li><li> <code class="index">yes</code>は1に翻訳される 
+    </li><li> <code class="index" data-lt="device-width!!viewport META">device-width</code>および<code class="index" data-lt="device-height!!viewport META">device-height</code>は10に翻訳される 
+    </li><li> <code class="index">no</code>および未知の値は、0.1に翻訳される 
    </li></ol>
-   <p>For a viewport <code class="html">&lt;META&gt;</code> element that translates
-into an <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> rule with no <a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a> declaration and a
-non-auto <a class="property" data-link-type="propdesc" href="#descdef-viewport-min-zoom">min-zoom</a> value that is larger than the <a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a> value of
-the UA stylesheet, the <a class="property" data-link-type="propdesc" href="#descdef-viewport-min-zoom">min-zoom</a> declaration value is clamped to the
-UA stylesheet <a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a> value.</p>
-   <h4 class="no-num no-toc heading settled" id="user-scalable"><span class="content">  The <code class="index">user-scalable</code> property</span><a class="self-link" href="#user-scalable"></a></h4>
-   <p>The <code class="index">user-scalable</code> property is translated into <a class="property" data-link-type="propdesc" href="#descdef-viewport-user-zoom">user-zoom</a> with the following value translations.</p>
+   <p><a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a>宣言をもたず、かつユーザーエージェントスタイルシートの<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a>値より大きい非auto<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-zoom">min-zoom</a>をもつ<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>規則に変換するビューポートの<code class="html">&lt;META&gt;</code>要素にの場合、<a class="property" data-link-type="propdesc" href="#descdef-viewport-min-zoom">min-zoom</a>宣言の値は、ユーザーエージェントスタイルシートの<a class="property" data-link-type="propdesc" href="#descdef-viewport-max-zoom">max-zoom</a>の値に固定される。</p>
+   <h4 class="no-num no-toc heading settled" id="user-scalable"><span class="content"> <code class="index">user-scalable</code>プロパティー</span><a class="self-link" href="#user-scalable"></a></h4>
+   <p><code class="index">user-scalable</code>プロパティーは、次の値の翻訳をもつ<a class="property" data-link-type="propdesc" href="#descdef-viewport-user-zoom">user-zoom</a>に翻訳される。</p>
    <ol>
-    <li> <code class="index">yes</code> and <code class="index">no</code> are
-        translated into <a class="css" data-link-type="maybe" href="#valdef-user-zoom-zoom">zoom</a> and <a class="css" data-link-type="maybe" href="#valdef-user-zoom-fixed">fixed</a> respectively. 
-     
-    </li><li>  Numbers ≥ 1, numbers ≤ -1, <code class="index" data-lt="device-width!!viewport META">device-width</code> and <code class="index" data-lt="device-height!!viewport
-        META">device-height</code> are mapped to <a class="css" data-link-type="maybe" href="#valdef-user-zoom-zoom">zoom</a> 
-    </li><li>  Numbers in the range <code>&lt;-1, 1&gt;</code>, and unknown values,
-        are mapped to <a class="css" data-link-type="maybe" href="#valdef-user-zoom-fixed">fixed</a> 
+    <li> <code class="index">yes</code>および<code class="index">no</code>は、それぞれ<a class="css" data-link-type="maybe" href="#valdef-user-zoom-zoom">zoom</a>および<a class="css" data-link-type="maybe" href="#valdef-user-zoom-fixed">fixed</a>に翻訳される。 
+    </li><li> 数 ≥ 1、数 ≤ -1、<code class="index" data-lt="device-width!!viewport META">device-width</code>および<code class="index" data-lt="device-height!!viewport
+        META">device-height</code>は、<a class="css" data-link-type="maybe" href="#valdef-user-zoom-zoom">zoom</a>にマッピングされる 
+    </li><li> <code>&lt;-1, 1&gt;</code>範囲の数値および未知の値は、<a class="css" data-link-type="maybe" href="#valdef-user-zoom-fixed">fixed</a>にマッピングされる 
    </li></ol>
    <div class="example" id="example-3f5b7757">
-    <a class="self-link" href="#example-3f5b7757"></a>  This <code class="html">&lt;META&gt;</code> element: 
- 
+    <a class="self-link" href="#example-3f5b7757"></a> この<code class="html">&lt;META&gt;</code>要素は： 
 <pre>&lt;meta name="viewport" content="width=480, initial-scale=2.0, user-scalable=1"&gt;
 </pre>
-    <p>will translate into this <a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a> block:</p>
+    <p>次の<a class="css" data-link-type="maybe" href="#at-ruledef-viewport">@viewport</a>ブロックに翻訳される：</p>
 <pre>@viewport {
     width: 480px;
     zoom: 2.0;
@@ -1427,8 +1258,8 @@ ensure proper rendering.</a><span>, in §6.2</span>
     <a data-link-type="biblio" href="#biblio-cssom-1">[cssom]</a> defines the following terms:
     
     <ul>
-     <li><a href="http://www.w3.org/TR/cssom/#cssrule">CSSRule</a>
-     </li><li><a href="http://www.w3.org/TR/cssom/#cssstyledeclaration">CSSStyleDeclaration</a>
+     <li><a href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#the-cssrule-interface">CSSRule</a>
+     </li><li><a href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#cssstyledeclaration">CSSStyleDeclaration</a>
     </li></ul>
    </li><li>
     <a data-link-type="biblio" href="#biblio-mediaqueries-4">[mediaqueries-4]</a> defines the following terms:
@@ -1451,7 +1282,7 @@ ensure proper rendering.</a><span>, in §6.2</span>
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="http://www.w3.org/TR/css-values/">CSS Values and Units Module Level 3</a>. 11 June 2015. CR. URL: <a href="http://www.w3.org/TR/css-values/">http://www.w3.org/TR/css-values/</a>
    <dt id="biblio-mediaq"><a class="self-link" href="#biblio-mediaq"></a>[MEDIAQ]
    
-   <dd>Florian Rivoal; et al. <a href="http://www.w3.org/TR/css3-mediaqueries/">Media Queries</a>. 19 June 2012. REC. URL: <a href="http://www.w3.org/TR/css3-mediaqueries/">http://www.w3.org/TR/css3-mediaqueries/</a>
+   <dd>Florian Rivoal; et al. <a href="http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/">Media Queries</a>. 19 June 2012. REC. URL: <a href="http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/">http://www.w3.org/TR/css3-mediaqueries/</a>
    <dt id="biblio-css-cascade-4"><a class="self-link" href="#biblio-css-cascade-4"></a>[CSS-CASCADE-4]
    
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="http://www.w3.org/TR/css-cascade-4/">CSS Cascading and Inheritance Level 4</a>. 8 September 2015. WD. URL: <a href="http://www.w3.org/TR/css-cascade-4/">http://www.w3.org/TR/css-cascade-4/</a>
@@ -1627,12 +1458,12 @@ ensure proper rendering.</a><span>, in §6.2</span>
    </td></th></tr></table>
   </div>
   <h2 class="no-num heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl">partial interface <a class="idl-code" data-link-type="interface" href="http://www.w3.org/TR/cssom/#cssrule">CSSRule</a> {
+<pre class="idl">partial interface <a class="idl-code" data-link-type="interface" href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#the-cssrule-interface">CSSRule</a> {
     const unsigned short <a href="#dom-cssrule-viewport_rule">VIEWPORT_RULE</a> = 15;
 };
 
-interface <a class="idl-code" data-link-type="interface" href="#cssviewportrule">CSSViewportRule</a> : <a data-link-type="idl-name" href="http://www.w3.org/TR/cssom/#cssrule">CSSRule</a> {
-    readonly attribute <a data-link-type="idl-name" href="http://www.w3.org/TR/cssom/#cssstyledeclaration">CSSStyleDeclaration</a> <a class="idl-code" data-link-type="attribute" data-readonly="" data-type="CSSStyleDeclaration " href="#dom-cssviewportrule-style">style</a>;
+interface <a class="idl-code" data-link-type="interface" href="#cssviewportrule">CSSViewportRule</a> : <a data-link-type="idl-name" href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#the-cssrule-interface">CSSRule</a> {
+    readonly attribute <a data-link-type="idl-name" href="http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html#cssstyledeclaration">CSSStyleDeclaration</a> <a class="idl-code" data-link-type="attribute" data-readonly="" data-type="CSSStyleDeclaration " href="#dom-cssviewportrule-style">style</a>;
 };
 
 </pre>
