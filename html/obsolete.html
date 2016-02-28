@@ -1,0 +1,1506 @@
+<!DOCTYPE html><html class=split lang=ja><meta charset=utf-8><title>HTML Standard 日本語訳</title>
+<script defer="" src=https://resources.whatwg.org/dfn.js></script>
+<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
+<script>
+   function F( /* varargs... */) {
+     var fragment = document.createDocumentFragment();
+     for (var index = 0; index < arguments.length; index += 1) {
+       if (arguments[index] instanceof Array) {
+         fragment.appendChild(F.apply(this, arguments[index]));
+       } else if (typeof arguments[index] == 'string') {
+         fragment.appendChild(document.createTextNode(arguments[index]));
+       } else {
+         fragment.appendChild(arguments[index]);
+       }
+     }
+     return fragment;
+   }
+   function E(name, /* optional */ attributes /*, varargs... */) {
+     var element = document.createElement(name);
+     var index = 1;
+     if ((arguments.length > 1) && (typeof attributes != 'string') &&
+         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
+       for (var attName in attributes) {
+         if (typeof attributes[attName] == 'boolean') {
+           if (attributes[attName])
+             element.setAttribute(attName, '');
+         } else if (typeof attributes[attName] == 'function') {
+           element[attName] = attributes[attName];
+         } else {
+           element.setAttribute(attName, attributes[attName]);
+         }
+       }
+       index = 2;
+     }
+     for (; index < arguments.length; index += 1) {
+       if (arguments[index] instanceof Array) {
+         element.appendChild(F.apply(this, arguments[index]));
+       } else if (typeof arguments[index] == 'string') {
+         element.appendChild(document.createTextNode(arguments[index]));
+       } else {
+         element.appendChild(arguments[index]);
+       }
+     }
+     return element;
+   }
+   var currentAlert;
+   var currentAlertTimeout;
+   function showAlert(s, href) {
+     if (!currentAlert) {
+       currentAlert = document.createElement('div');
+       currentAlert.id = 'alert';
+       var x = document.createElement('button');
+       x.textContent = '\u2573';
+       x.onclick = closeAlert2;
+       currentAlert.appendChild(x);
+       currentAlert.appendChild(document.createElement('span'));
+       currentAlert.onmousemove = function () {
+         clearTimeout(currentAlertTimeout);
+         currentAlert.className = '';
+         currentAlertTimeout = setTimeout(closeAlert, 10000);
+       }
+       document.body.appendChild(currentAlert);
+     } else {
+       clearTimeout(currentAlertTimeout);
+       currentAlert.className = '';
+     }
+     currentAlert.lastChild.textContent = '';
+     currentAlert.lastChild.appendChild(F(s));
+     if (href) {
+       var link = document.createElement('a');
+       link.href = href;
+       link.textContent = href;
+       currentAlert.lastChild.appendChild(F(' ', link));
+     }
+     currentAlertTimeout = setTimeout(closeAlert, 10000);
+   }
+   function closeAlert() {
+     clearTimeout(currentAlertTimeout);
+     if (currentAlert) {
+       currentAlert.className = 'closed';
+       currentAlertTimeout = setTimeout(closeAlert2, 3000);
+     }
+   }
+   function closeAlert2() {
+     clearTimeout(currentAlertTimeout);
+     if (currentAlert) {
+       currentAlert.parentNode.removeChild(currentAlert);
+       currentAlert = null;
+     }
+   }
+   window.addEventListener('keydown', function (event) {
+     if (event.keyCode == 27) {
+       if (currentAlert)
+         closeAlert2();
+     } else {
+       closeAlert();
+     }
+   }, false);
+   window.addEventListener('scroll', function (event) {
+     closeAlert();
+   }, false);
+
+   var startedInit = 0;
+   function init() {
+     startedInit = 1;
+   }
+   if (document.documentElement.className == "")
+     setTimeout(function () {
+       if (!startedInit)
+         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
+     }, 6000);
+
+   window.addEventListener('keypress', function (event) {
+     if ((event.which == 114) && (event.metaKey)) {
+       if (!confirm('Are you sure you want to reload this page?'))
+         event.preventDefault();
+     }
+   }, false);
+  </script>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=stylesheet href=https://resources.whatwg.org/standard.css><link rel=icon href=https://resources.whatwg.org/logo.svg>
+<style>
+   [hidden] { display: none; }
+
+   .proposal { border: blue solid; padding: 1em; }
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+   #updatesStatus { display: none; z-index: 10; }
+   #updatesStatus.relevant { display: block; position: fixed; right: 1em; top: 1em; padding: 0.5em; font: bold small sans-serif; min-width: 25em; width: 30%; max-width: 40em; height: auto; border: ridge 4px gray; background: #EEEEEE; color: black; }
+   div.head .logo { width: 11em; margin-bottom: 20em; }
+
+   #configUI { position: absolute; z-index: 20; top: auto; right: 0; width: 11em; padding: 0 0.5em 0 0.5em; font-size: small; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em 0 0 0.5em; }
+   #configUI p { margin: 0.75em 0; padding: 0.3em; }
+   #configUI p label { display: block; }
+   #configUI #updateUI, #configUI .loginUI { text-align: center; }
+   #configUI input[type=button] { display: block; margin: auto; }
+   #configUI :link, #configUI :visited { color: white; }
+   #configUI :link:hover, #configUI :visited:hover { background: transparent; }
+
+   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
+   #alert.closed { opacity: 0; }
+   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
+   #alert :link, #alert :visited { color: white; text-decoration: underline; }
+   #alert :link:hover, #alert :visited:hover { background: transparent; }
+
+   @media print { #configUI, #alert { display: none; } }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+
+   .status { font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; top: auto; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status.wrapped { width: 1em; height: 1em; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; right: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome-android.png); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.png); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mobile.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mobile.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+
+   .panel { position: fixed; z-index: 30; top: 10%; left: 0; margin: auto; right: 0; width: 35em; border: double thick; background: #EEEEEE; color: black; padding: 1em; font: 1em sans-serif; max-height: 70%; overflow: auto; }
+   .panel h2 { margin: 0; text-align: center; }
+   .panel ul { min-height: 6em; }
+   .panel p { text-align: right; margin: 0; }
+   .panel form { background: transparent; color: black; margin: 0.5em -0.5em 1em; padding: 0.5em; }
+   .panel form.changed { background: yellow; color: black; }
+   .panel form p { text-align: left; margin: 1em 0 0; }
+   .panel form p:first-child { margin-top: 0; }
+   .panel form p:last-child { margin-bottom: 0; }
+   .panel form p textarea { width: 100% /* TODO: need the keyword that makes it fit to the parent here */; min-height: 4em; display: block; }
+   .panel form dl { line-height: 1.5em; }
+   .panel form dt { display: inline-block; width: 20em; white-space: nowrap; text-align: right; font-weight: normal; margin: 0; padding: 0; }
+   .panel form dd { display: inline; margin: 0 0 0 1em; padding: 0; }
+   .panel form dd:after { display: block; }
+   ul.checkboxes { list-style-type: none; }
+   .progress { text-decoration: blink; }
+
+   .applies .yes { background: yellow; }
+  </style>
+<style>
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+  </style>
+<style>
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+  </style>
+<script src=link-fixup.js></script>
+<body onload=init()>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>27 February 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=rendering.html>← 14 Rendering</a> — <a href=index.html>Table of Contents</a> — <a href=iana.html>16 IANA considerations →</a></nav><ol class=toc><li id=toc-obsolete><a href=obsolete.html#obsolete>15 旧式の機能</a><ol><li><a href=obsolete.html#obsolete-but-conforming-features>15.1 旧式だが適合する機能</a><ol><li><a href=obsolete.html#warnings-for-obsolete-but-conforming-features>15.1.1 Warnings for obsolete but conforming features</a></li></ol></li><li><a href=obsolete.html#non-conforming-features>15.2 非適合機能</a></li><li><a href=obsolete.html#requirements-for-implementations>15.3 実装に対する適合性と必要条件</a><ol><li><a href=obsolete.html#the-applet-element>15.3.1 <code>applet</code>要素</a></li><li><a href=obsolete.html#the-marquee-element-2>15.3.2 <code>marquee</code>要素</a></li><li><a href=obsolete.html#frames>15.3.3 フレーム</a></li><li><a href=obsolete.html#other-elements,-attributes-and-apis>15.3.4 その他要素、属性、API</a></li></ol></li></ol></li></ol><h2 id=obsolete>15 旧式の機能</h2>
+
+  <h3 id=obsolete-but-conforming-features>15.1 旧式だが適合する機能</h3>
+
+  <p>このセクションに記載される機能は、適合性チェッカーで警告するだろう。</p>
+
+  <p>著者は、<code id=obsolete-but-conforming-features:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>要素に<code id=obsolete-but-conforming-features:attr-img-border><a href=#attr-img-border>border</a></code>属性を指定すべきでない。属性が存在する場合、その値は文字列"<code>0</code>"でなければならない。CSSが代わりに使用されるべきである。</p>
+
+  <p>著者は、<code id=obsolete-but-conforming-features:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素に<code id=obsolete-but-conforming-features:attr-script-language><a href=#attr-script-language>language</a></code>属性を指定すべきでない。属性が存在する場合、その値は、文字列"<code>JavaScript</code>"に<a id=obsolete-but-conforming-features:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならず、<code id=obsolete-but-conforming-features:attr-script-type><a href=scripting.html#attr-script-type>type</a></code>属性が省略されなければならない、またはその値が文字列"<code>text/javascript</code>"の<a id=obsolete-but-conforming-features:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>のいずれかで一致しなければならない。この属性は完全に省略される（値"<code>JavaScript</code>"で、効果はない）か、または<code id=obsolete-but-conforming-features:attr-script-type-2><a href=scripting.html#attr-script-type>type</a></code>属性を使用して置換すべきである。</p>
+
+  <p>著者は、<code id=obsolete-but-conforming-features:the-a-element><a href=semantics.html#the-a-element>a</a></code>要素に<code id=obsolete-but-conforming-features:attr-a-name><a href=#attr-a-name>name</a></code>属性を指定すべきでない。属性が存在する場合、その値は空文字列であってはならず、もしあれば、要素自身の<a href=infrastructure.html#concept-id id=obsolete-but-conforming-features:concept-id-2>ID</a>以外で要素の<a id=obsolete-but-conforming-features:home-subtree href=infrastructure.html#home-subtree>ホームサブツリー</a>で<a href=infrastructure.html#concept-id id=obsolete-but-conforming-features:concept-id>ID</a>のいずれかの値に等しくないもの、また任意の値に等しくなければ要素の<a id=obsolete-but-conforming-features:home-subtree-2 href=infrastructure.html#home-subtree>ホームサブツリー</a>で<code id=obsolete-but-conforming-features:the-a-element-2><a href=semantics.html#the-a-element>a</a></code>要素の他の<code id=obsolete-but-conforming-features:attr-a-name-2><a href=#attr-a-name>name</a></code>属性と等しくないものでなければならない。この属性が存在し、要素が<a href=infrastructure.html#concept-id id=obsolete-but-conforming-features:concept-id-3>ID</a>を持つ場合、属性値は要素の<a href=infrastructure.html#concept-id id=obsolete-but-conforming-features:concept-id-4>ID</a>と同じでなければならない。言語の以前のバージョンにおいて、この属性は<a href=infrastructure.html#url id=obsolete-but-conforming-features:url>URL</a>内のフラグメント識別子に対する可能なターゲットを指定するための手段として意図されていた。<code id=obsolete-but-conforming-features:the-id-attribute><a href=dom.html#the-id-attribute>id</a></code>属性が代わりに使用されるべきである。</p>
+
+  
+  <p>著者は、この仕様の他の場所に相いれない要件にもかかわらず、<code id=obsolete-but-conforming-features:attr-input-type><a href=forms.html#attr-input-type>type</a></code>属性が<a href="forms.html#number-state-(type=number)" id="obsolete-but-conforming-features:number-state-(type=number)">Number</a>状態にある<code id=obsolete-but-conforming-features:the-input-element><a href=forms.html#the-input-element>input</a></code>要素上の<code id=obsolete-but-conforming-features:attr-input-maxlength><a href=forms.html#attr-input-maxlength>maxlength</a></code>および<code id=obsolete-but-conforming-features:attr-input-size><a href=forms.html#attr-input-size>size</a></code>属性を指定すべきでないが、してもよい。これら属性を使用するための一つの正当な理由はとにかく、依然として有用幅でテキストフィールドをレンダリングするために、<code>type="number"</code>をもつ<code id=obsolete-but-conforming-features:the-input-element-2><a href=forms.html#the-input-element>input</a></code>要素をサポートしないレガシーユーザーエージェントを支援することである。</p>
+
+  <p class=note><a id=obsolete-but-conforming-features:syntax href=syntax.html#syntax>HTML構文</a>において、<a id=obsolete-but-conforming-features:obsolete-permitted-doctype href=syntax.html#obsolete-permitted-doctype>旧式の許可されたDOCTYPE</a>である<a href=syntax.html#syntax-doctype id=obsolete-but-conforming-features:syntax-doctype>DOCTYPE</a>の指定は、警告されるだろう。</p>
+
+
+  
+
+  <h4 id=warnings-for-obsolete-but-conforming-features>15.1.1 Warnings for obsolete but conforming features</h4>
+
+  <p>To ease the transition from HTML4 Transitional documents to the language defined in
+  <em>this</em> specification, and to discourage certain features that are only allowed in very few
+  circumstances, conformance checkers must warn the user when the following features are used in a
+  document. These are generally old obsolete features that have no effect, and are allowed only to
+  distinguish between likely mistakes (regular conformance errors) and mere vestigial markup or
+  unusual and discouraged practices (these warnings).</p>
+
+  <p>The following features must be categorised as described
+  above:</p>
+
+  <ul><li><p>The presence of an <a id=warnings-for-obsolete-but-conforming-features:obsolete-permitted-doctype href=syntax.html#obsolete-permitted-doctype>obsolete permitted DOCTYPE</a> in an <a href=infrastructure.html#html-documents id=warnings-for-obsolete-but-conforming-features:html-documents>HTML document</a>.</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-img-border><a href=#attr-img-border>border</a></code> attribute on an
+   <code id=warnings-for-obsolete-but-conforming-features:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element if its value is the string "<code>0</code>".</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-script-language><a href=#attr-script-language>language</a></code> attribute on a
+   <code id=warnings-for-obsolete-but-conforming-features:the-script-element><a href=scripting.html#the-script-element>script</a></code> element if its value is an <a id=warnings-for-obsolete-but-conforming-features:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the
+   string "<code>JavaScript</code>" and if there is no <code id=warnings-for-obsolete-but-conforming-features:attr-script-type><a href=scripting.html#attr-script-type>type</a></code> attribute or there is and its value is an <a id=warnings-for-obsolete-but-conforming-features:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII
+   case-insensitive</a> match for the string "<code>text/javascript</code>".</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-a-name><a href=#attr-a-name>name</a></code> attribute on an <code id=warnings-for-obsolete-but-conforming-features:the-a-element><a href=semantics.html#the-a-element>a</a></code>
+   element, if its value is not the empty string.</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-input-maxlength><a href=forms.html#attr-input-maxlength>maxlength</a></code> attribute on an
+   <code id=warnings-for-obsolete-but-conforming-features:the-input-element><a href=forms.html#the-input-element>input</a></code> element whose <code id=warnings-for-obsolete-but-conforming-features:attr-input-type><a href=forms.html#attr-input-type>type</a></code> attribute is in the
+   <a href="forms.html#number-state-(type=number)" id="warnings-for-obsolete-but-conforming-features:number-state-(type=number)">Number</a> state.</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-input-size><a href=forms.html#attr-input-size>size</a></code> attribute on an
+   <code id=warnings-for-obsolete-but-conforming-features:the-input-element-2><a href=forms.html#the-input-element>input</a></code> element whose <code id=warnings-for-obsolete-but-conforming-features:attr-input-type-2><a href=forms.html#attr-input-type>type</a></code> attribute is in the
+   <a href="forms.html#number-state-(type=number)" id="warnings-for-obsolete-but-conforming-features:number-state-(type=number)-2">Number</a> state.</li></ul>
+
+  <p>Conformance checkers must distinguish between pages that have no conformance errors and have
+  none of these obsolete features, and pages that have no conformance errors but do have some of
+  these obsolete features.</p>
+
+  <p class=example>For example, a validator could report some pages as "Valid HTML" and others as
+  "Valid HTML with warnings".</p>
+
+  
+
+
+  <h3 id=non-conforming-features>15.2 非適合機能</h3>
+
+  <p>次のリストの要素は完全に廃止されており、著者は使用してはならない：</p>
+
+  <dl><dt><code id=non-conforming-features:the-applet-element><a href=#the-applet-element>applet</a></code><dd><p>代わりに<code id=non-conforming-features:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code>または<code id=non-conforming-features:the-object-element><a href=embedded-content.html#the-object-element>object</a></code>を使用する。<dt><dfn id=acronym><code>acronym</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-abbr-element><a href=semantics.html#the-abbr-element>abbr</a></code>を使用する。<dt><dfn id=bgsound><code>bgsound</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-audio-element><a href=embedded-content.html#the-audio-element>audio</a></code>を使用する。<dt><dfn id=dir><code>dir</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-ul-element><a href=semantics.html#the-ul-element>ul</a></code>を使用する。<dt><code id=non-conforming-features:frame><a href=#frame>frame</a></code><dt><code id=non-conforming-features:frameset><a href=#frameset>frameset</a></code><dt><dfn id=noframes><code>noframes</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>およびCSSを使用する、または様々な不変部分が合併された完全なページを生成するために含まれるサーバー側を使用するかのいずれか。<dt><dfn id=isindex-2><code>isindex</code></dfn><dd><p>代わりに明示的に<code id=non-conforming-features:the-form-element><a href=forms.html#the-form-element>form</a></code>と<a href="forms.html#text-(type=text)-state-and-search-state-(type=search)" id="non-conforming-features:text-(type=text)-state-and-search-state-(type=search)">テキストフィールド</a>の組み合わせを使用する。<dt><dfn id=listing><code>listing</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-pre-element><a href=semantics.html#the-pre-element>pre</a></code>または<code id=non-conforming-features:the-code-element><a href=semantics.html#the-code-element>code</a></code>を使用する。<dt><dfn id=nextid><code>nextid</code></dfn><dd><p>GUIDを代わりに使用する。<dt><dfn id=noembed><code>noembed</code></dfn><dd><p>フォールバックが必要な際に<code id=non-conforming-features:the-embed-element-2><a href=embedded-content.html#the-embed-element>embed</a></code>の代わりに<code id=non-conforming-features:the-object-element-2><a href=embedded-content.html#the-object-element>object</a></code>を使用する。<dt><dfn id=plaintext><code>plaintext</code></dfn><dd><p>代わりに"<code id=non-conforming-features:text/plain><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code>" <a id=non-conforming-features:mime-type href=infrastructure.html#mime-type>MIMEタイプ</a>を使用する。<dt><dfn id=rb><code>rb</code></dfn><dt><dfn id=rtc><code>rtc</code></dfn><dd><p>Providing the ruby base directly inside the <code id=non-conforming-features:the-ruby-element><a href=semantics.html#the-ruby-element>ruby</a></code> element or using nested
+   <code id=non-conforming-features:the-ruby-element-2><a href=semantics.html#the-ruby-element>ruby</a></code> elements is sufficient.<dt><dfn id=strike><code>strike</code></dfn><dd><p>要素が編集をマークする場合は代わりに<code id=non-conforming-features:the-del-element><a href=semantics.html#the-del-element>del</a></code>を使用し、そうでなければ代わりに<code id=non-conforming-features:the-s-element><a href=semantics.html#the-s-element>s</a></code>を使用する。<dt><dfn id=xmp><code>xmp</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-pre-element-2><a href=semantics.html#the-pre-element>pre</a></code>および<code id=non-conforming-features:the-code-element-2><a href=semantics.html#the-code-element>code</a></code>を使用し、"<code>&lt;</code>"および"<code>&amp;</code>"文字をそれぞれ"<code>&amp;lt;</code>"および"<code>&amp;amp;</code>"としてエスケープする。<dt><dfn id=basefont><code>basefont</code></dfn><dt><dfn id=big><code>big</code></dfn><dt><dfn id=blink><code>blink</code></dfn><dt><dfn id=center><code>center</code></dfn><dt><dfn id=font><code>font</code></dfn><dt><code id=non-conforming-features:the-marquee-element-2><a href=#the-marquee-element-2>marquee</a></code><dt><dfn id=multicol><code>multicol</code></dfn><dt><dfn id=nobr><code>nobr</code></dfn><dt><dfn id=spacer><code>spacer</code></dfn><dt><dfn id=tt><code>tt</code></dfn><dd>
+
+    <p>適切な要素またはCSSを代わりに使用する。</p>
+
+    <p><code id=non-conforming-features:tt><a href=#tt>tt</a></code>要素がキーボード入力をマークアップするために使用されるであろう場所において、<code id=non-conforming-features:the-kbd-element><a href=semantics.html#the-kbd-element>kbd</a></code>要素を考慮する。変数に対しては、<code id=non-conforming-features:the-var-element><a href=semantics.html#the-var-element>var</a></code>要素を考慮する。コンピューターコードに対しては、<code id=non-conforming-features:the-code-element-3><a href=semantics.html#the-code-element>code</a></code>要素を考慮する。コンピュータ出力に対しては、<code id=non-conforming-features:the-samp-element><a href=semantics.html#the-samp-element>samp</a></code>要素を考慮する。</p>
+
+    <p>同様に、<code id=non-conforming-features:big><a href=#big>big</a></code>要素が見出しを表すために使用される場合、<code id=non-conforming-features:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code>要素の使用を考慮する。重要な語句をマークアップするために使用される場合、<code id=non-conforming-features:the-strong-element><a href=semantics.html#the-strong-element>strong</a></code>要素を考慮する。参照目的に対してテキストをハイライトするために使用されている場合、<code id=non-conforming-features:the-mark-element><a href=semantics.html#the-mark-element>mark</a></code>要素を検討する。</p>
+
+    <p>例を含むより多くの提案に対する<a href=semantics.html#usage-summary>テキストレベルのセマンティックの使用状況の概要</a>も参照のこと。</p>
+
+   </dl>
+
+  <hr>
+
+  <p>（要素はまだ言語の一部であるが）以下の属性は廃止されており、著者は使用してはならない：</p>
+
+  <dl><dt><code id=non-conforming-features:the-a-element><a href=semantics.html#the-a-element>a</a></code>要素の<dfn id=attr-a-charset><code>charset</code></dfn><dt><code id=non-conforming-features:the-link-element><a href=semantics.html#the-link-element>link</a></code>要素の<dfn id=attr-link-charset><code>charset</code></dfn><dd><p>Use an HTTP `<code id=non-conforming-features:content-type><a href=infrastructure.html#content-type>Content-Type</a></code>` header on the linked resource instead.<dt><code id=non-conforming-features:the-a-element-2><a href=semantics.html#the-a-element>a</a></code>要素の<dfn id=attr-a-coords><code>coords</code></dfn><dt><code id=non-conforming-features:the-a-element-3><a href=semantics.html#the-a-element>a</a></code>要素の<dfn id=attr-a-shape><code>shape</code></dfn><dd><p>イメージマップに対して<code id=non-conforming-features:the-a-element-4><a href=semantics.html#the-a-element>a</a></code>の代わりに<code id=non-conforming-features:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>を使用する。<dt><code id=non-conforming-features:the-a-element-5><a href=semantics.html#the-a-element>a</a></code>要素の<dfn id=attr-a-methods><code>methods</code></dfn><dt><code id=non-conforming-features:the-link-element-2><a href=semantics.html#the-link-element>link</a></code>要素の<dfn id=attr-link-methods><code>methods</code></dfn><dd><p>代わりにHTTP OPTIONS機能を使用する。<dt><code id=non-conforming-features:the-a-element-6><a href=semantics.html#the-a-element>a</a></code>要素の<dfn id=attr-a-name><code>name</code></dfn>（前のセクションに記載される場合を除く）<dt><code id=non-conforming-features:the-embed-element-3><a href=embedded-content.html#the-embed-element>embed</a></code>要素の<dfn id=attr-embed-name><code>name</code></dfn><dt><code id=non-conforming-features:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>要素の<dfn id=attr-img-name><code>name</code></dfn><dt><code id=non-conforming-features:the-option-element><a href=forms.html#the-option-element>option</a></code>要素の<dfn id=attr-option-name><code>name</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-id-attribute><a href=dom.html#the-id-attribute>id</a></code>属性を使用する。<dt><code id=non-conforming-features:the-a-element-7><a href=semantics.html#the-a-element>a</a></code>要素の<dfn id=attr-a-rev><code>rev</code></dfn><dt><code id=non-conforming-features:the-link-element-3><a href=semantics.html#the-link-element>link</a></code>要素の<dfn id=attr-link-rev><code>rev</code></dfn><dd><p>反対の用語をもつ、<code id=non-conforming-features:attr-hyperlink-rel><a href=semantics.html#attr-hyperlink-rel>rel</a></code>属性を代わりに使用する。（たとえば、<code>rev="made"</code>の代わりに、<code>rel="author"</code>を使用する。）<dt><code id=non-conforming-features:the-a-element-8><a href=semantics.html#the-a-element>a</a></code>要素の<dfn id=attr-a-urn><code>urn</code></dfn><dt><code id=non-conforming-features:the-link-element-4><a href=semantics.html#the-link-element>link</a></code>要素の<dfn id=attr-link-urn><code>urn</code></dfn><dd><p>代わりに<code id=non-conforming-features:attr-hyperlink-href><a href=semantics.html#attr-hyperlink-href>href</a></code>属性を使用して優先される永続的な識別子を指定する。<dt><code id=non-conforming-features:the-form-element-2><a href=forms.html#the-form-element>form</a></code>要素の<dfn id=attr-form-accept><code>accept</code></dfn><dd><p>代わりに、<code id=non-conforming-features:the-input-element><a href=forms.html#the-input-element>input</a></code>要素で直接<code id=non-conforming-features:attr-input-accept><a href=forms.html#attr-input-accept>accept</a></code>属性を使用する。<dt><dfn id=attr-area-hreflang><code>hreflang</code></dfn> on <code id=non-conforming-features:the-area-element-2><a href=embedded-content.html#the-area-element>area</a></code>
+   elements<dt><dfn id=attr-area-type><code>type</code></dfn> on <code id=non-conforming-features:the-area-element-3><a href=embedded-content.html#the-area-element>area</a></code> elements<dd><p>These attributes do not do anything useful, and for historical reasons there are no
+   corresponding IDL attributes on <code id=non-conforming-features:the-area-element-4><a href=embedded-content.html#the-area-element>area</a></code> elements. Omit them altogether.<dt><code id=non-conforming-features:the-area-element-5><a href=embedded-content.html#the-area-element>area</a></code>要素の<dfn id=attr-area-nohref><code>nohref</code></dfn><dd><p><code id=non-conforming-features:attr-hyperlink-href-2><a href=semantics.html#attr-hyperlink-href>href</a></code>属性を省略することで十分であり、<code id=non-conforming-features:attr-area-nohref><a href=#attr-area-nohref>nohref</a></code>属性は不要である。完全に省略する。<dt><code id=non-conforming-features:the-head-element><a href=semantics.html#the-head-element>head</a></code>要素の<dfn id=attr-head-profile><code>profile</code></dfn><dd><p><code id=non-conforming-features:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>用語が文書で使用される宣言に使用する場合、不要である。これを完全に省略し、<a href=semantics.html#concept-meta-extensions id=non-conforming-features:concept-meta-extensions>名前を登録する</a>。<dd><p>特定のユーザーエージェントの動作をトリガするために使用する場合：代わりに<code id=non-conforming-features:the-link-element-5><a href=semantics.html#the-link-element>link</a></code>要素を使用する。<dt><code id=non-conforming-features:the-html-element><a href=semantics.html#the-html-element>html</a></code>要素の<dfn id=attr-html-version><code>version</code></dfn><dd><p>不要。完全に省略する。<dt><code id=non-conforming-features:the-input-element-2><a href=forms.html#the-input-element>input</a></code>要素の<dfn id=attr-input-ismap><code>ismap</code></dfn><dd><p>不要。完全に省略する。<a href="forms.html#image-button-state-(type=image)" id="non-conforming-features:image-button-state-(type=image)">Image Button</a>状態で<code id=non-conforming-features:attr-input-type><a href=forms.html#attr-input-type>type</a></code>属性をもつすべての<code id=non-conforming-features:the-input-element-3><a href=forms.html#the-input-element>input</a></code>要素は、サーバ側イメージマップとして処理される。<dt><code id=non-conforming-features:the-input-element-4><a href=forms.html#the-input-element>input</a></code>要素の<dfn id=attr-input-usemap><code>usemap</code></dfn><dd><p>イメージマップに対して<code id=non-conforming-features:the-input-element-5><a href=forms.html#the-input-element>input</a></code>の代わりに<code id=non-conforming-features:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code>を使用する。<dt><code id=non-conforming-features:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-longdesc><code>longdesc</code></dfn><dt><code id=non-conforming-features:the-img-element-3><a href=embedded-content.html#the-img-element>img</a></code>要素の<dfn id=attr-img-longdesc><code>longdesc</code></dfn><dd><p>説明へのリンクのために<code id=non-conforming-features:the-a-element-9><a href=semantics.html#the-a-element>a</a></code>要素を使用する、または（画像の場合）画像から画像の説明へリンクを提供するために<a id=non-conforming-features:image-map href=embedded-content.html#image-map>イメージマップ</a>を使用する。<dt><code id=non-conforming-features:the-img-element-4><a href=embedded-content.html#the-img-element>img</a></code>要素の<dfn id=attr-img-lowsrc><code>lowsrc</code></dfn><dd><p>代わりに2つの別々の画像を使用する、（<code id=non-conforming-features:attr-img-src><a href=embedded-content.html#attr-img-src>src</a></code>属性で指定された）プログレッシブJPEG画像を使用する。<dt><code id=non-conforming-features:the-link-element-6><a href=semantics.html#the-link-element>link</a></code>要素の<dfn id=attr-link-target><code>target</code></dfn><dd><p>不要。完全に省略する。<dt><code id=non-conforming-features:the-meta-element-2><a href=semantics.html#the-meta-element>meta</a></code>要素の<dfn id=attr-meta-scheme><code>scheme</code></dfn><dd><p>フィールドごとに1つのスキームのみを使用する、または値のスキーム宣言部分を作成する。<dt><code id=non-conforming-features:the-object-element-3><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-archive><code>archive</code></dfn><dt><code id=non-conforming-features:the-object-element-4><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-classid><code>classid</code></dfn><dt><code id=non-conforming-features:the-object-element-5><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-code><code>code</code></dfn><dt><code id=non-conforming-features:the-object-element-6><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-codebase><code>codebase</code></dfn><dt><code id=non-conforming-features:the-object-element-7><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-codetype><code>codetype</code></dfn><dd><p><a href=infrastructure.html#plugin id=non-conforming-features:plugin>プラグイン</a>を呼び出すために、<code id=non-conforming-features:attr-object-data><a href=embedded-content.html#attr-object-data>data</a></code>属性および<code id=non-conforming-features:attr-object-type><a href=embedded-content.html#attr-object-type>type</a></code>属性を使用する。特にこれら名前のパラメータを設定するために、<code id=non-conforming-features:the-param-element><a href=embedded-content.html#the-param-element>param</a></code>要素を使用できる。<dt><code id=non-conforming-features:the-object-element-8><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-declare><code>declare</code></dfn><dd><p><code id=non-conforming-features:the-object-element-9><a href=embedded-content.html#the-object-element>object</a></code>要素のリソースを再利用するたびに完全に繰り返す。<dt><code id=non-conforming-features:the-object-element-10><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-standby><code>standby</code></dfn><dd><p>少なくとも徐々に、または迅速にロードするようにリンクされたリソースを最適化する。<dt><code id=non-conforming-features:the-param-element-2><a href=embedded-content.html#the-param-element>param</a></code>要素の<dfn id=attr-param-type><code>type</code></dfn><dt><code id=non-conforming-features:the-param-element-3><a href=embedded-content.html#the-param-element>param</a></code>要素の<dfn id=attr-param-valuetype><code>valuetype</code></dfn><dd><p>値型を宣言することなく、<code id=non-conforming-features:attr-param-name><a href=embedded-content.html#attr-param-name>name</a></code>および<code id=non-conforming-features:attr-param-value><a href=embedded-content.html#attr-param-value>value</a></code>属性を使用する。<dt><code id=non-conforming-features:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素の<dfn id=attr-script-language><code>language</code></dfn>（前のセクションに記載される場合を除く）<dd><p>代わりに<code id=non-conforming-features:attr-script-type><a href=scripting.html#attr-script-type>type</a></code>属性を使用する。<dt><code id=non-conforming-features:the-script-element-2><a href=scripting.html#the-script-element>script</a></code>要素の<dfn id=attr-script-event><code>event</code></dfn><dt><code id=non-conforming-features:the-script-element-3><a href=scripting.html#the-script-element>script</a></code>要素の<dfn id=attr-script-for><code>for</code></dfn><dd><p>Use DOM events mechanisms to register event listeners. <a href=references.html#refsDOM>[DOM]</a><dt> <code id=non-conforming-features:the-source-element><a href=embedded-content.html#the-source-element>source</a></code>要素の<dfn id=attr-source-media><code>media</code></dfn><dd><p>使用するメディアリソースを選択するためにスクリプトを使用する。<dt><code id=non-conforming-features:the-table-element><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-datapagesize><code>datapagesize</code></dfn><dd><p>不要。完全に省略する。<dt><code id=non-conforming-features:the-table-element-2><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-summary><code>summary</code></dfn><dd><p><code id=non-conforming-features:the-table-element-3><a href=tables.html#the-table-element>table</a></code>のセクションで指定された<a href=tables.html#table-descriptions-techniques>テーブルを記述するための手法</a>のいずれかを代わりに使用する。<dt><dfn id=attr-td-abbr><code>abbr</code></dfn> on <code id=non-conforming-features:the-td-element><a href=tables.html#the-td-element>td</a></code> elements<dd><p>Use text that begins in an unambiguous and terse manner, and include any more elaborate text after that. The <code id=non-conforming-features:attr-title><a href=dom.html#attr-title>title</a></code> attribute can also be useful in including more detailed text, so that the cell's contents can be made terse. If it's a heading, use <code id=non-conforming-features:the-th-element><a href=tables.html#the-th-element>th</a></code> (which has an <code id=non-conforming-features:attr-th-abbr><a href=tables.html#attr-th-abbr>abbr</a></code> attribute).</p>
+
+   <dt><code id=non-conforming-features:the-td-element-2><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-2><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-axis><code>axis</code></dfn><dd><p>代わりに該当する<code id=non-conforming-features:the-th-element-3><a href=tables.html#the-th-element>th</a></code>要素で<code id=non-conforming-features:attr-th-scope><a href=tables.html#attr-th-scope>scope</a></code>属性を使用する。</p>
+
+   <dt><code id=non-conforming-features:the-td-element-3><a href=tables.html#the-td-element>td</a></code>要素の<dfn id=attr-td-scope><code>scope</code></dfn><dd><p>見出しセルに対して<code id=non-conforming-features:the-th-element-4><a href=tables.html#the-th-element>th</a></code>要素を使用する。</p>
+
+   <dt><code id=non-conforming-features:the-a-element-10><a href=semantics.html#the-a-element>a</a></code>、<code id=non-conforming-features:the-applet-element-2><a href=#the-applet-element>applet</a></code>、<code id=non-conforming-features:the-button-element><a href=forms.html#the-button-element>button</a></code>、<code id=non-conforming-features:the-div-element><a href=semantics.html#the-div-element>div</a></code>、<code id=non-conforming-features:frame-2><a href=#frame>frame</a></code>、<code id=non-conforming-features:the-iframe-element-3><a href=embedded-content.html#the-iframe-element>iframe</a></code>、<code id=non-conforming-features:the-img-element-5><a href=embedded-content.html#the-img-element>img</a></code>、<code id=non-conforming-features:the-input-element-6><a href=forms.html#the-input-element>input</a></code>、<code id=non-conforming-features:the-label-element><a href=forms.html#the-label-element>label</a></code>、<code id=non-conforming-features:the-legend-element><a href=forms.html#the-legend-element>legend</a></code>、<code id=non-conforming-features:the-marquee-element-2-2><a href=#the-marquee-element-2>marquee</a></code>、<code id=non-conforming-features:the-object-element-11><a href=embedded-content.html#the-object-element>object</a></code>、<code id=non-conforming-features:the-option-element-2><a href=forms.html#the-option-element>option</a></code>、<code id=non-conforming-features:the-select-element><a href=forms.html#the-select-element>select</a></code>、<code id=non-conforming-features:the-span-element><a href=semantics.html#the-span-element>span</a></code>、<code id=non-conforming-features:the-table-element-4><a href=tables.html#the-table-element>table</a></code>、および<code id=non-conforming-features:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code>要素の<dfn id=attr-datasrc><code>datasrc</code></dfn><dt><code id=non-conforming-features:the-a-element-11><a href=semantics.html#the-a-element>a</a></code>、<code id=non-conforming-features:the-applet-element-3><a href=#the-applet-element>applet</a></code>、<code id=non-conforming-features:the-button-element-2><a href=forms.html#the-button-element>button</a></code>、<code id=non-conforming-features:the-div-element-2><a href=semantics.html#the-div-element>div</a></code>、<code id=non-conforming-features:the-fieldset-element><a href=forms.html#the-fieldset-element>fieldset</a></code>、<code id=non-conforming-features:frame-3><a href=#frame>frame</a></code>、<code id=non-conforming-features:the-iframe-element-4><a href=embedded-content.html#the-iframe-element>iframe</a></code>、<code id=non-conforming-features:the-img-element-6><a href=embedded-content.html#the-img-element>img</a></code>、<code id=non-conforming-features:the-input-element-7><a href=forms.html#the-input-element>input</a></code>、<code id=non-conforming-features:the-label-element-2><a href=forms.html#the-label-element>label</a></code>、<code id=non-conforming-features:the-legend-element-2><a href=forms.html#the-legend-element>legend</a></code>、<code id=non-conforming-features:the-marquee-element-2-3><a href=#the-marquee-element-2>marquee</a></code>、<code id=non-conforming-features:the-object-element-12><a href=embedded-content.html#the-object-element>object</a></code>、<code id=non-conforming-features:the-param-element-4><a href=embedded-content.html#the-param-element>param</a></code>、<code id=non-conforming-features:the-select-element-2><a href=forms.html#the-select-element>select</a></code>、<code id=non-conforming-features:the-span-element-2><a href=semantics.html#the-span-element>span</a></code>、および<code id=non-conforming-features:the-textarea-element-2><a href=forms.html#the-textarea-element>textarea</a></code>要素の<dfn id=attr-datafld><code>datafld</code></dfn><dt><code id=non-conforming-features:the-button-element-3><a href=forms.html#the-button-element>button</a></code>、<code id=non-conforming-features:the-div-element-3><a href=semantics.html#the-div-element>div</a></code>、<code id=non-conforming-features:the-input-element-8><a href=forms.html#the-input-element>input</a></code>、<code id=non-conforming-features:the-label-element-3><a href=forms.html#the-label-element>label</a></code>、<code id=non-conforming-features:the-legend-element-3><a href=forms.html#the-legend-element>legend</a></code>、<code id=non-conforming-features:the-marquee-element-2-4><a href=#the-marquee-element-2>marquee</a></code>、<code id=non-conforming-features:the-object-element-13><a href=embedded-content.html#the-object-element>object</a></code>、<code id=non-conforming-features:the-option-element-3><a href=forms.html#the-option-element>option</a></code>、<code id=non-conforming-features:the-select-element-3><a href=forms.html#the-select-element>select</a></code>、<code id=non-conforming-features:the-span-element-3><a href=semantics.html#the-span-element>span</a></code>、および<code id=non-conforming-features:the-table-element-5><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-dataformatas><code>dataformatas</code></dfn><dd><p>動的にページを読み込むためにスクリプトや<code id=non-conforming-features:xmlhttprequest><a href=infrastructure.html#xmlhttprequest>XMLHttpRequest</a></code>のようなメカニズムを使用する。<a href=references.html#refsXHR>[XHR]</a><dt><code id=non-conforming-features:the-body-element><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-alink><code>alink</code></dfn><dt><code id=non-conforming-features:the-body-element-2><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-bgcolor><code>bgcolor</code></dfn><dt><code id=non-conforming-features:the-body-element-3><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-bottommargin><code>bottommargin</code></dfn><dt><code id=non-conforming-features:the-body-element-4><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-leftmargin><code>leftmargin</code></dfn><dt><code id=non-conforming-features:the-body-element-5><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-link><code>link</code></dfn><dt><code id=non-conforming-features:the-body-element-6><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-marginheight><code>marginheight</code></dfn><dt><code id=non-conforming-features:the-body-element-7><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-marginwidth><code>marginwidth</code></dfn><dt><code id=non-conforming-features:the-body-element-8><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-rightmargin><code>rightmargin</code></dfn><dt><code id=non-conforming-features:the-body-element-9><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-text><code>text</code></dfn><dt><code id=non-conforming-features:the-body-element-10><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-topmargin><code>margintop</code></dfn><dt><code id=non-conforming-features:the-body-element-11><a href=semantics.html#the-body-element>body</a></code>要素の<dfn id=attr-body-vlink><code>vlink</code></dfn><dt><code id=non-conforming-features:the-br-element><a href=semantics.html#the-br-element>br</a></code>要素の<dfn id=attr-br-clear><code>clear</code></dfn><dt><code id=non-conforming-features:the-caption-element><a href=tables.html#the-caption-element>caption</a></code>要素の<dfn id=attr-caption-align><code>align</code></dfn><dt><code id=non-conforming-features:the-col-element><a href=tables.html#the-col-element>col</a></code>要素の<dfn id=attr-col-align><code>align</code></dfn><dt><code id=non-conforming-features:the-col-element-2><a href=tables.html#the-col-element>col</a></code>要素の<dfn id=attr-col-char><code>char</code></dfn><dt><code id=non-conforming-features:the-col-element-3><a href=tables.html#the-col-element>col</a></code>要素の<dfn id=attr-col-charoff><code>charoff</code></dfn><dt><code id=non-conforming-features:the-col-element-4><a href=tables.html#the-col-element>col</a></code>要素の<dfn id=attr-col-valign><code>valign</code></dfn><dt><code id=non-conforming-features:the-col-element-5><a href=tables.html#the-col-element>col</a></code>要素の<dfn id=attr-col-width><code>width</code></dfn><dt><code id=non-conforming-features:the-div-element-4><a href=semantics.html#the-div-element>div</a></code>要素の<dfn id=attr-div-align><code>align</code></dfn><dt><code id=non-conforming-features:the-dl-element><a href=semantics.html#the-dl-element>dl</a></code>要素の<dfn id=attr-dl-compact><code>compact</code></dfn><dt><code id=non-conforming-features:the-embed-element-4><a href=embedded-content.html#the-embed-element>embed</a></code>要素の<dfn id=attr-embed-align><code>align</code></dfn><dt><code id=non-conforming-features:the-embed-element-5><a href=embedded-content.html#the-embed-element>embed</a></code>要素の<dfn id=attr-embed-hspace><code>hspace</code></dfn><dt><code id=non-conforming-features:the-embed-element-6><a href=embedded-content.html#the-embed-element>embed</a></code>要素の<dfn id=attr-embed-vspace><code>vspace</code></dfn><dt><code id=non-conforming-features:the-hr-element><a href=semantics.html#the-hr-element>hr</a></code>要素の<dfn id=attr-hr-align><code>align</code></dfn><dt><code id=non-conforming-features:the-hr-element-2><a href=semantics.html#the-hr-element>hr</a></code>要素の<dfn id=attr-hr-color><code>color</code></dfn><dt><code id=non-conforming-features:the-hr-element-3><a href=semantics.html#the-hr-element>hr</a></code>要素の<dfn id=attr-hr-noshade><code>noshade</code></dfn><dt><code id=non-conforming-features:the-hr-element-4><a href=semantics.html#the-hr-element>hr</a></code>要素の<dfn id=attr-hr-size><code>size</code></dfn><dt><code id=non-conforming-features:the-hr-element-5><a href=semantics.html#the-hr-element>hr</a></code>要素の<dfn id=attr-hr-width><code>width</code></dfn><dt><code id=non-conforming-features:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-2><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code>—<code id=non-conforming-features:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-3><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h6</a></code>要素の<dfn id=attr-hx-align><code>align</code></dfn><dt><code id=non-conforming-features:the-iframe-element-5><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-align><code>align</code></dfn><dt><code id=non-conforming-features:the-iframe-element-6><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-allowtransparency><code>allowtransparency</code></dfn><dt><code id=non-conforming-features:the-iframe-element-7><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-frameborder><code>frameborder</code></dfn><dt><dfn id=attr-iframe-framespacing><code>framespacing</code></dfn> on <code id=non-conforming-features:the-iframe-element-8><a href=embedded-content.html#the-iframe-element>iframe</a></code> elements<dt><code id=non-conforming-features:the-iframe-element-9><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-hspace><code>hspace</code></dfn><dt><code id=non-conforming-features:the-iframe-element-10><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-marginheight><code>marginheight</code></dfn><dt><code id=non-conforming-features:the-iframe-element-11><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-marginwidth><code>marginwidth</code></dfn><dt><code id=non-conforming-features:the-iframe-element-12><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-scrolling><code>scrolling</code></dfn><dt><code id=non-conforming-features:the-iframe-element-13><a href=embedded-content.html#the-iframe-element>iframe</a></code>要素の<dfn id=attr-iframe-vspace><code>vspace</code></dfn><dt><code id=non-conforming-features:the-input-element-9><a href=forms.html#the-input-element>input</a></code>要素の<dfn id=attr-input-align><code>align</code></dfn><dt><code id=non-conforming-features:the-input-element-10><a href=forms.html#the-input-element>input</a></code>要素の<dfn id=attr-input-border><code>border</code></dfn><dt><code id=non-conforming-features:the-input-element-11><a href=forms.html#the-input-element>input</a></code>要素の<dfn id=attr-input-hspace><code>hspace</code></dfn><dt><code id=non-conforming-features:the-input-element-12><a href=forms.html#the-input-element>input</a></code>要素の<dfn id=attr-input-vspace><code>vspace</code></dfn><dt><code id=non-conforming-features:the-img-element-7><a href=embedded-content.html#the-img-element>img</a></code>要素の<dfn id=attr-img-align><code>align</code></dfn><dt><code id=non-conforming-features:the-img-element-8><a href=embedded-content.html#the-img-element>img</a></code>要素の<dfn id=attr-img-border><code>border</code></dfn>（前のセクションに記載される場合を除く）<dt><code id=non-conforming-features:the-img-element-9><a href=embedded-content.html#the-img-element>img</a></code>要素の<dfn id=attr-img-hspace><code>hspace</code></dfn><dt><code id=non-conforming-features:the-img-element-10><a href=embedded-content.html#the-img-element>img</a></code>要素の<dfn id=attr-img-vspace><code>vspace</code></dfn><dt><code id=non-conforming-features:the-legend-element-4><a href=forms.html#the-legend-element>legend</a></code>要素の<dfn id=attr-legend-align><code>align</code></dfn><dt><code id=non-conforming-features:the-li-element><a href=semantics.html#the-li-element>li</a></code>要素の<dfn id=attr-li-type><code>type</code></dfn><dt><code id=non-conforming-features:the-menu-element><a href=forms.html#the-menu-element>menu</a></code>要素の<dfn id=attr-menu-compact><code>compact</code></dfn><dt><code id=non-conforming-features:the-object-element-14><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-align><code>align</code></dfn><dt><code id=non-conforming-features:the-object-element-15><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-border><code>border</code></dfn><dt><code id=non-conforming-features:the-object-element-16><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-hspace><code>hspace</code></dfn><dt><code id=non-conforming-features:the-object-element-17><a href=embedded-content.html#the-object-element>object</a></code>要素の<dfn id=attr-object-vspace><code>vspace</code></dfn><dt><code id=non-conforming-features:the-ol-element><a href=semantics.html#the-ol-element>ol</a></code>要素の<dfn id=attr-ol-compact><code>compact</code></dfn><dt><code id=non-conforming-features:the-p-element><a href=semantics.html#the-p-element>p</a></code>要素の<dfn id=attr-p-align><code>align</code></dfn><dt><code id=non-conforming-features:the-pre-element-3><a href=semantics.html#the-pre-element>pre</a></code>要素の<dfn id=attr-pre-width><code>width</code></dfn><dt><code id=non-conforming-features:the-table-element-6><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-align><code>align</code></dfn><dt><code id=non-conforming-features:the-table-element-7><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-bgcolor><code>bgcolor</code></dfn><dt><dfn id=attr-table-border><code>border</code></dfn> on <code id=non-conforming-features:the-table-element-8><a href=tables.html#the-table-element>table</a></code> elements<dt><code id=non-conforming-features:the-table-element-9><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-bordercolor><code>bordercolor</code></dfn><dt><code id=non-conforming-features:the-table-element-10><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-cellpadding><code>cellpadding</code></dfn><dt><code id=non-conforming-features:the-table-element-11><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-cellspacing><code>cellspacing</code></dfn><dt><code id=non-conforming-features:the-table-element-12><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-frame><code>frame</code></dfn><dt><code id=non-conforming-features:the-table-element-13><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-height><code>height</code></dfn><dt><code id=non-conforming-features:the-table-element-14><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-rules><code>rules</code></dfn><dt><code id=non-conforming-features:the-table-element-15><a href=tables.html#the-table-element>table</a></code>要素の<dfn id=attr-table-width><code>width</code></dfn><dt><code id=non-conforming-features:the-tbody-element><a href=tables.html#the-tbody-element>tbody</a></code>、<code id=non-conforming-features:the-thead-element><a href=tables.html#the-thead-element>thead</a></code>、および<code id=non-conforming-features:the-tfoot-element><a href=tables.html#the-tfoot-element>tfoot</a></code>要素の<dfn id=attr-tbody-align><code>align</code></dfn><dt><code id=non-conforming-features:the-tbody-element-2><a href=tables.html#the-tbody-element>tbody</a></code>、<code id=non-conforming-features:the-thead-element-2><a href=tables.html#the-thead-element>thead</a></code>、および<code id=non-conforming-features:the-tfoot-element-2><a href=tables.html#the-tfoot-element>tfoot</a></code>要素の<dfn id=attr-tbody-char><code>char</code></dfn><dt><code id=non-conforming-features:the-tbody-element-3><a href=tables.html#the-tbody-element>tbody</a></code>、<code id=non-conforming-features:the-thead-element-3><a href=tables.html#the-thead-element>thead</a></code>、および<code id=non-conforming-features:the-tfoot-element-3><a href=tables.html#the-tfoot-element>tfoot</a></code>要素の<dfn id=attr-tbody-charoff><code>charoff</code></dfn><dt><code id=non-conforming-features:the-tbody-element-4><a href=tables.html#the-tbody-element>tbody</a></code>、<code id=non-conforming-features:the-thead-element-4><a href=tables.html#the-thead-element>thead</a></code>、および<code id=non-conforming-features:the-tfoot-element-4><a href=tables.html#the-tfoot-element>tfoot</a></code>要素の<dfn id=attr-tbody-valign><code>valign</code></dfn><dt><code id=non-conforming-features:the-td-element-4><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-5><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-align><code>align</code></dfn><dt><code id=non-conforming-features:the-td-element-5><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-6><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-bgcolor><code>bgcolor</code></dfn><dt><code id=non-conforming-features:the-td-element-6><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-7><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-char><code>char</code></dfn><dt><code id=non-conforming-features:the-td-element-7><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-8><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-charoff><code>charoff</code></dfn><dt><code id=non-conforming-features:the-td-element-8><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-9><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-height><code>height</code></dfn><dt><code id=non-conforming-features:the-td-element-9><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-10><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-nowrap><code>nowrap</code></dfn><dt><code id=non-conforming-features:the-td-element-10><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-11><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-valign><code>valign</code></dfn><dt><code id=non-conforming-features:the-td-element-11><a href=tables.html#the-td-element>td</a></code>および<code id=non-conforming-features:the-th-element-12><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-tdth-width><code>width</code></dfn><dt><code id=non-conforming-features:the-tr-element><a href=tables.html#the-tr-element>tr</a></code>要素の<dfn id=attr-tr-align><code>align</code></dfn><dt><code id=non-conforming-features:the-tr-element-2><a href=tables.html#the-tr-element>tr</a></code>要素の<dfn id=attr-tr-bgcolor><code>bgcolor</code></dfn><dt><code id=non-conforming-features:the-tr-element-3><a href=tables.html#the-tr-element>tr</a></code>要素の<dfn id=attr-tr-char><code>char</code></dfn><dt><code id=non-conforming-features:the-tr-element-4><a href=tables.html#the-tr-element>tr</a></code>要素の<dfn id=attr-tr-charoff><code>charoff</code></dfn><dt><code id=non-conforming-features:the-tr-element-5><a href=tables.html#the-tr-element>tr</a></code>要素の<dfn id=attr-tr-height><code>height</code></dfn><dt><code id=non-conforming-features:the-tr-element-6><a href=tables.html#the-tr-element>tr</a></code>要素の<dfn id=attr-tr-valign><code>valign</code></dfn><dt><code id=non-conforming-features:the-ul-element-2><a href=semantics.html#the-ul-element>ul</a></code>要素の<dfn id=attr-ul-compact><code>compact</code></dfn><dt><code id=non-conforming-features:the-ul-element-3><a href=semantics.html#the-ul-element>ul</a></code>要素の<dfn id=attr-ul-type><code>type</code></dfn><dt><code id=non-conforming-features:the-body-element-12><a href=semantics.html#the-body-element>body</a></code>、<code id=non-conforming-features:the-table-element-16><a href=tables.html#the-table-element>table</a></code>、<code id=non-conforming-features:the-thead-element-5><a href=tables.html#the-thead-element>thead</a></code>、<code id=non-conforming-features:the-tbody-element-5><a href=tables.html#the-tbody-element>tbody</a></code>、<code id=non-conforming-features:the-tfoot-element-5><a href=tables.html#the-tfoot-element>tfoot</a></code>、<code id=non-conforming-features:the-tr-element-7><a href=tables.html#the-tr-element>tr</a></code>、<code id=non-conforming-features:the-td-element-12><a href=tables.html#the-td-element>td</a></code>、<code id=non-conforming-features:the-th-element-13><a href=tables.html#the-th-element>th</a></code>要素の<dfn id=attr-background><code>background</code></dfn><dd><p>CSSを代わりに使用する。</dl><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=24679" title="Addition and improvements to the table over (non-)layout table heuristics">24679</a></div>
+
+
+  
+
+  <h3 id=requirements-for-implementations>15.3 実装に対する適合性と必要条件</h3>
+
+  <h4 id=the-applet-element>15.3.1<dfn><code>applet</code></dfn>要素</h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=28384" title="Per bug 28360 the browser might also be in charge of fetching the applet. If that's true, this section needs some extra text.">28384</a></div>
+
+  <p class=critical>This feature is in the process of being removed from the Web platform. (This
+  is a long process that takes many years.) Using the <code id=the-applet-element:the-applet-element><a href=#the-applet-element>applet</a></code> element at this time is
+  highly discouraged.</p>
+
+  <p>The <code id=the-applet-element:the-applet-element-2><a href=#the-applet-element>applet</a></code> element is a Java-specific variant of the <code id=the-applet-element:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code> element.
+  The <code id=the-applet-element:the-applet-element-3><a href=#the-applet-element>applet</a></code> element is now obsoleted so that all extension frameworks (Java, .NET,
+  Flash, etc) are handled in a consistent manner.</p>
+
+  <p>When the element matches any of the following conditions, it <a id=the-applet-element:represents href=dom.html#represents>represents</a> its
+  contents:</p>
+
+  <ul class=brief><li>The element is still in the <a id=the-applet-element:stack-of-open-elements href=syntax.html#stack-of-open-elements>stack of open elements</a> of an <a id=the-applet-element:html-parser href=syntax.html#html-parser>HTML
+   parser</a> or <a id=the-applet-element:xml-parser href=xhtml.html#xml-parser>XML parser</a>.</li><li>The element is not <a id=the-applet-element:in-a-document href=infrastructure.html#in-a-document>in a <code>Document</code></a>.</li><li>The element's <a id=the-applet-element:node-document href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> is not <a id=the-applet-element:fully-active href=browsers.html#fully-active>fully active</a>.</li><li id=sandboxPluginApplet>The element's <a id=the-applet-element:node-document-2 href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>'s <a id=the-applet-element:active-sandboxing-flag-set href=browsers.html#active-sandboxing-flag-set>active sandboxing flag
+   set</a> has its <a id=the-applet-element:sandboxed-plugins-browsing-context-flag href=browsers.html#sandboxed-plugins-browsing-context-flag>sandboxed plugins browsing context flag</a> set.</li><li>The element has an ancestor <a id=the-applet-element:media-element href=embedded-content.html#media-element>media element</a>.</li><li>The element has an ancestor <code id=the-applet-element:the-object-element><a href=embedded-content.html#the-object-element>object</a></code> element that is <em>not</em> showing its
+   <a id=the-applet-element:fallback-content href=dom.html#fallback-content>fallback content</a>.</li><li>No Java Language runtime <a id=the-applet-element:plugin href=infrastructure.html#plugin>plugin</a> is available.</li><li>A Java runtime <a id=the-applet-element:plugin-2 href=infrastructure.html#plugin>plugin</a> is available but it is disabled.</li></ul>
+
+  
+
+  <p>Otherwise, the user agent should instantiate a Java Language runtime <a id=the-applet-element:plugin-3 href=infrastructure.html#plugin>plugin</a>, and
+  should pass the names and values of all the attributes on the element, in the order they were
+  added to the element, with the attributes added by the parser being ordered in source order, and
+  then a parameter named "PARAM" whose value is null, and then all the names and values of <a href=embedded-content.html#concept-param-parameter id=the-applet-element:concept-param-parameter>parameters</a> given by <code id=the-applet-element:the-param-element><a href=embedded-content.html#the-param-element>param</a></code> elements that are
+  children of the <code id=the-applet-element:the-applet-element-4><a href=#the-applet-element>applet</a></code> element, in <a id=the-applet-element:tree-order href=infrastructure.html#tree-order>tree order</a>, to the
+  <a id=the-applet-element:plugin-4 href=infrastructure.html#plugin>plugin</a> used. If the <a id=the-applet-element:plugin-5 href=infrastructure.html#plugin>plugin</a> supports a scriptable interface, the
+  <code id=the-applet-element:htmlappletelement><a href=#htmlappletelement>HTMLAppletElement</a></code> object representing the element should expose that interface. The
+  <code id=the-applet-element:the-applet-element-5><a href=#the-applet-element>applet</a></code> element <a id=the-applet-element:represents-2 href=dom.html#represents>represents</a> the <a id=the-applet-element:plugin-6 href=infrastructure.html#plugin>plugin</a>.</p>
+
+  
+
+  <p class=note>The <code id=the-applet-element:the-applet-element-6><a href=#the-applet-element>applet</a></code> element is unaffected by the CSS 'display' property. The
+  Java Language runtime is instantiated even if the element is hidden with a 'display:none' CSS
+  style.</p>
+
+  <p>The <code id=the-applet-element:the-applet-element-7><a href=#the-applet-element>applet</a></code> element must implement the <code id=the-applet-element:htmlappletelement-2><a href=#htmlappletelement>HTMLAppletElement</a></code>
+  interface.</p>
+
+  <pre class=idl>interface <dfn id=htmlappletelement>HTMLAppletElement</dfn> : <a id=the-applet-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute DOMString <a href=#dom-applet-align id=the-applet-element:dom-applet-align>align</a>;
+  attribute DOMString <a href=#dom-applet-alt id=the-applet-element:dom-applet-alt>alt</a>;
+  attribute DOMString <a href=#dom-applet-archive id=the-applet-element:dom-applet-archive>archive</a>;
+  attribute DOMString <a href=#dom-applet-code id=the-applet-element:dom-applet-code>code</a>;
+  attribute DOMString <a href=#dom-applet-codebase id=the-applet-element:dom-applet-codebase>codeBase</a>;
+  attribute DOMString <a href=#dom-applet-height id=the-applet-element:dom-applet-height>height</a>;
+  attribute unsigned long <a href=#dom-applet-hspace id=the-applet-element:dom-applet-hspace>hspace</a>;
+  attribute DOMString <a href=#dom-applet-name id=the-applet-element:dom-applet-name>name</a>;
+  attribute DOMString _<a href=#dom-applet-object id=the-applet-element:dom-applet-object>object</a>; // the underscore is not part of the identifier 
+  attribute unsigned long <a href=#dom-applet-vspace id=the-applet-element:dom-applet-vspace>vspace</a>;
+  attribute DOMString <a href=#dom-applet-width id=the-applet-element:dom-applet-width>width</a>;
+};</pre>
+
+  <p>The <dfn id=dom-applet-align><code>align</code></dfn>, <dfn id=dom-applet-alt><code>alt</code></dfn>, <dfn id=dom-applet-archive><code>archive</code></dfn>, <dfn id=dom-applet-code><code>code</code></dfn>, <dfn id=dom-applet-height><code>height</code></dfn>, <dfn id=dom-applet-hspace><code>hspace</code></dfn>, <dfn id=dom-applet-name><code>name</code></dfn>, <dfn id=dom-applet-object><code>object</code></dfn>, <dfn id=dom-applet-vspace><code>vspace</code></dfn>, and <dfn id=dom-applet-width><code>width</code></dfn> IDL attributes must <a id=the-applet-element:reflect href=infrastructure.html#reflect>reflect</a> the
+  respective content attributes of the same name. For the purposes of reflection, the
+  <code id=the-applet-element:the-applet-element-8><a href=#the-applet-element>applet</a></code> element's <code>object</code> content
+  attribute is defined as containing a <a id=the-applet-element:url href=infrastructure.html#url>URL</a>.</p>
+
+  <p>The <dfn id=dom-applet-codebase><code>codeBase</code></dfn> IDL attribute must
+  <a id=the-applet-element:reflect-2 href=infrastructure.html#reflect>reflect</a> the <code>codebase</code> content
+  attribute, which for the purposes of reflection is defined as containing a <a id=the-applet-element:url-2 href=infrastructure.html#url>URL</a>.</p>
+
+
+  <h4 id=the-marquee-element-2>15.3.2 The <dfn><code>marquee</code></dfn> element</h4>
+
+  <p>The <code id=the-marquee-element-2:the-marquee-element-2><a href=#the-marquee-element-2>marquee</a></code> element is a presentational element that animates content. CSS
+  transitions and animations are a more appropriate mechanism. <a href=references.html#refsCSSANIMATIONS>[CSSANIMATIONS]</a> <a href=references.html#refsCSSTRANSITIONS>[CSSTRANSITIONS]</a></p>
+
+  <p>The <a id=the-marquee-element-2:task-source href=webappapis.html#task-source>task source</a> for tasks mentioned in this section is the <a id=the-marquee-element-2:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM manipulation
+  task source</a>.</p>
+
+  <p>The <code id=the-marquee-element-2:the-marquee-element-2-2><a href=#the-marquee-element-2>marquee</a></code> element must implement the <code id=the-marquee-element-2:htmlmarqueeelement><a href=#htmlmarqueeelement>HTMLMarqueeElement</a></code>
+  interface.</p>
+
+  <pre class=idl>interface <dfn id=htmlmarqueeelement>HTMLMarqueeElement</dfn> : <a id=the-marquee-element-2:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute DOMString <a href=#dom-marquee-behavior id=the-marquee-element-2:dom-marquee-behavior>behavior</a>;
+  attribute DOMString <a href=#dom-marquee-bgcolor id=the-marquee-element-2:dom-marquee-bgcolor>bgColor</a>;
+  attribute DOMString <a href=#dom-marquee-direction id=the-marquee-element-2:dom-marquee-direction>direction</a>;
+  attribute DOMString <a href=#dom-marquee-height id=the-marquee-element-2:dom-marquee-height>height</a>;
+  attribute unsigned long <a href=#dom-marquee-hspace id=the-marquee-element-2:dom-marquee-hspace>hspace</a>;
+  attribute long <a href=#dom-marquee-loop id=the-marquee-element-2:dom-marquee-loop>loop</a>;
+  attribute unsigned long <a href=#dom-marquee-scrollamount id=the-marquee-element-2:dom-marquee-scrollamount>scrollAmount</a>;
+  attribute unsigned long <a href=#dom-marquee-scrolldelay id=the-marquee-element-2:dom-marquee-scrolldelay>scrollDelay</a>;
+  attribute boolean <a href=#dom-marquee-truespeed id=the-marquee-element-2:dom-marquee-truespeed>trueSpeed</a>;
+  attribute unsigned long <a href=#dom-marquee-vspace id=the-marquee-element-2:dom-marquee-vspace>vspace</a>;
+  attribute DOMString <a href=#dom-marquee-width id=the-marquee-element-2:dom-marquee-width>width</a>;
+
+  attribute <a id=the-marquee-element-2:eventhandler href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-marquee-onbounce id=the-marquee-element-2:handler-marquee-onbounce>onbounce</a>;
+  attribute <a id=the-marquee-element-2:eventhandler-2 href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-marquee-onfinish id=the-marquee-element-2:handler-marquee-onfinish>onfinish</a>;
+  attribute <a id=the-marquee-element-2:eventhandler-3 href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-marquee-onstart id=the-marquee-element-2:handler-marquee-onstart>onstart</a>;
+
+  void <a href=#dom-marquee-start id=the-marquee-element-2:dom-marquee-start>start</a>();
+  void <a href=#dom-marquee-stop id=the-marquee-element-2:dom-marquee-stop>stop</a>();
+};</pre>
+
+  <p>A <code id=the-marquee-element-2:the-marquee-element-2-3><a href=#the-marquee-element-2>marquee</a></code> element can be <dfn id=concept-marquee-on>turned on</dfn> or <dfn id=concept-marquee-off>turned off</dfn>. When it is created, it is <a href=#concept-marquee-on id=the-marquee-element-2:concept-marquee-on>turned on</a>.</p>
+
+  <p>When the <dfn id=dom-marquee-start><code>start()</code></dfn> method is called, the
+  <code id=the-marquee-element-2:the-marquee-element-2-4><a href=#the-marquee-element-2>marquee</a></code> element must be <a href=#concept-marquee-on id=the-marquee-element-2:concept-marquee-on-2>turned on</a>.</p>
+
+  <p>When the <dfn id=dom-marquee-stop><code>stop()</code></dfn> method is called, the
+  <code id=the-marquee-element-2:the-marquee-element-2-5><a href=#the-marquee-element-2>marquee</a></code> element must be <a href=#concept-marquee-off id=the-marquee-element-2:concept-marquee-off>turned off</a>.</p>
+
+  <p>When a <code id=the-marquee-element-2:the-marquee-element-2-6><a href=#the-marquee-element-2>marquee</a></code> element is created, the user agent must <a id=the-marquee-element-2:queue-a-task href=webappapis.html#queue-a-task>queue a task</a>
+  to <a id=the-marquee-element-2:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code>start</code> at the element.</p>
+
+  <hr>
+
+  <p>The <dfn id=attr-marquee-behavior><code>behavior</code></dfn> content attribute on
+  <code id=the-marquee-element-2:the-marquee-element-2-7><a href=#the-marquee-element-2>marquee</a></code> elements is an <a id=the-marquee-element-2:enumerated-attribute href=infrastructure.html#enumerated-attribute>enumerated attribute</a> with the following keywords
+  (all non-conforming):</p>
+
+  <table><thead><tr><th>キーワード
+     </th><th>状態
+   <tbody></th></tr><tr><td><code>scroll</code>
+     </td><td><dfn id=attr-marquee-behavior-scroll>scroll</dfn>
+    </td></tr><tr><td><code>slide</code>
+     </td><td><dfn id=attr-marquee-behavior-slide>slide</dfn>
+    </td></tr><tr><td><code>alternate</code>
+     </td><td><dfn id=attr-marquee-behavior-alternate>alternate</dfn>
+  </td></tr></table>
+
+  <p>The <i id=the-marquee-element-2:missing-value-default><a href=infrastructure.html#missing-value-default>missing value default</a></i> is the <a href=#attr-marquee-behavior-scroll id=the-marquee-element-2:attr-marquee-behavior-scroll>scroll</a> state.</p>
+
+  <hr>
+
+  <p>The <dfn id=attr-marquee-direction><code>direction</code></dfn> content attribute on
+  <code id=the-marquee-element-2:the-marquee-element-2-8><a href=#the-marquee-element-2>marquee</a></code> elements is an <a id=the-marquee-element-2:enumerated-attribute-2 href=infrastructure.html#enumerated-attribute>enumerated attribute</a> with the following keywords
+  (all non-conforming):</p>
+
+  <table><thead><tr><th>キーワード
+     </th><th>状態
+   <tbody></th></tr><tr><td><code>left</code>
+     </td><td><dfn id=attr-marquee-direction-left>left</dfn>
+    </td></tr><tr><td><code>right</code>
+     </td><td><dfn id=attr-marquee-direction-right>right</dfn>
+    </td></tr><tr><td><code>up</code>
+     </td><td><dfn id=attr-marquee-direction-up>up</dfn>
+    </td></tr><tr><td><code>down</code>
+     </td><td><dfn id=attr-marquee-direction-down>down</dfn>
+  </td></tr></table>
+
+  <p>The <i id=the-marquee-element-2:missing-value-default-2><a href=infrastructure.html#missing-value-default>missing value default</a></i> is the <a href=#attr-marquee-direction-left id=the-marquee-element-2:attr-marquee-direction-left>left</a>
+  state.</p>
+
+  <hr>
+
+  <p>The <dfn id=attr-marquee-truespeed><code>truespeed</code></dfn> content attribute on
+  <code id=the-marquee-element-2:the-marquee-element-2-9><a href=#the-marquee-element-2>marquee</a></code> elements is a <a id=the-marquee-element-2:boolean-attribute href=infrastructure.html#boolean-attribute>boolean attribute</a>.</p>
+
+  <hr>
+
+  <p>A <code id=the-marquee-element-2:the-marquee-element-2-10><a href=#the-marquee-element-2>marquee</a></code> element has a <dfn id=marquee-scroll-interval>marquee scroll interval</dfn>, which is obtained as
+  follows:</p>
+
+  <ol><li><p>If the element has a <code>scrolldelay</code> attribute,
+   and parsing its value using the <a id=the-marquee-element-2:rules-for-parsing-non-negative-integers href=infrastructure.html#rules-for-parsing-non-negative-integers>rules for parsing non-negative integers</a> does not
+   return an error, then let <var>delay</var> be the parsed value. Otherwise, let <var>delay</var>
+   be 85.</li><li><p>If the element does not have a <code id=the-marquee-element-2:attr-marquee-truespeed><a href=#attr-marquee-truespeed>truespeed</a></code>
+   attribute, and the <var>delay</var> value is less than 60, then let <var>delay</var> be 60
+   instead.</li><li><p>The <a href=#marquee-scroll-interval id=the-marquee-element-2:marquee-scroll-interval>marquee scroll interval</a> is <var>delay</var>, interpreted in
+   milliseconds.</li></ol>
+
+  <hr>
+
+  <p>A <code id=the-marquee-element-2:the-marquee-element-2-11><a href=#the-marquee-element-2>marquee</a></code> element has a <dfn id=marquee-scroll-distance>marquee scroll distance</dfn>, which, if the element
+  has a <code>scrollamount</code> attribute, and
+  parsing its value using the <a id=the-marquee-element-2:rules-for-parsing-non-negative-integers-2 href=infrastructure.html#rules-for-parsing-non-negative-integers>rules for parsing non-negative integers</a> does not return
+  an error, is the parsed value interpreted in CSS pixels, and otherwise is 6 CSS pixels.</p>
+
+  <hr>
+
+  <p>A <code id=the-marquee-element-2:the-marquee-element-2-12><a href=#the-marquee-element-2>marquee</a></code> element has a <dfn id=marquee-loop-count>marquee loop count</dfn>, which, if the element has a
+  <dfn id=attr-marquee-loop><code>loop</code></dfn> attribute, and parsing its value using the <a id=the-marquee-element-2:rules-for-parsing-integers href=infrastructure.html#rules-for-parsing-integers>rules
+  for parsing integers</a> does not return an error or a number less than 1, is the parsed value,
+  and otherwise is −1.</p>
+
+  <p>The <dfn id=dom-marquee-loop><code>loop</code></dfn> IDL attribute, on getting, must
+  return the element's <a href=#marquee-loop-count id=the-marquee-element-2:marquee-loop-count>marquee loop count</a>; and on setting, if the new value is
+  different than the element's <a href=#marquee-loop-count id=the-marquee-element-2:marquee-loop-count-2>marquee loop count</a> and either greater than zero or equal
+  to −1, must set the element's <code id=the-marquee-element-2:attr-marquee-loop><a href=#attr-marquee-loop>loop</a></code> content attribute
+  (adding it if necessary) to the <a id=the-marquee-element-2:valid-integer href=infrastructure.html#valid-integer>valid integer</a> that represents the new value. (Other
+  values are ignored.)</p>
+
+  <p>A <code id=the-marquee-element-2:the-marquee-element-2-13><a href=#the-marquee-element-2>marquee</a></code> element also has a <dfn id=marquee-current-loop-index>marquee current loop index</dfn>, which is zero
+  when the element is created.</p>
+
+  <p>The rendering layer will occasionally <dfn id=increment-the-marquee-current-loop-index>increment the marquee current loop index</dfn>,
+  which must cause the following steps to be run:</p>
+
+  <ol><li><p>If the <a href=#marquee-loop-count id=the-marquee-element-2:marquee-loop-count-3>marquee loop count</a> is −1, then abort these steps.</p>
+
+   </li><li><p>Increment the <a href=#marquee-current-loop-index id=the-marquee-element-2:marquee-current-loop-index>marquee current loop index</a> by one.</li><li>
+
+    <p>If the <a href=#marquee-current-loop-index id=the-marquee-element-2:marquee-current-loop-index-2>marquee current loop index</a> is now equal to or greater than the element's
+    <a href=#marquee-loop-count id=the-marquee-element-2:marquee-loop-count-4>marquee loop count</a>, <a href=#concept-marquee-off id=the-marquee-element-2:concept-marquee-off-2>turn off</a> the
+    <code id=the-marquee-element-2:the-marquee-element-2-14><a href=#the-marquee-element-2>marquee</a></code> element and <a id=the-marquee-element-2:queue-a-task-2 href=webappapis.html#queue-a-task>queue a task</a> to <a id=the-marquee-element-2:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple event</a>
+    named <code>finish</code> at the <code id=the-marquee-element-2:the-marquee-element-2-15><a href=#the-marquee-element-2>marquee</a></code> element.</p>
+
+    <p>Otherwise, if the <code id=the-marquee-element-2:attr-marquee-behavior><a href=#attr-marquee-behavior>behavior</a></code> attribute is in the
+    <a href=#attr-marquee-behavior-alternate id=the-marquee-element-2:attr-marquee-behavior-alternate>alternate</a> state, then <a id=the-marquee-element-2:queue-a-task-3 href=webappapis.html#queue-a-task>queue a
+    task</a> to <a id=the-marquee-element-2:fire-a-simple-event-3 href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code>bounce</code>
+    at the <code id=the-marquee-element-2:the-marquee-element-2-16><a href=#the-marquee-element-2>marquee</a></code> element.</p>
+
+    <p>Otherwise, <a id=the-marquee-element-2:queue-a-task-4 href=webappapis.html#queue-a-task>queue a task</a> to <a id=the-marquee-element-2:fire-a-simple-event-4 href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code>start</code> at the <code id=the-marquee-element-2:the-marquee-element-2-17><a href=#the-marquee-element-2>marquee</a></code> element.</p>
+
+   </li></ol>
+
+  <hr>
+
+  <p>The following are the <a id=the-marquee-element-2:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <a href=webappapis.html#event-handler-event-type id=the-marquee-element-2:event-handler-event-type>event handler event types</a>) that must be supported, as <a id=the-marquee-element-2:event-handler-content-attributes href=webappapis.html#event-handler-content-attributes>event handler content attributes</a> and <a id=the-marquee-element-2:event-handler-idl-attributes href=webappapis.html#event-handler-idl-attributes>event handler IDL
+  attributes</a>, by <code id=the-marquee-element-2:the-marquee-element-2-18><a href=#the-marquee-element-2>marquee</a></code> elements:</p>
+
+  <table><thead><tr><th><a href=webappapis.html#event-handlers id=the-marquee-element-2:event-handlers-2>イベントハンドラ</a> </th><th><a id=the-marquee-element-2:event-handler-event-type-2 href=webappapis.html#event-handler-event-type>イベントハンドライベント型</a>
+   <tbody></th></tr><tr><td><dfn id=handler-marquee-onbounce><code>onbounce</code></dfn> </td><td> <code>bounce</code>
+    </td></tr><tr><td><dfn id=handler-marquee-onfinish><code>onfinish</code></dfn> </td><td> <code>finish</code>
+    </td></tr><tr><td><dfn id=handler-marquee-onstart><code>onstart</code></dfn> </td><td> <code>start</code>
+  </td></tr></table>
+
+  <hr>
+
+  <p>The <dfn id=dom-marquee-behavior><code>behavior</code></dfn>, <dfn id=dom-marquee-direction><code>direction</code></dfn>, <dfn id=dom-marquee-height><code>height</code></dfn>, <dfn id=dom-marquee-hspace><code>hspace</code></dfn>, <dfn id=dom-marquee-vspace><code>vspace</code></dfn>, and <dfn id=dom-marquee-width><code>width</code></dfn> IDL attributes must <a id=the-marquee-element-2:reflect href=infrastructure.html#reflect>reflect</a> the
+  respective content attributes of the same name.</p>
+
+  <p><dfn id=dom-marquee-bgcolor><code>bgColor</code></dfn> IDL属性は、<code>bgcolor</code>コンテンツ属性を<a id=the-marquee-element-2:reflect-2 href=infrastructure.html#reflect>反映</a>しなければならない。</p>
+
+  <p><dfn id=dom-marquee-scrollamount><code>scrollAmount</code></dfn> IDL属性は、<code>scrollamount</code>コンテンツ属性を<a id=the-marquee-element-2:reflect-3 href=infrastructure.html#reflect>反映</a>しなければならない。The default value is 6.</p>
+
+  <p><dfn id=dom-marquee-scrolldelay><code>scrollDelay</code></dfn> IDL属性は、<code>scrolldelay</code>コンテンツ属性を<a id=the-marquee-element-2:reflect-4 href=infrastructure.html#reflect>反映</a>しなければならない。The default value is 85.</p>
+
+  <p><dfn id=dom-marquee-truespeed><code>trueSpeed</code></dfn> IDL属性は、<code id=the-marquee-element-2:attr-marquee-truespeed-2><a href=#attr-marquee-truespeed>truespeed</a></code>コンテンツ属性を<a id=the-marquee-element-2:reflect-5 href=infrastructure.html#reflect>反映</a>しなければならない。</p>
+
+
+  <h4 id=frames>15.3.3 フレーム</h4>
+
+  <p>The <dfn id=frameset><code>frameset</code></dfn> element acts as <a id=frames:the-body-element-2 href=dom.html#the-body-element-2>the body element</a> in documents
+  that use frames.</p>
+
+  <p>The <code id=frames:frameset><a href=#frameset>frameset</a></code> element must implement the <code id=frames:htmlframesetelement><a href=#htmlframesetelement>HTMLFrameSetElement</a></code>
+  interface.</p>
+
+  <pre class=idl>interface <dfn id=htmlframesetelement>HTMLFrameSetElement</dfn> : <a id=frames:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute DOMString <a href=#dom-frameset-cols id=frames:dom-frameset-cols>cols</a>;
+  attribute DOMString <a href=#dom-frameset-rows id=frames:dom-frameset-rows>rows</a>;
+};
+<a href=#htmlframesetelement id=frames:htmlframesetelement-2>HTMLFrameSetElement</a> implements <a id=frames:windoweventhandlers href=webappapis.html#windoweventhandlers>WindowEventHandlers</a>;</pre>
+
+  <p>The <dfn id=dom-frameset-cols><code>cols</code></dfn> and <dfn id=dom-frameset-rows><code>rows</code></dfn> IDL attributes of the <code id=frames:frameset-2><a href=#frameset>frameset</a></code>
+  element must <a id=frames:reflect href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <p><code id=frames:frameset-3><a href=#frameset>frameset</a></code>要素は、<code id=frames:window><a href=browsers.html#window>Window</a></code>オブジェクトの<a id=frames:event-handlers href=webappapis.html#event-handlers>イベントハンドラ</a>の数を<a id=frames:event-handler-content-attributes href=webappapis.html#event-handler-content-attributes>イベントハンドラコンテンツ属性</a>として公開する。また、それらの<a id=frames:event-handler-idl-attributes href=webappapis.html#event-handler-idl-attributes>イベントハンドラIDL属性</a>を反映する。</p>
+
+  <p>The <code id=frames:handler-onblur><a href=webappapis.html#handler-onblur>onblur</a></code>, <code id=frames:handler-onerror><a href=webappapis.html#handler-onerror>onerror</a></code>,
+  <code id=frames:handler-onfocus><a href=webappapis.html#handler-onfocus>onfocus</a></code>, <code id=frames:handler-onload><a href=webappapis.html#handler-onload>onload</a></code>, <code id=frames:handler-onresize><a href=webappapis.html#handler-onresize>onresize</a></code>, and <code id=frames:handler-onscroll><a href=webappapis.html#handler-onscroll>onscroll</a></code>
+  <a id=frames:event-handlers-2 href=webappapis.html#event-handlers>event handlers</a> of the <code id=frames:window-2><a href=browsers.html#window>Window</a></code> object, exposed on the
+  <code id=frames:frameset-4><a href=#frameset>frameset</a></code> element, replace the generic <a id=frames:event-handlers-3 href=webappapis.html#event-handlers>event handlers</a> with the same names
+  normally supported by <a id=frames:html-elements href=infrastructure.html#html-elements>HTML elements</a>.</p>
+
+  <hr>
+
+  <p>The <dfn id=frame><code>frame</code></dfn> element defines a <a id=frames:nested-browsing-context href=browsers.html#nested-browsing-context>nested browsing context</a>
+  similar to the <code id=frames:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> element, but rendered within a <code id=frames:frameset-5><a href=#frameset>frameset</a></code>
+  element.</p>
+
+  
+
+  <p>A <code id=frames:frame><a href=#frame>frame</a></code> element is said to be an <dfn id=active-frame-element>active <code>frame</code> element</dfn> when
+  it is <a id=frames:in-a-document href=infrastructure.html#in-a-document>in a <code>Document</code></a>.</p> 
+
+  <p>When a <code id=frames:frame-2><a href=#frame>frame</a></code> element is created as an <a href=#active-frame-element id=frames:active-frame-element>active <code>frame</code>
+  element</a>, or becomes an <a href=#active-frame-element id=frames:active-frame-element-2>active <code>frame</code> element</a> after not having been
+  one, the user agent must <a href=browsers.html#creating-a-new-browsing-context id=frames:creating-a-new-browsing-context>create</a> a <a id=frames:nested-browsing-context-2 href=browsers.html#nested-browsing-context>nested browsing context</a>, and then <a href=#process-the-frame-attributes id=frames:process-the-frame-attributes>process the
+  <code>frame</code> attributes</a> for the first time.</p>
+
+  <p>When a <code id=frames:frame-3><a href=#frame>frame</a></code> element stops being an <a href=#active-frame-element id=frames:active-frame-element-3>active <code>frame</code>
+  element</a>, the user agent must <a href=browsers.html#a-browsing-context-is-discarded id=frames:a-browsing-context-is-discarded>discard</a>
+  the <a id=frames:nested-browsing-context-3 href=browsers.html#nested-browsing-context>nested browsing context</a>.</p>
+
+  <p>Whenever a <code id=frames:frame-4><a href=#frame>frame</a></code> element with a <a id=frames:nested-browsing-context-4 href=browsers.html#nested-browsing-context>nested browsing context</a> has its <code>src</code> attribute set, changed, or removed, the user agent must
+  <a href=#process-the-frame-attributes id=frames:process-the-frame-attributes-2>process the <code>frame</code> attributes</a>.</p> 
+
+  <p>When the user agent is to <dfn id=process-the-frame-attributes>process the <code>frame</code> attributes</dfn>, it must run the
+  first appropriate steps from the following list:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=27867" title="&lt;frame&gt; needs to do the same recursion check as &lt;iframe&gt; does">27867</a></div>
+
+  <dl class=switch><dt>If the element has no <code>src</code> attribute specified, and the
+   user agent is processing the <code id=frames:frame-5><a href=#frame>frame</a></code>'s attributes for the first time<dd>
+
+    <p><a id=frames:queue-a-task href=webappapis.html#queue-a-task>Queue a task</a> to <a id=frames:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code id=frames:event-load><a href=indices.html#event-load>load</a></code> at the <code id=frames:frame-6><a href=#frame>frame</a></code> element.</p>
+
+   <dt>そうでなければ<dd>
+
+    <ol><li>
+
+      <p>If the value of the <code>src</code> attribute is the empty string,
+      let <var>url</var> be the string "<code id=frames:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code>".</p>
+
+      <p>Otherwise, <a href=infrastructure.html#parse-a-url id=frames:parse-a-url>parse</a> the value of the <code>src</code> attribute, relative to the <code id=frames:frame-7><a href=#frame>frame</a></code>
+      element's <a id=frames:node-document href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>.</p>
+
+      <p>If that is not successful, then let <var>url</var> be the <a id=frames:url href=infrastructure.html#url>URL</a>
+      "<code id=frames:about:blank-2><a href=infrastructure.html#about:blank>about:blank</a></code>". Otherwise, let <var>url</var> be the <a id=frames:resulting-url-record href=infrastructure.html#resulting-url-record>resulting URL
+      record</a>.</p>
+
+     </li><li>
+
+      <p><a id=frames:navigate href=browsers.html#navigate>Navigate</a> the element's <a id=frames:child-browsing-context href=browsers.html#child-browsing-context>child browsing context</a>
+      to <var>url</var>.</p>
+
+     </li></ol>
+
+   </dl>
+
+  <p>Furthermore, if the <a id=frames:active-document href=browsers.html#active-document>active document</a> of the element's <a id=frames:child-browsing-context-2 href=browsers.html#child-browsing-context>child browsing
+  context</a> before such a <a href=browsers.html#navigate id=frames:navigate-2>navigation</a> was not <a id=frames:completely-loaded href=syntax.html#completely-loaded>completely
+  loaded</a> at the time of the new <a href=browsers.html#navigate id=frames:navigate-3>navigation</a>, then the <a href=browsers.html#navigate id=frames:navigate-4>navigation</a> must be completed with <a id=frames:replacement-enabled href=browsers.html#replacement-enabled>replacement enabled</a>.</p>
+
+  <p>Similarly, if the <a id=frames:child-browsing-context-3 href=browsers.html#child-browsing-context>child browsing context</a>'s <a id=frames:session-history href=browsers.html#session-history>session history</a> contained
+  only one <code id=frames:document><a href=dom.html#document>Document</a></code> when the <a href=#process-the-frame-attributes id=frames:process-the-frame-attributes-3>process the <code>frame</code> attributes</a>
+  algorithm was invoked, and that was the <code id=frames:about:blank-3><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=frames:document-2><a href=dom.html#document>Document</a></code> created
+  when the <a id=frames:child-browsing-context-4 href=browsers.html#child-browsing-context>child browsing context</a> was created, then any <a href=browsers.html#navigate id=frames:navigate-5>navigation</a> required of the user agent in that algorithm must be completed
+  with <a id=frames:replacement-enabled-2 href=browsers.html#replacement-enabled>replacement enabled</a>.</p> 
+
+  
+
+  <p>When a <code id=frames:document-3><a href=dom.html#document>Document</a></code> in a <code id=frames:frame-8><a href=#frame>frame</a></code> is marked as <a id=frames:completely-loaded-2 href=syntax.html#completely-loaded>completely
+  loaded</a>, the user agent must <a id=frames:queue-a-task-2 href=webappapis.html#queue-a-task>queue a task</a> to <a id=frames:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple event</a>
+  named <code id=frames:event-load-2><a href=indices.html#event-load>load</a></code> at the <code id=frames:frame-9><a href=#frame>frame</a></code> element.</p>
+
+  <p>The <a id=frames:task-source href=webappapis.html#task-source>task source</a> for the <a href=webappapis.html#concept-task id=frames:concept-task>tasks</a> above is the
+  <a id=frames:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM manipulation task source</a>.</p>
+
+  <p>When a <code id=frames:frame-10><a href=#frame>frame</a></code> element's <a id=frames:nested-browsing-context-5 href=browsers.html#nested-browsing-context>nested browsing context</a>'s <a id=frames:active-document-2 href=browsers.html#active-document>active
+  document</a> is not <a id=frames:ready-for-post-load-tasks href=syntax.html#ready-for-post-load-tasks>ready for post-load tasks</a>, and when anything is <a href=syntax.html#delay-the-load-event id=frames:delay-the-load-event>delaying the load event</a> of the <code id=frames:frame-11><a href=#frame>frame</a></code> element's
+  <a id=frames:browsing-context href=browsers.html#browsing-context>browsing context</a>'s <a id=frames:active-document-3 href=browsers.html#active-document>active document</a>, and when the <code id=frames:frame-12><a href=#frame>frame</a></code>
+  element's <a id=frames:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> is in the <a id=frames:delaying-load-events-mode href=browsers.html#delaying-load-events-mode>delaying <code>load</code> events mode</a>, the <code id=frames:frame-13><a href=#frame>frame</a></code> must <a id=frames:delay-the-load-event-2 href=syntax.html#delay-the-load-event>delay the
+  load event</a> of its document.</p>
+
+  
+
+  <p>When the browsing context is created, if a <code>name</code> attribute
+  is present, the <a id=frames:browsing-context-name href=browsers.html#browsing-context-name>browsing context name</a> must be set to the value of this attribute;
+  otherwise, the <a id=frames:browsing-context-name-2 href=browsers.html#browsing-context-name>browsing context name</a> must be set to the empty string.</p>
+
+  <p>Whenever the <code>name</code> attribute is set, the nested
+  <a id=frames:browsing-context-3 href=browsers.html#browsing-context>browsing context</a>'s <a href=browsers.html#browsing-context-name id=frames:browsing-context-name-3>name</a> must be changed to
+  the new value. If the attribute is removed, the <a id=frames:browsing-context-name-4 href=browsers.html#browsing-context-name>browsing context name</a> must be set to
+  the empty string.</p>
+
+  <p>The <code id=frames:frame-14><a href=#frame>frame</a></code> element must implement the <code id=frames:htmlframeelement><a href=#htmlframeelement>HTMLFrameElement</a></code> interface.</p>
+
+  <pre class=idl>interface <dfn id=htmlframeelement>HTMLFrameElement</dfn> : <a id=frames:htmlelement-2 href=dom.html#htmlelement>HTMLElement</a> {
+  attribute DOMString <a href=#dom-frame-name id=frames:dom-frame-name>name</a>;
+  attribute DOMString <a href=#dom-frame-scrolling id=frames:dom-frame-scrolling>scrolling</a>;
+  attribute DOMString <a href=#dom-frame-src id=frames:dom-frame-src>src</a>;
+  attribute DOMString <a href=#dom-frame-frameborder id=frames:dom-frame-frameborder>frameBorder</a>;
+  attribute DOMString <a href=#dom-frame-longdesc id=frames:dom-frame-longdesc>longDesc</a>;
+  attribute boolean <a href=#dom-frame-noresize id=frames:dom-frame-noresize>noResize</a>;
+  readonly attribute <a id=frames:document-4 href=dom.html#document>Document</a>? <a href=#dom-frame-contentdocument id=frames:dom-frame-contentdocument>contentDocument</a>;
+  readonly attribute <a id=frames:windowproxy href=browsers.html#windowproxy>WindowProxy</a>? <a href=#dom-frame-contentwindow id=frames:dom-frame-contentwindow>contentWindow</a>;
+
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-frame-marginheight id=frames:dom-frame-marginheight>marginHeight</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-frame-marginwidth id=frames:dom-frame-marginwidth>marginWidth</a>;
+};</pre>
+
+  <p>The <dfn id=dom-frame-name><code>name</code></dfn>, <dfn id=dom-frame-scrolling><code>scrolling</code></dfn>, and <dfn id=dom-frame-src><code>src</code></dfn> IDL attributes of the <code id=frames:frame-15><a href=#frame>frame</a></code> element must
+  <a id=frames:reflect-2 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name. For the purposes of
+  reflection, the <code id=frames:frame-16><a href=#frame>frame</a></code> element's <code>src</code> content
+  attribute is defined as containing a <a id=frames:url-2 href=infrastructure.html#url>URL</a>.</p>
+
+  <p>The <dfn id=dom-frame-frameborder><code>frameBorder</code></dfn> IDL attribute of the
+  <code id=frames:frame-17><a href=#frame>frame</a></code> element must <a id=frames:reflect-3 href=infrastructure.html#reflect>reflect</a> the element's <code>frameborder</code> content attribute.</p>
+
+  <p>The <dfn id=dom-frame-longdesc><code>longDesc</code></dfn> IDL attribute of the
+  <code id=frames:frame-18><a href=#frame>frame</a></code> element must <a id=frames:reflect-4 href=infrastructure.html#reflect>reflect</a> the element's <code>longdesc</code> content attribute, which for the purposes
+  of reflection is defined as containing a <a id=frames:url-3 href=infrastructure.html#url>URL</a>.</p>
+
+  <p>The <dfn id=dom-frame-noresize><code>noResize</code></dfn> IDL attribute of the
+  <code id=frames:frame-19><a href=#frame>frame</a></code> element must <a id=frames:reflect-5 href=infrastructure.html#reflect>reflect</a> the element's <code>noresize</code> content attribute.</p>
+
+  <p>The <dfn id=dom-frame-contentdocument><code>contentDocument</code></dfn> IDL attribute of
+  the <code id=frames:frame-20><a href=#frame>frame</a></code> element must return the <code id=frames:document-5><a href=dom.html#document>Document</a></code> object of the <a id=frames:active-document-4 href=browsers.html#active-document>active
+  document</a> of the <code id=frames:frame-21><a href=#frame>frame</a></code> element's <a id=frames:nested-browsing-context-6 href=browsers.html#nested-browsing-context>nested browsing context</a>, if any
+  and if its <a id=frames:effective-script-origin href=browsers.html#effective-script-origin>effective script origin</a> is the <a id=frames:same-origin href=browsers.html#same-origin>same origin</a> as the
+  <a id=frames:effective-script-origin-2 href=browsers.html#effective-script-origin>effective script origin</a> specified by the <a id=frames:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings object</a>, or
+  null otherwise.</p>
+
+  <p>The <dfn id=dom-frame-contentwindow><code>contentWindow</code></dfn> IDL attribute must
+  return the <code id=frames:windowproxy-2><a href=browsers.html#windowproxy>WindowProxy</a></code> object of the <code id=frames:frame-22><a href=#frame>frame</a></code> element's <a id=frames:nested-browsing-context-7 href=browsers.html#nested-browsing-context>nested
+  browsing context</a>.</p>
+
+  <p>The <dfn id=dom-frame-marginheight><code>marginHeight</code></dfn> IDL attribute of the
+  <code id=frames:frame-23><a href=#frame>frame</a></code> element must <a id=frames:reflect-6 href=infrastructure.html#reflect>reflect</a> the element's <code>marginheight</code> content attribute.</p>
+
+  <p>The <dfn id=dom-frame-marginwidth><code>marginWidth</code></dfn> IDL attribute of the
+  <code id=frames:frame-24><a href=#frame>frame</a></code> element must <a id=frames:reflect-7 href=infrastructure.html#reflect>reflect</a> the element's <code>marginwidth</code> content attribute.</p>
+
+
+
+  <h4 id=other-elements,-attributes-and-apis>15.3.4 その他要素、属性、API</h4> 
+
+  <p>User agents must treat <code id=other-elements,-attributes-and-apis:acronym><a href=#acronym>acronym</a></code> elements in a manner
+  equivalent to <code id=other-elements,-attributes-and-apis:the-abbr-element><a href=semantics.html#the-abbr-element>abbr</a></code> elements in terms of semantics and
+  for purposes of rendering.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLAnchorElement-partial href=semantics.html#htmlanchorelement>HTMLAnchorElement</a> {
+  attribute DOMString <a href=#dom-a-coords id=other-elements,-attributes-and-apis:dom-a-coords>coords</a>;
+  attribute DOMString <a href=#dom-a-charset id=other-elements,-attributes-and-apis:dom-a-charset>charset</a>;
+  attribute DOMString <a href=#dom-a-name id=other-elements,-attributes-and-apis:dom-a-name>name</a>;
+  attribute DOMString <a href=#dom-a-rev id=other-elements,-attributes-and-apis:dom-a-rev>rev</a>;
+  attribute DOMString <a href=#dom-a-shape id=other-elements,-attributes-and-apis:dom-a-shape>shape</a>;
+};</pre>
+
+  <p>The <dfn id=dom-a-coords><code>coords</code></dfn>, <dfn id=dom-a-charset><code>charset</code></dfn>, <dfn id=dom-a-name><code>name</code></dfn>, <dfn id=dom-a-rev><code>rev</code></dfn>, and <dfn id=dom-a-shape><code>shape</code></dfn> IDL attributes of the
+  <code id=other-elements,-attributes-and-apis:the-a-element><a href=semantics.html#the-a-element>a</a></code> element must <a id=other-elements,-attributes-and-apis:reflect href=infrastructure.html#reflect>reflect</a> the respective
+  content attributes of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLAreaElement-partial href=embedded-content.html#htmlareaelement>HTMLAreaElement</a> {
+  attribute boolean <a href=#dom-area-nohref id=other-elements,-attributes-and-apis:dom-area-nohref>noHref</a>;
+};</pre>
+
+  <p>The <dfn id=dom-area-nohref><code>noHref</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-area-element><a href=embedded-content.html#the-area-element>area</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-2 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-area-nohref><a href=#attr-area-nohref>nohref</a></code> content attribute.</p>
+
+
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLBodyElement-partial href=semantics.html#htmlbodyelement>HTMLBodyElement</a> {
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-body-text id=other-elements,-attributes-and-apis:dom-body-text>text</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-body-link id=other-elements,-attributes-and-apis:dom-body-link>link</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-body-vlink id=other-elements,-attributes-and-apis:dom-body-vlink>vLink</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-body-alink id=other-elements,-attributes-and-apis:dom-body-alink>aLink</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-body-bgcolor id=other-elements,-attributes-and-apis:dom-body-bgcolor>bgColor</a>;
+                   attribute DOMString <a href=#dom-body-background id=other-elements,-attributes-and-apis:dom-body-background>background</a>;
+};</pre>
+
+  <p>The <dfn id=dom-body-text><code>text</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-body-element><a href=semantics.html#the-body-element>body</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-3 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-body-text><a href=#attr-body-text>text</a></code> content
+  attribute.</p>
+
+  <p>The <dfn id=dom-body-link><code>link</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-body-element-2><a href=semantics.html#the-body-element>body</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-4 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-body-link><a href=#attr-body-link>link</a></code> content
+  attribute.</p>
+
+  <p>The <dfn id=dom-body-alink><code>aLink</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-body-element-3><a href=semantics.html#the-body-element>body</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-5 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-body-alink><a href=#attr-body-alink>alink</a></code> content
+  attribute.</p>
+
+  <p>The <dfn id=dom-body-vlink><code>vLink</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-body-element-4><a href=semantics.html#the-body-element>body</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-6 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-body-vlink><a href=#attr-body-vlink>vlink</a></code> content
+  attribute.</p>
+
+  <p>The <dfn id=dom-body-bgcolor><code>bgColor</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-body-element-5><a href=semantics.html#the-body-element>body</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-7 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-body-bgcolor><a href=#attr-body-bgcolor>bgcolor</a></code> content attribute.</p>
+
+  <p>The <dfn id=dom-body-background><code>background</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-body-element-6><a href=semantics.html#the-body-element>body</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-8 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-background><a href=#attr-background>background</a></code> content attribute. (The <code id=other-elements,-attributes-and-apis:attr-background-2><a href=#attr-background>background</a></code> content is <em>not</em> defined to contain a
+  <a id=other-elements,-attributes-and-apis:url href=infrastructure.html#url>URL</a>, despite rules regarding its handling in the rendering section above.)</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLBRElement-partial href=semantics.html#htmlbrelement>HTMLBRElement</a> {
+  attribute DOMString <a href=#dom-br-clear id=other-elements,-attributes-and-apis:dom-br-clear>clear</a>;
+};</pre>
+
+  <p>The <dfn id=dom-br-clear><code>clear</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-br-element><a href=semantics.html#the-br-element>br</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-9 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLTableCaptionElement-partial href=tables.html#htmltablecaptionelement>HTMLTableCaptionElement</a> {
+  attribute DOMString <a href=#dom-caption-align id=other-elements,-attributes-and-apis:dom-caption-align>align</a>;
+};</pre>
+
+  <p>The <dfn id=dom-caption-align><code>align</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-caption-element><a href=tables.html#the-caption-element>caption</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-10 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLTableColElement-partial href=tables.html#htmltablecolelement>HTMLTableColElement</a> {
+  attribute DOMString <a href=#dom-col-align id=other-elements,-attributes-and-apis:dom-col-align>align</a>;
+  attribute DOMString <a href=#dom-col-ch id=other-elements,-attributes-and-apis:dom-col-ch>ch</a>;
+  attribute DOMString <a href=#dom-col-choff id=other-elements,-attributes-and-apis:dom-col-choff>chOff</a>;
+  attribute DOMString <a href=#dom-col-valign id=other-elements,-attributes-and-apis:dom-col-valign>vAlign</a>;
+  attribute DOMString <a href=#dom-col-width id=other-elements,-attributes-and-apis:dom-col-width>width</a>;
+};</pre>
+
+  <p>The <dfn id=dom-col-align><code>align</code></dfn> and <dfn id=dom-col-width><code>width</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-col-element><a href=tables.html#the-col-element>col</a></code> element must
+  <a id=other-elements,-attributes-and-apis:reflect-11 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <p>The <dfn id=dom-col-ch><code>ch</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-col-element-2><a href=tables.html#the-col-element>col</a></code> element
+  must <a id=other-elements,-attributes-and-apis:reflect-12 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-col-char><a href=#attr-col-char>char</a></code> content
+  attribute.</p>
+
+  <p>The <dfn id=dom-col-choff><code>chOff</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-col-element-3><a href=tables.html#the-col-element>col</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-13 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-col-charoff><a href=#attr-col-charoff>charoff</a></code>
+  content attribute.</p>
+
+  <p>The <dfn id=dom-col-valign><code>vAlign</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-col-element-4><a href=tables.html#the-col-element>col</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-14 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-col-valign><a href=#attr-col-valign>valign</a></code>
+  content attribute.</p>
+
+  <hr>
+
+  <p>User agents must treat <code id=other-elements,-attributes-and-apis:dir><a href=#dir>dir</a></code> elements in a manner equivalent to <code id=other-elements,-attributes-and-apis:the-ul-element><a href=semantics.html#the-ul-element>ul</a></code>
+  elements in terms of semantics and for purposes of rendering.</p>
+
+  <p>The <code id=other-elements,-attributes-and-apis:dir-2><a href=#dir>dir</a></code> element must implement the <code id=other-elements,-attributes-and-apis:htmldirectoryelement><a href=#htmldirectoryelement>HTMLDirectoryElement</a></code>
+  interface.</p>
+
+  <pre class=idl>interface <dfn id=htmldirectoryelement>HTMLDirectoryElement</dfn> : <a id=other-elements,-attributes-and-apis:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute boolean <a href=#dom-dir-compact id=other-elements,-attributes-and-apis:dom-dir-compact>compact</a>;
+};</pre>
+
+  <p>The <dfn id=dom-dir-compact><code>compact</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:dir-3><a href=#dir>dir</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-15 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLDivElement-partial href=semantics.html#htmldivelement>HTMLDivElement</a> {
+  attribute DOMString <a href=#dom-div-align id=other-elements,-attributes-and-apis:dom-div-align>align</a>;
+};</pre>
+
+  <p>The <dfn id=dom-div-align><code>align</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-div-element><a href=semantics.html#the-div-element>div</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-16 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLDListElement-partial href=semantics.html#htmldlistelement>HTMLDListElement</a> {
+  attribute boolean <a href=#dom-dl-compact id=other-elements,-attributes-and-apis:dom-dl-compact>compact</a>;
+};</pre>
+
+  <p>The <dfn id=dom-dl-compact><code>compact</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-dl-element><a href=semantics.html#the-dl-element>dl</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-17 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLEmbedElement-partial href=embedded-content.html#htmlembedelement>HTMLEmbedElement</a> {
+  attribute DOMString <a href=#dom-embed-align id=other-elements,-attributes-and-apis:dom-embed-align>align</a>;
+  attribute DOMString <a href=#dom-embed-name id=other-elements,-attributes-and-apis:dom-embed-name>name</a>;
+};</pre>
+
+  <p>The <dfn id=dom-embed-name><code>name</code></dfn> and <dfn id=dom-embed-align><code>align</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code> element
+  must <a id=other-elements,-attributes-and-apis:reflect-18 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <hr>
+
+  <p>The <code id=other-elements,-attributes-and-apis:font><a href=#font>font</a></code> element must implement the <code id=other-elements,-attributes-and-apis:htmlfontelement><a href=#htmlfontelement>HTMLFontElement</a></code> interface.</p>
+
+  <pre class=idl>interface <dfn id=htmlfontelement>HTMLFontElement</dfn> : <a id=other-elements,-attributes-and-apis:htmlelement-2 href=dom.html#htmlelement>HTMLElement</a> {
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-font-color id=other-elements,-attributes-and-apis:dom-font-color>color</a>;
+                   attribute DOMString <a href=#dom-font-face id=other-elements,-attributes-and-apis:dom-font-face>face</a>;
+                   attribute DOMString <a href=#dom-font-size id=other-elements,-attributes-and-apis:dom-font-size>size</a>; 
+};</pre>
+
+  <p>The <dfn id=dom-font-color><code>color</code></dfn>, <dfn id=dom-font-face><code>face</code></dfn>, and <dfn id=dom-font-size><code>size</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:font-2><a href=#font>font</a></code> element must
+  <a id=other-elements,-attributes-and-apis:reflect-19 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLHeadingElement-partial href=semantics.html#htmlheadingelement>HTMLHeadingElement</a> {
+  attribute DOMString <a href=#dom-hx-align id=other-elements,-attributes-and-apis:dom-hx-align>align</a>;
+};</pre>
+
+  <p>The <dfn id=dom-hx-align><code>align</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code>–<code id=other-elements,-attributes-and-apis:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-2><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h6</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-20 href=infrastructure.html#reflect>reflect</a> the content attribute of
+  the same name.</p>
+
+  <hr>
+
+  <p class=note>The <dfn id=dom-head-profile><code>profile</code></dfn> IDL attribute on
+  <code id=other-elements,-attributes-and-apis:the-head-element><a href=semantics.html#the-head-element>head</a></code> elements (with the <code id=other-elements,-attributes-and-apis:htmlheadelement><a href=semantics.html#htmlheadelement>HTMLHeadElement</a></code> interface) is intentionally
+  omitted. Unless so required by <a href=infrastructure.html#other-applicable-specifications id=other-elements,-attributes-and-apis:other-applicable-specifications>another applicable
+  specification</a>, implementations would therefore not support this attribute. (It is mentioned
+  here as it was defined in a previous version of the DOM specifications.)</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLHRElement-partial href=semantics.html#htmlhrelement>HTMLHRElement</a> {
+  attribute DOMString <a href=#dom-hr-align id=other-elements,-attributes-and-apis:dom-hr-align>align</a>;
+  attribute DOMString <a href=#dom-hr-color id=other-elements,-attributes-and-apis:dom-hr-color>color</a>;
+  attribute boolean <a href=#dom-hr-noshade id=other-elements,-attributes-and-apis:dom-hr-noshade>noShade</a>;
+  attribute DOMString <a href=#dom-hr-size id=other-elements,-attributes-and-apis:dom-hr-size>size</a>;
+  attribute DOMString <a href=#dom-hr-width id=other-elements,-attributes-and-apis:dom-hr-width>width</a>;
+};</pre>
+
+  <p>The <dfn id=dom-hr-align><code>align</code></dfn>, <dfn id=dom-hr-color><code>color</code></dfn>, <dfn id=dom-hr-size><code>size</code></dfn>,
+  and <dfn id=dom-hr-width><code>width</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-hr-element><a href=semantics.html#the-hr-element>hr</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-21 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <p>The <dfn id=dom-hr-noshade><code>noShade</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-hr-element-2><a href=semantics.html#the-hr-element>hr</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-22 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-hr-noshade><a href=#attr-hr-noshade>noshade</a></code>
+  content attribute.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLHtmlElement-partial href=semantics.html#htmlhtmlelement>HTMLHtmlElement</a> {
+  attribute DOMString <a href=#dom-html-version id=other-elements,-attributes-and-apis:dom-html-version>version</a>;
+};</pre>
+
+  <p>The <dfn id=dom-html-version><code>version</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-html-element><a href=semantics.html#the-html-element>html</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-23 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLIFrameElement-partial href=embedded-content.html#htmliframeelement>HTMLIFrameElement</a> {
+  attribute DOMString <a href=#dom-iframe-align id=other-elements,-attributes-and-apis:dom-iframe-align>align</a>;
+  attribute DOMString <a href=#dom-iframe-scrolling id=other-elements,-attributes-and-apis:dom-iframe-scrolling>scrolling</a>;
+  attribute DOMString <a href=#dom-iframe-frameborder id=other-elements,-attributes-and-apis:dom-iframe-frameborder>frameBorder</a>;
+  attribute DOMString <a href=#dom-iframe-longdesc id=other-elements,-attributes-and-apis:dom-iframe-longdesc>longDesc</a>;
+
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-iframe-marginheight id=other-elements,-attributes-and-apis:dom-iframe-marginheight>marginHeight</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-iframe-marginwidth id=other-elements,-attributes-and-apis:dom-iframe-marginwidth>marginWidth</a>;
+};</pre>
+
+  <p>The <dfn id=dom-iframe-align><code>align</code></dfn> and <dfn id=dom-iframe-scrolling><code>scrolling</code></dfn> IDL attributes of the
+  <code id=other-elements,-attributes-and-apis:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-24 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the
+  same name.</p>
+
+  <p>The <dfn id=dom-iframe-frameborder><code>frameBorder</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-25 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-iframe-frameborder><a href=#attr-iframe-frameborder>frameborder</a></code> content attribute.</p>
+
+  <p>The <dfn id=dom-iframe-longdesc><code>longDesc</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-iframe-element-3><a href=embedded-content.html#the-iframe-element>iframe</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-26 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-iframe-longdesc><a href=#attr-iframe-longdesc>longdesc</a></code> content attribute, which for the purposes of
+  reflection is defined as containing a <a id=other-elements,-attributes-and-apis:url-2 href=infrastructure.html#url>URL</a>.</p>
+
+  <p>The <dfn id=dom-iframe-marginheight><code>marginHeight</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-iframe-element-4><a href=embedded-content.html#the-iframe-element>iframe</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-27 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-iframe-marginheight><a href=#attr-iframe-marginheight>marginheight</a></code> content attribute.</p>
+
+  <p>The <dfn id=dom-iframe-marginwidth><code>marginWidth</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-iframe-element-5><a href=embedded-content.html#the-iframe-element>iframe</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-28 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-iframe-marginwidth><a href=#attr-iframe-marginwidth>marginwidth</a></code> content attribute.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLImageElement-partial href=embedded-content.html#htmlimageelement>HTMLImageElement</a> {
+  attribute DOMString <a href=#dom-img-name id=other-elements,-attributes-and-apis:dom-img-name>name</a>;
+  attribute DOMString <a href=#dom-img-lowsrc id=other-elements,-attributes-and-apis:dom-img-lowsrc>lowsrc</a>;
+  attribute DOMString <a href=#dom-img-align id=other-elements,-attributes-and-apis:dom-img-align>align</a>;
+  attribute unsigned long <a href=#dom-img-hspace id=other-elements,-attributes-and-apis:dom-img-hspace>hspace</a>;
+  attribute unsigned long <a href=#dom-img-vspace id=other-elements,-attributes-and-apis:dom-img-vspace>vspace</a>;
+  attribute DOMString <a href=#dom-img-longdesc id=other-elements,-attributes-and-apis:dom-img-longdesc>longDesc</a>;
+
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-img-border id=other-elements,-attributes-and-apis:dom-img-border>border</a>;
+};</pre>
+
+  <p>The <dfn id=dom-img-name><code>name</code></dfn>, <dfn id=dom-img-align><code>align</code></dfn>, <dfn id=dom-img-border><code>border</code></dfn>, <dfn id=dom-img-hspace><code>hspace</code></dfn>, and <dfn id=dom-img-vspace><code>vspace</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element
+  must <a id=other-elements,-attributes-and-apis:reflect-29 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <p>The <dfn id=dom-img-longdesc><code>longDesc</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-30 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-img-longdesc><a href=#attr-img-longdesc>longdesc</a></code> content attribute, which for the purposes of reflection
+  is defined as containing a <a id=other-elements,-attributes-and-apis:url-3 href=infrastructure.html#url>URL</a>.</p>
+
+  <p>The <dfn id=dom-img-lowsrc><code>lowsrc</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-img-element-3><a href=embedded-content.html#the-img-element>img</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-31 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-img-lowsrc><a href=#attr-img-lowsrc>lowsrc</a></code>
+  content attribute, which for the purposes of reflection is defined as containing a
+  <a id=other-elements,-attributes-and-apis:url-4 href=infrastructure.html#url>URL</a>.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLInputElement-partial href=forms.html#htmlinputelement>HTMLInputElement</a> {
+  attribute DOMString <a href=#dom-input-align id=other-elements,-attributes-and-apis:dom-input-align>align</a>;
+  attribute DOMString <a href=#dom-input-usemap id=other-elements,-attributes-and-apis:dom-input-usemap>useMap</a>;
+};</pre>
+
+  <p>The <dfn id=dom-input-align><code>align</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-input-element><a href=forms.html#the-input-element>input</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-32 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <p>The <dfn id=dom-input-usemap><code>useMap</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-input-element-2><a href=forms.html#the-input-element>input</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-33 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-input-usemap><a href=#attr-input-usemap>usemap</a></code> content attribute.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLLegendElement-partial href=forms.html#htmllegendelement>HTMLLegendElement</a> {
+  attribute DOMString <a href=#dom-legend-align id=other-elements,-attributes-and-apis:dom-legend-align>align</a>;
+};</pre>
+
+  <p>The <dfn id=dom-legend-align><code>align</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-legend-element><a href=forms.html#the-legend-element>legend</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-34 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLLIElement-partial href=semantics.html#htmllielement>HTMLLIElement</a> {
+  attribute DOMString <a href=#dom-li-type id=other-elements,-attributes-and-apis:dom-li-type>type</a>;
+};</pre>
+
+  <p>The <dfn id=dom-li-type><code>type</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-li-element><a href=semantics.html#the-li-element>li</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-35 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLLinkElement-partial href=semantics.html#htmllinkelement>HTMLLinkElement</a> {
+  attribute DOMString <a href=#dom-link-charset id=other-elements,-attributes-and-apis:dom-link-charset>charset</a>;
+  attribute DOMString <a href=#dom-link-rev id=other-elements,-attributes-and-apis:dom-link-rev>rev</a>;
+  attribute DOMString <a href=#dom-link-target id=other-elements,-attributes-and-apis:dom-link-target>target</a>;
+};</pre>
+
+  <p>The <dfn id=dom-link-charset><code>charset</code></dfn>, <dfn id=dom-link-rev><code>rev</code></dfn>, and <dfn id=dom-link-target><code>target</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-link-element><a href=semantics.html#the-link-element>link</a></code> element
+  must <a id=other-elements,-attributes-and-apis:reflect-36 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <hr>
+
+  <p>User agents must treat <code id=other-elements,-attributes-and-apis:listing><a href=#listing>listing</a></code> elements in a manner equivalent to <code id=other-elements,-attributes-and-apis:the-pre-element><a href=semantics.html#the-pre-element>pre</a></code>
+  elements in terms of semantics and for purposes of rendering.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLMenuElement-partial href=forms.html#htmlmenuelement>HTMLMenuElement</a> {
+  attribute boolean <a href=#dom-menu-compact id=other-elements,-attributes-and-apis:dom-menu-compact>compact</a>;
+};</pre>
+
+  <p>The <dfn id=dom-menu-compact><code>compact</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-menu-element><a href=forms.html#the-menu-element>menu</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-37 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLMetaElement-partial href=semantics.html#htmlmetaelement>HTMLMetaElement</a> {
+  attribute DOMString <a href=#dom-meta-scheme id=other-elements,-attributes-and-apis:dom-meta-scheme>scheme</a>;
+};</pre>
+
+  <p>User agents may treat the <code id=other-elements,-attributes-and-apis:attr-meta-scheme><a href=#attr-meta-scheme>scheme</a></code> content attribute on the
+  <code id=other-elements,-attributes-and-apis:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code> element as an extension of the element's <code id=other-elements,-attributes-and-apis:attr-meta-name><a href=semantics.html#attr-meta-name>name</a></code> content attribute when processing a <code id=other-elements,-attributes-and-apis:the-meta-element-2><a href=semantics.html#the-meta-element>meta</a></code> element
+  with a <code id=other-elements,-attributes-and-apis:attr-meta-name-2><a href=semantics.html#attr-meta-name>name</a></code> attribute whose value is one that the user agent
+  recognizes as supporting the <code id=other-elements,-attributes-and-apis:attr-meta-scheme-2><a href=#attr-meta-scheme>scheme</a></code> attribute.</p>
+
+  <p>User agents are encouraged to ignore the <code id=other-elements,-attributes-and-apis:attr-meta-scheme-3><a href=#attr-meta-scheme>scheme</a></code> attribute
+  and instead process the value given to the metadata name as if it had been specified for each
+  expected value of the <code id=other-elements,-attributes-and-apis:attr-meta-scheme-4><a href=#attr-meta-scheme>scheme</a></code> attribute.</p>
+
+  <div class=example>
+
+   <p>For example, if the user agent acts on <code id=other-elements,-attributes-and-apis:the-meta-element-3><a href=semantics.html#the-meta-element>meta</a></code> elements with <code id=other-elements,-attributes-and-apis:attr-meta-name-3><a href=semantics.html#attr-meta-name>name</a></code> attributes having the value "eGMS.subject.keyword", and knows
+   that the <code id=other-elements,-attributes-and-apis:attr-meta-scheme-5><a href=#attr-meta-scheme>scheme</a></code> attribute is used with this metadata name,
+   then it could take the <code id=other-elements,-attributes-and-apis:attr-meta-scheme-6><a href=#attr-meta-scheme>scheme</a></code> attribute into account,
+   acting as if it was an extension of the <code id=other-elements,-attributes-and-apis:attr-meta-name-4><a href=semantics.html#attr-meta-name>name</a></code> attribute. Thus
+   the following two <code id=other-elements,-attributes-and-apis:the-meta-element-4><a href=semantics.html#the-meta-element>meta</a></code> elements could be treated as two elements giving values for
+   two different metadata names, one consisting of a combination of "eGMS.subject.keyword" and
+   "LGCL", and the other consisting of a combination of "eGMS.subject.keyword" and "ORLY":</p>
+
+   <pre class=bad>&lt;!-- this markup is invalid --&gt;
+&lt;meta name="eGMS.subject.keyword" scheme="LGCL" content="Abandoned vehicles"&gt;
+&lt;meta name="eGMS.subject.keyword" scheme="ORLY" content="Mah car: kthxbye"&gt;</pre>
+
+   <p>The suggested processing of this markup, however, would be equivalent to the following:</p>
+
+   <pre>&lt;meta name="eGMS.subject.keyword" content="Abandoned vehicles"&gt;
+&lt;meta name="eGMS.subject.keyword" content="Mah car: kthxbye"&gt;</pre>
+
+  </div>
+
+  <p>The <dfn id=dom-meta-scheme><code>scheme</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-meta-element-5><a href=semantics.html#the-meta-element>meta</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-38 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLObjectElement-partial href=embedded-content.html#htmlobjectelement>HTMLObjectElement</a> {
+  attribute DOMString <a href=#dom-object-align id=other-elements,-attributes-and-apis:dom-object-align>align</a>;
+  attribute DOMString <a href=#dom-object-archive id=other-elements,-attributes-and-apis:dom-object-archive>archive</a>;
+  attribute DOMString <a href=#dom-object-code id=other-elements,-attributes-and-apis:dom-object-code>code</a>;
+  attribute boolean <a href=#dom-object-declare id=other-elements,-attributes-and-apis:dom-object-declare>declare</a>;
+  attribute unsigned long <a href=#dom-object-hspace id=other-elements,-attributes-and-apis:dom-object-hspace>hspace</a>;
+  attribute DOMString <a href=#dom-object-standby id=other-elements,-attributes-and-apis:dom-object-standby>standby</a>;
+  attribute unsigned long <a href=#dom-object-vspace id=other-elements,-attributes-and-apis:dom-object-vspace>vspace</a>;
+  attribute DOMString <a href=#dom-object-codebase id=other-elements,-attributes-and-apis:dom-object-codebase>codeBase</a>;
+  attribute DOMString <a href=#dom-object-codetype id=other-elements,-attributes-and-apis:dom-object-codetype>codeType</a>;
+
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-object-border id=other-elements,-attributes-and-apis:dom-object-border>border</a>;
+};</pre>
+
+  <p>The <dfn id=dom-object-align><code>align</code></dfn>, <dfn id=dom-object-archive><code>archive</code></dfn>, <dfn id=dom-object-border><code>border</code></dfn>, <dfn id=dom-object-code><code>code</code></dfn>, <dfn id=dom-object-declare><code>declare</code></dfn>, <dfn id=dom-object-hspace><code>hspace</code></dfn>, <dfn id=dom-object-standby><code>standby</code></dfn>, and <dfn id=dom-object-vspace><code>vspace</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-object-element><a href=embedded-content.html#the-object-element>object</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-39 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <p>The <dfn id=dom-object-codebase><code>codeBase</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-object-element-2><a href=embedded-content.html#the-object-element>object</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-40 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-object-codebase><a href=#attr-object-codebase>codebase</a></code> content attribute, which for the purposes of
+  reflection is defined as containing a <a id=other-elements,-attributes-and-apis:url-5 href=infrastructure.html#url>URL</a>.</p>
+
+  <p>The <dfn id=dom-object-codetype><code>codeType</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-object-element-3><a href=embedded-content.html#the-object-element>object</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-41 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-object-codetype><a href=#attr-object-codetype>codetype</a></code> content attribute.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLOListElement-partial href=semantics.html#htmlolistelement>HTMLOListElement</a> {
+  attribute boolean <a href=#dom-ol-compact id=other-elements,-attributes-and-apis:dom-ol-compact>compact</a>;
+};</pre>
+
+  <p>The <dfn id=dom-ol-compact><code>compact</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-ol-element><a href=semantics.html#the-ol-element>ol</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-42 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLParagraphElement-partial href=semantics.html#htmlparagraphelement>HTMLParagraphElement</a> {
+  attribute DOMString <a href=#dom-p-align id=other-elements,-attributes-and-apis:dom-p-align>align</a>;
+};</pre>
+
+  <p>The <dfn id=dom-p-align><code>align</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-p-element><a href=semantics.html#the-p-element>p</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-43 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLParamElement-partial href=embedded-content.html#htmlparamelement>HTMLParamElement</a> {
+  attribute DOMString <a href=#dom-param-type id=other-elements,-attributes-and-apis:dom-param-type>type</a>;
+  attribute DOMString <a href=#dom-param-valuetype id=other-elements,-attributes-and-apis:dom-param-valuetype>valueType</a>;
+};</pre>
+
+  <p>The <dfn id=dom-param-type><code>type</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-param-element><a href=embedded-content.html#the-param-element>param</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-44 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <p>The <dfn id=dom-param-valuetype><code>valueType</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-param-element-2><a href=embedded-content.html#the-param-element>param</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-45 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-param-valuetype><a href=#attr-param-valuetype>valuetype</a></code> content attribute.</p>
+
+  <hr>
+
+  <p>User agents must treat <code id=other-elements,-attributes-and-apis:plaintext><a href=#plaintext>plaintext</a></code> elements in a manner equivalent to
+  <code id=other-elements,-attributes-and-apis:the-pre-element-2><a href=semantics.html#the-pre-element>pre</a></code> elements in terms of semantics and for purposes of rendering. (The parser has
+  special behaviour for this element, though.)</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLPreElement-partial href=semantics.html#htmlpreelement>HTMLPreElement</a> {
+  attribute long <a href=#dom-pre-width id=other-elements,-attributes-and-apis:dom-pre-width>width</a>;
+};</pre>
+
+  <p>The <dfn id=dom-pre-width><code>width</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-pre-element-3><a href=semantics.html#the-pre-element>pre</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-46 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLScriptElement-partial href=scripting.html#htmlscriptelement>HTMLScriptElement</a> {
+  attribute DOMString <a href=#dom-script-event id=other-elements,-attributes-and-apis:dom-script-event>event</a>;
+  attribute DOMString <a href=#dom-script-htmlfor id=other-elements,-attributes-and-apis:dom-script-htmlfor>htmlFor</a>;
+};</pre>
+
+  <p>The <dfn id=dom-script-event><code>event</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-script-element><a href=scripting.html#the-script-element>script</a></code> element must reflect the element's
+  <code id=other-elements,-attributes-and-apis:attr-script-event><a href=#attr-script-event>event</a></code> content attribute.</p>
+
+  <p>The <dfn id=dom-script-htmlfor><code>htmlFor</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-script-element-2><a href=scripting.html#the-script-element>script</a></code> element must reflect the element's
+  <code id=other-elements,-attributes-and-apis:attr-script-for><a href=#attr-script-for>for</a></code> content attribute.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLTableElement-partial href=tables.html#htmltableelement>HTMLTableElement</a> {
+  attribute DOMString <a href=#dom-table-align id=other-elements,-attributes-and-apis:dom-table-align>align</a>;
+  attribute DOMString <a href=#dom-table-border id=other-elements,-attributes-and-apis:dom-table-border>border</a>;
+  attribute DOMString <a href=#dom-table-frame id=other-elements,-attributes-and-apis:dom-table-frame>frame</a>;
+  attribute DOMString <a href=#dom-table-rules id=other-elements,-attributes-and-apis:dom-table-rules>rules</a>;
+  attribute DOMString <a href=#dom-table-summary id=other-elements,-attributes-and-apis:dom-table-summary>summary</a>;
+  attribute DOMString <a href=#dom-table-width id=other-elements,-attributes-and-apis:dom-table-width>width</a>;
+
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-table-bgcolor id=other-elements,-attributes-and-apis:dom-table-bgcolor>bgColor</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-table-cellpadding id=other-elements,-attributes-and-apis:dom-table-cellpadding>cellPadding</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-table-cellspacing id=other-elements,-attributes-and-apis:dom-table-cellspacing>cellSpacing</a>;
+};</pre>
+
+  <p>The <dfn id=dom-table-align><code>align</code></dfn>, <dfn id=dom-table-border><code>border</code></dfn>, <dfn id=dom-table-frame><code>frame</code></dfn>, <dfn id=dom-table-summary><code>summary</code></dfn>, <dfn id=dom-table-rules><code>rules</code></dfn>, and <dfn id=dom-table-width><code>width</code></dfn>, IDL attributes of the <code id=other-elements,-attributes-and-apis:the-table-element><a href=tables.html#the-table-element>table</a></code> element
+  must <a id=other-elements,-attributes-and-apis:reflect-47 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <p>The <dfn id=dom-table-bgcolor><code>bgColor</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-table-element-2><a href=tables.html#the-table-element>table</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-48 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-table-bgcolor><a href=#attr-table-bgcolor>bgcolor</a></code> content attribute.</p>
+
+  <p>The <dfn id=dom-table-cellpadding><code>cellPadding</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-table-element-3><a href=tables.html#the-table-element>table</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-49 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-table-cellpadding><a href=#attr-table-cellpadding>cellpadding</a></code> content attribute.</p>
+
+  <p>The <dfn id=dom-table-cellspacing><code>cellSpacing</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-table-element-4><a href=tables.html#the-table-element>table</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-50 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-table-cellspacing><a href=#attr-table-cellspacing>cellspacing</a></code> content attribute.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLTableSectionElement-partial href=tables.html#htmltablesectionelement>HTMLTableSectionElement</a> {
+  attribute DOMString <a href=#dom-tbody-align id=other-elements,-attributes-and-apis:dom-tbody-align>align</a>;
+  attribute DOMString <a href=#dom-tbody-ch id=other-elements,-attributes-and-apis:dom-tbody-ch>ch</a>;
+  attribute DOMString <a href=#dom-tbody-choff id=other-elements,-attributes-and-apis:dom-tbody-choff>chOff</a>;
+  attribute DOMString <a href=#dom-tbody-valign id=other-elements,-attributes-and-apis:dom-tbody-valign>vAlign</a>;
+};</pre>
+
+  <p>The <dfn id=dom-tbody-align><code>align</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-tbody-element><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=other-elements,-attributes-and-apis:the-thead-element><a href=tables.html#the-thead-element>thead</a></code>, and <code id=other-elements,-attributes-and-apis:the-tfoot-element><a href=tables.html#the-tfoot-element>tfoot</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-51 href=infrastructure.html#reflect>reflect</a>
+  the content attribute of the same name.</p>
+
+  <p>The <dfn id=dom-tbody-ch><code>ch</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-tbody-element-2><a href=tables.html#the-tbody-element>tbody</a></code>,
+  <code id=other-elements,-attributes-and-apis:the-thead-element-2><a href=tables.html#the-thead-element>thead</a></code>, and <code id=other-elements,-attributes-and-apis:the-tfoot-element-2><a href=tables.html#the-tfoot-element>tfoot</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-52 href=infrastructure.html#reflect>reflect</a> the elements' <code id=other-elements,-attributes-and-apis:attr-tbody-char><a href=#attr-tbody-char>char</a></code> content attributes.</p>
+
+  <p>The <dfn id=dom-tbody-choff><code>chOff</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-tbody-element-3><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=other-elements,-attributes-and-apis:the-thead-element-3><a href=tables.html#the-thead-element>thead</a></code>, and <code id=other-elements,-attributes-and-apis:the-tfoot-element-3><a href=tables.html#the-tfoot-element>tfoot</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-53 href=infrastructure.html#reflect>reflect</a>
+  the elements' <code id=other-elements,-attributes-and-apis:attr-tbody-charoff><a href=#attr-tbody-charoff>charoff</a></code> content attributes.</p>
+
+  <p>The <dfn id=dom-tbody-valign><code>vAlign</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-tbody-element-4><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=other-elements,-attributes-and-apis:the-thead-element-4><a href=tables.html#the-thead-element>thead</a></code>, and <code id=other-elements,-attributes-and-apis:the-tfoot-element-4><a href=tables.html#the-tfoot-element>tfoot</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-54 href=infrastructure.html#reflect>reflect</a>
+  the elements' <code id=other-elements,-attributes-and-apis:attr-tbody-valign><a href=#attr-tbody-valign>valign</a></code> content attributes.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLTableCellElement-partial href=tables.html#htmltablecellelement>HTMLTableCellElement</a> {
+  attribute DOMString <a href=#dom-tdth-align id=other-elements,-attributes-and-apis:dom-tdth-align>align</a>;
+  attribute DOMString <a href=#dom-tdth-axis id=other-elements,-attributes-and-apis:dom-tdth-axis>axis</a>;
+  attribute DOMString <a href=#dom-tdth-height id=other-elements,-attributes-and-apis:dom-tdth-height>height</a>;
+  attribute DOMString <a href=#dom-tdth-width id=other-elements,-attributes-and-apis:dom-tdth-width>width</a>;
+
+  attribute DOMString <a href=#dom-tdth-ch id=other-elements,-attributes-and-apis:dom-tdth-ch>ch</a>;
+  attribute DOMString <a href=#dom-tdth-choff id=other-elements,-attributes-and-apis:dom-tdth-choff>chOff</a>;
+  attribute boolean <a href=#dom-tdth-nowrap id=other-elements,-attributes-and-apis:dom-tdth-nowrap>noWrap</a>;
+  attribute DOMString <a href=#dom-tdth-valign id=other-elements,-attributes-and-apis:dom-tdth-valign>vAlign</a>;
+
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-tdth-bgcolor id=other-elements,-attributes-and-apis:dom-tdth-bgcolor>bgColor</a>;
+};</pre>
+
+  <p>The <dfn id=dom-tdth-align><code>align</code></dfn>, <dfn id=dom-tdth-axis><code>axis</code></dfn>, <dfn id=dom-tdth-height><code>height</code></dfn>, and <dfn id=dom-tdth-width><code>width</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-td-element><a href=tables.html#the-td-element>td</a></code> and
+  <code id=other-elements,-attributes-and-apis:the-th-element><a href=tables.html#the-th-element>th</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-55 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same
+  name.</p>
+
+  <p>The <dfn id=dom-tdth-ch><code>ch</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-td-element-2><a href=tables.html#the-td-element>td</a></code> and
+  <code id=other-elements,-attributes-and-apis:the-th-element-2><a href=tables.html#the-th-element>th</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-56 href=infrastructure.html#reflect>reflect</a> the elements' <code id=other-elements,-attributes-and-apis:attr-tdth-char><a href=#attr-tdth-char>char</a></code> content attributes.</p>
+
+  <p>The <dfn id=dom-tdth-choff><code>chOff</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-td-element-3><a href=tables.html#the-td-element>td</a></code>
+  and <code id=other-elements,-attributes-and-apis:the-th-element-3><a href=tables.html#the-th-element>th</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-57 href=infrastructure.html#reflect>reflect</a> the elements' <code id=other-elements,-attributes-and-apis:attr-tdth-charoff><a href=#attr-tdth-charoff>charoff</a></code> content attributes.</p>
+
+  <p>The <dfn id=dom-tdth-nowrap><code>noWrap</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-td-element-4><a href=tables.html#the-td-element>td</a></code>
+  and <code id=other-elements,-attributes-and-apis:the-th-element-4><a href=tables.html#the-th-element>th</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-58 href=infrastructure.html#reflect>reflect</a> the elements' <code id=other-elements,-attributes-and-apis:attr-tdth-nowrap><a href=#attr-tdth-nowrap>nowrap</a></code> content attributes.</p>
+
+  <p>The <dfn id=dom-tdth-valign><code>vAlign</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-td-element-5><a href=tables.html#the-td-element>td</a></code>
+  and <code id=other-elements,-attributes-and-apis:the-th-element-5><a href=tables.html#the-th-element>th</a></code> element must <a id=other-elements,-attributes-and-apis:reflect-59 href=infrastructure.html#reflect>reflect</a> the elements' <code id=other-elements,-attributes-and-apis:attr-tdth-valign><a href=#attr-tdth-valign>valign</a></code> content attributes.</p>
+
+  <p>The <dfn id=dom-tdth-bgcolor><code>bgColor</code></dfn> IDL attribute of the
+  <code id=other-elements,-attributes-and-apis:the-td-element-6><a href=tables.html#the-td-element>td</a></code> and <code id=other-elements,-attributes-and-apis:the-th-element-6><a href=tables.html#the-th-element>th</a></code> elements must <a id=other-elements,-attributes-and-apis:reflect-60 href=infrastructure.html#reflect>reflect</a> the elements' <code id=other-elements,-attributes-and-apis:attr-tdth-bgcolor><a href=#attr-tdth-bgcolor>bgcolor</a></code> content attributes.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLTableDataCellElement-partial href=tables.html#htmltabledatacellelement>HTMLTableDataCellElement</a> {
+  attribute DOMString <a href=#dom-td-abbr id=other-elements,-attributes-and-apis:dom-td-abbr>abbr</a>;
+};</pre>
+
+  <p>The <dfn id=dom-td-abbr><code>abbr</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-td-element-7><a href=tables.html#the-td-element>td</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-61 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLTableRowElement-partial href=tables.html#htmltablerowelement>HTMLTableRowElement</a> {
+  attribute DOMString <a href=#dom-tr-align id=other-elements,-attributes-and-apis:dom-tr-align>align</a>;
+  attribute DOMString <a href=#dom-tr-ch id=other-elements,-attributes-and-apis:dom-tr-ch>ch</a>;
+  attribute DOMString <a href=#dom-tr-choff id=other-elements,-attributes-and-apis:dom-tr-choff>chOff</a>;
+  attribute DOMString <a href=#dom-tr-valign id=other-elements,-attributes-and-apis:dom-tr-valign>vAlign</a>;
+
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-tr-bgcolor id=other-elements,-attributes-and-apis:dom-tr-bgcolor>bgColor</a>;
+};</pre>
+
+  <p>The <dfn id=dom-tr-align><code>align</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-tr-element><a href=tables.html#the-tr-element>tr</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-62 href=infrastructure.html#reflect>reflect</a> the content attribute of the same name.</p>
+
+  <p>The <dfn id=dom-tr-ch><code>ch</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-tr-element-2><a href=tables.html#the-tr-element>tr</a></code> element
+  must <a id=other-elements,-attributes-and-apis:reflect-63 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-tr-char><a href=#attr-tr-char>char</a></code> content
+  attribute.</p>
+
+  <p>The <dfn id=dom-tr-choff><code>chOff</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-tr-element-3><a href=tables.html#the-tr-element>tr</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-64 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-tr-charoff><a href=#attr-tr-charoff>charoff</a></code>
+  content attribute.</p>
+
+  <p>The <dfn id=dom-tr-valign><code>vAlign</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-tr-element-4><a href=tables.html#the-tr-element>tr</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-65 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-tr-valign><a href=#attr-tr-valign>valign</a></code> content
+  attribute.</p>
+
+  <p>The <dfn id=dom-tr-bgcolor><code>bgColor</code></dfn> IDL attribute of the <code id=other-elements,-attributes-and-apis:the-tr-element-5><a href=tables.html#the-tr-element>tr</a></code>
+  element must <a id=other-elements,-attributes-and-apis:reflect-66 href=infrastructure.html#reflect>reflect</a> the element's <code id=other-elements,-attributes-and-apis:attr-tr-bgcolor><a href=#attr-tr-bgcolor>bgcolor</a></code>
+  content attribute.</p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=HTMLUListElement-partial href=semantics.html#htmlulistelement>HTMLUListElement</a> {
+  attribute boolean <a href=#dom-ul-compact id=other-elements,-attributes-and-apis:dom-ul-compact>compact</a>;
+  attribute DOMString <a href=#dom-ul-type id=other-elements,-attributes-and-apis:dom-ul-type>type</a>;
+};</pre>
+
+  <p>The <dfn id=dom-ul-compact><code>compact</code></dfn> and <dfn id=dom-ul-type><code>type</code></dfn> IDL attributes of the <code id=other-elements,-attributes-and-apis:the-ul-element-2><a href=semantics.html#the-ul-element>ul</a></code> element must
+  <a id=other-elements,-attributes-and-apis:reflect-67 href=infrastructure.html#reflect>reflect</a> the respective content attributes of the same name.</p>
+
+  <hr>
+
+  <p>User agents must treat <code id=other-elements,-attributes-and-apis:xmp><a href=#xmp>xmp</a></code> elements in a manner equivalent to <code id=other-elements,-attributes-and-apis:the-pre-element-4><a href=semantics.html#the-pre-element>pre</a></code>
+  elements in terms of semantics and for purposes of rendering. (The parser has special behaviour for
+  this element though.)</p>
+
+  <hr>
+
+  <p>The <code id=other-elements,-attributes-and-apis:blink><a href=#blink>blink</a></code>, <code id=other-elements,-attributes-and-apis:bgsound><a href=#bgsound>bgsound</a></code>, <code id=other-elements,-attributes-and-apis:isindex-2><a href=#isindex-2>isindex</a></code>, <code id=other-elements,-attributes-and-apis:multicol><a href=#multicol>multicol</a></code>,
+  <code id=other-elements,-attributes-and-apis:nextid><a href=#nextid>nextid</a></code>, and <code id=other-elements,-attributes-and-apis:spacer><a href=#spacer>spacer</a></code> elements must use the <code id=other-elements,-attributes-and-apis:htmlunknownelement><a href=dom.html#htmlunknownelement>HTMLUnknownElement</a></code>
+  interface.</p> 
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=Document-partial href=dom.html#document>Document</a> {
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-document-fgcolor id=other-elements,-attributes-and-apis:dom-document-fgcolor>fgColor</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-document-linkcolor id=other-elements,-attributes-and-apis:dom-document-linkcolor>linkColor</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-document-vlinkcolor id=other-elements,-attributes-and-apis:dom-document-vlinkcolor>vlinkColor</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-document-alinkcolor id=other-elements,-attributes-and-apis:dom-document-alinkcolor>alinkColor</a>;
+  [TreatNullAs=EmptyString] attribute DOMString <a href=#dom-document-bgcolor id=other-elements,-attributes-and-apis:dom-document-bgcolor>bgColor</a>;
+
+  [SameObject] readonly attribute <a id=other-elements,-attributes-and-apis:htmlcollection href=infrastructure.html#htmlcollection>HTMLCollection</a> <a href=#dom-document-anchors id=other-elements,-attributes-and-apis:dom-document-anchors>anchors</a>;
+  [SameObject] readonly attribute <a id=other-elements,-attributes-and-apis:htmlcollection-2 href=infrastructure.html#htmlcollection>HTMLCollection</a> <a href=#dom-document-applets id=other-elements,-attributes-and-apis:dom-document-applets>applets</a>;
+
+  void <a href=#dom-document-clear id=other-elements,-attributes-and-apis:dom-document-clear>clear</a>();
+  void <a href=#dom-document-captureevents id=other-elements,-attributes-and-apis:dom-document-captureevents>captureEvents</a>();
+  void <a href=#dom-document-releaseevents id=other-elements,-attributes-and-apis:dom-document-releaseevents>releaseEvents</a>();
+
+  [SameObject] readonly attribute <a id=other-elements,-attributes-and-apis:htmlallcollection href=infrastructure.html#htmlallcollection>HTMLAllCollection</a> <a href=#dom-document-all id=other-elements,-attributes-and-apis:dom-document-all>all</a>;
+};</pre>
+
+  <p>The attributes of the <code id=other-elements,-attributes-and-apis:document><a href=dom.html#document>Document</a></code> object listed in the first column of the following
+  table must <a id=other-elements,-attributes-and-apis:reflect-68 href=infrastructure.html#reflect>reflect</a> the content attribute on <a id=other-elements,-attributes-and-apis:the-body-element-2-2 href=dom.html#the-body-element-2>the body element</a> with the
+  name given in the corresponding cell in the second column on the same row, if <a id=other-elements,-attributes-and-apis:the-body-element-2-3 href=dom.html#the-body-element-2>the body
+  element</a> is a <code id=other-elements,-attributes-and-apis:the-body-element-7><a href=semantics.html#the-body-element>body</a></code> element (as opposed to a <code id=other-elements,-attributes-and-apis:frameset><a href=#frameset>frameset</a></code> element).
+  When there is no <a href=dom.html#the-body-element-2 id=other-elements,-attributes-and-apis:the-body-element-2-4>body element</a> or if it is a
+  <code id=other-elements,-attributes-and-apis:frameset-2><a href=#frameset>frameset</a></code> element, the attributes must instead return the empty string on getting and
+  do nothing on setting.</p>
+
+  <table><thead><tr><th>  IDL attribute
+     
+     </th><th>  Content attribute
+   
+   <tbody></th></tr><tr><td><dfn id=dom-document-fgcolor><code>fgColor</code></dfn>
+     </td><td><code id=other-elements,-attributes-and-apis:attr-body-text-2><a href=#attr-body-text>text</a></code>
+    </td></tr><tr><td><dfn id=dom-document-linkcolor><code>linkColor</code></dfn>
+     </td><td><code id=other-elements,-attributes-and-apis:attr-body-link-2><a href=#attr-body-link>link</a></code>
+    </td></tr><tr><td><dfn id=dom-document-vlinkcolor><code>vlinkColor</code></dfn>
+     </td><td><code id=other-elements,-attributes-and-apis:attr-body-vlink-2><a href=#attr-body-vlink>vlink</a></code>
+    </td></tr><tr><td><dfn id=dom-document-alinkcolor><code>alinkColor</code></dfn>
+     </td><td><code id=other-elements,-attributes-and-apis:attr-body-alink-2><a href=#attr-body-alink>alink</a></code>
+    </td></tr><tr><td><dfn id=dom-document-bgcolor><code>bgColor</code></dfn>
+     </td><td><code id=other-elements,-attributes-and-apis:attr-body-bgcolor-2><a href=#attr-body-bgcolor>bgcolor</a></code>
+  </td></tr></table>
+
+  <hr>
+
+  <p>The <dfn id=dom-document-anchors><code>anchors</code></dfn> attribute must return an
+  <code id=other-elements,-attributes-and-apis:htmlcollection-3><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code> rooted at the <code id=other-elements,-attributes-and-apis:document-2><a href=dom.html#document>Document</a></code> node, whose filter matches only
+  <code id=other-elements,-attributes-and-apis:the-a-element-2><a href=semantics.html#the-a-element>a</a></code> elements with <code id=other-elements,-attributes-and-apis:attr-a-name><a href=#attr-a-name>name</a></code> attributes.</p>
+
+  <p>The <dfn id=dom-document-applets><code>applets</code></dfn> attribute must return an
+  <code id=other-elements,-attributes-and-apis:htmlcollection-4><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code> rooted at the <code id=other-elements,-attributes-and-apis:document-3><a href=dom.html#document>Document</a></code> node, whose filter matches only
+  <code id=other-elements,-attributes-and-apis:the-applet-element><a href=#the-applet-element>applet</a></code> elements.</p>
+
+  <p>The <dfn id=dom-document-clear><code>clear()</code></dfn>, <dfn id=dom-document-captureevents><code>captureEvents()</code></dfn>, and <dfn id=dom-document-releaseevents><code>releaseEvents()</code></dfn> methods must do nothing.</p>
+
+  <hr>
+
+  <p>The <dfn id=dom-document-all><code>all</code></dfn> attribute must return an
+  <code id=other-elements,-attributes-and-apis:htmlallcollection-2><a href=infrastructure.html#htmlallcollection>HTMLAllCollection</a></code> rooted at the <code id=other-elements,-attributes-and-apis:document-4><a href=dom.html#document>Document</a></code> node, whose filter matches all
+  elements.</p>
+
+  <p>The object returned for <code id=other-elements,-attributes-and-apis:dom-document-all-2><a href=#dom-document-all>all</a></code> has several unusual
+  behaviours:</p>
+
+  <ul><li><p>The user agent must act as if the <a href=https://tc39.github.io/ecma262/#sec-toboolean id=other-elements,-attributes-and-apis:js-toboolean data-x-internal=js-toboolean>ToBoolean</a> abstract
+   operation in JavaScript returns false when given the object returned for <code id=other-elements,-attributes-and-apis:dom-document-all-3><a href=#dom-document-all>all</a></code>.</li><li><p>The user agent must act as if the <a href=https://tc39.github.io/ecma262/#sec-abstract-equality-comparison id=other-elements,-attributes-and-apis:js-abstract-equality data-x-internal=js-abstract-equality>Abstract Equality
+   Comparison</a> algorithm, when given the object returned for <code id=other-elements,-attributes-and-apis:dom-document-all-4><a href=#dom-document-all>all</a></code>, returns true when compared to the <code>undefined</code> and <code>null</code> values. (Comparisons using the <a href=https://tc39.github.io/ecma262/#sec-strict-equality-comparison id=other-elements,-attributes-and-apis:js-strict-equality data-x-internal=js-strict-equality>Strict Equality Comparison</a> algorithm, and Abstract Equality
+   comparisons to other values such as strings or objects, are unaffected.)</li><li><p>The user agent must act such that the <code id=other-elements,-attributes-and-apis:js-typeof><a data-x-internal=js-typeof href=https://tc39.github.io/ecma262/#sec-typeof-operator>typeof</a></code> operator in
+   JavaScript returns the string <code>"undefined"</code> when applied to the object
+   returned for <code id=other-elements,-attributes-and-apis:dom-document-all-5><a href=#dom-document-all>all</a></code>.</li></ul>
+
+  <p class=note>These requirements are a <a id=other-elements,-attributes-and-apis:willful-violation href=introduction.html#willful-violation>willful violation</a> of the JavaScript
+  specification current at the time of writing. The JavaScript specification
+  requires that <a href=https://tc39.github.io/ecma262/#sec-toboolean id=other-elements,-attributes-and-apis:js-toboolean-2 data-x-internal=js-toboolean>ToBoolean</a> return true for all objects, and does not have
+  provisions for objects acting as if they were <code>undefined</code> for the purposes of
+  certain operators. This violation is motivated by a desire for compatibility with two classes of
+  legacy content: one that uses the presence of <code id=other-elements,-attributes-and-apis:dom-document-all-6><a href=#dom-document-all>document.all</a></code>
+  as a way to detect legacy user agents, and one that only supports those legacy user agents and
+  uses the <code id=other-elements,-attributes-and-apis:dom-document-all-7><a href=#dom-document-all>document.all</a></code> object without testing for its
+  presence first. <a href=references.html#refsECMA262>[ECMA262]</a></p>
+
+  <hr>
+
+  <pre class=idl>partial interface <a id=Window-partial href=browsers.html#window>Window</a> {
+  void <a href=#dom-window-captureevents id=other-elements,-attributes-and-apis:dom-window-captureevents>captureEvents</a>();
+  void <a href=#dom-window-releaseevents id=other-elements,-attributes-and-apis:dom-window-releaseevents>releaseEvents</a>();
+};</pre>
+
+  <p>The <dfn id=dom-window-captureevents><code>captureEvents()</code></dfn> and <dfn id=dom-window-releaseevents><code>releaseEvents()</code></dfn> methods must do nothing.</p>
+
+  
+
+
+
+  <nav><a href=rendering.html>← 14 Rendering</a> — <a href=index.html>Table of Contents</a> — <a href=iana.html>16 IANA considerations →</a></nav>
+</body></html>

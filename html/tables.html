@@ -1,0 +1,1986 @@
+<!DOCTYPE html><html class=split lang=ja><meta charset=utf-8><title>HTML Standard 日本語訳</title>
+<script defer="" src=https://resources.whatwg.org/dfn.js></script>
+<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
+<script>
+   function F( /* varargs... */) {
+     var fragment = document.createDocumentFragment();
+     for (var index = 0; index < arguments.length; index += 1) {
+       if (arguments[index] instanceof Array) {
+         fragment.appendChild(F.apply(this, arguments[index]));
+       } else if (typeof arguments[index] == 'string') {
+         fragment.appendChild(document.createTextNode(arguments[index]));
+       } else {
+         fragment.appendChild(arguments[index]);
+       }
+     }
+     return fragment;
+   }
+   function E(name, /* optional */ attributes /*, varargs... */) {
+     var element = document.createElement(name);
+     var index = 1;
+     if ((arguments.length > 1) && (typeof attributes != 'string') &&
+         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
+       for (var attName in attributes) {
+         if (typeof attributes[attName] == 'boolean') {
+           if (attributes[attName])
+             element.setAttribute(attName, '');
+         } else if (typeof attributes[attName] == 'function') {
+           element[attName] = attributes[attName];
+         } else {
+           element.setAttribute(attName, attributes[attName]);
+         }
+       }
+       index = 2;
+     }
+     for (; index < arguments.length; index += 1) {
+       if (arguments[index] instanceof Array) {
+         element.appendChild(F.apply(this, arguments[index]));
+       } else if (typeof arguments[index] == 'string') {
+         element.appendChild(document.createTextNode(arguments[index]));
+       } else {
+         element.appendChild(arguments[index]);
+       }
+     }
+     return element;
+   }
+   var currentAlert;
+   var currentAlertTimeout;
+   function showAlert(s, href) {
+     if (!currentAlert) {
+       currentAlert = document.createElement('div');
+       currentAlert.id = 'alert';
+       var x = document.createElement('button');
+       x.textContent = '\u2573';
+       x.onclick = closeAlert2;
+       currentAlert.appendChild(x);
+       currentAlert.appendChild(document.createElement('span'));
+       currentAlert.onmousemove = function () {
+         clearTimeout(currentAlertTimeout);
+         currentAlert.className = '';
+         currentAlertTimeout = setTimeout(closeAlert, 10000);
+       }
+       document.body.appendChild(currentAlert);
+     } else {
+       clearTimeout(currentAlertTimeout);
+       currentAlert.className = '';
+     }
+     currentAlert.lastChild.textContent = '';
+     currentAlert.lastChild.appendChild(F(s));
+     if (href) {
+       var link = document.createElement('a');
+       link.href = href;
+       link.textContent = href;
+       currentAlert.lastChild.appendChild(F(' ', link));
+     }
+     currentAlertTimeout = setTimeout(closeAlert, 10000);
+   }
+   function closeAlert() {
+     clearTimeout(currentAlertTimeout);
+     if (currentAlert) {
+       currentAlert.className = 'closed';
+       currentAlertTimeout = setTimeout(closeAlert2, 3000);
+     }
+   }
+   function closeAlert2() {
+     clearTimeout(currentAlertTimeout);
+     if (currentAlert) {
+       currentAlert.parentNode.removeChild(currentAlert);
+       currentAlert = null;
+     }
+   }
+   window.addEventListener('keydown', function (event) {
+     if (event.keyCode == 27) {
+       if (currentAlert)
+         closeAlert2();
+     } else {
+       closeAlert();
+     }
+   }, false);
+   window.addEventListener('scroll', function (event) {
+     closeAlert();
+   }, false);
+
+   var startedInit = 0;
+   function init() {
+     startedInit = 1;
+   }
+   if (document.documentElement.className == "")
+     setTimeout(function () {
+       if (!startedInit)
+         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
+     }, 6000);
+
+   window.addEventListener('keypress', function (event) {
+     if ((event.which == 114) && (event.metaKey)) {
+       if (!confirm('Are you sure you want to reload this page?'))
+         event.preventDefault();
+     }
+   }, false);
+  </script>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=stylesheet href=https://resources.whatwg.org/standard.css><link rel=icon href=https://resources.whatwg.org/logo.svg>
+<style>
+   [hidden] { display: none; }
+
+   .proposal { border: blue solid; padding: 1em; }
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+   #updatesStatus { display: none; z-index: 10; }
+   #updatesStatus.relevant { display: block; position: fixed; right: 1em; top: 1em; padding: 0.5em; font: bold small sans-serif; min-width: 25em; width: 30%; max-width: 40em; height: auto; border: ridge 4px gray; background: #EEEEEE; color: black; }
+   div.head .logo { width: 11em; margin-bottom: 20em; }
+
+   #configUI { position: absolute; z-index: 20; top: auto; right: 0; width: 11em; padding: 0 0.5em 0 0.5em; font-size: small; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em 0 0 0.5em; }
+   #configUI p { margin: 0.75em 0; padding: 0.3em; }
+   #configUI p label { display: block; }
+   #configUI #updateUI, #configUI .loginUI { text-align: center; }
+   #configUI input[type=button] { display: block; margin: auto; }
+   #configUI :link, #configUI :visited { color: white; }
+   #configUI :link:hover, #configUI :visited:hover { background: transparent; }
+
+   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
+   #alert.closed { opacity: 0; }
+   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
+   #alert :link, #alert :visited { color: white; text-decoration: underline; }
+   #alert :link:hover, #alert :visited:hover { background: transparent; }
+
+   @media print { #configUI, #alert { display: none; } }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+
+   .status { font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; top: auto; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status.wrapped { width: 1em; height: 1em; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; right: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome-android.png); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.png); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mobile.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mobile.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+
+   .panel { position: fixed; z-index: 30; top: 10%; left: 0; margin: auto; right: 0; width: 35em; border: double thick; background: #EEEEEE; color: black; padding: 1em; font: 1em sans-serif; max-height: 70%; overflow: auto; }
+   .panel h2 { margin: 0; text-align: center; }
+   .panel ul { min-height: 6em; }
+   .panel p { text-align: right; margin: 0; }
+   .panel form { background: transparent; color: black; margin: 0.5em -0.5em 1em; padding: 0.5em; }
+   .panel form.changed { background: yellow; color: black; }
+   .panel form p { text-align: left; margin: 1em 0 0; }
+   .panel form p:first-child { margin-top: 0; }
+   .panel form p:last-child { margin-bottom: 0; }
+   .panel form p textarea { width: 100% /* TODO: need the keyword that makes it fit to the parent here */; min-height: 4em; display: block; }
+   .panel form dl { line-height: 1.5em; }
+   .panel form dt { display: inline-block; width: 20em; white-space: nowrap; text-align: right; font-weight: normal; margin: 0; padding: 0; }
+   .panel form dd { display: inline; margin: 0 0 0 1em; padding: 0; }
+   .panel form dd:after { display: block; }
+   ul.checkboxes { list-style-type: none; }
+   .progress { text-decoration: blink; }
+
+   .applies .yes { background: yellow; }
+  </style>
+<style>
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+  </style>
+<style>
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+  </style>
+<script src=link-fixup.js></script>
+<body onload=init()>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>27 February 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=embedded-content.html>← 4.8 埋め込みコンテンツ</a> – <a href=index.html>目次</a> – <a href=forms.html>4.10 フォーム →</a></nav><ol class=toc><li id=toc-semantics><ol><li><a href=tables.html#tables>4.9 テーブルデータ</a><ol><li><a href=tables.html#the-table-element>4.9.1 <code>table</code>要素</a><ol><li><a href=tables.html#table-descriptions-techniques>4.9.1.1 表を記述するためのテクニック</a></li><li><a href=tables.html#table-layout-techniques>4.9.1.2 テーブルデザインのためのテクニック</a></li></ol></li><li><a href=tables.html#the-caption-element>4.9.2 <code>caption</code>要素</a></li><li><a href=tables.html#the-colgroup-element>4.9.3 <code>colgroup</code>要素</a></li><li><a href=tables.html#the-col-element>4.9.4 <code>col</code>要素</a></li><li><a href=tables.html#the-tbody-element>4.9.5 <code>tbody</code>要素</a></li><li><a href=tables.html#the-thead-element>4.9.6 <code>thead</code>要素</a></li><li><a href=tables.html#the-tfoot-element>4.9.7 <code>tfoot</code>要素</a></li><li><a href=tables.html#the-tr-element>4.9.8 <code>tr</code>要素</a></li><li><a href=tables.html#the-td-element>4.9.9 <code>td</code>要素</a></li><li><a href=tables.html#the-th-element>4.9.10 <code>th</code>要素</a></li><li><a href=tables.html#attributes-common-to-td-and-th-elements>4.9.11 <code>td</code>と<code>th</code>要素の共通属性</a></li><li><a href=tables.html#processing-model-2>4.9.12 処理モデル</a><ol><li><a href=tables.html#forming-a-table>4.9.12.1 テーブルの作成</a></li><li><a href=tables.html#header-and-data-cell-semantics>4.9.12.2 データセルとヘッダーセルとの間の関係を作成する</a></li></ol></li><li><a href=tables.html#table-examples>4.9.13 例</a></li></ol></li></ol></li></ol><h3 id=tables>4.9 テーブルデータ</h3>
+
+
+  <h4 id=the-table-element>4.9.1 <dfn><code>table</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-table-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-table-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dd><a id=the-table-element:palpable-content-2 href=dom.html#palpable-content-2>パルパブルコンテンツ</a>。<dt><a href=dom.html#concept-element-contexts id=the-table-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><a id=the-table-element:flow-content-2-2 href=dom.html#flow-content-2>フローコンテンツ</a>が期待される場所。<dt><a href=dom.html#concept-element-content-model id=the-table-element:concept-element-content-model>コンテンツモデル</a>：<dd>この順序で：任意で<code id=the-table-element:the-caption-element><a href=#the-caption-element>caption</a></code>要素、0個以上の<code id=the-table-element:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>要素、任意で<code id=the-table-element:the-thead-element><a href=#the-thead-element>thead</a></code>要素、0個以上の<code id=the-table-element:the-tbody-element><a href=#the-tbody-element>tbody</a></code>要素または1個以上の<code id=the-table-element:the-tr-element><a href=#the-tr-element>tr</a></code>要素のいずれか、任意で<code id=the-table-element:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code>要素、任意で1つ以上の<a id=the-table-element:script-supporting-elements-2 href=dom.html#script-supporting-elements-2>スクリプトサポート要素</a>と混合される。<dt><a href=dom.html#concept-element-tag-omission id=the-table-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd>どちらのタグも省略不可。<dt><a href=dom.html#concept-element-attributes id=the-table-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-table-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-table-element:concept-element-dom>DOMインターフェース</a>：<dd>
+<pre class=idl>interface <dfn id=htmltableelement>HTMLTableElement</dfn> : <a id=the-table-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute <a href=#htmltablecaptionelement id=the-table-element:htmltablecaptionelement>HTMLTableCaptionElement</a>? <a href=#dom-table-caption id=the-table-element:dom-table-caption>caption</a>;
+  <a href=#htmltablecaptionelement id=the-table-element:htmltablecaptionelement-2>HTMLTableCaptionElement</a> <a href=#dom-table-createcaption id=the-table-element:dom-table-createcaption>createCaption</a>();
+  void <a href=#dom-table-deletecaption id=the-table-element:dom-table-deletecaption>deleteCaption</a>();
+  attribute <a href=#htmltablesectionelement id=the-table-element:htmltablesectionelement>HTMLTableSectionElement</a>? <a href=#dom-table-thead id=the-table-element:dom-table-thead>tHead</a>;
+  <a href=#htmltablesectionelement id=the-table-element:htmltablesectionelement-2>HTMLTableSectionElement</a> <a href=#dom-table-createthead id=the-table-element:dom-table-createthead>createTHead</a>();
+  void <a href=#dom-table-deletethead id=the-table-element:dom-table-deletethead>deleteTHead</a>();
+  attribute <a href=#htmltablesectionelement id=the-table-element:htmltablesectionelement-3>HTMLTableSectionElement</a>? <a href=#dom-table-tfoot id=the-table-element:dom-table-tfoot>tFoot</a>;
+  <a href=#htmltablesectionelement id=the-table-element:htmltablesectionelement-4>HTMLTableSectionElement</a> <a href=#dom-table-createtfoot id=the-table-element:dom-table-createtfoot>createTFoot</a>();
+  void <a href=#dom-table-deletetfoot id=the-table-element:dom-table-deletetfoot>deleteTFoot</a>();
+  [SameObject] readonly attribute <a id=the-table-element:htmlcollection href=infrastructure.html#htmlcollection>HTMLCollection</a> <a href=#dom-table-tbodies id=the-table-element:dom-table-tbodies>tBodies</a>;
+  <a href=#htmltablesectionelement id=the-table-element:htmltablesectionelement-5>HTMLTableSectionElement</a> <a href=#dom-table-createtbody id=the-table-element:dom-table-createtbody>createTBody</a>();
+  [SameObject] readonly attribute <a id=the-table-element:htmlcollection-2 href=infrastructure.html#htmlcollection>HTMLCollection</a> <a href=#dom-table-rows id=the-table-element:dom-table-rows>rows</a>;
+  <a href=#htmltablerowelement id=the-table-element:htmltablerowelement>HTMLTableRowElement</a> <a href=#dom-table-insertrow id=the-table-element:dom-table-insertrow>insertRow</a>(optional long index = -1);
+  void <a href=#dom-table-deleterow id=the-table-element:dom-table-deleterow>deleteRow</a>(long index);
+};</pre>
+   </dl>
+
+  <p><code id=the-table-element:the-table-element><a href=#the-table-element>table</a></code>要素は<a href=#concept-table id=the-table-element:concept-table>テーブル</a>形式で、複数の次元を持つデータを<a id=the-table-element:represents href=dom.html#represents>表す</a>。</p>
+
+  <p><code id=the-table-element:the-table-element-2><a href=#the-table-element>table</a></code>要素は、<a href=#table-model id=the-table-element:table-model>テーブルモデル</a>に参加する。テーブルは、行、列、およびその子孫によって与えられるセルを持つ。行と列はグリッドを形成する。テーブルのセルは完全に重複することなく、グリッドをカバーしなければならない。</p>
+
+  
+
+  <p class=note>この適合要件が満たされるかどうかを決定するための正確な規則は、<a href=#table-model id=the-table-element:table-model-2>テーブルモデル</a>の説明に記載される。</p>
+
+  
+
+  <p>著者は、複雑なテーブルをどのように解釈するかを記述する情報を提供するよう推奨される。<a href=#table-descriptions-techniques>そのような情報を提供する</a>方法についての手引きは後述のとおりである。</p>
+
+  <p>テーブルは、レイアウトの補助として使用されてはならない。歴史的に、一部のウェブ著者は、自身のページのレイアウトを制御する方法としてHTMLのテーブルを誤用している。そのような文書から表形式のデータの抽出を試みるツールは極めて混乱する結果を得ることになるため、この使用法は非適合である。具体的に、スクリーンリーダーのようなアクセシビリティーツールのユーザーは、テーブルがレイアウトに使用されるテーブルをもつページをナビゲートするのに非常に困難であることを見つける可能性が高い。</p>
+
+  <p class=note>主にCSS位置決めとCSSテーブルモデルを用いて、レイアウトに対してHTMLのテーブルの代わりに使用できる、さまざまな代替手段がある。<a href=references.html#refsCSS>[CSS]</a></p>
+
+  
+
+  <hr>
+
+  <p>テーブルは、理解しかつナビゲートするために複雑になることがある。ユーザーエージェントが（非適合）レイアウトテーブルとしてテーブルを分類していない限り、これとともにユーザーを支援するために、ユーザーエージェントは、互いからテーブルのセルの輪郭を明確に描くべきである。</p>
+
+  
+
+  <p class=note>著者および実装者はユーザーに対してナビゲートするテーブルを容易にするために、以下に記載されるいくつかの<a href=#table-layout-techniques>テーブル設計技術</a>の使用の検討を勧める。</p>
+
+  
+
+  <p>ユーザーエージェント、特に任意のコンテンツ上でテーブルの分析を行うものは、どのテーブルが実際にデータを含み、どのテーブルが単にレイアウトのために使用されているかを決定するためのヒューリスティックを見つけることを勧める。この仕様は、正確なヒューリスティックを定義しないが、以下が可能な指標として提案される：</p>
+
+  <table><thead><tr><th>Feature
+     
+     </th><th>Indication
+   
+   <tbody></th></tr><tr><td>値<code id=the-table-element:attr-aria-role-presentation><a data-x-internal=attr-aria-role-presentation href=http://momdo.github.io/wai-aria-1.1/#presentation>presentation</a></code>をもつ<code id=the-table-element:attr-aria-role><a href=infrastructure.html#attr-aria-role>role</a></code>属性の使用
+     </td><td>おそらくレイアウトテーブル
+    </td></tr><tr><td>非適合値0をもつ非適合<code id=the-table-element:attr-table-border><a href=obsolete.html#attr-table-border>border</a></code>属性の使用
+     </td><td>おそらくレイアウトテーブル
+    </td></tr><tr><td>値0をもつ非適合<code id=the-table-element:attr-table-cellspacing><a href=obsolete.html#attr-table-cellspacing>cellspacing</a></code>および<code id=the-table-element:attr-table-cellpadding><a href=obsolete.html#attr-table-cellpadding>cellpadding</a></code>の使用
+     </td><td>おそらくレイアウトテーブル
+   <tbody></td></tr><tr><td><code id=the-table-element:the-caption-element-2><a href=#the-caption-element>caption</a></code>、<code id=the-table-element:the-thead-element-2><a href=#the-thead-element>thead</a></code>または<code id=the-table-element:the-th-element><a href=#the-th-element>th</a></code>要素の使用
+     </td><td>おそらく非レイアウトテーブル
+    </td></tr><tr><td><code id=the-table-element:attr-tdth-headers><a href=#attr-tdth-headers>headers</a></code>および<code id=the-table-element:attr-th-scope><a href=#attr-th-scope>scope</a></code>属性の使用
+     </td><td>おそらく非レイアウトテーブル
+    </td></tr><tr><td>0以外の値0をもつ非適合<code id=the-table-element:attr-table-border-2><a href=obsolete.html#attr-table-border>border</a></code>属性の使用
+     </td><td>おそらく非レイアウトテーブル
+    </td></tr><tr><td>CSSを使用して設定された明示的な可視ボーダー
+     </td><td>おそらく非レイアウトテーブル
+   <tbody></td></tr><tr><td><code id=the-table-element:attr-table-summary><a href=obsolete.html#attr-table-summary>summary</a></code>属性の使用
+     </td><td>よい指標ではない（歴史的にレイアウトと非レイアウトテーブルの両方は、この属性を与えられている）
+  </td></tr></table>
+
+  <p class=note>上記の提案が正しくないことが非常にありうる。実装者は、レイアウトテーブル検出ヒューリスティックを作成しようとするとともにその経験を推敲するフィードバックを提供することを強く勧める。</p>
+
+  <p><code id=the-table-element:the-table-element-3><a href=#the-table-element>table</a></code>要素が（非適合）<code id=the-table-element:attr-table-summary-2><a href=obsolete.html#attr-table-summary>summary</a></code>属性を持ち、かつユーザーエージェントがレイアウトテーブルとしてテーブルに分類されていない場合、ユーザーエージェントは、ユーザーにその属性のコンテンツを報告してもよい。</p>
+
+  
+
+  <hr>
+
+
+  <dl class=domintro><dt><var>table</var> . <code id=the-table-element:dom-table-caption-2><a href=#dom-table-caption>caption</a></code> [ = <var>value</var> ]<dd>
+
+    <p>テーブルの<code id=the-table-element:the-caption-element-3><a href=#the-caption-element>caption</a></code>要素を返す。</p>
+
+    <p><code id=the-table-element:the-caption-element-4><a href=#the-caption-element>caption</a></code>要素を置き換えるために、設定が可能である。</p>
+
+   <dt><var>caption</var> = <var>table</var> . <code id=the-table-element:dom-table-createcaption-2><a href=#dom-table-createcaption>createCaption</a></code>()<dd>
+
+    <p>表が<code id=the-table-element:the-caption-element-5><a href=#the-caption-element>caption</a></code>要素を持つことを保証し、それを返す。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-deletecaption-2><a href=#dom-table-deletecaption>deleteCaption</a></code>()<dd>
+
+    <p>表が<code id=the-table-element:the-caption-element-6><a href=#the-caption-element>caption</a></code>要素を持たないことを保証する。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-thead-2><a href=#dom-table-thead>tHead</a></code> [ = <var>value</var> ]<dd>
+
+    <p>テーブルの<code id=the-table-element:the-thead-element-3><a href=#the-thead-element>thead</a></code>要素を返す。</p>
+
+    <p><code id=the-table-element:the-thead-element-4><a href=#the-thead-element>thead</a></code>要素を置き換えるために、設定が可能である。新しい値が<code id=the-table-element:the-thead-element-5><a href=#the-thead-element>thead</a></code>要素でない場合、<code id=the-table-element:hierarchyrequesterror><a href=infrastructure.html#hierarchyrequesterror>HierarchyRequestError</a></code>例外を投げる。</p>
+
+   <dt><var>thead</var> = <var>table</var> . <code id=the-table-element:dom-table-createthead-2><a href=#dom-table-createthead>createTHead</a></code>()<dd>
+
+    <p>表が<code id=the-table-element:the-thead-element-6><a href=#the-thead-element>thead</a></code>要素を持つことを保証し、それを返す。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-deletethead-2><a href=#dom-table-deletethead>deleteTHead</a></code>()<dd>
+
+    <p>表が<code id=the-table-element:the-thead-element-7><a href=#the-thead-element>thead</a></code>要素を持たないことを保証する。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-tfoot-2><a href=#dom-table-tfoot>tFoot</a></code> [ = <var>value</var> ]<dd>
+
+    <p>テーブルの<code id=the-table-element:the-tfoot-element-2><a href=#the-tfoot-element>tfoot</a></code>要素を返す。</p>
+
+    <p><code id=the-table-element:the-tfoot-element-3><a href=#the-tfoot-element>tfoot</a></code>要素を置き換えるために、設定が可能である。新しい値が<code id=the-table-element:the-tfoot-element-4><a href=#the-tfoot-element>tfoot</a></code>要素でない場合、<code id=the-table-element:hierarchyrequesterror-2><a href=infrastructure.html#hierarchyrequesterror>HierarchyRequestError</a></code>例外を投げる。</p>
+
+   <dt><var>tfoot</var> = <var>table</var> . <code id=the-table-element:dom-table-createtfoot-2><a href=#dom-table-createtfoot>createTFoot</a></code>()<dd>
+
+    <p>表が<code id=the-table-element:the-tfoot-element-5><a href=#the-tfoot-element>tfoot</a></code>要素を持つことを保証し、それを返す。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-deletetfoot-2><a href=#dom-table-deletetfoot>deleteTFoot</a></code>()<dd>
+
+    <p>表が<code id=the-table-element:the-tfoot-element-6><a href=#the-tfoot-element>tfoot</a></code>要素を持たないことを保証する。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-tbodies-2><a href=#dom-table-tbodies>tBodies</a></code><dd>
+
+    <p>テーブルの<code id=the-table-element:the-tbody-element-2><a href=#the-tbody-element>tbody</a></code>要素の<code id=the-table-element:htmlcollection-3><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返す。</p>
+
+   <dt><var>tbody</var> = <var>table</var> . <code id=the-table-element:dom-table-createtbody-2><a href=#dom-table-createtbody>createTBody</a></code>()<dd>
+
+    <p><code id=the-table-element:the-tbody-element-3><a href=#the-tbody-element>tbody</a></code>要素を作成してテーブルに挿入し、それを返す。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-rows-2><a href=#dom-table-rows>rows</a></code><dd>
+
+    <p>テーブルの<code id=the-table-element:the-tr-element-2><a href=#the-tr-element>tr</a></code>要素の<code id=the-table-element:htmlcollection-4><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返す。</p>
+
+   <dt><var>tr</var> = <var>table</var> . <code id=the-table-element:dom-table-insertrow-2><a href=#dom-table-insertrow>insertRow</a></code>( [ <var>index</var> ] )<dd>
+
+    <p>必要であれば、<code id=the-table-element:the-tbody-element-4><a href=#the-tbody-element>tbody</a></code>要素とともに、<code id=the-table-element:the-tr-element-3><a href=#the-tr-element>tr</a></code>要素を作成し、引数で指定された位置にあるテーブルへそれらを挿入して、<code id=the-table-element:the-tr-element-4><a href=#the-tr-element>tr</a></code>を返す。</p>
+
+    <p>位置は、テーブルの行を基準にする。引数が省略されている場合、デフォルトでインデックス-1は、テーブルの末尾に挿入することと同じである。</p>
+
+    <p>指定された位置が-1未満または行数より大きい場合、<code id=the-table-element:indexsizeerror><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げる。</p>
+
+   <dt><var>table</var> . <code id=the-table-element:dom-table-deleterow-2><a href=#dom-table-deleterow>deleteRow</a></code>(<var>index</var>)<dd>
+
+    <p>テーブルで指定された位置とともに<code id=the-table-element:the-tr-element-5><a href=#the-tr-element>tr</a></code>要素を削除する。</p>
+
+    <p>位置は、テーブルの行を基準にする。インデックス-1は、テーブルの最後の行を削除するのと同じである。</p>
+
+    <p>指定された位置が-1未満または最終行のインデックスよりも大きい、または行が存在しない場合、<code id=the-table-element:indexsizeerror-2><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げる。</p>
+
+   </dl>
+
+  
+
+  <p>取得時に、<dfn id=dom-table-caption><code>caption</code></dfn> IDL属性は、もしあれば<code id=the-table-element:the-table-element-4><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-caption-element-7><a href=#the-caption-element>caption</a></code>要素の子を返さなければならず、そうでなければnullを返さなければならない。設定時に、もしあれば、<code id=the-table-element:the-table-element-5><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-caption-element-8><a href=#the-caption-element>caption</a></code>要素の子は除去されなければならず、nullでない場合、新しい値は<code id=the-table-element:the-table-element-6><a href=#the-table-element>table</a></code>要素の最初のノードとして挿入されなければならない。</p>
+
+  <p>もしあれば、<dfn id=dom-table-createcaption><code>createCaption()</code></dfn>メソッドは、<code id=the-table-element:the-table-element-7><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-caption-element-9><a href=#the-caption-element>caption</a></code>要素の子を返さなければならない。そうでなければ、新しい<code id=the-table-element:the-caption-element-10><a href=#the-caption-element>caption</a></code>要素は作成され、<code id=the-table-element:the-table-element-8><a href=#the-table-element>table</a></code>要素の最初のノードとして挿入され、その後返されなければならない。</p>
+
+  <p>もしあれば、<dfn id=dom-table-deletecaption><code>deleteCaption()</code></dfn>メソッドは、<code id=the-table-element:the-table-element-9><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-caption-element-11><a href=#the-caption-element>caption</a></code>要素の子を削除しなければならない。</p>
+
+  <p>取得時にもしあれば、<dfn id=dom-table-thead><code>tHead</code></dfn> IDL属性は、<code id=the-table-element:the-table-element-10><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-thead-element-8><a href=#the-thead-element>thead</a></code>要素の子を返さなければならず、そうでなければ、nullを返さなければならない。取得時に、新しい値がnullまたは<code id=the-table-element:the-thead-element-9><a href=#the-thead-element>thead</a></code>要素である場合、<code id=the-table-element:the-table-element-11><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-thead-element-10><a href=#the-thead-element>thead</a></code>要素の子は、もしあれば、除去されなければならず、nullでない場合、新しい値は、<code id=the-table-element:the-caption-element-12><a href=#the-caption-element>caption</a></code>要素でも<code id=the-table-element:the-colgroup-element-2><a href=#the-colgroup-element>colgroup</a></code>要素でもない<code id=the-table-element:the-table-element-12><a href=#the-table-element>table</a></code>要素における、またはもしあればそのような要素が存在しない場合にテーブルの最後で最初の要素の直前に挿入されなければならない。新しい値がnullでも<code id=the-table-element:the-thead-element-11><a href=#the-thead-element>thead</a></code>要素でもない場合、代わりに<code id=the-table-element:hierarchyrequesterror-3><a href=infrastructure.html#hierarchyrequesterror>HierarchyRequestError</a></code> DOM例外が投げられなければならない。</p>
+
+  <p>もしあれば、<dfn id=dom-table-createthead><code>createTHead()</code></dfn>メソッドは、<code id=the-table-element:the-table-element-13><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-thead-element-12><a href=#the-thead-element>thead</a></code>要素の子を返さなければならない。そうでなければ、新しい<code id=the-table-element:the-thead-element-13><a href=#the-thead-element>thead</a></code>要素は、<code id=the-table-element:the-caption-element-13><a href=#the-caption-element>caption</a></code>要素でも<code id=the-table-element:the-colgroup-element-3><a href=#the-colgroup-element>colgroup</a></code>要素でもない<code id=the-table-element:the-table-element-14><a href=#the-table-element>table</a></code>要素における、またはもしあればそのような要素が存在しない場合にテーブルの最後で最初の要素の直前に作成され挿入されなければならず、その後その新しい要素は返されなければならない。</p>
+
+  <p>もしあれば、<dfn id=dom-table-deletethead><code>deleteTHead()</code></dfn>メソッドは、<code id=the-table-element:the-table-element-15><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-thead-element-14><a href=#the-thead-element>thead</a></code>要素の子を削除しなければならない。</p>
+
+  <p>取得時にもしあれば、<dfn id=dom-table-tfoot><code>tFoot</code></dfn> IDL属性は、<code id=the-table-element:the-table-element-16><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-tfoot-element-7><a href=#the-tfoot-element>tfoot</a></code>要素の子を返さなければならず、そうでなければ、nullを返さなければならない。On setting, if the new value is null or a <code id=the-table-element:the-tfoot-element-8><a href=#the-tfoot-element>tfoot</a></code> element, the first <code id=the-table-element:the-tfoot-element-9><a href=#the-tfoot-element>tfoot</a></code> element child of the <code id=the-table-element:the-table-element-17><a href=#the-table-element>table</a></code> element, if any, must be removed, and the new value, if not null, must be inserted at the end of the table. 新しい値がnullでも<code id=the-table-element:the-tfoot-element-10><a href=#the-tfoot-element>tfoot</a></code>要素でもない場合、代わりに<code id=the-table-element:hierarchyrequesterror-4><a href=infrastructure.html#hierarchyrequesterror>HierarchyRequestError</a></code> DOM例外が投げられなければならない。</p>
+
+  <p>The <dfn id=dom-table-createtfoot><code>createTFoot()</code></dfn> method must return the
+  first <code id=the-table-element:the-tfoot-element-11><a href=#the-tfoot-element>tfoot</a></code> element child of the <code id=the-table-element:the-table-element-18><a href=#the-table-element>table</a></code> element, if any; otherwise a new
+  <code id=the-table-element:the-tfoot-element-12><a href=#the-tfoot-element>tfoot</a></code> element must be created and inserted at the end of the table, and then that new
+  element must be returned.</p>
+
+  <p>もしあれば、<dfn id=dom-table-deletetfoot><code>deleteTFoot()</code></dfn>メソッドは、<code id=the-table-element:the-table-element-19><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-tfoot-element-13><a href=#the-tfoot-element>tfoot</a></code>要素の子を削除しなければならない。</p>
+
+  <p><dfn id=dom-table-tbodies><code>tBodies</code></dfn>属性は、フィルタが<code id=the-table-element:the-table-element-21><a href=#the-table-element>table</a></code>要素の子である<code id=the-table-element:the-tbody-element-5><a href=#the-tbody-element>tbody</a></code>要素のみにマッチする、<code id=the-table-element:the-table-element-20><a href=#the-table-element>table</a></code>ノードでルートとなる<code id=the-table-element:htmlcollection-5><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返さなければならない。</p>
+
+  <p><dfn id=dom-table-createtbody><code>createTBody()</code></dfn>メソッドは、新しい<code id=the-table-element:the-tbody-element-6><a href=#the-tbody-element>tbody</a></code>要素を作成しなければならず、もしあれば、<code id=the-table-element:the-table-element-22><a href=#the-table-element>table</a></code>要素で最後の<code id=the-table-element:the-tbody-element-7><a href=#the-tbody-element>tbody</a></code>要素の子の直後に、または<code id=the-table-element:the-table-element-24><a href=#the-table-element>table</a></code>要素が<code id=the-table-element:the-tbody-element-8><a href=#the-tbody-element>tbody</a></code>要素の子を持たない場合に<code id=the-table-element:the-table-element-23><a href=#the-table-element>table</a></code>要素の最後に挿入し、その後新しい<code id=the-table-element:the-tbody-element-9><a href=#the-tbody-element>tbody</a></code>要素を返さなければならない。</p>
+
+  <p><dfn id=dom-table-rows><code>rows</code></dfn>属性は、フィルタが<code id=the-table-element:the-table-element-26><a href=#the-table-element>table</a></code>要素の<code id=the-table-element:the-tr-element-6><a href=#the-tr-element>tr</a></code>自身の子である、<code id=the-table-element:the-table-element-27><a href=#the-table-element>table</a></code>要素の子、または<code id=the-table-element:the-thead-element-15><a href=#the-thead-element>thead</a></code>要素、<code id=the-table-element:the-tfoot-element-14><a href=#the-tfoot-element>tfoot</a></code>、または<code id=the-table-element:the-tbody-element-10><a href=#the-tbody-element>tbody</a></code>要素の子のいずれかである<code id=the-table-element:the-tr-element-6><a href=#the-tr-element>tr</a></code>要素にのみマッチする、<code id=the-table-element:the-table-element-25><a href=#the-table-element>table</a></code>ノードでルートになる<code id=the-table-element:htmlcollection-6><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返さなければならない。コレクション内の要素は、<a id=the-table-element:tree-order href=infrastructure.html#tree-order>ツリー順</a>で、親が<code id=the-table-element:the-thead-element-16><a href=#the-thead-element>thead</a></code>要素であるこれらの要素が最初に含まれ、その後に親が<code id=the-table-element:the-table-element-28><a href=#the-table-element>table</a></code>または<code id=the-table-element:the-tbody-element-11><a href=#the-tbody-element>tbody</a></code>要素のいずれかであるこれら要素が再度<a id=the-table-element:tree-order-2 href=infrastructure.html#tree-order>ツリー順</a>で続き、依然として<a id=the-table-element:tree-order-3 href=infrastructure.html#tree-order>ツリー順</a>に、親が<code id=the-table-element:the-tfoot-element-15><a href=#the-tfoot-element>tfoot</a></code>要素であるこれらの要素によって最終的に続くように整えられなければならない。</p>
+
+  <p><dfn id=dom-table-insertrow><code>insertRow(<var>index</var>)</code></dfn>メソッドの動作は、tableの状態に依存する。このメソッドが呼び出される場合、メソッドは、テーブルの状態と<var>index</var>引数を記述する条件の次のリストにおける最初の項目で要求されるように動作しなければならない：</p>
+
+  <dl class=switch><dt><var>index</var>が-1未満または<code id=the-table-element:dom-table-rows-3><a href=#dom-table-rows>rows</a></code>コレクション内の要素の数よりも大きい場合：<dd>メソッドは、<code id=the-table-element:indexsizeerror-3><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げなければならない。<dt><code id=the-table-element:dom-table-rows-4><a href=#dom-table-rows>rows</a></code>コレクションがコレクションでゼロ要素を持ち、かつ<code id=the-table-element:the-table-element-29><a href=#the-table-element>table</a></code>がコレクションで<code id=the-table-element:the-tbody-element-12><a href=#the-tbody-element>tbody</a></code>要素を持たない場合：<dd>メソッドは、<code id=the-table-element:the-tbody-element-13><a href=#the-tbody-element>tbody</a></code>要素を作成し、それから<code id=the-table-element:the-tr-element-7><a href=#the-tr-element>tr</a></code>要素を作成し、その後<code id=the-table-element:the-tbody-element-14><a href=#the-tbody-element>tbody</a></code>要素に<code id=the-table-element:the-tr-element-8><a href=#the-tr-element>tr</a></code>要素を追加し、次に<code id=the-table-element:the-table-element-30><a href=#the-table-element>table</a></code>要素に<code id=the-table-element:the-tbody-element-15><a href=#the-tbody-element>tbody</a></code>要素を追加し、最終的に<code id=the-table-element:the-tr-element-9><a href=#the-tr-element>tr</a></code>要素を返さなければならない。<dt><code id=the-table-element:dom-table-rows-5><a href=#dom-table-rows>rows</a></code>コレクションコレクションでゼロ要素を持つ場合：<dd>メソッドは、<code id=the-table-element:the-tr-element-10><a href=#the-tr-element>tr</a></code>要素を作成して、テーブル内の最後の<code id=the-table-element:the-tbody-element-16><a href=#the-tbody-element>tbody</a></code>要素に追加し、<code id=the-table-element:the-tr-element-11><a href=#the-tr-element>tr</a></code>要素を返さなければならない。<dt><var>index</var>が-1または<code id=the-table-element:dom-table-rows-6><a href=#dom-table-rows>rows</a></code>コレクション内の項目数に等しい場合：<dd>メソッドは、<code id=the-table-element:the-tr-element-12><a href=#the-tr-element>tr</a></code>要素を作成して、<code id=the-table-element:dom-table-rows-7><a href=#dom-table-rows>rows</a></code>コレクションにおける最後の<code id=the-table-element:the-tr-element-13><a href=#the-tr-element>tr</a></code>要素の親にその要素を追加しなければならない。その後、新たに作成された<code id=the-table-element:the-tr-element-14><a href=#the-tr-element>tr</a></code>要素を返さなければならない。<dt>そうでなければ：<dd>メソッドは、<code id=the-table-element:the-tr-element-15><a href=#the-tr-element>tr</a></code>要素を作成して、同じ親で、<code id=the-table-element:dom-table-rows-8><a href=#dom-table-rows>rows</a></code>コレクション内の<var>index</var>番目の<code id=the-table-element:the-tr-element-16><a href=#the-tr-element>tr</a></code>要素の直前に挿入し、最後に新しく作成された<code id=the-table-element:the-tr-element-17><a href=#the-tr-element>tr</a></code>要素を返さなければならない。</dl>
+
+  <p><dfn id=dom-table-deleterow><code>deleteRow(<var>index</var>)</code></dfn>メソッドが呼び出される場合、ユーザーエージェントは次の手順を実行しなければならない：</p>
+
+  <ol><li><p><var>index</var>が-1に等しい場合、<var>index</var>は<code id=the-table-element:dom-table-rows-9><a href=#dom-table-rows>rows</a></code>コレクション内の項目数から1を引いた数に設定されなければならない。</li><li><p>さて、<var>index</var>が0未満、または<code id=the-table-element:dom-table-rows-10><a href=#dom-table-rows>rows</a></code>コレクション内の要素の数以上である場合、メソッドは<code id=the-table-element:indexsizeerror-4><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げなければならず、この手順は中止されなければならない。</li><li><p>そうでなければ、メソッドは、親からの<code id=the-table-element:dom-table-rows-11><a href=#dom-table-rows>rows</a></code>コレクションにおける<var>index</var>番目の要素を削除しなければならない。</p>
+
+  </li></ol>
+
+  
+
+
+  <div class=example>
+
+   <p>これは、数独パズルをマークアップするために使用されているテーブルの例である。そのようなテーブルで必要のない、ヘッダーの欠如を観察する。</p>
+
+   <pre>&lt;section&gt;
+ &lt;style scoped&gt;
+  table { border-collapse: collapse; border: solid thick; }
+  colgroup, tbody { border: solid medium; }
+  td { border: solid thin; height: 1.4em; width: 1.4em; text-align: center; padding: 0; }
+ &lt;/style&gt;
+ &lt;h1&gt;Today's Sudoku&lt;/h1&gt;
+ &lt;table&gt;
+  &lt;colgroup&gt;&lt;col&gt;&lt;col&gt;&lt;col&gt;
+  &lt;colgroup&gt;&lt;col&gt;&lt;col&gt;&lt;col&gt;
+  &lt;colgroup&gt;&lt;col&gt;&lt;col&gt;&lt;col&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt; &lt;td&gt; 1 &lt;td&gt;   &lt;td&gt; 3 &lt;td&gt; 6 &lt;td&gt;   &lt;td&gt; 4 &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt; 9
+   &lt;tr&gt; &lt;td&gt;   &lt;td&gt; 2 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 1 &lt;td&gt;
+   &lt;tr&gt; &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 6
+  &lt;tbody&gt;
+   &lt;tr&gt; &lt;td&gt; 2 &lt;td&gt;   &lt;td&gt; 4 &lt;td&gt;   &lt;td&gt; 3 &lt;td&gt;   &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt; 8
+   &lt;tr&gt; &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;
+   &lt;tr&gt; &lt;td&gt; 5 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 1
+  &lt;tbody&gt;
+   &lt;tr&gt; &lt;td&gt; 6 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 5 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 2
+   &lt;tr&gt; &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;
+   &lt;tr&gt; &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 8 &lt;td&gt;   &lt;td&gt; 2 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 5
+ &lt;/table&gt;
+&lt;/section&gt;</pre>
+
+  </div>
+
+
+
+
+  <h5 id=table-descriptions-techniques>4.9.1.1 表を記述するためのテクニック</h5>
+
+  <p id=table-descriptions>1行目のヘッダーと1列目のヘッダーをもつセルの1つ以上のグリッドからなるテーブルに対して、および一般に読者がコンテンツを理解する難しさがあるかもしれない場所で任意のテーブルに対して、著者はテーブルを導入する説明情報を含めるべきである。この情報はすべてのユーザーに対して有用であるが、たとえばスクリーンリーダーのユーザーなど、テーブルを見ることができないユーザーに対して特に有用である。</p>
+
+  <p>そのような説明情報は、テーブルの目的を紹介し、その基本的なセル構造を要約し、傾向やパターンを強調し、および一般にどのようにテーブルを使用するかをユーザーに教えるべきである。</p>
+
+  
+
+  <p>たとえば、次の表において：</p>
+
+  <table><caption>Characteristics with positive and negative sides</caption><thead><tr><th id=n>  Negative
+     
+     </th><th>  Characteristic
+     
+     </th><th>  Positive
+   
+   <tbody></th></tr><tr><td headers="n r1">  Sad
+     
+     <th id=r1>  Mood
+     
+     <td>  Happy
+    
+    </td></th></td></tr><tr><td headers="n r2">  Failing
+     
+     <th id=r2>  Grade
+     
+     <td>  Passing
+  
+  </td></th></td></tr></table>
+
+  <p>"左側の列の否定的な側面および右側の列に肯定的な側面とともに、特性は2列目に示されている"のような何かを、表がレイアウトする方法を示す説明が恩恵を受けるかもしれない。</p>
+
+  <p>この情報を含めるためのさまざまな方法がある：</p>
+
+  <dl><dt>文において、テーブルを囲んで<dd>
+    <div class=example><pre><strong>&lt;p&gt;In the following table, characteristics are given in the second
+column, with the negative side in the left column and the positive
+side in the right column.&lt;/p&gt;</strong>
+&lt;table&gt;
+ &lt;caption&gt;Characteristics with positive and negative sides&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th id="n"&gt; Negative
+   &lt;th&gt; Characteristic
+   &lt;th&gt; Positive
+ &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td headers="n r1"&gt; Sad
+   &lt;th id="r1"&gt; Mood
+   &lt;td&gt; Happy
+  &lt;tr&gt;
+   &lt;td headers="n r2"&gt; Failing
+   &lt;th id="r2"&gt; Grade
+   &lt;td&gt; Passing
+&lt;/table&gt;</pre></div>
+   <dt>テーブルの<code id=table-descriptions-techniques:the-caption-element><a href=#the-caption-element>caption</a></code>で<dd>
+    <div class=example><pre>&lt;table&gt;
+<strong> &lt;caption&gt;
+  &lt;strong&gt;Characteristics with positive and negative sides.&lt;/strong&gt;
+  &lt;p&gt;Characteristics are given in the second column, with the
+  negative side in the left column and the positive side in the right
+  column.&lt;/p&gt;</strong>
+ &lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th id="n"&gt; Negative
+   &lt;th&gt; Characteristic
+   &lt;th&gt; Positive
+ &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td headers="n r1"&gt; Sad
+   &lt;th id="r1"&gt; Mood
+   &lt;td&gt; Happy
+  &lt;tr&gt;
+   &lt;td headers="n r2"&gt; Failing
+   &lt;th id="r2"&gt; Grade
+   &lt;td&gt; Passing
+&lt;/table&gt;</pre></div>
+   <dt>テーブルの<code id=table-descriptions-techniques:the-caption-element-2><a href=#the-caption-element>caption</a></code>、<code id=table-descriptions-techniques:the-details-element><a href=forms.html#the-details-element>details</a></code>要素で<dd>
+    <div class=example><pre>&lt;table&gt;
+ &lt;caption&gt;
+  &lt;strong&gt;Characteristics with positive and negative sides.&lt;/strong&gt;
+<strong>  &lt;details&gt;
+   &lt;summary&gt;Help&lt;/summary&gt;
+   &lt;p&gt;Characteristics are given in the second column, with the
+   negative side in the left column and the positive side in the right
+   column.&lt;/p&gt;
+  &lt;/details&gt;</strong>
+ &lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th id="n"&gt; Negative
+   &lt;th&gt; Characteristic
+   &lt;th&gt; Positive
+ &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td headers="n r1"&gt; Sad
+   &lt;th id="r1"&gt; Mood
+   &lt;td&gt; Happy
+  &lt;tr&gt;
+   &lt;td headers="n r2"&gt; Failing
+   &lt;th id="r2"&gt; Grade
+   &lt;td&gt; Passing
+&lt;/table&gt;</pre></div>
+   <dt>テーブルの横に、同じ<code id=table-descriptions-techniques:the-figure-element><a href=semantics.html#the-figure-element>figure</a></code>で<dd>
+    <div class=example><pre>&lt;figure&gt;
+ &lt;figcaption&gt;Characteristics with positive and negative sides&lt;/figcaption&gt;
+<strong> &lt;p&gt;Characteristics are given in the second column, with the
+ negative side in the left column and the positive side in the right
+ column.&lt;/p&gt;</strong>
+ &lt;table&gt;
+  &lt;thead&gt;
+   &lt;tr&gt;
+    &lt;th id="n"&gt; Negative
+    &lt;th&gt; Characteristic
+    &lt;th&gt; Positive
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td headers="n r1"&gt; Sad
+    &lt;th id="r1"&gt; Mood
+    &lt;td&gt; Happy
+   &lt;tr&gt;
+    &lt;td headers="n r2"&gt; Failing
+    &lt;th id="r2"&gt; Grade
+    &lt;td&gt; Passing
+ &lt;/table&gt;
+&lt;/figure&gt;</pre></div>
+   <dt>テーブルの横に、<code id=table-descriptions-techniques:the-figure-element-2><a href=semantics.html#the-figure-element>figure</a></code>の<code id=table-descriptions-techniques:the-figcaption-element><a href=semantics.html#the-figcaption-element>figcaption</a></code>で<dd>
+    <div class=example><pre>&lt;figure&gt;
+ &lt;figcaption&gt;
+  &lt;strong&gt;Characteristics with positive and negative sides&lt;/strong&gt;
+<strong>  &lt;p&gt;Characteristics are given in the second column, with the
+  negative side in the left column and the positive side in the right
+  column.&lt;/p&gt;</strong>
+ &lt;/figcaption&gt;
+ &lt;table&gt;
+  &lt;thead&gt;
+   &lt;tr&gt;
+    &lt;th id="n"&gt; Negative
+    &lt;th&gt; Characteristic
+    &lt;th&gt; Positive
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td headers="n r1"&gt; Sad
+    &lt;th id="r1"&gt; Mood
+    &lt;td&gt; Happy
+   &lt;tr&gt;
+    &lt;td headers="n r2"&gt; Failing
+    &lt;th id="r2"&gt; Grade
+    &lt;td&gt; Passing
+ &lt;/table&gt;
+&lt;/figure&gt;</pre></div>
+   </dl>
+
+  <p>必要に応じて著者はまた、他の技術または上記の技術の組み合わせを使用してもよい。</p>
+
+  <p>もちろん、最良の選択肢は、テーブルがレイアウトされる理由を説明する記述を書くことよりもむしろ、一切の説明を必要としないようにテーブルを調整することである。</p>
+
+  <div class=example>
+
+   <p>上記の例で使用されるテーブルの場合、ヘッダーが上と左側に来るように、テーブルの単純な再配置は、<code id=table-descriptions-techniques:attr-tdth-headers><a href=#attr-tdth-headers>headers</a></code>属性の使用の要求を削除するだけでなく、説明の要求を削除する。</p>
+
+   <pre>&lt;table&gt;
+ &lt;caption&gt;Characteristics with positive and negative sides&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th&gt; Characteristic
+   &lt;th&gt; Negative
+   &lt;th&gt; Positive
+ &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;th&gt; Mood
+   &lt;td&gt; Sad
+   &lt;td&gt; Happy
+  &lt;tr&gt;
+   &lt;th&gt; Grade
+   &lt;td&gt; Failing
+   &lt;td&gt; Passing
+&lt;/table&gt;</pre>
+
+  </div>
+
+
+  <h5 id=table-layout-techniques>4.9.1.2 テーブルデザインのためのテクニック</h5>
+
+  <p>良いテーブルデザインは、テーブルがより読みやすく、使いやすくするための鍵となる。</p>
+
+  <p>視覚メディアにおいて、列と行の境界を提供して行の背景を交互にすることは、複雑なテーブルをより読みやすくするために非常に効果的である。</p>
+
+  <p>大量のコンテンツを持つテーブルに対して、特に、ユーザーエージェントがボーダーをレンダリングしない状況において等幅フォントを使用することは、ユーザーにパターンに気づくのを助けることができる。（残念ながら、歴史的な理由により、テーブルのボーダーをレンダリングしないことは、共通のデフォルトである。）</p>
+
+  <p>音声メディアにおいて、テーブルセルは、ソース順でテーブルのコンテンツ全体をシリアライズするよりも、セルのコンテンツを読み出す前に対応するヘッダーを報告することによって、およびグリッドの流儀でテーブルをユーザーにナビゲートできるようにすることで区別することができる。</p>
+
+  <p>著者は、これらの効果を達成するためにCSSを使用するよう推奨される。</p>
+
+  
+
+  <p>ユーザーエージェントは、ページがCSSを使用せずかつテーブルがレイアウトテーブルに分類されないときはいつでも、このテクニックを使用してテーブルをレンダリングすることが勧められる。</p>
+
+  
+
+
+
+
+  <h4 id=the-caption-element>4.9.2 <dfn><code>caption</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-caption-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-caption-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-caption-element:the-table-element><a href=#the-table-element>table</a></code>要素の最初の子として。<dt><a href=dom.html#concept-element-content-model id=the-caption-element:concept-element-content-model>コンテンツモデル</a>：<dd><a id=the-caption-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>、ただし<code id=the-caption-element:the-table-element-2><a href=#the-table-element>table</a></code>要素の子孫を除く。<dt><a href=dom.html#concept-element-tag-omission id=the-caption-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><code id=the-caption-element:the-caption-element-2><a href=#the-caption-element>caption</a></code>要素の直後が<a id=the-caption-element:space-character href=infrastructure.html#space-character>空白文字</a>または<a href=syntax.html#syntax-comments id=the-caption-element:syntax-comments>コメント</a>でない場合、<code id=the-caption-element:the-caption-element><a href=#the-caption-element>caption</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-caption-element:syntax-end-tag>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-caption-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-caption-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-caption-element:concept-element-dom>DOMインターフェース</a>：<dd>
+<pre class=idl>interface <dfn id=htmltablecaptionelement>HTMLTableCaptionElement</dfn> : <a id=the-caption-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {};</pre>
+   </dl>
+
+  <p>要素が親を持ち、それが<code id=the-caption-element:the-table-element-4><a href=#the-table-element>table</a></code>要素である場合は<code id=the-caption-element:the-caption-element-3><a href=#the-caption-element>caption</a></code>要素は、その親である<code id=the-caption-element:the-table-element-3><a href=#the-table-element>table</a></code>のタイトルを<a id=the-caption-element:represents href=dom.html#represents>表す</a>。</p>
+
+  
+
+  <p><code id=the-caption-element:the-caption-element-4><a href=#the-caption-element>caption</a></code>要素は、<a href=#table-model id=the-caption-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  
+
+  <p><code id=the-caption-element:the-table-element-5><a href=#the-table-element>table</a></code>要素が<code id=the-caption-element:the-figcaption-element><a href=semantics.html#the-figcaption-element>figcaption</a></code>以外の<code id=the-caption-element:the-figure-element><a href=semantics.html#the-figure-element>figure</a></code>要素でコンテンツのみである場合、<code id=the-caption-element:the-caption-element-5><a href=#the-caption-element>caption</a></code>要素は<code id=the-caption-element:the-figcaption-element-2><a href=semantics.html#the-figcaption-element>figcaption</a></code>を選んで省略されるべきである。</p>
+
+  <p>理解するのがより容易になるような、キャプションはテーブルに対するコンテキストを導入できる。</p>
+
+  <div class=example>
+
+   <p>たとえば、次のテーブルを考えてみる：</p>
+
+   <table class=dice-example><tr><th>   </th><th>  1  </th><th>  2  </th><th>  3  </th><th>  4  </th><th>  5  </th><th>  6
+    
+    </th></tr><tr><th>  1  <td>  2  </td><td>  3  </td><td>  4  </td><td>  5  </td><td>  6  </td><td>  7
+    
+    </td></th></tr><tr><th>  2  <td>  3  </td><td>  4  </td><td>  5  </td><td>  6  </td><td>  7  </td><td>  8
+    
+    </td></th></tr><tr><th>  3  <td>  4  </td><td>  5  </td><td>  6  </td><td>  7  </td><td>  8  </td><td>  9
+    
+    </td></th></tr><tr><th>  4  <td>  5  </td><td>  6  </td><td>  7  </td><td>  8  </td><td>  9  </td><td>  10
+    
+    </td></th></tr><tr><th>  5  <td>  6  </td><td>  7  </td><td>  8  </td><td>  9  </td><td>  10  </td><td>  11
+    
+    </td></th></tr><tr><th>  6  <td>  7  </td><td>  8  </td><td>  9  </td><td>  10  </td><td>  11  </td><td>  12
+   
+   </td></th></tr></table>
+
+   <p>理論的に考えれば、このテーブルは明確でない。しかし、キャプションは（主文で参照のために）表の数字を与え、その使用方法を説明することは、より理にかなう：</p>
+
+   <pre>&lt;caption&gt;
+&lt;p&gt;Table 1.
+&lt;p&gt;This table shows the total score obtained from rolling two
+six-sided dice. The first row represents the value of the first die,
+the first column the value of the second die. The total is given in
+the cell that corresponds to the values of the two dice.
+&lt;/caption&gt;</pre>
+
+   <p>以下は、より多くのコンテキストをユーザーに提供する：</p>
+
+   <table class=dice-example><caption>
+     <p>Table 1.
+     
+     <p>This table shows the total score obtained from rolling two
+     six-sided dice. The first row represents the value of the first
+     die, the first column the value of the second die. The total is
+     given in the cell that corresponds to the values of the two dice.
+    
+    </caption><tr><th>   </th><th>  1  </th><th>  2  </th><th>  3  </th><th>  4  </th><th>  5  </th><th>  6
+    
+    </th></tr><tr><th>  1  <td>  2  </td><td>  3  </td><td>  4  </td><td>  5  </td><td>  6  </td><td>  7
+    
+    </td></th></tr><tr><th>  2  <td>  3  </td><td>  4  </td><td>  5  </td><td>  6  </td><td>  7  </td><td>  8
+    
+    </td></th></tr><tr><th>  3  <td>  4  </td><td>  5  </td><td>  6  </td><td>  7  </td><td>  8  </td><td>  9
+    
+    </td></th></tr><tr><th>  4  <td>  5  </td><td>  6  </td><td>  7  </td><td>  8  </td><td>  9  </td><td>  10
+    
+    </td></th></tr><tr><th>  5  <td>  6  </td><td>  7  </td><td>  8  </td><td>  9  </td><td>  10  </td><td>  11
+    
+    </td></th></tr><tr><th>  6  <td>  7  </td><td>  8  </td><td>  9  </td><td>  10  </td><td>  11  </td><td>  12
+   
+   </td></th></tr></table>
+
+  </div>
+
+
+
+
+  <h4 id=the-colgroup-element>4.9.3 <dfn><code>colgroup</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-colgroup-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-colgroup-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-colgroup-element:the-table-element><a href=#the-table-element>table</a></code>要素の子として、任意の<code id=the-colgroup-element:the-caption-element><a href=#the-caption-element>caption</a></code>要素の後かつ任意の<code id=the-colgroup-element:the-thead-element><a href=#the-thead-element>thead</a></code>、<code id=the-colgroup-element:the-tbody-element><a href=#the-tbody-element>tbody</a></code>、<code id=the-colgroup-element:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code>、および<code id=the-colgroup-element:the-tr-element><a href=#the-tr-element>tr</a></code>要素の前。<dt><a href=dom.html#concept-element-content-model id=the-colgroup-element:concept-element-content-model>コンテンツモデル</a>：<dd><code id=the-colgroup-element:attr-colgroup-span><a href=#attr-colgroup-span>span</a></code>属性が存在する場合：<a href=dom.html#concept-content-nothing id=the-colgroup-element:concept-content-nothing>Nothing</a>。<dd><code id=the-colgroup-element:attr-colgroup-span-2><a href=#attr-colgroup-span>span</a></code>属性が存在しない場合：0個以上の<code id=the-colgroup-element:the-col-element><a href=#the-col-element>col</a></code>要素および<code id=the-colgroup-element:the-template-element><a href=scripting.html#the-template-element>template</a></code>要素。<dt><a href=dom.html#concept-element-tag-omission id=the-colgroup-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><code id=the-colgroup-element:the-colgroup-element-2><a href=#the-colgroup-element>colgroup</a></code>要素内の最初の文が<code id=the-colgroup-element:the-col-element-2><a href=#the-col-element>col</a></code>要素である場合、かつ<a href=syntax.html#syntax-end-tag id=the-colgroup-element:syntax-end-tag>終了タグ</a>が省略されている別の<code id=the-colgroup-element:the-colgroup-element-3><a href=#the-colgroup-element>colgroup</a></code>要素の直前に存在しない場合、<code id=the-colgroup-element:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>要素の<a href=syntax.html#syntax-start-tag id=the-colgroup-element:syntax-start-tag>開始タグ</a>は省略することができる。（要素が空である場合、省略できない。）<dd><code id=the-colgroup-element:the-colgroup-element-5><a href=#the-colgroup-element>colgroup</a></code>要素の直前が<a id=the-colgroup-element:space-character href=infrastructure.html#space-character>空白文字</a>または<a href=syntax.html#syntax-comments id=the-colgroup-element:syntax-comments>コメント</a>でない場合、<code id=the-colgroup-element:the-colgroup-element-4><a href=#the-colgroup-element>colgroup</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-colgroup-element:syntax-end-tag-2>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-colgroup-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-colgroup-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-colgroup-element:attr-colgroup-span-3><a href=#attr-colgroup-span>span</a></code> - 要素がまたがる列の数<dt><a href=dom.html#concept-element-dom id=the-colgroup-element:concept-element-dom>DOMインターフェース</a>：<dd>
+<pre class=idl>interface <dfn id=htmltablecolelement>HTMLTableColElement</dfn> : <a id=the-colgroup-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute unsigned long <a href=#dom-colgroup-span id=the-colgroup-element:dom-colgroup-span>span</a>;
+};</pre>
+   </dl>
+
+  <p>この要素が<code id=the-colgroup-element:the-table-element-3><a href=#the-table-element>table</a></code>要素の親を持つ場合、<code id=the-colgroup-element:the-colgroup-element-6><a href=#the-colgroup-element>colgroup</a></code>要素は、親である<code id=the-colgroup-element:the-table-element-2><a href=#the-table-element>table</a></code>で1つ以上の<a href=#concept-column id=the-colgroup-element:concept-column>列</a>の<a href=#concept-column-group id=the-colgroup-element:concept-column-group>グループ</a>を<a id=the-colgroup-element:represents href=dom.html#represents>表す</a>。</p>
+
+  <p><code id=the-colgroup-element:the-colgroup-element-7><a href=#the-colgroup-element>colgroup</a></code>要素が一切<code id=the-colgroup-element:the-col-element-3><a href=#the-col-element>col</a></code>要素を含まない場合、要素は、値が0より大きい<a id=the-colgroup-element:valid-non-negative-integer href=infrastructure.html#valid-non-negative-integer>妥当な負でないの整数</a>でなければならない、指定された<dfn id=attr-colgroup-span><code>span</code></dfn>コンテンツ属性を持ってもよい。</p>
+
+  
+
+  <p><code id=the-colgroup-element:the-colgroup-element-8><a href=#the-colgroup-element>colgroup</a></code>要素および要素の<code id=the-colgroup-element:attr-colgroup-span-4><a href=#attr-colgroup-span>span</a></code>は、<a href=#table-model id=the-colgroup-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  <p><dfn id=dom-colgroup-span><code>span</code></dfn>IDL属性は、同じ名前のコンテンツ属性を<a id=the-colgroup-element:reflect href=infrastructure.html#reflect>反映</a>しなければならない。値は<a id=the-colgroup-element:limited-to-only-non-negative-numbers-greater-than-zero href=infrastructure.html#limited-to-only-non-negative-numbers-greater-than-zero>0よりも大きい非負整数に制限</a>されなければならない。</p>
+
+  
+
+
+  <h4 id=the-col-element>4.9.4 <dfn><code>col</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-col-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-col-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-col-element:attr-col-span><a href=#attr-col-span>span</a></code>属性を持たない<code id=the-col-element:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>要素の子として。<dt><a href=dom.html#concept-element-content-model id=the-col-element:concept-element-content-model>コンテンツモデル</a>：<dd><a href=dom.html#concept-content-nothing id=the-col-element:concept-content-nothing>Nothing</a>。<dt><a href=dom.html#concept-element-tag-omission id=the-col-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><a href=syntax.html#syntax-end-tag id=the-col-element:syntax-end-tag>終了タグ</a>なし。<dt><a href=dom.html#concept-element-attributes id=the-col-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-col-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-col-element:attr-col-span-2><a href=#attr-col-span>span</a></code> - 要素がまたがる列の数<dt><a href=dom.html#concept-element-dom id=the-col-element:concept-element-dom>DOMインターフェース</a>：<dd>
+    <p><code id=the-col-element:htmltablecolelement><a href=#htmltablecolelement>HTMLTableColElement</a></code>、<code id=the-col-element:the-colgroup-element-2><a href=#the-colgroup-element>colgroup</a></code>要素の場合と同様。このインターフェースは、1つのメンバー、<code id=the-col-element:dom-col-span><a href=#dom-col-span>span</a></code>を定義する。</p>
+   </dl>
+
+  <p><code id=the-col-element:the-col-element><a href=#the-col-element>col</a></code>要素が親を持ち、それが<code id=the-col-element:the-table-element><a href=#the-table-element>table</a></code>要素が親である<code id=the-col-element:the-colgroup-element-3><a href=#the-colgroup-element>colgroup</a></code>要素自体である場合は、<code id=the-col-element:the-col-element-2><a href=#the-col-element>col</a></code>要素は、その<code id=the-col-element:the-colgroup-element-4><a href=#the-colgroup-element>colgroup</a></code>によって表される<a href=#concept-column-group id=the-col-element:concept-column-group>列グループ</a>内の1つ以上の<a href=#concept-column id=the-col-element:concept-column>列</a>を<a id=the-col-element:represents href=dom.html#represents>表す</a>。</p>
+
+  <p>要素は、値が0より大きい<a id=the-col-element:valid-non-negative-integer href=infrastructure.html#valid-non-negative-integer>妥当な負でないの整数</a>でなければならない、指定された<dfn id=attr-col-span><code>span</code></dfn>コンテンツ属性を持ってもよい。</p>
+
+  
+
+  <p><code id=the-col-element:the-col-element-3><a href=#the-col-element>col</a></code>要素および要素の<code id=the-col-element:attr-col-span-3><a href=#attr-col-span>span</a></code>は、<a href=#table-model id=the-col-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  <p><dfn id=dom-col-span><code>span</code></dfn>IDL属性は、同じ名前のコンテンツ属性を<a id=the-col-element:reflect href=infrastructure.html#reflect>反映</a>しなければならない。値は<a id=the-col-element:limited-to-only-non-negative-numbers-greater-than-zero href=infrastructure.html#limited-to-only-non-negative-numbers-greater-than-zero>0よりも大きい非負整数に制限</a>されなければならない。</p>
+
+  
+
+
+  <h4 id=the-tbody-element>4.9.5 <dfn><code>tbody</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-tbody-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-tbody-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-tbody-element:the-table-element><a href=#the-table-element>table</a></code>要素の子として、任意の<code id=the-tbody-element:the-caption-element><a href=#the-caption-element>caption</a></code>、<code id=the-tbody-element:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>、および<code id=the-tbody-element:the-thead-element><a href=#the-thead-element>thead</a></code>要素の後、ただし<code id=the-tbody-element:the-table-element-2><a href=#the-table-element>table</a></code>要素の子である<code id=the-tbody-element:the-tr-element><a href=#the-tr-element>tr</a></code>が一切存在しない場合を除く。<dt><a href=dom.html#concept-element-content-model id=the-tbody-element:concept-element-content-model>コンテンツモデル</a>：<dd>0個以上の<code id=the-tbody-element:the-tr-element-2><a href=#the-tr-element>tr</a></code>要素および<a href=dom.html#script-supporting-elements-2 id=the-tbody-element:script-supporting-elements-2>スクリプトサポート</a>要素。<dt><a href=dom.html#concept-element-tag-omission id=the-tbody-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><code id=the-tbody-element:the-tbody-element-2><a href=#the-tbody-element>tbody</a></code>要素内の最初の文が<code id=the-tbody-element:the-tr-element-3><a href=#the-tr-element>tr</a></code>要素である場合、かつこの要素が<a href=syntax.html#syntax-end-tag id=the-tbody-element:syntax-end-tag>終了タグ</a>が省略されている<code id=the-tbody-element:the-tbody-element-3><a href=#the-tbody-element>tbody</a></code>、<code id=the-tbody-element:the-thead-element-2><a href=#the-thead-element>thead</a></code>、または<code id=the-tbody-element:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code>要素の直前に存在しない場合、<code id=the-tbody-element:the-tbody-element><a href=#the-tbody-element>tbody</a></code>要素の<a href=syntax.html#syntax-start-tag id=the-tbody-element:syntax-start-tag>開始タグ</a>は省略することができる。（要素が空である場合、省略できない。）<dd><code id=the-tbody-element:the-tbody-element-5><a href=#the-tbody-element>tbody</a></code>要素が別の<code id=the-tbody-element:the-tbody-element-6><a href=#the-tbody-element>tbody</a></code>または<code id=the-tbody-element:the-tfoot-element-2><a href=#the-tfoot-element>tfoot</a></code>要素の直前に存在する場合、または親要素に追加のコンテンツが存在しない場合、<code id=the-tbody-element:the-tbody-element-4><a href=#the-tbody-element>tbody</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-tbody-element:syntax-end-tag-2>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-tbody-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-tbody-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-tbody-element:concept-element-dom>DOMインターフェース</a>：<dd>
+    <pre class=idl>interface <dfn id=htmltablesectionelement>HTMLTableSectionElement</dfn> : <a id=the-tbody-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  [SameObject] readonly attribute <a id=the-tbody-element:htmlcollection href=infrastructure.html#htmlcollection>HTMLCollection</a> <a href=#dom-tbody-rows id=the-tbody-element:dom-tbody-rows>rows</a>;
+  <a id=the-tbody-element:htmlelement-2 href=dom.html#htmlelement>HTMLElement</a> <a href=#dom-tbody-insertrow id=the-tbody-element:dom-tbody-insertrow>insertRow</a>(optional long index = -1);
+  void <a href=#dom-tbody-deleterow id=the-tbody-element:dom-tbody-deleterow>deleteRow</a>(long index);
+};</pre>
+    <p><code id=the-tbody-element:htmltablesectionelement><a href=#htmltablesectionelement>HTMLTableSectionElement</a></code>インターフェースは、<code id=the-tbody-element:the-thead-element-3><a href=#the-thead-element>thead</a></code>要素と<code id=the-tbody-element:the-tfoot-element-3><a href=#the-tfoot-element>tfoot</a></code>要素にも使用される。</p>
+   </dl>
+
+  <p><code id=the-tbody-element:the-tbody-element-8><a href=#the-tbody-element>tbody</a></code>要素が<code id=the-tbody-element:the-table-element-4><a href=#the-table-element>table</a></code>である親を持つ場合、<code id=the-tbody-element:the-tbody-element-7><a href=#the-tbody-element>tbody</a></code>要素は、親<code id=the-tbody-element:the-table-element-3><a href=#the-table-element>table</a></code>要素に対しデータの本体を構成する<a href=#concept-row id=the-tbody-element:concept-row>行</a>の<a href=#concept-row-group id=the-tbody-element:concept-row-group>ブロック</a>を<a id=the-tbody-element:represents href=dom.html#represents>表す</a>。</p>
+
+  
+
+  <p><code id=the-tbody-element:the-tbody-element-9><a href=#the-tbody-element>tbody</a></code>要素は、<a href=#table-model id=the-tbody-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  
+
+
+  <dl class=domintro><dt><var>tbody</var> . <code id=the-tbody-element:dom-tbody-rows-2><a href=#dom-tbody-rows>rows</a></code><dd>
+
+    <p>テーブルセクションの<code id=the-tbody-element:the-tr-element-4><a href=#the-tr-element>tr</a></code>要素の<code id=the-tbody-element:htmlcollection-2><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返す。</p>
+
+   <dt><var>tr</var> = <var>tbody</var> . <code id=the-tbody-element:dom-tbody-insertrow-2><a href=#dom-tbody-insertrow>insertRow</a></code>( [ <var>index</var> ] )<dd>
+
+    <p><code id=the-tbody-element:the-tr-element-5><a href=#the-tr-element>tr</a></code>要素を作成し、引数で指定された場所でテーブルセクションにこれを挿入し、<code id=the-tbody-element:the-tr-element-6><a href=#the-tr-element>tr</a></code>を返す。</p>
+
+    <p>位置は、テーブルの行を基準にする。引数が省略されている場合、デフォルトでインデックス-1は、テーブルセクションの末尾に挿入することと同じである。</p>
+
+    <p>指定された位置が-1未満または行数より大きい場合、<code id=the-tbody-element:indexsizeerror><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げる。</p>
+
+   <dt><var>tbody</var> . <code id=the-tbody-element:dom-tbody-deleterow-2><a href=#dom-tbody-deleterow>deleteRow</a></code>(<var>index</var>)<dd>
+
+    <p>テーブルセクションで指定された位置とともに<code id=the-tbody-element:the-tr-element-7><a href=#the-tr-element>tr</a></code>要素を削除する。</p>
+
+    <p>位置は、テーブルの行を基準にする。インデックス-1は、テーブルの最後の行を削除するのと同じである。</p>
+
+    <p>指定された位置が-1未満または最終行のインデックスよりも大きい、または行が存在しない場合、<code id=the-tbody-element:indexsizeerror-2><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げる。</p>
+
+   </dl>
+
+  
+
+  <p><dfn id=dom-tbody-rows><code>rows</code></dfn>要素は、フィルタが要素の子である<code id=the-tbody-element:the-tr-element-8><a href=#the-tr-element>tr</a></code>要素にのみマッチする、要素でルートになる<code id=the-tbody-element:htmlcollection-3><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返さなければならない。</p>
+
+  <p>要素<var>table section</var>に呼び出された場合、<dfn id=dom-tbody-insertrow><code>insertRow(<var>index</var>)</code></dfn>メソッドは、次のように機能しなければならない：</p>
+
+  <p><var>index</var>が-1未満または<code id=the-tbody-element:dom-tbody-rows-3><a href=#dom-tbody-rows>rows</a></code>コレクション内の要素の数よりも大きい場合、メソッドは<code id=the-tbody-element:indexsizeerror-3><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げなければならない。</p>
+
+  <p><var>index</var>が-1または<code id=the-tbody-element:dom-tbody-rows-4><a href=#dom-tbody-rows>rows</a></code>コレクション内の項目の数に等しい場合、メソッドは<code id=the-tbody-element:the-tr-element-9><a href=#the-tr-element>tr</a></code>要素を作成する要素<var>table section</var>に追加し、新しく作成された<code id=the-tbody-element:the-tr-element-10><a href=#the-tr-element>tr</a></code>要素を返さなければならない。</p>
+
+  <p>そうでなければ、メソッドは<code id=the-tbody-element:the-tr-element-11><a href=#the-tr-element>tr</a></code>要素を作成し、<code id=the-tbody-element:dom-tbody-rows-5><a href=#dom-tbody-rows>rows</a></code>コレクションの<var>index</var>番目の<code id=the-tbody-element:the-tr-element-12><a href=#the-tr-element>tr</a></code>要素の直前に、<var>table section</var>要素の子として挿入し、新たに作成された<code id=the-tbody-element:the-tr-element-13><a href=#the-tr-element>tr</a></code>要素を最終的に返さなければならない。</p>
+
+  <p>The <dfn id=dom-tbody-deleterow><code>deleteRow(<var>index</var>)</code></dfn> method
+  must, when invoked, act as follows:
+
+  
+
+  <p><var>index</var>が-1未満または<code id=the-tbody-element:dom-tbody-rows-6><a href=#dom-tbody-rows>rows</a></code>コレクション内の要素の数よりも大きい場合、メソッドは<code id=the-tbody-element:indexsizeerror-4><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げなければならない。</p>
+
+  <p>If <var>index</var> is −1, remove the last element in the <code id=the-tbody-element:dom-tbody-rows-7><a href=#dom-tbody-rows>rows</a></code> collection from its parent.</p>
+
+  <p>Otherwise, remove the <var>index</var>th element in the <code id=the-tbody-element:dom-tbody-rows-8><a href=#dom-tbody-rows>rows</a></code> collection from its parent.</p>
+
+  
+
+
+
+  <h4 id=the-thead-element>4.9.6 <dfn><code>thead</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-thead-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-thead-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-thead-element:the-table-element><a href=#the-table-element>table</a></code>要素の子として、任意の<code id=the-thead-element:the-caption-element><a href=#the-caption-element>caption</a></code>および<code id=the-thead-element:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>要素の前、および任意の<code id=the-thead-element:the-tbody-element><a href=#the-tbody-element>tbody</a></code>、<code id=the-thead-element:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code>、および<code id=the-thead-element:the-tr-element><a href=#the-tr-element>tr</a></code>要素の後、ただし<code id=the-thead-element:the-table-element-2><a href=#the-table-element>table</a></code>の子である<code id=the-thead-element:the-thead-element><a href=#the-thead-element>thead</a></code>要素以外である場合のみを除く。<dt><a href=dom.html#concept-element-content-model id=the-thead-element:concept-element-content-model>コンテンツモデル</a>：<dd>0個以上の<code id=the-thead-element:the-tr-element-2><a href=#the-tr-element>tr</a></code>要素および<a href=dom.html#script-supporting-elements-2 id=the-thead-element:script-supporting-elements-2>スクリプトサポート</a>要素。<dt><a href=dom.html#concept-element-tag-omission id=the-thead-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><code id=the-thead-element:the-thead-element-3><a href=#the-thead-element>thead</a></code>要素が<code id=the-thead-element:the-tbody-element-2><a href=#the-tbody-element>tbody</a></code>または<code id=the-thead-element:the-tfoot-element-2><a href=#the-tfoot-element>tfoot</a></code>要素の直前に存在する場合、<code id=the-thead-element:the-thead-element-2><a href=#the-thead-element>thead</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-thead-element:syntax-end-tag>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-thead-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-thead-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-thead-element:concept-element-dom>DOMインターフェース</a>：<dd><code id=the-thead-element:the-tbody-element-3><a href=#the-tbody-element>tbody</a></code>要素に対して定義されるものとして、<code id=the-thead-element:htmltablesectionelement><a href=#htmltablesectionelement>HTMLTableSectionElement</a></code>。</dl>
+
+  <p><code id=the-thead-element:the-thead-element-5><a href=#the-thead-element>thead</a></code>要素が<code id=the-thead-element:the-table-element-4><a href=#the-table-element>table</a></code>である親を持つ場合、<code id=the-thead-element:the-thead-element-4><a href=#the-thead-element>thead</a></code>要素は、親<code id=the-thead-element:the-table-element-3><a href=#the-table-element>table</a></code>要素に対し列ラベル（ヘッダー）を構成する<a href=#concept-row id=the-thead-element:concept-row>行</a>の<a href=#concept-row-group id=the-thead-element:concept-row-group>ブロック</a>を<a id=the-thead-element:represents href=dom.html#represents>表す</a>。</p>
+
+  
+
+  <p><code id=the-thead-element:the-thead-element-6><a href=#the-thead-element>thead</a></code>要素は、<a href=#table-model id=the-thead-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  
+
+  <div class=example>
+
+   <p>この例は、<code id=the-thead-element:the-thead-element-7><a href=#the-thead-element>thead</a></code>要素が使われる様子を示す。<code id=the-thead-element:the-thead-element-8><a href=#the-thead-element>thead</a></code>要素における<code id=the-thead-element:the-th-element><a href=#the-th-element>th</a></code>と<code id=the-thead-element:the-td-element><a href=#the-td-element>td</a></code>の両方の使い方に注意する。1行目はヘッダーであり、2行目は表に記入する方法の説明である。</p>
+
+   <pre>&lt;table&gt;
+ &lt;caption&gt; School auction sign-up sheet &lt;/caption&gt;
+<strong> &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th&gt;&lt;label for=e1&gt;Name&lt;/label&gt;
+   &lt;th&gt;&lt;label for=e2&gt;Product&lt;/label&gt;
+   &lt;th&gt;&lt;label for=e3&gt;Picture&lt;/label&gt;
+   &lt;th&gt;&lt;label for=e4&gt;Price&lt;/label&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Your name here
+   &lt;td&gt;What are you selling?
+   &lt;td&gt;Link to a picture
+   &lt;td&gt;Your reserve price
+</strong> &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Ms Danus
+   &lt;td&gt;Doughnuts
+   &lt;td&gt;&lt;img src="http://example.com/mydoughnuts.png" title="Doughnuts from Ms Danus"&gt;
+   &lt;td&gt;$45
+  &lt;tr&gt;
+   &lt;td&gt;&lt;input id=e1 type=text name=who required form=f&gt;
+   &lt;td&gt;&lt;input id=e2 type=text name=what required form=f&gt;
+   &lt;td&gt;&lt;input id=e3 type=url name=pic form=f&gt;
+   &lt;td&gt;&lt;input id=e4 type=number step=0.01 min=0 value=0 required form=f&gt;
+&lt;/table&gt;
+&lt;form id=f action="/auction.cgi"&gt;
+ &lt;input type=button name=add value="Submit"&gt;
+&lt;/form&gt;</pre>
+
+  </div>
+
+
+  <h4 id=the-tfoot-element>4.9.7 <dfn><code>tfoot</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-tfoot-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-tfoot-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-tfoot-element:the-table-element><a href=#the-table-element>table</a></code>要素の子として、任意の<code id=the-tfoot-element:the-caption-element><a href=#the-caption-element>caption</a></code>、<code id=the-tfoot-element:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>、<code id=the-tfoot-element:the-thead-element><a href=#the-thead-element>thead</a></code>、<code id=the-tfoot-element:the-tbody-element><a href=#the-tbody-element>tbody</a></code>および<code id=the-tfoot-element:the-tr-element><a href=#the-tr-element>tr</a></code>要素の後、ただし<code id=the-tfoot-element:the-table-element-2><a href=#the-table-element>table</a></code>の子である<code id=the-tfoot-element:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code>要素以外である場合のみを除く。<dt><a href=dom.html#concept-element-content-model id=the-tfoot-element:concept-element-content-model>コンテンツモデル</a>：<dd>0個以上の<code id=the-tfoot-element:the-tr-element-2><a href=#the-tr-element>tr</a></code>要素および<a href=dom.html#script-supporting-elements-2 id=the-tfoot-element:script-supporting-elements-2>スクリプトサポート</a>要素。<dt><a href=dom.html#concept-element-tag-omission id=the-tfoot-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd>親要素に追加のコンテンツが存在しない場合、<code id=the-tfoot-element:the-tfoot-element-2><a href=#the-tfoot-element>tfoot</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-tfoot-element:syntax-end-tag>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-tfoot-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-tfoot-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-tfoot-element:concept-element-dom>DOMインターフェース</a>：<dd><code id=the-tfoot-element:the-tbody-element-2><a href=#the-tbody-element>tbody</a></code>要素に対して定義されるものとして、<code id=the-tfoot-element:htmltablesectionelement><a href=#htmltablesectionelement>HTMLTableSectionElement</a></code>。</dl>
+
+  <p><code id=the-tfoot-element:the-tfoot-element-4><a href=#the-tfoot-element>tfoot</a></code>要素が<code id=the-tfoot-element:the-table-element-4><a href=#the-table-element>table</a></code>である親を持つ場合、<code id=the-tfoot-element:the-tfoot-element-3><a href=#the-tfoot-element>tfoot</a></code>要素は、親<code id=the-tfoot-element:the-table-element-3><a href=#the-table-element>table</a></code>要素に対し列の合計（フッター）を構成する<a href=#concept-row id=the-tfoot-element:concept-row>行</a>の<a href=#concept-row-group id=the-tfoot-element:concept-row-group>ブロック</a>を<a id=the-tfoot-element:represents href=dom.html#represents>表す</a>。</p>
+
+  
+
+  <p><code id=the-tfoot-element:the-tfoot-element-5><a href=#the-tfoot-element>tfoot</a></code>要素は、<a href=#table-model id=the-tfoot-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  
+
+
+  <h4 id=the-tr-element>4.9.8 <dfn><code>tr</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-tr-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-tr-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-tr-element:the-thead-element><a href=#the-thead-element>thead</a></code>要素の子として。<dd><code id=the-tr-element:the-tbody-element><a href=#the-tbody-element>tbody</a></code>要素の子として。<dd><code id=the-tr-element:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code>要素の子として。<dd><code id=the-tr-element:the-table-element><a href=#the-table-element>table</a></code>要素の子として、任意の<code id=the-tr-element:the-caption-element><a href=#the-caption-element>caption</a></code>、<code id=the-tr-element:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>、および<code id=the-tr-element:the-thead-element-2><a href=#the-thead-element>thead</a></code>要素の後、ただし<code id=the-tr-element:the-table-element-2><a href=#the-table-element>table</a></code>要素の子である<code id=the-tr-element:the-tbody-element-2><a href=#the-tbody-element>tbody</a></code>が一切存在しない場合を除く。<dt><a href=dom.html#concept-element-content-model id=the-tr-element:concept-element-content-model>コンテンツモデル</a>：<dd>0個以上の<code id=the-tr-element:the-td-element><a href=#the-td-element>tr</a></code>、<code id=the-tr-element:the-th-element><a href=#the-th-element>th</a></code>、および<a href=dom.html#script-supporting-elements-2 id=the-tr-element:script-supporting-elements-2>スクリプトサポート</a>要素。<dt><a href=dom.html#concept-element-tag-omission id=the-tr-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><code id=the-tr-element:the-tr-element-2><a href=#the-tr-element>tr</a></code>要素が別の<code id=the-tr-element:the-tr-element-3><a href=#the-tr-element>tr</a></code>要素の直前に存在する場合、または親要素に追加のコンテンツが存在しない場合、<code id=the-tr-element:the-tr-element><a href=#the-tr-element>tr</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-tr-element:syntax-end-tag>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-tr-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-tr-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-tr-element:concept-element-dom>DOMインターフェース</a>：<dd>
+    <pre class=idl>interface <dfn id=htmltablerowelement>HTMLTableRowElement</dfn> : <a id=the-tr-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  readonly attribute long <a href=#dom-tr-rowindex id=the-tr-element:dom-tr-rowindex>rowIndex</a>;
+  readonly attribute long <a href=#dom-tr-sectionrowindex id=the-tr-element:dom-tr-sectionrowindex>sectionRowIndex</a>;
+  [SameObject] readonly attribute <a id=the-tr-element:htmlcollection href=infrastructure.html#htmlcollection>HTMLCollection</a> <a href=#dom-tr-cells id=the-tr-element:dom-tr-cells>cells</a>;
+  <a id=the-tr-element:htmlelement-2 href=dom.html#htmlelement>HTMLElement</a> <a href=#dom-tr-insertcell id=the-tr-element:dom-tr-insertcell>insertCell</a>(optional long index = -1);
+  void <a href=#dom-tr-deletecell id=the-tr-element:dom-tr-deletecell>deleteCell</a>(long index);
+};</pre>
+   </dl>
+
+  <p><code id=the-tr-element:the-tr-element-4><a href=#the-tr-element>tr</a></code>要素は、<a href=#concept-table id=the-tr-element:concept-table>テーブル</a>で<a href=#concept-cell id=the-tr-element:concept-cell>セル</a>の<a href=#concept-row id=the-tr-element:concept-row>列</a>を<a id=the-tr-element:represents href=dom.html#represents>表す</a>。</p>
+
+  
+
+  <p><code id=the-tr-element:the-tr-element-5><a href=#the-tr-element>tr</a></code>要素は、<a href=#table-model id=the-tr-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  
+
+
+  <dl class=domintro><dt><var>tr</var> . <code id=the-tr-element:dom-tr-rowindex-2><a href=#dom-tr-rowindex>rowIndex</a></code><dd>
+
+    <p>テーブルの<code id=the-tr-element:dom-table-rows><a href=#dom-table-rows>rows</a></code>リストで行の位置を返す。</p>
+
+    <p>要素がテーブル内でない場合、-1を返す。</p>
+
+   <dt><var>tr</var> . <code id=the-tr-element:dom-tr-sectionrowindex-2><a href=#dom-tr-sectionrowindex>sectionRowIndex</a></code><dd>
+
+    <p>テーブルセクションの<code id=the-tr-element:dom-tbody-rows><a href=#dom-tbody-rows>rows</a></code>リストで行の位置を返す。</p>
+
+    <p>要素がテーブルセクション内でない場合、-1を返す。</p>
+
+   <dt><var>tr</var> . <code id=the-tr-element:dom-tr-cells-2><a href=#dom-tr-cells>cells</a></code><dd>
+
+    <p>行の<code id=the-tr-element:the-td-element-2><a href=#the-td-element>td</a></code>および<code id=the-tr-element:the-th-element-2><a href=#the-th-element>th</a></code>要素の<code id=the-tr-element:htmlcollection-2><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返す。</p>
+
+   <dt><var>cell</var> = <var>tr</var> . <code id=the-tr-element:dom-tr-insertcell-2><a href=#dom-tr-insertcell>insertCell</a></code>( [ <var>index</var> ] )<dd>
+
+    <p><code id=the-tr-element:the-td-element-3><a href=#the-td-element>td</a></code>要素を作成し、引数で指定された場所でテーブル行にこれを挿入し、<code id=the-tr-element:the-td-element-4><a href=#the-td-element>td</a></code>を返す。</p>
+
+    <p>位置は、行のセルを基準にする。引数が省略されている場合、デフォルトでインデックス-1は、行の末尾に挿入することと同じである。</p>
+
+    <p>指定された位置が-1未満またはセル数より大きい場合、<code id=the-tr-element:indexsizeerror><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げる。</p>
+
+   <dt><var>tr</var> . <code id=the-tr-element:dom-tr-deletecell-2><a href=#dom-tr-deletecell>deleteCell</a></code>(<var>index</var>)<dd>
+
+    <p>行で指定された位置とともに<code id=the-tr-element:the-td-element-5><a href=#the-td-element>tr</a></code>または<code id=the-tr-element:the-th-element-3><a href=#the-th-element>th</a></code>要素を削除する。</p>
+
+    <p>位置は、行のセルを基準にする。インデックス-1は、行の最後のセルを削除するのと同じである。</p>
+
+    <p>指定された位置が-1未満または最終セルのインデックスよりも大きい、またはセルが存在しない場合、<code id=the-tr-element:indexsizeerror-2><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げる。</p>
+
+   </dl>
+
+  
+
+  <p>要素が親<code id=the-tr-element:the-table-element-3><a href=#the-table-element>table</a></code>要素または親<code id=the-tr-element:the-tbody-element-3><a href=#the-tbody-element>tbody</a></code>、<code id=the-tr-element:the-thead-element-3><a href=#the-thead-element>thead</a></code>、<code id=the-tr-element:the-tfoot-element-2><a href=#the-tfoot-element>tfoot</a></code>要素を持ちかつ<em>先祖（祖父母）</em><code id=the-tr-element:the-table-element-4><a href=#the-table-element>table</a></code>要素を持つ場合、<dfn id=dom-tr-rowindex><code>rowIndex</code></dfn>属性は、その<code id=the-tr-element:the-table-element-5><a href=#the-table-element>table</a></code>要素の<code id=the-tr-element:dom-table-rows-2><a href=#dom-table-rows>rows</a></code>コレクションにおける<code id=the-tr-element:the-tr-element-6><a href=#the-tr-element>tr</a></code>要素のインデックスを返さなければならない。そのような<code id=the-tr-element:the-table-element-6><a href=#the-table-element>table</a></code>要素が存在しない場合、属性は-1を返さなければならない。</p>
+
+  <p>要素が親<code id=the-tr-element:the-table-element-7><a href=#the-table-element>table</a></code>、<code id=the-tr-element:the-tbody-element-4><a href=#the-tbody-element>tbody</a></code>、<code id=the-tr-element:the-thead-element-4><a href=#the-thead-element>thead</a></code>、<code id=the-tr-element:the-tfoot-element-3><a href=#the-tfoot-element>tfoot</a></code>要素を持つ場合、<dfn id=dom-tr-sectionrowindex><code>sectionRowIndex</code></dfn>属性は、親要素の<code>rows</code>コレクション（テーブルに対して、<code id=the-tr-element:dom-table-rows-3><a href=#dom-table-rows>HTMLTableElement.rows</a></code>コレクション。テーブルセクションに対して、<code id=the-tr-element:dom-tbody-rows-2><a href=#dom-tbody-rows>HTMLTableRowElement.rows</a></code>コレクション）における<code id=the-tr-element:the-tr-element-7><a href=#the-tr-element>tr</a></code>要素のインデックスを返さなければならない。そのような親要素が存在しない場合、属性は-1を返さなければならない。</p>
+
+  <p><dfn id=dom-tr-cells><code>cells</code></dfn>要素は、フィルタが<code id=the-tr-element:the-tr-element-9><a href=#the-tr-element>tr</a></code>要素の子である<code id=the-tr-element:the-td-element-6><a href=#the-td-element>td</a></code>および<code id=the-tr-element:the-th-element-4><a href=#the-th-element>th</a></code>要素にのみマッチする、<code id=the-tr-element:the-tr-element-8><a href=#the-tr-element>tr</a></code>要素でルートになる<code id=the-tr-element:htmlcollection-3><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返さなければならない。</p>
+
+  <p>The <dfn id=dom-tr-insertcell><code>insertCell(<var>index</var>)</code></dfn>
+  method must act as follows:</p>
+
+  <p><var>index</var>が-1未満または<code id=the-tr-element:dom-tr-cells-3><a href=#dom-tr-cells>cells</a></code>コレクション内の要素の数よりも大きい場合、メソッドは<code id=the-tr-element:indexsizeerror-3><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げなければならない。</p>
+
+  <p><var>index</var>が-1または<code id=the-tr-element:dom-tr-cells-4><a href=#dom-tr-cells>cells</a></code>コレクション内の項目の数に等しい場合、メソッドは<code id=the-tr-element:the-td-element-7><a href=#the-td-element>td</a></code>要素を作成し、<code id=the-tr-element:the-tr-element-10><a href=#the-tr-element>tr</a></code>要素をこれに追加し、新しく作成された<code id=the-tr-element:the-td-element-8><a href=#the-td-element>td</a></code>要素を返さなければならない。</p>
+
+  <p>そうでなければ、メソッドは<code id=the-tr-element:the-td-element-9><a href=#the-td-element>td</a></code>要素を作成し、<code id=the-tr-element:dom-tr-cells-5><a href=#dom-tr-cells>cells</a></code>コレクションで<var>index</var>番目の<code id=the-tr-element:the-td-element-10><a href=#the-td-element>td</a></code>または<code id=the-tr-element:the-th-element-5><a href=#the-th-element>th</a></code>要素の直前に、<code id=the-tr-element:the-tr-element-11><a href=#the-tr-element>tr</a></code>要素の子として挿入し、新たに作成された<code id=the-tr-element:the-td-element-11><a href=#the-td-element>td</a></code>要素を最終的に返さなければならない。</p>
+
+  <p>The <dfn id=dom-tr-deletecell><code>deleteCell(<var>index</var>)</code></dfn>
+  method must act as follows:</p>
+
+  <p><var>index</var>が-1未満または<code id=the-tr-element:dom-tr-cells-6><a href=#dom-tr-cells>cells</a></code>コレクション内の要素の数よりも大きい場合、メソッドは<code id=the-tr-element:indexsizeerror-4><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code>例外を投げなければならない。</p>
+
+  <p>If <var>index</var> is −1, remove the last element in the <code id=the-tr-element:dom-tr-cells-7><a href=#dom-tr-cells>cells</a></code> collection from its parent.</p>
+
+  <p>Otherwise, remove the <var>index</var>th element in the <code id=the-tr-element:dom-tr-cells-8><a href=#dom-tr-cells>cells</a></code> collection from its parent.</p>
+
+  
+
+
+
+  <h4 id=the-td-element>4.9.9 <dfn><code>td</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-td-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-td-element:sectioning-root href=semantics.html#sectioning-root>セクショニングルート</a>。<dt><a href=dom.html#concept-element-contexts id=the-td-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-td-element:the-tr-element><a href=#the-tr-element>tr</a></code>要素の子として。<dt><a href=dom.html#concept-element-content-model id=the-td-element:concept-element-content-model>コンテンツモデル</a>：<dd><a id=the-td-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dt><a href=dom.html#concept-element-tag-omission id=the-td-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><code id=the-td-element:the-td-element-2><a href=#the-td-element>td</a></code>要素が別の<code id=the-td-element:the-td-element-3><a href=#the-td-element>td</a></code>または<code id=the-td-element:the-th-element><a href=#the-th-element>th</a></code>要素の直前に存在する場合、または親要素に追加のコンテンツが存在しない場合、<code id=the-td-element:the-td-element><a href=#the-td-element>td</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-td-element:syntax-end-tag>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-td-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-td-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-td-element:attr-tdth-colspan><a href=#attr-tdth-colspan>colspan</a></code> — セルがまたがる列の数<dd><code id=the-td-element:attr-tdth-rowspan><a href=#attr-tdth-rowspan>rowspan</a></code> — セルがまたがる行の数<dd><code id=the-td-element:attr-tdth-headers><a href=#attr-tdth-headers>headers</a></code> — 該当セルに対するヘッダーセル<dt><a href=dom.html#concept-element-dom id=the-td-element:concept-element-dom>DOMインターフェース</a>：<dd>
+    <pre class=idl>interface <dfn id=htmltabledatacellelement>HTMLTableDataCellElement</dfn> : <a href=#htmltablecellelement id=the-td-element:htmltablecellelement>HTMLTableCellElement</a> {};</pre>
+   </dl>
+
+  <p><code id=the-td-element:the-td-element-4><a href=#the-td-element>td</a></code>要素は、テーブルで<a href=#concept-cell id=the-td-element:concept-cell>セル</a>のデータを<a id=the-td-element:represents href=dom.html#represents>表す</a>。</p>
+
+  
+
+  <p><code id=the-td-element:the-td-element-5><a href=#the-td-element>td</a></code>要素および要素の<code id=the-td-element:attr-tdth-colspan-2><a href=#attr-tdth-colspan>colspan</a></code>、<code id=the-td-element:attr-tdth-rowspan-2><a href=#attr-tdth-rowspan>rowspan</a></code>、および<code id=the-td-element:attr-tdth-headers-2><a href=#attr-tdth-headers>headers</a></code>属性は、<a href=#table-model id=the-td-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  <p>特に非視覚環境または2Dグリッドが非現実的であるようなテーブルを表示する場合に、ユーザーエージェントは、セルのコンテンツをレンダリングする際にセルのユーザーコンテキストを与えてもよい。たとえば、<a href=#table-model id=the-td-element:table-model-2>テーブルモデル</a>内の位置を与える、または（<a href=#algorithm-for-assigning-header-cells id=the-td-element:algorithm-for-assigning-header-cells>ヘッダーセルを割り当てるためのアルゴリズム</a>によって決定されるような）セルのヘッダーセルを一覧表示するなど。セルのヘッダーセルが表示されてされている場合、もしあれば、ユーザーエージェントは、ヘッダーセル自身のコンテンツの代わりに、それらのヘッダーセルの<code id=the-td-element:attr-th-abbr><a href=#attr-th-abbr>abbr</a></code>属性の値を使用してもよい。</p>
+
+  
+
+  <div class=example>
+
+   <p>この例において、編集可能なセルのグリッド（基本的にシンプルなスプレッドシート）からなるウェブアプリケーションの断片を見てみる。セルの1つは、その上のセルの合計を表示するように構成されている。3つは、<code id=the-td-element:the-td-element-6><a href=#the-td-element>td</a></code>要素の代わりに<code id=the-td-element:the-th-element-2><a href=#the-th-element>th</a></code>要素を使用する見出しとしてマークされている。スクリプトは、合計を維持するためにこれらの要素にイベントハンドラを結びつける。</p>
+
+   <pre>&lt;table&gt;
+ &lt;tr&gt;
+  &lt;th&gt;&lt;input value="Name"&gt;
+  &lt;th&gt;&lt;input value="Paid ($)"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;&lt;input value="Jeff"&gt;
+  &lt;td&gt;&lt;input value="14"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;&lt;input value="Britta"&gt;
+  &lt;td&gt;&lt;input value="9"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;&lt;input value="Abed"&gt;
+  &lt;td&gt;&lt;input value="25"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;&lt;input value="Shirley"&gt;
+  &lt;td&gt;&lt;input value="2"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;&lt;input value="Annie"&gt;
+  &lt;td&gt;&lt;input value="5"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;&lt;input value="Troy"&gt;
+  &lt;td&gt;&lt;input value="5"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;&lt;input value="Pierce"&gt;
+  &lt;td&gt;&lt;input value="1000"&gt;
+ &lt;tr&gt;
+  &lt;th&gt;&lt;input value="Total"&gt;
+  &lt;td&gt;&lt;output value="1060"&gt;
+&lt;/table&gt;</pre>
+
+  </div>
+
+
+  <h4 id=the-th-element>4.9.10 <dfn><code>th</code></dfn>要素</h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-th-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-th-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-th-element:the-tr-element><a href=#the-tr-element>tr</a></code>要素の子として。<dt><a href=dom.html#concept-element-content-model id=the-th-element:concept-element-content-model>コンテンツモデル</a>：<dd><a id=the-th-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>、ただし<code id=the-th-element:the-header-element><a href=semantics.html#the-header-element>header</a></code>、<code id=the-th-element:the-footer-element><a href=semantics.html#the-footer-element>footer</a></code>、<a id=the-th-element:sectioning-content-2 href=dom.html#sectioning-content-2>セクショニングコンテンツ</a>、または<a id=the-th-element:heading-content-2 href=dom.html#heading-content-2>ヘディングコンテンツ</a>の子孫を除く。<dt><a href=dom.html#concept-element-tag-omission id=the-th-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><code id=the-th-element:the-th-element-2><a href=#the-th-element>th</a></code>要素が別の<code id=the-th-element:the-td-element><a href=#the-td-element>td</a></code>または<code id=the-th-element:the-th-element-3><a href=#the-th-element>th</a></code>要素の直前に存在する場合、または親要素に追加のコンテンツが存在しない場合、<code id=the-th-element:the-th-element><a href=#the-th-element>th</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-th-element:syntax-end-tag>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-th-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-th-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-th-element:attr-tdth-colspan><a href=#attr-tdth-colspan>colspan</a></code> — セルがまたがる列の数<dd><code id=the-th-element:attr-tdth-rowspan><a href=#attr-tdth-rowspan>rowspan</a></code> — セルがまたがる行の数<dd><code id=the-th-element:attr-tdth-headers><a href=#attr-tdth-headers>headers</a></code> — 該当セルに対するヘッダーセル<dd><code id=the-th-element:attr-th-scope><a href=#attr-th-scope>scope</a></code> — ヘッダーセルがどのセルに適用するかを指定する<dd><code id=the-th-element:attr-th-abbr><a href=#attr-th-abbr>abbr</a></code> — 他のコンテキスト内のセルを参照する際にヘッダーセルに使用する代替ラベル<dt><a href=dom.html#concept-element-dom id=the-th-element:concept-element-dom>DOMインターフェース</a>：<dd>
+    <pre class=idl>interface <dfn id=htmltableheadercellelement>HTMLTableHeaderCellElement</dfn> : <a href=#htmltablecellelement id=the-th-element:htmltablecellelement>HTMLTableCellElement</a> {
+  attribute DOMString <a href=#dom-th-scope id=the-th-element:dom-th-scope>scope</a>;
+  attribute DOMString <a href=#dom-th-abbr id=the-th-element:dom-th-abbr>abbr</a>;
+};</pre>
+   </dl>
+
+  <p><code id=the-th-element:the-th-element-4><a href=#the-th-element>th</a></code>要素は、テーブルでヘッダー<a href=#concept-cell id=the-th-element:concept-cell>セル</a>を<a id=the-th-element:represents href=dom.html#represents>表す</a>。</p>
+
+  <p><code id=the-th-element:the-th-element-5><a href=#the-th-element>th</a></code>要素は、指定された<dfn id=attr-th-scope><code>scope</code></dfn>コンテンツ属性を持ってもよい。<code id=the-th-element:attr-th-scope-2><a href=#attr-th-scope>scope</a></code>属性は、明示的なキーワードを持つ4種類、5つの状態を持つ<a id=the-th-element:enumerated-attribute href=infrastructure.html#enumerated-attribute>列挙属性</a>である：</p>
+
+  <dl><dt><i>row</i>状態に対応する<dfn id=attr-th-scope-row><code>row</code></dfn>キーワード<dd><i>row</i>状態は、ヘッダーセルが同じ行で後続のセルの一部に適用することを意味する。<dt><i>column</i>状態に対応する<dfn id=attr-th-scope-col><code>col</code></dfn>キーワード<dd><i>column</i>状態は、ヘッダーセルが同じ列で後続のセルの一部に適用することを意味する。<dt><i>row group</i>状態に対応する<dfn id=attr-th-scope-rowgroup><code>rowgroup</code></dfn>キーワード<dd><i>row group</i>状態は、ヘッダーセルが行グループで残りのすべてのセルに適用されることを意味する。要素が<a href=#concept-row-group id=the-th-element:concept-row-group>行グループ</a>に固定されない場合、<code id=the-th-element:the-th-element-6><a href=#the-th-element>th</a></code>要素の<code id=the-th-element:attr-th-scope-3><a href=#attr-th-scope>scope</a></code>属性は、<a href=#attr-th-scope-rowgroup id=the-th-element:attr-th-scope-rowgroup>行グループ</a>状態であってはならない。<dt><i>column group</i>状態に対応する<dfn id=attr-th-scope-colgroup><code>colgroup</code></dfn>キーワード<dd><i>column group</i>状態は、ヘッダーセルが列グループで残りのすべてのセルに適用されることを意味する。<a href=#concept-column-group id=the-th-element:concept-column-group>column group</a>要素は列グループに固定されない場合、<code id=the-th-element:the-th-element-7><a href=#the-th-element>th</a></code>要素の<code id=the-th-element:attr-th-scope-4><a href=#attr-th-scope>scope</a></code>属性は、<a href=#attr-th-scope-colgroup id=the-th-element:attr-th-scope-colgroup>列グループ</a>状態でなければならない。<dt><dfn id=attr-th-scope-auto>auto</dfn>状態<dd><i>auto</i>状態は、ヘッダーセルがコンテキストに基づいて選択されたセルのセットに適用させる。</dl>
+
+  <p><code id=the-th-element:attr-th-scope-5><a href=#attr-th-scope>scope</a></code>属性の<i id=the-th-element:missing-value-default><a href=infrastructure.html#missing-value-default>欠損値のデフォルト</a></i>は、<i>auto</i>状態である。</p>
+
+  <p><code id=the-th-element:the-th-element-8><a href=#the-th-element>th</a></code>要素は、指定された<dfn id=attr-th-abbr><code>abbr</code></dfn>コンテンツ属性を持ってもよい。その値は、（たとえばデータセルに適用するヘッダーセルを記述する場合など）他のコンテキスト内のセルを参照する際に使用されるヘッダーセルの代替ラベルでなければならない。通常これは、完全なヘッダーセルの略語であるが、拡大または単なる別の言い回しでも構わない。</p>
+
+  
+
+  <p><code id=the-th-element:the-th-element-9><a href=#the-th-element>th</a></code>要素および要素の<code id=the-th-element:attr-tdth-colspan-2><a href=#attr-tdth-colspan>colspan</a></code>、<code id=the-th-element:attr-tdth-rowspan-2><a href=#attr-tdth-rowspan>rowspan</a></code>、<code id=the-th-element:attr-tdth-headers-2><a href=#attr-tdth-headers>headers</a></code>および<code id=the-th-element:attr-th-scope-6><a href=#attr-th-scope>scope</a></code>属性は、<a href=#table-model id=the-th-element:table-model>テーブルモデル</a>に参加する。</p>
+
+  <p><dfn id=dom-th-scope><code>scope</code></dfn>IDL属性は、<a id=the-th-element:limited-to-only-known-values href=infrastructure.html#limited-to-only-known-values>既知の値に制限され</a>、同じ名前のコンテンツ属性を<a id=the-th-element:reflect href=infrastructure.html#reflect>反映し</a>なければならない。</p>
+
+  <p><dfn id=dom-th-abbr><code>abbr</code></dfn> IDL属性は、同じ名前のコンテンツ属性を<a id=the-th-element:reflect-2 href=infrastructure.html#reflect>反映</a>しなければならない。</p>
+
+  
+
+  <div class=example>
+
+   <p>次の例は、<code id=the-th-element:attr-th-scope-7><a href=#attr-th-scope>scope</a></code>属性の<code id=the-th-element:attr-th-scope-rowgroup-2><a href=#attr-th-scope-rowgroup>rowgroup</a></code>値がヘッダーセルが適用するデータセルにどのように影響するかを示す。</p>
+
+   <p>ここで、テーブルを示すマークアップ断片は、次のとおり：</p>
+
+   <pre>&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt; &lt;th&gt; ID &lt;th&gt; Measurement &lt;th&gt; Average &lt;th&gt; Maximum
+ &lt;tbody&gt;
+  &lt;tr&gt; &lt;td&gt; &lt;th scope=rowgroup&gt; Cats &lt;td&gt; &lt;td&gt;
+  &lt;tr&gt; &lt;td&gt; 93 &lt;th scope=row&gt; Legs &lt;td&gt; 3.5 &lt;td&gt; 4
+  &lt;tr&gt; &lt;td&gt; 10 &lt;th scope=row&gt; Tails &lt;td&gt; 1 &lt;td&gt; 1
+ &lt;tbody&gt;
+  &lt;tr&gt; &lt;td&gt; &lt;th scope=rowgroup&gt; English speakers &lt;td&gt; &lt;td&gt;
+  &lt;tr&gt; &lt;td&gt; 32 &lt;th scope=row&gt; Legs &lt;td&gt; 2.67 &lt;td&gt; 4
+  &lt;tr&gt; &lt;td&gt; 35 &lt;th scope=row&gt; Tails &lt;td&gt; 0.33 &lt;td&gt; 1
+&lt;/table&gt;</pre>
+
+   <p>これは、次の表をもたらす：</p>
+
+   <table><thead><tr><th>  ID  </th><th>  Measurement  </th><th>  Average  </th><th>  Maximum
+    
+    <tbody></th></tr><tr><td> <th scope=rowgroup>  Cats  <td> </td><td>
+     </td></th></td></tr><tr><td>  93  <th scope=row>  Legs  <td>  3.5  </td><td>  4
+     
+     </td></th></td></tr><tr><td>  10  <th scope=row>  Tails  <td>  1  </td><td>  1
+    
+    <tbody></td></th></td></tr><tr><td> <th scope=rowgroup>  English speakers  <td> </td><td>
+     </td></th></td></tr><tr><td>  32  <th scope=row>  Legs  <td>  2.67  </td><td>  4
+     
+     </td></th></td></tr><tr><td>  35  <th scope=row>  Tails  <td>  0.33  </td><td>  1
+   
+   </td></th></td></tr></table>
+
+   <p>最初の行のヘッダーはすべて、その列の行まで直接適用される。</p>
+
+   <p>明示的に<code id=the-th-element:attr-th-scope-8><a href=#attr-th-scope>scope</a></code>属性を持つヘッダーは、最初の列のセル以外の行グループ内のすべてのセルに適用される。</p>
+
+   <p>残りのヘッダーは右側のセルにのみ適用される。</p>
+
+   
+   <img src=https://html.spec.whatwg.org/multipage/table-scope-diagram.png width=459 alt="" height=256>
+
+  </div>
+
+
+
+  <h4 id=attributes-common-to-td-and-th-elements>4.9.11 <code id=attributes-common-to-td-and-th-elements:the-td-element><a href=#the-td-element>td</a></code>と<code id=attributes-common-to-td-and-th-elements:the-th-element><a href=#the-th-element>th</a></code>要素の共通属性</h4>
+
+  <p><code id=attributes-common-to-td-and-th-elements:the-td-element-2><a href=#the-td-element>td</a></code>および<code id=attributes-common-to-td-and-th-elements:the-th-element-2><a href=#the-th-element>th</a></code>要素は、値が0より大きい<a id=attributes-common-to-td-and-th-elements:valid-non-negative-integer href=infrastructure.html#valid-non-negative-integer>妥当な負でないの整数</a>を指定しなければならない、<dfn id=attr-tdth-colspan><code>colspan</code></dfn>コンテンツ属性を持ってもよい。</p>
+
+  <p><code id=attributes-common-to-td-and-th-elements:the-td-element-3><a href=#the-td-element>td</a></code>および<code id=attributes-common-to-td-and-th-elements:the-th-element-3><a href=#the-th-element>th</a></code>要素はまた、値が0より大きい<a id=attributes-common-to-td-and-th-elements:valid-non-negative-integer-2 href=infrastructure.html#valid-non-negative-integer>妥当な負でないの整数</a>を指定しなければならない、<dfn id=attr-tdth-rowspan><code>rowspan</code></dfn>コンテンツ属性を持ってもよい。この属性のために、値0は、セルが行グループですべての残りの行にまたがることを意味する。</p> 
+
+  <p>これらの属性は、セルがまたがるようにそれぞれの列と行の数を与える。この属性は、<a href=#table-model id=attributes-common-to-td-and-th-elements:table-model>テーブルモデル</a>の記述で説明されるような、セルに重なるために使用されてはならない。</p> 
+
+  <hr>
+
+  <p><code id=attributes-common-to-td-and-th-elements:the-td-element-4><a href=#the-td-element>td</a></code>と<code id=attributes-common-to-td-and-th-elements:the-th-element-4><a href=#the-th-element>th</a></code>要素は、指定された<dfn id=attr-tdth-headers><code>headers</code></dfn>コンテンツ属性を持ってもよい。<code id=attributes-common-to-td-and-th-elements:attr-tdth-headers><a href=#attr-tdth-headers>headers</a></code>属性が指定される場合、<a id=attributes-common-to-td-and-th-elements:case-sensitive href=infrastructure.html#case-sensitive>大文字・小文字不区別</a>である<a id=attributes-common-to-td-and-th-elements:unordered-set-of-unique-space-separated-tokens href=infrastructure.html#unordered-set-of-unique-space-separated-tokens>順不同のスペースで区切られたトークンのセット</a>からなる文字列を含まなければならず、それぞれが、（<a href=#table-model id=attributes-common-to-td-and-th-elements:table-model-2>テーブルモデル</a>によって定義されるように）<code id=attributes-common-to-td-and-th-elements:the-td-element-5><a href=#the-td-element>td</a></code>または<code id=attributes-common-to-td-and-th-elements:the-th-element-6><a href=#the-th-element>th</a></code>要素と同じ<a href=#concept-table id=attributes-common-to-td-and-th-elements:concept-table>テーブル</a>に参加している<code id=attributes-common-to-td-and-th-elements:the-th-element-5><a href=#the-th-element>th</a></code>要素の<a href=infrastructure.html#concept-id id=attributes-common-to-td-and-th-elements:concept-id>ID</a>の値を持たなければならない。</p>
+
+  <p><a href=infrastructure.html#concept-id id=attributes-common-to-td-and-th-elements:concept-id-2>ID</a>をもつ<code id=attributes-common-to-td-and-th-elements:the-th-element-7><a href=#the-th-element>th</a></code>要素の<var>id</var>は、値がそれらのトークン<a href=infrastructure.html#concept-id id=attributes-common-to-td-and-th-elements:concept-id-3>ID</a> <var>id</var>の一つとして含む<code id=attributes-common-to-td-and-th-elements:attr-tdth-headers-2><a href=#attr-tdth-headers>headers</a></code>属性を持つ同じ<a href=#concept-table id=attributes-common-to-td-and-th-elements:concept-table-2>テーブル</a>ですべての<code id=attributes-common-to-td-and-th-elements:the-td-element-6><a href=#the-td-element>td</a></code>と<code id=attributes-common-to-td-and-th-elements:the-th-element-8><a href=#the-th-element>th</a></code>要素による<i>directly targeted</i>と言われる。<var>A</var>が<var>B</var>に<i>直接目標とされる</i>、または要素<var>B</var>によって要素<var>C</var>自体が<i>目標とされ</i>、かつ要素<var>A</var>が<var>C</var>によって<i>直接目標とされる</i>かのいずれかの場合、<code id=attributes-common-to-td-and-th-elements:the-th-element-9><a href=#the-th-element>th</a></code>要素<var>A</var>は<code id=attributes-common-to-td-and-th-elements:the-th-element-10><a href=#the-th-element>th</a></code>または<code id=attributes-common-to-td-and-th-elements:the-td-element-7><a href=#the-td-element>td</a></code>要素<var>B</var>の<i>目標にされる</i>と言われる。</p>
+
+  <p><code id=attributes-common-to-td-and-th-elements:the-th-element-11><a href=#the-th-element>th</a></code>要素は、それ自体が<i>目標</i>とならない。</p>
+
+  
+
+  <p><code id=attributes-common-to-td-and-th-elements:attr-tdth-colspan><a href=#attr-tdth-colspan>colspan</a></code>、<code id=attributes-common-to-td-and-th-elements:attr-tdth-rowspan><a href=#attr-tdth-rowspan>rowspan</a></code>、および<code id=attributes-common-to-td-and-th-elements:attr-tdth-headers-3><a href=#attr-tdth-headers>rowspan</a></code>属性は、<a href=#table-model id=attributes-common-to-td-and-th-elements:table-model-3>テーブルモデル</a>に参加する。</p>
+
+  
+
+  <hr>
+
+  <p><code id=attributes-common-to-td-and-th-elements:the-td-element-8><a href=#the-td-element>td</a></code>および<code id=attributes-common-to-td-and-th-elements:the-th-element-12><a href=#the-th-element>th</a></code>要素は<code id=attributes-common-to-td-and-th-elements:htmltablecellelement><a href=#htmltablecellelement>HTMLTableCellElement</a></code>インターフェースから継承するインターフェースを実装する：</p>
+
+  <pre class=idl>interface <dfn id=htmltablecellelement>HTMLTableCellElement</dfn> : <a id=attributes-common-to-td-and-th-elements:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute unsigned long <a href=#dom-tdth-colspan id=attributes-common-to-td-and-th-elements:dom-tdth-colspan>colSpan</a>;
+  attribute unsigned long <a href=#dom-tdth-rowspan id=attributes-common-to-td-and-th-elements:dom-tdth-rowspan>rowSpan</a>;
+  [SameObject, PutForwards=<a href=infrastructure.html#dom-domtokenlist-value id=attributes-common-to-td-and-th-elements:dom-domtokenlist-value>value</a>] readonly attribute <a id=attributes-common-to-td-and-th-elements:domtokenlist href=infrastructure.html#domtokenlist>DOMTokenList</a> <a href=#dom-tdth-headers id=attributes-common-to-td-and-th-elements:dom-tdth-headers>headers</a>;
+  readonly attribute long <a href=#dom-tdth-cellindex id=attributes-common-to-td-and-th-elements:dom-tdth-cellindex>cellIndex</a>;
+};</pre>
+
+
+  <dl class=domintro><dt><var>cell</var> . <code id=attributes-common-to-td-and-th-elements:dom-tdth-cellindex-2><a href=#dom-tdth-cellindex>cellIndex</a></code><dd>
+
+    <p>行の<code id=attributes-common-to-td-and-th-elements:dom-tr-cells><a href=#dom-tr-cells>cells</a></code>リストでセルの位置を返す。より前のセルが複数の行または列をカバーするかもしれないので、これは必ずしもテーブルにおけるセルの<var>x</var>方向の位置に対応しない。</p>
+
+    <p>要素が行にない場合、-1を返す。</p>
+
+   </dl>
+
+  
+
+  <p><dfn id=dom-tdth-colspan><code>colSpan</code></dfn> IDL属性は、<code id=attributes-common-to-td-and-th-elements:attr-tdth-colspan-2><a href=#attr-tdth-colspan>colspan</a></code>コンテンツ属性を<a id=attributes-common-to-td-and-th-elements:reflect href=infrastructure.html#reflect>反映</a>しなければならない。Its default value is 1.</p>
+
+  
+
+  <p><dfn id=dom-tdth-rowspan><code>rowSpan</code></dfn> IDL属性は、<code id=attributes-common-to-td-and-th-elements:attr-tdth-rowspan-2><a href=#attr-tdth-rowspan>rowspan</a></code>コンテンツ属性を<a id=attributes-common-to-td-and-th-elements:reflect-2 href=infrastructure.html#reflect>反映</a>しなければならない。Its default value is 1.</p>
+
+  <p><dfn id=dom-tdth-headers><code>headers</code></dfn>IDL属性は、同じ名前のコンテンツ属性を<a id=attributes-common-to-td-and-th-elements:reflect-3 href=infrastructure.html#reflect>反映</a>しなければならない。</p>
+
+  <p>要素が親<code id=attributes-common-to-td-and-th-elements:the-tr-element><a href=#the-tr-element>tr</a></code>要素を持つ場合、<dfn id=dom-tdth-cellindex><code>cellIndex</code></dfn> IDL属性は、親要素の<code id=attributes-common-to-td-and-th-elements:dom-tr-cells-2><a href=#dom-tr-cells>cells</a></code>コレクションにおけるセルの要素のインデックスを返さなければならない。そのような親要素が存在しない場合、属性は-1を返さなければならない。</p>
+
+  
+
+
+
+  
+
+  <h4 id=processing-model-2>4.9.12 処理モデル</h4>
+
+  <p>さまざまなテーブル要素およびそのコンテンツ属性は、<dfn id=table-model>テーブルモデル</dfn>を協力して定義する。</p>
+
+  <p><dfn id=concept-table>テーブル</dfn>は、座標(<var>x</var>, <var>y</var>)をもつ<dfn id=concept-slots>スロット</dfn>の二次元グリッド上に整列されるセルからなる。グリッドは有限であり、空または1つ以上のいずれかのスロットを持つ。グリッドが1つ以上のスロットを持つ場合、<var>x</var>座標は常に<span>0&nbsp;≤&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>x<sub>width</sub></var></span>の範囲にあり、<var>y</var>座標は常に<span>0&nbsp;≤&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>y<sub>height</sub></var></span>の範囲にある。<var>x<sub>width</sub></var>と<var>y<sub>height</sub></var>のいずれかまたは両方が0である場合、テーブルは空である（何のスロットを持たない）。テーブルは、<code id=processing-model-2:the-table-element><a href=#the-table-element>table</a></code>要素に対応する。</p>
+
+  <p><dfn id=concept-cell>セル</dfn>は、スロット(<var>cell<sub>x</sub></var>, <var>cell<sub>y</sub></var>)に固定されるスロットの集合であり、セルが<span><var>cell<sub>x</sub></var>&nbsp;≤&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>cell<sub>x</sub></var>+<var>width</var></span>および<span><var>cell<sub>y</sub></var>&nbsp;≤&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>cell<sub>y</sub></var>+<var>height</var></span>の条件で座標(<var>x</var>, <var>y</var>)をもつすべてのスロットをカバーするような固有の<var>width</var>と<var>height</var>をもつ。セルは、<em>データセル</em>または<em>ヘッダーセル</em>のいずれかである。データセルは、<code id=processing-model-2:the-td-element><a href=#the-td-element>td</a></code>要素に対応し、ヘッダーセルは<code id=processing-model-2:the-th-element><a href=#the-th-element>th</a></code>要素に対応する。両方の種類のセルは、0個以上の関連するヘッダーセルを持つことができる。</p>
+
+  <p>特定のエラーの場合、2つのセルが同一のスロットを占有することは可能である。</p>
+
+  <p><dfn id=concept-row>行</dfn>は、<var>y</var>の特定の値に対する、<span><var>x</var>=0</span>から<span><var>x</var>=<var>x<sub>width</sub></var>-1</span>までのスロットの完全なセットである。行は通常、<a href=#concept-row-group id=processing-model-2:concept-row-group>行グループ</a>が複数の行にまたがる<a href=#concept-cell id=processing-model-2:concept-cell>セル</a>を含む一部のケースで最後でいくつかの暗黙の<a href=#concept-row id=processing-model-2:concept-row>行</a>を持つことができるにもかかわらず、<code id=processing-model-2:the-tr-element><a href=#the-tr-element>tr</a></code>要素に対応する。</p>
+
+  <p><dfn id=concept-column>列</dfn>は、<var>x</var>の特定の値に対する、<span><var>y</var>=0</span>から<span><var>y</var>=<var>y<sub>height</sub></var>-1</span>までのスロットの完全なセットである。列は、<code id=processing-model-2:the-col-element><a href=#the-col-element>col</a></code>要素に対応づけることができる。<code id=processing-model-2:the-col-element-2><a href=#the-col-element>col</a></code>要素が存在しない場合、列は暗黙に暗示される。</p>
+
+  <p><dfn id=concept-row-group>行グループ</dfn>は、行グループが<span>0&nbsp;≤&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>x<sub>width</sub></var></span>および<span><var><sub>y</sub></var>&nbsp;≤&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>group<sub>y</sub></var>+<var>height</var></span>の条件で座標(<var>x</var>, <var>y</var>)をもつすべてのスロットを覆うような固有の<var>height</var>をもつスロット(0, <var>group<sub>y</sub></var>)に固定される<a href=#concept-row id=processing-model-2:concept-row-2>行</a>のセットである。行グループは、<code id=processing-model-2:the-tbody-element><a href=#the-tbody-element>tbody</a></code>、<code id=processing-model-2:the-thead-element><a href=#the-thead-element>thead</a></code>、および<code id=processing-model-2:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code>要素に対応する。各行は、行グループに必須ではない。</p>
+
+  <p><dfn id=concept-column-group>列グループ</dfn>は、<span><var>group<sub>x</sub></var>&nbsp;≤&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>group<sub>x</sub></var>+<var>width</var></span>および<span>0&nbsp;≤&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>y<sub>height</sub></var></span>の条件で座標(<var>x</var>, <var>y</var>)をもつすべてのスロットを覆うような固有の<var>width</var>をもつスロット(<var>group<sub>x</sub></var>, 0)に固定される<a href=#concept-column id=processing-model-2:concept-column>列</a>のセットである。列グループは、<code id=processing-model-2:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code>に対応する。必ずしも各列は、列グループで必須でない。</p>
+
+  <p><a href=#concept-row-group id=processing-model-2:concept-row-group-2>行グループ</a>は、互いに重なることができない。同様に、<a href=#concept-column-group id=processing-model-2:concept-column-group>列グループ</a>は、互いに重なることができない。</p>
+
+  <p><a href=#concept-cell id=processing-model-2:concept-cell-2>セル</a>は、2つ以上の<a href=#concept-row-group id=processing-model-2:concept-row-group-3>行グループ</a>に由来するスロットを占めることができない。しかし、セルが複数の<a href=#concept-column-group id=processing-model-2:concept-column-group-2>列グループ</a>に存在することは可能である。1つのセルの一部を形成するすべてのスロットは、0または1個の<a href=#concept-row-group id=processing-model-2:concept-row-group-4>行グループ</a>と0個以上の<a href=#concept-column-group id=processing-model-2:concept-column-group-3>列グループ</a>の一部である。</p>
+
+  <p><a href=#concept-cell id=processing-model-2:concept-cell-3>セル</a>、<a href=#concept-column id=processing-model-2:concept-column-2>列</a>、<a href=#concept-row id=processing-model-2:concept-row-3>行</a>、<a href=#concept-row-group id=processing-model-2:concept-row-group-5>行グループ</a>、<a href=#concept-column-group id=processing-model-2:concept-column-group-4>列グループ</a>に加えて、<a href=#concept-table id=processing-model-2:concept-table>テーブル</a>は、関連する<code id=processing-model-2:the-caption-element><a href=#the-caption-element>caption</a></code>要素を持つことができる。これは、テーブルに見出し、または凡例を提供する。</p>
+
+  <p><dfn id=table-model-error>テーブルモデルエラー</dfn>は、<code id=processing-model-2:the-table-element-2><a href=#the-table-element>table</a></code>要素およびその子孫によって表されるデータとのエラーである。文書は、テーブルモデルエラーを持ってはならない。</p>
+
+
+  <h5 id=forming-a-table>4.9.12.1 テーブルの作成</h5>
+
+  <p>どの要素が<a href=#concept-table id=forming-a-table:concept-table>テーブル</a>においてどのスロットと<code id=forming-a-table:the-table-element><a href=#the-table-element>table</a></code>要素とを関連付けられたかを決定するため、テーブル（<var>x<sub>width</sub></var>および<var>y<sub>height</sub></var>）の次元を決定するため、および任意の<a href=#table-model-error id=forming-a-table:table-model-error>テーブルモデルエラー</a>があるかどうかを決定するために、ユーザーエージェントは次のアルゴリズムを使用しなければならない：</p>
+
+  <ol><li>
+    <p><var>x<sub>width</sub></var>を0にする。</p>
+   </li><li>
+    <p><var>y<sub>height</sub></var>を0にする。</p>
+   </li><li>
+
+    <p><var>pending <code id=forming-a-table:the-tfoot-element><a href=#the-tfoot-element>tfoot</a></code> elements</var>を<code id=forming-a-table:the-tfoot-element-2><a href=#the-tfoot-element>tfoot</a></code>要素リストにし、最初に空にする。</p>
+
+   </li><li>
+
+    <p><var>the table</var>を<code id=forming-a-table:the-table-element-2><a href=#the-table-element>table</a></code>要素で表される<a href=#concept-table id=forming-a-table:concept-table-2>テーブル</a>にする。<var>x<sub>width</sub></var>および<var>y<sub>height</sub></var>変数は、<var>the table</var>の寸法を与える。<var>The table</var> テーブルは、初めに空となる。</p>
+
+   </li><li>
+
+    
+
+    <p><code id=forming-a-table:the-table-element-3><a href=#the-table-element>table</a></code>要素が子要素を持たない場合、（空である）<var>the table</var>を返し、この手順を中止する。</p>
+
+   </li><li>
+
+    <p><var>the table</var>と<code id=forming-a-table:the-table-element-4><a href=#the-table-element>table</a></code>要素の最初の<code id=forming-a-table:the-caption-element><a href=#the-caption-element>caption</a></code>要素の子を関連付ける。そのような子が存在しない場合、テーブルは関連する<code id=forming-a-table:the-caption-element-2><a href=#the-caption-element>caption</a></code>要素を持たない。</p>
+
+   </li><li>
+
+    <p><var>current element</var>を<code id=forming-a-table:the-table-element-5><a href=#the-table-element>table</a></code>要素の最初の要素の子とする。</p>
+
+    <p>そのような次の子がない際にこのアルゴリズムにおける手順が<dfn id=concept-table-advance><code>table</code>の次の子に前進する</dfn>ように<var>current element</var>をいずれ要求する場合、このアルゴリズムの終わり近くに、ユーザーエージェントは<i>end</i>とラベル付けされた手順にジャンプしなければならない。</p>
+
+   </li><li>
+
+    <p><var>current element</var>が次の要素のいずれでもない間、<code id=forming-a-table:the-table-element-6><a href=#the-table-element>table</a></code>の次の子に<var>current element</var>を<a href=#concept-table-advance id=forming-a-table:concept-table-advance>進める</a>：</p>
+
+    <ul class=brief><li><code id=forming-a-table:the-colgroup-element><a href=#the-colgroup-element>colgroup</a></code></li><li><code id=forming-a-table:the-thead-element><a href=#the-thead-element>thead</a></code></li><li><code id=forming-a-table:the-tbody-element><a href=#the-tbody-element>tbody</a></code></li><li><code id=forming-a-table:the-tfoot-element-3><a href=#the-tfoot-element>tfoot</a></code></li><li><code id=forming-a-table:the-tr-element><a href=#the-tr-element>tr</a></code></li></ul>
+
+   </li><li>
+
+    <p><var>current element</var>が<code id=forming-a-table:the-colgroup-element-2><a href=#the-colgroup-element>colgroup</a></code>である場合、次のサブ手順に従う：</p>
+
+    <ol><li>
+
+      <p><i>Column groups</i>：次の適切な場合に従って<var>current element</var>を処理する：</p>
+
+      <dl class=switch><dt><var>current element</var>が任意の<code id=forming-a-table:the-col-element><a href=#the-col-element>col</a></code>要素の子を持つ場合<dd>
+
+        <p>次の手順に従う：</p>
+
+        <ol><li>
+
+          <p><var>x<sub>start</sub></var>に<span><var>x<sub>width</sub></var></span>の値を持たせる。</p>
+
+         </li><li>
+
+          <p><var>current column</var>を<code id=forming-a-table:the-colgroup-element-3><a href=#the-colgroup-element>colgroup</a></code>要素の最初の<code id=forming-a-table:the-col-element-2><a href=#the-col-element>col</a></code>要素にする。</p>
+
+         </li><li>
+
+          <p><i>Columns</i>：<var>current column</var>の<code id=forming-a-table:the-col-element-3><a href=#the-col-element>col</a></code>要素が<code id=forming-a-table:attr-col-span><a href=#attr-col-span>span</a></code>属性を持つ場合、<a id=forming-a-table:rules-for-parsing-non-negative-integers href=infrastructure.html#rules-for-parsing-non-negative-integers>非負整数を解析するための規則を使用して</a>属性の値を解析する。</p>
+
+          <p>解析値の結果がエラーまたは0でない場合、<var>span</var>をその値にする。</p>
+
+          <p>そうでなければ、<code id=forming-a-table:the-col-element-4><a href=#the-col-element>col</a></code>要素が<code id=forming-a-table:attr-col-span-2><a href=#attr-col-span>span</a></code>属性を持たない、または属性値の解析の試みがエラーまたは0をもたらす場合、<var>span</var>を1にする。</p>
+
+         </li><li>
+
+          <p><var>span</var>で<var>x<sub>width</sub></var>を増やす。</p>
+
+         </li><li>
+
+          <p><var>the table</var>における最後の<var>span</var><a href=#concept-column id=forming-a-table:concept-column>列</a>を<var>current column</var> <code id=forming-a-table:the-col-element-5><a href=#the-col-element>col</a></code>要素に対応させる。</p>
+
+         </li><li>
+
+          <p><var>current column</var>が<code id=forming-a-table:the-colgroup-element-4><a href=#the-colgroup-element>colgroup</a></code>要素の最後の<code id=forming-a-table:the-col-element-6><a href=#the-col-element>col</a></code>要素の子でない場合、<var>current column</var>を<code id=forming-a-table:the-colgroup-element-5><a href=#the-colgroup-element>colgroup</a></code>要素の次の<code id=forming-a-table:the-col-element-7><a href=#the-col-element>col</a></code>要素の子とし、<i>columns</i>にラベル付けされた手順に戻る。</p>
+
+         </li><li>
+
+          <p><code id=forming-a-table:the-colgroup-element-6><a href=#the-colgroup-element>colgroup</a></code>要素に対応する、幅<span><var>x<sub>width</sub></var>-<var>x<sub>start</sub></var></span>をもち、スロット(<var>x<sub>start</sub></var>, 0)で固定された、<span>x=<var>x<sub>start</sub></var></span>から<span>x=<var>x<sub>width</sub></var>-1</span>までの<var>the table</var>におけるすべての最後の<a href=#concept-column id=forming-a-table:concept-column-2>列</a>を新しい<a href=#concept-column-group id=forming-a-table:concept-column-group>列グループ</a>に形成させる。</p>
+
+         </li></ol>
+
+       <dt><var>current element</var>が任意の<code id=forming-a-table:the-col-element-8><a href=#the-col-element>col</a></code>要素の子を持たない場合<dd>
+
+        <ol><li>
+
+          <p><code id=forming-a-table:the-colgroup-element-7><a href=#the-colgroup-element>colgroup</a></code>要素が<code id=forming-a-table:attr-colgroup-span><a href=#attr-colgroup-span>span</a></code>属性を持つ場合、<a id=forming-a-table:rules-for-parsing-non-negative-integers-2 href=infrastructure.html#rules-for-parsing-non-negative-integers>非負整数を解析するための規則を使用して</a>属性値を解析する。</p>
+
+          <p>解析値の結果がエラーまたは0でない場合、<var>span</var>をその値にする。</p>
+
+          <p>そうでなければ、<code id=forming-a-table:the-colgroup-element-8><a href=#the-colgroup-element>colgroup</a></code>要素が<code id=forming-a-table:attr-colgroup-span-2><a href=#attr-colgroup-span>span</a></code>属性を持たない、または属性値の解析の試みがエラーまたは0をもたらす場合、<var>span</var>を1にする。</p>
+
+         </li><li>
+
+          <p><var>span</var>で<var>x<sub>width</sub></var>を増やす。</p>
+
+         </li><li>
+
+          <p><code id=forming-a-table:the-colgroup-element-9><a href=#the-colgroup-element>colgroup</a></code>要素に対応する、幅<var>span</var>をもち、スロット(<span><var>x<sub>width</sub></var>-<var>span</var></span>, 0)で固定された、<var>the table</var>における最後の<var>span</var><a href=#concept-column id=forming-a-table:concept-column-3>列</a>を、新しい<a href=#concept-column-group id=forming-a-table:concept-column-group-2>列グループ</a>に形成させる。</p>
+
+         </li></ol>
+
+       </dl>
+
+     </li><li>
+
+      <p><var>current element</var>を<code id=forming-a-table:the-table-element-7><a href=#the-table-element>table</a></code>の次の子へ<a href=#concept-table-advance id=forming-a-table:concept-table-advance-2>前進させる</a>。</p>
+
+     </li><li>
+
+      <p><var>current element</var>が次の要素のいずれでもない間、<code id=forming-a-table:the-table-element-8><a href=#the-table-element>table</a></code>の次の子に<var>current element</var>を<a href=#concept-table-advance id=forming-a-table:concept-table-advance-3>進める</a>：</p>
+
+      <ul class=brief><li><code id=forming-a-table:the-colgroup-element-10><a href=#the-colgroup-element>colgroup</a></code></li><li><code id=forming-a-table:the-thead-element-2><a href=#the-thead-element>thead</a></code></li><li><code id=forming-a-table:the-tbody-element-2><a href=#the-tbody-element>tbody</a></code></li><li><code id=forming-a-table:the-tfoot-element-4><a href=#the-tfoot-element>tfoot</a></code></li><li><code id=forming-a-table:the-tr-element-2><a href=#the-tr-element>tr</a></code></li></ul>
+
+     </li><li>
+
+      <p><var>current element</var>が<code id=forming-a-table:the-colgroup-element-11><a href=#the-colgroup-element>colgroup</a></code>要素である場合、上記の<i>column groups</i>にラベル付けされた手順にジャンプする。</p>
+
+     </li></ol>
+
+   </li><li>
+
+    <p><var>y<sub>current</sub></var>を0にする。</p>
+
+   </li><li>
+
+    <p><var>list of downward-growing cells</var>を空のリストにする。</p>
+
+   </li><li>
+
+    <p><i>Rows</i>：<var>current element</var>が次の要素のいずれでもない間、<var>current element</var>を<code id=forming-a-table:the-table-element-9><a href=#the-table-element>table</a></code>の次の子へ<a href=#concept-table-advance id=forming-a-table:concept-table-advance-4>前進させる</a>：</p>
+
+    <ul class=brief><li><code id=forming-a-table:the-thead-element-3><a href=#the-thead-element>thead</a></code></li><li><code id=forming-a-table:the-tbody-element-3><a href=#the-tbody-element>tbody</a></code></li><li><code id=forming-a-table:the-tfoot-element-5><a href=#the-tfoot-element>tfoot</a></code></li><li><code id=forming-a-table:the-tr-element-3><a href=#the-tr-element>tr</a></code></li></ul>
+
+   </li><li>
+
+    <p><var>current element</var>が<code id=forming-a-table:the-tr-element-4><a href=#the-tr-element>tr</a></code>である場合、<a href=#algorithm-for-processing-rows id=forming-a-table:algorithm-for-processing-rows>列を処理するためのアルゴリズム</a>を実行し、<var>current element</var>を<code id=forming-a-table:the-table-element-10><a href=#the-table-element>table</a></code>の次の子に<a href=#concept-table-advance id=forming-a-table:concept-table-advance-5>前進させ</a>、<i>rows</i>にラベル付けされた手順を返す。</p>
+
+   </li><li>
+
+    <p><a href=#algorithm-for-ending-a-row-group id=forming-a-table:algorithm-for-ending-a-row-group>列グループを終了させるためのアルゴリズム</a>を実行する。</p>
+
+   </li><li>
+
+    <p><var>current element</var>が<code id=forming-a-table:the-tfoot-element-6><a href=#the-tfoot-element>tfoot</a></code>である場合、その要素に<var>pending <code id=forming-a-table:the-tfoot-element-7><a href=#the-tfoot-element>tfoot</a></code> elements</var>のリストを追加し、<var>current element</var>を<code id=forming-a-table:the-table-element-11><a href=#the-table-element>table</a></code>の次の子に<a href=#concept-table-advance id=forming-a-table:concept-table-advance-6>前進させ</a>、<i>rows</i>にラベル付けされた手順に戻る。</p>
+
+   </li><li>
+
+    <p><var>current element</var>は<code id=forming-a-table:the-thead-element-4><a href=#the-thead-element>thead</a></code>または<code id=forming-a-table:the-tbody-element-4><a href=#the-tbody-element>tbody</a></code>のいずれかである。</p>
+
+    <p><a href=#algorithm-for-processing-row-groups id=forming-a-table:algorithm-for-processing-row-groups>列グループを処理するためのアルゴリズム</a>を実行する。</p>
+
+   </li><li>
+
+    <p><var>current element</var>を<code id=forming-a-table:the-table-element-12><a href=#the-table-element>table</a></code>の次の子へ<a href=#concept-table-advance id=forming-a-table:concept-table-advance-7>前進させる</a>。</p>
+
+   </li><li>
+
+    <p><i>rows</i>にラベル付けされる手順に戻る。</p>
+
+   </li><li>
+
+    <p><i>End</i>: For each <code id=forming-a-table:the-tfoot-element-8><a href=#the-tfoot-element>tfoot</a></code> element in the list of <var>pending
+    <code id=forming-a-table:the-tfoot-element-9><a href=#the-tfoot-element>tfoot</a></code> elements</var>, in <a id=forming-a-table:tree-order href=infrastructure.html#tree-order>tree order</a>, run the <a href=#algorithm-for-processing-row-groups id=forming-a-table:algorithm-for-processing-row-groups-2>algorithm for processing row
+    groups</a>.</p>
+
+   </li><li>
+
+    <p>スロットに固定される<a href=#concept-cell id=forming-a-table:concept-cell>セル</a>を持たない<a href=#concept-slots id=forming-a-table:concept-slots>スロット</a>のみを含む<var>the table</var>において<a href=#concept-row id=forming-a-table:concept-row>行</a>または<a href=#concept-column id=forming-a-table:concept-column-4>列</a>が存在する場合、これは<a href=#table-model-error id=forming-a-table:table-model-error-2>テーブルモデルエラー</a>である。</p>
+
+   </li><li>
+
+    <p><var>the table</var>を返す。</p>
+
+   </li></ol>
+
+  <p><code id=forming-a-table:the-thead-element-5><a href=#the-thead-element>thead</a></code>、<code id=forming-a-table:the-tbody-element-5><a href=#the-tbody-element>tbody</a></code>、<code id=forming-a-table:the-tfoot-element-10><a href=#the-tfoot-element>tfoot</a></code>要素を処理するための上記の手順の設定によって呼び出される<dfn id=algorithm-for-processing-row-groups>行グループを処理するためのアルゴリズム</dfn>は：</p>
+
+  <ol><li>
+
+    <p><var>y<sub>start</sub></var>に<var>y<sub>height</sub></var>の値を持たせる。</p>
+
+   </li><li>
+
+    <p>処理されている要素の子である各<code id=forming-a-table:the-tr-element-5><a href=#the-tr-element>tr</a></code>要素に対して、ツリー順に、<a href=#algorithm-for-processing-rows id=forming-a-table:algorithm-for-processing-rows-2>行を処理するためのアルゴリズム</a>を実行する。</p>
+
+   </li><li>
+
+    
+    <p><span><var>y<sub>height</sub></var>&nbsp;&gt;&nbsp;<var>y<sub>start</sub></var></span>である場合、<span>y=<var>y<sub>start</sub></var></span>から<span>y=<var>y<sub>height</sub></var>-1</span>までの<var>the table</var>におけるすべての最後の<a href=#concept-row id=forming-a-table:concept-row-2>行</a>に、処理されている要素に対応する、高さ<span><var>y<sub>height</sub></var>-<var>y<sub>start</sub></var></span>をもつ、座標(0, <var>y<sub>start</sub></var>)をもつスロットで固定される、新しい<a href=#concept-row-group id=forming-a-table:concept-row-group>行グループ</a>を形成させる。</p>
+
+   </li><li>
+
+    <p><a href=#algorithm-for-ending-a-row-group id=forming-a-table:algorithm-for-ending-a-row-group-2>列グループを終了させるためのアルゴリズム</a>を実行する。</p>
+
+   </li></ol>
+
+  <p>行のブロックを開始及び終了する場合に上記の手順のセットで呼び出される、<dfn id=algorithm-for-ending-a-row-group>列グループを終了させるためのアルゴリズム</dfn>は：</p>
+
+  <ol><li>
+
+    <p><var>y<sub>current</sub></var>が<var>y<sub>height</sub></var>より小さい間、次の手順に従う：</p>
+
+    <ol><li>
+
+      <p><a href=#algorithm-for-growing-downward-growing-cells id=forming-a-table:algorithm-for-growing-downward-growing-cells>下向きに成長するセルのためのアルゴリズム</a>を実行する。</p>
+
+     </li><li>
+
+      <p><var>y<sub>current</sub></var>を1増やす。</p>
+
+     </li></ol>
+
+   </li><li>
+
+    <p><var>list of downward-growing cells</var>を空にする。</p>
+
+   </li></ol>
+
+
+  <p><code id=forming-a-table:the-tr-element-6><a href=#the-tr-element>tr</a></code>要素を処理するための上記の手順のセットで呼び出される、<dfn id=algorithm-for-processing-rows>行を処理するためのアルゴリズム</dfn>は：</p>
+
+  <ol><li>
+
+    <p><var>y<sub>height</sub></var>が<var>y<sub>current</sub></var>と等しい場合、<var>y<sub>height</sub></var>を1増やす。（<var>y<sub>current</sub></var>は<var>y<sub>height</sub></var>より<em>大きく</em>ない。）</p>
+
+   </li><li>
+
+    <p><var>x<sub>current</sub></var>を0にする。</p>
+
+   </li><li>
+
+    <p><a href=#algorithm-for-growing-downward-growing-cells id=forming-a-table:algorithm-for-growing-downward-growing-cells-2>下向きに成長するセルのためのアルゴリズム</a>を実行する。</p>
+
+   </li><li>
+
+    <p>処理されている<code id=forming-a-table:the-tr-element-7><a href=#the-tr-element>tr</a></code>要素が<code id=forming-a-table:the-td-element><a href=#the-td-element>td</a></code>または<code id=forming-a-table:the-th-element><a href=#the-th-element>th</a></code>要素の子を持たない場合、<var>y<sub>current</sub></var>を1増やし、この手順のセットを中止し、上記のアルゴリズムに戻る。</p>
+
+   </li><li>
+
+    <p><var>current cell</var>を処理されている<code id=forming-a-table:the-tr-element-8><a href=#the-tr-element>tr</a></code>要素における最初の<code id=forming-a-table:the-td-element-2><a href=#the-td-element>td</a></code>または<code id=forming-a-table:the-th-element-2><a href=#the-th-element>th</a></code>要素の子にする。</p>
+
+   </li><li>
+
+    <p><i>Cells</i>：<var>x<sub>current</sub></var>が<var>x<sub>width</sub></var>より小さくかつ座標(<var>x<sub>current</sub></var>, <var>y<sub>current</sub></var>)をもつスロットが割り当てられたセルをすでに持つ間、<var>x<sub>current</sub></var>を1増やす。</p>
+
+   </li><li>
+
+    <p><var>x<sub>current</sub></var>が<var>x<sub>width</sub></var>と等しい場合、<var>x<sub>width</sub></var>を1増やす。（<var>x<sub>current</sub></var>は<var>x<sub>width</sub></var>より<em>大きく</em>ない。）</p>
+
+   </li><li>
+
+    <p><var>current cell</var>が<code id=forming-a-table:attr-tdth-colspan><a href=#attr-tdth-colspan>colspan</a></code>属性を持つ場合、<a href=infrastructure.html#rules-for-parsing-non-negative-integers id=forming-a-table:rules-for-parsing-non-negative-integers-3>その属性の値を解析し</a>、そして<var>colspan</var>を結果とする。</p>
+
+    <p>その値の解析に失敗した、または0を返される場合、または属性が不在の場合、<var>colspan</var>を1にする。</p>
+
+   </li><li>
+
+    <p><var>current cell</var>が<code id=forming-a-table:attr-tdth-rowspan><a href=#attr-tdth-rowspan>rowspan</a></code>属性を持つ場合、<a href=infrastructure.html#rules-for-parsing-non-negative-integers id=forming-a-table:rules-for-parsing-non-negative-integers-4>その属性の値を解析し</a>、そして<var>rowspan</var>を結果とする。</p>
+
+    <p>その値の解析に失敗した場合、または属性が不在の場合、代わりに<var>rowspan</var>を1にする。</p>
+
+   </li><li>
+
+    <p>If <var>rowspan</var> is zero and the <code id=forming-a-table:the-table-element-13><a href=#the-table-element>table</a></code> element's <a id=forming-a-table:node-document href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> is not set to <a id=forming-a-table:quirks-mode href=infrastructure.html#quirks-mode>quirks mode</a>, then let <var>cell grows downward</var> be true, and set <var>rowspan</var> to 1. そうでなければ、<var>cell grows downward</var>をfalseにする。</p>
+
+   </li><li>
+
+    <p><span><var>x<sub>width</sub></var>&nbsp;&lt;&nbsp;<var>x<sub>current</sub></var>+<var>colspan</var></span>の場合、<var>x<sub>width</sub></var>を<span><var>x<sub>current</sub></var>+<var>colspan</var></span>にする。</p>
+
+   </li><li>
+
+    <p><span><var>y<sub>height</sub></var>&nbsp;&lt;&nbsp;<var>y<sub>current</sub></var>+<var>rowspan</var></span>の場合、<var>y<sub>height</sub></var>を<span><var>y<sub>current</sub></var>+<var>rowspan</var></span>にする。</p>
+
+   </li><li>
+
+    <p><span><var>x<sub>current</sub></var>&nbsp;≤&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>x<sub>current</sub></var>+<var>colspan</var></span>かつ<span><var>y<sub>current</sub></var>&nbsp;≤&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>y<sub>current</sub></var>+<var>rowspan</var></span>のような座標(<var>x</var>, <var>y</var>)をもつスロットを、<var>current cell</var>要素に対応する、幅<var>colspan</var>高さ<var>rowspan</var>を持つ、(<var>x<sub>current</sub></var>, <var>y<sub>current</sub></var>)で固定された、新しい<a href=#concept-cell id=forming-a-table:concept-cell-2>セル</a><var>c</var>で覆わせる。</p>
+
+    <p><var>current cell</var>要素が<code id=forming-a-table:the-th-element-3><a href=#the-th-element>th</a></code>要素である場合、この新しいセル<var>c</var>をヘッダーセルにする。そうでなければ、データセルにする。</p>
+
+    <p>どのヘッダーセルが<var>current cell</var>要素に適用されるかを確立するために、次のセクションで説明される<a href=#algorithm-for-assigning-header-cells id=forming-a-table:algorithm-for-assigning-header-cells>ヘッダーセルを割り当てるためのアルゴリズム</a>を使用する。</p>
+
+    <p>呼び出されたすべてのスロットがすでにスロットを覆う<a href=#concept-cell id=forming-a-table:concept-cell-3>セル</a>を持っていた場合、これは<a href=#table-model-error id=forming-a-table:table-model-error-3>テーブルモデルエラー</a>である。子のスロットは現在2つのセルの重なりを持つ。</p>
+
+   </li><li>
+
+    <p><var>cell grows downward</var>がtrueである場合、タプル{<var>c</var>, <var>x<sub>current</sub></var>, <var>colspan</var>}を<var>list of downward-growing cells</var>に追加する。</p>
+
+   </li><li>
+
+    <p><var>x<sub>current</sub></var>を<var>colspan</var>増やす。</p>
+
+   </li><li>
+
+    <p><var>current cell</var>が処理されている<code id=forming-a-table:the-tr-element-9><a href=#the-tr-element>tr</a></code>要素における最後の<code id=forming-a-table:the-td-element-3><a href=#the-td-element>td</a></code>または<code id=forming-a-table:the-th-element-4><a href=#the-th-element>th</a></code>要素の子である場合、<var>y<sub>current</sub></var>を1増やし、この手順のセットを中止し、上記のアルゴリズムに戻る。</p>
+
+   </li><li>
+
+    <p><var>current cell</var>を処理されている<code id=forming-a-table:the-tr-element-10><a href=#the-tr-element>tr</a></code>要素における次の<code id=forming-a-table:the-td-element-4><a href=#the-td-element>td</a></code>または<code id=forming-a-table:the-th-element-5><a href=#the-th-element>th</a></code>要素の子にする。</p>
+
+   </li><li>
+
+    <p><i>cells</i>にラベル付けされた手順に戻る。</p>
+
+   </li></ol>
+
+
+  <p>上記のアルゴリズムが<dfn id=algorithm-for-growing-downward-growing-cells>下方に成長するセルのためのアルゴリズム</dfn>を実行することをユーザーエージェントに要求する場合、もしあれば、<var>list of downward-growing cells</var>における各{<var>cell</var>, <var>cell<sub>x</sub></var>, <var>width</var>}タプルに対して、ユーザーエージェントは<a href=#concept-cell id=forming-a-table:concept-cell-4>セル</a><var>cell</var>を拡張しらければならず、その結果<span><var>cell<sub>x</sub></var>&nbsp;≤&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>cell<sub>x</sub></var>+<var>width</var></span>の場合に座標(<var>x</var>, <var>y<sub>current</sub></var>)をもつスロットも覆う。</p>
+
+
+
+
+  <h5 id=header-and-data-cell-semantics>4.9.12.2 データセルとヘッダーセルとの間の関係を作成する</h5>
+
+  <p>各セルは0個以上のヘッダーセルを割り当てることができる。セル<var>principal cell</var>への<dfn id=algorithm-for-assigning-header-cells>ヘッダーセルを割り当てるためのアルゴリズム</dfn>は次のとおりである。</p>
+
+  <ol><li>
+
+    <p><var>header list</var>を空のセルのリストにする。</p>
+
+   </li><li>
+
+    <p>(<var>principal<sub>x</sub></var>, <var>principal<sub>y</sub></var>)を<var>principal cell</var>が固定されるスロットの座標にする。</p>
+
+   </li><li>
+
+    <dl class=switch><dt><var>principal cell</var>が指定された<code id=header-and-data-cell-semantics:attr-tdth-headers><a href=#attr-tdth-headers>headers</a></code>属性を持つ場合<dd>
+
+      
+
+      <ol><li>
+
+        <p><var>principal cell</var>の<code id=header-and-data-cell-semantics:attr-tdth-headers-2><a href=#attr-tdth-headers>headers</a></code>属性の値を取って<a href=infrastructure.html#split-a-string-on-spaces id=header-and-data-cell-semantics:split-a-string-on-spaces>スペースで分割し</a>、<var>id list</var>を取得したトークンのリストにする。</p>
+
+       </li><li>
+
+        
+        
+        <p>トークンに等しい<a href=infrastructure.html#concept-id id=header-and-data-cell-semantics:concept-id>ID</a>をもつ<code id=header-and-data-cell-semantics:document><a href=dom.html#document>Document</a></code>における最初の要素が同じ<a href=#concept-table id=header-and-data-cell-semantics:concept-table>テーブル</a>におけるセルであり、かつそのセルが<var>principal cell</var>でない場合、<var>id list</var>における各トークンに対して、<var>header list</var>のセルを加える。</p>
+
+       </li></ol>
+
+     <dt><var>principal cell</var>が指定された<code id=header-and-data-cell-semantics:attr-tdth-headers-3><a href=#attr-tdth-headers>headers</a></code>属性を持たない場合<dd>
+
+      <ol><li>
+
+        <p><var>principal<sub>width</sub></var>を<var>principal cell</var>の幅にする。</p>
+
+       </li><li>
+
+        <p><var>principal<sub>height</sub></var>を<var>principal cell</var>の高さにする。</p>
+
+       </li><li>
+
+        <p><var>principal<sub>y</sub></var>から<span><var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1</span>までの<var>y</var>の各値に対して、<var>principal cell</var>、<var>header list</var>、初期座標(<var>principal<sub>x</sub></var>,<var>y</var>)、および<span>Δ<var>x</var>=−1</span>と<span>Δ<var>y</var>=0</span>の増加とともに、<a href=#internal-algorithm-for-scanning-and-assigning-header-cells id=header-and-data-cell-semantics:internal-algorithm-for-scanning-and-assigning-header-cells>ヘッダーセルの走査および割り当てのためのアルゴリズム</a>を実行する。</p>
+
+       </li><li>
+
+        <p><var>principal<sub>x</sub></var>から<span><var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1</span>までの<var>x</var>の各値に対して、<var>principal cell</var>、<var>header list</var>、初期座標(<var>x</var>,<var>principal<sub>y</sub></var>)、および<span>Δ<var>x</var>=0</span>と<span>Δ<var>y</var>=−1</span>の増加とともに、<a href=#internal-algorithm-for-scanning-and-assigning-header-cells id=header-and-data-cell-semantics:internal-algorithm-for-scanning-and-assigning-header-cells-2>ヘッダーセルの走査および割り当てのためのアルゴリズム</a>を実行する。</p>
+
+       </li><li>
+
+        <p><var>principal cell</var>が<a href=#concept-row-group id=header-and-data-cell-semantics:concept-row-group>行グループ</a>で固定される場合、<a href=#row-group-header id=header-and-data-cell-semantics:row-group-header>行グループヘッダー</a>でありかつ<span><var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1</span>以下の<var>x</var>座標および<span><var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1</span>以下の<var>y</var>座標をもつ同じ行グループで固定されるすべてのヘッダーセルを<var>header list</var>に追加する。</p>
+
+        
+
+       </li><li>
+
+        <p><var>principal cell</var>が<a href=#concept-column-group id=header-and-data-cell-semantics:concept-column-group>列グループ</a>で固定される場合、<a href=#column-group-header id=header-and-data-cell-semantics:column-group-header>列グループヘッダー</a>でありかつ<span><var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1</span>以下の<var>x</var>座標および<span><var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1</span>以下の<var>y</var>座標をもつ同じ列グループで固定されるすべてのヘッダーセルを<var>header list</var>に追加する。</p>
+
+        
+
+       </li></ol>
+
+     </dl>
+
+   </li><li>
+
+    <p>すべての<a href=#empty-cell id=header-and-data-cell-semantics:empty-cell>空セル</a>を<var>header list</var>から除去する。</p>
+
+   </li><li>
+
+    <p>任意の複製物を<var>header list</var>から除去する。</p>
+
+   </li><li>
+
+    <p><var>principal cell</var>が存在する場合、<var>header list</var>からこれを除去する。</p> 
+
+   </li><li>
+
+    <p><var>header list</var>におけるヘッダーを<var>principal cell</var>に割り当てる。</p>
+
+   </li></ol>
+
+  <p><var>principal cell</var>、<var>header list</var>、初期座標(<var>initial<sub>x</sub></var>, <var>initial<sub>y</sub></var>)、およびΔ<var>x</var>とΔ<var>y</var>の増分で与えられる、<dfn id=internal-algorithm-for-scanning-and-assigning-header-cells>ヘッダーセルを操作して割り当てるための初期アルゴリズム</dfn>は、次のとおり：</p>
+
+  <ol><li>
+
+    <p><var>x</var>を<var>initial<sub>x</sub></var>と等しくする。</p>
+
+   </li><li>
+
+    <p><var>y</var>を<var>initial<sub>y</sub></var>と等しくする。</p>
+
+   </li><li>
+
+    <p><var>opaque headers</var>を空のセルのリストにする。</p>
+
+   </li><li>
+
+    <dl class=switch><dt><var>principal cell</var>がヘッダーセルである場合<dd><p><var>in header block</var>をtrueにし、<var>headers from current header block</var>を<var>principal cell</var>のみを含むセルのリストにする。<dt>そうでなければ<dd><p><var>in header block</var>をfalseにし、<var>headers from current header block</var>を空のセルのリストにする。</p>
+
+    </dl>
+
+   </li><li>
+
+    <p><i>Loop</i>：<var>x</var>をΔ<var>x</var>増加し、<var>y</var>をΔ<var>y</var>増加する。</p>
+
+    <p class=note>このアルゴリズムの各起動に対して、Δ<var>x</var>とΔ<var>y</var>のいずれかは-1であり、もう一方は0となる。</p>
+
+   </li><li>
+
+    <p><var>x</var>または<var>y</var>のいずれかが0より小さい場合、この初期アルゴリズムを中止する。</p>
+
+   </li><li>
+
+    <p>スロット(<var>x</var>, <var>y</var>)を覆うセルが存在しない場合、またはスロット(<var>x</var>, <var>y</var>)を覆うセルが複数存在する場合、<i>loop</i>にラベル付けされたサブ手順に戻る。</p>
+
+   </li><li>
+
+    <p><var>current cell</var>をスロット(<var>x</var>, <var>y</var>)を覆うセルにする。</p>
+
+   </li><li>
+
+    <dl class=switch><dt><var>current cell</var>がヘッダーセルである場合<dd>
+
+      <ol><li><p><var>in header block</var>をtrueに設定する。</li><li><p><var>current cell</var>を<var>headers from current header block</var>に加える。</li><li><p><var>blocked</var>をfalseにする。</li><li>
+
+        <dl class=switch><dt>Δ<var>x</var>が0である場合<dd>
+
+          <p><var>current cell</var>と同じ<var>x</var>座標に、かつ<var>current cell</var>と同じ幅に固定された<var>opaque headers</var>リストで任意のセルが存在する場合、<var>blocked</var>をtrueにする。</p>
+
+          <p><var>current cell</var>が<a href=#column-header id=header-and-data-cell-semantics:column-header>列ヘッダー</a>でない場合、<var>blocked</var>をtrueにする。</p>
+
+         <dt>Δ<var>y</var>が0である場合<dd>
+
+          <p><var>current cell</var>と同じ<var>y</var>座標に、かつ<var>current cell</var>と同じ高さに固定された<var>opaque headers</var>リストで任意のセルが存在する場合、<var>blocked</var>をtrueにする。</p>
+
+          <p><var>current cell</var>が<a href=#row-header id=header-and-data-cell-semantics:row-header>行ヘッダー</a>でない場合、<var>blocked</var>をtrueにする。</p>
+
+         </dl>
+
+       </li><li><p><var>blocked</var>がflaseである場合、<var>current cell</var>を<var>headers list</var>に加える。</li></ol>
+
+     <dt>If <var>current cell</var> is a data cell and <var>in header block</var> is true<dd><p><var>in header block</var>をfalseに設定する。<var>headers from current header block</var>におけるすべてのセルを<var>opaque headers</var>リストに加え、<var>headers from current header block</var>リストを空にする。</p>
+
+    </dl>
+
+   </li><li>
+
+    <p><i>loop</i>にラベル付けされた手順に戻る。</p>
+
+   </li></ol>
+
+  <p>幅<var>width</var>および高さ<var>height</var>をもつ座標(<var>x</var>, <var>y</var>)をもったスロットで固定されるヘッダーセルは、次の座標条件のいずれかがtrueである場合に<dfn id=column-header>行ヘッダー</dfn>であると呼ばれる。</p>
+
+  <ul><li>セルの<code id=header-and-data-cell-semantics:attr-th-scope><a href=#attr-th-scope>scope</a></code>属性が<a href=#attr-th-scope-col id=header-and-data-cell-semantics:attr-th-scope-col>column</a>状態にある、または、</li><li>The cell's <code id=header-and-data-cell-semantics:attr-th-scope-2><a href=#attr-th-scope>scope</a></code> attribute is in the <a href=#attr-th-scope-auto id=header-and-data-cell-semantics:attr-th-scope-auto>auto</a> state, and there are no data cells in any of the cells covering slots with <var>y</var>-coordinates <var>y</var> .. <span><var>y</var>+<var>height</var>-1</span>をもつスロットを覆う任意のセルでデータセルが存在しない。</li></ul>
+
+  <p>幅<var>width</var>および高さ<var>height</var>をもつ座標(<var>x</var>, <var>y</var>)をもったスロットで固定されるヘッダーセルは、次の座標条件のいずれかがtrueである場合に<dfn id=row-header>列ヘッダー</dfn>であると呼ばれる。</p>
+
+  <ul><li>セルの<code id=header-and-data-cell-semantics:attr-th-scope-3><a href=#attr-th-scope>scope</a></code>属性が<a href=#attr-th-scope-row id=header-and-data-cell-semantics:attr-th-scope-row>row</a>状態にある、または、</li><li>セルの<code id=header-and-data-cell-semantics:attr-th-scope-4><a href=#attr-th-scope>scope</a></code>属性が<a href=#attr-th-scope-auto id=header-and-data-cell-semantics:attr-th-scope-auto-2>auto</a>状態にあり、<var>x</var>座標<var>x</var> .. <span><var>x</var>+<var>width</var>-1</span>をもつスロットを覆う任意のセルでデータセルが存在しない。</li></ul>
+
+  <p>セルの<code id=header-and-data-cell-semantics:attr-th-scope-5><a href=#attr-th-scope>scope</a></code>属性が<a href=#attr-th-scope-colgroup id=header-and-data-cell-semantics:attr-th-scope-colgroup>column group state</a>にある場合、ヘッダーセルは<dfn id=column-group-header>列グループヘッダー</dfn>であると言われる。</p>
+
+  <p>セルの<code id=header-and-data-cell-semantics:attr-th-scope-6><a href=#attr-th-scope>scope</a></code>属性が<a href=#attr-th-scope-rowgroup id=header-and-data-cell-semantics:attr-th-scope-rowgroup>row group state</a>にある場合、ヘッダーセルは<dfn id=row-group-header>行グループヘッダー</dfn>であると言われる。</p>
+
+  <p>セルが要素を含まず、かつもしあれば、セルのテキストコンテンツが<a id=header-and-data-cell-semantics:white_space href=infrastructure.html#white_space>White_Space</a>のみを含む場合、セルは<dfn id=empty-cell>空セル</dfn>であると言われる。</p>
+
+  
+
+  <h4 id=table-examples>4.9.13 例</h4>
+
+  <p><i>この節は非規範的である。</i></p>
+
+  <p>次は、<cite>Smithsonian physical tables, Volume 71</cite>の表45の底部をマークアップする可能性のある1つの方法を示す：</p>
+
+   
+   
+  <pre>&lt;table&gt;
+ &lt;caption&gt;Specification values: &lt;b&gt;Steel&lt;/b&gt;, &lt;b&gt;Castings&lt;/b&gt;,
+ Ann. A.S.T.M. A27-16, Class B;* P max. 0.06; S max. 0.05.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th rowspan=2&gt;Grade.&lt;/th&gt;
+   &lt;th rowspan=2&gt;Yield Point.&lt;/th&gt;
+   &lt;th colspan=2&gt;Ultimate tensile strength&lt;/th&gt;
+   &lt;th rowspan=2&gt;Per cent elong. 50.8mm or 2 in.&lt;/th&gt;
+   &lt;th rowspan=2&gt;Per cent reduct. area.&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th&gt;kg/mm&lt;sup&gt;2&lt;/sup&gt;&lt;/th&gt;
+   &lt;th&gt;lb/in&lt;sup&gt;2&lt;/sup&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Hard&lt;/td&gt;
+   &lt;td&gt;0.45 ultimate&lt;/td&gt;
+   &lt;td&gt;56.2&lt;/td&gt;
+   &lt;td&gt;80,000&lt;/td&gt;
+   &lt;td&gt;15&lt;/td&gt;
+   &lt;td&gt;20&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Medium&lt;/td&gt;
+   &lt;td&gt;0.45 ultimate&lt;/td&gt;
+   &lt;td&gt;49.2&lt;/td&gt;
+   &lt;td&gt;70,000&lt;/td&gt;
+   &lt;td&gt;18&lt;/td&gt;
+   &lt;td&gt;25&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Soft&lt;/td&gt;
+   &lt;td&gt;0.45 ultimate&lt;/td&gt;
+   &lt;td&gt;42.2&lt;/td&gt;
+   &lt;td&gt;60,000&lt;/td&gt;
+   &lt;td&gt;22&lt;/td&gt;
+   &lt;td&gt;30&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+
+  <p>このテーブルは、次のようになる：</p>
+
+  <table id=table-example-1><caption>Specification values: <b>Steel</b>, <b>Castings</b>,
+   Ann. A.S.T.M. A27-16, Class B;* P max. 0.06; S max. 0.05.</caption><thead><tr><th rowspan=2>Grade.</th><th rowspan=2>Yield Point.</th><th colspan=2>Ultimate tensile strength</th><th rowspan=2>Per cent elong. 50.8&nbsp;mm or&nbsp;2&nbsp;in.</th><th rowspan=2>Per cent reduct. area.</th></tr><tr><th>kg/mm<sup>2</sup></th><th>lb/in<sup>2</sup><tbody></th></tr><tr><td>Hard</td><td>0.45 ultimate</td><td>56.2</td><td>80,000</td><td>15</td><td>20</td></tr><tr><td>Medium</td><td>0.45 ultimate</td><td>49.2</td><td>70,000</td><td>18</td><td>25</td></tr><tr><td>Soft</td><td>0.45 ultimate</td><td>42.2</td><td>60,000</td><td>22</td><td>30</td></tr></table>
+
+  <hr>
+
+  <p>次は、2008年度のApple社年次報告書の46ページで粗利益表をマークアップする方法の1つを示す：</p>
+
+  <pre>&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th&gt;
+   &lt;th&gt;2008
+   &lt;th&gt;2007
+   &lt;th&gt;2006
+ &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;th&gt;Net sales
+   &lt;td&gt;$ 32,479
+   &lt;td&gt;$ 24,006
+   &lt;td&gt;$ 19,315
+  &lt;tr&gt;
+   &lt;th&gt;Cost of sales
+   &lt;td&gt;  21,334
+   &lt;td&gt;  15,852
+   &lt;td&gt;  13,717
+ &lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;th&gt;Gross margin
+   &lt;td&gt;$ 11,145
+   &lt;td&gt;$  8,154
+   &lt;td&gt;$  5,598
+ &lt;tfoot&gt;
+  &lt;tr&gt;
+   &lt;th&gt;Gross margin percentage
+   &lt;td&gt;34.3%
+   &lt;td&gt;34.0%
+   &lt;td&gt;29.0%
+&lt;/table&gt;</pre>
+
+  <p>このテーブルは、次のようになる：</p>
+
+  <table class="apple-table-examples e1"><thead><tr><th>
+     </th><th>2008
+     
+     </th><th>2007
+     
+     </th><th>2006
+   
+   <tbody></th></tr><tr><th>Net sales
+     
+     <td>$ 32,479
+     
+     </td><td>$ 24,006
+     
+     </td><td>$ 19,315
+    
+    </td></th></tr><tr><th>Cost of sales
+     
+     <td>    21,334
+     
+     </td><td>    15,852
+     
+     </td><td>    13,717
+   
+   <tbody></td></th></tr><tr><th>Gross margin
+     
+     <td>$ 11,145
+     
+     </td><td>$  8,154
+     
+     </td><td>$  5,598
+   
+   <tfoot></td></th></tr><tr><th>Gross margin percentage
+     
+     <td>34.3%
+     
+     </td><td>34.0%
+     
+     </td><td>29.0%
+  
+  </td></th></tr></table>
+
+  <hr>
+
+  <p>以下は、その文書の同じページに下から営業費用テーブルをマークアップする方法を示す：</p>
+
+  <pre>&lt;table&gt;
+ &lt;colgroup&gt; &lt;col&gt;
+ &lt;colgroup&gt; &lt;col&gt; &lt;col&gt; &lt;col&gt;
+ &lt;thead&gt;
+  &lt;tr&gt; &lt;th&gt; &lt;th&gt;2008 &lt;th&gt;2007 &lt;th&gt;2006
+ &lt;tbody&gt;
+  &lt;tr&gt; &lt;th scope=rowgroup&gt; Research and development
+       &lt;td&gt; $ 1,109 &lt;td&gt; $ 782 &lt;td&gt; $ 712
+  &lt;tr&gt; &lt;th scope=row&gt; Percentage of net sales
+       &lt;td&gt; 3.4% &lt;td&gt; 3.3% &lt;td&gt; 3.7%
+ &lt;tbody&gt;
+  &lt;tr&gt; &lt;th scope=rowgroup&gt; Selling, general, and administrative
+       &lt;td&gt; $ 3,761 &lt;td&gt; $ 2,963 &lt;td&gt; $ 2,433
+  &lt;tr&gt; &lt;th scope=row&gt; Percentage of net sales
+       &lt;td&gt; 11.6% &lt;td&gt; 12.3% &lt;td&gt; 12.6%
+&lt;/table&gt;</pre>
+
+  <p>このテーブルは、次のようになる：</p>
+
+  <table class="apple-table-examples e2"><thead><tr><th> </th><th>2008  </th><th>2007  </th><th>2006
+   
+   <tbody></th></tr><tr><th scope=rowgroup>  Research and development
+         
+         <td>  $ 1,109  </td><td>  $ 782  </td><td>  $ 712
+    
+    </td></th></tr><tr><th scope=row>  Percentage of net sales
+         
+         <td>  3.4%  </td><td>  3.3%  </td><td>  3.7%
+   
+   <tbody></td></th></tr><tr><th scope=rowgroup>  Selling, general, and administrative
+         
+         <td>  $ 3,761  </td><td>  $ 2,963  </td><td>  $ 2,433
+    
+    </td></th></tr><tr><th scope=row>  Percentage of net sales
+         
+         <td>  11.6%  </td><td>  12.3%  </td><td>  12.6%
+  
+  </td></th></tr></table>
+
+
+
+  <nav><a href=embedded-content.html>← 4.8 埋め込みコンテンツ</a> – <a href=index.html>目次</a> – <a href=forms.html>4.10 フォーム →</a></nav>
+</body></html>

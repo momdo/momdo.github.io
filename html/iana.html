@@ -1,0 +1,560 @@
+<!DOCTYPE html><html class=split lang=ja><meta charset=utf-8><title>HTML Standard 日本語訳</title>
+<script defer="" src=https://resources.whatwg.org/dfn.js></script>
+<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
+<script>
+   function F( /* varargs... */) {
+     var fragment = document.createDocumentFragment();
+     for (var index = 0; index < arguments.length; index += 1) {
+       if (arguments[index] instanceof Array) {
+         fragment.appendChild(F.apply(this, arguments[index]));
+       } else if (typeof arguments[index] == 'string') {
+         fragment.appendChild(document.createTextNode(arguments[index]));
+       } else {
+         fragment.appendChild(arguments[index]);
+       }
+     }
+     return fragment;
+   }
+   function E(name, /* optional */ attributes /*, varargs... */) {
+     var element = document.createElement(name);
+     var index = 1;
+     if ((arguments.length > 1) && (typeof attributes != 'string') &&
+         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
+       for (var attName in attributes) {
+         if (typeof attributes[attName] == 'boolean') {
+           if (attributes[attName])
+             element.setAttribute(attName, '');
+         } else if (typeof attributes[attName] == 'function') {
+           element[attName] = attributes[attName];
+         } else {
+           element.setAttribute(attName, attributes[attName]);
+         }
+       }
+       index = 2;
+     }
+     for (; index < arguments.length; index += 1) {
+       if (arguments[index] instanceof Array) {
+         element.appendChild(F.apply(this, arguments[index]));
+       } else if (typeof arguments[index] == 'string') {
+         element.appendChild(document.createTextNode(arguments[index]));
+       } else {
+         element.appendChild(arguments[index]);
+       }
+     }
+     return element;
+   }
+   var currentAlert;
+   var currentAlertTimeout;
+   function showAlert(s, href) {
+     if (!currentAlert) {
+       currentAlert = document.createElement('div');
+       currentAlert.id = 'alert';
+       var x = document.createElement('button');
+       x.textContent = '\u2573';
+       x.onclick = closeAlert2;
+       currentAlert.appendChild(x);
+       currentAlert.appendChild(document.createElement('span'));
+       currentAlert.onmousemove = function () {
+         clearTimeout(currentAlertTimeout);
+         currentAlert.className = '';
+         currentAlertTimeout = setTimeout(closeAlert, 10000);
+       }
+       document.body.appendChild(currentAlert);
+     } else {
+       clearTimeout(currentAlertTimeout);
+       currentAlert.className = '';
+     }
+     currentAlert.lastChild.textContent = '';
+     currentAlert.lastChild.appendChild(F(s));
+     if (href) {
+       var link = document.createElement('a');
+       link.href = href;
+       link.textContent = href;
+       currentAlert.lastChild.appendChild(F(' ', link));
+     }
+     currentAlertTimeout = setTimeout(closeAlert, 10000);
+   }
+   function closeAlert() {
+     clearTimeout(currentAlertTimeout);
+     if (currentAlert) {
+       currentAlert.className = 'closed';
+       currentAlertTimeout = setTimeout(closeAlert2, 3000);
+     }
+   }
+   function closeAlert2() {
+     clearTimeout(currentAlertTimeout);
+     if (currentAlert) {
+       currentAlert.parentNode.removeChild(currentAlert);
+       currentAlert = null;
+     }
+   }
+   window.addEventListener('keydown', function (event) {
+     if (event.keyCode == 27) {
+       if (currentAlert)
+         closeAlert2();
+     } else {
+       closeAlert();
+     }
+   }, false);
+   window.addEventListener('scroll', function (event) {
+     closeAlert();
+   }, false);
+
+   var startedInit = 0;
+   function init() {
+     startedInit = 1;
+   }
+   if (document.documentElement.className == "")
+     setTimeout(function () {
+       if (!startedInit)
+         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
+     }, 6000);
+
+   window.addEventListener('keypress', function (event) {
+     if ((event.which == 114) && (event.metaKey)) {
+       if (!confirm('Are you sure you want to reload this page?'))
+         event.preventDefault();
+     }
+   }, false);
+  </script>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=stylesheet href=https://resources.whatwg.org/standard.css><link rel=icon href=https://resources.whatwg.org/logo.svg>
+<style>
+   [hidden] { display: none; }
+
+   .proposal { border: blue solid; padding: 1em; }
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+   #updatesStatus { display: none; z-index: 10; }
+   #updatesStatus.relevant { display: block; position: fixed; right: 1em; top: 1em; padding: 0.5em; font: bold small sans-serif; min-width: 25em; width: 30%; max-width: 40em; height: auto; border: ridge 4px gray; background: #EEEEEE; color: black; }
+   div.head .logo { width: 11em; margin-bottom: 20em; }
+
+   #configUI { position: absolute; z-index: 20; top: auto; right: 0; width: 11em; padding: 0 0.5em 0 0.5em; font-size: small; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em 0 0 0.5em; }
+   #configUI p { margin: 0.75em 0; padding: 0.3em; }
+   #configUI p label { display: block; }
+   #configUI #updateUI, #configUI .loginUI { text-align: center; }
+   #configUI input[type=button] { display: block; margin: auto; }
+   #configUI :link, #configUI :visited { color: white; }
+   #configUI :link:hover, #configUI :visited:hover { background: transparent; }
+
+   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
+   #alert.closed { opacity: 0; }
+   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
+   #alert :link, #alert :visited { color: white; text-decoration: underline; }
+   #alert :link:hover, #alert :visited:hover { background: transparent; }
+
+   @media print { #configUI, #alert { display: none; } }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+
+   .status { font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; top: auto; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status.wrapped { width: 1em; height: 1em; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; right: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome-android.png); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.png); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mobile.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mobile.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+
+   .panel { position: fixed; z-index: 30; top: 10%; left: 0; margin: auto; right: 0; width: 35em; border: double thick; background: #EEEEEE; color: black; padding: 1em; font: 1em sans-serif; max-height: 70%; overflow: auto; }
+   .panel h2 { margin: 0; text-align: center; }
+   .panel ul { min-height: 6em; }
+   .panel p { text-align: right; margin: 0; }
+   .panel form { background: transparent; color: black; margin: 0.5em -0.5em 1em; padding: 0.5em; }
+   .panel form.changed { background: yellow; color: black; }
+   .panel form p { text-align: left; margin: 1em 0 0; }
+   .panel form p:first-child { margin-top: 0; }
+   .panel form p:last-child { margin-bottom: 0; }
+   .panel form p textarea { width: 100% /* TODO: need the keyword that makes it fit to the parent here */; min-height: 4em; display: block; }
+   .panel form dl { line-height: 1.5em; }
+   .panel form dt { display: inline-block; width: 20em; white-space: nowrap; text-align: right; font-weight: normal; margin: 0; padding: 0; }
+   .panel form dd { display: inline; margin: 0 0 0 1em; padding: 0; }
+   .panel form dd:after { display: block; }
+   ul.checkboxes { list-style-type: none; }
+   .progress { text-decoration: blink; }
+
+   .applies .yes { background: yellow; }
+  </style>
+<style>
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+  </style>
+<style>
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+  </style>
+<script src=link-fixup.js></script>
+<body onload=init()>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>27 February 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=obsolete.html>← 15 Obsolete features</a> — <a href=index.html>Table of Contents</a> — <a href=indices.html>Index →</a></nav><ol class=toc><li id=toc-iana><a href=iana.html#iana>16 IANAの考慮</a><ol><li><a href=iana.html#text/html>16.1 <code>text/html</code></a></li><li><a href=iana.html#multipart/x-mixed-replace>16.2 <code>multipart/x-mixed-replace</code></a></li><li><a href=iana.html#application/xhtml+xml>16.3 <code>application/xhtml+xml</code></a></li><li><a href=iana.html#text/cache-manifest>16.4 <code>text/cache-manifest</code></a></li><li><a href=iana.html#text/ping>16.5 <code>text/ping</code></a></li><li><a href=iana.html#application/microdata+json>16.6 <code>application/microdata+json</code></a></li><li><a href=iana.html#ping-from>16.7 `<code>Ping-From</code>`</a></li><li><a href=iana.html#ping-to>16.8 `<code>Ping-To</code>`</a></li><li><a href=iana.html#web+-scheme-prefix>16.9 <code>web+</code> scheme prefix</a></li></ol></li></ol><h2 id=iana>16 IANAの考慮</h2>
+
+  
+
+
+  <h3 id=text/html>16.1 <dfn><code>text/html</code></dfn></h3>
+
+  <p>この登録は、コミュニティによるレビューのためであり、レビュー、承認、およびIANAへの登録のためにIESGに提出される予定である。</p>
+
+  
+
+  
+
+  <dl><dt>タイプ名：<dd>text<dt>サブタイプ名：<dd>html<dt>必須パラメータ：<dd>必須パラメータなし<dt>任意パラメータ：<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p>The <code>charset</code> parameter may be provided to specify the
+      <a id="text/html:document's-character-encoding" href="infrastructure.html#document's-character-encoding">document's character encoding</a>, overriding any <a href=semantics.html#character-encoding-declaration id=text/html:character-encoding-declaration>character encoding declarations</a> in the document other than a Byte Order Mark (BOM). The parameter's value
+      must be one of the <a href=https://encoding.spec.whatwg.org/#label id=text/html:encoding-label data-x-internal=encoding-label>labels</a> of the <a href=https://encoding.spec.whatwg.org/#encoding id=text/html:encoding data-x-internal=encoding>character encoding</a> used to serialise the file. <a href=references.html#refsENCODING>[ENCODING]</a></p>
+
+     </dl>
+   <dt>エンコーディングの考慮：<dd>
+
+    8ビット（<a href=semantics.html#character-encoding-declaration id=text/html:character-encoding-declaration-2>文字エンコーディング宣言</a>の節を参照）
+
+   <dt>セキュリティの考慮：<dd>
+
+    <p>全体小説はHTML文書に適用するセキュリティ上の考慮事項について書かれている。読者が詳細について参照する場合、多くはこの文書に記載されている。しかし、一部の一般的な懸念はここで特筆に値する：</p>
+
+    <p>HTMLはスクリプト化言語であり、多数のAPI（一部はこの文書に記載される）を持つ。スクリプトは、情報漏洩、認証情報漏洩、クロスサイトスクリプティング攻撃、クロスサイトリクエストフォージェリ、および他の多くの問題に関して潜在的なリスクをユーザーに公開できる。この仕様の設計は正しく実装されれば安全であることを意図する一方で、任意のソフトウェアと同様に、完全な実装は大規模な事業であり、ユーザーエージェントはセキュリティバグを持つ可能性がある。</p>
+
+    <p>スクリプトを使用しないけれども、歴史的な理由により、レガシーコンテンツとの幅広い互換性を保つために必要であるが、不幸なセキュリティ上の問題をユーザーに公開するHTML内の特定の機能が存在する。具体的に、<code id=text/html:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>要素はインターネット上のユーザーの場所からポートスキャンに影響を与えるための方法として他の機能と組み合わせて使用できる。これは、攻撃者が別の方法で判断することができないだろうローカルネットワークトポロジーを公開できる。</p>
+
+    <p>HTMLは、時に<i>同一生成元ポリシー</i>として知られる区画化スキームに依存する。ほとんどの場合に<a id=text/html:origin-2 href=browsers.html#origin-2>生成元</a>は、同じプロトコルを使用して、同じポート上で同じホストから提供されるすべてのページで構成する。</p>
+
+    <p>したがって、サイトの一部を形成する任意の信頼できないコンテンツがそのサイト上のすべての機密コンテンツとは異なる<a id=text/html:origin-2-2 href=browsers.html#origin-2>生成元</a>でホストされていることを確認することは非常に重要である。信頼できないコンテンツは、同じ生成元に他のページを簡単に偽装でき、その生成元からデータを読み取り、実行するために生成元にスクリプトを引き起こし、たとえそれらがユニークなトークンによってクロスサイトリクエストフォージェリ攻撃から保護されている場合でも、その生成元からフォームを送信し、任意のサードパーティのリソースを公開するために活用するまたはその生成元に付与された権利を利用することができる。</p>
+
+   <dt>相互運用性の考慮：<dd>
+    適合および非適合コンテンツの両方を処理するための規則は、この仕様で定義される。
+   <dt>発行された仕様：<dd id=authors-using-html>
+    この文書は関連仕様である。<code id=text/html:text/html><a href=#text/html>text/html</a></code>タイプをもつリソースにラベル付けすることは、リソースが<a id=text/html:syntax href=syntax.html#syntax>HTML構文</a>を使用する<a href=infrastructure.html#html-documents id=text/html:html-documents>HTML文書</a>であることを主張する。
+   <dt>このメディアタイプを使用するアプリケーション：<dd>
+    ウェブブラウザ、ウェブコンテンツ処理のためのツール、HTMLオーサリングツール、検索エンジン、バリデータ。
+   <dt>追加情報：<dd>
+    <dl><dt>マジックナンバー：<dd>バイトシーケンスのないHTML文書を一意に識別できない。More information on detecting HTML documents is available in the WHATWG MIME Sniffing standard. <a href=references.html#refsMIMESNIFF>[MIMESNIFF]</a><dt>ファイル拡張子：<dd>"<code>html</code>"および"<code>htm</code>は一般的であるが、確実に排他的でなく、HTML文書の拡張子として使用される。<dt>Macintoshファイルタイプコード：<dd><code>TEXT</code></dl>
+   <dt>より詳しい情報について連絡する人物および電子メールアドレス：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>想定される利用法：<dd>一般<dt>利用法の制限：<dd>何の制限も適用されない。<dt>著者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>W3C</dl>
+
+  <p><code id=text/html:text/html-2><a href=#text/html>text/html</a></code>リソースとともに使用されるフラグメント識別子は、<a id=text/html:the-indicated-part-of-the-document href=browsers.html#the-indicated-part-of-the-document>文書の指定された部分</a>を参照するか、ページ内スクリプトに状態情報を提供する。</p>
+
+
+
+
+  <h3 id=multipart/x-mixed-replace>16.2 <dfn><code>multipart/x-mixed-replace</code></dfn></h3>
+
+  <p>この登録は、コミュニティによるレビューのためであり、レビュー、承認、およびIANAへの登録のためにIESGに提出される予定である。</p>
+
+  
+
+  <dl><dt>タイプ名：<dd>multipart<dt>サブタイプ名：<dd>x-mixed-replace<dt>必須パラメータ：<dd>
+    <ul class=brief><li><code>boundary</code>（RFC2046で定義される）<a href=references.html#refsRFC2046>[RFC2046]</a>
+    </li></ul>
+   <dt>任意パラメータ：<dd>任意パラメータなし<dt>エンコーディングの考慮：<dd>binary<dt>セキュリティの考慮：<dd>
+    <code id=multipart/x-mixed-replace:multipart/x-mixed-replace><a href=#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code>リソースのサブリソースは、<code id=multipart/x-mixed-replace:text/html><a href=#text/html>text/html</a></code>などの自明でないセキュリティへの影響を持つタイプを含めた、任意のデータ型を指定できる。
+   <dt>相互運用性の考慮：<dd>
+    なし。
+   <dt>発行された仕様：<dd>
+    この仕様は、ウェブブラウザのための処理規則について説明する。Conformance requirements for generating resources with this type are the same as for <code id=multipart/x-mixed-replace:multipart/mixed><a href=indices.html#multipart/mixed>multipart/mixed</a></code>. <a href=references.html#refsRFC2046>[RFC2046]</a>
+   <dt>このメディアタイプを使用するアプリケーション：<dd>
+    このタイプは、ウェブブラウザによって消費のために、ウェブサーバーによって生成されたリソースで使用されることを意図する。
+   <dt>追加情報：<dd>
+    <dl><dt>マジックナンバー：<dd>バイトシーケンスのない<code id=multipart/x-mixed-replace:multipart/x-mixed-replace-2><a href=#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code>リソースを一意に識別できない。<dt>ファイル拡張子：<dd>いずれのファイル拡張子もこのタイプのために推奨されない。<dt>Macintoshファイルタイプコード：<dd>いずれのマッキントッシュファイルタイプコードもこのタイプのために推奨されない。</dl>
+   <dt>より詳しい情報について連絡する人物および電子メールアドレス：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>想定される利用法：<dd>一般<dt>利用法の制限：<dd>何の制限も適用されない。<dt>著者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>W3C</dl>
+
+  <p><code id=multipart/x-mixed-replace:multipart/x-mixed-replace-3><a href=#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code>リソースとともに使用されるフラグメント識別子は、そのボディ部分で使用されるタイプで定義されているようにそれぞれのボディ部分に適用する。</p>
+
+
+  <h3 id=application/xhtml+xml>16.3 <dfn><code>application/xhtml+xml</code></dfn></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=13787" title="Define fragment identifier semantics for XML MIME types">13787</a></div>
+
+  <p>この登録は、コミュニティによるレビューのためであり、レビュー、承認、およびIANAへの登録のためにIESGに提出される予定である。</p>
+
+  
+
+  
+
+  <dl><dt>タイプ名：<dd>application<dt>サブタイプ名：<dd>xhtml+xml<dt>必須パラメータ：<dd>Same as for <code id=application/xhtml+xml:application/xml><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>任意パラメータ：<dd>Same as for <code id=application/xhtml+xml:application/xml-2><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>エンコーディングの考慮：<dd>Same as for <code id=application/xhtml+xml:application/xml-3><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>セキュリティの考慮：<dd>Same as for <code id=application/xhtml+xml:application/xml-4><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>相互運用性の考慮：<dd>Same as for <code id=application/xhtml+xml:application/xml-5><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt id=authors-using-xhtml>発行された仕様：<dd>
+    <code id=application/xhtml+xml:application/xhtml+xml><a href=#application/xhtml+xml>application/xhtml+xml</a></code>タイプをもつリソースにラベル付けすることは、リソースが<a id=application/xhtml+xml:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML名前空間</a>のルート要素を持つ可能性のあるXML文書であることを主張する。したがって、関連する仕様は、XML仕様、XML仕様での名前空間、およびこの仕様である。<a href=references.html#refsXML>[XML]</a> <a href=references.html#refsXMLNS>[XMLNS]</a>
+   <dt>このメディアタイプを使用するアプリケーション：<dd>Same as for <code id=application/xhtml+xml:application/xml-6><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>追加情報：<dd>
+    <dl><dt>マジックナンバー：<dd>Same as for <code id=application/xhtml+xml:application/xml-7><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>ファイル拡張子：<dd>"<code>xhtml</code>"および"<code>xht</code>"は、時に<a id=application/xhtml+xml:html-namespace-2-2 href=infrastructure.html#html-namespace-2>HTML名前空間</a>由来のルート要素を持つXMLリソースの拡張子として使用される。<dt>Macintoshファイルタイプコード：<dd><code>TEXT</code></dl>
+   <dt>より詳しい情報について連絡する人物および電子メールアドレス：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>想定される利用法：<dd>一般<dt>利用法の制限：<dd>何の制限も適用されない。<dt>著者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>W3C</dl>
+
+  <p><code id=application/xhtml+xml:application/xhtml+xml-2><a href=#application/xhtml+xml>application/xhtml+xml</a></code>リソースで使用されるフラグメント識別子は、任意の<a id=application/xhtml+xml:xml-mime-type href=infrastructure.html#xml-mime-type>XML MIMEタイプ</a>と同じセマンティックを持つ。<a href=references.html#refsRFC7303>[RFC7303]</a></p>
+
+
+  <h3 id=text/cache-manifest>16.4 <dfn><code>text/cache-manifest</code></dfn></h3>
+
+  <p>この登録は、コミュニティによるレビューのためであり、レビュー、承認、およびIANAへの登録のためにIESGに提出される予定である。</p>
+
+  
+
+  <dl><dt>タイプ名：<dd>text<dt>サブタイプ名：<dd>cache-manifest<dt>必須パラメータ：<dd>パラメータなし<dt>任意パラメータ：<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p><code>charset</code>パラメータは提供されてもよい。パラメータの値は"<code>utf-8</code>"でなければならない。このパラメータは、目的を達成しない。これはレガシーサーバとの互換性のためのみに許可される。</p>
+
+     </dl>
+   <dt>エンコーディングの考慮：<dd>8ビット（常にUTF-8）<dt>セキュリティの考慮：<dd>
+    <p>キャッシュマニフェスト自身は、機密情報がマニフェストに含まれない限り、直接のリスクはない。しかし、実装は、キャッシュマニフェストに基づくキャッシュを取り込む際、その特定の生成元ベースの制限が履行されることを確認するために、特定の規則に従う必要がある。これらの規則を正しく実装できない場合、情報漏洩、クロスサイトスクリプティング攻撃などが発生するかもしれない。</p>
+   <dt>相互運用性の考慮：<dd>
+    適合および非適合コンテンツの両方を処理するための規則は、この仕様で定義される。
+   <dt>発行された仕様：<dd>
+    この文書は関連仕様である。
+   <dt>このメディアタイプを使用するアプリケーション：<dd>
+    ウェブブラウザ。
+   <dt>追加情報：<dd>
+    <dl><dt>マジックナンバー：<dd>Cache manifests begin with the string "<code>CACHE
+     MANIFEST</code>", followed by either a U+0020 SPACE character, a
+     U+0009 CHARACTER TABULATION (tab) character, a U+000A LINE FEED
+     (LF) character, or a U+000D CARRIAGE RETURN (CR) character.<dt>ファイル拡張子：<dd>"<code>appcache</code>"<dt>Macintoshファイルタイプコード：<dd>いずれのマッキントッシュファイルタイプコードもこのタイプのために推奨されない。</dl>
+   <dt>より詳しい情報について連絡する人物および電子メールアドレス：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>想定される利用法：<dd>一般<dt>利用法の制限：<dd>何の制限も適用されない。<dt>著者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>W3C</dl>
+
+  <p>フラグメント識別子は、<code id=text/cache-manifest:text/cache-manifest><a href=#text/cache-manifest>text/cache-manifest</a></code>リソースで意味を持たない。</p>
+
+
+  <h3 id=text/ping>16.5 <dfn><code>text/ping</code></dfn></h3>
+
+  <p>この登録は、コミュニティによるレビューのためであり、レビュー、承認、およびIANAへの登録のためにIESGに提出される予定である。</p>
+
+  
+
+  <dl><dt>タイプ名：<dd>text<dt>サブタイプ名：<dd>ping<dt>必須パラメータ：<dd>パラメータなし<dt>任意パラメータ：<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p><code>charset</code>パラメータは提供されてもよい。パラメータの値は"<code>utf-8</code>"でなければならない。このパラメータは、目的を達成しない。これはレガシーサーバとの互換性のためのみに許可される。</p>
+
+     </dl>
+   <dt>エンコーディングの考慮：<dd>該当事項なし。<dt>セキュリティの考慮：<dd>
+    <p>If used exclusively in the fashion described in the context of
+    <a id=text/ping:hyperlink-auditing href=semantics.html#hyperlink-auditing>hyperlink auditing</a>, this type introduces no new
+    security concerns.</p>
+   <dt>相互運用性の考慮：<dd>
+    
+    Rules applicable to this type are defined in this specification.
+   
+   <dt>発行された仕様：<dd>
+    この文書は関連仕様である。
+   <dt>このメディアタイプを使用するアプリケーション：<dd>
+    ウェブブラウザ。
+   <dt>追加情報：<dd>
+    <dl><dt>マジックナンバー：<dd><code id=text/ping:text/ping><a href=#text/ping>text/ping</a></code> resources always consist of the four
+     bytes 0x50 0x49 0x4E 0x47 (ASCII 'PING').<dt>ファイル拡張子：<dd>No specific file extension is recommended for this type.<dt>Macintoshファイルタイプコード：<dd>いずれのマッキントッシュファイルタイプコードもこのタイプのために推奨されない。</dl>
+   <dt>より詳しい情報について連絡する人物および電子メールアドレス：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>想定される利用法：<dd>一般<dt>利用法の制限：<dd>Only intended for use with HTTP POST requests generated as part
+   of a Web browser's processing of the <code id=text/ping:ping><a href=semantics.html#ping>ping</a></code> attribute.<dt>著者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>W3C</dl>
+
+  <p>Fragment identifiers have no meaning with <code id=text/ping:text/ping-2><a href=#text/ping>text/ping</a></code> resources.</p>
+
+
+
+  <h3 id=application/microdata+json>16.6 <dfn><code>application/microdata+json</code></dfn></h3>
+
+  <p>この登録は、コミュニティによるレビューのためであり、レビュー、承認、およびIANAへの登録のためにIESGに提出される予定である。</p>
+
+  
+
+  <dl><dt>タイプ名：<dd>application<dt>サブタイプ名：<dd>microdata+json<dt>必須パラメータ：<dd>Same as for <code id=application/microdata+json:application/json><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>任意パラメータ：<dd>Same as for <code id=application/microdata+json:application/json-2><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>エンコーディングの考慮：<dd>8ビット（常にUTF-8）<dt>セキュリティの考慮：<dd>Same as for <code id=application/microdata+json:application/json-3><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>相互運用性の考慮：<dd>Same as for <code id=application/microdata+json:application/json-4><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>発行された仕様：<dd>
+
+    
+
+    Labeling a resource with the <code id=application/microdata+json:application/microdata+json><a href=#application/microdata+json>application/microdata+json</a></code> type asserts that the
+    resource is a JSON text that consists of an object with a single entry called "<code>items</code>" consisting of an array of entries, each of which consists of an object
+    with an entry called "<code>id</code>" whose value is a string, an entry called "<code>type</code>" whose value is another string, and an entry called "<code>properties</code>" whose value is an object whose entries each have a value consisting
+    of an array of either objects or strings, the objects being of the same form as the objects in
+    the aforementioned "<code>items</code>" entry. Thus, the relevant specifications are
+    the JSON specification and this specification. <a href=references.html#refsJSON>[JSON]</a>
+
+   <dt>このメディアタイプを使用するアプリケーション：<dd>
+
+    <p>Applications that transfer data intended for use with HTML's microdata feature, especially in
+    the context of drag-and-drop, are the primary application class for this type.</p>
+
+   <dt>追加情報：<dd>
+    <dl><dt>マジックナンバー：<dd>Same as for <code id=application/microdata+json:application/json-5><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>ファイル拡張子：<dd>Same as for <code id=application/microdata+json:application/json-6><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>Macintoshファイルタイプコード：<dd>Same as for <code id=application/microdata+json:application/json-7><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a></dl>
+   <dt>より詳しい情報について連絡する人物および電子メールアドレス：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>想定される利用法：<dd>一般<dt>利用法の制限：<dd>何の制限も適用されない。<dt>著者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>W3C</dl>
+
+  <p>Fragment identifiers used with <code id=application/microdata+json:application/microdata+json-2><a href=#application/microdata+json>application/microdata+json</a></code> resources have the same
+  semantics as when used with <code id=application/microdata+json:application/json-8><a href=indices.html#application/json>application/json</a></code> (namely, at the time of writing, no
+  semantics at all). <a href=references.html#refsJSON>[JSON]</a></p>
+
+
+
+  <h3 id=ping-from>16.7 `<dfn><code>Ping-From</code></dfn>`</h3>
+
+  <p>This section describes a header for registration in the Permanent Message Header Field
+  Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
+
+  <dl><dt>Header field name:<dd>Ping-From<dt>Applicable protocol:<dd>http<dt>Status（状態）<dd>standard<dt>著者/変更管理者：<dd>W3C<dt>Specification document(s):<dd>
+    この文書は関連仕様である。
+   <dt>Related information:<dd>なし。</dl>
+
+
+  <h3 id=ping-to>16.8 `<dfn><code>Ping-To</code></dfn>`</h3>
+
+  <p>This section describes a header for registration in the Permanent Message Header Field
+  Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
+
+  <dl><dt>Header field name:<dd>Ping-To<dt>Applicable protocol:<dd>http<dt>Status（状態）<dd>standard<dt>著者/変更管理者：<dd>W3C<dt>Specification document(s):<dd>
+    この文書は関連仕様である。
+   <dt>Related information:<dd>なし。</dl>
+
+
+
+  <h3 id=web+-scheme-prefix>16.9 <dfn><code>web+</code> scheme prefix</dfn></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18496" title="Registries (IANA): Change the IANA sections to refer to the new registration system and not IANA">18496</a>, <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18671" title="Find a solution to the problem of the IANA scheme registry being so incomplete (especially given web+)">18671</a></div>
+
+  <p>このセクションは、IANAのURIスキームレジストリで使用するための規則を説明する。これ自体は特定のスキームを登録しない。<a href=references.html#refsRFC7595>[RFC7595]</a></p>
+
+  <dl><dt>Scheme name:<dd>
+    スキームは、4文字"<code>web+</code>"で始まり、その後に<code>a</code>-<code>z</code>範囲内の1つ以上の文字が続く。
+   <dt>Status（状態）<dd>Permanent<dt>Scheme syntax:<dd>スキーム固有。<dt>Scheme semantics:<dd>スキーム固有。<dt>エンコーディングの考慮：<dd>すべての"<code>web+</code>"スキームは、UTF-8エンコーディングが関連したように使用すべきである。<dt>Applications/protocols that use this scheme name:<dd>スキーム固有。<dt>相互運用性の考慮：<dd>スキームは、ウェブアプリケーションのコンテキストで使用されることが期待される。<dt>セキュリティの考慮：<dd>
+
+    任意のウェブページは、すべての"<code>web+</code>"スキームに対するハンドラを登録できる。このように、これらスキームはコアプラットフォームの機能（たとえばHTTPまたはFTPなどのネットワーク転送プロトコルなど）になるように意図された機能のために使用してはならない。同様に、このようなスキームは、ユーザー名、パスワード、個人情報、または機密プロジェクト名として、そのURLに機密情報を格納してはならない。
+
+   <dt>連絡先：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>参考文献：<dd>
+    <cite>Custom scheme and content handlers</cite>, HTML Living Standard:
+    <a href=webappapis.html#custom-handlers>https://html.spec.whatwg.org/#custom-handlers</a>
+   </dl>
+
+
+  <nav><a href=obsolete.html>← 15 Obsolete features</a> — <a href=index.html>Table of Contents</a> — <a href=indices.html>Index →</a></nav>
+</body></html>
