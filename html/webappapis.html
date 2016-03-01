@@ -313,7 +313,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>29 February 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>1 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -532,6 +532,17 @@
 
   <h5 id=fetching-scripts>8.1.3.2 Fetching scripts</h5>
 
+  <p>The various script-fetching algorithms below have two hooks that may be customized by their
+  callers:</p>
+
+  <ul><li><p><dfn id=fetching-scripts-set-up-request>Set up the request</dfn>, which takes a
+   <a href=https://fetch.spec.whatwg.org/#concept-request id=fetching-scripts:concept-request data-x-internal=concept-request>request</a> which it may modify before the algorithm
+   continues</li><li><p><dfn id=fetching-scripts-validate-response>Validate the response</dfn>, which takes
+   a <a href=https://fetch.spec.whatwg.org/#concept-response id=fetching-scripts:concept-response data-x-internal=concept-response>response</a> and must either return true or false</li></ul>
+
+  <p class=note><cite>Service Workers</cite> is an example of a specification that runs these
+  algorithms with its own options for the hooks. <a href=references.html#refsSW>[SW]</a></p>
+
   <p>To <dfn id=fetch-a-classic-script>fetch a classic script</dfn> for a <code id=fetching-scripts:the-script-element><a href=scripting.html#the-script-element>script</a></code> element <var>element</var>,
   given a <var>url</var>, a <var>CORS setting</var>, a <var>settings object</var>, and a
   <var>character encoding</var>, run these steps. The algorithm will asynchronously complete with
@@ -540,15 +551,18 @@
   <ol><li><p>Let <var>request</var> be the result of <a href=infrastructure.html#create-a-potential-cors-request id=fetching-scripts:create-a-potential-cors-request>creating a potential-CORS request</a> given <var>url</var> and <var>CORS
    setting</var>.</li><li><p>Set <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-client id=fetching-scripts:concept-request-client data-x-internal=concept-request-client>client</a> to
    <var>settings object</var>, its <a href=https://fetch.spec.whatwg.org/#concept-request-type id=fetching-scripts:concept-request-type data-x-internal=concept-request-type>type</a> to "<code>script</code>", and its <a href=https://fetch.spec.whatwg.org/#concept-request-destination id=fetching-scripts:concept-request-destination data-x-internal=concept-request-destination>destination</a>
-   to "<code>script</code>".</li><li><p><a href=https://fetch.spec.whatwg.org/#concept-fetch id=fetching-scripts:concept-fetch data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li>
+   to "<code>script</code>".</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request>set
+   up the request</a>, perform them on <var>request</var>.</li><li><p><a href=https://fetch.spec.whatwg.org/#concept-fetch id=fetching-scripts:concept-fetch data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li>
     <p>Return from this algorithm, and run the remaining steps as part of the fetch's
-    <a id=fetching-scripts:process-response href=https://fetch.spec.whatwg.org/#process-response data-x-internal=process-response>process response</a> for the <a href=https://fetch.spec.whatwg.org/#concept-response id=fetching-scripts:concept-response data-x-internal=concept-response>response</a>
+    <a id=fetching-scripts:process-response href=https://fetch.spec.whatwg.org/#process-response data-x-internal=process-response>process response</a> for the <a href=https://fetch.spec.whatwg.org/#concept-response id=fetching-scripts:concept-response-2 data-x-internal=concept-response>response</a>
     <var>response</var>.</p>
 
     <p class=note><var>response</var> can be either <a id=fetching-scripts:cors-same-origin href=infrastructure.html#cors-same-origin>CORS-same-origin</a> or
     <a id=fetching-scripts:cors-cross-origin href=infrastructure.html#cors-cross-origin>CORS-cross-origin</a>. This only affects how error reporting happens.</p>
    </li><li><p>If <var>response</var>'s <a href=https://fetch.spec.whatwg.org/#concept-response-type id=fetching-scripts:concept-response-type data-x-internal=concept-response-type>type</a> is "<code>error</code>", or <var>response</var>'s <a href=https://fetch.spec.whatwg.org/#concept-response-status id=fetching-scripts:concept-response-status data-x-internal=concept-response-status>status</a> is not an <a id=fetching-scripts:ok-status href=https://fetch.spec.whatwg.org/#ok-status data-x-internal=ok-status>ok status</a>, asynchronously
-   complete this algorithm with null, and abort these steps.</li><li><p>If <var>response</var>'s <a href=infrastructure.html#content-type id=fetching-scripts:content-type>Content Type metadata</a>, if
+   complete this algorithm with null, and abort these steps.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-validate-response id=fetching-scripts:fetching-scripts-validate-response>validate the response</a>, perform them on
+   <var>response</var>. If they return false, complete this algorithm with null, and abort these
+   steps.</li><li><p>If <var>response</var>'s <a href=infrastructure.html#content-type id=fetching-scripts:content-type>Content Type metadata</a>, if
    any, specifies a character encoding, and the user agent supports that encoding, then set
    <var>character encoding</var> to that encoding (ignoring the passed-in value).</li><li>
     <p>Let <var>source text</var> be the result of <a href=https://encoding.spec.whatwg.org/#decode id=fetching-scripts:decode data-x-internal=decode>decoding</a>
@@ -571,11 +585,14 @@
   asynchronously complete with either null (on failure) or a new <a href=#classic-script id=fetching-scripts:classic-script-2>classic script</a> (on
   success).</p>
 
-  <ol><li><p>Let <var>request</var> be a new <a href=https://fetch.spec.whatwg.org/#concept-request id=fetching-scripts:concept-request data-x-internal=concept-request>request</a> whose
-   <a href=https://fetch.spec.whatwg.org/#concept-request-url id=fetching-scripts:concept-request-url data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-client id=fetching-scripts:concept-request-client-2 data-x-internal=concept-request-client>client</a> is <var>settings object</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-type id=fetching-scripts:concept-request-type-2 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://fetch.spec.whatwg.org/#concept-request-destination id=fetching-scripts:concept-request-destination-2 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-referrer id=fetching-scripts:concept-request-referrer data-x-internal=concept-request-referrer>referrer</a> is <var>referrer</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-mode id=fetching-scripts:concept-request-mode data-x-internal=concept-request-mode>mode</a> is "<code>same-origin</code>", <a href=https://fetch.spec.whatwg.org/#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> is "<code>same-origin</code>", and whose <a id=fetching-scripts:use-url-credentials-flag href=https://fetch.spec.whatwg.org/#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a> is set.</li><li><p><a href=https://fetch.spec.whatwg.org/#concept-fetch id=fetching-scripts:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li><p>Return from this algorithm, and run the remaining steps as part of the fetch's
-   <a id=fetching-scripts:process-response-2 href=https://fetch.spec.whatwg.org/#process-response data-x-internal=process-response>process response</a> for the <a href=https://fetch.spec.whatwg.org/#concept-response id=fetching-scripts:concept-response-2 data-x-internal=concept-response>response</a>
+  <ol><li><p>Let <var>request</var> be a new <a href=https://fetch.spec.whatwg.org/#concept-request id=fetching-scripts:concept-request-2 data-x-internal=concept-request>request</a> whose
+   <a href=https://fetch.spec.whatwg.org/#concept-request-url id=fetching-scripts:concept-request-url data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-client id=fetching-scripts:concept-request-client-2 data-x-internal=concept-request-client>client</a> is <var>settings object</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-type id=fetching-scripts:concept-request-type-2 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://fetch.spec.whatwg.org/#concept-request-destination id=fetching-scripts:concept-request-destination-2 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-referrer id=fetching-scripts:concept-request-referrer data-x-internal=concept-request-referrer>referrer</a> is <var>referrer</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-mode id=fetching-scripts:concept-request-mode data-x-internal=concept-request-mode>mode</a> is "<code>same-origin</code>", <a href=https://fetch.spec.whatwg.org/#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> is "<code>same-origin</code>", and whose <a id=fetching-scripts:use-url-credentials-flag href=https://fetch.spec.whatwg.org/#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a> is set.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-2>set
+   up the request</a>, perform them on <var>request</var>.</li><li><p><a href=https://fetch.spec.whatwg.org/#concept-fetch id=fetching-scripts:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li><p>Return from this algorithm, and run the remaining steps as part of the fetch's
+   <a id=fetching-scripts:process-response-2 href=https://fetch.spec.whatwg.org/#process-response data-x-internal=process-response>process response</a> for the <a href=https://fetch.spec.whatwg.org/#concept-response id=fetching-scripts:concept-response-3 data-x-internal=concept-response>response</a>
    <var>response</var>.</li><li><p>If <var>response</var>'s <a href=https://fetch.spec.whatwg.org/#concept-response-type id=fetching-scripts:concept-response-type-2 data-x-internal=concept-response-type>type</a> is "<code>error</code>", or <var>response</var>'s <a href=https://fetch.spec.whatwg.org/#concept-response-status id=fetching-scripts:concept-response-status-2 data-x-internal=concept-response-status>status</a> is not an <a id=fetching-scripts:ok-status-2 href=https://fetch.spec.whatwg.org/#ok-status data-x-internal=ok-status>ok status</a>, asynchronously
-   complete this algorithm with null, and abort these steps.</li><li><p>Let <var>source text</var> be the result of <a href=https://encoding.spec.whatwg.org/#utf-8-decode id=fetching-scripts:utf-8-decode data-x-internal=utf-8-decode>UTF-8
+   complete this algorithm with null, and abort these steps.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-validate-response id=fetching-scripts:fetching-scripts-validate-response-2>validate the response</a>, perform them on
+   <var>response</var>. If they return false, complete this algorithm with null, and abort these
+   steps.</li><li><p>Let <var>source text</var> be the result of <a href=https://encoding.spec.whatwg.org/#utf-8-decode id=fetching-scripts:utf-8-decode data-x-internal=utf-8-decode>UTF-8
    decoding</a> <var>response</var>'s <a href=https://fetch.spec.whatwg.org/#concept-response-body id=fetching-scripts:concept-response-body-2 data-x-internal=concept-response-body>body</a>.</li><li><p>Let <var>script</var> be the result of <a href=#creating-a-classic-script id=fetching-scripts:creating-a-classic-script-3>creating a classic script</a> using
    <var>source text</var> and <var>settings object</var>.</li><li>Asynchronously complete this algorithm with <var>script</var>.</li></ol>
 
@@ -585,15 +602,25 @@
   <a href=#module-script id=fetching-scripts:module-script>module script</a> (on success).</p>
 
   <ol><li><p>If <var>ancestor list</var> is not given, let it be an empty list.</li><li><p><a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script>Fetch a single module script</a> given <var>url</var>, <var>credentials
-   mode</var>, <var>destination</var>, and <var>settings object</var>.</p>
+   mode</var>, <var>destination</var>, and <var>settings object</var>. If the caller of this
+   algorithm specified custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-3>set up the
+   request</a> or <a href=#fetching-scripts-validate-response id=fetching-scripts:fetching-scripts-validate-response-3>validate the response</a>
+   steps, pass those along while <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-2>fetching a single
+   module script</a>.</p>
 
-   </li><li><p>Return from this algorithm and run the following steps when <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-2>fetching a single module script</a> asynchronously completes with
+   </li><li><p>Return from this algorithm and run the following steps when <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-3>fetching a single module script</a> asynchronously completes with
    <var>result</var>:</li><li><p>If <var>result</var> is null, asynchronously complete this algorithm with null and abort
    these steps.</li><li><p>Otherwise, <var>result</var> is a <a href=#module-script id=fetching-scripts:module-script-2>module script</a>. <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script>Fetch the descendants</a> of <var>result</var> given
    <var>destination</var> and an ancestor list obtained by appending <var>url</var> to <var>ancestor
    list</var>.</li><li><p>When <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-2>fetching the descendants of
    a module script</a> asynchronously completes with <var>descendants result</var>,
    asynchronously complete this algorithm with <var>descendants result</var>.</li></ol>
+
+  <hr>
+
+  <p>The following algorithms are used when <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree>fetching a
+  module script tree</a>, and are not meant to be used directly by other specifications (or by
+  other parts of this specification).</p>
 
   <p>To <dfn id=fetch-the-descendants-of-a-module-script>fetch the descendants of a module script</dfn> <var>module script</var>, given a
   <var>destination</var> and an <var>ancestor list</var>, run these steps. The algorithm will
@@ -613,15 +640,18 @@
      </li><li><p>Otherwise, if <var>url</var> is not in <var>ancestor list</var>, add <var>url</var> to
      <var>urls</var>.</li></ol>
    </li><li>
-    <p>For each <var>url</var> in <var>urls</var>, <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree>fetch a module script tree</a> given
+    <p>For each <var>url</var> in <var>urls</var>, <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-2>fetch a module script tree</a> given
     <var>url</var>, <var>module script</var>'s <a href=#concept-module-script-credentials-mode id=fetching-scripts:concept-module-script-credentials-mode>credentials mode</a>, <var>destination</var>,
     <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>, and <var>ancestor list</var>.</p>
 
-    <p>If any of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-2>fetch a module script tree</a> invocations asynchronously complete
+    <p class=note>It is intentional that no custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-4>set up the request</a> or <a href=#fetching-scripts-validate-response id=fetching-scripts:fetching-scripts-validate-response-4>validate the response</a> steps are passed along
+    here. Those hooks only apply to the top-level fetch at the root of the module script tree.</p>
+
+    <p>If any of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-3>fetch a module script tree</a> invocations asynchronously complete
     with null, the user agent may <a href=https://fetch.spec.whatwg.org/#concept-fetch-terminate id=fetching-scripts:concept-fetch-terminate data-x-internal=concept-fetch-terminate>terminate</a> any or
     all of the other fetches, and must then asynchronously complete this algorithm with null.</p>
 
-    <p>Once all of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-3>fetch a module script tree</a> invocations asynchronously
+    <p>Once all of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-4>fetch a module script tree</a> invocations asynchronously
     complete with a <a href=#module-script id=fetching-scripts:module-script-3>module script</a>, asynchronously complete this algorithm with
     <var>module script</var>.</p>
    </li></ol>
@@ -635,12 +665,13 @@
    then proceed to the next step.</li><li><p>If <var>module map</var> contains an entry with key <var>url</var>, asynchronously
    complete this algorithm with that entry's value, and abort these steps.</li><li><p>Create an entry in <var>module map</var> with key <var>url</var> and value "<code>fetching</code>".</p>
 
-   </li><li><p>Let <var>request</var> be a new <a href=https://fetch.spec.whatwg.org/#concept-request id=fetching-scripts:concept-request-2 data-x-internal=concept-request>request</a> whose
+   </li><li><p>Let <var>request</var> be a new <a href=https://fetch.spec.whatwg.org/#concept-request id=fetching-scripts:concept-request-3 data-x-internal=concept-request>request</a> whose
    <a href=https://fetch.spec.whatwg.org/#concept-request-url id=fetching-scripts:concept-request-url-2 data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-destination id=fetching-scripts:concept-request-destination-3 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://fetch.spec.whatwg.org/#concept-request-type id=fetching-scripts:concept-request-type-3 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://fetch.spec.whatwg.org/#concept-request-mode id=fetching-scripts:concept-request-mode-2 data-x-internal=concept-request-mode>mode</a> is "<code>cors</code>", <a href=https://fetch.spec.whatwg.org/#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode-2 data-x-internal=concept-request-credentials-mode>credentials mode</a> is <var>credentials
    mode</var>, and <a href=https://fetch.spec.whatwg.org/#concept-request-client id=fetching-scripts:concept-request-client-3 data-x-internal=concept-request-client>client</a> is
-   <var>settings object</var>.</li><li><p><a href=https://fetch.spec.whatwg.org/#concept-fetch id=fetching-scripts:concept-fetch-3 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li>
+   <var>settings object</var>.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-5>set
+   up the request</a>, perform them on <var>request</var>.</li><li><p><a href=https://fetch.spec.whatwg.org/#concept-fetch id=fetching-scripts:concept-fetch-3 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li>
     <p>Return from this algorithm, and run the remaining steps as part of the fetch's
-    <a id=fetching-scripts:process-response-3 href=https://fetch.spec.whatwg.org/#process-response data-x-internal=process-response>process response</a> for the <a href=https://fetch.spec.whatwg.org/#concept-response id=fetching-scripts:concept-response-3 data-x-internal=concept-response>response</a>
+    <a id=fetching-scripts:process-response-3 href=https://fetch.spec.whatwg.org/#process-response data-x-internal=process-response>process response</a> for the <a href=https://fetch.spec.whatwg.org/#concept-response id=fetching-scripts:concept-response-4 data-x-internal=concept-response>response</a>
     <var>response</var>.</p>
 
     <p class=note><var>response</var> is always <a id=fetching-scripts:cors-same-origin-2 href=infrastructure.html#cors-same-origin>CORS-same-origin</a>.</p>
@@ -658,7 +689,8 @@
       <p class=note>For historical reasons, <a href=#fetch-a-classic-script id=fetching-scripts:fetch-a-classic-script>fetching a
       classic script</a> does not include MIME type checking. In contrast, module scripts will
       fail to load if they are not of a correct MIME type.</p>
-     </li></ul>
+     </li><li><p>The caller specified custom steps to <a href=#fetching-scripts-validate-response id=fetching-scripts:fetching-scripts-validate-response-5>validate the response</a>, which when performed
+     on <var>response</var> return false.</li></ul>
    </li><li><p>Let <var>source text</var> be the result of <a href=https://encoding.spec.whatwg.org/#utf-8-decode id=fetching-scripts:utf-8-decode-2 data-x-internal=utf-8-decode>UTF-8
    decoding</a> <var>response</var>'s <a href=https://fetch.spec.whatwg.org/#concept-response-body id=fetching-scripts:concept-response-body-3 data-x-internal=concept-response-body>body</a>.</li><li><p>Let <var>module script</var> be the result of <a href=#creating-a-module-script id=fetching-scripts:creating-a-module-script>creating a module script</a> given
    <var>source text</var>, <var>settings object</var>, <var>response</var>'s <a href=https://fetch.spec.whatwg.org/#concept-response-url id=fetching-scripts:concept-response-url data-x-internal=concept-response-url>url</a>, and <var>credentials mode</var>.</li><li>
@@ -4108,7 +4140,6 @@ interface <dfn id=imagebitmap>ImageBitmap</dfn> {
   readonly attribute unsigned long <a href=#dom-imagebitmap-width id=images:dom-imagebitmap-width>width</a>;
   readonly attribute unsigned long <a href=#dom-imagebitmap-height id=images:dom-imagebitmap-height>height</a>;
 };
-<a href=#imagebitmap id=images:imagebitmap>ImageBitmap</a> implements <a id=images:transferable href=infrastructure.html#transferable>Transferable</a>;
 
 typedef (<a id=images:htmlimageelement href=embedded-content.html#htmlimageelement>HTMLImageElement</a> or
          <a id=images:htmlvideoelement href=embedded-content.html#htmlvideoelement>HTMLVideoElement</a> or
@@ -4116,37 +4147,57 @@ typedef (<a id=images:htmlimageelement href=embedded-content.html#htmlimageeleme
          <a id=images:blob href=infrastructure.html#blob>Blob</a> or
          <a id=images:imagedata href=scripting.html#imagedata>ImageData</a> or
          <a id=images:canvasrenderingcontext2d href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a> or
-         <a href=#imagebitmap id=images:imagebitmap-2>ImageBitmap</a>) <dfn id=imagebitmapsource>ImageBitmapSource</dfn>;
+         <a href=#imagebitmap id=images:imagebitmap>ImageBitmap</a>) <dfn id=imagebitmapsource>ImageBitmapSource</dfn>;
+
+enum <dfn id=imageorientation>ImageOrientation</dfn> { "<a href=#dom-imageorientation-none id=images:dom-imageorientation-none>none</a>", "<a href=#dom-imageorientation-flipy id=images:dom-imageorientation-flipy>flipY</a>" };
+enum <dfn id=premultiplyalpha>PremultiplyAlpha</dfn> { "<a href=#dom-premultiplyalpha-none id=images:dom-premultiplyalpha-none>none</a>", "<a href=#dom-premultiplyalpha-premultiply id=images:dom-premultiplyalpha-premultiply>premultiply</a>", "<a href=#dom-premultiplyalpha-default id=images:dom-premultiplyalpha-default>default</a>" };
+enum <dfn id=colorspaceconversion>ColorspaceConversion</dfn> { "<a href=#dom-colorspaceconversion-none id=images:dom-colorspaceconversion-none>none</a>", "<a href=#dom-colorspaceconversion-default id=images:dom-colorspaceconversion-default>default</a>" };
+
+dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
+  <a href=#imageorientation id=images:imageorientation>ImageOrientation</a> <a href=#dom-imagebitmapoptions-imageorientation id=images:dom-imagebitmapoptions-imageorientation>imageOrientation</a> = "<a href=#dom-imageorientation-none id=images:dom-imageorientation-none-2>none</a>";
+  <a href=#premultiplyalpha id=images:premultiplyalpha>PremultiplyAlpha</a> <a href=#dom-imagebitmapoptions-premultiplyalpha id=images:dom-imagebitmapoptions-premultiplyalpha>premultiplyAlpha</a> = "<a href=#dom-premultiplyalpha-default id=images:dom-premultiplyalpha-default-2>default</a>";
+  <a href=#colorspaceconversion id=images:colorspaceconversion>ColorspaceConversion</a> <a href=#dom-imagebitmapoptions-colorspaceconversion id=images:dom-imagebitmapoptions-colorspaceconversion>colorspaceConversion</a> = "<a href=#dom-colorspaceconversion-default id=images:dom-colorspaceconversion-default-2>default</a>";
+};
 
 [NoInterfaceObject, Exposed=(Window,Worker)]
 interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
-  Promise&lt;ImageBitmap&gt; <a href=#dom-createimagebitmap id=images:dom-createimagebitmap>createImageBitmap</a>(<a href=#imagebitmapsource id=images:imagebitmapsource>ImageBitmapSource</a> image);
-  Promise&lt;ImageBitmap&gt; <a href=#dom-createimagebitmap id=images:dom-createimagebitmap-2>createImageBitmap</a>(<a href=#imagebitmapsource id=images:imagebitmapsource-2>ImageBitmapSource</a> image, long sx, long sy, long sw, long sh);
+  Promise&lt;<a href=#imagebitmap id=images:imagebitmap-2>ImageBitmap</a>&gt; <a href=#dom-createimagebitmap id=images:dom-createimagebitmap>createImageBitmap</a>(<a href=#imagebitmapsource id=images:imagebitmapsource>ImageBitmapSource</a> image, optional <a href=#imagebitmapoptions id=images:imagebitmapoptions>ImageBitmapOptions</a> options);
+  Promise&lt;<a href=#imagebitmap id=images:imagebitmap-3>ImageBitmap</a>&gt; <a href=#dom-createimagebitmap id=images:dom-createimagebitmap-2>createImageBitmap</a>(<a href=#imagebitmapsource id=images:imagebitmapsource-2>ImageBitmapSource</a> image, long sx, long sy, long sw, long sh, optional <a href=#imagebitmapoptions id=images:imagebitmapoptions-2>ImageBitmapOptions</a> options);
 };
 <a id=images:window href=browsers.html#window>Window</a> implements <a href=#imagebitmapfactories id=images:imagebitmapfactories>ImageBitmapFactories</a>;
 <a id=images:workerglobalscope href=workers.html#workerglobalscope>WorkerGlobalScope</a> implements <a href=#imagebitmapfactories id=images:imagebitmapfactories-2>ImageBitmapFactories</a>;</pre>
 
-  <p><code id=images:imagebitmap-3><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトは過度の待ち時間なしのキャンバスに塗装できるビットマップ画像を表す。</p>
+  <p><code id=images:imagebitmap-4><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトは過度の待ち時間なしのキャンバスに塗装できるビットマップ画像を表す。</p>
 
   <p class=note>この過度の待ち時間は何かの正確な判断は実装者に委ねるが、一般にビットマップを活用することは、ネットワークI/O、あるいはローカルディスクI/Oを必要とする場合、その後待ち時間はおそらく過度である。一方それが唯一のGPUやシステムRAMからのブロッキングの読み出しを必要とする場合、待ち時間はおそらく許容できる。</p>
 
-  <dl class=domintro><dt><var>promise</var> = <var>Window</var> . <code id=images:dom-createimagebitmap-3><a href=#dom-createimagebitmap>createImageBitmap</a></code>(<var>image</var> [, <var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var> ] )<dd>
+  <dl class=domintro><dt><var>promise</var> = <var>Window</var> . <code id=images:dom-createimagebitmap-3><a href=#dom-createimagebitmap>createImageBitmap</a></code>(<var>image</var> [, <var>options</var> ])<dt><var>promise</var> = <var>Window</var> . <code id=images:dom-createimagebitmap-4><a href=#dom-createimagebitmap>createImageBitmap</a></code>(<var>image</var>, <var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var> [, <var>options</var> ])<dd>
 
     <p>Takes <var>image</var>, which can be an <code id=images:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element,
     <code id=images:the-video-element><a href=embedded-content.html#the-video-element>video</a></code>, or <code id=images:the-canvas-element><a href=scripting.html#the-canvas-element>canvas</a></code> element, a <code id=images:blob-2><a href=infrastructure.html#blob>Blob</a></code> object, an
     <code id=images:imagedata-2><a href=scripting.html#imagedata>ImageData</a></code> object, a <code id=images:canvasrenderingcontext2d-2><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object, or another
-    <code id=images:imagebitmap-4><a href=#imagebitmap>ImageBitmap</a></code> object, and returns a promise that is resolved when a new
-    <code id=images:imagebitmap-5><a href=#imagebitmap>ImageBitmap</a></code> is created.</p>
+    <code id=images:imagebitmap-5><a href=#imagebitmap>ImageBitmap</a></code> object, and returns a promise that is resolved when a new
+    <code id=images:imagebitmap-6><a href=#imagebitmap>ImageBitmap</a></code> is created.</p>
 
-    <p><code id=images:imagebitmap-6><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトを構築することが全くできない場合、たとえば、与えられた<var>image</var> データが実際の画像ではないので、代わりにpromiseが却下される。</p>
+    <p><code id=images:imagebitmap-7><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトを構築することが全くできない場合、たとえば、与えられた<var>image</var> データが実際の画像ではないので、代わりにpromiseが却下される。</p>
 
     <p><var>sx</var>、<var>sy</var>、<var>sw</var>、および<var>sh</var>引数が提供される場合、ソース画像は、透明な黒によって置き換えられたオリジナルで任意のピクセル欠落とともに、与えられたピクセルにトリミングされる。これらの座標は、CSSピクセルで<em>なく</em>、ソース画像のピクセル座標空間にある。</p>
+
+    <p>If <var>options</var> is provided, the <code id=images:imagebitmap-8><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap
+    data is modified according to <var>options</var>. For example,
+    if the <code id=images:dom-imagebitmapoptions-premultiplyalpha-2><a href=#dom-imagebitmapoptions-premultiplyalpha>premultiplyAlpha</a></code>
+    option is set to "<code id=images:dom-premultiplyalpha-premultiply-2><a href=#dom-premultiplyalpha-premultiply>premultiply</a></code>",
+    the <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data>bitmap data</a>'s color channels are
+    premultiplied by its alpha channel.
+
+    
 
     <p>Rejects the promise with an <code id=images:invalidstateerror><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception if the source image is
     not in a valid state (e.g. an <code id=images:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code> element that hasn't finished loading, or a
     <code id=images:canvasrenderingcontext2d-3><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object whose bitmap data has zero length along one or
-    both dimensions, an ImageBitmap object that has been <a href=infrastructure.html#concept-transferable-neutered id=images:concept-transferable-neutered>neutered</a>, or an <code id=images:imagedata-3><a href=scripting.html#imagedata>ImageData</a></code> object
-    whose data is <code id=images:dom-imagedata-data><a href=scripting.html#dom-imagedata-data>data</a></code> attribute has been <a href=infrastructure.html#concept-transferable-neutered id=images:concept-transferable-neutered-2>neutered</a>).</p>
+    both dimensions, an <code id=images:imagebitmap-9><a href=#imagebitmap>ImageBitmap</a></code> object whose [[<a id=images:detached href=infrastructure.html#detached>Detached</a>]] internal
+    slot value is true, or an <code id=images:imagedata-3><a href=scripting.html#imagedata>ImageData</a></code> object whose <code id=images:dom-imagedata-data><a href=scripting.html#dom-imagedata-data>data</a></code> attribute value's [[<a id=images:detached-2 href=infrastructure.html#detached>Detached</a>]] internal
+    slot value is true.</p>
 
     <p>Rejects the promise with a
     <code id=images:securityerror><a href=infrastructure.html#securityerror>SecurityError</a></code> exception if the script is not allowed to access the image data of
@@ -4166,25 +4217,34 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
 
   
 
-  <p>An <code id=images:imagebitmap-7><a href=#imagebitmap>ImageBitmap</a></code> object always has associated <dfn id=concept-imagebitmap-bitmap-data>bitmap data</dfn>, with a width and a height. However,
-  it is possible for this data to be corrupted. If an <code id=images:imagebitmap-8><a href=#imagebitmap>ImageBitmap</a></code> object's media data
+  <p>An <code id=images:imagebitmap-10><a href=#imagebitmap>ImageBitmap</a></code> object always has associated <dfn id=concept-imagebitmap-bitmap-data>bitmap data</dfn>, with a width and a height. However,
+  it is possible for this data to be corrupted. If an <code id=images:imagebitmap-11><a href=#imagebitmap>ImageBitmap</a></code> object's media data
   can be decoded without errors, it is said to be <dfn id=concept-imagebitmap-good>fully decodable</dfn>.</p>
 
-  <p>An <code id=images:imagebitmap-9><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap has an <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean>origin-clean</a> flag, which indicates whether the
+  <p>An <code id=images:imagebitmap-12><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap has an <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean>origin-clean</a> flag, which indicates whether the
   bitmap is tainted by content from a different <a id=images:origin-2-2 href=browsers.html#origin-2>origin</a>. The flag is initially set to
-  true and may be changed to false by the steps of <code id=images:dom-createimagebitmap-4><a href=#dom-createimagebitmap>createImageBitmap()</a></code>.</p>
+  true and may be changed to false by the steps of <code id=images:dom-createimagebitmap-5><a href=#dom-createimagebitmap>createImageBitmap()</a></code>.</p>
 
-  <p>To <a href=infrastructure.html#transfer-a-transferable-object id=images:transfer-a-transferable-object>transfer</a> an <code id=images:imagebitmap-10><a href=#imagebitmap>ImageBitmap</a></code>
-  object <var>old</var> to a new owner <var>owner</var>, a user agent must run the following
-  steps:</p>
+  <p><code id=images:imagebitmap-13><a href=#imagebitmap>ImageBitMap</a></code> objects are <a id=images:cloneable-objects href=infrastructure.html#cloneable-objects>cloneable objects</a> and <a id=images:transferable-objects href=infrastructure.html#transferable-objects>transferable
+  objects</a>.</p>
 
-  <ol><li><p>Create a new <code id=images:imagebitmap-11><a href=#imagebitmap>ImageBitmap</a></code> object pointing at the same underlying <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data>bitmap data</a> as <var>old</var>, thus obtaining
-   <var>new</var>;</li><li><p>Set <var>new</var>'s bitmap's <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-2>origin-clean</a> flag to the same values as
-   <var>old</var>'s bitmap's <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-3>origin-clean</a>
-   flag;</li><li><p><a href=infrastructure.html#concept-transferable-neutered id=images:concept-transferable-neutered-3>Neuter</a> the <var>old</var>
-   object;</li><li><p>Return <var>new</var>.</li></ol>
+  <p>Each <code id=images:imagebitmap-14><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:clone href=infrastructure.html#clone>Clone</a>]] internal method, given
+  <var>targetRealm</var> and ignoring <var>memory</var>, must run these steps:</p>
 
-  <p>An <code id=images:imagebitmap-12><a href=#imagebitmap>ImageBitmap</a></code> object can be obtained from a variety of different objects, using
+  <ol><li><p>If <b>this</b>'s [[<a id=images:detached-3 href=infrastructure.html#detached>Detached</a>]] internal slot is true, then throw a
+   <code id=images:datacloneerror><a href=infrastructure.html#datacloneerror>DataCloneError</a></code> exception.</li><li><p>Return a new <code id=images:imagebitmap-15><a href=#imagebitmap>ImageBitmap</a></code> object in <var>targetRealm</var> whose <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-2>bitmap data</a> is a copy of <b>this</b>'s <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-3>bitmap data</a>, and whose <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-2>origin-clean</a> flag is set to the same value as
+   <b>this</b>'s <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-3>origin-clean</a> flag.</li></ol>
+
+  <p>Each <code id=images:imagebitmap-16><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:transfer href=infrastructure.html#transfer>Transfer</a>]] internal method, given
+  <var>targetRealm</var>, must run these steps:</p>
+
+  <ol><li><p>Let <var>new</var> be a new <code id=images:imagebitmap-17><a href=#imagebitmap>ImageBitmap</a></code> object in <var>targetRealm</var>,
+   pointing at the same underlying <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-4>bitmap data</a>
+   as <b>this</b>.</li><li><p>Set <var>new</var>'s bitmap's <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-4>origin-clean</a> flag to the same values as
+   <b>this</b>'s bitmap's <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-5>origin-clean</a>
+   flag.</li><li><p>Set <b>this</b>'s [[<a id=images:detached-4 href=infrastructure.html#detached>Detached</a>]] internal slot value to true.</li><li><p>Return <var>new</var>.</li></ol>
+
+  <p>An <code id=images:imagebitmap-18><a href=#imagebitmap>ImageBitmap</a></code> object can be obtained from a variety of different objects, using
   the <dfn id=dom-createimagebitmap><code>createImageBitmap()</code></dfn> method. When
   invoked, the method must act as follows:</p>
   
@@ -4200,16 +4260,16 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
      available</a>, then return a promise rejected with an <code id=images:invalidstateerror-2><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these
      steps.</li><li><p>If the <code id=images:the-img-element-5><a href=embedded-content.html#the-img-element>img</a></code> element's media data is not a bitmap (e.g. it's a vector
      graphic), then return a promise rejected with an <code id=images:invalidstateerror-3><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these
-     steps.</li><li><p>Create a new <code id=images:imagebitmap-13><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-14><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-2>bitmap data</a> be a copy of the <code id=images:the-img-element-6><a href=embedded-content.html#the-img-element>img</a></code>
-     element's media data, <a href=#cropped-to-the-source-rectangle id=images:cropped-to-the-source-rectangle>cropped to the source rectangle</a>. If this is an animated
-     image, the <code id=images:imagebitmap-15><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-3>bitmap data</a> must only be taken from the
+     steps.</li><li><p>Create a new <code id=images:imagebitmap-19><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-20><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-5>bitmap data</a> be a copy of the <code id=images:the-img-element-6><a href=embedded-content.html#the-img-element>img</a></code>
+     element's media data, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting>cropped to the source rectangle with formatting</a>. If this is
+     an animated image, the <code id=images:imagebitmap-21><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-6>bitmap data</a> must only be taken from the
      default image of the animation (the one that the format defines is to be used when animation
      is not supported or is disabled), or, if there is no such image, the first frame of the
      animation.</li><li><p>If the <a id=images:origin-2-3 href=browsers.html#origin-2>origin</a> of the <code id=images:the-img-element-7><a href=embedded-content.html#the-img-element>img</a></code> element's image is not the
      <a id=images:same-origin href=browsers.html#same-origin>same origin</a> as the <a id=images:origin-2-4 href=browsers.html#origin-2>origin</a> specified by the <a href=#entry-settings-object id=images:entry-settings-object>entry settings
-     object</a>, then set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-4>origin-clean
-     </a> flag of the <code id=images:imagebitmap-16><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-17><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     object</a>, then set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-6>origin-clean
+     </a> flag of the <code id=images:imagebitmap-22><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
+     <a id=images:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-23><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is a <code id=images:the-video-element-3><a href=embedded-content.html#the-video-element>video</a></code> element
 
@@ -4220,15 +4280,15 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
     <ol><li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
      but zero, return a promise rejected with an <code id=images:indexsizeerror-2><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code> exception and abort these steps.</li><li><p>If the <code id=images:the-video-element-4><a href=embedded-content.html#the-video-element>video</a></code> element's <code id=images:dom-media-networkstate><a href=embedded-content.html#dom-media-networkstate>networkState</a></code> attribute is <code id=images:dom-media-network_empty><a href=embedded-content.html#dom-media-network_empty>NETWORK_EMPTY</a></code>, then return a promise rejected with an
      <code id=images:invalidstateerror-4><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these steps.</li><li><p>If the <code id=images:the-video-element-5><a href=embedded-content.html#the-video-element>video</a></code> element's <code id=images:dom-media-readystate><a href=embedded-content.html#dom-media-readystate>readyState</a></code> attribute is either <code id=images:dom-media-have_nothing><a href=embedded-content.html#dom-media-have_nothing>HAVE_NOTHING</a></code> or <code id=images:dom-media-have_metadata><a href=embedded-content.html#dom-media-have_metadata>HAVE_METADATA</a></code>, then return a promise rejected with an
-     <code id=images:invalidstateerror-5><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-18><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-19><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-4>bitmap data</a> be a copy of the frame at the
+     <code id=images:invalidstateerror-5><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-24><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-25><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-7>bitmap data</a> be a copy of the frame at the
      <a id=images:current-playback-position href=embedded-content.html#current-playback-position>current playback position</a>, at the <a id=images:media-resource href=embedded-content.html#media-resource>media resource</a>'s <a href=embedded-content.html#concept-video-intrinsic-width id=images:concept-video-intrinsic-width>intrinsic width</a> and <a href=embedded-content.html#concept-video-intrinsic-height id=images:concept-video-intrinsic-height>intrinsic height</a> (i.e. after any aspect-ratio
-     correction has been applied), <a href=#cropped-to-the-source-rectangle id=images:cropped-to-the-source-rectangle-2>cropped to the source rectangle</a>.</p>
+     correction has been applied), <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-2>cropped to the source rectangle with formatting</a>.</p>
 
      </li><li><p>If the <a id=images:origin-2-5 href=browsers.html#origin-2>origin</a> of the <code id=images:the-video-element-6><a href=embedded-content.html#the-video-element>video</a></code> element is not the <a id=images:same-origin-2 href=browsers.html#same-origin>same
      origin</a> as the <a id=images:origin-2-6 href=browsers.html#origin-2>origin</a> specified by the <a href=#entry-settings-object id=images:entry-settings-object-2>entry settings object</a>,
-     then set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-5>origin-clean</a> flag of the
-     <code id=images:imagebitmap-20><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-2 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-21><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     then set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-7>origin-clean</a> flag of the
+     <code id=images:imagebitmap-26><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
+     <a id=images:in-parallel-2 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-27><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is a <code id=images:the-canvas-element-3><a href=scripting.html#the-canvas-element>canvas</a></code> element
 
@@ -4239,12 +4299,12 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
     <ol><li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
      but zero, return a promise rejected with an <code id=images:indexsizeerror-3><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code> exception and abort these steps.</li><li><p>If the <code id=images:the-canvas-element-4><a href=scripting.html#the-canvas-element>canvas</a></code> element's bitmap has either a horizontal dimension or a
      vertical dimension equal to zero, then return a promise rejected with an <code id=images:invalidstateerror-6><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and
-     abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-22><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-23><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-5>bitmap data</a> be a copy of the
-     <code id=images:the-canvas-element-5><a href=scripting.html#the-canvas-element>canvas</a></code> element's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-6>bitmap data</a>, <a href=#cropped-to-the-source-rectangle id=images:cropped-to-the-source-rectangle-3>cropped to the source
-     rectangle</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-6>origin-clean</a> flag of the
-     <code id=images:imagebitmap-24><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-7>origin-clean</a> flag of the <code id=images:the-canvas-element-6><a href=scripting.html#the-canvas-element>canvas</a></code>
+     abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-28><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-29><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-8>bitmap data</a> be a copy of the
+     <code id=images:the-canvas-element-5><a href=scripting.html#the-canvas-element>canvas</a></code> element's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-9>bitmap data</a>, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-3>cropped to the source
+     rectangle with formatting</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-8>origin-clean</a> flag of the
+     <code id=images:imagebitmap-30><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-9>origin-clean</a> flag of the <code id=images:the-canvas-element-6><a href=scripting.html#the-canvas-element>canvas</a></code>
      element's bitmap.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-3 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-25><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <a id=images:in-parallel-3 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-31><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is a <code id=images:blob-3><a href=infrastructure.html#blob>Blob</a></code> object
 
@@ -4262,12 +4322,12 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
      by the <code id=images:blob-6><a href=infrastructure.html#blob>Blob</a></code> object's <code id=images:dom-blob-type><a href=infrastructure.html#dom-blob-type>type</a></code> attribute) giving the
      official type.</li><li><p>If the image data is not in a supported file format (e.g. it's not actually an image at
      all), or if the image data is corrupted in some fatal way such that the image dimensions cannot
-     be obtained, then reject the promise with null, and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-26><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-27><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-7>bitmap data</a> be the image data read from the
-     <code id=images:blob-7><a href=infrastructure.html#blob>Blob</a></code> object, <a href=#cropped-to-the-source-rectangle id=images:cropped-to-the-source-rectangle-4>cropped to the source rectangle</a>. If this is an animated
-     image, the <code id=images:imagebitmap-28><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-8>bitmap data</a> must only be taken from the
+     be obtained, then reject the promise with null, and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-32><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-33><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-10>bitmap data</a> be the image data read from the
+     <code id=images:blob-7><a href=infrastructure.html#blob>Blob</a></code> object, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-4>cropped to the source rectangle with formatting</a>.
+     If this is an animated image, the <code id=images:imagebitmap-34><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-11>bitmap data</a> must only be taken from the
      default image of the animation (the one that the format defines is to be used when animation
      is not supported or is disabled), or, if there is no such image, the first frame of the
-     animation.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-29><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     animation.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-35><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is an <code id=images:imagedata-4><a href=scripting.html#imagedata>ImageData</a></code> object
 
@@ -4276,11 +4336,11 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
    <dd>
 
     <ol><li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
-     but zero, return a promise rejected with an <code id=images:indexsizeerror-5><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code> exception and abort these steps.</li><li><p>If the <var>image</var> object's <code id=images:dom-imagedata-data-2><a href=scripting.html#dom-imagedata-data>data</a></code>
-     attribute has been <a href=infrastructure.html#concept-transferable-neutered id=images:concept-transferable-neutered-4>neutered</a>, return a promise rejected with an
-     <code id=images:invalidstateerror-8><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-30><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-31><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-9>bitmap data</a> be the image data given by the
-     <code id=images:imagedata-5><a href=scripting.html#imagedata>ImageData</a></code> object, <a href=#cropped-to-the-source-rectangle id=images:cropped-to-the-source-rectangle-5>cropped to the source rectangle</a>.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-5 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-32><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     but zero, return a promise rejected with an <code id=images:indexsizeerror-5><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code> exception and abort these steps.</li><li><p>If the <var>image</var> object's <code id=images:dom-imagedata-data-2><a href=scripting.html#dom-imagedata-data>data</a></code> attribute
+     value's [[<a id=images:detached-5 href=infrastructure.html#detached>Detached</a>]] internal slot value is true, return a promise rejected with
+     an <code id=images:invalidstateerror-8><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-36><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-37><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-12>bitmap data</a> be the image data given by the
+     <code id=images:imagedata-5><a href=scripting.html#imagedata>ImageData</a></code> object, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-5>cropped to the source rectangle with formatting</a>.</li><li><p>Return a new promise, but continue running these steps
+     <a id=images:in-parallel-5 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-38><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is a <code id=images:canvasrenderingcontext2d-4><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object
 
@@ -4291,14 +4351,14 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
     <ol><li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
      but zero, return a promise rejected with an <code id=images:indexsizeerror-6><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code> exception and abort these steps.</li><li><p>If the <code id=images:canvasrenderingcontext2d-5><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object's <a id=images:scratch-bitmap href=scripting.html#scratch-bitmap>scratch bitmap</a> has
      either a horizontal dimension or a vertical dimension equal to zero, then return a promise rejected with an
-     <code id=images:invalidstateerror-9><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-33><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-34><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-10>bitmap data</a> be a copy of the
-     <code id=images:canvasrenderingcontext2d-6><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object's <a id=images:scratch-bitmap-2 href=scripting.html#scratch-bitmap>scratch bitmap</a>, <a href=#cropped-to-the-source-rectangle id=images:cropped-to-the-source-rectangle-6>cropped to
-     the source rectangle</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-8>origin-clean</a> flag of the
-     <code id=images:imagebitmap-35><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-9>origin-clean</a> flag of the
+     <code id=images:invalidstateerror-9><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-39><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-40><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-13>bitmap data</a> be a copy of the
+     <code id=images:canvasrenderingcontext2d-6><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object's <a id=images:scratch-bitmap-2 href=scripting.html#scratch-bitmap>scratch bitmap</a>, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-6>cropped to
+     the source rectangle with formatting</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-10>origin-clean</a> flag of the
+     <code id=images:imagebitmap-41><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-11>origin-clean</a> flag of the
      <code id=images:canvasrenderingcontext2d-7><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object's <a id=images:scratch-bitmap-3 href=scripting.html#scratch-bitmap>scratch bitmap</a></li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-6 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-36><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <a id=images:in-parallel-6 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-42><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
-   <dt>If <var>image</var> is an <code id=images:imagebitmap-37><a href=#imagebitmap>ImageBitmap</a></code> object
+   <dt>If <var>image</var> is an <code id=images:imagebitmap-43><a href=#imagebitmap>ImageBitmap</a></code> object
 
    
 
@@ -4306,21 +4366,21 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
 
     <ol><li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
      but zero, return a promise rejected with an <code id=images:indexsizeerror-7><a href=infrastructure.html#indexsizeerror>IndexSizeError</a></code> exception and abort
-     these steps.</li><li><p>If image is <a href=infrastructure.html#concept-transferable-neutered id=images:concept-transferable-neutered-5>neutered</a>, return a
+     these steps.</li><li><p>If <var>image</var>'s [[<a id=images:detached-6 href=infrastructure.html#detached>Detached</a>]] internal slot value is true, return a
      promise rejected with an <code id=images:invalidstateerror-10><a href=infrastructure.html#invalidstateerror>InvalidStateError</a></code> exception and abort these
-     steps.</li><li><p>Create a new <code id=images:imagebitmap-38><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-39><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-11>bitmap data</a> be a copy of the <var>image</var>
-     argument's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-12>bitmap data</a>, <a href=#cropped-to-the-source-rectangle id=images:cropped-to-the-source-rectangle-7>cropped
-     to the source rectangle</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-10>origin-clean</a> flag of the
-     <code id=images:imagebitmap-40><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-11>origin-clean</a> flag of the bitmap of the
+     steps.</li><li><p>Create a new <code id=images:imagebitmap-44><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-45><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-14>bitmap data</a> be a copy of the <var>image</var>
+     argument's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-15>bitmap data</a>, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-7>cropped
+     to the source rectangle with formatting</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-12>origin-clean</a> flag of the
+     <code id=images:imagebitmap-46><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-13>origin-clean</a> flag of the bitmap of the
      <var>image</var> argument.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-7 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-41><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <a id=images:in-parallel-7 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-47><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    </dl>
 
-  <p>When the steps above require that the user agent <dfn id=cropped-to-the-source-rectangle>crop bitmap data to the source rectangle</dfn>, the user agent must run the following
-  steps:</p>
+  <p>When the steps above require that the user agent <dfn id=cropped-to-the-source-rectangle-with-formatting>crop bitmap data to the source rectangle with formatting</dfn>,
+  the user agent must run the following steps:</p>
 
-  <ol><li><p>Let <var>input</var> be the <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-13>bitmap
+  <ol><li><p>Let <var>input</var> be the <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-16>bitmap
    data</a> being cropped.</li><li><p>If the <var>sx</var>, <var>sy</var>, <var>sw</var>, and <var>sh</var> arguments are omitted, return <var>input</var>.</li><li><p>Place <var>input</var> on an infinite transparent black grid plane, positioned so
    that it's top left corner is at the origin of the plane, with the <var>x</var>-coordinate increasing to the right, and the <var>y</var>-coordinate
    increasing down, and with each pixel in the <var>input</var> image data occupying a cell
@@ -4334,13 +4394,51 @@ interface <dfn id=imagebitmapfactories>ImageBitmapFactories</dfn> {
     <var>sy</var>) point. If any of the pixels on this rectangle are outside the area where
     the <var>input</var> bitmap was placed, then they will be transparent black in <var>output</var>.</p>
 
+   </li><li>
+
+    <p>If the value of the <dfn id=dom-imagebitmapoptions-imageorientation><code>imageOrientation</code></dfn> member of
+    <var>options</var> is "<dfn id=dom-imageorientation-flipy><code>flipY</code></dfn>",
+    <var>output</var> must be flipped vertically, disregarding any image orientation metadata of
+    the source (such as EXIF metadata), if any. <a href=references.html#refsEXIF>[EXIF]</a></p>
+
+    <p class=note>If the value is "<dfn id=dom-imageorientation-none><code>none</code></dfn>", no extra step is required.</p>
+
+   </li><li>
+
+    <p>If <var>image</var> is an <code id=images:the-img-element-8><a href=embedded-content.html#the-img-element>img</a></code> element or a <code id=images:blob-8><a href=infrastructure.html#blob>Blob</a></code> object, let
+    <var>val</var> be the value of the <dfn id=dom-imagebitmapoptions-colorspaceconversion><code>colorspaceConversion</code></dfn> member
+    of <var>options</var>, and then run these substeps:</p>
+
+    <ol><li><p>If <var>val</var> is "<dfn id=dom-colorspaceconversion-default><code>default</code></dfn>",
+     the colorspace conversion behavior is implementation-specific, and should be chosen according
+     to the colorspace that the implementation uses for drawing images onto the canvas.</li><li><p>If <var>val</var> is "<dfn id=dom-colorspaceconversion-none><code>none</code></dfn>", <var>output</var> must be decoded
+     without performing any colorspace conversions. This means that the image decoding algorithm
+     must ignore color profile metadata embedded in the source data as well as the display device
+     color profile.</li></ol>
+
+    <p class=note>The native colorspace of canvas is currently unspecified, but this is expected
+    to change in the future.</p>
+
+   </li><li>
+
+    <p>Let <var>val</var> be the value of <dfn id=dom-imagebitmapoptions-premultiplyalpha><code>premultiplyAlpha</code></dfn> member of
+    <var>options</var>, and then run these substeps:</p>
+
+    <ol><li><p>If <var>val</var> is "<dfn id=dom-premultiplyalpha-default><code>default</code></dfn>", the alpha premultiplication
+     behavior is implementation-specific, and should be chosen according to implementation deems
+     optimal for drawing images onto the canvas.</li><li><p>If <var>val</var> is "<dfn id=dom-premultiplyalpha-premultiply><code>premultiply</code></dfn>", the <var>output</var>
+     that is not premultiplied by alpha must have its color components multiplied by alpha and
+     that is premultiplied by alpha must be left untouched.</li><li><p>If <var>val</var> is "<dfn id=dom-premultiplyalpha-none><code>none</code></dfn>", the <var>output</var> that is not
+     premultiplied by alpha must be left untouched and that is premultiplied by alpha must have
+     its color components divided by alpha.</li></ol>
+
    </li><li><p>Return <var>output</var>.</li></ol>
 
   <p>The <dfn id=dom-imagebitmap-width><code>width</code></dfn> attribute must return the
-  <code id=images:imagebitmap-42><a href=#imagebitmap>ImageBitmap</a></code> object's width, in CSS pixels.</p>
+  <code id=images:imagebitmap-48><a href=#imagebitmap>ImageBitmap</a></code> object's width, in CSS pixels.</p>
 
   <p>The <dfn id=dom-imagebitmap-height><code>height</code></dfn> attribute must return the
-  <code id=images:imagebitmap-43><a href=#imagebitmap>ImageBitmap</a></code> object's height, in CSS pixels.</p>
+  <code id=images:imagebitmap-49><a href=#imagebitmap>ImageBitmap</a></code> object's height, in CSS pixels.</p>
 
   
 
