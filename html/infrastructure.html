@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class=split lang=ja><meta charset=utf-8><title>HTML Standard 日本語訳</title>
+<!DOCTYPE html><html class=split lang=ja><meta charset=utf-8><title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
 <script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
 <script>
@@ -313,7 +313,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>1 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -1275,6 +1275,9 @@
 
     <p>The feature <dfn id=length data-noexport="">&lt;length&gt;</dfn> is defined in the <cite>CSS Values and
     Units</cite> specification. <a href=references.html#refsCSSVALUES>[CSSVALUES]</a></p>
+
+    <p>The feature <dfn id=color data-noexport=""><a href=https://drafts.csswg.org/css-color/#typedef-color>&lt;color&gt;</a></dfn>
+    is defined in the <cite>CSS Color</cite> specification. <a href=references.html#refsCSSCOLOR>[CSSCOLOR]</a></p>
 
     <p>The term <dfn id=css-styling-attribute data-noexport="">CSS styling attribute</dfn> is defined in the <cite>CSS Style
     Attributes</cite> specification. <a href=references.html#refsCSSATTR>[CSSATTR]</a></p>
@@ -3691,6 +3694,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   have a [[<dfn id=detached>Detached</dfn>]] internal slot and the following internal method:</p>
 
   <p>[[<dfn id=transfer>Transfer</dfn>]] ( <var>targetRealm</var> )</p>
+  
 
   <p>IDL-defined transferable objects must define the [[<a href=#transfer id=transferable-objects:transfer>Transfer</a>]] internal method such
   that it either throws or returns a clone of <b>this</b>, created in <var>targetRealm</var>, with
@@ -3754,7 +3758,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   <ol><li><p>If <var>memory</var> was not supplied, let <var>memory</var> be an empty map.</li><li><p>If <var>memory</var> contains an entry with key <var>input</var>, then return that entry's
    value.</li><li><p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredclone:js-type data-x-internal=js-type>Type</a>(<var>input</var>) is Undefined, Null, Boolean,
    String, or Number, then return <var>input</var>.</li><li><p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredclone:js-type-2 data-x-internal=js-type>Type</a>(<var>input</var>) is Symbol, then throw a
-   <code id=structuredclone:datacloneerror><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li><p>Let <var>deepClone</var> be "<code>none</code>".</li><li><p>If <var>input</var> has a [[BooleanData]] internal slot, then let <var>output</var> be a
+   <code id=structuredclone:datacloneerror><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li><p>Let <var>deepClone</var> be false.</li><li><p>If <var>input</var> has a [[BooleanData]] internal slot, then let <var>output</var> be a
    new  Boolean object in <var>targetRealm</var> whose [[BooleanData]] internal slot value is the
    [[BooleanData]] internal slot value of <var>input</var>.</li><li><p>Otherwise, if <var>input</var> has a [[NumberData]] internal slot, then let
    <var>output</var> be a new Number object in <var>targetRealm</var> whose [[NumberData]] internal
@@ -3804,12 +3808,12 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
     <p>Otherwise, if <var>input</var> has [[MapData]] internal slot, then:</p>
 
     <ol><li><p>Let <var>output</var> be a new Map object in <var>targetRealm</var> whose [[MapData]]
-     internal slot value is a new empty <a id=structuredclone:list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li><p>Set <var>deepClone</var> to "<code>map</code>".</li></ol>
+     internal slot value is a new empty <a id=structuredclone:list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
    </li><li>
     <p>Otherwise, if <var>input</var> has [[SetData]] internal slot, then:</p>
 
     <ol><li><p>Let <var>output</var> be a new Set object in <var>targetRealm</var> whose [[SetData]]
-     internal slot value is a new empty <a id=structuredclone:list-2 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li><p>Set <var>deepClone</var> to "<code>set</code>".</li></ol>
+     internal slot value is a new empty <a id=structuredclone:list-2 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
    </li><li>
     <p>Otherwise, if <var>input</var> is an Array exotic object, then:</p>
     
@@ -3817,7 +3821,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
     <ol><li><p>Let <var>inputLen</var> be <a id=structuredclone:ordinarygetownproperty href=https://tc39.github.io/ecma262/#sec-ordinarygetownproperty data-x-internal=ordinarygetownproperty>OrdinaryGetOwnProperty</a>(<var>input</var>,
      "<code>length</code>").[[Value]].</li><li><p>Let <var>outputProto</var> be the <a id=structuredclone:%arrayprototype% href=https://tc39.github.io/ecma262/#sec-properties-of-the-array-prototype-object data-x-internal=%arrayprototype%>%ArrayPrototype%</a> intrinsic object in
      <var>targetRealm</var>.</li><li><p>Let <var>output</var> be ! <a id=structuredclone:arraycreate href=https://tc39.github.io/ecma262/#sec-arraycreate data-x-internal=arraycreate>ArrayCreate</a>(<var>inputLen</var>,
-     <var>outputProto</var>).</li><li><p>Set <var>deepClone</var> to "<code>own</code>".</li></ol>
+     <var>outputProto</var>).</li><li><p>Set <var>deepClone</var> to true.</li></ol>
    </li><li><p>Otherwise, if <a id=structuredclone:iscallable href=https://tc39.github.io/ecma262/#sec-iscallable data-x-internal=iscallable>IsCallable</a>(<var>input</var>) is true, then throw a
    <code id=structuredclone:datacloneerror-3><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li><p>Otherwise, if <var>input</var> has an [[ErrorData]] internal slot, then throw a
    <code id=structuredclone:datacloneerror-4><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li><p>Otherwise, if <var>input</var> has a [[<a href=#clone id=structuredclone:clone>Clone</a>]] internal method, then let
@@ -3825,65 +3829,70 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
    <code id=structuredclone:datacloneerror-5><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li>
     <p>そうでなければ：</p>
 
-    <ol><li><p>Let <var>output</var> be a new Object in <var>targetRealm</var>.</li><li><p>Set <var>deepClone</var> to "<code>own</code>".</li></ol>
+    <ol><li><p>Let <var>output</var> be a new Object in <var>targetRealm</var>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
    </li><li><p>Create an entry in <var>memory</var> whose key is <var>input</var> and value is
    <var>output</var>.</li><li>
-    <p>If <var>deepClone</var> is "<code>map</code>", then:</p>
-
-    <ol><li><p>Let <var>inputList</var> the value of <var>input</var>'s [[MapData]] internal
-     slot.</li><li><p>Let <var>copiedList</var> be a new empty <a id=structuredclone:list-3 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.
-
-     
-
-     </li><li>
-      <p>Repeat for each <a id=structuredclone:record href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=record>Record</a> {[[Key]], [[Value]]} <var>entry</var> that is an
-      element of <var>inputList</var>,</p>
-
-      <ol><li><p>Let <var>copiedEntry</var> be a new <a id=structuredclone:record-2 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=record>Record</a> {
-       [[Key]]: <var>entry</var>.[[Key]],
-       [[Value]]: <var>entry</var>.[[Value]] }.</li><li><p>If <var>copiedEntry</var>.[[Key]] is not empty, append <var>copiedEntry</var> as the
-       last element of <var>copiedList</var>.</li></ol>
-
-     </li><li><p>Let <var>outputList</var> be the value of <var>output</var>'s [[MapData]] internal
-     slot.</li><li>
-      <p>For each <a id=structuredclone:record-3 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=record>Record</a> {[[Key]], [[Value]]} <var>entry</var> that is an element of
-      <var>copiedList</var>,</p>
-
-      <ol><li><p>Let <var>outputKey</var> be ? <a href=#structuredclone id=structuredclone:structuredclone-2>StructuredClone</a>(<var>entry</var>.[[Key]],
-       <var>targetRealm</var>, <var>memory</var>).</li><li><p>Let <var>outputValue</var> be ?
-       <a href=#structuredclone id=structuredclone:structuredclone-3>StructuredClone</a>(<var>entry</var>.[[Value]], <var>targetRealm</var>,
-       <var>memory</var>).</li><li><p>Add { [[Key]]: <var>outputKey</var>, [[Value]]: <var>outputValue</var> } as the last
-       element of <var>outputList</var>.</li></ol>
-     </li><li><p>Set <var>deepClone</var> to "<code>own</code>".</li></ol>
-   </li><li>
-    <p>If <var>deepClone</var> is "<code>set</code>", then:</p>
-
-    <ol><li><p>Let <var>copiedList</var> be a copy of the value of <var>input</var>'s [[SetData]]
-     internal slot.</li><li><p>Let <var>outputList</var> be the value of <var>output</var>'s [[SetData]] internal
-     slot.</li><li>
-      <p>For each <var>entry</var> that is an element of <var>copiedList</var> that is not
-      empty,</p>
-
-      <ol><li><p>Let <var>outputEntry</var> be ? <a href=#structuredclone id=structuredclone:structuredclone-4>StructuredClone</a>(<var>entry</var>,
-       <var>targetResult</var>, <var>memory</var>).</li><li><p>Add <var>outputEntry</var> as the last element of <var>outputList</var>.</li></ol>
-     </li><li><p>Set <var>deepClone</var> to  "<code>own</code>".</li></ol>
-   </li><li>
-    <p>If <var>deepClone</var> is "<code>own</code>", then for each <var>key</var> in ?
-    <var>input</var>.[[OwnPropertyKeys]]():</p>
+    <p>If <var>deepClone</var> is true, then:</p>
 
     <ol><li>
-      <p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredclone:js-type-3 data-x-internal=js-type>Type</a>(<var>key</var>) is String, then:</p>
+      <p>If <var>input</var> has a [[MapData]] internal slot, then:
 
-      <ol><li><p>Let <var>inputDesc</var> be ?
-       <var>input</var>.[[GetOwnProperty]](<var>key</var>).</li><li>
-        <p>If <var>inputDesc</var> is not undefined and <var>inputDesc</var>.[[Enumerable]] is true,
-        then:</p>
+      
 
-        <ol><li><p>Let <var>inputValue</var> be ? <var>input</var>.[[Get]](<var>key</var>,
-         <var>input</var>).</li><li><p>Let <var>outputValue</var> be ?
-         <a href=#structuredclone id=structuredclone:structuredclone-5>StructuredClone</a>(<var>inputValue</var>, <var>targetRealm</var>,
-         <var>memory</var>).</li><li><p>Perform ? <a id=structuredclone:createdataproperty href=https://tc39.github.io/ecma262/#sec-createdataproperty data-x-internal=createdataproperty>CreateDataProperty</a>(<var>output</var>, <var>key</var>,
-         <var>outputValue</var>).</li></ol>
+      <ol><li><p>Let <var>inputList</var> the value of <var>input</var>'s [[MapData]] internal
+       slot.</li><li><p>Let <var>copiedList</var> be a new empty <a id=structuredclone:list-3 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.
+
+       
+
+       </li><li>
+        <p>Repeat for each <a id=structuredclone:record href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=record>Record</a> { [[Key]], [[Value]] } <var>entry</var> that is an
+        element of <var>inputList</var>,</p>
+
+        <ol><li><p>Let <var>copiedEntry</var> be a new <a id=structuredclone:record-2 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=record>Record</a> {
+         [[Key]]: <var>entry</var>.[[Key]],
+         [[Value]]: <var>entry</var>.[[Value]] }.</li><li><p>If <var>copiedEntry</var>.[[Key]] is not empty, append <var>copiedEntry</var> as the
+         last element of <var>copiedList</var>.</li></ol>
+
+       </li><li><p>Let <var>outputList</var> be the value of <var>output</var>'s [[MapData]] internal
+       slot.</li><li>
+        <p>For each <a id=structuredclone:record-3 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=record>Record</a> { [[Key]], [[Value]] } <var>entry</var> that is an element
+        of <var>copiedList</var>,</p>
+
+        <ol><li><p>Let <var>outputKey</var> be ? <a href=#structuredclone id=structuredclone:structuredclone-2>StructuredClone</a>(<var>entry</var>.[[Key]],
+         <var>targetRealm</var>, <var>memory</var>).</li><li><p>Let <var>outputValue</var> be ?
+         <a href=#structuredclone id=structuredclone:structuredclone-3>StructuredClone</a>(<var>entry</var>.[[Value]], <var>targetRealm</var>,
+         <var>memory</var>).</li><li><p>Add { [[Key]]: <var>outputKey</var>, [[Value]]: <var>outputValue</var> } as the last
+         element of <var>outputList</var>.</li></ol>
+       </li></ol>
+     </li><li>
+      <p>Otherwise, if <var>input</var> has a [[SetData]] internal slot, then:</p>
+
+      <ol><li><p>Let <var>copiedList</var> be a copy of the value of <var>input</var>'s [[SetData]]
+       internal slot.</li><li><p>Let <var>outputList</var> be the value of <var>output</var>'s [[SetData]] internal
+       slot.</li><li>
+        <p>For each <var>entry</var> that is an element of <var>copiedList</var> that is not
+        empty,</p>
+
+        <ol><li><p>Let <var>outputEntry</var> be ? <a href=#structuredclone id=structuredclone:structuredclone-4>StructuredClone</a>(<var>entry</var>,
+         <var>targetResult</var>, <var>memory</var>).</li><li><p>Add <var>outputEntry</var> as the last element of <var>outputList</var>.</li></ol>
+       </li></ol>
+     </li><li>
+      <p>Otherwise, then for each <var>key</var> in ? <var>input</var>.[[OwnPropertyKeys]]():</p>
+
+      <ol><li>
+        <p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredclone:js-type-3 data-x-internal=js-type>Type</a>(<var>key</var>) is String, then:</p>
+
+        <ol><li><p>Let <var>inputDesc</var> be ?
+         <var>input</var>.[[GetOwnProperty]](<var>key</var>).</li><li>
+          <p>If <var>inputDesc</var> is not undefined and <var>inputDesc</var>.[[Enumerable]] is true,
+          then:</p>
+
+          <ol><li><p>Let <var>inputValue</var> be ? <var>input</var>.[[Get]](<var>key</var>,
+           <var>input</var>).</li><li><p>Let <var>outputValue</var> be ?
+           <a href=#structuredclone id=structuredclone:structuredclone-5>StructuredClone</a>(<var>inputValue</var>, <var>targetRealm</var>,
+           <var>memory</var>).</li><li><p>Perform ? <a id=structuredclone:createdataproperty href=https://tc39.github.io/ecma262/#sec-createdataproperty data-x-internal=createdataproperty>CreateDataProperty</a>(<var>output</var>, <var>key</var>,
+           <var>outputValue</var>).</li></ol>
+         </li></ol>
        </li></ol>
      </li></ol>
    </li><li><p>Return <var>output</var>.</li></ol>
