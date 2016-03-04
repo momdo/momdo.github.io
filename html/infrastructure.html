@@ -313,7 +313,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>3 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>4 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -3666,15 +3666,20 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   <a href=#cloneable-objects id=cloneable-objects:cloneable-objects-2>cloneable objects</a> and not all aspects of objects that are <a href=#cloneable-objects id=cloneable-objects:cloneable-objects-3>cloneable
   objects</a> are necessarily preserved when cloned.</p>
 
-  <p>IDL-defined cloneable objects are <a href=#cloneable-objects id=cloneable-objects:cloneable-objects-4>cloneable objects</a> defined through IDL that have
-  the following internal method:</p>
+  <p>IDL-defined objects have the following internal method:</p>
 
   <p>[[<dfn id=clone>Clone</dfn>]] ( <var>targetRealm</var>, <var>memory</var> )</p>
   
 
-  <p>IDL-defined clonable objects must define the [[<a href=#clone id=cloneable-objects:clone>Clone</a>]] internal method such that
-  it either throws or returns a clone of <b>this</b>, created in <var>targetRealm</var>. It is up to
-  IDL-defined cloneable objects to define what cloning means for them.</p>
+  <p>Unless specified otherwise, invoking the [[<a href=#clone id=cloneable-objects:clone>Clone</a>]] internal method must throw a
+  <code id=cloneable-objects:datacloneerror><a href=#datacloneerror>DataCloneError</a></code> exception. (By default, IDL-defined objects are not <a href=#cloneable-objects id=cloneable-objects:cloneable-objects-4>cloneable
+  objects</a>.)</p>
+
+  <p>IDL-defined cloneable objects are <a href=#cloneable-objects id=cloneable-objects:cloneable-objects-5>cloneable objects</a> defined through IDL whose
+  [[<a href=#clone id=cloneable-objects:clone-2>Clone</a>]] internal method is specified to run a series of steps. The result of
+  running those steps must be a thrown exception or a clone of <b>this</b>, created in
+  <var>targetRealm</var>. It is up to IDL-defined cloneable objects to define what cloning means for
+  them.</p>
 
   <p>Objects defined in the JavaScript specification are handled by the <a href=#structuredclone id=cloneable-objects:structuredclone>StructuredClone</a>
   abstract operation directly.</p>
@@ -3696,11 +3701,15 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   <p>[[<dfn id=transfer>Transfer</dfn>]] ( <var>targetRealm</var> )</p>
   
 
-  <p>IDL-defined transferable objects must define the [[<a href=#transfer id=transferable-objects:transfer>Transfer</a>]] internal method such
-  that it either throws or returns a clone of <b>this</b>, created in <var>targetRealm</var>, with
-  <b>this</b>'s underlying data shared with the return value, and <b>this</b>'s
-  [[<a href=#detached id=transferable-objects:detached>Detached</a>]] internal slot value set to true. It is up to IDL-defined transferable
-  objects to define what transfering means for them.</p>
+  <p class=note>Whereas all IDL-defined objects have a [[<a href=#clone id=transferable-objects:clone>Clone</a>]] internal method, not
+  all have a [[<a href=#detached id=transferable-objects:detached>Detached</a>]] internal slot and a [[<a href=#transfer id=transferable-objects:transfer>Transfer</a>]] internal
+  method.</p>
+
+  <p>IDL-defined transferable objects must define the [[<a href=#transfer id=transferable-objects:transfer-2>Transfer</a>]] internal method such
+  that it either throws an exception or returns a clone of <b>this</b>, created in
+  <var>targetRealm</var>, with <b>this</b>'s underlying data shared with the return value, and
+  <b>this</b>'s [[<a href=#detached id=transferable-objects:detached-2>Detached</a>]] internal slot value set to true. It is up to IDL-defined
+  transferable objects to define what transfering means for them.</p>
 
   <p>Objects defined in the JavaScript specification are handled by the
   <a href=#structuredclonewithtransfer id=transferable-objects:structuredclonewithtransfer>StructuredCloneWithTransfer</a> abstract operation directly. (Technically, by
@@ -3753,7 +3762,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   method on the <code id=structuredclonewithtransfer:messageport><a href=comms.html#messageport>MessagePort</a></code> object.</p>
 
   <h4 id=structuredclone>2.9.4 <dfn id=structured-clone data-export="">StructuredClone</dfn> (
-  <var>input</var>, <var>targetRealm</var> [ , <var>memory</var> ] )  </h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=28566" title="Add a synchronous structured clone API">28566</a></div>
+  <var>input</var>, <var>targetRealm</var> [ , <var>memory</var> ] )  </h4>
 
   <ol><li><p>If <var>memory</var> was not supplied, let <var>memory</var> be an empty map.</li><li><p>If <var>memory</var> contains an entry with key <var>input</var>, then return that entry's
    value.</li><li><p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredclone:js-type data-x-internal=js-type>Type</a>(<var>input</var>) is Undefined, Null, Boolean,
@@ -3822,11 +3831,20 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
      "<code>length</code>").[[Value]].</li><li><p>Let <var>outputProto</var> be the <a id=structuredclone:%arrayprototype% href=https://tc39.github.io/ecma262/#sec-properties-of-the-array-prototype-object data-x-internal=%arrayprototype%>%ArrayPrototype%</a> intrinsic object in
      <var>targetRealm</var>.</li><li><p>Let <var>output</var> be ! <a id=structuredclone:arraycreate href=https://tc39.github.io/ecma262/#sec-arraycreate data-x-internal=arraycreate>ArrayCreate</a>(<var>inputLen</var>,
      <var>outputProto</var>).</li><li><p>Set <var>deepClone</var> to true.</li></ol>
-   </li><li><p>Otherwise, if <a id=structuredclone:iscallable href=https://tc39.github.io/ecma262/#sec-iscallable data-x-internal=iscallable>IsCallable</a>(<var>input</var>) is true, then throw a
-   <code id=structuredclone:datacloneerror-3><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li><p>Otherwise, if <var>input</var> has an [[ErrorData]] internal slot, then throw a
-   <code id=structuredclone:datacloneerror-4><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li><p>Otherwise, if <var>input</var> has a [[<a href=#clone id=structuredclone:clone>Clone</a>]] internal method, then let
-   <var>output</var> be ? <var>input</var>.[[<a href=#clone id=structuredclone:clone-2>Clone</a>]](<var>targetRealm</var>).</li><li><p>Otherwise, if <var>input</var> is an exotic object, then throw a
-   <code id=structuredclone:datacloneerror-5><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li>
+   </li><li><p>Otherwise, if <var>input</var> has a [[<a href=#clone id=structuredclone:clone>Clone</a>]] internal method, then let
+   <var>output</var> be ? <var>input</var>.[[<a href=#clone id=structuredclone:clone-2>Clone</a>]](<var>targetRealm</var>,
+   <var>memory</var>).</li><li><p>Otherwise, if <a id=structuredclone:iscallable href=https://tc39.github.io/ecma262/#sec-iscallable data-x-internal=iscallable>IsCallable</a>(<var>input</var>) is true, then throw a
+   <code id=structuredclone:datacloneerror-3><a href=#datacloneerror>DataCloneError</a></code> exception.</li><li>
+    <p>Otherwise, if <var>input</var> has any internal slot other than [[Prototype]] or
+    [[Extensible]], then throw a <code id=structuredclone:datacloneerror-4><a href=#datacloneerror>DataCloneError</a></code> exception.</p>
+
+    <p class=example>For instance, a [[PromiseState]] or [[WeakMapData]] internal slot.</p>
+   </li><li>
+    <p>Otherwise, if <var>input</var> is an exotic object, then throw a
+    <code id=structuredclone:datacloneerror-5><a href=#datacloneerror>DataCloneError</a></code> exception.</p>
+
+    <p class=example>For instance, a proxy object.</p>
+  </li><li>
     <p>そうでなければ：</p>
 
     <ol><li><p>Let <var>output</var> be a new Object in <var>targetRealm</var>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
