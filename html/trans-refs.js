@@ -18,8 +18,8 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-ARIA: 'http://momdo.github.io/wai-aria-1.1/';
-ARIAHTML: 'http://momdo.github.io/html-aria/';
+ARIA: 'http://momdo.github.io/wai-aria-1.1/',
+ARIAHTML: 'http://momdo.github.io/html-aria/',
 ATOM: [ 'http://momdo.s35.xrea.com/web-html-test/spec/rfc4287j.html',
 	'http://www.futomi.com/lecture/japanese/rfc4287.html',
 	'http://www.7key.jp/rfc/4287/rfc4287.html'
