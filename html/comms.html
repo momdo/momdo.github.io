@@ -197,7 +197,8 @@
    ul.checkboxes { list-style-type: none; }
    .progress { text-decoration: blink; }
 
-   .applies .yes { background: yellow; }
+   .applies .yes, .yesno .yes { background: yellow; }
+   .yesno .yes, .yesno .no { text-align: center; }
   </style>
 <style>
    .applies thead th > * { display: block; }
@@ -313,7 +314,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>7 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -463,7 +464,7 @@ source.addEventListener('remove', removeHandler, false);</pre>
   requests. Clients will reconnect if the connection is closed; a client can be told to stop
   reconnecting using the HTTP 204 No Content response code.</p>
 
-  <p>Using this API rather than emulating it using <code id=server-sent-events-intro:xmlhttprequest><a href=infrastructure.html#xmlhttprequest>XMLHttpRequest</a></code> or an
+  <p>Using this API rather than emulating it using <code id=server-sent-events-intro:xmlhttprequest><a data-x-internal=xmlhttprequest href=https://xhr.spec.whatwg.org/#xmlhttprequest>XMLHttpRequest</a></code> or an
   <code id=server-sent-events-intro:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> allows the user agent to make better use of network resources in cases where
   the user agent implementor and the network operator are able to coordinate in advance. Amongst
   other benefits, this can result in significant savings in battery life on portable devices. This
@@ -496,11 +497,11 @@ dictionary <dfn id=eventsourceinit>EventSourceInit</dfn> {
 };</pre>
 
   <p>The <dfn id=dom-eventsource><code>EventSource()</code></dfn> constructor takes one or two
-  arguments. The first specifies the <a id=the-eventsource-interface:url href=infrastructure.html#url>URL</a> to which to connect. The second specifies the
+  arguments. The first specifies the <a id=the-eventsource-interface:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> to which to connect. The second specifies the
   settings, if any, in the form of an <code id=the-eventsource-interface:eventsourceinit-2><a href=#eventsourceinit>EventSourceInit</a></code> dictionary. When the <code id=the-eventsource-interface:dom-eventsource-2><a href=#dom-eventsource>EventSource()</a></code> constructor is invoked, the UA must run these
   steps:</p>
 
-  <ol><li><p><a href=infrastructure.html#parse-a-url id=the-eventsource-interface:parse-a-url>Parse</a> the <a id=the-eventsource-interface:url-2 href=infrastructure.html#url>URL</a> specified in the first
+  <ol><li><p><a href=infrastructure.html#parse-a-url id=the-eventsource-interface:parse-a-url>Parse</a> the <a id=the-eventsource-interface:url-2 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> specified in the first
    argument, relative to the <a id=the-eventsource-interface:entry-settings-object href=webappapis.html#entry-settings-object>entry settings object</a>.</li><li><p>If the previous step failed, then throw a <code id=the-eventsource-interface:syntaxerror><a href=infrastructure.html#syntaxerror>SyntaxError</a></code> exception and abort
    these steps.</li><li><p>Create a new <code id=the-eventsource-interface:eventsource-2><a href=#eventsource>EventSource</a></code> object.</li><li><p>Let <var>corsAttributeState</var> be <a href=infrastructure.html#attr-crossorigin-anonymous id=the-eventsource-interface:attr-crossorigin-anonymous>Anonymous</a>.</li><li><p>If the second argument is present, and the <code id=the-eventsource-interface:dom-eventsourceinit-withcredentials><a href=#dom-eventsourceinit-withcredentials>withCredentials</a></code> dictionary member has the
    value true, then set <var>corsAttributeState</var> to <a href=infrastructure.html#attr-crossorigin-use-credentials id=the-eventsource-interface:attr-crossorigin-use-credentials>Use Credentials</a> and initialise the new
@@ -508,15 +509,14 @@ dictionary <dfn id=eventsourceinit>EventSourceInit</dfn> {
    <a id=the-eventsource-interface:resulting-url-record href=infrastructure.html#resulting-url-record>resulting URL record</a>, <var>corsAttributeState</var>, and with the <i>same-origin
    fallback flag</i> set.</li><li><p>Set <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-client id=the-eventsource-interface:concept-request-client data-x-internal=concept-request-client>client</a> to
    <a id=the-eventsource-interface:entry-settings-object-2 href=webappapis.html#entry-settings-object>entry settings object</a>.</li><li><p>User agents may <a href=https://fetch.spec.whatwg.org/#concept-header-list-set id=the-eventsource-interface:concept-header-list-set data-x-internal=concept-header-list-set>set</a> `<code id=the-eventsource-interface:http-accept><a data-x-internal=http-accept href=https://tools.ietf.org/html/rfc7231#section-5.3.2>Accept</a></code>`/`<code id=the-eventsource-interface:text/event-stream><a href=#text/event-stream>text/event-stream</a></code>` in <var>request</var>'s
-   <a href=https://fetch.spec.whatwg.org/#concept-request-header-list id=the-eventsource-interface:concept-request-header-list data-x-internal=concept-request-header-list>header list</a>.</li><li><p>User agents should <a href=https://fetch.spec.whatwg.org/#concept-header-list-set id=the-eventsource-interface:concept-header-list-set-2 data-x-internal=concept-header-list-set>set</a> `<code id=the-eventsource-interface:http-cache-control><a data-x-internal=http-cache-control href=https://tools.ietf.org/html/rfc7234#section-5.2>Cache-Control</a></code>`/`<code>no-cache</code>` in
-   <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-header-list id=the-eventsource-interface:concept-request-header-list-2 data-x-internal=concept-request-header-list>header list</a> and set
-   <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-cache-mode id=the-eventsource-interface:concept-request-cache-mode data-x-internal=concept-request-cache-mode>cache mode</a> to "<code>no-store</code>".</li><li><p>Set <code id=the-eventsource-interface:eventsource-4><a href=#eventsource>EventSource</a></code> object's <a href=#concept-event-stream-request id=the-eventsource-interface:concept-event-stream-request>request</a> to <var>request</var>.</li><li><p>Return the new <code id=the-eventsource-interface:eventsource-5><a href=#eventsource>EventSource</a></code> object, but continue these steps
+   <a href=https://fetch.spec.whatwg.org/#concept-request-header-list id=the-eventsource-interface:concept-request-header-list data-x-internal=concept-request-header-list>header list</a>.</li><li><p>Set <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-cache-mode id=the-eventsource-interface:concept-request-cache-mode data-x-internal=concept-request-cache-mode>cache mode</a> to
+   "<code>no-store</code>".</li><li><p>Set <code id=the-eventsource-interface:eventsource-4><a href=#eventsource>EventSource</a></code> object's <a href=#concept-event-stream-request id=the-eventsource-interface:concept-event-stream-request>request</a> to <var>request</var>.</li><li><p>Return the new <code id=the-eventsource-interface:eventsource-5><a href=#eventsource>EventSource</a></code> object, but continue these steps
    <a id=the-eventsource-interface:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p><a href=https://fetch.spec.whatwg.org/#concept-fetch id=the-eventsource-interface:concept-fetch data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li></ol>
 
   <hr>
 
   <p>The <dfn id=dom-eventsource-url><code>url</code></dfn> attribute must return the
-  <a id=the-eventsource-interface:absolute-url href=infrastructure.html#absolute-url>absolute URL</a> that resulted from <a href=infrastructure.html#parse-a-url id=the-eventsource-interface:parse-a-url-2>parsing</a> the
+  <a id=the-eventsource-interface:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a> that resulted from <a href=infrastructure.html#parse-a-url id=the-eventsource-interface:parse-a-url-2>parsing</a> the
   value that was passed to the constructor.</p> 
 
   <p>The <dfn id=dom-eventsource-withcredentials><code>withCredentials</code></dfn> attribute
@@ -1060,7 +1060,7 @@ interface <dfn id=websocket>WebSocket</dfn> : <a id=the-websocket-interface:even
 
   <p>The <dfn id=dom-websocket><code>WebSocket(<var>url</var>,
   <var>protocols</var>)</code></dfn> constructor takes one or two arguments. The first argument,
-  <var>url</var>, specifies the <a id=the-websocket-interface:url href=infrastructure.html#url>URL</a> to which to connect. The second,
+  <var>url</var>, specifies the <a id=the-websocket-interface:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> to which to connect. The second,
   <var>protocols</var>, if present, is either a string or an array of strings. If it is a string, it
   is equivalent to an array consisting of just that string; if it is omitted, it is equivalent to
   the empty array. Each string in the array is a subprotocol name. The connection will only be
@@ -1145,8 +1145,8 @@ interface <dfn id=websocket>WebSocket</dfn> : <a id=the-websocket-interface:even
 
   <p>The <dfn id=dom-websocket-url><code>url</code></dfn> attribute must return the
   <a id=the-websocket-interface:resulting-url-string href=infrastructure.html#resulting-url-string>resulting URL string</a> of <a href=infrastructure.html#parse-a-url id=the-websocket-interface:parse-a-url>parsing</a> the
-  <a id=the-websocket-interface:url-2 href=infrastructure.html#url>URL</a> that was passed to the constructor, with the URL character encoding set to UTF-8.
-  (It doesn't matter what it is parsed relative to, since we already know it is an <a id=the-websocket-interface:absolute-url href=infrastructure.html#absolute-url>absolute
+  <a id=the-websocket-interface:url-2 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> that was passed to the constructor, with the URL character encoding set to UTF-8.
+  (It doesn't matter what it is parsed relative to, since we already know it is an <a id=the-websocket-interface:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
   URL</a>.)</p>
 
   <p>The <dfn id=dom-websocket-readystate><code>readyState</code></dfn> attribute represents
@@ -1405,7 +1405,7 @@ socket.onopen = function () {
 
    </li><li><p>Initialise <var>event</var>'s <code id=feedback-from-the-protocol:dom-messageevent-origin><a href=#dom-messageevent-origin>origin</a></code>
    attribute to the <a href=browsers.html#unicode-serialisation-of-an-origin id=feedback-from-the-protocol:unicode-serialisation-of-an-origin>Unicode serialisation</a>
-   of the <a id=feedback-from-the-protocol:origin-2 href=browsers.html#origin-2>origin</a> of the <a id=feedback-from-the-protocol:url href=infrastructure.html#url>URL</a> that was passed to the <code id=feedback-from-the-protocol:websocket-3><a href=#websocket>WebSocket</a></code>
+   of the <a id=feedback-from-the-protocol:origin-2 href=browsers.html#origin-2>origin</a> of the <a id=feedback-from-the-protocol:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> that was passed to the <code id=feedback-from-the-protocol:websocket-3><a href=#websocket>WebSocket</a></code>
    object's constructor.</li><li>
 
     <p>If <var>type</var> indicates that the data is Text, then initialise <var>event</var>'s <code id=feedback-from-the-protocol:dom-messageevent-data><a href=#dom-messageevent-data>data</a></code> attribute to <var>data</var>.
@@ -1550,13 +1550,13 @@ socket.onopen = function () {
   follows. These steps return either a <var>host</var>, a <var>port</var>, a <var>resource
   name</var>, and a <var>secure</var> flag, or they fail.</p>
 
-  <ol><li><p>If the <var>url</var> string is not an <a id=parsing-websocket-urls:absolute-url href=infrastructure.html#absolute-url>absolute URL</a>, then fail this
+  <ol><li><p>If the <var>url</var> string is not an <a id=parsing-websocket-urls:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>, then fail this
    algorithm.</li><li>
 
     <p><a href=infrastructure.html#parse-a-url id=parsing-websocket-urls:parse-a-url>Parse</a> the <var>url</var> string, with the URL character
     encoding set to UTF-8. <a href=references.html#refsENCODING>[ENCODING]</a></p> 
 
-    <p class=note>Since we already know the <var>url</var> string is an <a id=parsing-websocket-urls:absolute-url-2 href=infrastructure.html#absolute-url>absolute URL</a>,
+    <p class=note>Since we already know the <var>url</var> string is an <a id=parsing-websocket-urls:absolute-url-2 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
     <a href=infrastructure.html#parse-a-url id=parsing-websocket-urls:parse-a-url-2>parsing</a> it will never return an error, and it doesn't
     matter what it is resolved relative to.</p>
 
@@ -1798,7 +1798,7 @@ function receiver(e) {
   follow these steps:</p>
 
   <ol><li><p>If the value of the <var>targetOrigin</var> argument is neither a single U+002A
-   ASTERISK character (*), a single U+002F SOLIDUS character (/), nor an <a id=posting-messages:absolute-url href=infrastructure.html#absolute-url>absolute URL</a>,
+   ASTERISK character (*), a single U+002F SOLIDUS character (/), nor an <a id=posting-messages:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
    then throw a <code id=posting-messages:syntaxerror><a href=infrastructure.html#syntaxerror>SyntaxError</a></code> exception and abort the overall set of steps.</li><li><p>Let <var>targetRealm</var> be this <code id=posting-messages:window-4><a href=browsers.html#window>Window</a></code> object's <a id=posting-messages:javascript-realm href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript
    realm</a>.</li><li><p>Let <var>cloneRecord</var> be <a id=posting-messages:structuredclonewithtransfer href=infrastructure.html#structuredclonewithtransfer>StructuredCloneWithTransfer</a>(<var>message</var>,
    <var>transfer</var>, <var>targetRealm</var>). Rethrow any exceptions.</li><li><p>Let <var>message clone</var> be <var>cloneRecord</var>.[[Clone]].</li><li><p>Let <var>new ports</var> be a new <a href=infrastructure.html#dfn-read-only-array id=posting-messages:dfn-read-only-array>read only</a>
@@ -1812,7 +1812,7 @@ function receiver(e) {
     document</a> specified by the <a id=posting-messages:entry-settings-object href=webappapis.html#entry-settings-object>entry settings object</a>, then abort these steps
     silently.</p>
 
-    <p>Otherwise, if the <var>targetOrigin</var> argument is an <a id=posting-messages:absolute-url-2 href=infrastructure.html#absolute-url>absolute URL</a>,
+    <p>Otherwise, if the <var>targetOrigin</var> argument is an <a id=posting-messages:absolute-url-2 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
     and the <code id=posting-messages:document-4><a href=dom.html#document>Document</a></code> of the <code id=posting-messages:window-6><a href=browsers.html#window>Window</a></code> object on which the method was invoked
     does not have the <a id=posting-messages:same-origin-2 href=browsers.html#same-origin>same origin</a> as <var>targetOrigin</var>, then abort
     these steps silently.</p>
@@ -1956,8 +1956,8 @@ function handleMessage(event) {
   <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-3><a href=embedded-content.html#the-iframe-element>iframe</a></code> cannot access anything inside the first <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-4><a href=embedded-content.html#the-iframe-element>iframe</a></code>; together they can
   only:</p>
 
-  <ul class=brief><li><a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:navigate href=browsers.html#navigate>Navigate</a> the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-5><a href=embedded-content.html#the-iframe-element>iframe</a></code> to a new <a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:url href=infrastructure.html#url>URL</a>, such as the same
-   <a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:url-2 href=infrastructure.html#url>URL</a> but with a different <a href=https://url.spec.whatwg.org/#concept-url-fragment id=ports-as-the-basis-of-an-object-capability-model-on-the-web:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a>,
+  <ul class=brief><li><a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:navigate href=browsers.html#navigate>Navigate</a> the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-5><a href=embedded-content.html#the-iframe-element>iframe</a></code> to a new <a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>, such as the same
+   <a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:url-2 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> but with a different <a href=https://url.spec.whatwg.org/#concept-url-fragment id=ports-as-the-basis-of-an-object-capability-model-on-the-web:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a>,
    causing the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:window><a href=browsers.html#window>Window</a></code> in the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-6><a href=embedded-content.html#the-iframe-element>iframe</a></code> to receive a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-hashchange><a href=indices.html#event-hashchange>hashchange</a></code> event.</li><li>Resize the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-7><a href=embedded-content.html#the-iframe-element>iframe</a></code>, causing the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:window-2><a href=browsers.html#window>Window</a></code> in the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-8><a href=embedded-content.html#the-iframe-element>iframe</a></code> to
    receive a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-resize><a href=infrastructure.html#event-resize>resize</a></code> event.</li><li>Send a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-message><a href=indices.html#event-message>message</a></code> event to the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:window-3><a href=browsers.html#window>Window</a></code> in the
    <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-9><a href=embedded-content.html#the-iframe-element>iframe</a></code> using the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:dom-window-postmessage><a href=#dom-window-postmessage>window.postMessage()</a></code>
@@ -1997,12 +1997,12 @@ function handleMessage(event) {
   <p><i>この節は非規範的である。</i></p>
 
   <p>Continuing the example from the previous section, consider the contacts provider in particular.
-  While an initial implementation might have simply used <code id=ports-as-the-basis-of-abstracting-out-service-implementations:xmlhttprequest><a href=infrastructure.html#xmlhttprequest>XMLHttpRequest</a></code> objects in the
+  While an initial implementation might have simply used <code id=ports-as-the-basis-of-abstracting-out-service-implementations:xmlhttprequest><a data-x-internal=xmlhttprequest href=https://xhr.spec.whatwg.org/#xmlhttprequest>XMLHttpRequest</a></code> objects in the
   service's <code id=ports-as-the-basis-of-abstracting-out-service-implementations:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>, an evolution of the service might instead want to use a <a href=workers.html#sharedworker id=ports-as-the-basis-of-abstracting-out-service-implementations:sharedworker>shared worker</a> with a single <code id=ports-as-the-basis-of-abstracting-out-service-implementations:websocket><a href=#websocket>WebSocket</a></code> connection.</p>
 
   <p>If the initial design used <code id=ports-as-the-basis-of-abstracting-out-service-implementations:messageport><a href=#messageport>MessagePort</a></code> objects to grant capabilities, or even just
   to allow multiple simultaneous independent sessions, the service implementation can switch from
-  the <code id=ports-as-the-basis-of-abstracting-out-service-implementations:xmlhttprequest-2><a href=infrastructure.html#xmlhttprequest>XMLHttpRequest</a></code>s-in-each-<code id=ports-as-the-basis-of-abstracting-out-service-implementations:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code> model to the
+  the <code id=ports-as-the-basis-of-abstracting-out-service-implementations:xmlhttprequest-2><a data-x-internal=xmlhttprequest href=https://xhr.spec.whatwg.org/#xmlhttprequest>XMLHttpRequest</a></code>s-in-each-<code id=ports-as-the-basis-of-abstracting-out-service-implementations:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code> model to the
   shared-<code id=ports-as-the-basis-of-abstracting-out-service-implementations:websocket-2><a href=#websocket>WebSocket</a></code> model without changing the API at all: the ports on the service
   provider side can all be forwarded to the shared worker without it affecting the users of the API
   in the slightest.</p>
