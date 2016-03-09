@@ -314,7 +314,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>9 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -1332,15 +1332,24 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
       <a href=browsers.html#concept-document-bc id=processing-model-8:concept-document-bc-2>browsing context</a>'s <a id=processing-model-8:top-level-browsing-context-2 href=browsers.html#top-level-browsing-context>top-level browsing
       context</a> is in <var>B</var>.</p>
 
-      <p class=note>Whether a <a id=processing-model-8:top-level-browsing-context-3 href=browsers.html#top-level-browsing-context>top-level browsing context</a> would benefit from having
-      its rendering updated depends on various factors, such as the update frequency. For example,
-      if the browser is attempting to achieve a 60 Hz refresh rate, then these steps are only
-      necessary every 60th of a second (about 16.7ms). If the browser finds that a <a id=processing-model-8:top-level-browsing-context-4 href=browsers.html#top-level-browsing-context>top-level
-      browsing context</a> is not able to sustain this rate, it might drop to a more sustainable
-      30Hz for that set of <code id=processing-model-8:document-8><a href=dom.html#document>Document</a></code>s, rather than occasionally dropping frames. (This
-      specification does not mandate any particular model for when to update the rendering.)
-      Similarly, if a <a id=processing-model-8:top-level-browsing-context-5 href=browsers.html#top-level-browsing-context>top-level browsing context</a> is in the background, the user agent
-      might decide to drop that page to a much slower 4Hz, or even less.</p>
+      <div class=note>
+       <p>Whether a <a id=processing-model-8:top-level-browsing-context-3 href=browsers.html#top-level-browsing-context>top-level browsing context</a> would benefit from having its rendering
+       updated depends on various factors, such as the update frequency. For example, if the browser
+       is attempting to achieve a 60Hz refresh rate, then these steps are only necessary every 60th
+       of a second (about 16.7ms). If the browser finds that a <a id=processing-model-8:top-level-browsing-context-4 href=browsers.html#top-level-browsing-context>top-level browsing
+       context</a> is not able to sustain this rate, it might drop to a more sustainable 30Hz for
+       that set of <code id=processing-model-8:document-8><a href=dom.html#document>Document</a></code>s, rather than occasionally dropping frames. (This
+       specification does not mandate any particular model for when to update the rendering.)
+       Similarly, if a <a id=processing-model-8:top-level-browsing-context-5 href=browsers.html#top-level-browsing-context>top-level browsing context</a> is in the background, the user agent
+       might decide to drop that page to a much slower 4Hz, or even less.</p>
+
+       <p>Another example of why a browser might skip updating the rendering is to ensure certain
+       <a href=#concept-task id=processing-model-8:concept-task-4>tasks</a> are executed immediately after each other, with only
+       <a href=#perform-a-microtask-checkpoint id=processing-model-8:perform-a-microtask-checkpoint-2>microtask checkpoints</a> interleaved (and
+       without, e.g., <a href=#run-the-animation-frame-callbacks id=processing-model-8:run-the-animation-frame-callbacks>animation frame
+       callbacks</a> interleaved). For example, a user agent might wish to coalesce timer
+       callbacks together, with no intermediate rendering updates.</p>
+      </div>
 
      </li><li>
 
@@ -1362,7 +1371,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
      steps</a> for that <code id=processing-model-8:document-13><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>For each <a id=processing-model-8:fully-active-4 href=browsers.html#fully-active>fully active</a> <code id=processing-model-8:document-14><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=processing-model-8:evaluate-media-queries-and-report-changes href=https://drafts.csswg.org/cssom-view/#evaluate-media-queries-and-report-changes data-x-internal=evaluate-media-queries-and-report-changes>evaluate media queries
      and report changes</a> for that <code id=processing-model-8:document-15><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>For each <a id=processing-model-8:fully-active-5 href=browsers.html#fully-active>fully active</a> <code id=processing-model-8:document-16><a href=dom.html#document>Document</a></code> in <var>docs</var>, <dfn id=run-css-animations-and-send-events>run CSS animations and send
      events</dfn> for that <code id=processing-model-8:document-17><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSANIMATIONS>[CSSANIMATIONS]</a></li><li><p>For each <a id=processing-model-8:fully-active-6 href=browsers.html#fully-active>fully active</a> <code id=processing-model-8:document-18><a href=dom.html#document>Document</a></code> in <var>docs</var>, <dfn id=run-the-fullscreen-rendering-steps>run the fullscreen rendering
-     steps</dfn> for that <code id=processing-model-8:document-19><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsFULLSCREEN>[FULLSCREEN]</a><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=28001" title="Formalize rendering tasks">28001</a></div></li><li><p>For each <a id=processing-model-8:fully-active-7 href=browsers.html#fully-active>fully active</a> <code id=processing-model-8:document-20><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a href=#run-the-animation-frame-callbacks id=processing-model-8:run-the-animation-frame-callbacks>run the animation frame
+     steps</dfn> for that <code id=processing-model-8:document-19><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsFULLSCREEN>[FULLSCREEN]</a><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=28001" title="Formalize rendering tasks">28001</a></div></li><li><p>For each <a id=processing-model-8:fully-active-7 href=browsers.html#fully-active>fully active</a> <code id=processing-model-8:document-20><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a href=#run-the-animation-frame-callbacks id=processing-model-8:run-the-animation-frame-callbacks-2>run the animation frame
      callbacks</a> for that <code id=processing-model-8:document-21><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the
      timestamp.</li><li><p>For each <a id=processing-model-8:fully-active-8 href=browsers.html#fully-active>fully active</a> <code id=processing-model-8:document-22><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=processing-model-8:run-the-update-intersection-observations-steps href=https://rawgit.com/WICG/IntersectionObserver/master/index.html#run-the-update-intersection-observations-steps data-x-internal=run-the-update-intersection-observations-steps>run the update
      intersection observations steps</a> for that <code id=processing-model-8:document-23><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the
@@ -1370,7 +1379,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
      rendering or user interface of that <code id=processing-model-8:document-25><a href=dom.html#document>Document</a></code> and its <a href=browsers.html#concept-document-bc id=processing-model-8:concept-document-bc-4>browsing context</a> to reflect the current state.</li></ol>
 
    </li><li><p>If this is a <a href=workers.html#workers>worker</a> <a href=#event-loop id=processing-model-8:event-loop-10>event loop</a> (i.e. one running for a
-   <code id=processing-model-8:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code>), but there are no <a href=#concept-task id=processing-model-8:concept-task-4>tasks</a> in the
+   <code id=processing-model-8:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code>), but there are no <a href=#concept-task id=processing-model-8:concept-task-5>tasks</a> in the
    <a href=#event-loop id=processing-model-8:event-loop-11>event loop</a>'s <a href=#task-queue id=processing-model-8:task-queue-4>task queues</a> and the
    <code id=processing-model-8:workerglobalscope-2><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> object's <a href=workers.html#dom-workerglobalscope-closing id=processing-model-8:dom-workerglobalscope-closing>closing</a> flag is true, then destroy the <a href=#event-loop id=processing-model-8:event-loop-12>event
    loop</a>, aborting these steps, resuming the <a id=processing-model-8:run-a-worker href=workers.html#run-a-worker>run a worker</a> steps described in the
@@ -1379,7 +1388,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   <hr>
 
   <p>Each <a href=#event-loop id=processing-model-8:event-loop-14>event loop</a> has a <dfn id=microtask-queue>microtask queue</dfn>. A <dfn id=microtask>microtask</dfn> is a
-  <a href=#concept-task id=processing-model-8:concept-task-5>task</a> that is originally to be queued on the <a href=#microtask-queue id=processing-model-8:microtask-queue>microtask
+  <a href=#concept-task id=processing-model-8:concept-task-6>task</a> that is originally to be queued on the <a href=#microtask-queue id=processing-model-8:microtask-queue>microtask
   queue</a> rather than a <a href=#task-queue id=processing-model-8:task-queue-5>task queue</a>. There are two kinds of <a href=#microtask id=processing-model-8:microtask>microtasks</a>: <dfn id=solitary-callback-microtask>solitary callback
   microtasks</dfn>, and <dfn id=compound-microtask>compound microtasks</dfn>.</p>
 
@@ -1403,12 +1412,12 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
   <ol><li><p>Let the <a href=#performing-a-microtask-checkpoint id=processing-model-8:performing-a-microtask-checkpoint-2>performing a microtask checkpoint</a> flag be true.</li><li><p><i>Microtask queue handling</i>: If the <a href=#event-loop id=processing-model-8:event-loop-16>event loop</a>'s <a href=#microtask-queue id=processing-model-8:microtask-queue-3>microtask
    queue</a> is empty, jump to the <i>done</i> step below.</li><li><p>Select the oldest <a href=#microtask id=processing-model-8:microtask-6>microtask</a> on the <a href=#event-loop id=processing-model-8:event-loop-17>event loop</a>'s <a href=#microtask-queue id=processing-model-8:microtask-queue-4>microtask
-   queue</a>.</li><li><p>Set the <a href=#event-loop id=processing-model-8:event-loop-18>event loop</a>'s <a href=#currently-running-task id=processing-model-8:currently-running-task-3>currently running task</a> to the <a href=#concept-task id=processing-model-8:concept-task-6>task</a> selected in the previous step.</li><li>
+   queue</a>.</li><li><p>Set the <a href=#event-loop id=processing-model-8:event-loop-18>event loop</a>'s <a href=#currently-running-task id=processing-model-8:currently-running-task-3>currently running task</a> to the <a href=#concept-task id=processing-model-8:concept-task-7>task</a> selected in the previous step.</li><li>
 
-    <p><i>Run</i>: Run the selected <a href=#concept-task id=processing-model-8:concept-task-7>task</a>.</p>
+    <p><i>Run</i>: Run the selected <a href=#concept-task id=processing-model-8:concept-task-8>task</a>.</p>
 
     <p class=note>This might involve invoking scripted callbacks, which eventually calls the
-    <a href=#clean-up-after-running-script id=processing-model-8:clean-up-after-running-script>clean up after running script</a> steps, which call this <a href=#perform-a-microtask-checkpoint id=processing-model-8:perform-a-microtask-checkpoint-2>perform a microtask
+    <a href=#clean-up-after-running-script id=processing-model-8:clean-up-after-running-script>clean up after running script</a> steps, which call this <a href=#perform-a-microtask-checkpoint id=processing-model-8:perform-a-microtask-checkpoint-3>perform a microtask
     checkpoint</a> algorithm again, which is why we use the <a href=#performing-a-microtask-checkpoint id=processing-model-8:performing-a-microtask-checkpoint-3>performing a microtask
     checkpoint</a> flag to avoid reentrancy.</p>
 
@@ -1423,7 +1432,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   the following steps:</p>
 
   <ol><li><p>Let <var>parent</var> be the <a href=#event-loop id=processing-model-8:event-loop-21>event loop</a>'s <a href=#currently-running-task id=processing-model-8:currently-running-task-5>currently running
-   task</a> (the currently running <a href=#compound-microtask id=processing-model-8:compound-microtask-3>compound microtask</a>).</li><li><p>Let <var>subtask</var> be a new <a href=#concept-task id=processing-model-8:concept-task-8>task</a> that
+   task</a> (the currently running <a href=#compound-microtask id=processing-model-8:compound-microtask-3>compound microtask</a>).</li><li><p>Let <var>subtask</var> be a new <a href=#concept-task id=processing-model-8:concept-task-9>task</a> that
    consists of running the given series of steps. The <a href=#task-source id=processing-model-8:task-source-4>task source</a> of such a
    <a href=#microtask id=processing-model-8:microtask-8>microtask</a> is the <a href=#microtask-task-source id=processing-model-8:microtask-task-source-2>microtask task source</a>. This is a <dfn id=compound-microtask-subtask>compound
    microtask subtask</dfn>.</li><li><p>Set the <a href=#event-loop id=processing-model-8:event-loop-22>event loop</a>'s <a href=#currently-running-task id=processing-model-8:currently-running-task-6>currently running task</a> to <var>subtask</var>.</li><li><p>Run <var>subtask</var>.</li><li><p>Set the <a href=#event-loop id=processing-model-8:event-loop-23>event loop</a>'s <a href=#currently-running-task id=processing-model-8:currently-running-task-7>currently running task</a> back to <var>parent</var>.</li></ol>
@@ -1452,18 +1461,18 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
     <p class=note>This might be a <a href=#microtask id=processing-model-8:microtask-9>microtask</a>, in which case it is a <a href=#solitary-callback-microtask id=processing-model-8:solitary-callback-microtask-2>solitary
     callback microtask</a>. It could also be a <a href=#compound-microtask-subtask id=processing-model-8:compound-microtask-subtask>compound microtask subtask</a>, or a
-    regular <a href=#concept-task id=processing-model-8:concept-task-9>task</a> that is not a <a href=#microtask id=processing-model-8:microtask-10>microtask</a>. It will
+    regular <a href=#concept-task id=processing-model-8:concept-task-10>task</a> that is not a <a href=#microtask id=processing-model-8:microtask-10>microtask</a>. It will
     <em>not</em> be a <a href=#compound-microtask id=processing-model-8:compound-microtask-4>compound microtask</a>.</p> 
 
    </li><li><p>Let <var>task source</var> be <var>task</var>'s <a href=#task-source id=processing-model-8:task-source-5>task
    source</a>.</li><li><p>Let <var>old stack</var> be a copy of the <a id=processing-model-8:javascript-execution-context-stack href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context
-   stack</a>.</li><li><p>Empty the <a id=processing-model-8:javascript-execution-context-stack-2 href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a>.</li><li><p><a href=#run-the-global-script-clean-up-jobs id=processing-model-8:run-the-global-script-clean-up-jobs>Run the global script clean-up jobs</a>.</li><li><p><a href=#perform-a-microtask-checkpoint id=processing-model-8:perform-a-microtask-checkpoint-3>Perform a microtask checkpoint</a>.</li><li>
+   stack</a>.</li><li><p>Empty the <a id=processing-model-8:javascript-execution-context-stack-2 href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a>.</li><li><p><a href=#run-the-global-script-clean-up-jobs id=processing-model-8:run-the-global-script-clean-up-jobs>Run the global script clean-up jobs</a>.</li><li><p><a href=#perform-a-microtask-checkpoint id=processing-model-8:perform-a-microtask-checkpoint-4>Perform a microtask checkpoint</a>.</li><li>
 
     <p>Stop <var>task</var>, allowing whatever algorithm that invoked it to resume, but
     continue these steps <a id=processing-model-8:in-parallel-3 href=infrastructure.html#in-parallel>in parallel</a>.</p>
 
     <p class=note>This causes one of the following algorithms to continue: the <a href=#event-loop id=processing-model-8:event-loop-25>event
-    loop</a>'s main set of steps, the <a href=#perform-a-microtask-checkpoint id=processing-model-8:perform-a-microtask-checkpoint-4>perform a microtask checkpoint</a> algorithm, or
+    loop</a>'s main set of steps, the <a href=#perform-a-microtask-checkpoint id=processing-model-8:perform-a-microtask-checkpoint-5>perform a microtask checkpoint</a> algorithm, or
     the <a href=#execute-a-compound-microtask-subtask id=processing-model-8:execute-a-compound-microtask-subtask-2>execute a compound microtask subtask</a> algorithm to continue.</p>
 
    </li><li><p>Wait until the condition <var>goal</var> is met.</li><li><p><a href=#queue-a-task id=processing-model-8:queue-a-task>Queue a task</a> to continue running these steps, using the <a href=#task-source id=processing-model-8:task-source-6>task
@@ -1474,12 +1483,12 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   <hr>
 
   <p>Some of the algorithms in this specification, for historical reasons, require the user agent to
-  <dfn id=pause>pause</dfn> while running a <a href=#concept-task id=processing-model-8:concept-task-10>task</a> until a condition <var>goal</var> is met. This means running the following steps:</p>
+  <dfn id=pause>pause</dfn> while running a <a href=#concept-task id=processing-model-8:concept-task-11>task</a> until a condition <var>goal</var> is met. This means running the following steps:</p>
 
   <ol><li><p>If necessary, update the rendering or user interface of any <code id=processing-model-8:document-26><a href=dom.html#document>Document</a></code> or
    <a id=processing-model-8:browsing-context-3 href=browsers.html#browsing-context>browsing context</a> to reflect the current state.</li><li><p>Wait until the condition <var>goal</var> is met. While a user agent has a paused
-   <a href=#concept-task id=processing-model-8:concept-task-11>task</a>, the corresponding <a href=#event-loop id=processing-model-8:event-loop-26>event loop</a> must not run
-   further <a href=#concept-task id=processing-model-8:concept-task-12>tasks</a>, and any script in the currently running <a href=#concept-task id=processing-model-8:concept-task-13>task</a> must block. User agents should remain responsive to user input
+   <a href=#concept-task id=processing-model-8:concept-task-12>task</a>, the corresponding <a href=#event-loop id=processing-model-8:event-loop-26>event loop</a> must not run
+   further <a href=#concept-task id=processing-model-8:concept-task-13>tasks</a>, and any script in the currently running <a href=#concept-task id=processing-model-8:concept-task-14>task</a> must block. User agents should remain responsive to user input
    while paused, however, albeit in a reduced capacity since the <a href=#event-loop id=processing-model-8:event-loop-27>event loop</a> will not be
    doing anything.</li></ol>
 
@@ -1498,7 +1507,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
     <p>This <a href=#task-source id=generic-task-sources:task-source-3>task source</a> is used for features that react to user interaction, for
     example keyboard or mouse input.</p>
 
-    <p>Events sent in response to user input (e.g. <code id=generic-task-sources:event-click><a href=infrastructure.html#event-click>click</a></code> events) must be fired using <a href=#concept-task id=generic-task-sources:concept-task>tasks</a> <a href=#queue-a-task id=generic-task-sources:queue-a-task>queued</a> with the <a href=#user-interaction-task-source id=generic-task-sources:user-interaction-task-source>user
+    <p>Events sent in response to user input (e.g. <code id=generic-task-sources:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> events) must be fired using <a href=#concept-task id=generic-task-sources:concept-task>tasks</a> <a href=#queue-a-task id=generic-task-sources:queue-a-task>queued</a> with the <a href=#user-interaction-task-source id=generic-task-sources:user-interaction-task-source>user
     interaction task source</a>. <a href=references.html#refsUIEVENTS>[UIEVENTS]</a></p> 
 
    <dt>The <dfn id=networking-task-source>networking task source</dfn><dd>
@@ -1667,7 +1676,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
     <p>Process <var>return value</var> as follows:</p>
 
-    <dl class=switch><dt>If the event type is <code id=event-handler-attributes:event-mouseover><a href=infrastructure.html#event-mouseover>mouseover</a></code><dt>If the event type is <code id=event-handler-attributes:event-error><a href=indices.html#event-error>error</a></code> and <var>E</var> is an <code id=event-handler-attributes:errorevent-2><a href=#errorevent>ErrorEvent</a></code> object<dd><p>If <var>return value</var> is a Web IDL boolean true value, then cancel the event.<dt>If the event type is <code id=event-handler-attributes:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code><dd>
+    <dl class=switch><dt>If the event type is <code id=event-handler-attributes:event-mouseover><a data-x-internal=event-mouseover href=https://w3c.github.io/uievents/#event-type-mouseover>mouseover</a></code><dt>If the event type is <code id=event-handler-attributes:event-error><a href=indices.html#event-error>error</a></code> and <var>E</var> is an <code id=event-handler-attributes:errorevent-2><a href=#errorevent>ErrorEvent</a></code> object<dd><p>If <var>return value</var> is a Web IDL boolean true value, then cancel the event.<dt>If the event type is <code id=event-handler-attributes:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code><dd>
 
       <p class=note>The <a href=#event-handler-idl-attributes id=event-handler-attributes:event-handler-idl-attributes-6>event handler IDL
       attribute</a>'s type is <code id=event-handler-attributes:onbeforeunloadeventhandler><a href=#onbeforeunloadeventhandler>OnBeforeUnloadEventHandler</a></code>, and the <var>return value</var> will therefore have been coerced into either the value null or a
@@ -1709,7 +1718,7 @@ typedef <a href=#eventhandlernonnull id=event-handler-attributes:eventhandlernon
 
   <p class=note>The return value of the function affects whether the event is canceled or not:
   as described above, if the return value is false, the event is canceled
-  (except for <code id=event-handler-attributes:event-mouseover-2><a href=infrastructure.html#event-mouseover>mouseover</a></code> events, where the return value has to
+  (except for <code id=event-handler-attributes:event-mouseover-2><a data-x-internal=event-mouseover href=https://w3c.github.io/uievents/#event-type-mouseover>mouseover</a></code> events, where the return value has to
   be true to cancel the event). With <code id=event-handler-attributes:event-beforeunload-2><a href=indices.html#event-beforeunload>beforeunload</a></code> events,
   the value is instead used to determine the message to show the user.</p>
 
@@ -1832,11 +1841,11 @@ typedef <a href=#onbeforeunloadeventhandlernonnull id=event-handler-attributes:o
     </td></tr><tr><td><dfn id=handler-oncanplay><code>oncanplay</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-canplay><a href=embedded-content.html#event-media-canplay>canplay</a></code>
     </td></tr><tr><td><dfn id=handler-oncanplaythrough><code>oncanplaythrough</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-canplaythrough><a href=embedded-content.html#event-media-canplaythrough>canplaythrough</a></code>
     </td></tr><tr><td><dfn id=handler-onchange><code>onchange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-change><a href=indices.html#event-change>change</a></code> 
-    </td></tr><tr><td><dfn id=handler-onclick><code>onclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-click><a href=infrastructure.html#event-click>click</a></code> 
+    </td></tr><tr><td><dfn id=handler-onclick><code>onclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> 
     </td></tr><tr><td><dfn id=handler-onclose><code>onclose</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-close><a href=indices.html#event-close>close</a></code> 
     </td></tr><tr><td><dfn id=handler-oncontextmenu><code>oncontextmenu</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-contextmenu><a href=indices.html#event-contextmenu>contextmenu</a></code> 
     </td></tr><tr><td><dfn id=handler-oncuechange><code>oncuechange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-cuechange><a href=embedded-content.html#event-media-cuechange>cuechange</a></code>
-    </td></tr><tr><td><dfn id=handler-ondblclick><code>ondblclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dblclick><a href=infrastructure.html#event-dblclick>dblclick</a></code> 
+    </td></tr><tr><td><dfn id=handler-ondblclick><code>ondblclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dblclick><a data-x-internal=event-dblclick href=https://w3c.github.io/uievents/#event-type-dblclick>dblclick</a></code> 
     </td></tr><tr><td><dfn id=handler-ondrag><code>ondrag</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-drag><a href=interaction.html#event-dnd-drag>drag</a></code>
     </td></tr><tr><td><dfn id=handler-ondragend><code>ondragend</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragend><a href=interaction.html#event-dnd-dragend>dragend</a></code>
     </td></tr><tr><td><dfn id=handler-ondragenter><code>ondragenter</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragenter><a href=interaction.html#event-dnd-dragenter>dragenter</a></code>
@@ -1850,20 +1859,20 @@ typedef <a href=#onbeforeunloadeventhandlernonnull id=event-handler-attributes:o
     </td></tr><tr><td><dfn id=handler-onended><code>onended</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-ended><a href=embedded-content.html#event-media-ended>ended</a></code>
     </td></tr><tr><td><dfn id=handler-oninput><code>oninput</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-input><a href=indices.html#event-input>input</a></code>
     </td></tr><tr><td><dfn id=handler-oninvalid><code>oninvalid</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-invalid><a href=indices.html#event-invalid>invalid</a></code>
-    </td></tr><tr><td><dfn id=handler-onkeydown><code>onkeydown</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keydown><a href=infrastructure.html#event-keydown>keydown</a></code> 
-    </td></tr><tr><td><dfn id=handler-onkeypress><code>onkeypress</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keypress><a href=infrastructure.html#event-keypress>keypress</a></code> 
-    </td></tr><tr><td><dfn id=handler-onkeyup><code>onkeyup</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keyup><a href=infrastructure.html#event-keyup>keyup</a></code> 
+    </td></tr><tr><td><dfn id=handler-onkeydown><code>onkeydown</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keydown><a data-x-internal=event-keydown href=https://w3c.github.io/uievents/#event-type-keydown>keydown</a></code> 
+    </td></tr><tr><td><dfn id=handler-onkeypress><code>onkeypress</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keypress><a data-x-internal=event-keypress href=https://w3c.github.io/uievents/#event-type-keypress>keypress</a></code> 
+    </td></tr><tr><td><dfn id=handler-onkeyup><code>onkeyup</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keyup><a data-x-internal=event-keyup href=https://w3c.github.io/uievents/#event-type-keyup>keyup</a></code> 
     </td></tr><tr><td><dfn id=handler-onloadeddata><code>onloadeddata</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-loadeddata><a href=embedded-content.html#event-media-loadeddata>loadeddata</a></code>
     </td></tr><tr><td><dfn id=handler-onloadedmetadata><code>onloadedmetadata</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-loadedmetadata><a href=embedded-content.html#event-media-loadedmetadata>loadedmetadata</a></code>
     </td></tr><tr><td><dfn id=handler-onloadstart><code>onloadstart</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-loadstart><a href=embedded-content.html#event-media-loadstart>loadstart</a></code>
-    </td></tr><tr><td><dfn id=handler-onmousedown><code>onmousedown</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mousedown><a href=infrastructure.html#event-mousedown>mousedown</a></code> 
-    </td></tr><tr><td><dfn id=handler-onmouseenter><code>onmouseenter</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseenter><a href=infrastructure.html#event-mouseenter>mouseenter</a></code> 
-    </td></tr><tr><td><dfn id=handler-onmouseleave><code>onmouseleave</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseleave><a href=infrastructure.html#event-mouseleave>mouseleave</a></code> 
-    </td></tr><tr><td><dfn id=handler-onmousemove><code>onmousemove</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mousemove><a href=infrastructure.html#event-mousemove>mousemove</a></code> 
-    </td></tr><tr><td><dfn id=handler-onmouseout><code>onmouseout</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseout><a href=infrastructure.html#event-mouseout>mouseout</a></code> 
-    </td></tr><tr><td><dfn id=handler-onmouseover><code>onmouseover</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseover><a href=infrastructure.html#event-mouseover>mouseover</a></code> 
-    </td></tr><tr><td><dfn id=handler-onmouseup><code>onmouseup</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseup><a href=infrastructure.html#event-mouseup>mouseup</a></code> 
-    </td></tr><tr><td><dfn id=handler-onwheel><code>onwheel</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-wheel><a href=infrastructure.html#event-wheel>wheel</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmousedown><code>onmousedown</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mousedown><a data-x-internal=event-mousedown href=https://w3c.github.io/uievents/#event-type-mousedown>mousedown</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseenter><code>onmouseenter</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseenter><a data-x-internal=event-mouseenter href=https://w3c.github.io/uievents/#event-type-mouseenter>mouseenter</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseleave><code>onmouseleave</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseleave><a data-x-internal=event-mouseleave href=https://w3c.github.io/uievents/#event-type-mouseleave>mouseleave</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmousemove><code>onmousemove</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mousemove><a data-x-internal=event-mousemove href=https://w3c.github.io/uievents/#event-type-mousemove>mousemove</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseout><code>onmouseout</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseout><a data-x-internal=event-mouseout href=https://w3c.github.io/uievents/#event-type-mouseout>mouseout</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseover><code>onmouseover</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseover><a data-x-internal=event-mouseover href=https://w3c.github.io/uievents/#event-type-mouseover>mouseover</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseup><code>onmouseup</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseup><a data-x-internal=event-mouseup href=https://w3c.github.io/uievents/#event-type-mouseup>mouseup</a></code> 
+    </td></tr><tr><td><dfn id=handler-onwheel><code>onwheel</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-wheel><a data-x-internal=event-wheel href=https://w3c.github.io/uievents/#event-type-wheel>wheel</a></code> 
     </td></tr><tr><td><dfn id=handler-onpause><code>onpause</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-pause><a href=embedded-content.html#event-media-pause>pause</a></code>
     </td></tr><tr><td><dfn id=handler-onplay><code>onplay</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-play><a href=embedded-content.html#event-media-play>play</a></code>
     </td></tr><tr><td><dfn id=handler-onplaying><code>onplaying</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-playing><a href=embedded-content.html#event-media-playing>playing</a></code>
@@ -2061,7 +2070,7 @@ interface <dfn id=documentandelementeventhandlers>DocumentAndElementEventHandler
   <h5 id=event-firing>8.1.5.3 Event firing</h5>
 
   <p>Certain operations and methods are defined as firing events on elements. For example, the <code id=event-firing:dom-click><a href=interaction.html#dom-click>click()</a></code> method on the <code id=event-firing:htmlelement><a href=dom.html#htmlelement>HTMLElement</a></code> interface is defined as
-  firing a <code id=event-firing:event-click><a href=infrastructure.html#event-click>click</a></code> event on the element. <a href=references.html#refsUIEVENTS>[UIEVENTS]</a></p>
+  firing a <code id=event-firing:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> event on the element. <a href=references.html#refsUIEVENTS>[UIEVENTS]</a></p>
 
   <p><dfn id=fire-a-simple-event>Firing a simple event named <var>e</var></dfn>
   means that a <a href=infrastructure.html#concept-events-trusted id=event-firing:concept-events-trusted>trusted</a> event with the name <var>e</var>, which does not bubble (except where otherwise stated) and is not cancelable
@@ -2070,14 +2079,14 @@ interface <dfn id=documentandelementeventhandlers>DocumentAndElementEventHandler
 
   <p><dfn id=fire-a-synthetic-mouse-event>Firing a synthetic mouse event named <var>e</var></dfn> means that an event with the name <var>e</var>, which is <a href=infrastructure.html#concept-events-trusted id=event-firing:concept-events-trusted-2>trusted</a> (except where otherwise stated), does not bubble
   (except where otherwise stated), is not cancelable (except where otherwise stated), and which uses
-  the <code id=event-firing:mouseevent><a href=infrastructure.html#mouseevent>MouseEvent</a></code> interface, must be created and
+  the <code id=event-firing:mouseevent><a data-x-internal=mouseevent href=https://w3c.github.io/uievents/#interface-MouseEvent>MouseEvent</a></code> interface, must be created and
   <a href=infrastructure.html#concept-event-dispatch id=event-firing:concept-event-dispatch-2>dispatched</a> at the given target. The
   event object must have its <code>screenX</code>, <code>screenY</code>, <code>clientX</code>, <code>clientY</code>, and <code>button</code>
   attributes initialised to 0, its <code>ctrlKey</code>, <code>shiftKey</code>,
   <code>altKey</code>, and <code>metaKey</code> attributes initialised according
   to the current state of the key input device, if any (false for any keys that are not available),
-  its <code>detail</code> attribute initialised to 1, its <code id=event-firing:dom-mouseevent-relatedtarget><a href=infrastructure.html#dom-mouseevent-relatedtarget>relatedTarget</a></code> attribute initialised to null (except
-  where otherwise stated), and its <code id=event-firing:dom-uievent-view><a href=infrastructure.html#dom-uievent-view>view</a></code> attribute initialised to the <code id=event-firing:window><a href=browsers.html#window>Window</a></code> object of the <code id=event-firing:document><a href=dom.html#document>Document</a></code> object of the given target node, if any, or else null. The <code>getModifierState()</code> method on the object must
+  its <code>detail</code> attribute initialised to 1, its <code id=event-firing:dom-mouseevent-relatedtarget><a data-x-internal=dom-mouseevent-relatedtarget href=https://w3c.github.io/uievents/#widl-MouseEvent-relatedTarget>relatedTarget</a></code> attribute initialised to null (except
+  where otherwise stated), and its <code id=event-firing:dom-uievent-view><a data-x-internal=dom-uievent-view href=https://w3c.github.io/uievents/#widl-UIEvent-view>view</a></code> attribute initialised to the <code id=event-firing:window><a href=browsers.html#window>Window</a></code> object of the <code id=event-firing:document><a href=dom.html#document>Document</a></code> object of the given target node, if any, or else null. The <code>getModifierState()</code> method on the object must
   return values appropriately describing the state of the key input device at the time the event is
   created.</p>
 
@@ -3063,7 +3072,7 @@ interface <dfn id=navigatorid>NavigatorID</dfn> {
    <dt><var>window</var> . <code id=client-identification:dom-navigator-6><a href=#dom-navigator>navigator</a></code> . <code id=client-identification:dom-navigator-productsub-2><a href=#dom-navigator-productsub>productSub</a></code><dd>
     <p>Returns either the string "<code>20030107</code>", or the string "<code>20100101</code>".</p>
    <dt><var>window</var> . <code id=client-identification:dom-navigator-7><a href=#dom-navigator>navigator</a></code> . <code id=client-identification:dom-navigator-useragent-2><a href=#dom-navigator-useragent>userAgent</a></code><dd>
-    <p>完全なUser-Agentヘッダーを返す。</p>
+    <p>Returns the complete `<code>User-Agent</code>` header.</p>
    <dt><var>window</var> . <code id=client-identification:dom-navigator-8><a href=#dom-navigator>navigator</a></code> . <code id=client-identification:dom-navigator-vendor-2><a href=#dom-navigator-vendor>vendor</a></code><dd>
     <p>Returns either the empty string, the string "<code>Apple Computer, Inc.</code>", or
     the string "<code>Google Inc.</code>".</p>
@@ -3085,8 +3094,8 @@ interface <dfn id=navigatorid>NavigatorID</dfn> {
      mode</a> is <i>Chrome</i> or <i>WebKit</i><dd><p>The string "<code>20030107</code>".<dt>If the <a href=#concept-navigator-compatibility-mode id=client-identification:concept-navigator-compatibility-mode-3>navigator compatibility
      mode</a> is <i>Gecko</i><dd><p>The string "<code>20100101</code>".</dl>
 
-   <dt><dfn id=dom-navigator-useragent><code>userAgent</code></dfn><dd><p>Must return the string used for the value of the `<code>User-Agent</code>` header
-   in HTTP requests, or the empty string if no such header is ever sent.<dt><dfn id=dom-navigator-vendor><code>vendor</code></dfn><dd>
+   <dt><dfn id=dom-navigator-useragent><code>userAgent</code></dfn><dd><p>Must return the <a href=https://fetch.spec.whatwg.org/#default-user-agent-value id=client-identification:default-user-agent-value data-x-internal=default-user-agent-value>default `<code>User-Agent</code>`
+   value</a>.<dt><dfn id=dom-navigator-vendor><code>vendor</code></dfn><dd>
 
     <p>Must return the appropriate string from the following list:</p>
 
