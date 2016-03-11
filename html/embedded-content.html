@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class=split lang=ja><meta charset=utf-8><title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color>
+<!DOCTYPE html><html class=split lang=ja><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
 <script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
 <script>
@@ -148,6 +148,9 @@
    @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
+   @media (max-width: 767px) {
+     .fingerprint { max-width: 35px; }
+   }
 
    .status { font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; top: auto; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
    .status.wrapped { width: 1em; height: 1em; }
@@ -179,6 +182,13 @@
    .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
    .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
    .status > .caniuse { text-align: right; font-style: italic; }
+
+   @media (max-width: 767px) {
+     .status.wrapped { width: 9em; height: auto; }
+     .status:not(.wrapped) { width: 1em; height: 1em; }
+     .status.wrapped > :not(input) { display: block; }
+     .status:not(.wrapped) > :not(input) { display: none; }
+   }
 
    .panel { position: fixed; z-index: 30; top: 10%; left: 0; margin: auto; right: 0; width: 35em; border: double thick; background: #EEEEEE; color: black; padding: 1em; font: 1em sans-serif; max-height: 70%; overflow: auto; }
    .panel h2 { margin: 0; text-align: center; }
@@ -314,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>10 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -614,7 +624,7 @@ was an English &lt;a href="/wiki/Music_hall"&gt;music hall&lt;/a&gt; singer, ...
 
      <p><code id=introduction-3:attr-img-sizes-4><a href=#attr-img-sizes>sizes</a></code>属性は、<code>30em</code>および<code>50em</code>でレイアウトのブレークポイントを設定し、これらブレークポイントの間で <code>100vw</code>、<code>50vw</code>または<code>calc(33vw - 100px)</code>に画像サイズを宣言する。これらサイズは、CSSで指定されたように実際の画像幅と厳密にマッチする必要が必然的にない。</p>
 
-     <p>ユーザーエージェントは、trueに評価する<a id=introduction-3:media-condition href=infrastructure.html#media-condition>&lt;media-condition&gt;</a>（丸括弧の一部）をもつ最初の項目を用いる、またはそれらがfalseにすべて評価する場合、最後の項目（<code>calc(33vw - 100px)</code>）を用いて、<code id=introduction-3:attr-img-sizes-5><a href=#attr-img-sizes>sizes</a></code>属性から幅を選ぶだろう。</p>
+     <p>ユーザーエージェントは、trueに評価する<a id=introduction-3:media-condition href=https://drafts.csswg.org/mediaqueries/#typedef-media-condition data-x-internal=media-condition>&lt;media-condition&gt;</a>（丸括弧の一部）をもつ最初の項目を用いる、またはそれらがfalseにすべて評価する場合、最後の項目（<code>calc(33vw - 100px)</code>）を用いて、<code id=introduction-3:attr-img-sizes-5><a href=#attr-img-sizes>sizes</a></code>属性から幅を選ぶだろう。</p>
 
      <p>For example, if the <a id=introduction-3:viewport-9 href=http://momdo.github.io/css2/visuren.html#viewport data-x-internal=viewport>viewport</a> width is <code>29em</code>, then <code>(max-width: 30em)</code> evaluates to true and <code>100vw</code> is used,
      so the image size, for the purpose of resource selection, is <code>29em</code>. If
@@ -914,8 +924,8 @@ interface <dfn id=htmlimageelement>HTMLImageElement</dfn> : <a id=the-img-elemen
   <p><dfn id=valid-source-size-list>妥当なソースサイズのリスト</dfn>は、以下の文法にマッチする文字列である：<a href=references.html#refsCSSVALUES>[CSSVALUES]</a> <a href=references.html#refsMQ>[MQ]</a></p>
 
 <pre><dfn id=source-size-list>&lt;source-size-list&gt;</dfn> = [ <a href=source-size id=the-img-element:source-size>&lt;source-size&gt;</a># , ]? <a href=#source-size-value id=the-img-element:source-size-value>&lt;source-size-value&gt;</a>
-<dfn id=source-size>&lt;source-size&gt;</dfn> = <a id=the-img-element:media-condition href=infrastructure.html#media-condition>&lt;media-condition&gt;</a> <a href=#source-size-value id=the-img-element:source-size-value-2>&lt;source-size-value&gt;</a>
-<dfn id=source-size-value>&lt;source-size-value&gt;</dfn> = <a id=the-img-element:length href=infrastructure.html#length>&lt;length&gt;</a></pre>
+<dfn id=source-size>&lt;source-size&gt;</dfn> = <a id=the-img-element:media-condition href=https://drafts.csswg.org/mediaqueries/#typedef-media-condition data-x-internal=media-condition>&lt;media-condition&gt;</a> <a href=#source-size-value id=the-img-element:source-size-value-2>&lt;source-size-value&gt;</a>
+<dfn id=source-size-value>&lt;source-size-value&gt;</dfn> = <a id=the-img-element:length href=https://drafts.csswg.org/css-values/#lengths data-x-internal=length>&lt;length&gt;</a></pre>
 
   <p><a href=#source-size-value id=the-img-element:source-size-value-3>&lt;source-size-value&gt;</a>は負であってはならない。</p>
 
@@ -962,7 +972,7 @@ interface <dfn id=htmlimageelement>HTMLImageElement</dfn> : <a id=the-img-elemen
   <p>An <a href=#image-request id=the-img-element:image-request-6>image request</a> is initially <a href=#img-none id=the-img-element:img-none>unavailable</a>.</p>
 
   <p>When an <code id=the-img-element:the-img-element-9><a href=#the-img-element>img</a></code> element is <a href=#img-available id=the-img-element:img-available>available</a>,
-  it <a id=the-img-element:provides-a-paint-source href=infrastructure.html#provides-a-paint-source>provides a paint source</a>
+  it provides a <a id=the-img-element:paint-source href=https://drafts.csswg.org/css-images-4/#paint-source data-x-internal=paint-source>paint source</a>
   whose width is the image's <a href=#density-corrected-intrinsic-width-and-height id=the-img-element:density-corrected-intrinsic-width-and-height>density-corrected intrinsic width</a> (if any),
   whose height is the image's <a href=#density-corrected-intrinsic-width-and-height id=the-img-element:density-corrected-intrinsic-width-and-height-2>density-corrected intrinsic height</a> (if any),
   and whose appearance is the intrinsic appearance of the image.</p>
@@ -1580,37 +1590,37 @@ interface <dfn id=htmlimageelement>HTMLImageElement</dfn> : <a id=the-img-elemen
    Otherwise, there is a <a href=#concept-microsyntax-parse-error id=the-img-element:concept-microsyntax-parse-error-4>parse error</a>.</li><li><p>Return to the step labeled <i>splitting loop</i>.</li></ol>
 
   <p>When asked to <dfn id=parse-a-sizes-attribute>parse a sizes attribute</dfn> from an element, with a fallback width
-  <var>width</var>, <a id=the-img-element:parse-a-comma-separated-list-of-component-values href=infrastructure.html#parse-a-comma-separated-list-of-component-values>parse a comma-separated list of component values</a> from the value of
+  <var>width</var>, <a id=the-img-element:parse-a-comma-separated-list-of-component-values href=https://drafts.csswg.org/css-syntax/#parse-a-comma-separated-list-of-component-values data-x-internal=parse-a-comma-separated-list-of-component-values>parse a comma-separated list of component values</a> from the value of
   the element's <code>sizes</code> attribute (or the empty string, if the attribute is
   absent), and let <var>unparsed sizes list</var> be the result. <a href=references.html#refsCSSSYNTAX>[CSSSYNTAX]</a></p>
 
   <p>For each <var>unparsed size</var> in <var>unparsed sizes list</var>:</p>
 
-  <ol><li><p>Remove all consecutive <a id=the-img-element:whitespace-token href=infrastructure.html#whitespace-token>&lt;whitespace-token&gt;</a>s
+  <ol><li><p>Remove all consecutive <a id=the-img-element:whitespace-token href=https://drafts.csswg.org/css-syntax/#typedef-whitespace-token data-x-internal=whitespace-token>&lt;whitespace-token&gt;</a>s
    from the end of <var>unparsed size</var>.
    If <var>unparsed size</var> is now empty,
    that is a <a href=#concept-microsyntax-parse-error id=the-img-element:concept-microsyntax-parse-error-5>parse error</a>;
-   continue to the next iteration of this algorithm.</li><li><p>If the last <a id=the-img-element:component-value href=infrastructure.html#component-value>component value</a> in <var>unparsed size</var>
+   continue to the next iteration of this algorithm.</li><li><p>If the last <a id=the-img-element:component-value href=https://drafts.csswg.org/css-syntax/#component-value data-x-internal=component-value>component value</a> in <var>unparsed size</var>
    is a valid non-negative <a href=#source-size-value id=the-img-element:source-size-value-6>&lt;source-size-value&gt;</a>,
    let <var>size</var> be its value
-   and remove the <a id=the-img-element:component-value-2 href=infrastructure.html#component-value>component value</a> from <var>unparsed size</var>.
+   and remove the <a id=the-img-element:component-value-2 href=https://drafts.csswg.org/css-syntax/#component-value data-x-internal=component-value>component value</a> from <var>unparsed size</var>.
    Any CSS function other than the <code>calc()</code> function is invalid.
    Otherwise, there is a <a href=#concept-microsyntax-parse-error id=the-img-element:concept-microsyntax-parse-error-6>parse error</a>;
-   continue to the next iteration of this algorithm.</li><li><p>Remove all consecutive <a id=the-img-element:whitespace-token-2 href=infrastructure.html#whitespace-token>&lt;whitespace-token&gt;</a>s
+   continue to the next iteration of this algorithm.</li><li><p>Remove all consecutive <a id=the-img-element:whitespace-token-2 href=https://drafts.csswg.org/css-syntax/#typedef-whitespace-token data-x-internal=whitespace-token>&lt;whitespace-token&gt;</a>s
    from the end of <var>unparsed size</var>.
    If <var>unparsed size</var> is now empty,
    return <var>size</var> and exit this algorithm.
    If this was not the last item in <var>unparsed sizes list</var>,
-   that is a <a href=#concept-microsyntax-parse-error id=the-img-element:concept-microsyntax-parse-error-7>parse error</a>.</li><li><p>Parse the remaining <a href=infrastructure.html#component-value id=the-img-element:component-value-3>component values</a> in <var>unparsed size</var>
-   as a <a id=the-img-element:media-condition-2 href=infrastructure.html#media-condition>&lt;media-condition&gt;</a>.
+   that is a <a href=#concept-microsyntax-parse-error id=the-img-element:concept-microsyntax-parse-error-7>parse error</a>.</li><li><p>Parse the remaining <a href=https://drafts.csswg.org/css-syntax/#component-value id=the-img-element:component-value-3 data-x-internal=component-value>component values</a> in <var>unparsed size</var>
+   as a <a id=the-img-element:media-condition-2 href=https://drafts.csswg.org/mediaqueries/#typedef-media-condition data-x-internal=media-condition>&lt;media-condition&gt;</a>.
    If it does not parse correctly,
-   or it does parse correctly but the <a id=the-img-element:media-condition-3 href=infrastructure.html#media-condition>&lt;media-condition&gt;</a> evaluates to false,
+   or it does parse correctly but the <a id=the-img-element:media-condition-3 href=https://drafts.csswg.org/mediaqueries/#typedef-media-condition data-x-internal=media-condition>&lt;media-condition&gt;</a> evaluates to false,
    continue to the next iteration of this algorithm. <a href=references.html#refsMQ>[MQ]</a></li><li><p>Return <var>size</var> and exit this algorithm.</li></ol>
 
   <p>If the above algorithm exhausts <var>unparsed sizes list</var> without returning a
   <var>size</var> value, follow these steps:</p>
 
-  <ol><li><p>If <var>width</var> is not null, return a <a id=the-img-element:length-2 href=infrastructure.html#length>&lt;length&gt;</a> with the value
+  <ol><li><p>If <var>width</var> is not null, return a <a id=the-img-element:length-2 href=https://drafts.csswg.org/css-values/#lengths data-x-internal=length>&lt;length&gt;</a> with the value
    <var>width</var> and the unit <a id="the-img-element:'px'-4" href=https://drafts.csswg.org/css-values/#px data-x-internal="'px'">'px'</a>.</li><li><p>Return <code>100vw</code>.</li></ol>
 
   <p>A <dfn id=concept-microsyntax-parse-error>parse error</dfn> for the algorithms above
@@ -1618,7 +1628,7 @@ interface <dfn id=htmlimageelement>HTMLImageElement</dfn> : <a id=the-img-elemen
   User agents are encouraged to expose <a href=#concept-microsyntax-parse-error id=the-img-element:concept-microsyntax-parse-error-8>parse error</a>s somehow.</p>
 
   <p class=note>While a <a href=#valid-source-size-list id=the-img-element:valid-source-size-list-2>valid source size list</a> only contains a bare <a href=#source-size-value id=the-img-element:source-size-value-7>&lt;source-size-value&gt;</a>
-  (without an accompanying <a id=the-img-element:media-condition-4 href=infrastructure.html#media-condition>&lt;media-condition&gt;</a>)
+  (without an accompanying <a id=the-img-element:media-condition-4 href=https://drafts.csswg.org/mediaqueries/#typedef-media-condition data-x-internal=media-condition>&lt;media-condition&gt;</a>)
   as the last entry in the <a href=#source-size-list id=the-img-element:source-size-list>&lt;source-size-list&gt;</a>,
   the parsing algorithm technically allows such at any point in the list,
   and will accept it immediately as the size
@@ -2783,7 +2793,7 @@ href="?audio"&gt;audio&lt;/a&gt; test instead.)&lt;/p&gt;</pre>
   attribute DOMString <a href=#dom-iframe-src id=the-iframe-element:dom-iframe-src>src</a>;
   attribute DOMString <a href=#dom-iframe-srcdoc id=the-iframe-element:dom-iframe-srcdoc>srcdoc</a>;
   attribute DOMString <a href=#dom-iframe-name id=the-iframe-element:dom-iframe-name>name</a>;
-  [SameObject, PutForwards=<a href=infrastructure.html#dom-domtokenlist-value id=the-iframe-element:dom-domtokenlist-value>value</a>] readonly attribute <a id=the-iframe-element:domtokenlist href=infrastructure.html#domtokenlist>DOMTokenList</a> <a href=#dom-iframe-sandbox id=the-iframe-element:dom-iframe-sandbox>sandbox</a>;
+  [SameObject, PutForwards=<a href=https://dom.spec.whatwg.org/#dom-domtokenlist-value id=the-iframe-element:dom-domtokenlist-value data-x-internal=dom-domtokenlist-value>value</a>] readonly attribute <a id=the-iframe-element:domtokenlist href=https://dom.spec.whatwg.org/#interface-domtokenlist data-x-internal=domtokenlist>DOMTokenList</a> <a href=#dom-iframe-sandbox id=the-iframe-element:dom-iframe-sandbox>sandbox</a>;
   attribute boolean <a href=#dom-iframe-allowfullscreen id=the-iframe-element:dom-iframe-allowfullscreen>allowFullscreen</a>;
   attribute DOMString <a href=#dom-dim-width id=the-iframe-element:dom-dim-width>width</a>;
   attribute DOMString <a href=#dom-dim-height id=the-iframe-element:dom-dim-height>height</a>;
@@ -2812,7 +2822,7 @@ href="?audio"&gt;audio&lt;/a&gt; test instead.)&lt;/p&gt;</pre>
 
    </li><li>任意の数の<a href=syntax.html#syntax-comments id=the-iframe-element:syntax-comments-2>コメント</a>および<a href=infrastructure.html#space-character id=the-iframe-element:space-character-2>空白文字</a>。</li><li><code id=the-iframe-element:the-html-element><a href=semantics.html#the-html-element>html</a></code><a href=syntax.html#syntax-elements id=the-iframe-element:syntax-elements>要素</a>の形式で、ルート要素。</li><li>任意の数の<a href=syntax.html#syntax-comments id=the-iframe-element:syntax-comments-3>コメント</a>および<a href=infrastructure.html#space-character id=the-iframe-element:space-character-3>空白文字</a>。</li></ol>
 
-  <p class=note>The above requirements apply in <a id=the-iframe-element:xml-documents href=infrastructure.html#xml-documents>XML documents</a> as well.
+  <p class=note>The above requirements apply in <a id=the-iframe-element:xml-documents href=https://dom.spec.whatwg.org/#xml-document data-x-internal=xml-documents>XML documents</a> as well.
 
   
 
@@ -3115,9 +3125,9 @@ href="?audio"&gt;audio&lt;/a&gt; test instead.)&lt;/p&gt;</pre>
 
   <p><code id=the-iframe-element:the-iframe-element-46><a href=#the-iframe-element>iframe</a></code>要素の子孫は何も表さない。（<code id=the-iframe-element:the-iframe-element-47><a href=#the-iframe-element>iframe</a></code>要素をサポートしないレガシーユーザーエージェントにおいて、コンテンツはフォールバックコンテンツとして機能することができるマークアップとして解析される。）</p>
 
-  <p id=iframe-content-model><a id=the-iframe-element:html-documents href=infrastructure.html#html-documents>HTML文書</a>で使用する場合、<code id=the-iframe-element:the-iframe-element-48><a href=#the-iframe-element>iframe</a></code>要素の許可されたコンテンツモデルはテキストである。ただし、<var id=the-iframe-element:concept-frag-parse-context><a href=syntax.html#concept-frag-parse-context>context</a></var>要素として<code id=the-iframe-element:the-iframe-element-49><a href=#the-iframe-element>iframe</a></code>要素および<var>input</var>としてテキストコンテンツをもつ<a id=the-iframe-element:html-fragment-parsing-algorithm href=syntax.html#html-fragment-parsing-algorithm>HTML断片解析アルゴリズム</a>を呼び出すことが、一切の<a href=syntax.html#parse-error id=the-iframe-element:parse-error>解析エラー</a>なく、リスト内の任意の場所にまたはリスト内の要素の子孫として<code id=the-iframe-element:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素をもたず、かつ自身が適合するリスト（その子孫を含む）内のすべての要素をもつ、<a id=the-iframe-element:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>であるノードのリストをもたらさなければならないことを除く。</p>
+  <p id=iframe-content-model><a id=the-iframe-element:html-documents href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML文書</a>で使用する場合、<code id=the-iframe-element:the-iframe-element-48><a href=#the-iframe-element>iframe</a></code>要素の許可されたコンテンツモデルはテキストである。ただし、<var id=the-iframe-element:concept-frag-parse-context><a href=syntax.html#concept-frag-parse-context>context</a></var>要素として<code id=the-iframe-element:the-iframe-element-49><a href=#the-iframe-element>iframe</a></code>要素および<var>input</var>としてテキストコンテンツをもつ<a id=the-iframe-element:html-fragment-parsing-algorithm href=syntax.html#html-fragment-parsing-algorithm>HTML断片解析アルゴリズム</a>を呼び出すことが、一切の<a href=syntax.html#parse-error id=the-iframe-element:parse-error>解析エラー</a>なく、リスト内の任意の場所にまたはリスト内の要素の子孫として<code id=the-iframe-element:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素をもたず、かつ自身が適合するリスト（その子孫を含む）内のすべての要素をもつ、<a id=the-iframe-element:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>であるノードのリストをもたらさなければならないことを除く。</p>
 
-  <p><code id=the-iframe-element:the-iframe-element-50><a href=#the-iframe-element>iframe</a></code>要素は、<a id=the-iframe-element:xml-documents-2 href=infrastructure.html#xml-documents>XML文書</a>で空でなければならない。</p>
+  <p><code id=the-iframe-element:the-iframe-element-50><a href=#the-iframe-element>iframe</a></code>要素は、<a id=the-iframe-element:xml-documents-2 href=https://dom.spec.whatwg.org/#xml-document data-x-internal=xml-documents>XML文書</a>で空でなければならない。</p>
 
   <p class=note><a id=the-iframe-element:html-parser href=syntax.html#html-parser>HTMLパーサ</a>は、テキストとして<code id=the-iframe-element:the-iframe-element-51><a href=#the-iframe-element>iframe</a></code>要素の内側のマークアップを扱う。</p>
 
@@ -3128,7 +3138,7 @@ href="?audio"&gt;audio&lt;/a&gt; test instead.)&lt;/p&gt;</pre>
 
   <p>IDL属性<dfn id=dom-iframe-src><code>src</code></dfn>、<dfn id=dom-iframe-srcdoc><code>srcdoc</code></dfn>、<dfn id=dom-iframe-name><code>name</code></dfn>および<dfn id=dom-iframe-sandbox><code>sandbox</code></dfn>のそれぞれは、同じ名前の各コンテンツ属性を<a id=the-iframe-element:reflect href=infrastructure.html#reflect>反映</a>しなければならない。</p>
 
-  <p>The <a href=infrastructure.html#concept-supported-tokens id=the-iframe-element:concept-supported-tokens>supported tokens</a> for <code id=the-iframe-element:dom-iframe-sandbox-2><a href=#dom-iframe-sandbox>sandbox</a></code>'s <code id=the-iframe-element:domtokenlist-2><a href=infrastructure.html#domtokenlist>DOMTokenList</a></code> are the allowed
+  <p>The <a href=https://dom.spec.whatwg.org/#concept-supported-tokens id=the-iframe-element:concept-supported-tokens data-x-internal=concept-supported-tokens>supported tokens</a> for <code id=the-iframe-element:dom-iframe-sandbox-2><a href=#dom-iframe-sandbox>sandbox</a></code>'s <code id=the-iframe-element:domtokenlist-2><a data-x-internal=domtokenlist href=https://dom.spec.whatwg.org/#interface-domtokenlist>DOMTokenList</a></code> are the allowed
   values defined in the <code id=the-iframe-element:attr-iframe-sandbox-12><a href=#attr-iframe-sandbox>sandbox</a></code> attribute and supported by
   the user agent.</p>
 
@@ -3358,7 +3368,7 @@ attribute, set the <a id=the-embed-element:browsing-context-name href=browsers.h
 
   <p><code id=the-embed-element:attr-embed-name-2><a href=obsolete.html#attr-embed-name>name</a></code>、<code id=the-embed-element:attr-embed-align><a href=obsolete.html#attr-embed-align>align</a></code>、<code id=the-embed-element:attr-embed-hspace><a href=obsolete.html#attr-embed-hspace>hspace</a></code>、および<code id=the-embed-element:attr-embed-vspace><a href=obsolete.html#attr-embed-vspace>vspace</a></code>以外の名前空間なしの属性は、その名前が<a id=the-embed-element:xml-compatible href=infrastructure.html#xml-compatible>XML互換性</a>があり、<a id=the-embed-element:uppercase-ascii-letters href=infrastructure.html#uppercase-ascii-letters>ASCII大文字</a>を一切含まない限り、<code id=the-embed-element:the-embed-element-23><a href=#the-embed-element>embed</a></code>要素で指定されてもよい。これらの属性は、<a id=the-embed-element:plugin-15 href=infrastructure.html#plugin>プラグイン</a>にパラメーターとして渡される。</p>
 
-  <p class=note>大文字の制限がそのような文書に影響しないので、<a id=the-embed-element:html-documents href=infrastructure.html#html-documents>HTML文書</a>内のすべての属性は自動的に小文字を取得する。</p>
+  <p class=note>大文字の制限がそのような文書に影響しないので、<a id=the-embed-element:html-documents href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML文書</a>内のすべての属性は自動的に小文字を取得する。</p>
 
   <p class=note>4つの例外は、<a id=the-embed-element:plugin-16 href=infrastructure.html#plugin>プラグイン</a>に送信するパラメーターを超えた副作用を持つ従来の属性を除外するのに適当である。</p>
 
@@ -3811,7 +3821,7 @@ attribute, set the <a id=the-embed-element:browsing-context-name href=browsers.h
   element, in the order they were added to the element, with the attributes added by the parser
   being ordered in source order, followed by a parameter named "PARAM" whose value is null, followed
   by all the names and values of <a href=#concept-param-parameter id=the-object-element:concept-param-parameter>parameters</a> given by
-  <code id=the-object-element:the-param-element-3><a href=#the-param-element>param</a></code> elements that are children of the <code id=the-object-element:the-object-element-22><a href=#the-object-element>object</a></code> element, in <a id=the-object-element:tree-order href=infrastructure.html#tree-order>tree
+  <code id=the-object-element:the-param-element-3><a href=#the-param-element>param</a></code> elements that are children of the <code id=the-object-element:the-object-element-22><a href=#the-object-element>object</a></code> element, in <a id=the-object-element:tree-order href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree
   order</a>. If the <a id=the-object-element:plugin-22 href=infrastructure.html#plugin>plugin</a> supports a scriptable interface, the
   <code id=the-object-element:htmlobjectelement><a href=#htmlobjectelement>HTMLObjectElement</a></code> object representing the element should expose that interface. The
   <code id=the-object-element:the-object-element-23><a href=#the-object-element>object</a></code> element <a id=the-object-element:represents-4 href=dom.html#represents>represents</a> the <a id=the-object-element:plugin-23 href=infrastructure.html#plugin>plugin</a>. The
@@ -4092,7 +4102,7 @@ attribute, set the <a id=the-embed-element:browsing-context-name href=browsers.h
   data itself.</p>
 
   <p>When a <code id=the-video-element:the-video-element-21><a href=#the-video-element>video</a></code> element's <a href=#media-resource id=the-video-element:media-resource-8>media resource</a> has a video channel, the
-  element <a id=the-video-element:provides-a-paint-source href=infrastructure.html#provides-a-paint-source>provides a paint source</a> whose width is the <a href=#media-resource id=the-video-element:media-resource-9>media resource</a>'s
+  element provides a <a id=the-video-element:paint-source href=https://drafts.csswg.org/css-images-4/#paint-source data-x-internal=paint-source>paint source</a> whose width is the <a href=#media-resource id=the-video-element:media-resource-9>media resource</a>'s
   <a href=#concept-video-intrinsic-width id=the-video-element:concept-video-intrinsic-width>intrinsic width</a>, whose height is the
   <a href=#media-resource id=the-video-element:media-resource-10>media resource</a>'s <a href=#concept-video-intrinsic-height id=the-video-element:concept-video-intrinsic-height>intrinsic
   height</a>, and whose appearance is the frame of video corresponding to the <a href=#current-playback-position id=the-video-element:current-playback-position-9>current playback position</a>, if that is available, or else
@@ -4154,7 +4164,7 @@ attribute, set the <a id=the-embed-element:browsing-context-name href=browsers.h
   element currently <a id=the-video-element:represents-9 href=dom.html#represents>represents</a> its poster frame; otherwise it is the <a href=#concept-video-intrinsic-height id=the-video-element:concept-video-intrinsic-height-4>intrinsic height</a> of the video resource, if that is
   available; otherwise the <a id=the-video-element:intrinsic-height-3 href=infrastructure.html#intrinsic-height>intrinsic height</a> is missing.</p>
 
-  <p>The <a id=the-video-element:default-object-size href=infrastructure.html#default-object-size>default object size</a> is a width of 300 <a href=https://drafts.csswg.org/css-values/#px id="the-video-element:'px'-4" data-x-internal="'px'">CSS pixels</a>
+  <p>The <a id=the-video-element:default-object-size href=https://drafts.csswg.org/css-images/#default-object-size data-x-internal=default-object-size>default object size</a> is a width of 300 <a href=https://drafts.csswg.org/css-values/#px id="the-video-element:'px'-4" data-x-internal="'px'">CSS pixels</a>
   and a height of 150 <a href=https://drafts.csswg.org/css-values/#px id="the-video-element:'px'-5" data-x-internal="'px'">CSS pixels</a>. <a href=references.html#refsCSSIMAGES>[CSSIMAGES]</a></p>
 
   <hr>
@@ -4530,7 +4540,7 @@ interface <dfn id=htmlmediaelement>HTMLMediaElement</dfn> : <a id=media-elements
   attribute double <a href=#dom-media-currenttime id=media-elements:dom-media-currenttime>currentTime</a>;
   void <a href=#dom-media-fastseek id=media-elements:dom-media-fastseek>fastSeek</a>(double time);
   readonly attribute unrestricted double <a href=#dom-media-duration id=media-elements:dom-media-duration>duration</a>;
-  <a href=infrastructure.html#idl-object id=media-elements:idl-object>object</a> <a href=#dom-media-getstartdate id=media-elements:dom-media-getstartdate>getStartDate</a>();
+  <a href=https://heycam.github.io/webidl/#idl-object id=media-elements:idl-object data-x-internal=idl-object>object</a> <a href=#dom-media-getstartdate id=media-elements:dom-media-getstartdate>getStartDate</a>();
   readonly attribute boolean <a href=#dom-media-paused id=media-elements:dom-media-paused>paused</a>;
   attribute double <a href=#dom-media-defaultplaybackrate id=media-elements:dom-media-defaultplaybackrate>defaultPlaybackRate</a>;
   attribute double <a href=#dom-media-playbackrate id=media-elements:dom-media-playbackrate>playbackRate</a>;
@@ -4896,7 +4906,7 @@ interface <dfn id=htmlmediaelement>HTMLMediaElement</dfn> : <a id=media-elements
     <p>⌛ Otherwise, if the <a href=#media-element id=loading-the-media-resource:media-element-16>media element</a> does not have an <a href=#assigned-media-provider-object id=loading-the-media-resource:assigned-media-provider-object-3>assigned media provider
     object</a> and does not have a <code id=loading-the-media-resource:attr-media-src-2><a href=#attr-media-src>src</a></code> attribute, but does have a <code id=loading-the-media-resource:the-source-element><a href=#the-source-element>source</a></code> element child, then
     let <var>mode</var> be <i>children</i> and let <var>candidate</var>
-    be the first such <code id=loading-the-media-resource:the-source-element-2><a href=#the-source-element>source</a></code> element child in <a id=loading-the-media-resource:tree-order href=infrastructure.html#tree-order>tree order</a>.</p>
+    be the first such <code id=loading-the-media-resource:the-source-element-2><a href=#the-source-element>source</a></code> element child in <a id=loading-the-media-resource:tree-order href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.</p>
 
     <p>⌛ Otherwise the <a href=#media-element id=loading-the-media-resource:media-element-17>media element</a> has no <a href=#assigned-media-provider-object id=loading-the-media-resource:assigned-media-provider-object-4>assigned media provider
     object</a> and has neither a <code id=loading-the-media-resource:attr-media-src-3><a href=#attr-media-src>src</a></code> attribute nor a <code id=loading-the-media-resource:the-source-element-3><a href=#the-source-element>source</a></code> element child: set the
@@ -6549,7 +6559,7 @@ interface <dfn id=htmlmediaelement>HTMLMediaElement</dfn> : <a id=media-elements
 
   <p><code id=audiotracklist-and-videotracklist-objects:audiotracklist-2><a href=#audiotracklist>AudioTrackList</a></code>および<code id=audiotracklist-and-videotracklist-objects:videotracklist-2><a href=#videotracklist>VideoTrackList</a></code>インターフェイスは、前節で定義された属性で使用される。</p>
 
-  <pre class=idl>interface <dfn id=audiotracklist>AudioTrackList</dfn> : <a id=audiotracklist-and-videotracklist-objects:eventtarget href=infrastructure.html#eventtarget>EventTarget</a> {
+  <pre class=idl>interface <dfn id=audiotracklist>AudioTrackList</dfn> : <a id=audiotracklist-and-videotracklist-objects:eventtarget href=https://dom.spec.whatwg.org/#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   readonly attribute unsigned long <a href=#dom-audiotracklist-length id=audiotracklist-and-videotracklist-objects:dom-audiotracklist-length>length</a>;
   getter <a href=#audiotrack id=audiotracklist-and-videotracklist-objects:audiotrack>AudioTrack</a> (unsigned long index);
   <a href=#audiotrack id=audiotracklist-and-videotracklist-objects:audiotrack-2>AudioTrack</a>? <a href=#dom-audiotracklist-gettrackbyid id=audiotracklist-and-videotracklist-objects:dom-audiotracklist-gettrackbyid>getTrackById</a>(DOMString id);
@@ -6567,7 +6577,7 @@ interface <dfn id=audiotrack>AudioTrack</dfn> {
   attribute boolean <a href=#dom-audiotrack-enabled id=audiotracklist-and-videotracklist-objects:dom-audiotrack-enabled>enabled</a>;
 };
 
-interface <dfn id=videotracklist>VideoTrackList</dfn> : <a id=audiotracklist-and-videotracklist-objects:eventtarget-2 href=infrastructure.html#eventtarget>EventTarget</a> {
+interface <dfn id=videotracklist>VideoTrackList</dfn> : <a id=audiotracklist-and-videotracklist-objects:eventtarget-2 href=https://dom.spec.whatwg.org/#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   readonly attribute unsigned long <a href=#dom-videotracklist-length id=audiotracklist-and-videotracklist-objects:dom-videotracklist-length>length</a>;
   getter <a href=#videotrack id=audiotracklist-and-videotracklist-objects:videotrack>VideoTrack</a> (unsigned long index);
   <a href=#videotrack id=audiotracklist-and-videotracklist-objects:videotrack-2>VideoTrack</a>? <a href=#dom-videotracklist-gettrackbyid id=audiotracklist-and-videotracklist-objects:dom-videotracklist-gettrackbyid>getTrackById</a>(DOMString id);
@@ -6897,7 +6907,7 @@ interface <dfn id=videotrack>VideoTrack</dfn> {
 
   <pre class=idl>enum <dfn id=mediacontrollerplaybackstate>MediaControllerPlaybackState</dfn> { "<a href=#dom-mediacontroller-waiting id=media-controllers:dom-mediacontroller-waiting>waiting</a>", "<a href=#dom-mediacontroller-playing id=media-controllers:dom-mediacontroller-playing>playing</a>", "<a href=#dom-mediacontroller-ended id=media-controllers:dom-mediacontroller-ended>ended</a>" };
 [<a href=#dom-mediacontroller id=media-controllers:dom-mediacontroller>Constructor</a>]
-interface <dfn id=mediacontroller>MediaController</dfn> : <a id=media-controllers:eventtarget href=infrastructure.html#eventtarget>EventTarget</a> {
+interface <dfn id=mediacontroller>MediaController</dfn> : <a id=media-controllers:eventtarget href=https://dom.spec.whatwg.org/#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   readonly attribute unsigned short <a href=#dom-mediacontroller-readystate id=media-controllers:dom-mediacontroller-readystate>readyState</a>; // uses <a href=#htmlmediaelement id=media-controllers:htmlmediaelement>HTMLMediaElement</a>.<a href=#dom-media-readystate id=media-controllers:dom-media-readystate>readyState</a>'s values
 
   readonly attribute <a href=#timeranges id=media-controllers:timeranges>TimeRanges</a> <a href=#dom-mediacontroller-buffered id=media-controllers:dom-mediacontroller-buffered>buffered</a>;
@@ -7477,7 +7487,7 @@ interface <dfn id=mediacontroller>MediaController</dfn> : <a id=media-controller
 
   <p><a href=#media-element id=text-track-model:media-element>メディア要素</a>は、<a href=#media-element id=text-track-model:media-element-2>メディア要素</a>の<dfn id=list-of-text-tracks>テキストトラックのリスト</dfn>として知られ、関連した<dfn id=text-track>テキストトラック</dfn>のグループを持つことができる。<a href=#text-track id=text-track-model:text-track>テキストトラック</a>は以下のようにソートされる：</p>
 
-  <ol class=brief><li><a id=text-track-model:tree-order href=infrastructure.html#tree-order>ツリー順</a>で、<a href=#media-element id=text-track-model:media-element-3>メディア要素</a>の<code id=text-track-model:the-track-element><a href=#the-track-element>track</a></code>要素の子に対応する<a href=#text-track id=text-track-model:text-track-2>テキストトラック</a>。</li><li>古いものから順で、追加された順に、<code id=text-track-model:dom-media-addtexttrack><a href=#dom-media-addtexttrack>addTextTrack()</a></code>メソッドを使用して追加された任意の<a href=#text-track id=text-track-model:text-track-3>テキストトラック</a>。</li><li><a href=#media-resource id=text-track-model:media-resource-2>メディアリソース</a>の書式仕様によって定義された順序で、任意の<a href=#media-resource-specific-text-track id=text-track-model:media-resource-specific-text-track>メディアリソース固有のテキストトラック</a>（<a href=#media-resource id=text-track-model:media-resource>メディアリソース</a>が内のデータに対応する<a href=#text-track id=text-track-model:text-track-4>テキストトラック</a>）。</li></ol>
+  <ol class=brief><li><a id=text-track-model:tree-order href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>ツリー順</a>で、<a href=#media-element id=text-track-model:media-element-3>メディア要素</a>の<code id=text-track-model:the-track-element><a href=#the-track-element>track</a></code>要素の子に対応する<a href=#text-track id=text-track-model:text-track-2>テキストトラック</a>。</li><li>古いものから順で、追加された順に、<code id=text-track-model:dom-media-addtexttrack><a href=#dom-media-addtexttrack>addTextTrack()</a></code>メソッドを使用して追加された任意の<a href=#text-track id=text-track-model:text-track-3>テキストトラック</a>。</li><li><a href=#media-resource id=text-track-model:media-resource-2>メディアリソース</a>の書式仕様によって定義された順序で、任意の<a href=#media-resource-specific-text-track id=text-track-model:media-resource-specific-text-track>メディアリソース固有のテキストトラック</a>（<a href=#media-resource id=text-track-model:media-resource>メディアリソース</a>が内のデータに対応する<a href=#text-track id=text-track-model:text-track-4>テキストトラック</a>）。</li></ol>
 
   <p><a href=#text-track id=text-track-model:text-track-5>テキストトラック</a>の構成要素は次のとおり：</p>
 
@@ -8008,7 +8018,7 @@ interface <dfn id=mediacontroller>MediaController</dfn> : <a id=media-controller
 
   <h6 id=text-track-api>4.8.13.12.5 テキストトラックAPI</h6>
 
-  <pre class=idl>interface <dfn id=texttracklist>TextTrackList</dfn> : <a id=text-track-api:eventtarget href=infrastructure.html#eventtarget>EventTarget</a> {
+  <pre class=idl>interface <dfn id=texttracklist>TextTrackList</dfn> : <a id=text-track-api:eventtarget href=https://dom.spec.whatwg.org/#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   readonly attribute unsigned long <a href=#dom-texttracklist-length id=text-track-api:dom-texttracklist-length>length</a>;
   getter <a href=#texttrack id=text-track-api:texttrack>TextTrack</a> (unsigned long index);
   <a href=#texttrack id=text-track-api:texttrack-2>TextTrack</a>? <a href=#dom-texttracklist-gettrackbyid id=text-track-api:dom-texttracklist-gettrackbyid>getTrackById</a>(DOMString id);
@@ -8062,7 +8072,7 @@ interface <dfn id=mediacontroller>MediaController</dfn> : <a id=media-controller
 
   <pre class=idl>enum <dfn id=texttrackmode>TextTrackMode</dfn> { "<a href=#dom-texttrack-disabled id=text-track-api:dom-texttrack-disabled>disabled</a>",  "<a href=#dom-texttrack-hidden id=text-track-api:dom-texttrack-hidden>hidden</a>",  "<a href=#dom-texttrack-showing id=text-track-api:dom-texttrack-showing>showing</a>" };
 enum <dfn id=texttrackkind>TextTrackKind</dfn> { "<a href=#dom-texttrack-kind-subtitles id=text-track-api:dom-texttrack-kind-subtitles>subtitles</a>",  "<a href=#dom-texttrack-kind-captions id=text-track-api:dom-texttrack-kind-captions>captions</a>",  "<a href=#dom-texttrack-kind-descriptions id=text-track-api:dom-texttrack-kind-descriptions>descriptions</a>",  "<a href=#dom-texttrack-kind-chapters id=text-track-api:dom-texttrack-kind-chapters>chapters</a>",  "<a href=#dom-texttrack-kind-metadata id=text-track-api:dom-texttrack-kind-metadata>metadata</a>" };
-interface <dfn id=texttrack>TextTrack</dfn> : <a id=text-track-api:eventtarget-2 href=infrastructure.html#eventtarget>EventTarget</a> {
+interface <dfn id=texttrack>TextTrack</dfn> : <a id=text-track-api:eventtarget-2 href=https://dom.spec.whatwg.org/#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   readonly attribute <a href=#texttrackkind id=text-track-api:texttrackkind>TextTrackKind</a> <a href=#dom-texttrack-kind id=text-track-api:dom-texttrack-kind>kind</a>;
   readonly attribute DOMString <a href=#dom-texttrack-label id=text-track-api:dom-texttrack-label>label</a>;
   readonly attribute DOMString <a href=#dom-texttrack-language id=text-track-api:dom-texttrack-language>language</a>;
@@ -8341,7 +8351,7 @@ window.onbeforeunload = function () {
 
   <hr>
 
-  <pre class=idl>interface <dfn id=texttrackcue>TextTrackCue</dfn> : <a id=text-track-api:eventtarget-3 href=infrastructure.html#eventtarget>EventTarget</a> {
+  <pre class=idl>interface <dfn id=texttrackcue>TextTrackCue</dfn> : <a id=text-track-api:eventtarget-3 href=https://dom.spec.whatwg.org/#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   readonly attribute <a href=#texttrack id=text-track-api:texttrack-31>TextTrack</a>? <a href=#dom-texttrackcue-track id=text-track-api:dom-texttrackcue-track>track</a>;
 
   attribute DOMString <a href=#dom-texttrackcue-id id=text-track-api:dom-texttrackcue-id>id</a>;
@@ -8828,11 +8838,11 @@ red:89
   <h5 id=the-trackevent-interface>4.8.13.15 The <code id=the-trackevent-interface:trackevent><a href=#trackevent>TrackEvent</a></code> interface</h5>
 
   <pre class=idl>[Constructor(DOMString type, optional <a href=#trackeventinit id=the-trackevent-interface:trackeventinit>TrackEventInit</a> eventInitDict)]
-interface <dfn id=trackevent>TrackEvent</dfn> : <a id=the-trackevent-interface:event href=infrastructure.html#event>Event</a> {
+interface <dfn id=trackevent>TrackEvent</dfn> : <a id=the-trackevent-interface:event href=https://dom.spec.whatwg.org/#interface-event data-x-internal=event>Event</a> {
   readonly attribute (<a href=#videotrack id=the-trackevent-interface:videotrack>VideoTrack</a> or <a href=#audiotrack id=the-trackevent-interface:audiotrack>AudioTrack</a> or <a href=#texttrack id=the-trackevent-interface:texttrack>TextTrack</a>)? <a href=#dom-trackevent-track id=the-trackevent-interface:dom-trackevent-track>track</a>;
 };
 
-dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-interface:eventinit href=infrastructure.html#eventinit>EventInit</a> {
+dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-interface:eventinit href=https://dom.spec.whatwg.org/#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
   (<a href=#videotrack id=the-trackevent-interface:videotrack-2>VideoTrack</a> or <a href=#audiotrack id=the-trackevent-interface:audiotrack-2>AudioTrack</a> or <a href=#texttrack id=the-trackevent-interface:texttrack-2>TextTrack</a>)? track;
 };</pre>
 
@@ -8865,7 +8875,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></th></tr><tr><td><dfn id=event-media-loadstart><code>loadstart</code></dfn>
 
-     </td><td><code id=mediaevents:event><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、<a href=#concept-media-load-algorithm id=mediaevents:concept-media-load-algorithm>リソース選択アルゴリズム</a>の一部として、<a href=#media-data id=mediaevents:media-data>メディアデータ</a>を探し始める。
 
@@ -8873,7 +8883,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-progress><code>progress</code></dfn>
 
-     </td><td><code id=mediaevents:event-2><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-2><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、<a href=#media-data id=mediaevents:media-data-2>メディアデータ</a>をフェッチしている。
 
@@ -8881,7 +8891,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-suspend><code>suspend</code></dfn>
 
-     </td><td><code id=mediaevents:event-3><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-3><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、意図的に現在の<a href=#media-data id=mediaevents:media-data-3>メディアデータ</a>をフェッチしていない。
 
@@ -8889,7 +8899,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-abort><code>abort</code></dfn>
 
-     </td><td><code id=mediaevents:event-4><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-4><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、完全にダウンロードされる前に<a href=#media-data id=mediaevents:media-data-4>メディアデータ</a>のフェッチを停止するが、エラーによるものではない。
 
@@ -8897,7 +8907,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-error><code>error</code></dfn>
 
-     </td><td><code id=mediaevents:event-5><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-5><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>An error occurs while fetching the <a href=#media-data id=mediaevents:media-data-5>media data</a> or the type of the resource
      is not supported media format.
@@ -8908,7 +8918,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-emptied><code>emptied</code></dfn>
 
-     </td><td><code id=mediaevents:event-6><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-6><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>以前<code id=mediaevents:dom-media-network_empty-3><a href=#dom-media-network_empty>NETWORK_EMPTY</a></code>状態でなかった<code id=mediaevents:dom-media-networkstate-6><a href=#dom-media-networkstate>networkState</a></code>である<a href=#media-element id=mediaevents:media-element-2>メディア要素</a>が、その状態にちょうど切り替わった（ロード中に致命的なエラーが発生したため、<a href=#concept-media-load-algorithm id=mediaevents:concept-media-load-algorithm-2>リソース選択アルゴリズム</a>がすでに実行している間に<code id=mediaevents:dom-media-load><a href=#dom-media-load>load()</a></code>メソッドが呼び出されたためのいずれか）。
 
@@ -8916,7 +8926,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-stalled><code>stalled</code></dfn>
 
-     </td><td><code id=mediaevents:event-7><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-7><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、<a href=#media-data id=mediaevents:media-data-6>メディアデータ</a>をフェッチしようとしているが、データが突発的に用意されない。
 
@@ -8924,7 +8934,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></td></tr><tr><td><dfn id=event-media-loadedmetadata><code>loadedmetadata</code></dfn>
 
-     </td><td><code id=mediaevents:event-8><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-8><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、ちょうど<a href=#media-resource id=mediaevents:media-resource>メディアリソース</a>と<a href=#the-text-tracks-are-ready id=mediaevents:the-text-tracks-are-ready>テキストトラックの準備</a>の期間と寸法を決定した。
 
@@ -8932,7 +8942,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-loadeddata><code>loadeddata</code></dfn>
 
-     </td><td><code id=mediaevents:event-9><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-9><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、初期時間に対して<a href=#current-playback-position id=mediaevents:current-playback-position>現在の再生位置</a>で<a href=#media-data id=mediaevents:media-data-7>メディアデータ</a>をレンダリングできる。
 
@@ -8940,7 +8950,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-canplay><code>canplay</code></dfn>
 
-     </td><td><code id=mediaevents:event-10><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-10><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、<a href=#media-data id=mediaevents:media-data-8>メディアデータ</a>の再生を再開できるが、再生を今すぐ開始されることになったかどうかを推定し、<a href=#media-resource id=mediaevents:media-resource-2>メディアリソース</a>は、コンテンツの追加のバッファリングに対して停止させることなく、終わりに現在の再生レートでレンダリングできなかった。
 
@@ -8948,7 +8958,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-canplaythrough><code>canplaythrough</code></dfn>
 
-     </td><td><code id=mediaevents:event-11><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-11><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>ユーザーエージェントは、再生が今すぐ開始されることになったかどうかを推定し、<a href=#media-resource id=mediaevents:media-resource-3>メディアリソース</a>は追加のバッファリングに対して停止することなく、現在の再生レートの最後までのすべての方法でレンダリングできる。
 
@@ -8956,7 +8966,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-playing><code>playing</code></dfn>
 
-     </td><td><code id=mediaevents:event-12><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-12><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>再生は、<a href=#media-data id=mediaevents:media-data-9>メディアデータ</a>の不足のために、一時停止または遅延された後に開始する準備ができている。
 
@@ -8964,7 +8974,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-waiting><code>waiting</code></dfn>
 
-     </td><td><code id=mediaevents:event-13><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-13><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>次のフレームが利用できないため、再生が停止したが、ユーザーエージェントは、そのフレームがやがて利用できるようになると予想する。
 
@@ -8972,7 +8982,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></td></tr><tr><td><dfn id=event-media-seeking><code>seeking</code></dfn>
 
-     </td><td><code id=mediaevents:event-14><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-14><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-media-seeking-2><a href=#dom-media-seeking>seeking</a></code>IDL属性がtrueに変更され、かつユーザーエージェントが新しい位置を探し始めている。
 
@@ -8980,7 +8990,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-seeked><code>seeked</code></dfn>
 
-     </td><td><code id=mediaevents:event-15><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-15><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><a href=#current-playback-position id=mediaevents:current-playback-position-3>current playback position</a>が変更された後に、<code id=mediaevents:dom-media-seeking-3><a href=#dom-media-seeking>seeking</a></code>IDL属性がfalseに変更された。
 
@@ -8988,7 +8998,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-ended><code>ended</code></dfn>
 
-     </td><td><code id=mediaevents:event-16><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-16><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><a href=#media-resource id=mediaevents:media-resource-5>メディアリソース</a>の終わりに達したため、再生が停止した。
 
@@ -8996,7 +9006,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></td></tr><tr><td><dfn id=event-media-durationchange><code>durationchange</code></dfn>
 
-     </td><td><code id=mediaevents:event-17><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-17><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-media-duration><a href=#dom-media-duration>duration</a></code>属性はちょうど更新された。
 
@@ -9004,7 +9014,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-timeupdate><code>timeupdate</code></dfn>
 
-     </td><td><code id=mediaevents:event-18><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-18><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><a href=#current-playback-position id=mediaevents:current-playback-position-4>現在の再生位置</a>が、通常の再生の一部として、または、たとえば不連続的に、特に興味深い方法で変更された。
 
@@ -9012,7 +9022,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-play><code>play</code></dfn>
 
-     </td><td><code id=mediaevents:event-19><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-19><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>要素はもはや一時停止でない。<code id=mediaevents:dom-media-play><a href=#dom-media-play>play()</a></code>メソッドが返された後、または<code id=mediaevents:attr-media-autoplay><a href=#attr-media-autoplay>autoplay</a></code>属性を開始する再生を起こす際に発火した。
 
@@ -9020,7 +9030,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-pause><code>pause</code></dfn>
 
-     </td><td><code id=mediaevents:event-20><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-20><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>要素が一時停止された。<code id=mediaevents:dom-media-pause><a href=#dom-media-pause>pause()</a></code>メソッドが返された後に発火した。
 
@@ -9028,7 +9038,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-ratechange><code>ratechange</code></dfn>
 
-     </td><td><code id=mediaevents:event-21><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-21><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-media-defaultplaybackrate><a href=#dom-media-defaultplaybackrate> defaultPlaybackRate</a></code>または<code id=mediaevents:dom-media-playbackrate><a href=#dom-media-playbackrate> playbackRate</a></code>属性が更新されたばかりのいずれか。
 
@@ -9036,7 +9046,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></td></tr><tr><td><dfn id=event-media-resize><code>resize</code></dfn>
 
-     </td><td><code id=mediaevents:event-22><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-22><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-video-videowidth><a href=#dom-video-videowidth>videoWidth</a></code>と<code id=mediaevents:dom-video-videoheight><a href=#dom-video-videoheight>videoHeight</a></code>属性のいずれかまたは両方がちょうど更新されている。
 
@@ -9044,7 +9054,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-media-volumechange><code>volumechange</code></dfn>
 
-     </td><td><code id=mediaevents:event-23><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-23><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-media-volume><a href=#dom-media-volume>volume</a></code>属性または<code id=mediaevents:dom-media-muted><a href=#dom-media-muted>muted</a></code>属性のいずれかが変更された。関連する属性のセッターが返された後に発火した。
 
@@ -9063,7 +9073,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></th></tr><tr><td><dfn id=event-source-error><code>error</code></dfn>
 
-     </td><td><code id=mediaevents:event-24><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-24><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>An error occurs while fetching the <a href=#media-data id=mediaevents:media-data-10>media data</a> or the type of the resource
      is not supported media format.
@@ -9083,85 +9093,85 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></th></tr><tr><td><dfn id=event-mediacontroller-emptied><code>emptied</code></dfn>
 
-     </td><td><code id=mediaevents:event-25><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-25><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>すべての<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-2>従属メディア要素</a>は、新たに<code id=mediaevents:dom-media-have_nothing-2><a href=#dom-media-have_nothing>HAVE_NOTHING</a></code>以上に設定した<code id=mediaevents:dom-media-readystate-9><a href=#dom-media-readystate>readyState</a></code>をもつか、または<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-3>従属メディア要素</a>がもはや存在しない。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-loadedmetadata><code>loadedmetadata</code></dfn>
 
-     </td><td><code id=mediaevents:event-26><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-26><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>すべての<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-4>従属メディア要素</a>の<code id=mediaevents:dom-media-readystate-10><a href=#dom-media-readystate>readyState</a></code>が新た<code id=mediaevents:dom-media-have_metadata-2><a href=#dom-media-have_metadata>HAVE_METADATA</a></code>以上に設定される。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-loadeddata><code>loadeddata</code></dfn>
 
-     </td><td><code id=mediaevents:event-27><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-27><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>すべての<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-5>従属メディア要素</a>の<code id=mediaevents:dom-media-readystate-11><a href=#dom-media-readystate>readyState</a></code>が新た<code id=mediaevents:dom-media-have_current_data-3><a href=#dom-media-have_current_data>HAVE_CURRENT_DATA</a></code>以上に設定される。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-canplay><code>canplay</code></dfn>
 
-     </td><td><code id=mediaevents:event-28><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-28><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>すべての<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-6>従属メディア要素</a>の<code id=mediaevents:dom-media-readystate-12><a href=#dom-media-readystate>readyState</a></code>が新た<code id=mediaevents:dom-media-have_future_data-4><a href=#dom-media-have_future_data>HAVE_FUTURE_DATA</a></code>以上に設定される。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-canplaythrough><code>canplaythrough</code></dfn>
 
-     </td><td><code id=mediaevents:event-29><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-29><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>すべての<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-7>従属メディア要素</a>の<code id=mediaevents:dom-media-readystate-13><a href=#dom-media-readystate>readyState</a></code>が新た<code id=mediaevents:dom-media-have_enough_data-2><a href=#dom-media-have_enough_data>HAVE_ENOUGH_DATA</a></code>に設定される。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-playing><code>playing</code></dfn>
 
-     </td><td><code id=mediaevents:event-30><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-30><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:mediacontroller-2><a href=#mediacontroller>MediaController</a></code>は、もはや<a href=#blocked-media-controller id=mediaevents:blocked-media-controller>ブロックメディアコントローラー</a>ではない。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-waiting><code>waiting</code></dfn>
 
-     </td><td><code id=mediaevents:event-31><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-31><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:mediacontroller-3><a href=#mediacontroller>MediaController</a></code>は現在、<a href=#blocked-media-controller id=mediaevents:blocked-media-controller-2>ブロックされたメディアコントローラー</a>である。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-ended><code>ended</code></dfn>
 
-     </td><td><code id=mediaevents:event-32><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-32><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>すべての<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-8>従属メディア要素</a>は、新たに<a href=#ended-playback id=mediaevents:ended-playback-2>再生を終了して</a>いる。<code id=mediaevents:mediacontroller-4><a href=#mediacontroller>MediaController</a></code>は、すべての<a href=#slaved-media-elements id=mediaevents:slaved-media-elements-9>従属メディア要素</a>の終わりに達した。
 
    <tbody></td></tr><tr><td><dfn id=event-mediacontroller-durationchange><code>durationchange</code></dfn>
 
-     </td><td><code id=mediaevents:event-33><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-33><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-mediacontroller-duration><a href=#dom-mediacontroller-duration>duration</a></code>属性はちょうど更新された。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-timeupdate><code>timeupdate</code></dfn>
 
-     </td><td><code id=mediaevents:event-34><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-34><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><a href=#media-controller-position id=mediaevents:media-controller-position-2>メディアコントローラーの位置</a>が変更された。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-play><code>play</code></dfn>
 
-     </td><td><code id=mediaevents:event-35><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-35><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-mediacontroller-paused><a href=#dom-mediacontroller-paused>paused</a></code>属性が新たにfalseである。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-pause><code>pause</code></dfn>
 
-     </td><td><code id=mediaevents:event-36><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-36><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-mediacontroller-paused-2><a href=#dom-mediacontroller-paused>paused</a></code>属性が新たにtrueである。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-ratechange><code>ratechange</code></dfn>
 
-     </td><td><code id=mediaevents:event-37><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-37><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-mediacontroller-defaultplaybackrate><a href=#dom-mediacontroller-defaultplaybackrate>defaultPlaybackRate</a></code>属性または<code id=mediaevents:dom-mediacontroller-playbackrate><a href=#dom-mediacontroller-playbackrate>playbackRate</a></code>属性がちょうど更新されたかのいずれか。
 
     </td></tr><tr><td><dfn id=event-mediacontroller-volumechange><code>volumechange</code></dfn>
 
-     </td><td><code id=mediaevents:event-38><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-38><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td><code id=mediaevents:dom-mediacontroller-volume><a href=#dom-mediacontroller-volume>volume</a></code>属性または<code id=mediaevents:dom-mediacontroller-muted><a href=#dom-mediacontroller-muted>muted</a></code>属性がちょうど更新されたかのいずれか。
 
@@ -9178,7 +9188,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></th></tr><tr><td><dfn id=event-media-change><code>change</code></dfn>
 
-     </td><td><code id=mediaevents:event-39><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-39><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>トラックリストの1つ以上のトラックが有効か無効である。
 
@@ -9208,7 +9218,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></th></tr><tr><td><dfn id=event-media-cuechange><code>cuechange</code></dfn>
 
-     </td><td><code id=mediaevents:event-40><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-40><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>トラック内の1つ以上のキューがアクティブになるか、アクティブで停止している。
 
@@ -9225,7 +9235,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></th></tr><tr><td><dfn id=event-track-error><code>error</code></dfn>
 
-     </td><td><code id=mediaevents:event-41><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-41><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>An error occurs while fetching the track data or the type of the resource is not supported text track format.
 
@@ -9233,7 +9243,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
     </td></tr><tr><td><dfn id=event-track-load><code>load</code></dfn>
 
-     </td><td><code id=mediaevents:event-42><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-42><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>A track data has been fetched and successfully processed.
   
@@ -9250,13 +9260,13 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <tbody></th></tr><tr><td><dfn id=event-media-enter><code>enter</code></dfn>
 
-     </td><td><code id=mediaevents:event-43><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-43><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>キューはアクティブになっている。
 
     </td></tr><tr><td><dfn id=event-media-exit><code>exit</code></dfn>
 
-     </td><td><code id=mediaevents:event-44><a href=infrastructure.html#event>Event</a></code>
+     </td><td><code id=mediaevents:event-44><a data-x-internal=event href=https://dom.spec.whatwg.org/#interface-event>Event</a></code>
 
      </td><td>キューはアクティブになるのを停止している。
 
@@ -9375,7 +9385,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
   <dl class=element><dt><a href=dom.html#concept-element-categories id=the-map-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-map-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dd><a id=the-map-element:phrasing-content-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>。<dd><a id=the-map-element:palpable-content-2 href=dom.html#palpable-content-2>パルパブルコンテンツ</a>。<dt><a href=dom.html#concept-element-contexts id=the-map-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><a id=the-map-element:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>が期待される場所。<dt><a href=dom.html#concept-element-content-model id=the-map-element:concept-element-content-model>コンテンツモデル</a>：<dd><a id=the-map-element:transparent href=dom.html#transparent>透過的</a>。<dt><a href=dom.html#concept-element-tag-omission id=the-map-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd>どちらのタグも省略不可。<dt><a href=dom.html#concept-element-attributes id=the-map-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-map-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-map-element:attr-map-name><a href=#attr-map-name>name</a></code> — <code id=the-map-element:attr-hyperlink-usemap><a href=#attr-hyperlink-usemap>usemap</a></code>属性から参照する<a href=#image-map id=the-map-element:image-map>イメージマップ</a>名 <dt><a href=dom.html#concept-element-dom id=the-map-element:concept-element-dom>DOMインターフェイス</a>：<dd>
 <pre class=idl>interface <dfn id=htmlmapelement>HTMLMapElement</dfn> : <a id=the-map-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
   attribute DOMString <a href=#dom-map-name id=the-map-element:dom-map-name>name</a>;
-  [SameObject] readonly attribute <a id=the-map-element:htmlcollection href=infrastructure.html#htmlcollection>HTMLCollection</a> <a href=#dom-map-areas id=the-map-element:dom-map-areas>areas</a>;
+  [SameObject] readonly attribute <a id=the-map-element:htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection data-x-internal=htmlcollection>HTMLCollection</a> <a href=#dom-map-areas id=the-map-element:dom-map-areas>areas</a>;
 };</pre>
    </dl>
 
@@ -9386,13 +9396,13 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
   <dl class=domintro><dt><var>map</var> . <code id=the-map-element:dom-map-areas-2><a href=#dom-map-areas>areas</a></code><dd>
 
-    <p><code id=the-map-element:the-map-element-3><a href=#the-map-element>map</a></code>の<code id=the-map-element:the-area-element-2><a href=#the-area-element>area</a></code>要素の<code id=the-map-element:htmlcollection-2><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返す。</p>
+    <p><code id=the-map-element:the-map-element-3><a href=#the-map-element>map</a></code>の<code id=the-map-element:the-area-element-2><a href=#the-area-element>area</a></code>要素の<code id=the-map-element:htmlcollection-2><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code>を返す。</p>
 
    </dl>
 
   
 
-  <p><dfn id=dom-map-areas><code>areas</code></dfn>属性は、フィルターが<code id=the-map-element:the-area-element-3><a href=#the-area-element>area</a></code>要素のみに一致する、<code id=the-map-element:the-map-element-4><a href=#the-map-element>map</a></code>要素でルートとなる<code id=the-map-element:htmlcollection-3><a href=infrastructure.html#htmlcollection>HTMLCollection</a></code>を返さなければならない。</p>
+  <p><dfn id=dom-map-areas><code>areas</code></dfn>属性は、フィルターが<code id=the-map-element:the-area-element-3><a href=#the-area-element>area</a></code>要素のみに一致する、<code id=the-map-element:the-map-element-4><a href=#the-map-element>map</a></code>要素でルートとなる<code id=the-map-element:htmlcollection-3><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code>を返さなければならない。</p>
 
   <p><dfn id=dom-map-name><code>name</code></dfn>IDL属性は、同じ名前のコンテンツ属性を<a id=the-map-element:reflect href=infrastructure.html#reflect>反映</a>しなければならない。</p>
 
@@ -9440,9 +9450,9 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
   attribute DOMString <a href=#dom-area-shape id=the-area-element:dom-area-shape>shape</a>;
   attribute DOMString <a href=#dom-area-target id=the-area-element:dom-area-target>target</a>;
   attribute DOMString <a href=#dom-area-download id=the-area-element:dom-area-download>download</a>;
-  [SameObject, PutForwards=<a href=infrastructure.html#dom-domtokenlist-value id=the-area-element:dom-domtokenlist-value>value</a>] readonly attribute <a id=the-area-element:domtokenlist href=infrastructure.html#domtokenlist>DOMTokenList</a> <a href=#dom-area-ping id=the-area-element:dom-area-ping>ping</a>;
+  [SameObject, PutForwards=<a href=https://dom.spec.whatwg.org/#dom-domtokenlist-value id=the-area-element:dom-domtokenlist-value data-x-internal=dom-domtokenlist-value>value</a>] readonly attribute <a id=the-area-element:domtokenlist href=https://dom.spec.whatwg.org/#interface-domtokenlist data-x-internal=domtokenlist>DOMTokenList</a> <a href=#dom-area-ping id=the-area-element:dom-area-ping>ping</a>;
   attribute DOMString <a href=#dom-area-rel id=the-area-element:dom-area-rel>rel</a>;
-  [SameObject, PutForwards=<a href=infrastructure.html#dom-domtokenlist-value id=the-area-element:dom-domtokenlist-value-2>value</a>] readonly attribute <a id=the-area-element:domtokenlist-2 href=infrastructure.html#domtokenlist>DOMTokenList</a> <a href=#dom-area-rellist id=the-area-element:dom-area-rellist>relList</a>;
+  [SameObject, PutForwards=<a href=https://dom.spec.whatwg.org/#dom-domtokenlist-value id=the-area-element:dom-domtokenlist-value-2 data-x-internal=dom-domtokenlist-value>value</a>] readonly attribute <a id=the-area-element:domtokenlist-2 href=https://dom.spec.whatwg.org/#interface-domtokenlist data-x-internal=domtokenlist>DOMTokenList</a> <a href=#dom-area-rellist id=the-area-element:dom-area-rellist>relList</a>;
 };
 <a href=#htmlareaelement id=the-area-element:htmlareaelement>HTMLAreaElement</a> implements <a id=the-area-element:htmlhyperlinkelementutils href=semantics.html#htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</a>;</pre>
    </dl>
@@ -9584,7 +9594,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
    <p>このコンテキストにおいて、ユーザーエージェントは、適切な著者提供テキストの欠如を示すことを意図したユーザーエージェント定義の方法で、指定された<code>alt</code>属性をもたない、または<code>alt</code>属性が空文字列または一部の他の非表示テキストである<code id=processing-model:the-area-element-7><a href=#the-area-element>area</a></code>および<code id=processing-model:the-img-element-5><a href=#the-img-element>img</a></code>要素を表してもよい。</li></ol>
 
-  <p>ユーザーエージェントが画像を表示することを意図し、かつハイパーリンクを選択する画像との相互作用を可能にする場合、その画像は、逆<a id=processing-model:tree-order href=infrastructure.html#tree-order>ツリー</a>順で、<var>areas</var>で<code id=processing-model:the-area-element-8><a href=#the-area-element>area</a></code>要素から採取した、層状の形状のセットに関連付けられなければならない（よって、<a id=processing-model:tree-order-2 href=infrastructure.html#tree-order>ツリー順</a>に、<var>map</var>における最後に指定された<code id=processing-model:the-area-element-9><a href=#the-area-element>area</a></code>要素が一番下の形状であり、かつ<var>map</var>における最初の要素が最上位の形状である）。</p>
+  <p>ユーザーエージェントが画像を表示することを意図し、かつハイパーリンクを選択する画像との相互作用を可能にする場合、その画像は、逆<a id=processing-model:tree-order href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>ツリー</a>順で、<var>areas</var>で<code id=processing-model:the-area-element-8><a href=#the-area-element>area</a></code>要素から採取した、層状の形状のセットに関連付けられなければならない（よって、<a id=processing-model:tree-order-2 href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>ツリー順</a>に、<var>map</var>における最後に指定された<code id=processing-model:the-area-element-9><a href=#the-area-element>area</a></code>要素が一番下の形状であり、かつ<var>map</var>における最初の要素が最上位の形状である）。</p>
 
   <p><var>areas</var>における各<code id=processing-model:the-area-element-10><a href=#the-area-element>area</a></code>要素は、画像の上に層状にする形状を得るために、次のように処理されなければならない：</p>
 
@@ -9748,7 +9758,7 @@ dictionary <dfn id=trackeventinit>TrackEventInit</dfn> : <a id=the-trackevent-in
 
   <p>SVGの<code>foreignObject</code>要素が<a id=svg-0:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML名前空間</a>の要素を含む場合、そのような要素は、すべて<a id=svg-0:flow-content-2-2 href=dom.html#flow-content-2>フローコンテンツ</a>でなければならない。<a href=references.html#refsSVG>[SVG]</a></p>
 
-  <p><a id=svg-0:html-documents href=infrastructure.html#html-documents>HTML文書</a>内部の<a id=svg-0:svg-namespace-2 href=infrastructure.html#svg-namespace>SVG名前空間</a>で<code>title</code>要素のコンテンツモデルは<a id=svg-0:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>である。（これはSVG仕様で指定された要件をさらに制約する。）</p>
+  <p><a id=svg-0:html-documents href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML文書</a>内部の<a id=svg-0:svg-namespace-2 href=infrastructure.html#svg-namespace>SVG名前空間</a>で<code>title</code>要素のコンテンツモデルは<a id=svg-0:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>である。（これはSVG仕様で指定された要件をさらに制約する。）</p>
 
   <p>SVGの要素のセマンティックスは、SVG仕様や<a id=svg-0:other-applicable-specifications href=infrastructure.html#other-applicable-specifications>その他の適用可能な仕様</a>で定義される。<a href=references.html#refsSVG>[SVG]</a></p>
 
