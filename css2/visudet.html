@@ -76,7 +76,7 @@ class="index-def" title="containing block">包含ブロック</span></a></dfn>�
 <li><a href="conform.html#root">ルート要素</a>にある包含ブロックは、<dfn><a name="x1"><span
 class="index-def" title="initial containing block|containing
 block::initial">初期包含ブロック</span></a></dfn>と呼ばれる長方形である。連続メディアの場合、初期包含ブロックは<a
-href="visuren.html#viewport">ビューポート</a>の寸法を持ち、キャンバスの原点で固定される。ページメディアの場合、初期包含ブロックは<a href="page.html#page-area">ページ領域</a>である。初期包含ブロックの'direction'プロパティは、ルート要素と同じである。
+href="visuren.html#viewport">ビューポート</a>の次元を持ち、キャンバスの原点で固定される。ページメディアの場合、初期包含ブロックは<a href="page.html#page-area">ページ領域</a>である。初期包含ブロックの'direction'プロパティは、ルート要素と同じである。
 </li>
 <li>その他の要素について、要素の配置が'relative'または'static'である場合、包含ブロックは<a href="visuren.html#block-boxes">ブロックコンテナ</a>である最も近い先祖ボックスまたは先祖ボックスが設置する整形コンテキストのコンテンツ辺によって整形される。
 </li>
@@ -215,7 +215,7 @@ href="visuren.html#containing-block">包含ブロック</a>によって与えら
 </dd>
 <dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x5" href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage"><strong>&lt;percentage&gt;</strong></span></a></span>
 </dt>
-<dd>パーセント幅を指定する。割合は、生成ボックスの<a href="visuren.html#containing-block">包含ブロック</a>の幅に対して計算される。包含ブロックの幅がこの要素の幅に依存する場合、その結果のレイアウトはCSS 2.2で未定義である。<span class="note">注：絶対配置要素の包含ブロックはブロックコンテナ要素を基にするため、割合はその要素の<em>パディングボックス</em>の幅に対して計算される。これは、パーセント幅が親要素の<em>コンテンツボックス</em>に対して常に計算されていたCSS1からの変更である。</span>
+<dd>パーセント幅を指定する。割合は、生成ボックスの<a href="visuren.html#containing-block">包含ブロック</a>の幅に対して計算される。If the containing block's width depends on this element's width, then the resulting layout is undefined in CSS 2.2. <span class="note"> Note: For absolutely positioned elements whose containing block is based on a block container element, the percentage is calculated with respect to the width of the <em>padding box</em> of that element. これは、パーセント幅が親要素の<em>コンテンツボックス</em>に対して常に計算されていたCSS1からの変更である。</span>
 </dd>
 <dt><strong>auto</strong>
 </dt>
@@ -279,18 +279,27 @@ class="propinst-margin-left">'margin-left'</span></a>または<a href="box.html#
 class="propinst-margin-right">'margin-right'</span></a>に対する'auto'の算出値は、'0'の使用値になる。
 
 <p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>および<a href="visudet.html#propdef-width" class="noxref"><span
-class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつ要素が固有幅を持つ場合、固有幅は<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつ要素が内在幅を持つ場合、内在幅は<a href="visudet.html#propdef-width" class="noxref"><span
 class="propinst-width">'width'</span></a>の使用値となる。
 
 <p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>および<a href="visudet.html#propdef-width" class="noxref"><span
-class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつ要素が固有幅を持たない場合、固有高さと固有幅を持つ。つまり、<a href="visudet.html#propdef-width" class="noxref"><span
-class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>は別の算出値を持ち、そしてその要素は固有比を持つ。その結果<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の使用値は次のようになる：
+class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつ要素が内在幅を持たない場合、内在高さと内在幅を持つ。つまり、<a href="visudet.html#propdef-width" class="noxref"><span
+class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>は別の算出値を持ち、そしてその要素は内在比を持つ。その結果<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の使用値は次のようになる：
 
-<blockquote><p>(使用高さ) * (固有比)</blockquote>
+<blockquote><p>(使用高さ) * (内在比)</blockquote>
 
-<p>'height'および<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつその要素が固有比を持つが固有の高さまたは幅を持たない場合、'width'の使用値はCSS&nbsp;2.2で未定義である。しかし、その包含ブロックの幅が置換要素の幅に依存しない場合、'width'の使用値は通常フローにおける非置換ブロックレベル要素に用いる拘束方程式より計算されることが示唆される。
+<p>If 'height' and <a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a> both
+have computed values of 'auto' and the element has an intrinsic ratio
+but no intrinsic height or width, then the used value of 'width' is
+undefined in CSS&nbsp;2.2.
+However, it is suggested that, if the containing block's width
+does not itself depend on the replaced element's width, then the used
+value of 'width' is calculated from the constraint equation used for
+block-level, non-replaced elements in normal flow.
 
-<p>そうでなければ、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、その要素は固有幅を持ち、その結果その固有幅は<a href="visudet.html#propdef-width" class="noxref"><span
+
+
+<p>そうでなければ、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、その要素は内在幅を持ち、その結果その内在幅は<a href="visudet.html#propdef-width" class="noxref"><span
 class="propinst-width">'width'</span></a>の使用値となる。
 
 <p>そうでなければ、上記の条件に一致せず、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>の使用値は300pxになる。デバイスにあわせて300pxが広すぎる場合、ユーザーエージェントは2:1の比率を持つ最大の矩形の幅を使用し、代わりにデバイスに収めるべきである。
@@ -362,7 +371,7 @@ class="propinst-position">'position'</span></a>プロパティが'static'かつ<
 </li>
 </ul>
 
-<p>しかし、仮ボックスの寸法を実際に計算するよりむしろ、ユーザーエージェントは可能性のある位置で見当を付けることが自由である。
+<p>しかし、仮ボックスの次元を実際に計算するよりむしろ、ユーザーエージェントは可能性のある位置で見当を付けることが自由である。
 </p>
 <p>静的位置を計算する目的に対して、固定配置される要素の包含ブロックはビューポートの代わりに初期包含ブロックとなり、そしてすべてのスクロール可能なボックスは、ボックスの原点までスクロールされると仮定されるべきである。
 
@@ -372,9 +381,15 @@ class="propinst-position">'position'</span></a>プロパティが'static'かつ<
     <p>'left' + 'margin-left' + 'border-left-width' + 'padding-left' + 'width' + 'padding-right' + 'border-right-width' + 'margin-right' + 'right' = 包含ブロックの幅 </p>
   </blockquote>
   
-<p>'left'、'width'、'right'の3つすべてが'auto'である場合：最初に'margin-left'と'margin-right'のすべての'auto'値を0に設定する。次に、静的位置包含ブロックを設置する要素の'direction'プロパティが<a
-href="#static-position">静的位置</a>に'left'を設定される'ltr'であり、かつ下記の番号3の規則を適用する。そうでなければ、<a
-href="#static-position">静的位置</a>に'right'を設定し、下記の番号1の規則を適用する。</p>
+<p>If all three of 'left', 'width', and 'right' are 'auto': First set
+any 'auto' values for 'margin-left' and 'margin-right' to 0. Then, if
+the 'direction' property of the element establishing the
+static-position containing block is 'ltr' set 'left'
+to the <a
+href="#static-position">static position</a> and apply rule number
+three below; otherwise, set 'right' to the <a
+href="#static-position">static position</a> and apply rule number
+one below.</p>
 
 <p>この3つが'auto'でない場合：'margin-left'と'margin-right'の両方が'auto'である場合、2つのマージンが等しい値を得る追加制約の下で式を解く。ただしこの追加制約が2つのマージンを負にする場合を除く。そして2つのマージンが負になる場合に、包含ボックスの方向が'ltr'（'rtl'）であるならば、'margin-left'（'margin-right'）を0に設定し、'margin-right'（'margin-left'）を解決する。'margin-left'または'margin-right'の1つが'auto'である場合、その値について等式を解く。値が制限しすぎである場合、（包含ブロックの'direction'プロパティが'rtl'の場合）または'right'（'direction'が'ltr'の場合）の値を無視し、その値について解く。</p>
 
@@ -533,7 +548,7 @@ class="propinst-min-width">'min-width'</span></a>を用いる。
 
 <p class="note">このステップは上記のプロパティの実際の算出値に影響しない。</p>
 
-<p>しかし、置換要素の固有比と<a href="visudet.html#propdef-width" class="noxref"><span
+<p>しかし、置換要素の内在比と<a href="visudet.html#propdef-width" class="noxref"><span
 class="propinst-width">'width'</span></a>および<a href="visudet.html#propdef-height" class="noxref"><span
 class="propinst-height">'height'</span></a>の両方に'auto'が指定されるため、アルゴリズムは次のようになる：
 </p>
@@ -542,9 +557,9 @@ class="propinst-height">'height'</span></a>の両方に'auto'が指定される�
 class="propinst-min-width">'min-width'</span></a>、<a href="visudet.html#propdef-min-height" class="noxref"><span
 class="propinst-min-height">'min-height'</span></a>、<a href="visudet.html#propdef-max-width" class="noxref"><span
 class="propinst-max-width">'max-width'</span></a>、<a href="visudet.html#propdef-max-height" class="noxref"><span
-class="propinst-max-height">'max-height'</span></a>プロパティを無視した幅と高さの計算結果を表す。通常、固有の幅と高さを持つが、固有比を伴う置換要素の場合はもたない。
+class="propinst-max-height">'max-height'</span></a>プロパティを無視した幅と高さの計算結果を表す。通常、内在幅と高さを持つが、内在比を伴う置換要素の場合はもたない。
 
-<p class=note>注；明確な幅または高さが設定され、他の寸法がautoである場所の場合、auto側の最小または最大の制限を適用することは制限しすぎの状況を引き起こす。仕様はこの振る舞いで明らかであるが、著者が予期しないことが存在しないわけではない。CSS3 object-fitプロパティはこの状況で異なる結果を得るために使われる。
+<p class=note>注；明確な幅または高さが設定され、他の次元がautoである場所の場合、auto側の最小または最大の制限を適用することは制限しすぎの状況を引き起こす。仕様はこの振る舞いで明らかであるが、著者が予期しないことが存在しないわけではない。CSS3 object-fitプロパティはこの状況で異なる結果を得るために使われる。
 
 <table rules=all>
 <thead>
@@ -713,14 +728,14 @@ class="propinst-line-height">'line-height'</span></a>に限り、行ボックス
 class="propinst-margin-bottom">'margin-bottom'</span></a>が'auto'である場合、使用値は0になる。
 
 <p><a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>と<a href="visudet.html#propdef-width" class="noxref"><span
-class="propinst-width">'width'</span></a>が'auto'の算出値と固有高さの両方である場合、固有高さが<a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-width">'width'</span></a>が'auto'の算出値と内在高さの両方である場合、内在高さが<a href="visudet.html#propdef-height" class="noxref"><span
 class="propinst-height">'height'</span></a>の使用値になる。
 
-<p>そうでなければ、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、その要素は固有比を持ち、結果その<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>の使用値は次のようになる：
+<p>そうでなければ、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、その要素は内在比を持ち、結果その<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>の使用値は次のようになる：
 
-<blockquote><p>(使用幅) / (固有比)</blockquote>
+<blockquote><p>(使用幅) / (内在比)</blockquote>
 
-<p>そうでなければ、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、その要素は固有高さを持ち、結果その固有高さは<a href="visudet.html#propdef-height" class="noxref"><span
+<p>そうでなければ、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、その要素は内在高さを持ち、結果その内在高さは<a href="visudet.html#propdef-height" class="noxref"><span
 class="propinst-height">'height'</span></a>の使用値となる。
 
 <p>そうでなければ、上記の条件に一致しないが、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>が'auto'の算出値を持つ場合、<a href="visudet.html#propdef-height" class="noxref"><span class="propinst-height">'height'</span></a>の使用値は2:1の比を持つ最も大きい矩形の高さに設定されなければならず、150pxより大きくない高さを持ち、かつデバイスの幅より大きくない幅を持つ。
@@ -733,10 +748,14 @@ class="propinst-height">'height'</span></a>の使用値となる。
 
 <p>この節も'overflow'が'visible'に計算されない場合に通常フローで非置換ブロックレベル要素に適用されるが、ビューポートに伝播されている。
 
-<p><a href="box.html#propdef-margin-top" class="noxref"><span
-class="propinst-margin-top">'margin-top'</span></a>または<a href="box.html#propdef-margin-bottom" class="noxref"><span
-class="propinst-margin-bottom">'margin-bottom'</span></a>が'auto'である場合、使用値は0になる。<a href="visudet.html#propdef-height" class="noxref"><span
-class="propinst-height">'height'</span></a>が'auto'の場合、高さはその要素が子供ブロックレベル要素を持つかどうか、およびパディングまたはボーダーを持つかどうかによって異なる。
+<p>If <a href="box.html#propdef-margin-top" class="noxref"><span
+class="propinst-margin-top">'margin-top'</span></a>, or <a href="box.html#propdef-margin-bottom" class="noxref"><span
+class="propinst-margin-bottom">'margin-bottom'</span></a> are 'auto',
+their used value is 0. If <a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a> is 'auto', the height depends
+on whether the element has any block-level children and whether it has
+padding or borders:
+
 </p>
 
 <p>要素の高さは要素の上コンテンツ辺から、以下のうち最初に受け入れ可能なものまでの距離となる：
@@ -760,7 +779,7 @@ href="visuren.html#anonymous-block-level">匿名ブロックボックス</a>で�
 <p>本節と次節の目的のために、用語（ある要素の）"静的位置"は、おおまかに、要素が通常フロー内にある位置を参照する。より正確に、<a href="visuren.html#propdef-position" class="noxref"><span
 class="propinst-position">'position'</span></a>の指定値が'static'であり、<a href="visuren.html#propdef-float" class="noxref"><span class="propinst-float">'float'</span></a>の指定値が'none'であり、かつ<a href="visuren.html#propdef-clear" class="noxref"><span class="propinst-clear">'clear'</span></a>の指定値が'none'である場合、'top'の通常位置は、包含ブロックの上辺から、要素の最初のボックスの仮定ボックスの上マージン辺までの距離である。（<a href="visuren.html#dis-pos-flo">9.7節</a>の規則によれば、この仮計算は異なる'display'の算出値と仮定することでも要求されるかもしれないことに注意する。）仮ボックスが包含ブロックの上にある場合、この値は負になる。
 </p>
-<p>しかし、仮ボックスの寸法を実際に計算するよりむしろ、ユーザーエージェントは可能性のある位置で見当を付けることが自由である。
+<p>しかし、仮ボックスの次元を実際に計算するよりむしろ、ユーザーエージェントは可能性のある位置で見当を付けることが自由である。
 </p>
 <p>通常位置を計算する目的に対して、固定位置要素の包含ブロックはビューポートの代わりに初期包含ブロックとなる。
 
@@ -792,7 +811,7 @@ class="propinst-position">'position'</span></a>の指定値が'static'であり�
 
 <h3>10.6.5 <a name="abs-replaced-height">絶対配置される置換要素の場合</a></h3>
 
-<p>これは、要素が<a href="conform.html#intrinsic">固有</a>高さを持つことを除いて、1つ前の場合と似ている。置換の順序は現状では次のようになる：
+<p>これは、要素が<a href="conform.html#intrinsic">内在</a>高さを持つことを除いて、1つ前の場合と似ている。置換の順序は現状では次のようになる：
 </p>
 <ol>
 
@@ -833,10 +852,13 @@ class="propinst-margin-bottom">'margin-bottom'</span></a>の両方が'auto'の�
     </li><li>非置換浮動要素。
 </li></ul>
 
-<p><a href="box.html#propdef-margin-top" class="noxref"><span class="propinst-margin-top">'margin-top'</span></a>または<a href="box.html#propdef-margin-bottom" class="noxref"><span
-class="propinst-margin-bottom">'margin-bottom'</span></a>が'auto'である場合、使用値は0になる。<a href="visudet.html#propdef-height" class="noxref"><span
-class="propinst-height">'height'</span></a>が'auto'である場合、<a
-href="#root-height">10.6.7節によって要素の子孫に依存する</a>。
+<p>If <a href="box.html#propdef-margin-top" class="noxref"><span class="propinst-margin-top">'margin-top'</span></a>, or <a href="box.html#propdef-margin-bottom" class="noxref"><span
+class="propinst-margin-bottom">'margin-bottom'</span></a> are 'auto',
+their used value is 0. If <a href="visudet.html#propdef-height" class="noxref"><span
+class="propinst-height">'height'</span></a> is 'auto', the <a
+href="#root-height">height depends on the element's descendants per 10.6.7</a>.
+
+
 
 <p>インラインブロック要素に対して、行ボックスの高さの計算時にマージンボックスが使用される。
 
@@ -1032,8 +1054,8 @@ href="visuren.html#inline-boxes">インライン</a>要素上で、'line-height'
 <dt><strong>normal</strong> </dt>
 <dd>要素のフォントを基に"理にかなった"値を使用値に設定するようユーザーエージェントに指示する。この値は<span class="index-inst"
 title="&lt;number&gt;"><a name="x18" href="syndata.html#value-def-number" class="noxref"><span
-class="value-inst-number">&lt;number&gt;</span></a></span>と同じ意味を持つ。'normal'に対して1.0と1.2の間の使用値を推奨する。<a
-href="cascade.html#computed-value">算出値</a>は'normal'になる。
+class="value-inst-number">&lt;number&gt;</span></a></span>と同じ意味を持つ。We recommend a used value for 'normal' between 1.0 to 1.2. The <a
+href="cascade.html#computed-value">computed value</a> is 'normal'.
 </dd>
 <dt><span class="index-inst" title="&lt;length&gt;"><a name="x19" href="syndata.html#value-def-length" class="noxref"><span
 class="value-inst-length"><strong>&lt;length&gt;</strong></span></a></span>
