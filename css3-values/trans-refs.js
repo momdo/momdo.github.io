@@ -18,7 +18,7 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-css21: 'http://momdo.github.io/css2/cover.html',
+css21: 'https://momdo.github.io/css2/cover.html',
 css3bg: 'http://www.hcn.zaq.ne.jp/___/WEB/css-backgrounds-ja.html',
 css3cascade: 'http://www.hcn.zaq.ne.jp/___/WEB/css-cascade-ja.html',
 css3color: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
@@ -32,16 +32,17 @@ css3syn: 'http://www.hcn.zaq.ne.jp/___/WEB/css-syntax-ja.html',
 "css-fonts-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-fonts-ja.html',
 "css-images-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-images-ja.html',
 "css-text-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-text-ja.html',
-"css-text-decor-3": 'http://momdo.s35.xrea.com/web-html-test/spec/CR-css-text-decor-3-20130801.html',
+"css-text-decor-3": 'https://momdo.github.io/css-text-decor-3/',
 "css-transitions-1": 'http://www.hcn.zaq.ne.jp/___/WEB/css-transitions-ja.html',
-"css-ui-3": ['http://momdo.github.io/css-ui/',
+"css-ui-3": ['https://momdo.github.io/css-ui/',
     'http://www.hcn.zaq.ne.jp/___/WEB/css-ui-ja.html',
 ],
-"dom-ls": 'http://www.hcn.zaq.ne.jp/___/WEB/DOM4-ja.html',
+"whatwg-dom": 'http://www.hcn.zaq.ne.jp/___/WEB/DOM4-ja.html',
+"whatwg-url": 'http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html',
 "mediaqueries-4": 'http://www.hcn.zaq.ne.jp/___/WEB/mediaqueries4-ja.html',
 
 "mediaq": 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/',
-
+"css-writing-modes-3": "http://www.hcn.zaq.ne.jp/___/WEB/css-writing-modes-ja.html",
 
 "cssom-1": 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html',
 rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
@@ -52,7 +53,6 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
 ],
 "selectors-4": 'http://www.hcn.zaq.ne.jp/___/WEB/selectors4-ja.html',
 
-"url": 'http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html',
 	};
 
 	(function(){
