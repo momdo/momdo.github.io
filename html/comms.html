@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>15 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>16 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -1145,19 +1145,16 @@ interface <dfn id=websocket>WebSocket</dfn> : <a id=the-websocket-interface:even
   subprotocol selected by the server, if any. It can be used in conjunction with the array form of
   the constructor's second argument to perform subprotocol negotiation.</p>
 
-  <p>The <dfn id=dom-websocket-close><code>close()</code></dfn> method must run the following
-  steps:</p>
+  <p>The <dfn id=dom-websocket-close><code>close(<var>code</var>,
+  <var>reason</var>)</code></dfn> method, when invoked, must run these steps:</p>
 
-  <ol><li><p>If the method's first argument is present but is neither an integer equal to 1000 nor an
-   integer in the range 3000 to 4999, throw an <code id=the-websocket-interface:invalidaccesserror><a data-x-internal=invalidaccesserror href=https://heycam.github.io/webidl/#invalidaccesserror>InvalidAccessError</a></code> exception and abort
-   these steps.</li><li>
+  <ol><li><p>If <var>code</var> is present, but is neither an integer equal to 1000 nor an integer in
+   the range 3000 to 4999, inclusive, throw an <code id=the-websocket-interface:invalidaccesserror><a data-x-internal=invalidaccesserror href=https://heycam.github.io/webidl/#invalidaccesserror>InvalidAccessError</a></code> exception.</li><li>
+    <p>If <var>reason</var> is present, then run these substeps:</p>
 
-    <p>If the method's second argument is present, then run these substeps:</p>
-
-    <ol><li><p>Let <var>raw reason</var> be the method's second argument.</li><li><p>Let <var>reason</var> be the result of encoding <var>raw
-     reason</var> as UTF-8.</li><li><p>If <var>reason</var> is longer than 123 bytes, then throw a
-     <code id=the-websocket-interface:syntaxerror-5><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code> exception and abort these steps. <a href=references.html#refsENCODING>[ENCODING]</a></li></ol>
-
+    <ol><li><p>Let <var>reasonBytes</var> be the result of <a href=https://encoding.spec.whatwg.org/#utf-8-encode id=the-websocket-interface:utf-8-encode data-x-internal=utf-8-encode>encoding</a>
+     <var>reason</var>.</li><li><p>If <var>reasonBytes</var> is longer than 123 bytes, then throw a
+     <code id=the-websocket-interface:syntaxerror-5><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code> exception.</li></ol>
    </li><li><p>Run the first matching steps from the following list:</p>
 
     <dl class=switch><dt>If the <code id=the-websocket-interface:dom-websocket-readystate-3><a href=#dom-websocket-readystate>readyState</a></code> attribute is in the <code id=the-websocket-interface:dom-websocket-closing-2><a href=#dom-websocket-closing>CLOSING</a></code> (2) or <code id=the-websocket-interface:dom-websocket-closed-2><a href=#dom-websocket-closed>CLOSED</a></code> (3) state<dd>
@@ -1182,11 +1179,11 @@ interface <dfn id=websocket>WebSocket</dfn> : <a id=the-websocket-interface:even
       handshake</a></i> and set the <code id=the-websocket-interface:dom-websocket-readystate-5><a href=#dom-websocket-readystate>readyState</a></code>
       attribute's value to <code id=the-websocket-interface:dom-websocket-closing-4><a href=#dom-websocket-closing>CLOSING</a></code> (2). <a href=references.html#refsWSP>[WSP]</a></p>
 
-      <p>If the first argument is present, then the status code to use in the
-      WebSocket Close message must be the integer given by the first argument. <a href=references.html#refsWSP>[WSP]</a></p>
+      <p>If <var>code</var> is present, then the status code to use in the
+      WebSocket Close message must be the integer given by <var>close</var>. <a href=references.html#refsWSP>[WSP]</a></p>
 
-      <p>If the second argument is also present, then <var>reason</var> must be provided in the
-      Close message after the status code. <a href=references.html#refsENCODING>[ENCODING]</a> <a href=references.html#refsWSP>[WSP]</a></p>
+      <p>If <var>reason</var> is also present, then <var>reasonBytes</var> must be provided in the
+      Close message after the status code. <a href=references.html#refsWSP>[WSP]</a></p>
 
       <p class=note>The <i id=the-websocket-interface:concept-websocket-start-closing-handshake-2><a href=infrastructure.html#concept-websocket-start-closing-handshake>start the WebSocket
       closing handshake</a></i> algorithm eventually invokes the <i id=the-websocket-interface:concept-websocket-close-3><a href=infrastructure.html#concept-websocket-close>close the WebSocket connection</a></i> algorithm, which then

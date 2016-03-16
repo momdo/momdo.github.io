@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>15 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>16 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -2729,7 +2729,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   [Unforgeable] void <a href=#dom-location-replace id=the-location-interface:dom-location-replace>replace</a>(USVString url);
   [Unforgeable] void <a href=#dom-location-reload id=the-location-interface:dom-location-reload>reload</a>();
 
-  [Unforgeable, SameObject] readonly attribute <span>USVString</span>[] <a href=#dom-location-ancestororigins id=the-location-interface:dom-location-ancestororigins>ancestorOrigins</a>;
+  [Unforgeable, SameObject] readonly attribute FrozenArray&lt;USVString&gt; <a href=#dom-location-ancestororigins id=the-location-interface:dom-location-ancestororigins>ancestorOrigins</a>;
 };</pre>
 
   <dl class=domintro><dt><var>location</var> . <code>toString()</code><dt><var>location</var> . <code id=the-location-interface:dom-location-href-2><a href=#dom-location-href>href</a></code><dd>
@@ -2780,14 +2780,26 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>A <code id=the-location-interface:location-21><a href=#location>Location</a></code> object has an associated <dfn id=concept-location-url data-noexport="">url</dfn>, which is this <code id=the-location-interface:location-22><a href=#location>Location</a></code> object's
   <a href=#relevant-document id=the-location-interface:relevant-document>relevant <code>Document</code></a>'s <a href=https://dom.spec.whatwg.org/#concept-document-url id="the-location-interface:the-document's-address-2" data-x-internal="the-document's-address">address</a>.</p>
 
-  <p>A <code id=the-location-interface:location-23><a href=#location>Location</a></code> object has an associated <dfn id=location-object-setter-navigate><code>Location</code>-object-setter
+  <p>A <code id=the-location-interface:location-23><a href=#location>Location</a></code> object has an associated <dfn id=concept-location-ancestor-origins-array data-noexport="">ancestor origins array</dfn>. When a
+  <code id=the-location-interface:location-24><a href=#location>Location</a></code> object is created, its <a href=#concept-location-ancestor-origins-array id=the-location-interface:concept-location-ancestor-origins-array>ancestor origins array</a> must be set to a
+  <a id=the-location-interface:frozen-array href=https://heycam.github.io/webidl/#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> created from the list of strings that the following steps would
+  produce:</p>
+
+  <ol><li><p>Let <var>output</var> be an empty ordered list of strings.</li><li><p>Let <var>current</var> be the <a href=#concept-document-bc id=the-location-interface:concept-document-bc-4>browsing context</a>
+   of the <code id=the-location-interface:document-5><a href=dom.html#document>Document</a></code> with which this <code id=the-location-interface:location-25><a href=#location>Location</a></code> object is associated.</li><li><p><i>Loop</i>: If <var>current</var> has no <a href=#parent-browsing-context id=the-location-interface:parent-browsing-context-2>parent browsing context</a>, jump to
+   the step labeled <i>end</i>.</li><li><p>Let <var>current</var> be <var>current</var>'s <a href=#parent-browsing-context id=the-location-interface:parent-browsing-context-3>parent browsing
+   context</a>.</li><li><p>Append the <a href=#unicode-serialisation-of-an-origin id=the-location-interface:unicode-serialisation-of-an-origin>Unicode serialisation</a>
+   of <var>current</var>'s <a href=#active-document id=the-location-interface:active-document-3>active document</a>'s <a href=#origin-2 id=the-location-interface:origin-2>origin</a> to <var>output</var>
+   as a new value.</li><li><p><i>loop</i>にラベル付けされた手順に戻る。</li><li><p><i>End</i>: Return <var>output</var>.</li></ol>
+
+  <p>A <code id=the-location-interface:location-26><a href=#location>Location</a></code> object has an associated <dfn id=location-object-setter-navigate><code>Location</code>-object-setter
   navigate</dfn> algorithm, which given a <var>url</var>, runs these steps:</p>
 
   <ol><li>
     <p>If any of the following conditions are met, let <var>replacement flag</var> be unset;
     otherwise, let it be set:</p>
 
-    <ul class=brief><li>This <code id=the-location-interface:location-24><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-2>relevant <code>Document</code></a> has
+    <ul class=brief><li>This <code id=the-location-interface:location-27><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-2>relevant <code>Document</code></a> has
      <a id=the-location-interface:completely-loaded href=syntax.html#completely-loaded>completely loaded</a>, or</li><li>In the <a href=webappapis.html#concept-task id=the-location-interface:concept-task>task</a> in which the algorithm is running, an
      <a id=the-location-interface:activation-behaviour href=interaction.html#activation-behaviour>activation behaviour</a> is currently being processed whose <code id=the-location-interface:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> event was <a href=infrastructure.html#concept-events-trusted id=the-location-interface:concept-events-trusted>trusted</a>, or</li><li>In the <a href=webappapis.html#concept-task id=the-location-interface:concept-task-2>task</a> in which the algorithm is running, the event
      listener for a <a href=infrastructure.html#concept-events-trusted id=the-location-interface:concept-events-trusted-2>trusted</a> <code id=the-location-interface:event-click-2><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> event is being handled.</li></ul>
@@ -2803,8 +2815,8 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     <var>url</var>, with <a href=#exceptions-enabled id=the-location-interface:exceptions-enabled>exceptions enabled</a>.</p>
 
     <p>If the <var>replacement flag</var> is set or the <a href=#browsing-context id=the-location-interface:browsing-context-4>browsing context</a>'s
-    <a href=#session-history id=the-location-interface:session-history>session history</a> contains only one <code id=the-location-interface:document-5><a href=dom.html#document>Document</a></code>, and that was the
-    <code id=the-location-interface:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=the-location-interface:document-6><a href=dom.html#document>Document</a></code> created when the <a href=#browsing-context id=the-location-interface:browsing-context-5>browsing context</a>
+    <a href=#session-history id=the-location-interface:session-history>session history</a> contains only one <code id=the-location-interface:document-6><a href=dom.html#document>Document</a></code>, and that was the
+    <code id=the-location-interface:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=the-location-interface:document-7><a href=dom.html#document>Document</a></code> created when the <a href=#browsing-context id=the-location-interface:browsing-context-5>browsing context</a>
     was created, then the navigation must be done with <a href=#replacement-enabled id=the-location-interface:replacement-enabled>replacement enabled</a>.</p>
     
    </li></ol>
@@ -2812,10 +2824,10 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-href><code>href</code></dfn> attribute's getter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-25><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-3>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-28><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-3>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin>same origin</a> with <a id=the-location-interface:entry-settings-object href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-2>effective script origin</a>, throw a <code id=the-location-interface:securityerror><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Return this <code id=the-location-interface:location-26><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url>url</a>,
+   exception.</li><li><p>Return this <code id=the-location-interface:location-29><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url>url</a>,
    <a href=https://url.spec.whatwg.org/#concept-url-serializer id=the-location-interface:concept-url-serialiser data-x-internal=concept-url-serialiser>serialised</a>.</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-href-3><a href=#dom-location-href>href</a></code> attribute's setter must run these steps:</p>
@@ -2830,11 +2842,11 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-origin><code>origin</code></dfn> attribute's getter must run
   these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-27><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-4>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-30><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-4>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-3>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-2>same origin</a> with <a id=the-location-interface:entry-settings-object-3 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-4>effective script origin</a>, throw a <code id=the-location-interface:securityerror-2><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Return the <a href=#unicode-serialisation-of-an-origin id=the-location-interface:unicode-serialisation-of-an-origin>Unicode serialization</a>
-   of this <code id=the-location-interface:location-28><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-2>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-origin id=the-location-interface:concept-url-origin data-x-internal=concept-url-origin>origin</a>.</li></ol>
+   exception.</li><li><p>Return the <a href=#unicode-serialisation-of-an-origin id=the-location-interface:unicode-serialisation-of-an-origin-2>Unicode serialization</a>
+   of this <code id=the-location-interface:location-31><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-2>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-origin id=the-location-interface:concept-url-origin data-x-internal=concept-url-origin>origin</a>.</li></ol>
 
   <p class="note no-backref">It returns the Unicode rather than the ASCII serialisation for
   compatibility with <code id=the-location-interface:messageevent><a href=comms.html#messageevent>MessageEvent</a></code>.</p>
@@ -2842,19 +2854,19 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-protocol><code>protocol</code></dfn> attribute's getter must run
   these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-29><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-5>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-32><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-5>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-5>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-3>same origin</a> with <a id=the-location-interface:entry-settings-object-4 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-6>effective script origin</a>, throw a <code id=the-location-interface:securityerror-3><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Return this <code id=the-location-interface:location-30><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-3>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-location-interface:concept-url-scheme data-x-internal=concept-url-scheme>scheme</a>,
+   exception.</li><li><p>Return this <code id=the-location-interface:location-33><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-3>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-location-interface:concept-url-scheme data-x-internal=concept-url-scheme>scheme</a>,
    followed by "<code>:</code>".</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-protocol-3><a href=#dom-location-protocol>protocol</a></code> attribute's setter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-31><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-6>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-34><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-6>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-7>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-4>same origin</a> with <a id=the-location-interface:entry-settings-object-5 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-8>effective script origin</a>, throw a <code id=the-location-interface:securityerror-4><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-32><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-4>url</a>.</li><li><p>Let <var>possibleFailure</var> be the result of <a href=https://url.spec.whatwg.org/#concept-basic-url-parser id=the-location-interface:basic-url-parser data-x-internal=basic-url-parser>basic URL
+   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-35><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-4>url</a>.</li><li><p>Let <var>possibleFailure</var> be the result of <a href=https://url.spec.whatwg.org/#concept-basic-url-parser id=the-location-interface:basic-url-parser data-x-internal=basic-url-parser>basic URL
    parsing</a> the given value, followed by "<code>:</code>", with <var>copyURL</var>
    as <var>url</var> and <a id=the-location-interface:scheme-start-state href=https://url.spec.whatwg.org/#scheme-start-state data-x-internal=scheme-start-state>scheme start state</a> as <var>state override</var>.</li><li><p>If <var>possibleFailure</var> is failure, throw a <code id=the-location-interface:typeerror-2><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code>
    exception.</li><li><p>If <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-location-interface:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a> is not "<code>http</code>" or "<code>https</code>", terminate these steps.</li><li><p><a href=#location-object-setter-navigate id=the-location-interface:location-object-setter-navigate-2><code>Location</code>-object-setter navigate</a> to <var>copyURL</var>.</li></ol>
@@ -2862,19 +2874,19 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-host><code>host</code></dfn> attribute's getter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-33><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-7>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-36><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-7>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-9>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-5>same origin</a> with <a id=the-location-interface:entry-settings-object-6 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-10>effective script origin</a>, throw a <code id=the-location-interface:securityerror-5><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>url</var> be this <code id=the-location-interface:location-34><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-5>url</a>.</li><li><p>If <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host data-x-internal=concept-url-host>host</a> is null, return the empty
+   exception.</li><li><p>Let <var>url</var> be this <code id=the-location-interface:location-37><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-5>url</a>.</li><li><p>If <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host data-x-internal=concept-url-host>host</a> is null, return the empty
    string.</li><li><p>If <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-port id=the-location-interface:concept-url-port data-x-internal=concept-url-port>port</a> is null, return
    <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-2 data-x-internal=concept-url-host>host</a>, <a href=https://url.spec.whatwg.org/#concept-host-serializer id=the-location-interface:host-serialiser data-x-internal=host-serialiser>serialised</a>.</li><li><p>Return <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-3 data-x-internal=concept-url-host>host</a>, <a href=https://url.spec.whatwg.org/#concept-host-serializer id=the-location-interface:host-serialiser-2 data-x-internal=host-serialiser>serialised</a>, followed by "<code>:</code>" and <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-port id=the-location-interface:concept-url-port-2 data-x-internal=concept-url-port>port</a>, <a href=https://url.spec.whatwg.org/#serialize-an-integer id=the-location-interface:serialise-an-integer data-x-internal=serialise-an-integer>serialised</a>.</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-host-3><a href=#dom-location-host>host</a></code> attribute's setter must run these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-35><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-8>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-38><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-8>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-11>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-6>same origin</a> with <a id=the-location-interface:entry-settings-object-7 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-12>effective script origin</a>, throw a <code id=the-location-interface:securityerror-6><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-36><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-6>url</a>.</li><li><p>If <var>copyURL</var>'s <a id=the-location-interface:non-relative-flag href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, terminate these
+   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-39><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-6>url</a>.</li><li><p>If <var>copyURL</var>'s <a id=the-location-interface:non-relative-flag href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, terminate these
    steps.</li><li><p><a href=https://url.spec.whatwg.org/#concept-basic-url-parser id=the-location-interface:basic-url-parser-2 data-x-internal=basic-url-parser>Basic URL parse</a> the given value, with
    <var>copyURL</var> as <var>url</var> and <a id=the-location-interface:host-state href=https://url.spec.whatwg.org/#host-state data-x-internal=host-state>host state</a> as <var>state
    override</var>.</li><li><p><a href=#location-object-setter-navigate id=the-location-interface:location-object-setter-navigate-3><code>Location</code>-object-setter navigate</a> to <var>copyURL</var>.</li></ol>
@@ -2882,19 +2894,19 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-hostname><code>hostname</code></dfn> attribute's getter must
   run these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-37><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-9>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-40><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-9>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-13>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-7>same origin</a> with <a id=the-location-interface:entry-settings-object-8 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-14>effective script origin</a>, throw a <code id=the-location-interface:securityerror-7><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>If this <code id=the-location-interface:location-38><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-7>url</a>'s
-   <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-4 data-x-internal=concept-url-host>host</a> is null, return the empty string.</li><li><p>Return this <code id=the-location-interface:location-39><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-8>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-5 data-x-internal=concept-url-host>host</a>, <a href=https://url.spec.whatwg.org/#concept-host-serializer id=the-location-interface:host-serialiser-3 data-x-internal=host-serialiser>serialised</a>.</li></ol>
+   exception.</li><li><p>If this <code id=the-location-interface:location-41><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-7>url</a>'s
+   <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-4 data-x-internal=concept-url-host>host</a> is null, return the empty string.</li><li><p>Return this <code id=the-location-interface:location-42><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-8>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-5 data-x-internal=concept-url-host>host</a>, <a href=https://url.spec.whatwg.org/#concept-host-serializer id=the-location-interface:host-serialiser-3 data-x-internal=host-serialiser>serialised</a>.</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-hostname-3><a href=#dom-location-hostname>hostname</a></code> attribute's setter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-40><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-10>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-43><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-10>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-15>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-8>same origin</a> with <a id=the-location-interface:entry-settings-object-9 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-16>effective script origin</a>, throw a <code id=the-location-interface:securityerror-8><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-41><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-9>url</a>.</li><li><p>If <var>copyURL</var>'s <a id=the-location-interface:non-relative-flag-2 href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, terminate these
+   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-44><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-9>url</a>.</li><li><p>If <var>copyURL</var>'s <a id=the-location-interface:non-relative-flag-2 href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, terminate these
    steps.</li><li><p><a href=https://url.spec.whatwg.org/#concept-basic-url-parser id=the-location-interface:basic-url-parser-3 data-x-internal=basic-url-parser>Basic URL parse</a> the given value, with
    <var>copyURL</var> as <var>url</var> and <a id=the-location-interface:hostname-state href=https://url.spec.whatwg.org/#hostname-state data-x-internal=hostname-state>hostname state</a> as <var>state
    override</var>.</li><li><p><a href=#location-object-setter-navigate id=the-location-interface:location-object-setter-navigate-4><code>Location</code>-object-setter navigate</a> to <var>copyURL</var>.</li></ol>
@@ -2902,18 +2914,18 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-port><code>port</code></dfn> attribute's getter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-42><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-11>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-45><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-11>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-17>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-9>same origin</a> with <a id=the-location-interface:entry-settings-object-10 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-18>effective script origin</a>, throw a <code id=the-location-interface:securityerror-9><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>If this <code id=the-location-interface:location-43><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-10>url</a>'s
-   <a href=https://url.spec.whatwg.org/#concept-url-port id=the-location-interface:concept-url-port-3 data-x-internal=concept-url-port>port</a> is null, return the empty string.</li><li><p>Return this <code id=the-location-interface:location-44><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-11>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-port id=the-location-interface:concept-url-port-4 data-x-internal=concept-url-port>port</a>, <a href=https://url.spec.whatwg.org/#serialize-an-integer id=the-location-interface:serialise-an-integer-2 data-x-internal=serialise-an-integer>serialised</a>.</li></ol>
+   exception.</li><li><p>If this <code id=the-location-interface:location-46><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-10>url</a>'s
+   <a href=https://url.spec.whatwg.org/#concept-url-port id=the-location-interface:concept-url-port-3 data-x-internal=concept-url-port>port</a> is null, return the empty string.</li><li><p>Return this <code id=the-location-interface:location-47><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-11>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-port id=the-location-interface:concept-url-port-4 data-x-internal=concept-url-port>port</a>, <a href=https://url.spec.whatwg.org/#serialize-an-integer id=the-location-interface:serialise-an-integer-2 data-x-internal=serialise-an-integer>serialised</a>.</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-port-3><a href=#dom-location-port>port</a></code> attribute's setter must run these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-45><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-12>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-48><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-12>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-19>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-10>same origin</a> with <a id=the-location-interface:entry-settings-object-11 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-20>effective script origin</a>, throw a <code id=the-location-interface:securityerror-10><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-46><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-12>url</a>.</li><li><p>If <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-6 data-x-internal=concept-url-host>host</a> is null,
+   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-49><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-12>url</a>.</li><li><p>If <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-host id=the-location-interface:concept-url-host-6 data-x-internal=concept-url-host>host</a> is null,
    <var>copyURL</var>'s <a id=the-location-interface:non-relative-flag-3 href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, or <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-location-interface:concept-url-scheme-3 data-x-internal=concept-url-scheme>scheme</a> is "<code>file</code>", terminate these
    steps.</li><li><p><a href=https://url.spec.whatwg.org/#concept-basic-url-parser id=the-location-interface:basic-url-parser-4 data-x-internal=basic-url-parser>Basic URL parse</a> the given value, with
    <var>copyURL</var> as <var>url</var> and <a id=the-location-interface:port-state href=https://url.spec.whatwg.org/#port-state data-x-internal=port-state>port state</a> as <var>state
@@ -2922,20 +2934,20 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-pathname><code>pathname</code></dfn> attribute's getter must
   run these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-47><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-13>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-50><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-13>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-21>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-11>same origin</a> with <a id=the-location-interface:entry-settings-object-12 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-22>effective script origin</a>, throw a <code id=the-location-interface:securityerror-11><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>url</var> be this <code id=the-location-interface:location-48><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-13>url</a>.</li><li><p>If <var>url</var>'s <a id=the-location-interface:non-relative-flag-4 href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, return the first string in
+   exception.</li><li><p>Let <var>url</var> be this <code id=the-location-interface:location-51><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-13>url</a>.</li><li><p>If <var>url</var>'s <a id=the-location-interface:non-relative-flag-4 href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, return the first string in
    <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-path id=the-location-interface:concept-url-path data-x-internal=concept-url-path>path</a>.</li><li><p>Return "<code>/</code>", followed by the strings in <var>url</var>'s <a href=https://url.spec.whatwg.org/#concept-url-path id=the-location-interface:concept-url-path-2 data-x-internal=concept-url-path>path</a> (including empty strings), separated from each other by
    "<code>/</code>".</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-pathname-3><a href=#dom-location-pathname>pathname</a></code> attribute's setter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-49><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-14>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-52><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-14>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-23>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-12>same origin</a> with <a id=the-location-interface:entry-settings-object-13 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-24>effective script origin</a>, throw a <code id=the-location-interface:securityerror-12><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-50><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-14>url</a>.</li><li><p>If <var>copyURL</var>'s <a id=the-location-interface:non-relative-flag-5 href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, terminate these
+   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-53><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-14>url</a>.</li><li><p>If <var>copyURL</var>'s <a id=the-location-interface:non-relative-flag-5 href=https://url.spec.whatwg.org/#non-relative-flag data-x-internal=non-relative-flag>non-relative flag</a> is set, terminate these
    steps.</li><li><p>Set <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-path id=the-location-interface:concept-url-path-3 data-x-internal=concept-url-path>path</a> to the empty
    list.</li><li><p><a href=https://url.spec.whatwg.org/#concept-basic-url-parser id=the-location-interface:basic-url-parser-5 data-x-internal=basic-url-parser>Basic URL parse</a> the given value, with
    <var>copyURL</var> as <var>url</var> and <a id=the-location-interface:path-start-state href=https://url.spec.whatwg.org/#path-start-state data-x-internal=path-start-state>path start state</a> as <var>state
@@ -2944,20 +2956,20 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-search><code>search</code></dfn> attribute's getter must run
   these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-51><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-15>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-54><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-15>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-25>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-13>same origin</a> with <a id=the-location-interface:entry-settings-object-14 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-26>effective script origin</a>, throw a <code id=the-location-interface:securityerror-13><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>If this <code id=the-location-interface:location-52><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-15>url</a>'s
+   exception.</li><li><p>If this <code id=the-location-interface:location-55><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-15>url</a>'s
    <a href=https://url.spec.whatwg.org/#concept-url-query id=the-location-interface:concept-url-query data-x-internal=concept-url-query>query</a> is either null or the empty string, return the
-   empty string.</li><li><p>Return "<code>?</code>", followed by this <code id=the-location-interface:location-53><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-16>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-query id=the-location-interface:concept-url-query-2 data-x-internal=concept-url-query>query</a>.</li></ol>
+   empty string.</li><li><p>Return "<code>?</code>", followed by this <code id=the-location-interface:location-56><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-16>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-query id=the-location-interface:concept-url-query-2 data-x-internal=concept-url-query>query</a>.</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-search-3><a href=#dom-location-search>search</a></code> attribute's setter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-54><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-16>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-57><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-16>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-27>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-14>same origin</a> with <a id=the-location-interface:entry-settings-object-15 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-28>effective script origin</a>, throw a <code id=the-location-interface:securityerror-14><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-55><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-17>url</a>.</li><li><p>If the given value is the empty string, set <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-query id=the-location-interface:concept-url-query-3 data-x-internal=concept-url-query>query</a> to null.
+   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-58><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-17>url</a>.</li><li><p>If the given value is the empty string, set <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-query id=the-location-interface:concept-url-query-3 data-x-internal=concept-url-query>query</a> to null.
 
    
 
@@ -2975,19 +2987,19 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>The <dfn id=dom-location-hash><code>hash</code></dfn> attribute's getter must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-56><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-18>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-59><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-18>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-29>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-15>same origin</a> with <a id=the-location-interface:entry-settings-object-16 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-30>effective script origin</a>, throw a <code id=the-location-interface:securityerror-15><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>If this <code id=the-location-interface:location-57><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-18>url</a>'s
+   exception.</li><li><p>If this <code id=the-location-interface:location-60><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-18>url</a>'s
    <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-location-interface:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a> is either null or the empty string, return
-   the empty string.</li><li><p>Return "<code>#</code>", followed by this <code id=the-location-interface:location-58><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-19>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-location-interface:concept-url-fragment-2 data-x-internal=concept-url-fragment>fragment</a>.</li></ol>
+   the empty string.</li><li><p>Return "<code>#</code>", followed by this <code id=the-location-interface:location-61><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-19>url</a>'s <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-location-interface:concept-url-fragment-2 data-x-internal=concept-url-fragment>fragment</a>.</li></ol>
 
   <p>The <code id=the-location-interface:dom-location-hash-3><a href=#dom-location-hash>hash</a></code> attribute's setter must run these steps:</p>
 
-  <ol><li><p>If this <code id=the-location-interface:location-59><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-19>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-62><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-19>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-31>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-16>same origin</a> with <a id=the-location-interface:entry-settings-object-17 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-32>effective script origin</a>, throw a <code id=the-location-interface:securityerror-16><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-60><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-20>url</a>.</li><li><p>If <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-location-interface:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is "<code>javascript</code>", terminate these steps.</li><li><p>If the given value is the empty string, set <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-location-interface:concept-url-fragment-3 data-x-internal=concept-url-fragment>fragment</a> to null.
+   exception.</li><li><p>Let <var>copyURL</var> be a copy of this <code id=the-location-interface:location-63><a href=#location>Location</a></code> object's <a href=#concept-location-url id=the-location-interface:concept-location-url-20>url</a>.</li><li><p>If <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-location-interface:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is "<code>javascript</code>", terminate these steps.</li><li><p>If the given value is the empty string, set <var>copyURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-location-interface:concept-url-fragment-3 data-x-internal=concept-url-fragment>fragment</a> to null.
 
    
 
@@ -3008,7 +3020,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   
 
-  <ol><li><p>If this <code id=the-location-interface:location-61><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-20>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-64><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-20>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-33>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-17>same origin</a> with <a id=the-location-interface:entry-settings-object-18 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-34>effective script origin</a>, throw a <code id=the-location-interface:securityerror-17><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
    exception.</li><li><p><a href=infrastructure.html#parse-a-url id=the-location-interface:parse-a-url-2>Parse</a> <var>url</var> relative to the <a id=the-location-interface:entry-settings-object-19 href=webappapis.html#entry-settings-object>entry
@@ -3030,26 +3042,26 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>When the <dfn id=dom-location-reload><code>reload()</code></dfn> method is invoked, the
   user agent must run the appropriate steps from the following list:</p>
 
-  <dl class=switch><dt>If this <code id=the-location-interface:location-62><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-21>relevant <code>Document</code></a>'s
+  <dl class=switch><dt>If this <code id=the-location-interface:location-65><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-21>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-35>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-18>same origin</a> with <a id=the-location-interface:entry-settings-object-21 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-36>effective script origin</a><dd><p>Throw a <code id=the-location-interface:securityerror-18><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code> exception.<dt>If the currently executing <a href=webappapis.html#concept-task id=the-location-interface:concept-task-3>task</a> is the dispatch of a <code id=the-location-interface:event-resize><a data-x-internal=event-resize href=https://drafts.csswg.org/cssom-view/#eventdef-window-resize>resize</a></code> event in response to the user resizing the <a href=#browsing-context id=the-location-interface:browsing-context-6>browsing
-   context</a><dd><p>Repaint the <a href=#browsing-context id=the-location-interface:browsing-context-7>browsing context</a> and abort these steps.<dt>If the <a href=#browsing-context id=the-location-interface:browsing-context-8>browsing context</a>'s <a href=#active-document id=the-location-interface:active-document-3>active document</a> is <a id=the-location-interface:an-iframe-srcdoc-document href=embedded-content.html#an-iframe-srcdoc-document>an
+   context</a><dd><p>Repaint the <a href=#browsing-context id=the-location-interface:browsing-context-7>browsing context</a> and abort these steps.<dt>If the <a href=#browsing-context id=the-location-interface:browsing-context-8>browsing context</a>'s <a href=#active-document id=the-location-interface:active-document-4>active document</a> is <a id=the-location-interface:an-iframe-srcdoc-document href=embedded-content.html#an-iframe-srcdoc-document>an
    <code>iframe</code> <code>srcdoc</code> document</a><dd><p><a href=embedded-content.html#process-the-iframe-attributes id=the-location-interface:process-the-iframe-attributes>Reprocess the <code>iframe</code>
    attributes</a> of the <a href=#browsing-context id=the-location-interface:browsing-context-9>browsing context</a>'s <a href=#browsing-context-container id=the-location-interface:browsing-context-container>browsing context
-   container</a>.<dt>If the <a href=#browsing-context id=the-location-interface:browsing-context-10>browsing context</a>'s <a href=#active-document id=the-location-interface:active-document-4>active document</a> has its <a id=the-location-interface:reload-override-flag href=dom.html#reload-override-flag>reload
+   container</a>.<dt>If the <a href=#browsing-context id=the-location-interface:browsing-context-10>browsing context</a>'s <a href=#active-document id=the-location-interface:active-document-5>active document</a> has its <a id=the-location-interface:reload-override-flag href=dom.html#reload-override-flag>reload
    override flag</a> set<dd><p>Perform <a id=the-location-interface:an-overridden-reload href=dom.html#an-overridden-reload>an overridden reload</a>, with the <a href=#browsing-context id=the-location-interface:browsing-context-11>browsing context</a> being
    navigated as the <a id=the-location-interface:responsible-browsing-context-2 href=webappapis.html#responsible-browsing-context>responsible browsing context</a>.<dt>そうでなければ<dd><p><a href=#navigate id=the-location-interface:navigate-2>Navigate</a> the <a href=#browsing-context id=the-location-interface:browsing-context-12>browsing context</a> to
    <a id="the-location-interface:the-document's-address-3" href=https://dom.spec.whatwg.org/#concept-document-url data-x-internal="the-document's-address">the document's address</a> with <a href=#replacement-enabled id=the-location-interface:replacement-enabled-2>replacement enabled</a> and <a href=#exceptions-enabled id=the-location-interface:exceptions-enabled-2>exceptions
    enabled</a>. The <a href=#source-browsing-context id=the-location-interface:source-browsing-context-2>source browsing context</a> must be the <a href=#browsing-context id=the-location-interface:browsing-context-13>browsing
    context</a> being navigated. This is a <a href=#reload-triggered-navigation id=the-location-interface:reload-triggered-navigation>reload-triggered navigation</a>.</dl>
 
-  <p>When a user requests that the <a href=#active-document id=the-location-interface:active-document-5>active document</a> of a <a href=#browsing-context id=the-location-interface:browsing-context-14>browsing context</a>
+  <p>When a user requests that the <a href=#active-document id=the-location-interface:active-document-6>active document</a> of a <a href=#browsing-context id=the-location-interface:browsing-context-14>browsing context</a>
   be reloaded through a user interface element, the user agent should <a href=#navigate id=the-location-interface:navigate-3>navigate</a> the <a href=#browsing-context id=the-location-interface:browsing-context-15>browsing context</a> to the same resource as that
-  <code id=the-location-interface:document-7><a href=dom.html#document>Document</a></code>, with <a href=#replacement-enabled id=the-location-interface:replacement-enabled-3>replacement enabled</a>. In the case of non-idempotent
+  <code id=the-location-interface:document-8><a href=dom.html#document>Document</a></code>, with <a href=#replacement-enabled id=the-location-interface:replacement-enabled-3>replacement enabled</a>. In the case of non-idempotent
   methods (e.g. HTTP POST), the user agent should prompt the user to confirm the operation first,
   since otherwise transactions (e.g. purchases or database modifications) could be repeated. User
   agents may allow the user to explicitly override any caches when reloading. If <a href=#browsing-context id=the-location-interface:browsing-context-16>browsing
-  context</a>'s <a href=#active-document id=the-location-interface:active-document-6>active document</a>'s <a id=the-location-interface:reload-override-flag-2 href=dom.html#reload-override-flag>reload override flag</a> is set, then the
+  context</a>'s <a href=#active-document id=the-location-interface:active-document-7>active document</a>'s <a id=the-location-interface:reload-override-flag-2 href=dom.html#reload-override-flag>reload override flag</a> is set, then the
   user agent may instead perform <a id=the-location-interface:an-overridden-reload-2 href=dom.html#an-overridden-reload>an overridden reload</a> rather than the navigation
   described in this paragraph (with the <a href=#browsing-context id=the-location-interface:browsing-context-17>browsing context</a> being reloaded as the
   <a href=#source-browsing-context id=the-location-interface:source-browsing-context-3>source browsing context</a>).</p>
@@ -3061,25 +3073,18 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   
 
-  <ol><li><p>If this <code id=the-location-interface:location-63><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-22>relevant <code>Document</code></a>'s
+  <ol><li><p>If this <code id=the-location-interface:location-66><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-22>relevant <code>Document</code></a>'s
    <a href=#effective-script-origin id=the-location-interface:effective-script-origin-37>effective script origin</a> is not <a href=#same-origin id=the-location-interface:same-origin-19>same origin</a> with <a id=the-location-interface:entry-settings-object-22 href=webappapis.html#entry-settings-object>entry settings
    object</a>'s <a href=#effective-script-origin id=the-location-interface:effective-script-origin-38>effective script origin</a>, throw a <code id=the-location-interface:securityerror-19><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code>
-   exception.</li><li><p>Let <var>output</var> be an empty ordered list of strings.</p>
-
-   </li><li><p>Let <var>current</var> be the <a href=#concept-document-bc id=the-location-interface:concept-document-bc-4>browsing context</a>
-   of the <code id=the-location-interface:document-8><a href=dom.html#document>Document</a></code> with which this <code id=the-location-interface:location-64><a href=#location>Location</a></code> object is associated.</li><li><p><i>Loop</i>: If <var>current</var> has no <a href=#parent-browsing-context id=the-location-interface:parent-browsing-context-2>parent browsing context</a>, jump to
-   the step labeled <i>end</i>.</li><li><p>Let <var>current</var> be <var>current</var>'s <a href=#parent-browsing-context id=the-location-interface:parent-browsing-context-3>parent browsing
-   context</a>.</li><li><p>Append the <a href=#unicode-serialisation-of-an-origin id=the-location-interface:unicode-serialisation-of-an-origin-2>Unicode serialisation</a>
-   of <var>current</var>'s <a href=#active-document id=the-location-interface:active-document-7>active document</a>'s <a href=#origin-2 id=the-location-interface:origin-2>origin</a> to <var>output</var>
-   as a new value.</li><li><p><i>loop</i>にラベル付けされた手順に戻る。</li><li><p><i>End</i>: Return <var>output</var>.</li></ol>
+   exception.</li><li><p>Otherwise, return this <code id=the-location-interface:location-67><a href=#location>Location</a></code> object's <a href=#concept-location-ancestor-origins-array id=the-location-interface:concept-location-ancestor-origins-array-2>ancestor origins array</a>.</li></ol>
 
   <hr>
 
-  <p>As explained earlier, the <code id=the-location-interface:location-65><a href=#location>Location</a></code> exotic object requires additional logic beyond
-  IDL for security purposes. The internal slot and internal methods <code id=the-location-interface:location-66><a href=#location>Location</a></code> objects
+  <p>As explained earlier, the <code id=the-location-interface:location-68><a href=#location>Location</a></code> exotic object requires additional logic beyond
+  IDL for security purposes. The internal slot and internal methods <code id=the-location-interface:location-69><a href=#location>Location</a></code> objects
   must implement are defined below.</p>
 
-  <p>Every <code id=the-location-interface:location-67><a href=#location>Location</a></code> object has a [[<dfn id=defaultproperties>DefaultProperties</dfn>]] internal slot
+  <p>Every <code id=the-location-interface:location-70><a href=#location>Location</a></code> object has a [[<dfn id=defaultproperties>DefaultProperties</dfn>]] internal slot
   representing its own properties at time of its creation.</p>
 
   <h5 id=location-getprototypeof>7.7.3.1 [[GetPrototypeOf]] ( )</h5>
