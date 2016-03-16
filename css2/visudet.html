@@ -215,7 +215,7 @@ href="visuren.html#containing-block">包含ブロック</a>によって与えら
 </dd>
 <dt><span class="index-inst" title="&lt;percentage&gt;"><a name="x5" href="syndata.html#value-def-percentage" class="noxref"><span class="value-inst-percentage"><strong>&lt;percentage&gt;</strong></span></a></span>
 </dt>
-<dd>パーセント幅を指定する。割合は、生成ボックスの<a href="visuren.html#containing-block">包含ブロック</a>の幅に対して計算される。If the containing block's width depends on this element's width, then the resulting layout is undefined in CSS 2.2. <span class="note"> Note: For absolutely positioned elements whose containing block is based on a block container element, the percentage is calculated with respect to the width of the <em>padding box</em> of that element. これは、パーセント幅が親要素の<em>コンテンツボックス</em>に対して常に計算されていたCSS1からの変更である。</span>
+<dd>パーセント幅を指定する。割合は、生成ボックスの<a href="visuren.html#containing-block">包含ブロック</a>の幅に対して計算される。包含ブロックの幅がこの要素の幅に依存する場合、その結果のレイアウトはCSS 2.2で未定義である。<span class="note">注：絶対配置要素の包含ブロックはブロックコンテナ要素を基にするため、割合はその要素の<em>パディングボックス</em>の幅に対して計算される。これは、パーセント幅が親要素の<em>コンテンツボックス</em>に対して常に計算されていたCSS1からの変更である。</span>
 </dd>
 <dt><strong>auto</strong>
 </dt>
@@ -288,16 +288,7 @@ class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、
 
 <blockquote><p>(使用高さ) * (内在比)</blockquote>
 
-<p>If 'height' and <a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a> both
-have computed values of 'auto' and the element has an intrinsic ratio
-but no intrinsic height or width, then the used value of 'width' is
-undefined in CSS&nbsp;2.2.
-However, it is suggested that, if the containing block's width
-does not itself depend on the replaced element's width, then the used
-value of 'width' is calculated from the constraint equation used for
-block-level, non-replaced elements in normal flow.
-
-
+<p>'height'および<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持ち、かつその要素が固有比を持つが固有の高さまたは幅を持たない場合、'width'の使用値はCSS&nbsp;2.2で未定義である。しかし、その包含ブロックの幅が置換要素の幅に依存しない場合、'width'の使用値は通常フローにおける非置換ブロックレベル要素に用いる拘束方程式より計算されることが示唆される。
 
 <p>そうでなければ、<a href="visudet.html#propdef-width" class="noxref"><span class="propinst-width">'width'</span></a>が'auto'の算出値を持つ場合、その要素は内在幅を持ち、その結果その内在幅は<a href="visudet.html#propdef-width" class="noxref"><span
 class="propinst-width">'width'</span></a>の使用値となる。
@@ -381,15 +372,9 @@ class="propinst-position">'position'</span></a>プロパティが'static'かつ<
     <p>'left' + 'margin-left' + 'border-left-width' + 'padding-left' + 'width' + 'padding-right' + 'border-right-width' + 'margin-right' + 'right' = 包含ブロックの幅 </p>
   </blockquote>
   
-<p>If all three of 'left', 'width', and 'right' are 'auto': First set
-any 'auto' values for 'margin-left' and 'margin-right' to 0. Then, if
-the 'direction' property of the element establishing the
-static-position containing block is 'ltr' set 'left'
-to the <a
-href="#static-position">static position</a> and apply rule number
-three below; otherwise, set 'right' to the <a
-href="#static-position">static position</a> and apply rule number
-one below.</p>
+<p>'left'、'width'、'right'の3つすべてが'auto'である場合：最初に'margin-left'と'margin-right'のすべての'auto'値を0に設定する。次に、静的位置包含ブロックを設置する要素の'direction'プロパティが<a
+href="#static-position">静的位置</a>に'left'を設定される'ltr'であり、かつ下記の番号3の規則を適用する。そうでなければ、<a
+href="#static-position">静的位置</a>に'right'を設定し、下記の番号1の規則を適用する。</p>
 
 <p>この3つが'auto'でない場合：'margin-left'と'margin-right'の両方が'auto'である場合、2つのマージンが等しい値を得る追加制約の下で式を解く。ただしこの追加制約が2つのマージンを負にする場合を除く。そして2つのマージンが負になる場合に、包含ボックスの方向が'ltr'（'rtl'）であるならば、'margin-left'（'margin-right'）を0に設定し、'margin-right'（'margin-left'）を解決する。'margin-left'または'margin-right'の1つが'auto'である場合、その値について等式を解く。値が制限しすぎである場合、（包含ブロックの'direction'プロパティが'rtl'の場合）または'right'（'direction'が'ltr'の場合）の値を無視し、その値について解く。</p>
 
@@ -1054,8 +1039,8 @@ href="visuren.html#inline-boxes">インライン</a>要素上で、'line-height'
 <dt><strong>normal</strong> </dt>
 <dd>要素のフォントを基に"理にかなった"値を使用値に設定するようユーザーエージェントに指示する。この値は<span class="index-inst"
 title="&lt;number&gt;"><a name="x18" href="syndata.html#value-def-number" class="noxref"><span
-class="value-inst-number">&lt;number&gt;</span></a></span>と同じ意味を持つ。We recommend a used value for 'normal' between 1.0 to 1.2. The <a
-href="cascade.html#computed-value">computed value</a> is 'normal'.
+class="value-inst-number">&lt;number&gt;</span></a></span>と同じ意味を持つ。'normal'に対して1.0と1.2の間の使用値を推奨する。<a
+href="cascade.html#computed-value">算出値</a>は'normal'になる。
 </dd>
 <dt><span class="index-inst" title="&lt;length&gt;"><a name="x19" href="syndata.html#value-def-length" class="noxref"><span
 class="value-inst-length"><strong>&lt;length&gt;</strong></span></a></span>
