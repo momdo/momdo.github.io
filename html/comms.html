@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>22 March 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>30 March 2016</span></h2></hgroup>
    
    
   </header>
@@ -353,20 +353,20 @@
   <pre class=idl>[Constructor(DOMString type, optional <a href=#messageeventinit id=the-messageevent-interfaces:messageeventinit>MessageEventInit</a> eventInitDict), Exposed=(Window,Worker)]
 interface <dfn id=messageevent>MessageEvent</dfn> : <a id=the-messageevent-interfaces:event href=https://dom.spec.whatwg.org/#interface-event data-x-internal=event>Event</a> {
   readonly attribute any <a href=#dom-messageevent-data id=the-messageevent-interfaces:dom-messageevent-data>data</a>;
-  readonly attribute DOMString <a href=#dom-messageevent-origin id=the-messageevent-interfaces:dom-messageevent-origin>origin</a>;
+  readonly attribute USVString <a href=#dom-messageevent-origin id=the-messageevent-interfaces:dom-messageevent-origin>origin</a>;
   readonly attribute DOMString <a href=#dom-messageevent-lasteventid id=the-messageevent-interfaces:dom-messageevent-lasteventid>lastEventId</a>;
   readonly attribute (<a id=the-messageevent-interfaces:windowproxy href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport>MessagePort</a>)? <a href=#dom-messageevent-source id=the-messageevent-interfaces:dom-messageevent-source>source</a>;
-  readonly attribute <a href=#messageport id=the-messageevent-interfaces:messageport-2>MessagePort</a>[]? <a href=#dom-messageevent-ports id=the-messageevent-interfaces:dom-messageevent-ports>ports</a>;
+  readonly attribute FrozenArray&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-2>MessagePort</a>&gt;? <a href=#dom-messageevent-ports id=the-messageevent-interfaces:dom-messageevent-ports>ports</a>;
 
   void <a href=#dom-messageevent-initmessageevent id=the-messageevent-interfaces:dom-messageevent-initmessageevent>initMessageEvent</a>(DOMString type, boolean bubbles, boolean cancelable, any data, DOMString origin, DOMString lastEventId, (<a id=the-messageevent-interfaces:windowproxy-2 href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport-3>MessagePort</a>)? source, sequence&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-4>MessagePort</a>&gt;? ports);
 };
 
 dictionary <dfn id=messageeventinit>MessageEventInit</dfn> : <a id=the-messageevent-interfaces:eventinit href=https://dom.spec.whatwg.org/#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
-  any data;
-  DOMString origin;
-  DOMString lastEventId;
-  (<a id=the-messageevent-interfaces:windowproxy-3 href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport-5>MessagePort</a>)? source;
-  sequence&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-6>MessagePort</a>&gt;? ports;
+  any data = null;
+  USVString origin = "";
+  DOMString lastEventId = "";
+  (<a id=the-messageevent-interfaces:windowproxy-3 href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport-5>MessagePort</a>)? source = null;
+  sequence&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-6>MessagePort</a>&gt;? ports = null;
 };</pre>
 
   <dl class=domintro><dt><var>event</var> . <code id=the-messageevent-interfaces:dom-messageevent-data-2><a href=#dom-messageevent-data>data</a></code><dd>
@@ -398,15 +398,28 @@ dictionary <dfn id=messageeventinit>MessageEventInit</dfn> : <a id=the-messageev
 
   
 
-  <p>The <dfn id=dom-messageevent-data><code>data</code></dfn> attribute must return the value it was initialised to. オブジェクトが作成される際、この属性はnullに初期化しなければならない。It represents the message being sent.</p>
+  <p>The <dfn id=dom-messageevent-data><code>data</code></dfn> attribute must return the value
+  it was initialised to. It represents the message being sent.</p>
 
-  <p>The <dfn id=dom-messageevent-origin><code>origin</code></dfn> attribute must return the value it was initialised to. オブジェクトが作成される際、この属性は空文字列に初期化しなければならない。It represents, in <a href=#server-sent-events id=the-messageevent-interfaces:server-sent-events-4>server-sent events</a> and <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-5>cross-document messaging</a>, the <a id=the-messageevent-interfaces:origin-2 href=browsers.html#origin-2>origin</a> of the document that sent the message (typically the scheme, hostname, and port of the document, but not its path or <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-messageevent-interfaces:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a>).</p>
+  <p>The <dfn id=dom-messageevent-origin><code>origin</code></dfn> attribute must return the
+  value it was initialised to. It represents, in <a href=#server-sent-events id=the-messageevent-interfaces:server-sent-events-4>server-sent events</a> and
+  <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-5>cross-document messaging</a>, the <a id=the-messageevent-interfaces:concept-origin href=browsers.html#concept-origin>origin</a> of the document that sent the
+  message (typically the scheme, hostname, and port of the document, but not its path or <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-messageevent-interfaces:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a>).</p>
 
-  <p>The <dfn id=dom-messageevent-lasteventid><code>lastEventId</code></dfn> attribute must return the value it was initialised to. オブジェクトが作成される際、この属性は空文字列に初期化しなければならない。It represents, in <a href=#server-sent-events id=the-messageevent-interfaces:server-sent-events-5>server-sent events</a>, the <a href=#concept-event-stream-last-event-id id=the-messageevent-interfaces:concept-event-stream-last-event-id-2>last event ID string</a> of the event source.</p>
+  <p>The <dfn id=dom-messageevent-lasteventid><code>lastEventId</code></dfn> attribute must
+  return the value it was initialised to. It represents, in <a href=#server-sent-events id=the-messageevent-interfaces:server-sent-events-5>server-sent events</a>, the
+  <a href=#concept-event-stream-last-event-id id=the-messageevent-interfaces:concept-event-stream-last-event-id-2>last event ID string</a> of the event
+  source.</p>
 
-  <p>The <dfn id=dom-messageevent-source><code>source</code></dfn> attribute must return the value it was initialised to. オブジェクトが作成される際、この属性はnullに初期化しなければならない。It represents, in <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-6>cross-document messaging</a>, the <code id=the-messageevent-interfaces:windowproxy-5><a href=browsers.html#windowproxy>WindowProxy</a></code> of the <a id=the-messageevent-interfaces:browsing-context href=browsers.html#browsing-context>browsing context</a> of the <code id=the-messageevent-interfaces:window><a href=browsers.html#window>Window</a></code> object from which the message came; and in the <code id=the-messageevent-interfaces:event-workerglobalscope-connect-2><a href=indices.html#event-workerglobalscope-connect>connect</a></code> events used by <a href=workers.html#sharedworkerglobalscope id=the-messageevent-interfaces:sharedworkerglobalscope-2>shared workers</a>, the newly connecting <code id=the-messageevent-interfaces:messageport-9><a href=#messageport>MessagePort</a></code>.</p>
+  <p>The <dfn id=dom-messageevent-source><code>source</code></dfn> attribute must return the
+  value it was initialised to. It represents, in <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-6>cross-document messaging</a>, the
+  <code id=the-messageevent-interfaces:windowproxy-5><a href=browsers.html#windowproxy>WindowProxy</a></code> of the <a id=the-messageevent-interfaces:browsing-context href=browsers.html#browsing-context>browsing context</a> of the <code id=the-messageevent-interfaces:window><a href=browsers.html#window>Window</a></code> object
+  from which the message came; and in the <code id=the-messageevent-interfaces:event-workerglobalscope-connect-2><a href=indices.html#event-workerglobalscope-connect>connect</a></code> events used by <a href=workers.html#sharedworkerglobalscope id=the-messageevent-interfaces:sharedworkerglobalscope-2>shared workers</a>, the newly connecting
+  <code id=the-messageevent-interfaces:messageport-9><a href=#messageport>MessagePort</a></code>.</p>
 
-  <p>The <dfn id=dom-messageevent-ports><code>ports</code></dfn> attribute must return the value it was initialised to. オブジェクトが作成される際、この属性はnullに初期化しなければならない。It represents, in <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-7>cross-document messaging</a> and <a href=#channel-messaging id=the-messageevent-interfaces:channel-messaging-3>channel messaging</a>, the <code id=the-messageevent-interfaces:messageport-10><a href=#messageport>MessagePort</a></code> array being sent, if any.</p>
+  <p>The <dfn id=dom-messageevent-ports><code>ports</code></dfn> attribute must return the
+  value it was initialised to. It represents, in <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-7>cross-document messaging</a> and
+  <a href=#channel-messaging id=the-messageevent-interfaces:channel-messaging-3>channel messaging</a>, the <code id=the-messageevent-interfaces:messageport-10><a href=#messageport>MessagePort</a></code> array being sent, if any.</p>
 
   
   <p>The <dfn id=dom-messageevent-initmessageevent><code>initMessageEvent()</code></dfn>
@@ -762,7 +775,7 @@ any-char      = %x0000-0009 / %x000B-000C / %x000E-10FFFF
    <code id=event-stream-interpretation:event-message><a href=indices.html#event-message>message</a></code>, which does not bubble, is not cancelable, and has no
    default action. The <code id=event-stream-interpretation:dom-messageevent-data><a href=#dom-messageevent-data>data</a></code> attribute must be
    initialised to the value of the <var>data</var> buffer, the <code id=event-stream-interpretation:dom-messageevent-origin><a href=#dom-messageevent-origin>origin</a></code> attribute must be initialised to the <a href=browsers.html#unicode-serialisation-of-an-origin id=event-stream-interpretation:unicode-serialisation-of-an-origin>Unicode serialisation</a> of the
-   <a id=event-stream-interpretation:origin-2 href=browsers.html#origin-2>origin</a> of the event stream's final URL (i.e. the URL after redirects), and the <code id=event-stream-interpretation:dom-messageevent-lasteventid><a href=#dom-messageevent-lasteventid>lastEventId</a></code> attribute must be initialised to the
+   <a id=event-stream-interpretation:concept-origin href=browsers.html#concept-origin>origin</a> of the event stream's final URL (i.e. the URL after redirects), and the <code id=event-stream-interpretation:dom-messageevent-lasteventid><a href=#dom-messageevent-lasteventid>lastEventId</a></code> attribute must be initialised to the
    <a href=#concept-event-stream-last-event-id id=event-stream-interpretation:concept-event-stream-last-event-id-3>last event ID string</a> of the event
    source. This event is not <a href=infrastructure.html#concept-events-trusted id=event-stream-interpretation:concept-events-trusted>trusted</a>.</li><li><p>If the <var>event type</var> buffer has a value other than the empty string, change the
    <a href=https://dom.spec.whatwg.org/#dom-event-type id=event-stream-interpretation:concept-event-type data-x-internal=concept-event-type>type</a> of the newly created event to equal the value of
@@ -1090,16 +1103,7 @@ interface <dfn id=websocket>WebSocket</dfn> : <a id=the-websocket-interface:even
    <var>url</var>.</li><li><p>If <var>urlRecord</var> is failure, then throw a <code id=the-websocket-interface:syntaxerror><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code>
    exception.</li><li><p>If <var>urlRecord</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-websocket-interface:concept-url-scheme data-x-internal=concept-url-scheme>scheme</a> is not "<code>ws</code>" or "<code>wss</code>", then throw a <code id=the-websocket-interface:syntaxerror-2><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code>
    exception.</li><li><p>If <var>urlRecord</var>'s <a href=https://url.spec.whatwg.org/#concept-url-fragment id=the-websocket-interface:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a> is non-null,
-   then throw a <code id=the-websocket-interface:syntaxerror-3><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code> exception.</li><li>
-    <p>If <var>urlRecord</var>'s <a href=https://url.spec.whatwg.org/#concept-url-port id=the-websocket-interface:concept-url-port data-x-internal=concept-url-port>port</a> is a port to which the
-    user agent is configured to block access, then throw a <code id=the-websocket-interface:securityerror><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code> exception and
-    abort these steps. (User agents typically block access to well-known ports like SMTP.)</p>
-    
-
-    <p>Access to ports 80 and 443 should not be blocked, including the unlikely cases when
-    <var>urlRecord</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-websocket-interface:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a> is "<code>ws</code>" but its <a href=https://url.spec.whatwg.org/#concept-url-port id=the-websocket-interface:concept-url-port-2 data-x-internal=concept-url-port>port</a> is 443 or its <a href=https://url.spec.whatwg.org/#concept-url-scheme id=the-websocket-interface:concept-url-scheme-3 data-x-internal=concept-url-scheme>scheme</a> is "<code>wss</code>" but its <a href=https://url.spec.whatwg.org/#concept-url-port id=the-websocket-interface:concept-url-port-3 data-x-internal=concept-url-port>port</a> is 80.</p>
-    
-   </li><li><p>If <var>protocols</var> is a string, set <var>protocols</var> to a sequence consisting of
+   then throw a <code id=the-websocket-interface:syntaxerror-3><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code> exception.</li><li><p>If <var>protocols</var> is a string, set <var>protocols</var> to a sequence consisting of
    just that string.</li><li><p>If any of the values in <var>protocols</var> occur more than once or otherwise fail to
    match the requirements for elements that comprise the value of <code id=the-websocket-interface:http-sec-websocket-protocol-2><a href=infrastructure.html#http-sec-websocket-protocol>Sec-WebSocket-Protocol</a></code> fields as defined by the
    WebSocket protocol specification, then throw a <code id=the-websocket-interface:syntaxerror-4><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code> exception and abort these
@@ -1375,7 +1379,7 @@ socket.onopen = function () {
 
    </li><li><p>Initialise <var>event</var>'s <code id=feedback-from-the-protocol:dom-messageevent-origin><a href=#dom-messageevent-origin>origin</a></code>
    attribute to the <a href=browsers.html#unicode-serialisation-of-an-origin id=feedback-from-the-protocol:unicode-serialisation-of-an-origin>Unicode serialisation</a>
-   of the <a id=feedback-from-the-protocol:origin-2 href=browsers.html#origin-2>origin</a> of the <a id=feedback-from-the-protocol:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> that was passed to the <code id=feedback-from-the-protocol:websocket-2><a href=#websocket>WebSocket</a></code>
+   of the <a id=feedback-from-the-protocol:concept-origin href=browsers.html#concept-origin>origin</a> of the <a id=feedback-from-the-protocol:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> that was passed to the <code id=feedback-from-the-protocol:websocket-2><a href=#websocket>WebSocket</a></code>
    object's constructor.</li><li>
 
     <p>If <var>type</var> indicates that the data is Text, then initialise <var>event</var>'s <code id=feedback-from-the-protocol:dom-messageevent-data><a href=#dom-messageevent-data>data</a></code> attribute to <var>data</var>.
@@ -1520,20 +1524,23 @@ socket.onopen = function () {
 interface <dfn id=closeevent>CloseEvent</dfn> : <a id=the-closeevent-interfaces:event href=https://dom.spec.whatwg.org/#interface-event data-x-internal=event>Event</a> {
   readonly attribute boolean <a href=#dom-closeevent-wasclean id=the-closeevent-interfaces:dom-closeevent-wasclean>wasClean</a>;
   readonly attribute unsigned short <a href=#dom-closeevent-code id=the-closeevent-interfaces:dom-closeevent-code>code</a>;
-  readonly attribute DOMString <a href=#dom-closeevent-reason id=the-closeevent-interfaces:dom-closeevent-reason>reason</a>;
+  readonly attribute USVString <a href=#dom-closeevent-reason id=the-closeevent-interfaces:dom-closeevent-reason>reason</a>;
 };
 
 dictionary <dfn id=closeeventinit>CloseEventInit</dfn> : <a id=the-closeevent-interfaces:eventinit href=https://dom.spec.whatwg.org/#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
-  boolean wasClean;
-  unsigned short code;
-  DOMString reason;
+  boolean wasClean = false;
+  unsigned short code = 0;
+  USVString reason = "";
 };</pre>
 
-  <p>The <dfn id=dom-closeevent-wasclean><code>wasClean</code></dfn> attribute must return the value it was initialised to. オブジェクトが作成される際、この属性はfalseに初期化しなければならない。It represents whether the connection closed cleanly or not.</p>
+  <p>The <dfn id=dom-closeevent-wasclean><code>wasClean</code></dfn> attribute must return the
+  value it was initialised to. It represents whether the connection closed cleanly or not.</p>
 
-  <p>The <dfn id=dom-closeevent-code><code>code</code></dfn> attribute must return the value it was initialised to. オブジェクトが作成される際、この属性は0に初期化しなければならない。It represents the WebSocket connection close code provided by the server.</p>
+  <p>The <dfn id=dom-closeevent-code><code>code</code></dfn> attribute must return the value
+  it was initialised to. It represents the WebSocket connection close code provided by the
+  server.</p>
 
-  <p><dfn id=dom-closeevent-reason><code>reason</code></dfn>属性は、属性が初期化された値を返さなければならない。When the object is created, this attribute must be initialised to empty string. It represents the WebSocket connection close reason provided by the server.</p>
+  <p><dfn id=dom-closeevent-reason><code>reason</code></dfn>属性は、属性が初期化された値を返さなければならない。It represents the WebSocket connection close reason provided by the server.</p>
 
 
 
@@ -1683,7 +1690,7 @@ function receiver(e) {
 
   <h5 id=user-agents>9.4.2.2 ユーザーエージェント</h5>
 
-  <p>The integrity of this API is based on the inability for scripts of one <a id=user-agents:origin-2 href=browsers.html#origin-2>origin</a> to
+  <p>The integrity of this API is based on the inability for scripts of one <a id=user-agents:concept-origin href=browsers.html#concept-origin>origin</a> to
   post arbitrary events (using <code>dispatchEvent()</code> or otherwise) to objects in
   other origins (those that are not the <a href=browsers.html#same-origin id=user-agents:same-origin>same</a>).</p>
 
@@ -1695,7 +1702,7 @@ function receiver(e) {
   <hr>
 
   <p>User agents are also encouraged to consider rate-limiting message traffic between different
-  <a href=browsers.html#origin-2 id=user-agents:origin-2-2>origins</a>, to protect naïve sites from denial-of-service
+  <a href=browsers.html#concept-origin id=user-agents:concept-origin-2>origins</a>, to protect naïve sites from denial-of-service
   attacks.</p>
 
   
@@ -1742,18 +1749,16 @@ function receiver(e) {
 
   <ol><li><p>If the value of the <var>targetOrigin</var> argument is neither a single U+002A
    ASTERISK character (*), a single U+002F SOLIDUS character (/), nor an <a id=posting-messages:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
-   then throw a <code id=posting-messages:syntaxerror><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code> exception and abort the overall set of steps.</li><li><p>Let <var>targetRealm</var> be this <code id=posting-messages:window-4><a href=browsers.html#window>Window</a></code> object's <a id=posting-messages:javascript-realm href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript
-   realm</a>.</li><li><p>Let <var>cloneRecord</var> be <a id=posting-messages:structuredclonewithtransfer href=infrastructure.html#structuredclonewithtransfer>StructuredCloneWithTransfer</a>(<var>message</var>,
-   <var>transfer</var>, <var>targetRealm</var>). Rethrow any exceptions.</li><li><p>Let <var>message clone</var> be <var>cloneRecord</var>.[[Clone]].</li><li><p>Let <var>new ports</var> be a new <a href=infrastructure.html#dfn-read-only-array id=posting-messages:dfn-read-only-array>read only</a>
-   array consisting of all <code id=posting-messages:messageport><a href=#messageport>MessagePort</a></code> objects in
-   <var>cloneRecord</var>.[[TransferList]], if any, maintaining their relative order.</li><li><p>Return from the <code id=posting-messages:dom-window-postmessage-2><a href=#dom-window-postmessage>postMessage()</a></code> method, but
+   then throw a <code id=posting-messages:syntaxerror><a data-x-internal=syntaxerror href=https://heycam.github.io/webidl/#syntaxerror>SyntaxError</a></code> exception and abort the overall set of steps.</li><li><p>Let <var>targetRealm</var> be this <code id=posting-messages:window-4><a href=browsers.html#window>Window</a></code> object's <a href=webappapis.html#concept-global-object-realm id=posting-messages:concept-global-object-realm>Realm</a>.</li><li><p>Let <var>entrySettings</var> be the <a id=posting-messages:entry-settings-object href=webappapis.html#entry-settings-object>entry settings object</a>.</li><li><p>Let <var>incumbentSettings</var> be the <a id=posting-messages:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings object</a>.</li><li><p>Let <var>cloneRecord</var> be <a id=posting-messages:structuredclonewithtransfer href=infrastructure.html#structuredclonewithtransfer>StructuredCloneWithTransfer</a>(<var>message</var>,
+   <var>transfer</var>, <var>targetRealm</var>). Rethrow any exceptions.</li><li><p>Let <var>message clone</var> be <var>cloneRecord</var>.[[Clone]].</li><li><p>Let <var>new ports</var> be a new <a id=posting-messages:frozen-array href=https://heycam.github.io/webidl/#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> consisting of all
+   <code id=posting-messages:messageport><a href=#messageport>MessagePort</a></code> objects in <var>cloneRecord</var>.[[TransferList]], if any, maintaining
+   their relative order.</li><li><p>Return from the <code id=posting-messages:dom-window-postmessage-2><a href=#dom-window-postmessage>postMessage()</a></code> method, but
    <a id=posting-messages:in-parallel href=infrastructure.html#in-parallel>in parallel</a> continue running these steps.</li><li>
 
     <p>If the <var>targetOrigin</var> argument is a single literal U+002F SOLIDUS
     character (/), and the <code id=posting-messages:document-3><a href=dom.html#document>Document</a></code> of the <code id=posting-messages:window-5><a href=browsers.html#window>Window</a></code> object on which the
     method was invoked does not have the <a id=posting-messages:same-origin href=browsers.html#same-origin>same origin</a> as the <a id=posting-messages:responsible-document href=webappapis.html#responsible-document>responsible
-    document</a> specified by the <a id=posting-messages:entry-settings-object href=webappapis.html#entry-settings-object>entry settings object</a>, then abort these steps
-    silently.</p>
+    document</a> specified by <var>entrySettings</var>, then abort these steps silently.</p>
 
     <p>Otherwise, if the <var>targetOrigin</var> argument is an <a id=posting-messages:absolute-url-2 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
     and the <code id=posting-messages:document-4><a href=dom.html#document>Document</a></code> of the <code id=posting-messages:window-6><a href=browsers.html#window>Window</a></code> object on which the method was invoked
@@ -1767,10 +1772,9 @@ function receiver(e) {
    <code id=posting-messages:messageevent><a href=#messageevent>MessageEvent</a></code> interface, with the event type <code id=posting-messages:event-message><a href=indices.html#event-message>message</a></code>, which does not bubble, is not cancelable, and has no
    default action. The <code id=posting-messages:dom-messageevent-data><a href=#dom-messageevent-data>data</a></code> attribute must be
    initialised to the value of <var>message clone</var>, the <code id=posting-messages:dom-messageevent-origin><a href=#dom-messageevent-origin>origin</a></code> attribute must be initialised to the <a href=browsers.html#unicode-serialisation-of-an-origin id=posting-messages:unicode-serialisation-of-an-origin>Unicode serialisation</a> of the
-   <a id=posting-messages:origin-2 href=browsers.html#origin-2>origin</a> specified by the <a id=posting-messages:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings object</a>, the <code id=posting-messages:dom-messageevent-source><a href=#dom-messageevent-source>source</a></code> attribute must be initialised to the
-   <code id=posting-messages:windowproxy><a href=browsers.html#windowproxy>WindowProxy</a></code> object corresponding to the <a id=posting-messages:global-object href=webappapis.html#global-object>global object</a> (a
-   <code id=posting-messages:window-7><a href=browsers.html#window>Window</a></code> object) specified by the <a id=posting-messages:incumbent-settings-object-2 href=webappapis.html#incumbent-settings-object>incumbent settings object</a>, and the
-   <code id=posting-messages:dom-messageevent-ports><a href=#dom-messageevent-ports>ports</a></code> attribute must be initialised to the <var>new
+   <a id=posting-messages:concept-origin href=browsers.html#concept-origin>origin</a> specified by <var>incumbentSettings</var>, the <code id=posting-messages:dom-messageevent-source><a href=#dom-messageevent-source>source</a></code> attribute must be initialised to the
+   <code id=posting-messages:windowproxy><a href=browsers.html#windowproxy>WindowProxy</a></code> object corresponding to the <a href=webappapis.html#concept-settings-object-global id=posting-messages:concept-settings-object-global>global object</a> (a <code id=posting-messages:window-7><a href=browsers.html#window>Window</a></code> object)
+   specified by <var>incumbentSettings</var>, and the <code id=posting-messages:dom-messageevent-ports><a href=#dom-messageevent-ports>ports</a></code> attribute must be initialised to the <var>new
    ports</var> array.</li><li><p><a id=posting-messages:queue-a-task href=webappapis.html#queue-a-task>Queue a task</a> to <a href=infrastructure.html#concept-event-dispatch id=posting-messages:concept-event-dispatch>dispatch</a> the
    event created in the previous step at the <code id=posting-messages:window-8><a href=browsers.html#window>Window</a></code> object on which the method was
    invoked. The <a id=posting-messages:task-source href=webappapis.html#task-source>task source</a> for this <a href=webappapis.html#concept-task id=posting-messages:concept-task>task</a> is the
@@ -2111,8 +2115,7 @@ interface <dfn id=messageport>MessagePort</dfn> : <a id=message-ports:eventtarge
   <var>targetRealm</var>, must run these steps:</p>
 
   <ol><li><p>Set <b>this</b>'s <a href=#has-been-shipped id=message-ports:has-been-shipped-5>has been shipped</a> flag to true.</li><li><p>Let <var>new</var> be a <a href=#create-a-new-messageport-object id=message-ports:create-a-new-messageport-object>new
-   <code>MessagePort</code> object</a> in <var>targetRealm</var> whose <a href=#concept-port-owner id=message-ports:concept-port-owner-6>owner</a> is <var>targetRealm</var>'s [[GlobalObject]]'s
-   <a id=message-ports:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a>.</li><li><p>Set <var>new</var>'s <a href=#has-been-shipped id=message-ports:has-been-shipped-6>has been shipped</a> flag to true.</li><li><p>Move all the <a href=webappapis.html#concept-task id=message-ports:concept-task-4>tasks</a> that are to fire <code id=message-ports:event-message><a href=indices.html#event-message>message</a></code> events in the <a href=#port-message-queue id=message-ports:port-message-queue-9>port message queue</a> of
+   <code>MessagePort</code> object</a> in <var>targetRealm</var> whose <a href=#concept-port-owner id=message-ports:concept-port-owner-6>owner</a> is <var>targetRealm</var>'s <a href=webappapis.html#concept-realm-settings-object id=message-ports:concept-realm-settings-object>settings object</a>.</li><li><p>Set <var>new</var>'s <a href=#has-been-shipped id=message-ports:has-been-shipped-6>has been shipped</a> flag to true.</li><li><p>Move all the <a href=webappapis.html#concept-task id=message-ports:concept-task-4>tasks</a> that are to fire <code id=message-ports:event-message><a href=indices.html#event-message>message</a></code> events in the <a href=#port-message-queue id=message-ports:port-message-queue-9>port message queue</a> of
    <b>this</b> to the <a href=#port-message-queue id=message-ports:port-message-queue-10>port message queue</a> of <var>new</var>, if any, leaving
    <var>new</var>'s <a href=#port-message-queue id=message-ports:port-message-queue-11>port message queue</a> in its initial disabled state, and, if
    <var>new</var>'s <a href=#concept-port-owner id=message-ports:concept-port-owner-7>owner</a> specifies a <a id=message-ports:responsible-event-loop-3 href=webappapis.html#responsible-event-loop>responsible
@@ -2152,9 +2155,9 @@ interface <dfn id=messageport>MessagePort</dfn> : <a id=message-ports:eventtarge
     transferred, but since they are then discarded, it doesn't matter where they are transferred
     to.)</p>
    </li><li><p>Let <var>cloneRecord</var> be <a id=message-ports:structuredclonewithtransfer href=infrastructure.html#structuredclonewithtransfer>StructuredCloneWithTransfer</a>(<var>message</var>,
-   <var>transfer</var>, <var>targetRealm</var>). Rethrow any exceptions.</li><li><p>Let <var>message clone</var> be <var>cloneRecord</var>.[[Clone]].</li><li><p>Let <var>new ports</var> be a new <a href=infrastructure.html#dfn-read-only-array id=message-ports:dfn-read-only-array>read only</a>
-   array consisting of all <code id=message-ports:messageport-11><a href=#messageport>MessagePort</a></code> objects in
-   <var>cloneRecord</var>.[[TransferList]], if any, maintaining their relative order.</li><li><p>If there is no <var>target port</var> (i.e. if <var>source port</var>
+   <var>transfer</var>, <var>targetRealm</var>). Rethrow any exceptions.</li><li><p>Let <var>message clone</var> be <var>cloneRecord</var>.[[Clone]].</li><li><p>Let <var>new ports</var> be a new <a id=message-ports:frozen-array href=https://heycam.github.io/webidl/#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> consisting of all
+   <code id=message-ports:messageport-11><a href=#messageport>MessagePort</a></code> objects in <var>cloneRecord</var>.[[TransferList]], if any, maintaining
+   their relative order.</li><li><p>If there is no <var>target port</var> (i.e. if <var>source port</var>
    is not entangled), or if <var>doomed</var> is true, then abort these steps.</li><li><p>Create an event <var>e</var> that uses the <code id=message-ports:messageevent><a href=#messageevent>MessageEvent</a></code> interface, with the name <code id=message-ports:event-message-2><a href=indices.html#event-message>message</a></code>, which does not bubble, is not cancelable, and has no
    default action.</li><li><p>Let the <code id=message-ports:dom-messageevent-data><a href=#dom-messageevent-data>data</a></code> attribute of <var>e</var> be
    initialised to the value of <var>message clone</var>.</li><li><p>Let the <code id=message-ports:dom-messageevent-ports><a href=#dom-messageevent-ports>ports</a></code> attribute of <var>e</var> be
@@ -2219,7 +2222,9 @@ interface <dfn id=messageport>MessagePort</dfn> : <a id=message-ports:eventtarge
 
   <p>When a <code id=ports-and-garbage-collection:messageport><a href=#messageport>MessagePort</a></code> object <var>o</var> is entangled, user agents must
   either act as if <var>o</var>'s entangled <code id=ports-and-garbage-collection:messageport-2><a href=#messageport>MessagePort</a></code> object has a strong
-  reference to <var>o</var>, or as if the <a id=ports-and-garbage-collection:global-object href=webappapis.html#global-object>global object</a> specified by <var>o</var>'s <a href=#concept-port-owner id=ports-and-garbage-collection:concept-port-owner>owner</a> has a strong reference to <var>o</var>.</p>
+  reference to <var>o</var>, or as if the <a href=webappapis.html#concept-settings-object-global id=ports-and-garbage-collection:concept-settings-object-global>global
+  object</a> specified by <var>o</var>'s <a href=#concept-port-owner id=ports-and-garbage-collection:concept-port-owner>owner</a> has a
+  strong reference to <var>o</var>.</p>
 
   <div class=note>
 
@@ -2251,7 +2256,7 @@ interface <dfn id=messageport>MessagePort</dfn> : <a id=message-ports:eventtarge
 
   <h3 id=broadcasting-to-other-browsing-contexts>9.6 <dfn>Broadcasting to other browsing contexts</dfn></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome no"><span>Chrome</span> <span>None</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>38+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="opera no"><span>Opera</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="ie_mob no"><span>IE Mobile</span> <span>None</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=broadcastchannel">caniuse.com</a></div>
 
-  <p>Pages on a single <a id=broadcasting-to-other-browsing-contexts:origin-2 href=browsers.html#origin-2>origin</a> opened by the same user in the same user agent but in
+  <p>Pages on a single <a id=broadcasting-to-other-browsing-contexts:concept-origin href=browsers.html#concept-origin>origin</a> opened by the same user in the same user agent but in
   different unrelated <a href=browsers.html#browsing-context id=broadcasting-to-other-browsing-contexts:browsing-context>browsing contexts</a> sometimes need to
   send notifications to each other, for example "hey, the user logged in over here, check your
   credentials again".</p>
@@ -2325,13 +2330,14 @@ interface <dfn id=broadcastchannel>BroadcastChannel</dfn> : <a id=broadcasting-t
 
       <p>Their <a href=#broadcastchannel-settings-object id=broadcasting-to-other-browsing-contexts:broadcastchannel-settings-object-3><code>BroadcastChannel</code> settings object</a> specifies either:</p>
 
-      <ul><li><p>a <a id=broadcasting-to-other-browsing-contexts:global-object href=webappapis.html#global-object>global object</a> that is a <code id=broadcasting-to-other-browsing-contexts:window><a href=browsers.html#window>Window</a></code> object and a
-       <a id=broadcasting-to-other-browsing-contexts:responsible-document href=webappapis.html#responsible-document>responsible document</a> that is <a id=broadcasting-to-other-browsing-contexts:fully-active href=browsers.html#fully-active>fully active</a>, or</li><li><p>a <a id=broadcasting-to-other-browsing-contexts:global-object-2 href=webappapis.html#global-object>global object</a> that is a <code id=broadcasting-to-other-browsing-contexts:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> object whose
-       <code id=broadcasting-to-other-browsing-contexts:dom-workerglobalscope-closing><a href=workers.html#dom-workerglobalscope-closing>closing</a></code> flag is false and whose
+      <ul><li><p>a <a href=webappapis.html#concept-settings-object-global id=broadcasting-to-other-browsing-contexts:concept-settings-object-global>global object</a> that is a
+       <code id=broadcasting-to-other-browsing-contexts:window><a href=browsers.html#window>Window</a></code> object and a <a id=broadcasting-to-other-browsing-contexts:responsible-document href=webappapis.html#responsible-document>responsible document</a> that is <a id=broadcasting-to-other-browsing-contexts:fully-active href=browsers.html#fully-active>fully
+       active</a>, or</li><li><p>a <a href=webappapis.html#concept-settings-object-global id=broadcasting-to-other-browsing-contexts:concept-settings-object-global-2>global object</a> that is a
+       <code id=broadcasting-to-other-browsing-contexts:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> object whose <code id=broadcasting-to-other-browsing-contexts:dom-workerglobalscope-closing><a href=workers.html#dom-workerglobalscope-closing>closing</a></code> flag is false and whose
        <a id=broadcasting-to-other-browsing-contexts:worker href=workers.html#worker>worker</a> is a <a id=broadcasting-to-other-browsing-contexts:suspendable-worker href=workers.html#suspendable-worker>suspendable worker</a>.</li></ul>
 
      </li><li><p>Their <a href=#broadcastchannel-settings-object id=broadcasting-to-other-browsing-contexts:broadcastchannel-settings-object-4><code>BroadcastChannel</code> settings object</a> specifies an
-     <a id=broadcasting-to-other-browsing-contexts:origin-2-2 href=browsers.html#origin-2>origin</a> that is the <a id=broadcasting-to-other-browsing-contexts:same-origin href=browsers.html#same-origin>same origin</a> as the <a id=broadcasting-to-other-browsing-contexts:origin-2-3 href=browsers.html#origin-2>origin</a> specified
+     <a id=broadcasting-to-other-browsing-contexts:concept-origin-2 href=browsers.html#concept-origin>origin</a> that is the <a id=broadcasting-to-other-browsing-contexts:same-origin href=browsers.html#same-origin>same origin</a> as the <a id=broadcasting-to-other-browsing-contexts:concept-origin-3 href=browsers.html#concept-origin>origin</a> specified
      by <var>source settings</var>.</li><li><p>Their <a href=#channel-name id=broadcasting-to-other-browsing-contexts:channel-name-4>channel name</a> is a <a id=broadcasting-to-other-browsing-contexts:case-sensitive href=infrastructure.html#case-sensitive>case-sensitive</a> match for <var>source channel</var>.</li><li><p>Their <a href=#concept-broadcastchannel-closed id=broadcasting-to-other-browsing-contexts:concept-broadcastchannel-closed-3>closed flag</a> is
      false.</li></ul>
 
@@ -2355,7 +2361,7 @@ interface <dfn id=broadcastchannel>BroadcastChannel</dfn> : <a id=broadcasting-t
      initialised to <a id=broadcasting-to-other-browsing-contexts:structuredclone-2 href=infrastructure.html#structuredclone>StructuredClone</a>(<var>cloned message</var>,
      <var>targetRealm</var>), and the <code id=broadcasting-to-other-browsing-contexts:dom-messageevent-origin><a href=#dom-messageevent-origin>origin</a></code>
      attribute must be initialised to the <a href=browsers.html#unicode-serialisation-of-an-origin id=broadcasting-to-other-browsing-contexts:unicode-serialisation-of-an-origin>Unicode
-     serialisation</a> of the <a id=broadcasting-to-other-browsing-contexts:origin-2-4 href=browsers.html#origin-2>origin</a> specified by <var>source settings</var>. This
+     serialisation</a> of the <a id=broadcasting-to-other-browsing-contexts:concept-origin-4 href=browsers.html#concept-origin>origin</a> specified by <var>source settings</var>. This
      event is not <a href=infrastructure.html#concept-events-trusted id=broadcasting-to-other-browsing-contexts:concept-events-trusted>trusted</a>.</li><li><p><a href=infrastructure.html#concept-event-dispatch id=broadcasting-to-other-browsing-contexts:concept-event-dispatch>Dispatch</a> the event at the
      <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-11><a href=#broadcastchannel>BroadcastChannel</a></code> object.</li></ol>
 
@@ -2370,9 +2376,9 @@ interface <dfn id=broadcastchannel>BroadcastChannel</dfn> : <a id=broadcasting-t
 
   <p>While a <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-14><a href=#broadcastchannel>BroadcastChannel</a></code> object whose <a href=#concept-broadcastchannel-closed id=broadcasting-to-other-browsing-contexts:concept-broadcastchannel-closed-4>closed flag</a> is false has an event listener
   registered for <code id=broadcasting-to-other-browsing-contexts:event-message-2><a href=indices.html#event-message>message</a></code> events, there must be a strong
-  reference from <a id=broadcasting-to-other-browsing-contexts:global-object-3 href=webappapis.html#global-object>global object</a> specified by the <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-15><a href=#broadcastchannel>BroadcastChannel</a></code> object's
-  <a href=#broadcastchannel-settings-object id=broadcasting-to-other-browsing-contexts:broadcastchannel-settings-object-8><code>BroadcastChannel</code> settings object</a> to the <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-16><a href=#broadcastchannel>BroadcastChannel</a></code>
-  object itself.</p>
+  reference from <a href=webappapis.html#concept-settings-object-global id=broadcasting-to-other-browsing-contexts:concept-settings-object-global-3>global object</a> specified by
+  the <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-15><a href=#broadcastchannel>BroadcastChannel</a></code> object's <a href=#broadcastchannel-settings-object id=broadcasting-to-other-browsing-contexts:broadcastchannel-settings-object-8><code>BroadcastChannel</code> settings
+  object</a> to the <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-16><a href=#broadcastchannel>BroadcastChannel</a></code> object itself.</p>
 
   <p>The <dfn id=dom-broadcastchannel-close><code>close()</code></dfn> method must set the
   <a href=#concept-broadcastchannel-closed id=broadcasting-to-other-browsing-contexts:concept-broadcastchannel-closed-5>closed flag</a> of the
