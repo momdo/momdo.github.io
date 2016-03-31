@@ -18,9 +18,9 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-css21: 'http://momdo.github.io/css2/cover.html',
+css21: 'https://momdo.github.io/css2/cover.html',
 css3syn: 'http://www.hcn.zaq.ne.jp/___/WEB/css-syntax-ja.html',
-css3val: [ 'http://momdo.github.io/css3-values/',
+css3val: [ 'https://momdo.github.io/css3-values/',
 	'http://www.hcn.zaq.ne.jp/___/WEB/css-values-ja.html',
 ],
 mediaq: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/',
