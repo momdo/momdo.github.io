@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>5 April 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 April 2016</span></h2></hgroup>
    
    
   </header>
@@ -1581,9 +1581,61 @@ interface <dfn id=elementcontenteditable>ElementContentEditable</dfn> {
 
   <p><i>true</i>状態は、要素が編集可能であることを示す。<i>inherit</i>状態は、その親が存在する場合、要素が編集可能であることを示す。<i>false</i>状態は、要素が編集可能でないことを示す。</p>
 
+  <div class=example>
+   <p>For example, consider a page that has a <code id=contenteditable:the-form-element><a href=forms.html#the-form-element>form</a></code> and a <code id=contenteditable:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code> to
+   publish a new article, where the user is expected to write the article using HTML:</p>
+
+   <pre>&lt;form method=POST&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt;New article&lt;/legend&gt;
+  &lt;textarea name=article&gt;&amp;lt;p&gt;Hello world.&amp;lt;/p&gt;&lt;/textarea&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;button&gt;Publish&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+
+   <p>When scripting is enabled, the <code id=contenteditable:the-textarea-element-2><a href=forms.html#the-textarea-element>textarea</a></code> element could be replaced with a rich
+   text field instead, using the <code id=contenteditable:attr-contenteditable-2><a href=#attr-contenteditable>contenteditable</a></code>
+   attribute:</p>
+
+   <pre>&lt;form method=POST&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt;New article&lt;/legend&gt;
+  &lt;textarea id=textarea name=article&gt;&amp;lt;p&gt;Hello world.&amp;lt;/p&gt;&lt;/textarea&gt;
+  &lt;div id=div style="white-space: pre-wrap" hidden&gt;&lt;p&gt;Hello world.&lt;/p&gt;&lt;/div&gt;
+  &lt;script&gt;
+   let textarea = document.getElementById("textarea");
+   let div = document.getElementById("div");
+   textarea.hidden = true;
+   div.hidden = false;
+   div.contentEditable = "true";
+   div.oninput = (e) =&gt; {
+     textarea.value = div.innerHTML;
+   };
+  &lt;/script&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;button&gt;Publish&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+
+   <p>Features to enable, e.g., inserting links, can be implemented using the <code id=contenteditable:execCommand><a href=#execCommand>document.execCommand()</a></code> API, or using
+   <code id=contenteditable:selection><a data-x-internal=selection href=https://w3c.github.io/selection-api/#idl-def-Selection>Selection</a></code> APIs and other DOM APIs. <a href=references.html#refsEDITING>[EDITING]</a> <a href=references.html#refsSELECTION>[SELECTION]</a> <a href=references.html#refsDOM>[DOM]</a></p>
+  </div>
+
+  <div class=example>
+   <p>The <code id=contenteditable:attr-contenteditable-3><a href=#attr-contenteditable>contenteditable</a></code> attribute can also be used to
+   great effect:</p>
+
+   <pre>&lt;!doctype html&gt;
+&lt;title&gt;Live CSS editing!&lt;/title&gt;
+&lt;style style=white-space:pre contenteditable&gt;
+html { margin:.2em; font-size:2em; color:lime; background:purple }
+head, title, style { display:block }
+body { display:none }
+&lt;/style&gt;</pre>
+  </div>
+
   <dl class=domintro><dt><var>element</var> . <code id=contenteditable:dom-contenteditable-2><a href=#dom-contenteditable>contentEditable</a></code> [ = <var>value</var> ]<dd>
 
-    <p><code id=contenteditable:attr-contenteditable-2><a href=#attr-contenteditable>contenteditable</a></code>属性の状態に基づいて、"<code>true</code>"、"<code>false</code>"、または"<code>inherit</code>"を返す。</p>
+    <p><code id=contenteditable:attr-contenteditable-4><a href=#attr-contenteditable>contenteditable</a></code>属性の状態に基づいて、"<code>true</code>"、"<code>false</code>"、または"<code>inherit</code>"を返す。</p>
 
     <p>その状態を変更する設定が可能である。</p>
 
