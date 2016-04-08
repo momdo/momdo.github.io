@@ -18,13 +18,13 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-css21: 'http://momdo.github.io/css2/cover.html',
+css21: 'https://momdo.github.io/css2/cover.html',
 css3bg: 'http://www.hcn.zaq.ne.jp/___/WEB/css-backgrounds-ja.html',
-"css3text": 'http://www.hcn.zaq.ne.jp/___/WEB/css-text-ja.html',
+"css-text-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-text-ja.html',
 "css-color-3": 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
 "css-counter-styles-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-counter-styles-ja.html',
 "css-fonts-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-fonts-ja.html',
-"css-values": [ 'http://momdo.github.io/css3-values/',
+"css-values": [ 'https://momdo.github.io/css3-values/',
 	'http://www.hcn.zaq.ne.jp/___/WEB/css-values-ja.html',
 ],
 "css3-writing-modes": 'http://www.hcn.zaq.ne.jp/___/WEB/css-writing-modes-ja.html',
