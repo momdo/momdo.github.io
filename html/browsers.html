@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 April 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>15 April 2016</span></h2></hgroup>
    
    
   </header>
@@ -1067,7 +1067,7 @@
 
   <h5 id=crossorigingetownpropertyhelper-(-o,-p-)>7.2.3.3 <dfn>CrossOriginGetOwnPropertyHelper</dfn> ( <var>O</var>, <var>P</var> )</h5>
 
-  <p class=note>If this abstract operation returns undefined and there is no custom behavior, the
+  <p class=note>If this abstract operation returns undefined and there is no custom behaviour, the
   caller needs to throw a <code id=crossorigingetownpropertyhelper-(-o,-p-):securityerror><a data-x-internal=securityerror href=https://heycam.github.io/webidl/#securityerror>SecurityError</a></code> exception.</p>
 
   <ol><li><p>If <var>P</var> is <a id=crossorigingetownpropertyhelper-(-o,-p-):@@tostringtag href=infrastructure.html#@@tostringtag>@@toStringTag</a>, <a id=crossorigingetownpropertyhelper-(-o,-p-):@@hasinstance href=infrastructure.html#@@hasinstance>@@hasInstance</a>, or
@@ -1180,6 +1180,7 @@
   attribute DOMString <a href=#dom-name id=the-window-object:dom-name>name</a>;
   [PutForwards=<a href=#dom-location-href id=the-window-object:dom-location-href>href</a>, Unforgeable] readonly attribute <a href=#location id=the-window-object:location>Location</a> <a href=#dom-location id=the-window-object:dom-location>location</a>;
   readonly attribute <a href=#history-3 id=the-window-object:history-3>History</a> <a href=#dom-history id=the-window-object:dom-history>history</a>;
+  readonly attribute <a id=the-window-object:customelementsregistry href=scripting.html#customelementsregistry>CustomElementsRegistry</a> <a href=scripting.html#dom-window-customelements id=the-window-object:dom-window-customelements>customElements</a>;
   [Replaceable] readonly attribute <a href=#barprop id=the-window-object:barprop>BarProp</a> <a href=#dom-window-locationbar id=the-window-object:dom-window-locationbar>locationbar</a>;
   [Replaceable] readonly attribute <a href=#barprop id=the-window-object:barprop-2>BarProp</a> <a href=#dom-window-menubar id=the-window-object:dom-window-menubar>menubar</a>;
   [Replaceable] readonly attribute <a href=#barprop id=the-window-object:barprop-3>BarProp</a> <a href=#dom-window-personalbar id=the-window-object:dom-window-personalbar>personalbar</a>;
@@ -3292,10 +3293,11 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
        source</var>, and then append <var>urlRecord</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#concept-url-fragment id=navigating-across-documents:concept-url-fragment-4 data-x-internal=concept-url-fragment>fragment</a> component to <var>script source</var>.</li><li><p>Replace <var>script source</var> with the result of applying the
        <a id=navigating-across-documents:percent-decode href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#percent-decode data-x-internal=percent-decode>percent decode</a> algorithm to <var>script source</var>.</li><li><p>Replace <var>script source</var> with the result of applying the <a id=navigating-across-documents:utf-8-decode href=http://www.hcn.zaq.ne.jp/___/WEB/Encoding-ja.html#utf-8-decode data-x-internal=utf-8-decode>UTF-8
        decode</a> algorithm to <var>script source</var>.</li><li><p>Let <var>address</var> be the <a href=http://www.hcn.zaq.ne.jp/___/WEB/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-2" data-x-internal="the-document's-address">address</a> of the <a href=#active-document id=navigating-across-documents:active-document-7>active document</a> of the <a href=#browsing-context id=navigating-across-documents:browsing-context-14>browsing
-       context</a> being navigated.</li><li><p>Let <var>result</var> be the result of <span>running the classic script</span>
-       <var>script</var>. If an exception was thrown, let <var>result</var> be void instead. (The
-       result will be void also if <a href=webappapis.html#concept-bc-noscript id=navigating-across-documents:concept-bc-noscript>scripting is
-       disabled</a>.)</li><li>
+       context</a> being navigated.</li><li><p>Let <var>settings</var> be the <a id=navigating-across-documents:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a> for the
+       <a href=#active-document id=navigating-across-documents:active-document-8>active document</a> of the <a href=#browsing-context id=navigating-across-documents:browsing-context-15>browsing context</a> being navigated.</li><li><p>Let <var>script</var> be the result of <a id=navigating-across-documents:creating-a-classic-script href=webappapis.html#creating-a-classic-script>creating a classic script</a> given
+       <var>script source</var> and <var>settings</var>.</li><li><p>Let <var>result</var> be the result of <a href=webappapis.html#run-a-classic-script id=navigating-across-documents:run-a-classic-script>running the
+       classic script</a> <var>script</var>. If evaluation was unsuccessful, let
+       <var>result</var> be void instead. (The result will be void also if <a href=webappapis.html#concept-bc-noscript id=navigating-across-documents:concept-bc-noscript>scripting is disabled</a>.)</li><li>
 
         <p><i>Process results</i>: If <var>result</var> is void (there is no return value), then
         the result of obtaining the resource for the URL is a <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-response id=navigating-across-documents:concept-response data-x-internal=concept-response>response</a> whose <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-response-status id=navigating-across-documents:concept-response-status data-x-internal=concept-response-status>status</a> is <code>204</code>.</p>
@@ -3317,8 +3319,8 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
        would only be evaluated when the link was <a href=semantics.html#following-hyperlinks-2 id=navigating-across-documents:following-hyperlinks-2-2>followed</a>, while such a URL in the <code id=navigating-across-documents:attr-iframe-src><a href=embedded-content.html#attr-iframe-src>src</a></code> attribute of an <code id=navigating-across-documents:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> element would be
        evaluated in the context of the <code id=navigating-across-documents:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code>'s own <a href=#nested-browsing-context id=navigating-across-documents:nested-browsing-context-3>nested browsing
        context</a> when the <code id=navigating-across-documents:the-iframe-element-3><a href=embedded-content.html#the-iframe-element>iframe</a></code> is being set up; once evaluated, its return value
-       (if it was not void) would replace that <a href=#browsing-context id=navigating-across-documents:browsing-context-15>browsing context</a>'s <code id=navigating-across-documents:document-3><a href=dom.html#document>Document</a></code>, thus also
-       changing the <code id=navigating-across-documents:window><a href=#window>Window</a></code> object of that <a href=#browsing-context id=navigating-across-documents:browsing-context-16>browsing context</a>.</p>
+       (if it was not void) would replace that <a href=#browsing-context id=navigating-across-documents:browsing-context-16>browsing context</a>'s <code id=navigating-across-documents:document-3><a href=dom.html#document>Document</a></code>, thus also
+       changing the <code id=navigating-across-documents:window><a href=#window>Window</a></code> object of that <a href=#browsing-context id=navigating-across-documents:browsing-context-17>browsing context</a>.</p>
 
       </div>
 
@@ -3347,9 +3349,9 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
       <ol><li><p>Let <var>request</var> be the new resource.</li><li><p>If <var>request</var> is a URL, set <var>request</var> to a new <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request data-x-internal=concept-request>request</a> whose <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url data-x-internal=concept-request-url>url</a>
        is <var>request</var>.</li><li><p>Set <var>request</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-client id=navigating-across-documents:concept-request-client data-x-internal=concept-request-client>client</a> to the
-       <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-5>source browsing context</a>'s <a href=#active-document id=navigating-across-documents:active-document-8>active document</a>'s <code id=navigating-across-documents:window-2><a href=#window>Window</a></code>
+       <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-5>source browsing context</a>'s <a href=#active-document id=navigating-across-documents:active-document-9>active document</a>'s <code id=navigating-across-documents:window-2><a href=#window>Window</a></code>
        object's <a id=navigating-across-documents:environment-settings-object href=webappapis.html#environment-settings-object>environment settings object</a>, <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-target-browsing-context id=navigating-across-documents:concept-request-target-browsing-context data-x-internal=concept-request-target-browsing-context>target browsing context</a> to the
-       <a href=#browsing-context id=navigating-across-documents:browsing-context-17>browsing context</a> being navigated, <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-destination id=navigating-across-documents:concept-request-destination data-x-internal=concept-request-destination>destination</a> to "<code>document</code>",
+       <a href=#browsing-context id=navigating-across-documents:browsing-context-18>browsing context</a> being navigated, <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-destination id=navigating-across-documents:concept-request-destination data-x-internal=concept-request-destination>destination</a> to "<code>document</code>",
        <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-mode id=navigating-across-documents:concept-request-mode data-x-internal=concept-request-mode>mode</a> to "<code>navigate</code>", <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-credentials-mode id=navigating-across-documents:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> to "<code>include</code>", <a id=navigating-across-documents:use-url-credentials-flag href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a>, and <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-redirect-mode id=navigating-across-documents:concept-request-redirect-mode data-x-internal=concept-request-redirect-mode>redirect mode</a> to "<code>manual</code>".</li><li><p>Set <var>request</var>'s <a id=navigating-across-documents:omit-origin-header-flag href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#omit-origin-header-flag data-x-internal=omit-origin-header-flag>omit-<code>Origin</code>-header flag</a>.
 
        
@@ -3357,11 +3359,11 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
        </li><li><p>If <var>request</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-method id=navigating-across-documents:concept-request-method data-x-internal=concept-request-method>method</a> is not
        `<code>GET</code>`, or, if the <a href=#navigate id=navigating-across-documents:navigate-7>navigation algorithm</a>
        was invoked as a result of the <a href=forms.html#concept-form-submit id=navigating-across-documents:concept-form-submit-2>form submission
-       algorithm</a>, then if there is an <a href=#concept-origin id=navigating-across-documents:concept-origin-5>origin</a> of the <a href=#active-document id=navigating-across-documents:active-document-9>active document</a>
+       algorithm</a>, then if there is an <a href=#concept-origin id=navigating-across-documents:concept-origin-5>origin</a> of the <a href=#active-document id=navigating-across-documents:active-document-10>active document</a>
        of the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-6>source browsing context</a>, unset <var>request</var>'s
-       <a id=navigating-across-documents:omit-origin-header-flag-2 href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#omit-origin-header-flag data-x-internal=omit-origin-header-flag>omit-<code>Origin</code>-header flag</a>.</li><li><p>Otherwise, if the <a href=#browsing-context id=navigating-across-documents:browsing-context-18>browsing context</a> being navigated is a <a href=#child-browsing-context id=navigating-across-documents:child-browsing-context-2>child
+       <a id=navigating-across-documents:omit-origin-header-flag-2 href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#omit-origin-header-flag data-x-internal=omit-origin-header-flag>omit-<code>Origin</code>-header flag</a>.</li><li><p>Otherwise, if the <a href=#browsing-context id=navigating-across-documents:browsing-context-19>browsing context</a> being navigated is a <a href=#child-browsing-context id=navigating-across-documents:child-browsing-context-2>child
        browsing context</a>, and the <a href=#browsing-context-container id=navigating-across-documents:browsing-context-container>browsing context container</a> of the
-       <a href=#browsing-context id=navigating-across-documents:browsing-context-19>browsing context</a> being navigated has a <a href=#browsing-context-scope-origin id=navigating-across-documents:browsing-context-scope-origin>browsing context scope
+       <a href=#browsing-context id=navigating-across-documents:browsing-context-20>browsing context</a> being navigated has a <a href=#browsing-context-scope-origin id=navigating-across-documents:browsing-context-scope-origin>browsing context scope
        origin</a>, set <var>request</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-origin id=navigating-across-documents:concept-request-origin data-x-internal=concept-request-origin>origin</a>
        to that <a href=#browsing-context-scope-origin id=navigating-across-documents:browsing-context-scope-origin-2>browsing context scope origin</a> and unset <var>request</var>'s
        <a id=navigating-across-documents:omit-origin-header-flag-3 href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#omit-origin-header-flag data-x-internal=omit-origin-header-flag>omit-<code>Origin</code>-header flag</a>.</li><li><p><a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-fetch id=navigating-across-documents:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li></ol>
@@ -3484,7 +3486,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     allowing resources to present HTTP login forms without requiring their use.</p>
 
    </li><li><p>Let <var>type</var> be the <a href=https://mimesniff.spec.whatwg.org/#computed-mime-type id=navigating-across-documents:content-type-sniffing-2 data-x-internal=content-type-sniffing-2>computed type of
-   the resource</a>.</li><li><p>If the user agent has been configured to process resources of the given <var>type</var> using some mechanism other than rendering the content in a <a href=#browsing-context id=navigating-across-documents:browsing-context-20>browsing
+   the resource</a>.</li><li><p>If the user agent has been configured to process resources of the given <var>type</var> using some mechanism other than rendering the content in a <a href=#browsing-context id=navigating-across-documents:browsing-context-21>browsing
    context</a>, then skip this step. Otherwise, if the <var>type</var> is one of the
    following types, jump to the appropriate entry in the following list, and process the resource as
    described there:</p>
@@ -3499,13 +3501,13 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
      type</a><dt>"<code id=navigating-across-documents:text/cache-manifest><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code>"<dt>"<code id=navigating-across-documents:text/css><a href=indices.html#text/css>text/css</a></code>"<dt>"<code id=navigating-across-documents:text/plain><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code>"<dt>"<code id=navigating-across-documents:text/vtt><a href=indices.html#text/vtt>text/vtt</a></code>"<dd>Follow the steps given in the <a href=#read-text id=navigating-across-documents:read-text>plain text file</a> section,
      and then, once they have completed, abort this <a href=#navigate id=navigating-across-documents:navigate-10>navigate</a> algorithm.<dt>"<code id=navigating-across-documents:multipart/x-mixed-replace><a href=iana.html#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code>"<dd>Follow the steps given in the <a href=#read-multipart-x-mixed-replace id=navigating-across-documents:read-multipart-x-mixed-replace>multipart/x-mixed-replace</a> section, and then,
      once they have completed, abort this <a href=#navigate id=navigating-across-documents:navigate-11>navigate</a> algorithm.<dt>A supported image, video, or audio type<dd>Follow the steps given in the <a href=#read-media id=navigating-across-documents:read-media>media</a> section, and then,
-     once they have completed, abort this <a href=#navigate id=navigating-across-documents:navigate-12>navigate</a> algorithm.<dt>A type that will use an external application to render the content in the <a href=#browsing-context id=navigating-across-documents:browsing-context-21>browsing
+     once they have completed, abort this <a href=#navigate id=navigating-across-documents:navigate-12>navigate</a> algorithm.<dt>A type that will use an external application to render the content in the <a href=#browsing-context id=navigating-across-documents:browsing-context-22>browsing
      context</a><dd>Follow the steps given in the <a href=#read-plugin id=navigating-across-documents:read-plugin>plugin</a> section, and then,
      once they have completed, abort this <a href=#navigate id=navigating-across-documents:navigate-13>navigate</a> algorithm.</dl>
 
     <p>An <dfn id=explicitly-supported-xml-type>explicitly supported XML type</dfn> is one for which the user agent is configured to
     use an external application to render the content (either a <a id=navigating-across-documents:plugin href=infrastructure.html#plugin>plugin</a> rendering
-    directly in the <a href=#browsing-context id=navigating-across-documents:browsing-context-22>browsing context</a>, or a separate application), or one for which the
+    directly in the <a href=#browsing-context id=navigating-across-documents:browsing-context-23>browsing context</a>, or a separate application), or one for which the
     user agent has dedicated processing rules (e.g. a Web browser with a built-in Atom feed viewer
     would be said to explicitly support the <code id=navigating-across-documents:application/atom+xml><a href=indices.html#application/atom+xml>application/atom+xml</a></code> MIME type), or one for
     which the user agent has a dedicated handler (e.g. one registered using <code id=navigating-across-documents:dom-navigator-registercontenthandler><a href=webappapis.html#dom-navigator-registercontenthandler>registerContentHandler()</a></code>).</p>
@@ -3518,7 +3520,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
     <p>An <dfn id=explicitly-supported-json-type>explicitly supported JSON type</dfn> is one for which the user agent is configured to
     use an external application to render the content (either a <a id=navigating-across-documents:plugin-2 href=infrastructure.html#plugin>plugin</a> rendering
-    directly in the <a href=#browsing-context id=navigating-across-documents:browsing-context-23>browsing context</a>, or a separate application), or one for which the
+    directly in the <a href=#browsing-context id=navigating-across-documents:browsing-context-24>browsing context</a>, or a separate application), or one for which the
     user agent has dedicated processing rules, or one for which the user agent has a dedicated
     handler (e.g. one registered using <code id=navigating-across-documents:dom-navigator-registercontenthandler-2><a href=webappapis.html#dom-navigator-registercontenthandler>registerContentHandler()</a></code>).</p>
 
@@ -3538,8 +3540,8 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     will be required to additionally run the following algorithm after creating the new object:</p>
 
     <ol><li>
-      <p>If the <a href=#browsing-context id=navigating-across-documents:browsing-context-24>browsing context</a>'s only entry in its <a href=#session-history id=navigating-across-documents:session-history>session history</a>
-      is the <code id=navigating-across-documents:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=navigating-across-documents:document-7><a href=dom.html#document>Document</a></code> that was added when the <a href=#browsing-context id=navigating-across-documents:browsing-context-25>browsing
+      <p>If the <a href=#browsing-context id=navigating-across-documents:browsing-context-25>browsing context</a>'s only entry in its <a href=#session-history id=navigating-across-documents:session-history>session history</a>
+      is the <code id=navigating-across-documents:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=navigating-across-documents:document-7><a href=dom.html#document>Document</a></code> that was added when the <a href=#browsing-context id=navigating-across-documents:browsing-context-26>browsing
       context</a> was <a href=#creating-a-new-browsing-context id=navigating-across-documents:creating-a-new-browsing-context>created</a>, and
       navigation is occurring with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled>replacement enabled</a>, and that <code id=navigating-across-documents:document-8><a href=dom.html#document>Document</a></code>
       has the <a href=#same-origin id=navigating-across-documents:same-origin-8>same origin</a> as the new <code id=navigating-across-documents:document-9><a href=dom.html#document>Document</a></code>, then</p>
@@ -3555,13 +3557,13 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
         with the following customizations:</p>
 
         <ul><li><p>For the global object, create a new <code id=navigating-across-documents:window-4><a href=#window>Window</a></code> object
-         <var>window</var>.</li><li><p>For the global <b>this</b> value, use the <a href=#browsing-context id=navigating-across-documents:browsing-context-26>browsing context</a>'s
+         <var>window</var>.</li><li><p>For the global <b>this</b> value, use the <a href=#browsing-context id=navigating-across-documents:browsing-context-27>browsing context</a>'s
          <code id=navigating-across-documents:windowproxy><a href=#windowproxy>WindowProxy</a></code> object.</li><li><p>Let <var>realm execution context</var> be the created <a id=navigating-across-documents:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
          context</a>.</li><li><p>Do not obtain any source texts for scripts or modules.</li></ul>
        </li><li><p><a href=#set-up-a-browsing-context-environment-settings-object id=navigating-across-documents:set-up-a-browsing-context-environment-settings-object>Set up a browsing context environment settings object</a> with <var>realm
        execution context</var>, and let <var>settings object</var> be the result.</li><li><p>Set <var>window</var>'s <a href=#concept-document-window id=navigating-across-documents:concept-document-window>associated
        <code>Document</code></a> to the new <code id=navigating-across-documents:document-12><a href=dom.html#document>Document</a></code>.</li></ol>
-     </li><li><p>Set the <a href=#browsing-context id=navigating-across-documents:browsing-context-27>browsing context</a>'s <code id=navigating-across-documents:windowproxy-2><a href=#windowproxy>WindowProxy</a></code> object's [[<a href=#concept-windowproxy-window id=navigating-across-documents:concept-windowproxy-window>Window</a>]] internal slot value to
+     </li><li><p>Set the <a href=#browsing-context id=navigating-across-documents:browsing-context-28>browsing context</a>'s <code id=navigating-across-documents:windowproxy-2><a href=#windowproxy>WindowProxy</a></code> object's [[<a href=#concept-windowproxy-window id=navigating-across-documents:concept-windowproxy-window>Window</a>]] internal slot value to
      <var>window</var>.</li><li><p>Set the <code id=navigating-across-documents:document-13><a href=dom.html#document>Document</a></code>'s <a href=dom.html#concept-document-https-state id=navigating-across-documents:concept-document-https-state>HTTPS
      state</a> to the <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-response-https-state id=navigating-across-documents:concept-response-https-state data-x-internal=concept-response-https-state>HTTPS state</a> of the
      resource used to generate the document.</li><li><p>Execute the <a id="navigating-across-documents:initialize-a-document's-csp-list" href=https://w3c.github.io/webappsec-csp/#initialize-document-csp data-x-internal="initialize-a-document's-csp-list">Initialize a <code>Document</code>'s CSP list</a>
@@ -3609,7 +3611,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   data to an external software package</dfn> separate from the user agent (e.g. handing a <code id=navigating-across-documents:mailto-protocol><a data-x-internal=mailto-protocol href=https://tools.ietf.org/html/rfc6068#section-2>mailto:</a></code> URL to a mail client, or a Word document to a word
   processor), user agents should attempt to mitigate the risk that this is an attempt to exploit the
   target software, e.g. by prompting the user to confirm that the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-7>source browsing
-  context</a>'s <a href=#active-document id=navigating-across-documents:active-document-10>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-6>origin</a> is to be allowed to invoke the
+  context</a>'s <a href=#active-document id=navigating-across-documents:active-document-11>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-6>origin</a> is to be allowed to invoke the
   specified software. In particular, if the <a href=#navigate id=navigating-across-documents:navigate-14>navigate</a> algorithm, when it was invoked,
   was not <a href=#allowed-to-show-a-popup id=navigating-across-documents:allowed-to-show-a-popup>allowed to show a popup</a>, the user agent should not invoke the external
   software package without prior user confirmation.</p>
@@ -3651,7 +3653,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
       <ol><li>
 
-        <p>Remove all the entries in the <a href=#browsing-context id=navigating-across-documents:browsing-context-28>browsing context</a>'s <a href=#session-history id=navigating-across-documents:session-history-2>session
+        <p>Remove all the entries in the <a href=#browsing-context id=navigating-across-documents:browsing-context-29>browsing context</a>'s <a href=#session-history id=navigating-across-documents:session-history-2>session
         history</a> after the <a href=#current-entry id=navigating-across-documents:current-entry-4>current entry</a>. If the <a href=#current-entry id=navigating-across-documents:current-entry-5>current entry</a> is
         the last entry in the session history, then no entries are removed.</p>
 

@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 April 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>15 April 2016</span></h2></hgroup>
    
    
   </header>
@@ -1548,8 +1548,15 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
 
     <dl class=switch><dt>"<code>classic</code>"<dd><a id=processing-model-10:fetch-a-classic-worker-script href=webappapis.html#fetch-a-classic-worker-script>Fetch a classic worker script</a> given <var>url</var>, <var>referrer</var>,
      <var>settings object</var>, and <var>destination</var>.<dt>"<code>module</code>"<dd><a id=processing-model-10:fetch-a-module-script-tree href=webappapis.html#fetch-a-module-script-tree>Fetch a module script tree</a> given <var>url</var>, the value of the <code>credentials</code> member of <var>options</var>, the empty string (as no
-     <var>cryptographic nonce</var> is present for workers), <var>destination</var>, and
-     <var>settings object</var>.</dl>
+     <var>cryptographic nonce</var> is present for workers), "<code>not
+     parser-inserted</code>", <var>destination</var>, and <var>settings object</var>.</dl>
+
+    <p>In both cases, to <a href=webappapis.html#fetching-scripts-process-response id=processing-model-10:fetching-scripts-process-response>process the
+    response</a> <var>response</var>, perform the following steps:</p>
+
+    <ol><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-url id=processing-model-10:concept-workerglobalscope-url>url</a> to <var>response</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-response-url id=processing-model-10:concept-response-url data-x-internal=concept-response-url>url</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-https-state id=processing-model-10:concept-workerglobalscope-https-state>HTTPS state</a> to <var>response</var>'s
+     <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-response-https-state id=processing-model-10:concept-response-https-state data-x-internal=concept-response-https-state>HTTPS state</a>.</li><li><p>Execute the <a id="processing-model-10:initialize-a-global-object's-csp-list" href=https://w3c.github.io/webappsec-csp/#initialize-global-object-csp data-x-internal="initialize-a-global-object's-csp-list">Initialize a <code>global object</code>'s CSP list</a>
+     algorithm on <var>worker global scope</var> and <var>response</var>. <a href=references.html#refsCSP>[CSP]</a></li><li><p>Return true.</li></ol>
 
     <p>If the algorithm asynchronously completes with null, <a id=processing-model-10:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a id=processing-model-10:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire
     a simple event</a> named <code id=processing-model-10:event-error><a href=indices.html#event-error>error</a></code> at <var>worker</var>, and
@@ -1560,10 +1567,7 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
    scope</var>'s list of <span>the worker's <code>Document</code>s</span></a> the
    <code id=processing-model-10:document><a href=dom.html#document>Document</a></code> objects in <var>docs</var>.</li><li><p>If <var>parent worker global scope</var> is not null, add <var>worker global scope</var>
    to the list of <a href="#the-worker's-workers" id="processing-model-10:the-worker's-workers">the worker's workers</a> of <var>parent worker global
-   scope</var>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-url id=processing-model-10:concept-workerglobalscope-url>url</a> to <var>response</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-response-url id=processing-model-10:concept-response-url data-x-internal=concept-response-url>url</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-https-state id=processing-model-10:concept-workerglobalscope-https-state>HTTPS state</a> to <var>response</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-response-https-state id=processing-model-10:concept-response-https-state data-x-internal=concept-response-https-state>HTTPS state</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-type id=processing-model-10:concept-workerglobalscope-type>type</a> to the value of the <code>type</code> member of <var>options</var>.</li><li><p>Execute the <a id="processing-model-10:initialize-a-global-object's-csp-list" href=https://w3c.github.io/webappsec-csp/#initialize-global-object-csp data-x-internal="initialize-a-global-object's-csp-list">Initialize a <code>global object</code>'s CSP list</a>
-   algorithm on <var>worker global scope</var> and <var>response</var>. <a href=references.html#refsCSP>[CSP]</a></p>
-
-   </li><li><p>If <var>is shared</var> is true, and there are any <a href=browsers.html#relevant-application-cache id=processing-model-10:relevant-application-cache>relevant application caches</a> that are identified by a manifest URL with the
+   scope</var>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-type id=processing-model-10:concept-workerglobalscope-type>type</a> to the value of the <code>type</code> member of <var>options</var>.</li><li><p>If <var>is shared</var> is true, and there are any <a href=browsers.html#relevant-application-cache id=processing-model-10:relevant-application-cache>relevant application caches</a> that are identified by a manifest URL with the
    <a id=processing-model-10:same-origin href=browsers.html#same-origin>same origin</a> as <var>url</var> and that have <var>url</var> as one of their
    entries, <em>not</em> excluding entries marked as <a href=browsers.html#concept-appcache-foreign id=processing-model-10:concept-appcache-foreign>foreign</a>, then associate <var>worker global scope</var>
    with the <a href=browsers.html#concept-appcache-selection id=processing-model-10:concept-appcache-selection>most appropriate application cache</a> of
