@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>21 April 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>28 April 2016</span></h2></hgroup>
    
    
   </header>
@@ -497,9 +497,9 @@ source.addEventListener('remove', removeHandler, false);</pre>
 
   <h4 id=the-eventsource-interface>9.2.2 The <code id=the-eventsource-interface:eventsource><a href=#eventsource>EventSource</a></code> interface</h4>
 
-  <pre class=idl>[<a href=#dom-eventsource id=the-eventsource-interface:dom-eventsource>Constructor</a>(DOMString url, optional <a href=#eventsourceinit id=the-eventsource-interface:eventsourceinit>EventSourceInit</a> eventSourceInitDict), Exposed=(Window,Worker)]
+  <pre class=idl>[<a href=#dom-eventsource id=the-eventsource-interface:dom-eventsource>Constructor</a>(USVString url, optional <a href=#eventsourceinit id=the-eventsource-interface:eventsourceinit>EventSourceInit</a> eventSourceInitDict), Exposed=(Window,Worker)]
 interface <dfn id=eventsource>EventSource</dfn> : <a id=the-eventsource-interface:eventtarget href=https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
-  readonly attribute DOMString <a href=#dom-eventsource-url id=the-eventsource-interface:dom-eventsource-url>url</a>;
+  readonly attribute USVString <a href=#dom-eventsource-url id=the-eventsource-interface:dom-eventsource-url>url</a>;
   readonly attribute boolean <a href=#dom-eventsource-withcredentials id=the-eventsource-interface:dom-eventsource-withcredentials>withCredentials</a>;
 
   // ready state
@@ -519,28 +519,46 @@ dictionary <dfn id=eventsourceinit>EventSourceInit</dfn> {
   boolean <dfn id=dom-eventsourceinit-withcredentials>withCredentials</dfn> = false;
 };</pre>
 
-  <p>The <dfn id=dom-eventsource><code>EventSource()</code></dfn> constructor takes one or two
-  arguments. The first specifies the <a id=the-eventsource-interface:url href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#concept-url data-x-internal=url>URL</a> to which to connect. The second specifies the
-  settings, if any, in the form of an <code id=the-eventsource-interface:eventsourceinit-2><a href=#eventsourceinit>EventSourceInit</a></code> dictionary. When the <code id=the-eventsource-interface:dom-eventsource-2><a href=#dom-eventsource>EventSource()</a></code> constructor is invoked, the UA must run these
-  steps:</p>
+  <p>Each <code id=the-eventsource-interface:eventsource-2><a href=#eventsource>EventSource</a></code> object has the following associated with it:</p>
 
-  <ol><li><p><a href=infrastructure.html#parse-a-url id=the-eventsource-interface:parse-a-url>Parse</a> the <a id=the-eventsource-interface:url-2 href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#concept-url data-x-internal=url>URL</a> specified in the first
-   argument, relative to the <a id=the-eventsource-interface:entry-settings-object href=webappapis.html#entry-settings-object>entry settings object</a>.</li><li><p>If the previous step failed, then throw a <code id=the-eventsource-interface:syntaxerror><a data-x-internal=syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror>SyntaxError</a></code> exception and abort
-   these steps.</li><li><p>Create a new <code id=the-eventsource-interface:eventsource-2><a href=#eventsource>EventSource</a></code> object.</li><li><p>Let <var>corsAttributeState</var> be <a href=infrastructure.html#attr-crossorigin-anonymous id=the-eventsource-interface:attr-crossorigin-anonymous>Anonymous</a>.</li><li><p>If the second argument is present, and the <code id=the-eventsource-interface:dom-eventsourceinit-withcredentials><a href=#dom-eventsourceinit-withcredentials>withCredentials</a></code> dictionary member has the
-   value true, then set <var>corsAttributeState</var> to <a href=infrastructure.html#attr-crossorigin-use-credentials id=the-eventsource-interface:attr-crossorigin-use-credentials>Use Credentials</a> and initialise the new
-   <code id=the-eventsource-interface:eventsource-3><a href=#eventsource>EventSource</a></code> object's <code id=the-eventsource-interface:dom-eventsource-withcredentials-2><a href=#dom-eventsource-withcredentials>withCredentials</a></code> attribute to true.</li><li><p>Let <var>request</var> be the result of <a href=infrastructure.html#create-a-potential-cors-request id=the-eventsource-interface:create-a-potential-cors-request>creating a potential-CORS request</a> given the
-   <a id=the-eventsource-interface:resulting-url-record href=infrastructure.html#resulting-url-record>resulting URL record</a>, <var>corsAttributeState</var>, and with the <i>same-origin
-   fallback flag</i> set.</li><li><p>Set <var>request</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-client id=the-eventsource-interface:concept-request-client data-x-internal=concept-request-client>client</a> to
-   <a id=the-eventsource-interface:entry-settings-object-2 href=webappapis.html#entry-settings-object>entry settings object</a>.</li><li><p>User agents may <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-header-list-set id=the-eventsource-interface:concept-header-list-set data-x-internal=concept-header-list-set>set</a> `<code id=the-eventsource-interface:http-accept><a data-x-internal=http-accept href=http://www.hcn.zaq.ne.jp/___/WEB/RFC7231-ja.html#section-5.3.2>Accept</a></code>`/`<code id=the-eventsource-interface:text/event-stream><a href=#text/event-stream>text/event-stream</a></code>` in <var>request</var>'s
+  <ul><li><p>A <dfn id=concept-eventsource-url data-for=EventSource>url</dfn> (a <a id=the-eventsource-interface:url-record href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#concept-url data-x-internal=url-record>URL
+   record</a>). Set during construction.</li><li><p>A <dfn id=concept-event-stream-request>request</dfn>. This must initially be
+   null.</li><li><p>A <dfn id=concept-event-stream-reconnection-time>reconnection time</dfn>, in
+   milliseconds. This must initially be a user-agent-defined value, probably in the region of a few
+   seconds.</li><li><p>A <dfn id=concept-event-stream-last-event-id>last event ID string</dfn>. This must
+   initially be the empty string.</li></ul>
+
+  <p>Apart from <a href=#concept-eventsource-url id=the-eventsource-interface:concept-eventsource-url>url</a> these are not currently exposed on
+  the <code id=the-eventsource-interface:eventsource-3><a href=#eventsource>EventSource</a></code> object.</p>
+
+  <p>The <dfn id=dom-eventsource><code>EventSource(<var>url</var>,
+  <var>eventSourceInitDict</var>)</code></dfn> constructor, when invoked, must run these steps:</p>
+
+  <ol><li><p>Let <var>ev</var> be a new <code id=the-eventsource-interface:eventsource-4><a href=#eventsource>EventSource</a></code> object.</li><li><p>Let <var>settings</var> be <var>ev</var>'s <a id=the-eventsource-interface:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a>.
+
+   
+
+   </li><li><p>Let <var>urlRecord</var> be the result of <a href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#concept-url-parser id=the-eventsource-interface:url-parser data-x-internal=url-parser>parsing</a>
+   <var>url</var> with <var>settings</var>'s <a id=the-eventsource-interface:api-base-url href=webappapis.html#api-base-url>API base URL</a> and <var>settings</var>'s
+   <a id=the-eventsource-interface:api-url-character-encoding href=webappapis.html#api-url-character-encoding>API URL character encoding</a>.</li><li><p>If <var>urlRecord</var> is failure, then throw a <code id=the-eventsource-interface:syntaxerror><a data-x-internal=syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror>SyntaxError</a></code>
+   exception.</li><li><p>Set <var>ev</var>'s <a href=#concept-eventsource-url id=the-eventsource-interface:concept-eventsource-url-2>url</a> to
+   <var>urlRecord</var>.</p>
+
+   </li><li><p>Let <var>corsAttributeState</var> be <a href=infrastructure.html#attr-crossorigin-anonymous id=the-eventsource-interface:attr-crossorigin-anonymous>Anonymous</a>.</li><li><p>If the value of <var>eventSourceInitDict</var>'s <code id=the-eventsource-interface:dom-eventsourceinit-withcredentials><a href=#dom-eventsourceinit-withcredentials>withCredentials</a></code> member is true, then set
+   <var>corsAttributeState</var> to <a href=infrastructure.html#attr-crossorigin-use-credentials id=the-eventsource-interface:attr-crossorigin-use-credentials>Use
+   Credentials</a> and set <var>ev</var>'s <code id=the-eventsource-interface:dom-eventsource-withcredentials-2><a href=#dom-eventsource-withcredentials>withCredentials</a></code> attribute to true.</li><li><p>Let <var>request</var> be the result of <a href=infrastructure.html#create-a-potential-cors-request id=the-eventsource-interface:create-a-potential-cors-request>creating a potential-CORS request</a> given
+   <var>urlRecord</var>, <var>corsAttributeState</var>, and with the <i>same-origin fallback
+   flag</i> set.</li><li><p>Set <var>request</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-client id=the-eventsource-interface:concept-request-client data-x-internal=concept-request-client>client</a> to
+   <var>settings</var>.</li><li><p>User agents may <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-header-list-set id=the-eventsource-interface:concept-header-list-set data-x-internal=concept-header-list-set>set</a> `<code id=the-eventsource-interface:http-accept><a data-x-internal=http-accept href=http://www.hcn.zaq.ne.jp/___/WEB/RFC7231-ja.html#section-5.3.2>Accept</a></code>`/`<code id=the-eventsource-interface:text/event-stream><a href=#text/event-stream>text/event-stream</a></code>` in <var>request</var>'s
    <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-header-list id=the-eventsource-interface:concept-request-header-list data-x-internal=concept-request-header-list>header list</a>.</li><li><p>Set <var>request</var>'s <a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-request-cache-mode id=the-eventsource-interface:concept-request-cache-mode data-x-internal=concept-request-cache-mode>cache mode</a> to
-   "<code>no-store</code>".</li><li><p>Set <code id=the-eventsource-interface:eventsource-4><a href=#eventsource>EventSource</a></code> object's <a href=#concept-event-stream-request id=the-eventsource-interface:concept-event-stream-request>request</a> to <var>request</var>.</li><li><p>Return the new <code id=the-eventsource-interface:eventsource-5><a href=#eventsource>EventSource</a></code> object, but continue these steps
-   <a id=the-eventsource-interface:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p><a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-fetch id=the-eventsource-interface:concept-fetch data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li></ol>
+   "<code>no-store</code>".</li><li><p>Set <var>ev</var>'s <a href=#concept-event-stream-request id=the-eventsource-interface:concept-event-stream-request>request</a> to
+   <var>request</var>.</li><li><p>Return <var>ev</var>, but continue these steps <a id=the-eventsource-interface:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p><a href=http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html#concept-fetch id=the-eventsource-interface:concept-fetch data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li></ol>
 
   <hr>
 
-  <p>The <dfn id=dom-eventsource-url><code>url</code></dfn> attribute must return the
-  <a id=the-eventsource-interface:absolute-url href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a> that resulted from <a href=infrastructure.html#parse-a-url id=the-eventsource-interface:parse-a-url-2>parsing</a> the
-  value that was passed to the constructor.</p> 
+  <p>The <dfn id=dom-eventsource-url><code>url</code></dfn> attribute's getter must return the
+  <a href=http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html#concept-url-serializer id=the-eventsource-interface:concept-url-serialiser data-x-internal=concept-url-serialiser>serialisation</a> of this <code id=the-eventsource-interface:eventsource-5><a href=#eventsource>EventSource</a></code>
+  object's <a href=#concept-eventsource-url id=the-eventsource-interface:concept-eventsource-url-3>url</a>.</p>
 
   <p>The <dfn id=dom-eventsource-withcredentials><code>withCredentials</code></dfn> attribute
   must return the value to which it was last initialised. When the object is created, it must be
@@ -572,16 +590,6 @@ dictionary <dfn id=eventsourceinit>EventSourceInit</dfn> {
   </td></tr></table>
 
   <hr>
-
-  <p>In addition to the above, each <code id=the-eventsource-interface:eventsource-8><a href=#eventsource>EventSource</a></code> object has the following associated
-  with it:</p>
-
-  <ul><li>A <dfn id=concept-event-stream-request>request</dfn>. This must initially be null.</li><li>A <dfn id=concept-event-stream-reconnection-time>reconnection time</dfn>, in
-   milliseconds. This must initially be a user-agent-defined value, probably in the region of a few
-   seconds.</li><li>A <dfn id=concept-event-stream-last-event-id>last event ID string</dfn>. This must
-   initially be the empty string.</li></ul>
-
-  <p>These values are not currently exposed on the interface.</p>
 
 
   <h4 id=processing-model-9>9.2.3 処理モデル</h4>
