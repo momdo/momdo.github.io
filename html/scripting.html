@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>5 May 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>10 May 2016</span></h2></hgroup>
    
    
   </header>
@@ -6484,8 +6484,8 @@ console.log(plasticButton2.getAttribute("is")); // will output "plastic-button"<
 
     <dl><dt><code><dfn id=prod-potentialcustomelementname>PotentialCustomElementName</dfn> ::=</code><dd><code>[a-z] (<a href=#prod-pcenchar id=custom-elements-core-concepts:prod-pcenchar>PCENChar</a>)* '-'
      (<a href=#prod-pcenchar id=custom-elements-core-concepts:prod-pcenchar-2>PCENChar</a>)*</code><dt><code><dfn id=prod-pcenchar>PCENChar</dfn> ::=</code><dd><code>"-" | "." | [0-9] | "_" | [a-z] | #xB7 | [#xC0-#xD6] | [#xD8-#xF6] |
-     [#xF8-#x2FF] | [#x300-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x203F-#x2040] |
-     [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] |
+     [#xF8-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x203F-#x2040] | [#x2070-#x218F] |
+     [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] |
      [#x10000-#xEFFFF]</code></dl>
 
     <p>This uses the <a href=https://www.w3.org/TR/xml/#sec-notation>EBNF notation</a> from the
@@ -6552,12 +6552,12 @@ console.log(plasticButton2.getAttribute("is")); // will output "plastic-button"<
   <code id=custom-elements-api:window-6><a href=browsers.html#window>Window</a></code> object.</p>
 
   <pre class=idl>interface <dfn id=customelementsregistry>CustomElementsRegistry</dfn> {
-  void <a href=#dom-customelementsregistry-define id=custom-elements-api:dom-customelementsregistry-define>define</a>(DOMString name, Function constructor, optional ElementRegistrationOptions options);
+  [<a href=#cereactions id=custom-elements-api:cereactions>CEReactions</a>] void <a href=#dom-customelementsregistry-define id=custom-elements-api:dom-customelementsregistry-define>define</a>(DOMString name, Function constructor, optional ElementDefinitionOptions options);
   any <a href=#dom-customelementsregistry-get id=custom-elements-api:dom-customelementsregistry-get>get</a>(DOMString name);
-  [NewObject] Promise&lt;void&gt; <a href=#dom-customelementsregistry-whendefined id=custom-elements-api:dom-customelementsregistry-whendefined>whenDefined</a>(DOMString name);
+  Promise&lt;void&gt; <a href=#dom-customelementsregistry-whendefined id=custom-elements-api:dom-customelementsregistry-whendefined>whenDefined</a>(DOMString name);
 };
 
-dictionary <dfn id=elementregistrationoptions>ElementRegistrationOptions</dfn> {
+dictionary <dfn id=elementdefinitionoptions>ElementDefinitionOptions</dfn> {
   DOMString extends;
 };</pre>
 
@@ -6565,9 +6565,8 @@ dictionary <dfn id=elementregistrationoptions>ElementRegistrationOptions</dfn> {
   specification look up elements in the registry by any of <a href=#concept-custom-element-definition-name id=custom-elements-api:concept-custom-element-definition-name>name</a>, <a href=#concept-custom-element-definition-local-name id=custom-elements-api:concept-custom-element-definition-local-name>local name</a>, or <a href=#concept-custom-element-definition-constructor id=custom-elements-api:concept-custom-element-definition-constructor>constructor</a>.</p>
 
   <p>Every <code id=custom-elements-api:customelementsregistry-5><a href=#customelementsregistry>CustomElementsRegistry</a></code> also has a <dfn id=when-defined-promise-map>when-defined promise map</dfn>,
-  mapping <a href=#valid-custom-element-name id=custom-elements-api:valid-custom-element-name>valid custom element names</a> to lists of
-  promises. It is used to implement the <code id=custom-elements-api:dom-customelementsregistry-whendefined-2><a href=#dom-customelementsregistry-whendefined>whenDefined()</a></code> method. Storing a promise in
-  the <a href=#when-defined-promise-map id=custom-elements-api:when-defined-promise-map>when-defined promise map</a> must not create a strong reference to that promise.</p>
+  mapping <a href=#valid-custom-element-name id=custom-elements-api:valid-custom-element-name>valid custom element names</a> to promises. It
+  is used to implement the <code id=custom-elements-api:dom-customelementsregistry-whendefined-2><a href=#dom-customelementsregistry-whendefined>whenDefined()</a></code> method.</p>
 
   <dl class=domintro><dt><var>window</var> . <code id=custom-elements-api:dom-window-customelements><a href=#dom-window-customelements>customElements</a></code> . <code id=custom-elements-api:dom-customelementsregistry-define-2><a href=#dom-customelementsregistry-define>define</a></code>(<var>name</var>,
    <var>constructor</var>)<dd>Defines a new <a href=#custom-element id=custom-elements-api:custom-element>custom element</a>, mapping the given name to the given constructor as
@@ -6622,19 +6621,23 @@ dictionary <dfn id=elementregistrationoptions>ElementRegistrationOptions</dfn> {
    <var>constructor</var>, <a href=#concept-custom-element-definition-prototype id=custom-elements-api:concept-custom-element-definition-prototype>prototype</a> <var>prototype</var>, <a href=#concept-custom-element-definition-observed-attributes id=custom-elements-api:concept-custom-element-definition-observed-attributes>observed attributes</a>
    <var>observedAttributes</var>, and <a href=#concept-custom-element-definition-lifecycle-callbacks id=custom-elements-api:concept-custom-element-definition-lifecycle-callbacks>lifecycle callbacks</a>
    <var>connectedCallback</var>, <var>disconnectedCallback</var>, and
-   <var>attributeChangedCallback</var> (stored by their corresponding name).</li><li><p>Add <var>definition</var> to this <code id=custom-elements-api:customelementsregistry-9><a href=#customelementsregistry>CustomElementsRegistry</a></code>.</li><li>
-    <p>If this <code id=custom-elements-api:customelementsregistry-10><a href=#customelementsregistry>CustomElementsRegistry</a></code>'s <a href=#when-defined-promise-map id=custom-elements-api:when-defined-promise-map-2>when-defined promise map</a>
+   <var>attributeChangedCallback</var> (stored by their corresponding name).</li><li><p>Add <var>definition</var> to this <code id=custom-elements-api:customelementsregistry-9><a href=#customelementsregistry>CustomElementsRegistry</a></code>.</li><li><p>Let <var>document</var> be this <code id=custom-elements-api:customelementsregistry-10><a href=#customelementsregistry>CustomElementsRegistry</a></code>'s <a href=webappapis.html#concept-relevant-global id=custom-elements-api:concept-relevant-global>relevant global object</a>'s <a href=browsers.html#concept-document-window id=custom-elements-api:concept-document-window><code>Document</code> object</a>.</li><li><p>Let <var>upgrade candidates</var> be all elements in <var>document</var> whose namespace
+   is the <a id=custom-elements-api:html-namespace-2-2 href=infrastructure.html#html-namespace-2>HTML namespace</a> and whose local name is <var>localName</var>, in tree
+   order. Additionally, if <var>extends</var> is non-null, only include elements that have an
+   attribute named <code id=custom-elements-api:attr-is><a href=#attr-is>is</a></code> whose value is <var>name</var>.</li><li><p>For each element <var>element</var> in <var>upgrade candidates</var>, <a href=#enqueue-a-custom-element-upgrade-reaction id=custom-elements-api:enqueue-a-custom-element-upgrade-reaction>enqueue a
+   custom element upgrade reaction</a> given <var>element</var> and
+   <var>definition</var>.</li><li>
+    <p>If this <code id=custom-elements-api:customelementsregistry-11><a href=#customelementsregistry>CustomElementsRegistry</a></code>'s <a href=#when-defined-promise-map id=custom-elements-api:when-defined-promise-map>when-defined promise map</a>
     contains an entry with key <var>name</var>:</p>
 
-    <ol><li><p>Let <var>promiseList</var> be the value of that entry.</li><li><p>For each <var>promise</var> in <var>promiseList</var>, resolve <var>promise</var> with
-     undefined.</li><li><p>Delete the entry with key <var>name</var> from this
-     <code id=custom-elements-api:customelementsregistry-11><a href=#customelementsregistry>CustomElementsRegistry</a></code>'s <a href=#when-defined-promise-map id=custom-elements-api:when-defined-promise-map-3>when-defined promise map</a>.</li></ol>
+    <ol><li><p>Let <var>promise</var> be the value of that entry.</li><li><p>Resolve <var>promise</var> with undefined.</li><li><p>Delete the entry with key <var>name</var> from this
+     <code id=custom-elements-api:customelementsregistry-12><a href=#customelementsregistry>CustomElementsRegistry</a></code>'s <a href=#when-defined-promise-map id=custom-elements-api:when-defined-promise-map-2>when-defined promise map</a>.</li></ol>
    </li></ol>
 
   <p>When invoked, the <dfn id=dom-customelementsregistry-get><code>get(<var>name</var>)</code></dfn> method must run these
   steps:</p>
 
-  <ol><li><p>If this <code id=custom-elements-api:customelementsregistry-12><a href=#customelementsregistry>CustomElementsRegistry</a></code> contains an entry with <a href=#concept-custom-element-definition-name id=custom-elements-api:concept-custom-element-definition-name-6>name</a> <var>name</var>, then return that
+  <ol><li><p>If this <code id=custom-elements-api:customelementsregistry-13><a href=#customelementsregistry>CustomElementsRegistry</a></code> contains an entry with <a href=#concept-custom-element-definition-name id=custom-elements-api:concept-custom-element-definition-name-6>name</a> <var>name</var>, then return that
    entry's <a href=#concept-custom-element-definition-constructor id=custom-elements-api:concept-custom-element-definition-constructor-4>constructor</a>.</li><li><p>Otherwise, return undefined.</li></ol>
 
   <p>When invoked, the <dfn id=dom-customelementsregistry-whendefined><code>whenDefined(<var>name</var>)</code></dfn> method
@@ -6642,12 +6645,11 @@ dictionary <dfn id=elementregistrationoptions>ElementRegistrationOptions</dfn> {
 
   <ol><li><p>If <var>name</var> is not a <a href=#valid-custom-element-name id=custom-elements-api:valid-custom-element-name-5>valid custom element name</a>, then return a new
    promise rejected with a <a id=custom-elements-api:syntaxerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code id=custom-elements-api:domexception-8><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and
-   abort these steps.</li><li><p>If this <code id=custom-elements-api:customelementsregistry-13><a href=#customelementsregistry>CustomElementsRegistry</a></code> contains an entry with <a href=#concept-custom-element-definition-name id=custom-elements-api:concept-custom-element-definition-name-7>name</a> <var>name</var>, then return a new
-   promise resolved with undefined and abort these steps.</li><li><p>Let <var>map</var> be this <code id=custom-elements-api:customelementsregistry-14><a href=#customelementsregistry>CustomElementsRegistry</a></code>'s <a href=#when-defined-promise-map id=custom-elements-api:when-defined-promise-map-4>when-defined
+   abort these steps.</li><li><p>If this <code id=custom-elements-api:customelementsregistry-14><a href=#customelementsregistry>CustomElementsRegistry</a></code> contains an entry with <a href=#concept-custom-element-definition-name id=custom-elements-api:concept-custom-element-definition-name-7>name</a> <var>name</var>, then return a new
+   promise resolved with undefined and abort these steps.</li><li><p>Let <var>map</var> be this <code id=custom-elements-api:customelementsregistry-15><a href=#customelementsregistry>CustomElementsRegistry</a></code>'s <a href=#when-defined-promise-map id=custom-elements-api:when-defined-promise-map-3>when-defined
    promise map</a>.</li><li><p>If <var>map</var> does not contain an entry with key <var>name</var>, create an entry in
-   <var>map</var> with key <var>name</var> and whose value is an empty list.</li><li><p>Let <var>promiseList</var> be the value of the entry in <var>map</var> with key
-   <var>name</var>.</li><li><p>Let <var>promise</var> be a new promise, and append <var>promise</var> to
-   <var>promiseList</var>.</li><li><p>Return <var>promise</var>.</li></ol>
+   <var>map</var> with key <var>name</var> and whose value is a new promise.</li><li><p>Let <var>promise</var> be the value of the entry in <var>map</var> with key
+   <var>name</var>.</li><li><p>Return <var>promise</var>.</li></ol>
 
   <div class=example>
    <p>The <code id=custom-elements-api:dom-customelementsregistry-whendefined-4><a href=#dom-customelementsregistry-whendefined>whenDefined()</a></code> method can be
