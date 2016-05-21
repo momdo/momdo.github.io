@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>16 May 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 May 2016</span></h2></hgroup>
    
    
   </header>
@@ -1274,7 +1274,7 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
   readonly attribute <a href=#workerglobalscope id=the-workerglobalscope-common-interface:workerglobalscope-2>WorkerGlobalScope</a> <a href=#dom-workerglobalscope-self id=the-workerglobalscope-common-interface:dom-workerglobalscope-self>self</a>;
   readonly attribute <a href=#workerlocation id=the-workerglobalscope-common-interface:workerlocation>WorkerLocation</a> <a href=#dom-workerglobalscope-location id=the-workerglobalscope-common-interface:dom-workerglobalscope-location>location</a>;
   readonly attribute <a href=#workernavigator id=the-workerglobalscope-common-interface:workernavigator>WorkerNavigator</a> <a href=#dom-worker-navigator id=the-workerglobalscope-common-interface:dom-worker-navigator>navigator</a>;
-  void <a href=#dom-workerglobalscope-importscripts id=the-workerglobalscope-common-interface:dom-workerglobalscope-importscripts>importScripts</a>(DOMString... urls);
+  void <a href=#dom-workerglobalscope-importscripts id=the-workerglobalscope-common-interface:dom-workerglobalscope-importscripts>importScripts</a>(USVString... urls);
 
   attribute <a id=the-workerglobalscope-common-interface:onerroreventhandler href=webappapis.html#onerroreventhandler>OnErrorEventHandler</a> <a href=#handler-workerglobalscope-onerror id=the-workerglobalscope-common-interface:handler-workerglobalscope-onerror>onerror</a>;
   attribute <a id=the-workerglobalscope-common-interface:eventhandler href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-workerglobalscope-onlanguagechange id=the-workerglobalscope-common-interface:handler-workerglobalscope-onlanguagechange>onlanguagechange</a>;
@@ -1298,12 +1298,17 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
 
   
 
-  <p>A <code id=the-workerglobalscope-common-interface:workerglobalscope-6><a href=#workerglobalscope>WorkerGlobalScope</a></code> object has an associated <dfn data-dfn-for=WorkerGlobalScope id=concept-workerglobalscope-csp-list data-export="">CSP list</dfn>. It is
+  <p>A <code id=the-workerglobalscope-common-interface:workerglobalscope-6><a href=#workerglobalscope>WorkerGlobalScope</a></code> object has an associated <dfn data-dfn-for=WorkerGlobalScope id=concept-workerglobalscope-referrer-policy data-export="">referrer
+  policy</dfn> (a <a id=the-workerglobalscope-common-interface:referrer-policy href=https://fetch.spec.whatwg.org/#concept-referrer-policy data-x-internal=referrer-policy>referrer policy</a>). It is initially the empty string.
+
+  
+
+  <p>A <code id=the-workerglobalscope-common-interface:workerglobalscope-7><a href=#workerglobalscope>WorkerGlobalScope</a></code> object has an associated <dfn data-dfn-for=WorkerGlobalScope id=concept-workerglobalscope-csp-list data-export="">CSP list</dfn>. It is
   initially an empty list.
 
   
 
-  <p>A <code id=the-workerglobalscope-common-interface:workerglobalscope-7><a href=#workerglobalscope>WorkerGlobalScope</a></code> object has an associated <dfn data-dfn-for=WorkerGlobalScope id=concept-workerglobalscope-module-map data-export="">module map</dfn>.
+  <p>A <code id=the-workerglobalscope-common-interface:workerglobalscope-8><a href=#workerglobalscope>WorkerGlobalScope</a></code> object has an associated <dfn data-dfn-for=WorkerGlobalScope id=concept-workerglobalscope-module-map data-export="">module map</dfn>.
   It is a <a id=the-workerglobalscope-common-interface:module-map href=webappapis.html#module-map>module map</a>, initially empty.</p>
 
   <dl class=domintro><dt><var>workerGlobal</var> . <code id=the-workerglobalscope-common-interface:dom-workerglobalscope-self-2><a href=#dom-workerglobalscope-self>self</a></code><dd>Returns <var>workerGlobal</var>.<dt><var>workerGlobal</var> . <code id=the-workerglobalscope-common-interface:dom-workerglobalscope-location-2><a href=#dom-workerglobalscope-location>location</a></code><dd>Returns <var>workerGlobal</var>'s <code id=the-workerglobalscope-common-interface:workerlocation-2><a href=#workerlocation>WorkerLocation</a></code> object.<dt><var>workerGlobal</var> . <code id=the-workerglobalscope-common-interface:dom-worker-navigator-2><a href=#dom-worker-navigator>navigator</a></code><dd>Returns <var>workerGlobal</var>'s <code id=the-workerglobalscope-common-interface:workernavigator-2><a href=#workernavigator>WorkerNavigator</a></code> object.<dt><var>workerGlobal</var> . <code id=the-workerglobalscope-common-interface:dom-workerglobalscope-importscripts-2><a href=#dom-workerglobalscope-importscripts>importScripts</a></code>(<var>urls</var>...)<dd>Fetches each <a id=the-workerglobalscope-common-interface:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> in <var>urls</var>, executes them one-by-one in the order they
@@ -1312,14 +1317,14 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
   
 
   <p>The <dfn id=dom-workerglobalscope-self><code>self</code></dfn> attribute must return the
-  <code id=the-workerglobalscope-common-interface:workerglobalscope-8><a href=#workerglobalscope>WorkerGlobalScope</a></code> object itself.</p>
+  <code id=the-workerglobalscope-common-interface:workerglobalscope-9><a href=#workerglobalscope>WorkerGlobalScope</a></code> object itself.</p>
 
   <p>The <dfn id=dom-workerglobalscope-location><code>location</code></dfn> attribute must
   return the <code id=the-workerglobalscope-common-interface:workerlocation-3><a href=#workerlocation>WorkerLocation</a></code> object whose associated <a href=#concept-workerlocation-workerglobalscope id=the-workerglobalscope-common-interface:concept-workerlocation-workerglobalscope><code>WorkerGlobalScope</code> object</a> is
-  the <code id=the-workerglobalscope-common-interface:workerglobalscope-9><a href=#workerglobalscope>WorkerGlobalScope</a></code> object.</p>
+  the <code id=the-workerglobalscope-common-interface:workerglobalscope-10><a href=#workerglobalscope>WorkerGlobalScope</a></code> object.</p>
 
   <p class=note>While the <code id=the-workerglobalscope-common-interface:workerlocation-4><a href=#workerlocation>WorkerLocation</a></code> object is created after the
-  <code id=the-workerglobalscope-common-interface:workerglobalscope-10><a href=#workerglobalscope>WorkerGlobalScope</a></code> object, this is not problematic as it cannot be observed from
+  <code id=the-workerglobalscope-common-interface:workerglobalscope-11><a href=#workerglobalscope>WorkerGlobalScope</a></code> object, this is not problematic as it cannot be observed from
   script.</p>
 
   
@@ -1327,7 +1332,7 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
   <hr>
 
   <p>The following are the <a id=the-workerglobalscope-common-interface:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <a href=webappapis.html#event-handler-event-type id=the-workerglobalscope-common-interface:event-handler-event-type>event handler event types</a>) that must be supported, as <a id=the-workerglobalscope-common-interface:event-handler-idl-attributes href=webappapis.html#event-handler-idl-attributes>event handler IDL attributes</a>,
-  by objects implementing the <code id=the-workerglobalscope-common-interface:workerglobalscope-11><a href=#workerglobalscope>WorkerGlobalScope</a></code> interface:</p>
+  by objects implementing the <code id=the-workerglobalscope-common-interface:workerglobalscope-12><a href=#workerglobalscope>WorkerGlobalScope</a></code> interface:</p>
 
   <table><thead><tr><th><a href=webappapis.html#event-handlers id=the-workerglobalscope-common-interface:event-handlers-2>イベントハンドラ</a> </th><th><a id=the-workerglobalscope-common-interface:event-handler-event-type-2 href=webappapis.html#event-handler-event-type>イベントハンドライベント型</a>
    <tbody></th></tr><tr><td><dfn id=handler-workerglobalscope-onerror><code>onerror</code></dfn> </td><td> <code id=the-workerglobalscope-common-interface:event-error><a href=indices.html#event-error>error</a></code>
@@ -1583,7 +1588,9 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
     response</a> <var>response</var>, perform the following steps:</p>
 
     <ol><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-url id=worker-processing-model:concept-workerglobalscope-url>url</a> to <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=worker-processing-model:concept-response-url data-x-internal=concept-response-url>url</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-https-state id=worker-processing-model:concept-workerglobalscope-https-state>HTTPS state</a> to <var>response</var>'s
-     <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-https-state id=worker-processing-model:concept-response-https-state data-x-internal=concept-response-https-state>HTTPS state</a>.</li><li><p>Execute the <a id="worker-processing-model:initialize-a-global-object's-csp-list" href=https://hashedhyphen.github.io/webappsec-specjp/csp/#initialize-global-object-csp data-x-internal="initialize-a-global-object's-csp-list">Initialize a <code>global object</code>'s CSP list</a>
+     <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-https-state id=worker-processing-model:concept-response-https-state data-x-internal=concept-response-https-state>HTTPS state</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-referrer-policy id=worker-processing-model:concept-workerglobalscope-referrer-policy>referrer policy</a> to the result of
+     <a href=https://w3c.github.io/webappsec-referrer-policy/#parse-referrer-policy-from-header id=worker-processing-model:parse-referrer-policy-header data-x-internal=parse-referrer-policy-header>parsing the `<code>Referrer-Policy</code>`
+     header</a> of <var>response</var>.</li><li><p>Execute the <a id="worker-processing-model:initialize-a-global-object's-csp-list" href=https://hashedhyphen.github.io/webappsec-specjp/csp/#initialize-global-object-csp data-x-internal="initialize-a-global-object's-csp-list">Initialize a <code>global object</code>'s CSP list</a>
      algorithm on <var>worker global scope</var> and <var>response</var>. <a href=references.html#refsCSP>[CSP]</a></li><li><p>Return true.</li></ol>
 
     <p>If the algorithm asynchronously completes with null, <a id=worker-processing-model:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a id=worker-processing-model:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire
@@ -1806,6 +1813,10 @@ interface <dfn id=abstractworker>AbstractWorker</dfn> {
 
       <p>Return <var>worker global scope</var>'s <a href=#concept-workerglobalscope-https-state id=script-settings-for-workers:concept-workerglobalscope-https-state>HTTPS state</a>.</p>
 
+     <dt>The <a id=script-settings-for-workers:referrer-policy href=https://fetch.spec.whatwg.org/#concept-referrer-policy data-x-internal=referrer-policy>referrer policy</a><dd>
+
+      <p>Return <var>worker global scope</var>'s <a href=#concept-workerglobalscope-referrer-policy id=script-settings-for-workers:concept-workerglobalscope-referrer-policy>referrer policy</a>.</p>
+
      </dl>
 
    </li><li><p>Set <var>realm</var>'s [[HostDefined]] field to <var>settings object</var>.</li><li><p>Return <var>settings object</var>.</li></ol>
@@ -1813,7 +1824,7 @@ interface <dfn id=abstractworker>AbstractWorker</dfn> {
 
   <h5 id=dedicated-workers-and-the-worker-interface>10.2.6.3 Dedicated workers and the <code id=dedicated-workers-and-the-worker-interface:worker><a href=#worker>Worker</a></code> interface</h5>
 
-  <pre class=idl>[<a href=#dom-worker id=dedicated-workers-and-the-worker-interface:dom-worker>Constructor</a>(DOMString scriptURL, optional <a href=#workeroptions id=dedicated-workers-and-the-worker-interface:workeroptions>WorkerOptions</a> options), Exposed=(Window,Worker)]
+  <pre class=idl>[<a href=#dom-worker id=dedicated-workers-and-the-worker-interface:dom-worker>Constructor</a>(USVString scriptURL, optional <a href=#workeroptions id=dedicated-workers-and-the-worker-interface:workeroptions>WorkerOptions</a> options), Exposed=(Window,Worker)]
 interface <dfn id=worker>Worker</dfn> : <a id=dedicated-workers-and-the-worker-interface:eventtarget href=https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   void <a href=#dom-worker-terminate id=dedicated-workers-and-the-worker-interface:dom-worker-terminate>terminate</a>();
 
@@ -1903,7 +1914,7 @@ enum <dfn id=workertype>WorkerType</dfn> { "classic", "module" };
 
   <h5 id=shared-workers-and-the-sharedworker-interface>10.2.6.4 Shared workers and the <code id=shared-workers-and-the-sharedworker-interface:sharedworker><a href=#sharedworker>SharedWorker</a></code> interface</h5>
 
-  <pre class=idl>[<a href=#dom-sharedworker id=shared-workers-and-the-sharedworker-interface:dom-sharedworker>Constructor</a>(DOMString scriptURL, optional DOMString name = "", optional <a href=#workeroptions id=shared-workers-and-the-sharedworker-interface:workeroptions>WorkerOptions</a> options), Exposed=(Window,Worker)]
+  <pre class=idl>[<a href=#dom-sharedworker id=shared-workers-and-the-sharedworker-interface:dom-sharedworker>Constructor</a>(USVString scriptURL, optional DOMString name = "", optional <a href=#workeroptions id=shared-workers-and-the-sharedworker-interface:workeroptions>WorkerOptions</a> options), Exposed=(Window,Worker)]
 interface <dfn id=sharedworker>SharedWorker</dfn> : <a id=shared-workers-and-the-sharedworker-interface:eventtarget href=https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
   readonly attribute <a id=shared-workers-and-the-sharedworker-interface:messageport href=comms.html#messageport>MessagePort</a> <a href=#dom-sharedworker-port id=shared-workers-and-the-sharedworker-interface:dom-sharedworker-port>port</a>;
 };

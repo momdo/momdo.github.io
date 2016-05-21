@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>16 May 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 May 2016</span></h2></hgroup>
    
    
   </header>
@@ -512,9 +512,12 @@
     to mechanisms such as <code id=definitions-2:dom-history-pushstate><a href=browsers.html#dom-history-pushstate>history.pushState()</a></code>.</p>
    <dt>An <dfn id=https-state>HTTPS state</dfn><dd><p>An <a id=definitions-2:https-state-value href=https://fetch.spec.whatwg.org/#concept-https-state-value data-x-internal=https-state-value>HTTPS state value</a> representing the security properties of the network
    channel used to deliver the resource with which the <a href=#environment-settings-object id=definitions-2:environment-settings-object-8>environment settings object</a> is
-   associated.</dl>
+   associated.<dt>A <a id=definitions-2:referrer-policy href=https://fetch.spec.whatwg.org/#concept-referrer-policy data-x-internal=referrer-policy>referrer policy</a><dd><p>The default <a id=definitions-2:referrer-policy-2 href=https://fetch.spec.whatwg.org/#concept-referrer-policy data-x-internal=referrer-policy>referrer policy</a> for <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=definitions-2:concept-fetch data-x-internal=concept-fetch>fetches</a>
+   performed using this <a href=#environment-settings-object id=definitions-2:environment-settings-object-9>environment settings object</a> as a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=definitions-2:concept-request-client data-x-internal=concept-request-client>request client</a>. <a href=references.html#refsREFERRERPOLICY>[REFERRERPOLICY]</a>
 
-  <p>An <a href=#environment-settings-object id=definitions-2:environment-settings-object-9>environment settings object</a> also has an <dfn id=outstanding-rejected-promises-weak-set>outstanding rejected promises
+  </dl>
+
+  <p>An <a href=#environment-settings-object id=definitions-2:environment-settings-object-10>environment settings object</a> also has an <dfn id=outstanding-rejected-promises-weak-set>outstanding rejected promises
   weak set</dfn> and an <dfn id=about-to-be-notified-rejected-promises-list>about-to-be-notified rejected promises list</dfn>, used to track
   <a href=#unhandled-promise-rejections>unhandled promise rejections</a>. The <a href=#outstanding-rejected-promises-weak-set id=definitions-2:outstanding-rejected-promises-weak-set>outstanding
   rejected promises weak set</a> must not create strong references to any of its members, and
@@ -594,18 +597,19 @@
 
   <p>To <dfn id=fetch-a-module-script-tree>fetch a module script tree</dfn> given a <var>url</var>, a <var>credentials mode</var>,
   a <var>cryptographic nonce</var>, a <var>parser state</var>, a <var>destination</var>, a
-  <var>fetch client settings object</var>, and an optional <var>ancestor list</var> and <var>module
-  map settings object</var>, run these steps. The algorithm will asynchronously complete with either
-  null (on failure) or a <a href=#module-script id=fetching-scripts:module-script>module script</a> (on success).</p>
+  <var>fetch client settings object</var>, and optional <var>module map settings object</var>,
+  <var>ancestor list</var>, and <var>referrer</var>, run these steps. The algorithm will
+  asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script>module script</a> (on
+  success).</p>
 
-  <ol><li><p>If <var>ancestor list</var> is not given, let it be an empty list.</li><li><p>If <var>module map settings object</var> is not given, let it be <var>fetch client
-   settings object</var>.</li><li><p><a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script>Fetch a single module script</a> given <var>url</var>, <var>credentials
+  <ol><li><p>If <var>module map settings object</var> is not given, let it be <var>fetch client
+   settings object</var>.</li><li><p>If <var>ancestor list</var> is not given, let it be an empty list.</li><li><p>If <var>referrer</var> is not given, let it be "<code>client</code>".</p>
+
+   </li><li><p><a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script>Fetch a single module script</a> given <var>url</var>, <var>credentials
    mode</var>, <var>cryptographic nonce</var>, <var>parser state</var>, <var>destination</var>,
-   <var>fetch client settings object</var>, and <var>module map settings object</var>. If the caller
-   of this algorithm specified custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-3>set up the
-   request</a> or <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-3>process the response</a>
-   steps, pass those along while <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-2>fetching a single
-   module script</a>.</p>
+   <var>fetch client settings object</var>, <var>module map settings object</var>, and
+   <var>referrer</var>. If the caller of this algorithm specified custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-3>set up the request</a> or <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-3>process the response</a> steps, pass those along
+   while <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-2>fetching a single module script</a>.</p>
 
    </li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-3>fetching a single module script</a> asynchronously completes with
    <var>result</var>:</li><li><p>If <var>result</var> is null, asynchronously complete this algorithm with null and abort
@@ -637,8 +641,9 @@
     <var>url</var>, <var>module script</var>'s <a href=#concept-module-script-credentials-mode id=fetching-scripts:concept-module-script-credentials-mode>credentials mode</a>, <var>module
     script</var>'s <a href=#concept-module-script-nonce id=fetching-scripts:concept-module-script-nonce>cryptographic nonce</a>,
     <var>module script</var>'s <a href=#concept-module-script-parser id=fetching-scripts:concept-module-script-parser>parser state</a>,
-    <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>, and
-    <var>ancestor list</var>.</p>
+    <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>, <var>module
+    script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>, <var>ancestor list</var>, and <var>module
+    script</var>'s <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a>.</p>
 
     <p class=note>It is intentional that no custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-4>set up the request</a> or <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-4>process the response</a> steps are passed along
     here. Those hooks only apply to the top-level fetch at the root of the module script tree.</p>
@@ -654,9 +659,9 @@
 
   <p>To <dfn id=fetch-a-single-module-script>fetch a single module script</dfn>, given a <var>url</var>, a <var>credentials
   mode</var>, a <var>cryptographic nonce</var>, a <var>parser state</var>, a <var>destination</var>,
-  a <var>fetch client settings object</var>, and a <var>module map settings object</var>, run these
-  steps. The algorithm will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-4>module
-  script</a> (on success).</p>
+  a <var>fetch client settings object</var>, a <var>module map settings object</var>, and a
+  <var>referrer</var>, run these steps. The algorithm will asynchronously complete with either null
+  (on failure) or a <a href=#module-script id=fetching-scripts:module-script-4>module script</a> (on success).</p>
 
   <ol><li><p>Let <var>module map</var> be <var>module map settings object</var>'s <a href=#module-map id=fetching-scripts:module-map>module
    map</a>.</li><li><p>If <var>module map</var> contains an entry with key <var>url</var> whose value is "<code>fetching</code>", wait (<a id=fetching-scripts:in-parallel href=infrastructure.html#in-parallel>in parallel</a>) until that entry's value changes,
@@ -667,8 +672,8 @@
    <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-2 data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination-3 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-3 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode-2 data-x-internal=concept-request-mode>mode</a> is "<code>cors</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode-2 data-x-internal=concept-request-credentials-mode>credentials mode</a> is <var>credentials
    mode</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata id=fetching-scripts:concept-request-nonce-metadata-2 data-x-internal=concept-request-nonce-metadata>cryptographic nonce metadata</a> is
    <var>cryptographic nonce</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata-3 data-x-internal=concept-request-parser-metadata>parser
-   metadata</a> is <var>parser state</var>and <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client-3 data-x-internal=concept-request-client>client</a>
-   is <var>fetch client settings object</var>.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-5>set
+   metadata</a> is <var>parser state</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer id=fetching-scripts:concept-request-referrer data-x-internal=concept-request-referrer>referrer</a> is <var>referrer</var>, and <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client-3 data-x-internal=concept-request-client>client</a> is <var>fetch client settings
+   object</var>.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-5>set
    up the request</a>, perform them on <var>request</var>.</li><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=fetching-scripts:concept-fetch-3 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li>
     <p>Return from this algorithm, and run the remaining steps as part of the fetch's
     <a id=fetching-scripts:process-response-3 href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-4 data-x-internal=concept-response>response</a>
@@ -684,13 +689,13 @@
      <a id=fetching-scripts:ok-status-3 href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a></li><li>
       <p>The result of <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-header-extract-mime-type id=fetching-scripts:extract-a-mime-type data-x-internal=extract-a-mime-type>extracting a MIME type</a> from
       <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-header-list id=fetching-scripts:concept-response-header-list data-x-internal=concept-response-header-list>header list</a>
-      (ignoring parameters) is not a <a id=fetching-scripts:javascript-mime-type href=scripting.html#javascript-mime-type>JavaScript MIME type</a>.</p>
+      (ignoring parameters) is not a <a id=fetching-scripts:javascript-mime-type href=scripting.html#javascript-mime-type>JavaScript MIME type</a></p>
 
       <p class=note>For historical reasons, <a href=#fetch-a-classic-script id=fetching-scripts:fetch-a-classic-script>fetching a
       classic script</a> does not include MIME type checking. In contrast, module scripts will
       fail to load if they are not of a correct MIME type.</p>
      </li><li><p>The caller specified custom steps to <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-5>process the response</a>, which when performed
-     on <var>response</var> return false.</li></ul>
+     on <var>response</var> return false</li></ul>
    </li><li><p>Let <var>source text</var> be the result of <a href=https://triple-underscore.github.io/Encoding-ja.html#utf-8-decode id=fetching-scripts:utf-8-decode-2 data-x-internal=utf-8-decode>UTF-8
    decoding</a> <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-body id=fetching-scripts:concept-response-body-3 data-x-internal=concept-response-body>body</a>.</li><li><p>Let <var>module script</var> be the result of <a href=#creating-a-module-script id=fetching-scripts:creating-a-module-script>creating a module script</a> given
    <var>source text</var>, <var>module map settings object</var>, <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=fetching-scripts:concept-response-url data-x-internal=concept-response-url>url</a>, <var>credentials mode</var>, and <var>cryptographic
@@ -699,7 +704,7 @@
     <var>module script</var>, and asynchronously complete this algorithm with <var>module
     script</var>.</p>
 
-    <p class=note>It is intentional that the <a href=#module-map id=fetching-scripts:module-map-2>module map</a> is keyed by the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-3 data-x-internal=concept-request-url>request URL</a>, whereas the <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a> for the <a href=#module-script id=fetching-scripts:module-script-5>module script</a> is
+    <p class=note>It is intentional that the <a href=#module-map id=fetching-scripts:module-map-2>module map</a> is keyed by the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-3 data-x-internal=concept-request-url>request URL</a>, whereas the <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url-2>base URL</a> for the <a href=#module-script id=fetching-scripts:module-script-5>module script</a> is
     set to the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=fetching-scripts:concept-response-url-2 data-x-internal=concept-response-url>response URL</a>. The former is used to
     deduplicate fetches, while the latter is used for URL resolution.</p>
    </li></ol>
@@ -1249,7 +1254,7 @@
   <pre class=idl>[Constructor(DOMString type, optional <a href=#erroreventinit id=the-errorevent-interface:erroreventinit>ErrorEventInit</a> eventInitDict), Exposed=(Window,Worker)]
 interface <dfn id=errorevent>ErrorEvent</dfn> : <a id=the-errorevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
   readonly attribute DOMString <a href=#dom-errorevent-message id=the-errorevent-interface:dom-errorevent-message>message</a>;
-  readonly attribute DOMString <a href=#dom-errorevent-filename id=the-errorevent-interface:dom-errorevent-filename>filename</a>;
+  readonly attribute USVString <a href=#dom-errorevent-filename id=the-errorevent-interface:dom-errorevent-filename>filename</a>;
   readonly attribute unsigned long <a href=#dom-errorevent-lineno id=the-errorevent-interface:dom-errorevent-lineno>lineno</a>;
   readonly attribute unsigned long <a href=#dom-errorevent-colno id=the-errorevent-interface:dom-errorevent-colno>colno</a>;
   readonly attribute any <a href=#dom-errorevent-error id=the-errorevent-interface:dom-errorevent-error>error</a>;
@@ -1257,7 +1262,7 @@ interface <dfn id=errorevent>ErrorEvent</dfn> : <a id=the-errorevent-interface:e
 
 dictionary <dfn id=erroreventinit>ErrorEventInit</dfn> : <a id=the-errorevent-interface:eventinit href=https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
   DOMString message = "";
-  DOMString filename = "";
+  USVString filename = "";
   unsigned long lineno = 0;
   unsigned long colno = 0;
   any error = null;
@@ -3424,12 +3429,12 @@ interface <dfn id=navigatorlanguage>NavigatorLanguage</dfn> {
   <pre class=idl>[NoInterfaceObject]
 interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
   // content handler registration
-  void <a href=#dom-navigator-registerprotocolhandler id=custom-handlers:dom-navigator-registerprotocolhandler-2>registerProtocolHandler</a>(DOMString scheme, DOMString url, DOMString title);
-  void <a href=#dom-navigator-registercontenthandler id=custom-handlers:dom-navigator-registercontenthandler-2>registerContentHandler</a>(DOMString mimeType, DOMString url, DOMString title);
-  DOMString <a href=#dom-navigator-isprotocolhandlerregistered id=custom-handlers:dom-navigator-isprotocolhandlerregistered>isProtocolHandlerRegistered</a>(DOMString scheme, DOMString url);
-  DOMString <a href=#dom-navigator-iscontenthandlerregistered id=custom-handlers:dom-navigator-iscontenthandlerregistered>isContentHandlerRegistered</a>(DOMString mimeType, DOMString url);
-  void <a href=#dom-navigator-unregisterprotocolhandler id=custom-handlers:dom-navigator-unregisterprotocolhandler>unregisterProtocolHandler</a>(DOMString scheme, DOMString url);
-  void <a href=#dom-navigator-unregistercontenthandler id=custom-handlers:dom-navigator-unregistercontenthandler>unregisterContentHandler</a>(DOMString mimeType, DOMString url);
+  void <a href=#dom-navigator-registerprotocolhandler id=custom-handlers:dom-navigator-registerprotocolhandler-2>registerProtocolHandler</a>(DOMString scheme, USVString url, DOMString title);
+  void <a href=#dom-navigator-registercontenthandler id=custom-handlers:dom-navigator-registercontenthandler-2>registerContentHandler</a>(DOMString mimeType, USVString url, DOMString title);
+  DOMString <a href=#dom-navigator-isprotocolhandlerregistered id=custom-handlers:dom-navigator-isprotocolhandlerregistered>isProtocolHandlerRegistered</a>(DOMString scheme, USVString url);
+  DOMString <a href=#dom-navigator-iscontenthandlerregistered id=custom-handlers:dom-navigator-iscontenthandlerregistered>isContentHandlerRegistered</a>(DOMString mimeType, USVString url);
+  void <a href=#dom-navigator-unregisterprotocolhandler id=custom-handlers:dom-navigator-unregisterprotocolhandler>unregisterProtocolHandler</a>(DOMString scheme, USVString url);
+  void <a href=#dom-navigator-unregistercontenthandler id=custom-handlers:dom-navigator-unregistercontenthandler>unregisterContentHandler</a>(DOMString mimeType, USVString url);
 };</pre>
 
   <p><dfn id=dom-navigator-registerprotocolhandler><code>registerProtocolHandler()</code></dfn>メソッドは、ウェブサイトが特定のスキームに対する可能なハンドラとして自身の登録を可能にする。For example, an online telephone messaging service could register itself as a handler of the <code id=custom-handlers:sms-protocol><a data-x-internal=sms-protocol href=https://tools.ietf.org/html/rfc5724#section-2>sms:</a></code> scheme, so that if the user clicks on such a link, they are given the opportunity to use that Web site. Analogously, the <dfn id=dom-navigator-registercontenthandler><code>registerContentHandler()</code></dfn> method allows Web sites to register themselves as possible handlers for content in a particular <a id=custom-handlers:mime-type href=infrastructure.html#mime-type>MIME type</a>. For example, the same online telephone messaging service could register itself as a handler for <code id=custom-handlers:text/vcard><a href=indices.html#text/vcard>text/vcard</a></code> files, so that if the user has no native application capable of handling vCards, their Web browser can instead suggest they use that site to view contact information stored on vCards that they open. <a href=references.html#refsSMS>[SMS]</a> <a href=references.html#refsRFC6350>[RFC6350]</a></p>
@@ -4289,12 +4294,9 @@ interface <dfn id=imagebitmap>ImageBitmap</dfn> {
   void <a href=#dom-imagebitmap-close id=images:dom-imagebitmap-close>close</a>();
 };
 
-typedef (<a id=images:htmlorsvgimageelement href=scripting.html#htmlorsvgimageelement>HTMLOrSVGImageElement</a> or
-         <a id=images:htmlvideoelement href=embedded-content.html#htmlvideoelement>HTMLVideoElement</a> or
-         <a id=images:htmlcanvaselement href=scripting.html#htmlcanvaselement>HTMLCanvasElement</a> or
+typedef (<a id=images:canvasimagesource href=scripting.html#canvasimagesource>CanvasImageSource</a> or
          <a id=images:blob href=https://triple-underscore.github.io/File_API-ja.html#blob data-x-internal=blob>Blob</a> or
-         <a id=images:imagedata href=scripting.html#imagedata>ImageData</a> or
-         <a href=#imagebitmap id=images:imagebitmap>ImageBitmap</a>) <dfn id=imagebitmapsource>ImageBitmapSource</dfn>;
+         <a id=images:imagedata href=scripting.html#imagedata>ImageData</a>) <dfn id=imagebitmapsource>ImageBitmapSource</dfn>;
 
 enum <dfn id=imageorientation>ImageOrientation</dfn> { "<a href=#dom-imageorientation-none id=images:dom-imageorientation-none>none</a>", "<a href=#dom-imageorientation-flipy id=images:dom-imageorientation-flipy>flipY</a>" };
 enum <dfn id=premultiplyalpha>PremultiplyAlpha</dfn> { "<a href=#dom-premultiplyalpha-none id=images:dom-premultiplyalpha-none>none</a>", "<a href=#dom-premultiplyalpha-premultiply id=images:dom-premultiplyalpha-premultiply>premultiply</a>", "<a href=#dom-premultiplyalpha-default id=images:dom-premultiplyalpha-default>default</a>" };
@@ -4306,7 +4308,7 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
   <a href=#colorspaceconversion id=images:colorspaceconversion>ColorSpaceConversion</a> <a href=#dom-imagebitmapoptions-colorspaceconversion id=images:dom-imagebitmapoptions-colorspaceconversion>colorSpaceConversion</a> = "<a href=#dom-colorspaceconversion-default id=images:dom-colorspaceconversion-default-2>default</a>";
 };</pre>
 
-  <p><code id=images:imagebitmap-2><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトは過度の待ち時間なしのキャンバスに塗装できるビットマップ画像を表す。</p>
+  <p><code id=images:imagebitmap><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトは過度の待ち時間なしのキャンバスに塗装できるビットマップ画像を表す。</p>
 
   <p class=note>この過度の待ち時間は何かの正確な判断は実装者に委ねるが、一般にビットマップを活用することは、ネットワークI/O、あるいはローカルディスクI/Oを必要とする場合、その後待ち時間はおそらく過度である。一方それが唯一のGPUやシステムRAMからのブロッキングの読み出しを必要とする場合、待ち時間はおそらく許容できる。</p>
 
@@ -4315,14 +4317,14 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
     <p>Takes <var>image</var>, which can be an <code id=images:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element, an <a id=images:svg-image href=https://triple-underscore.github.io/SVG11/struct.html#ImageElement data-x-internal=svg-image>SVG
     <code>image</code></a> element, a <code id=images:the-video-element><a href=embedded-content.html#the-video-element>video</a></code> element, a <code id=images:the-canvas-element><a href=scripting.html#the-canvas-element>canvas</a></code>
     element, a <code id=images:blob-2><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> object, an <code id=images:imagedata-2><a href=scripting.html#imagedata>ImageData</a></code> object, or another
-    <code id=images:imagebitmap-3><a href=#imagebitmap>ImageBitmap</a></code> object, and returns a promise that is resolved when a new
-    <code id=images:imagebitmap-4><a href=#imagebitmap>ImageBitmap</a></code> is created.</p>
+    <code id=images:imagebitmap-2><a href=#imagebitmap>ImageBitmap</a></code> object, and returns a promise that is resolved when a new
+    <code id=images:imagebitmap-3><a href=#imagebitmap>ImageBitmap</a></code> is created.</p>
 
-    <p><code id=images:imagebitmap-5><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトを構築することが全くできない場合、たとえば、与えられた<var>image</var> データが実際の画像ではないので、代わりにpromiseが却下される。</p>
+    <p><code id=images:imagebitmap-4><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトを構築することが全くできない場合、たとえば、与えられた<var>image</var> データが実際の画像ではないので、代わりにpromiseが却下される。</p>
 
     <p><var>sx</var>、<var>sy</var>、<var>sw</var>、および<var>sh</var>引数が提供される場合、ソース画像は、透明な黒によって置き換えられたオリジナルで任意のピクセル欠落とともに、与えられたピクセルにトリミングされる。These coordinates are in the source image's pixel coordinate space, <em>not</em> in <a href=https://momdo.github.io/css3-values/#px id="images:'px'" data-x-internal="'px'">CSS pixels</a>.</p>
 
-    <p>If <var>options</var> is provided, the <code id=images:imagebitmap-6><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap
+    <p>If <var>options</var> is provided, the <code id=images:imagebitmap-5><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap
     data is modified according to <var>options</var>. For example,
     if the <code id=images:dom-imagebitmapoptions-premultiplyalpha-2><a href=#dom-imagebitmapoptions-premultiplyalpha>premultiplyAlpha</a></code>
     option is set to "<code id=images:dom-premultiplyalpha-premultiply-2><a href=#dom-premultiplyalpha-premultiply>premultiply</a></code>",
@@ -4333,10 +4335,9 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
 
     <p>Rejects the promise with an <a id=images:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
     <code id=images:domexception><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> if the source image is not in a valid state (e.g. an <code id=images:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code>
-    element that hasn't loaded successfully, or a <code id=images:canvasrenderingcontext2d><a href=scripting.html#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object whose
-    bitmap data has zero length along one or both dimensions, an <code id=images:imagebitmap-7><a href=#imagebitmap>ImageBitmap</a></code> object
-    whose [[<a id=images:detached href=infrastructure.html#detached>Detached</a>]] internal slot value is true, an <code id=images:imagedata-3><a href=scripting.html#imagedata>ImageData</a></code> object
-    whose <code id=images:dom-imagedata-data><a href=scripting.html#dom-imagedata-data>data</a></code> attribute value's [[<a id=images:detached-2 href=infrastructure.html#detached>Detached</a>]]
+    element that hasn't loaded successfully, an <code id=images:imagebitmap-6><a href=#imagebitmap>ImageBitmap</a></code> object whose
+    [[<a id=images:detached href=infrastructure.html#detached>Detached</a>]] internal slot value is true, an <code id=images:imagedata-3><a href=scripting.html#imagedata>ImageData</a></code> object whose
+    <code id=images:dom-imagedata-data><a href=scripting.html#dom-imagedata-data>data</a></code> attribute value's [[<a id=images:detached-2 href=infrastructure.html#detached>Detached</a>]]
     internal slot value is true, or a <code id=images:blob-3><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> whose data cannot be interpreted as a bitmap
     image).</p>
 
@@ -4364,36 +4365,36 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
 
   
 
-  <p>An <code id=images:imagebitmap-8><a href=#imagebitmap>ImageBitmap</a></code> object whose [[<a id=images:detached-3 href=infrastructure.html#detached>Detached</a>]] internal slot value
+  <p>An <code id=images:imagebitmap-7><a href=#imagebitmap>ImageBitmap</a></code> object whose [[<a id=images:detached-3 href=infrastructure.html#detached>Detached</a>]] internal slot value
   is false always has associated <dfn id=concept-imagebitmap-bitmap-data>bitmap data</dfn>,
   with a width and a height. However, it is possible for this data to be corrupted. If an
-  <code id=images:imagebitmap-9><a href=#imagebitmap>ImageBitmap</a></code> object's media data can be decoded without errors, it is said to be <dfn id=concept-imagebitmap-good>fully decodable</dfn>.</p>
+  <code id=images:imagebitmap-8><a href=#imagebitmap>ImageBitmap</a></code> object's media data can be decoded without errors, it is said to be <dfn id=concept-imagebitmap-good>fully decodable</dfn>.</p>
 
-  <p>An <code id=images:imagebitmap-10><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap has an <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean>origin-clean</a> flag, which indicates whether the
+  <p>An <code id=images:imagebitmap-9><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap has an <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean>origin-clean</a> flag, which indicates whether the
   bitmap is tainted by content from a different <a id=images:concept-origin-2 href=browsers.html#concept-origin>origin</a>. The flag is initially set to
   true and may be changed to false by the steps of <code id=images:dom-createimagebitmap-3><a href=#dom-createimagebitmap>createImageBitmap()</a></code>.</p>
 
-  <p><code id=images:imagebitmap-11><a href=#imagebitmap>ImageBitmap</a></code> objects are <a id=images:cloneable-objects href=infrastructure.html#cloneable-objects>cloneable objects</a> and <a id=images:transferable-objects href=infrastructure.html#transferable-objects>transferable
+  <p><code id=images:imagebitmap-10><a href=#imagebitmap>ImageBitmap</a></code> objects are <a id=images:cloneable-objects href=infrastructure.html#cloneable-objects>cloneable objects</a> and <a id=images:transferable-objects href=infrastructure.html#transferable-objects>transferable
   objects</a>.</p>
 
-  <p>Each <code id=images:imagebitmap-12><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:clone href=infrastructure.html#clone>Clone</a>]] internal method, given
+  <p>Each <code id=images:imagebitmap-11><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:clone href=infrastructure.html#clone>Clone</a>]] internal method, given
   <var>targetRealm</var> and ignoring <var>memory</var>, must run these steps:</p>
 
   <ol><li><p>If <b>this</b>'s [[<a id=images:detached-4 href=infrastructure.html#detached>Detached</a>]] internal slot is true, then throw a
-   <a id=images:datacloneerror href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=images:domexception-3><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code>.</li><li><p>Return a new <code id=images:imagebitmap-13><a href=#imagebitmap>ImageBitmap</a></code> object in <var>targetRealm</var> whose <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-3>bitmap data</a> is a copy of <b>this</b>'s <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-4>bitmap data</a>, and whose <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-2>origin-clean</a> flag is set to the same value as
+   <a id=images:datacloneerror href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=images:domexception-3><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code>.</li><li><p>Return a new <code id=images:imagebitmap-12><a href=#imagebitmap>ImageBitmap</a></code> object in <var>targetRealm</var> whose <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-3>bitmap data</a> is a copy of <b>this</b>'s <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-4>bitmap data</a>, and whose <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-2>origin-clean</a> flag is set to the same value as
    <b>this</b>'s <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-3>origin-clean</a> flag.</li></ol>
 
-  <p>Each <code id=images:imagebitmap-14><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:transfer href=infrastructure.html#transfer>Transfer</a>]] internal method, given
+  <p>Each <code id=images:imagebitmap-13><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:transfer href=infrastructure.html#transfer>Transfer</a>]] internal method, given
   <var>targetRealm</var>, must run these steps:</p>
 
-  <ol><li><p>Let <var>new</var> be a new <code id=images:imagebitmap-15><a href=#imagebitmap>ImageBitmap</a></code> object in <var>targetRealm</var>,
+  <ol><li><p>Let <var>new</var> be a new <code id=images:imagebitmap-14><a href=#imagebitmap>ImageBitmap</a></code> object in <var>targetRealm</var>,
    pointing at the same underlying <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-5>bitmap data</a>
    as <b>this</b>.</li><li><p>Set <var>new</var>'s bitmap's <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-4>origin-clean</a> flag to the same values as
    <b>this</b>'s bitmap's <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-5>origin-clean</a>
    flag.</li><li><p>Set <b>this</b>'s [[<a id=images:detached-5 href=infrastructure.html#detached>Detached</a>]] internal slot value to true.</li><li><p>Unset <b>this</b>'s <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-6>bitmap
    data</a>.</li><li><p>Return <var>new</var>.</li></ol>
 
-  <p>An <code id=images:imagebitmap-16><a href=#imagebitmap>ImageBitmap</a></code> object can be obtained from a variety of different objects, using
+  <p>An <code id=images:imagebitmap-15><a href=#imagebitmap>ImageBitmap</a></code> object can be obtained from a variety of different objects, using
   the <dfn id=dom-createimagebitmap><code>createImageBitmap()</code></dfn> method. When
   invoked, the method must act as follows:</p>
   
@@ -4420,16 +4421,16 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
      steps.</li><li><p>If the <var>sh</var> argument is not specified and <var>image</var>'s media data has
      an <a id=images:intrinsic-height-3 href=infrastructure.html#intrinsic-height>intrinsic height</a> of 0, then return a promise rejected with an
      <a id=images:invalidstateerror-5 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-8><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these
-     steps.</li><li><p>Create a new <code id=images:imagebitmap-17><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-18><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-7>bitmap data</a> be a copy of <var>image</var>'s
+     steps.</li><li><p>Create a new <code id=images:imagebitmap-16><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-17><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-7>bitmap data</a> be a copy of <var>image</var>'s
      media data, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting>cropped to the source rectangle with formatting</a>. If this is an
-     animated image, the <code id=images:imagebitmap-19><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-8>bitmap data</a> must only be taken from the
+     animated image, the <code id=images:imagebitmap-18><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-8>bitmap data</a> must only be taken from the
      default image of the animation (the one that the format defines is to be used when animation
      is not supported or is disabled), or, if there is no such image, the first frame of the
      animation.</li><li><p>If the <a id=images:concept-origin-3 href=browsers.html#concept-origin>origin</a> of <var>image</var>'s image is not the <a id=images:same-origin href=browsers.html#same-origin>same
      origin</a> as the <a id=images:concept-origin-4 href=browsers.html#concept-origin>origin</a> specified by the <a href=#entry-settings-object id=images:entry-settings-object>entry settings object</a>,
      then set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-6>origin-clean</a> flag of the
-     <code id=images:imagebitmap-20><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-21><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <code id=images:imagebitmap-19><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
+     <a id=images:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-20><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is a <code id=images:the-video-element-3><a href=embedded-content.html#the-video-element>video</a></code> element
 
@@ -4443,15 +4444,15 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
      <a id=images:invalidstateerror-6 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-10><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these
      steps.</li><li><p>If the <code id=images:the-video-element-5><a href=embedded-content.html#the-video-element>video</a></code> element's <code id=images:dom-media-readystate><a href=embedded-content.html#dom-media-readystate>readyState</a></code> attribute is either <code id=images:dom-media-have_nothing><a href=embedded-content.html#dom-media-have_nothing>HAVE_NOTHING</a></code> or <code id=images:dom-media-have_metadata><a href=embedded-content.html#dom-media-have_metadata>HAVE_METADATA</a></code>, then return a promise rejected with an
      <a id=images:invalidstateerror-7 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-11><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these
-     steps.</li><li><p>Create a new <code id=images:imagebitmap-22><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-23><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-9>bitmap data</a> be a copy of the frame at the
+     steps.</li><li><p>Create a new <code id=images:imagebitmap-21><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-22><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-9>bitmap data</a> be a copy of the frame at the
      <a id=images:current-playback-position href=embedded-content.html#current-playback-position>current playback position</a>, at the <a id=images:media-resource href=embedded-content.html#media-resource>media resource</a>'s <a href=embedded-content.html#concept-video-intrinsic-width id=images:concept-video-intrinsic-width>intrinsic width</a> and <a href=embedded-content.html#concept-video-intrinsic-height id=images:concept-video-intrinsic-height>intrinsic height</a> (i.e. after any aspect-ratio
      correction has been applied), <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-2>cropped to the source rectangle with formatting</a>.</p>
 
      </li><li><p>If the <a id=images:concept-origin-5 href=browsers.html#concept-origin>origin</a> of the <code id=images:the-video-element-6><a href=embedded-content.html#the-video-element>video</a></code> element is not the <a id=images:same-origin-2 href=browsers.html#same-origin>same
      origin</a> as the <a id=images:concept-origin-6 href=browsers.html#concept-origin>origin</a> specified by the <a href=#entry-settings-object id=images:entry-settings-object-2>entry settings object</a>,
      then set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-7>origin-clean</a> flag of the
-     <code id=images:imagebitmap-24><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-2 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-25><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <code id=images:imagebitmap-23><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to false.</li><li><p>Return a new promise, but continue running these steps
+     <a id=images:in-parallel-2 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-24><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is a <code id=images:the-canvas-element-3><a href=scripting.html#the-canvas-element>canvas</a></code> element
 
@@ -4464,12 +4465,12 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
      <code id=images:domexception-12><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>If the <code id=images:the-canvas-element-4><a href=scripting.html#the-canvas-element>canvas</a></code> element's bitmap has either a horizontal dimension or a
      vertical dimension equal to zero, then return a promise rejected with an
      <a id=images:invalidstateerror-8 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-13><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these
-     steps.</li><li><p>Create a new <code id=images:imagebitmap-26><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-27><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-10>bitmap data</a> be a copy of the
+     steps.</li><li><p>Create a new <code id=images:imagebitmap-25><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-26><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-10>bitmap data</a> be a copy of the
      <code id=images:the-canvas-element-5><a href=scripting.html#the-canvas-element>canvas</a></code> element's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-11>bitmap data</a>, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-3>cropped to the source
      rectangle with formatting</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-8>origin-clean</a> flag of the
-     <code id=images:imagebitmap-28><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-9>origin-clean</a> flag of the <code id=images:the-canvas-element-6><a href=scripting.html#the-canvas-element>canvas</a></code>
+     <code id=images:imagebitmap-27><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-9>origin-clean</a> flag of the <code id=images:the-canvas-element-6><a href=scripting.html#the-canvas-element>canvas</a></code>
      element's bitmap.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-3 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-29><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <a id=images:in-parallel-3 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-28><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is a <code id=images:blob-4><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> object
 
@@ -4492,12 +4493,12 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
      all), or if the image data is corrupted in some fatal way such that the image dimensions
      cannot be obtained (e.g. a vector graphic with no intrinsic size), then reject the promise
      with an <a id=images:invalidstateerror-11 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-17><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code>, and abort
-     these steps.</li><li><p>Create a new <code id=images:imagebitmap-30><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-31><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-12>bitmap data</a> be the image data read from the
+     these steps.</li><li><p>Create a new <code id=images:imagebitmap-29><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-30><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-12>bitmap data</a> be the image data read from the
      <code id=images:blob-8><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> object, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-4>cropped to the source rectangle with formatting</a>.
-     If this is an animated image, the <code id=images:imagebitmap-32><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-13>bitmap data</a> must only be taken from the
+     If this is an animated image, the <code id=images:imagebitmap-31><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-13>bitmap data</a> must only be taken from the
      default image of the animation (the one that the format defines is to be used when animation
      is not supported or is disabled), or, if there is no such image, the first frame of the
-     animation.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-33><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     animation.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-32><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    <dt>If <var>image</var> is an <code id=images:imagedata-4><a href=scripting.html#imagedata>ImageData</a></code> object
 
@@ -4510,11 +4511,11 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
      <code id=images:domexception-18><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>If the <var>image</var> object's <code id=images:dom-imagedata-data-2><a href=scripting.html#dom-imagedata-data>data</a></code> attribute
      value's [[<a id=images:detached-6 href=infrastructure.html#detached>Detached</a>]] internal slot value is true, return a promise rejected with
      an <a id=images:invalidstateerror-12 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-19><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these
-     steps.</li><li><p>Create a new <code id=images:imagebitmap-34><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-35><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-14>bitmap data</a> be the image data given by the
+     steps.</li><li><p>Create a new <code id=images:imagebitmap-33><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-34><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-14>bitmap data</a> be the image data given by the
      <code id=images:imagedata-5><a href=scripting.html#imagedata>ImageData</a></code> object, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-5>cropped to the source rectangle with formatting</a>.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-5 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-36><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <a id=images:in-parallel-5 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-35><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
-   <dt>If <var>image</var> is an <code id=images:imagebitmap-37><a href=#imagebitmap>ImageBitmap</a></code> object
+   <dt>If <var>image</var> is an <code id=images:imagebitmap-36><a href=#imagebitmap>ImageBitmap</a></code> object
 
    
 
@@ -4524,12 +4525,12 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
      but zero, return a promise rejected with an <a id=images:indexsizeerror-6 href=https://triple-underscore.github.io/WebIDL-ja.html#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a>
      <code id=images:domexception-20><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>If <var>image</var>'s [[<a id=images:detached-7 href=infrastructure.html#detached>Detached</a>]] internal slot value is true, return a
      promise rejected with an <a id=images:invalidstateerror-13 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
-     <code id=images:domexception-21><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-38><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-39><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-15>bitmap data</a> be a copy of the <var>image</var>
+     <code id=images:domexception-21><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>Create a new <code id=images:imagebitmap-37><a href=#imagebitmap>ImageBitmap</a></code> object.</li><li><p>Let the <code id=images:imagebitmap-38><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-15>bitmap data</a> be a copy of the <var>image</var>
      argument's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-16>bitmap data</a>, <a href=#cropped-to-the-source-rectangle-with-formatting id=images:cropped-to-the-source-rectangle-with-formatting-6>cropped
      to the source rectangle with formatting</a>.</li><li><p>Set the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-10>origin-clean</a> flag of the
-     <code id=images:imagebitmap-40><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-11>origin-clean</a> flag of the bitmap of the
+     <code id=images:imagebitmap-39><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap to the same value as the <a href=scripting.html#concept-canvas-origin-clean id=images:concept-canvas-origin-clean-11>origin-clean</a> flag of the bitmap of the
      <var>image</var> argument.</li><li><p>Return a new promise, but continue running these steps
-     <a id=images:in-parallel-6 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-41><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
+     <a id=images:in-parallel-6 href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Resolve the promise with the new <code id=images:imagebitmap-40><a href=#imagebitmap>ImageBitmap</a></code> object as the value.</li></ol>
 
    </dl>
 
@@ -4593,21 +4594,21 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
   <p>When the <dfn id=dom-imagebitmap-close><code>close()</code></dfn> method is called, the
   user agent must run these steps:</p>
 
-  <ol><li><p>Set this <code id=images:imagebitmap-42><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:detached-8 href=infrastructure.html#detached>Detached</a>]] internal slot value
-   to true.</li><li><p>Unset this <code id=images:imagebitmap-43><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-18>bitmap data</a>.</li></ol>
+  <ol><li><p>Set this <code id=images:imagebitmap-41><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:detached-8 href=infrastructure.html#detached>Detached</a>]] internal slot value
+   to true.</li><li><p>Unset this <code id=images:imagebitmap-42><a href=#imagebitmap>ImageBitmap</a></code> object's <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-18>bitmap data</a>.</li></ol>
 
   <p>The <dfn id=dom-imagebitmap-width><code>width</code></dfn> attribute's getter must run
   these steps:</p>
 
-  <ol><li><p>If this <code id=images:imagebitmap-44><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:detached-9 href=infrastructure.html#detached>Detached</a>]] internal slot's
-   value is true, then return 0.</li><li><p>Return this <code id=images:imagebitmap-45><a href=#imagebitmap>ImageBitmap</a></code> object's width, in <a href=https://momdo.github.io/css3-values/#px id="images:'px'-4" data-x-internal="'px'">CSS
+  <ol><li><p>If this <code id=images:imagebitmap-43><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:detached-9 href=infrastructure.html#detached>Detached</a>]] internal slot's
+   value is true, then return 0.</li><li><p>Return this <code id=images:imagebitmap-44><a href=#imagebitmap>ImageBitmap</a></code> object's width, in <a href=https://momdo.github.io/css3-values/#px id="images:'px'-4" data-x-internal="'px'">CSS
    pixels</a>.</li></ol>
 
   <p>The <dfn id=dom-imagebitmap-height><code>height</code></dfn> attribute's getter must run
   these steps:</p>
 
-  <ol><li><p>If this <code id=images:imagebitmap-46><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:detached-10 href=infrastructure.html#detached>Detached</a>]] internal slot's
-   value is true, then return 0.</li><li><p>Return this <code id=images:imagebitmap-47><a href=#imagebitmap>ImageBitmap</a></code> object's height, in <a href=https://momdo.github.io/css3-values/#px id="images:'px'-5" data-x-internal="'px'">CSS
+  <ol><li><p>If this <code id=images:imagebitmap-45><a href=#imagebitmap>ImageBitmap</a></code> object's [[<a id=images:detached-10 href=infrastructure.html#detached>Detached</a>]] internal slot's
+   value is true, then return 0.</li><li><p>Return this <code id=images:imagebitmap-46><a href=#imagebitmap>ImageBitmap</a></code> object's height, in <a href=https://momdo.github.io/css3-values/#px id="images:'px'-5" data-x-internal="'px'">CSS
    pixels</a>.</li></ol>
 
   
