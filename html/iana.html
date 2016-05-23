@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 May 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>23 May 2016</span></h2></hgroup>
    
    
   </header>
@@ -341,7 +341,7 @@
 
   
 
-  <nav><a href=obsolete.html>← 15 旧式の機能</a> — <a href=index.html>目次</a> — <a href=indices.html>索引 →</a></nav><ol class=toc><li id=toc-iana><a href=iana.html#iana>16 IANAの考慮</a><ol><li><a href=iana.html#text/html>16.1 <code>text/html</code></a></li><li><a href=iana.html#multipart/x-mixed-replace>16.2 <code>multipart/x-mixed-replace</code></a></li><li><a href=iana.html#application/xhtml+xml>16.3 <code>application/xhtml+xml</code></a></li><li><a href=iana.html#text/cache-manifest>16.4 <code>text/cache-manifest</code></a></li><li><a href=iana.html#text/ping>16.5 <code>text/ping</code></a></li><li><a href=iana.html#application/microdata+json>16.6 <code>application/microdata+json</code></a></li><li><a href=iana.html#ping-from>16.7 `<code>Ping-From</code>`</a></li><li><a href=iana.html#ping-to>16.8 `<code>Ping-To</code>`</a></li><li><a href=iana.html#web+-scheme-prefix>16.9 <code>web+</code>スキーマ接頭辞</a></li></ol></li></ol><h2 id=iana>16 IANAの考慮</h2>
+  <nav><a href=obsolete.html>← 15 旧式の機能</a> — <a href=index.html>目次</a> — <a href=indices.html>索引 →</a></nav><ol class=toc><li id=toc-iana><a href=iana.html#iana>16 IANAの考慮</a><ol><li><a href=iana.html#text/html>16.1 <code>text/html</code></a></li><li><a href=iana.html#multipart/x-mixed-replace>16.2 <code>multipart/x-mixed-replace</code></a></li><li><a href=iana.html#application/xhtml+xml>16.3 <code>application/xhtml+xml</code></a></li><li><a href=iana.html#text/cache-manifest>16.4 <code>text/cache-manifest</code></a></li><li><a href=iana.html#text/ping>16.5 <code>text/ping</code></a></li><li><a href=iana.html#application/microdata+json>16.6 <code>application/microdata+json</code></a></li><li><a href=iana.html#text/event-stream>16.7 <code>text/event-stream</code></a></li><li><a href=iana.html#ping-from>16.8 `<code>Ping-From</code>`</a></li><li><a href=iana.html#ping-to>16.9 `<code>Ping-To</code>`</a></li><li><a href="iana.html#`last-event-id`">16.10 `<code>Last-Event-ID</code>`</a></li><li><a href=iana.html#web+-scheme-prefix>16.11 <code>web+</code> scheme prefix</a></li></ol></li></ol><h2 id=iana>16 IANAの考慮</h2>
 
   
 
@@ -528,8 +528,51 @@
   <a href=references.html#refsJSON>[JSON]</a></p>
 
 
+  <h3 id=text/event-stream>16.7 <dfn><code>text/event-stream</code></dfn></h3>
 
-  <h3 id=ping-from>16.7 `<dfn><code>Ping-From</code></dfn>`</h3>
+  <p>この登録は、コミュニティーによるレビューのためであり、レビュー、承認、およびIANAへの登録のためにIESGに提出される予定である。</p>
+
+  
+
+  <dl><dt>タイプ名：<dd>text<dt>サブタイプ名：<dd>event-stream<dt>必須パラメーター：<dd>パラメーターなし<dt>任意パラメーター：<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p><code>charset</code>パラメーターは提供されてもよい。パラメーターの値は"<code>utf-8</code>"でなければならない。このパラメーターは、目的を達成しない。これはレガシーサーバとの互換性のためのみに許可される。</p>
+
+     </dl>
+   <dt>エンコーディングの考慮：<dd>8ビット（常にUTF-8）<dt>セキュリティーの考慮：<dd>
+
+    <p>An event stream from an origin distinct from the origin of the content consuming the event
+    stream can result in information leakage. To avoid this, user agents are required to apply CORS
+    semantics. <a href=references.html#refsFETCH>[FETCH]</a></p>
+
+    <p>Event streams can overwhelm a user agent; a user agent is expected to apply suitable
+    restrictions to avoid depleting local resources because of an overabundance of information from
+    an event stream.</p>
+
+    <p>Servers can be overwhelmed if a situation develops in which the server is causing clients to
+    reconnect rapidly. Servers should use a 5xx status code to indicate capacity problems, as this
+    will prevent conforming clients from reconnecting automatically.</p>
+
+   <dt>相互運用性の考慮：<dd>
+    適合および非適合コンテンツの両方を処理するための規則は、この仕様で定義される。
+   <dt>発行された仕様：<dd>
+    この文書は関連仕様である。
+   <dt>このメディアタイプを使用するアプリケーション：<dd>
+    
+    Web browsers and tools using Web services.
+   
+   <dt>追加情報：<dd>
+    <dl><dt>マジックナンバー：<dd>No sequence of bytes can uniquely identify an event stream.<dt>ファイル拡張子：<dd>いずれのファイル拡張子もこのタイプのために推奨されない。<dt>Macintoshファイルタイプコード：<dd>いずれのマッキントッシュファイルタイプコードもこのタイプのために推奨されない。</dl>
+   <dt>より詳しい情報について連絡する人物および電子メールアドレス：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>想定される利用法：<dd>一般<dt>利用法の制限：<dd>This format is only expected to be used by dynamic open-ended streams served using HTTP or a
+   similar protocol. Finite resources are not expected to be labeled with this type.<dt>著者：<dd>Ian Hickson &lt;ian@hixie.ch&gt;<dt>変更管理者：<dd>W3C</dl>
+
+  <p><a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=text/event-stream:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> have no meaning with
+  <code id=text/event-stream:text/event-stream><a href=#text/event-stream>text/event-stream</a></code> resources.</p>
+
+
+  
+  <h3 id=ping-from>16.8 `<dfn><code>Ping-From</code></dfn>`</h3>
 
   <p>This section describes a header for registration in the Permanent Message Header Field
   Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
@@ -539,7 +582,7 @@
    <dt>Related information:<dd>なし。</dl>
 
 
-  <h3 id=ping-to>16.8 `<dfn><code>Ping-To</code></dfn>`</h3>
+  <h3 id=ping-to>16.9 `<dfn><code>Ping-To</code></dfn>`</h3>
 
   <p>This section describes a header for registration in the Permanent Message Header Field
   Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
@@ -549,8 +592,17 @@
    <dt>Related information:<dd>なし。</dl>
 
 
+  <h3 id="`last-event-id`">16.10 `<dfn><code>Last-Event-ID</code></dfn>`</h3>
 
-  <h3 id=web+-scheme-prefix>16.9 <dfn><code>web+</code> scheme prefix</dfn></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18496" title="Registries (IANA): Change the IANA sections to refer to the new registration system and not IANA">18496</a>, <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18671" title="Find a solution to the problem of the IANA scheme registry being so incomplete (especially given web+)">18671</a></div>
+  <p>This section describes a header for registration in the Permanent Message Header Field
+  Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
+
+  <dl><dt>Header field name:<dd>Last-Event-ID<dt>Applicable protocol:<dd>http<dt>状態：<dd>standard<dt>著者/変更管理者：<dd>W3C<dt>Specification document(s):<dd>
+    この文書は関連仕様である。
+   <dt>Related information:<dd>なし。</dl>
+
+
+  <h3 id=web+-scheme-prefix>16.11 <dfn><code>web+</code> scheme prefix</dfn></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18496" title="Registries (IANA): Change the IANA sections to refer to the new registration system and not IANA">18496</a>, <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18671" title="Find a solution to the problem of the IANA scheme registry being so incomplete (especially given web+)">18671</a></div>
 
   <p>このセクションは、IANAのURIスキームレジストリーで使用するための規則を説明する。これ自体は特定のスキームを登録しない。<a href=references.html#refsRFC7595>[RFC7595]</a></p>
 

@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 May 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>23 May 2016</span></h2></hgroup>
    
    
   </header>
@@ -1651,7 +1651,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
     <p class=note>This causes one of the following algorithms to continue: the <a href=#event-loop id=event-loop-processing-model:event-loop-25>event
     loop</a>'s main set of steps, the <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint-5>perform a microtask checkpoint</a> algorithm, or
-    the <a href=#execute-a-compound-microtask-subtask id=event-loop-processing-model:execute-a-compound-microtask-subtask-2>execute a compound microtask subtask</a> algorithm to continue.</p>
+    the <a href=#execute-a-compound-microtask-subtask id=event-loop-processing-model:execute-a-compound-microtask-subtask-2>execute a compound microtask subtask</a> algorithm.</p>
 
    </li><li><p>Wait until the condition <var>goal</var> is met.</li><li><p><a href=#queue-a-task id=event-loop-processing-model:queue-a-task>Queue a task</a> to continue running these steps, using the <a href=#task-source id=event-loop-processing-model:task-source-6>task
    source</a> <var>task source</var>. Wait until this new task runs before continuing
@@ -1669,6 +1669,22 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
    further <a href=#concept-task id=event-loop-processing-model:concept-task-13>tasks</a>, and any script in the currently running <a href=#concept-task id=event-loop-processing-model:concept-task-14>task</a> must block. User agents should remain responsive to user input
    while paused, however, albeit in a reduced capacity since the <a href=#event-loop id=event-loop-processing-model:event-loop-27>event loop</a> will not be
    doing anything.</li></ol>
+
+  <div class=warning>
+   <p><a href=#pause id=event-loop-processing-model:pause>Pausing</a> is highly detrimental to the user experience, especially
+   in scenarios where a single <a href=#event-loop id=event-loop-processing-model:event-loop-28>event loop</a> is shared among multiple documents. User
+   agents are encouraged to experiment with alternatives to <a href=#pause id=event-loop-processing-model:pause-2>pausing</a>,
+   such as <a href=#spin-the-event-loop id=event-loop-processing-model:spin-the-event-loop-3>spinning the event loop</a> or even simply
+   proceeding without any kind of suspended execution at all, insofar as it is possible to do so
+   while preserving compatibility with existing content. This specification will happily change if
+   a less-drastic alternative is discovered to be web-compatible.</p>
+
+   <p>In the interim, implementers should be aware that the variety of alternatives that user agents
+   might experiment with can change subtle aspects of <a href=#event-loop id=event-loop-processing-model:event-loop-29>event loop</a> behavior, including
+   <a href=#concept-task id=event-loop-processing-model:concept-task-15>task</a> and <a href=#microtask id=event-loop-processing-model:microtask-11>microtask</a> timing. Implementations should
+   continue experimenting even if doing so causes them to violate the exact semantics implied by the
+   <a href=#pause id=event-loop-processing-model:pause-3>pause</a> operation.</p>
+  </div>
 
   <h5 id=generic-task-sources>8.1.4.3 Generic task sources</h5>
 
