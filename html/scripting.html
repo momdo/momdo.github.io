@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>23 May 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>30 May 2016</span></h2></hgroup>
    
    
   </header>
@@ -6517,9 +6517,9 @@ console.log(plasticButton2.getAttribute("is")); // will output "plastic-button"<
    attributes</dfn><dd>A <code>sequence&lt;DOMString&gt;</code><dt>A collection of <dfn id=concept-custom-element-definition-lifecycle-callbacks>lifecycle callbacks</dfn><dd>A map, whose three keys are the strings "<code>connectedCallback</code>",
    "<code>disconnectedCallback</code>", and "<code>attributeChangedCallback</code>". The corresponding values are either a JavaScript
    function object, or undefined. By default the value of each entry is undefined.<dt>A <dfn id=concept-custom-element-definition-construction-stack>construction
-   stack</dfn><dd>A list, initially empty, that is manipulated by the <span>upgrade an element</span> algorithm
-   and the <a href=dom.html#dom-htmlelement id=custom-elements-core-concepts:dom-htmlelement><code>HTMLElement</code> constructor</a>. Each entry in
-   the list will be either an element or an <dfn id=concept-already-constructed-marker><i>already constructed</i> marker</dfn>.</dl>
+   stack</dfn><dd>A list, initially empty, that is manipulated by the <a href=#concept-upgrade-an-element id=custom-elements-core-concepts:concept-upgrade-an-element>upgrade an element</a> algorithm and the <a href=dom.html#dom-htmlelement id=custom-elements-core-concepts:dom-htmlelement><code>HTMLElement</code> constructor</a>. Each entry in the list will
+   be either an element or an <dfn id=concept-already-constructed-marker><i>already
+   constructed</i> marker</dfn>.</dl>
 
   <p>To <dfn id=look-up-a-custom-element-definition data-export="">look up a custom element definition</dfn>, given a <var>document</var>,
   <var>namespace</var>, <var>localName</var>, and <var>is</var>, perform the following steps. They
@@ -6677,7 +6677,20 @@ fetch(articleURL)
   input a <a href=#custom-element-definition id=upgrades:custom-element-definition>custom element definition</a> <var>definition</var> and an element
   <var>element</var>, run the following steps:</p>
 
-  <ol><li><p>Add <var>element</var> to the end of <var>definition</var>'s <a href=#concept-custom-element-definition-construction-stack id=upgrades:concept-custom-element-definition-construction-stack>construction stack</a>.</li><li><p>Let <var>C</var> be <var>definition</var>'s <a href=#concept-custom-element-definition-constructor id=upgrades:concept-custom-element-definition-constructor>constructor</a>.</li><li><p>Let <var>constructResult</var> be <a id=upgrades:construct href=https://tc39.github.io/ecma262/#sec-construct data-x-internal=construct>Construct</a>(<var>C</var>).</li><li><p>Remove <var>element</var> from the end of <var>definition</var>'s <a href=#concept-custom-element-definition-construction-stack id=upgrades:concept-custom-element-definition-construction-stack-2>construction stack</a>.</li><li><p>If <var>constructResult</var> is an abrupt completion, then return
+  <ol><li><p>Add <var>element</var> to the end of <var>definition</var>'s <a href=#concept-custom-element-definition-construction-stack id=upgrades:concept-custom-element-definition-construction-stack>construction stack</a>.</li><li><p>Let <var>C</var> be <var>definition</var>'s <a href=#concept-custom-element-definition-constructor id=upgrades:concept-custom-element-definition-constructor>constructor</a>.</li><li><p>Let <var>constructResult</var> be <a id=upgrades:construct href=https://tc39.github.io/ecma262/#sec-construct data-x-internal=construct>Construct</a>(<var>C</var>).</li><li>
+    <p>Remove the last entry from the end of <var>definition</var>'s <a href=#concept-custom-element-definition-construction-stack id=upgrades:concept-custom-element-definition-construction-stack-2>construction stack</a>.</p>
+
+    <div class=note>
+     <p>Assuming <var>C</var> calls <code>super()</code> (as it will if it is <a href=#custom-element-conformance>conformant</a>), and that the call succeeds, this will be
+     the <a href=#concept-already-constructed-marker id=upgrades:concept-already-constructed-marker><i>already
+     constructed</i> marker</a> that replaced the <var>element</var> we pushed at the beginning
+     of this algorithm. (The <a href=dom.html#dom-htmlelement id=upgrades:dom-htmlelement><code>HTMLElement</code>
+     constructor</a> carries out this replacement.)</p>
+
+     <p>If <var>C</var> does not call <code>super()</code> (i.e. it is not <a href=#custom-element-conformance>conformant</a>), or if any step in the <a href=dom.html#dom-htmlelement id=upgrades:dom-htmlelement-2><code>HTMLElement</code> constructor</a> throws, then this entry
+     will still be <var>element</var>.</p>
+    </div>
+   </li><li><p>If <var>constructResult</var> is an abrupt completion, then return
    <var>constructResult</var> (i.e., rethrow the exception).</li><li>
     <p>If <a id=upgrades:samevalue href=https://tc39.github.io/ecma262/#sec-samevalue data-x-internal=samevalue>SameValue</a>(<var>constructResult</var>.[[value]], <var>element</var>) is false,
     then throw an <a id=upgrades:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=upgrades:domexception><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and

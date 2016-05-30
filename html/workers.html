@@ -324,7 +324,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>23 May 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>30 May 2016</span></h2></hgroup>
    
    
   </header>
@@ -1574,7 +1574,8 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
      created object.</li><li><p>Let <var>realm execution context</var> be the created <a id=worker-processing-model:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
      context</a>.</li></ul>
    </li><li><p><a href=#set-up-a-worker-environment-settings-object id=worker-processing-model:set-up-a-worker-environment-settings-object>Set up a worker environment settings object</a> with <var>realm execution
-   context</var>, and let <var>inside settings</var> be the result.</li><li><p>Let <var>destination</var> be "<code>sharedworker</code>" if <var>is
+   context</var> and <var>outside settings</var>, and let <var>inside settings</var> be the
+   result.</li><li><p>Let <var>destination</var> be "<code>sharedworker</code>" if <var>is
    shared</var> is true, and "<code>worker</code>" otherwise.</li><li>
     <p>Obtain <var>script</var> by switching on the value of <var>options</var>'s <code>type</code> member:</p>
 
@@ -1758,16 +1759,17 @@ interface <dfn id=abstractworker>AbstractWorker</dfn> {
   <h5 id=script-settings-for-workers>10.2.6.2 Script settings for workers</h5>
 
   <p>When the user agent is required to <dfn id=set-up-a-worker-environment-settings-object>set up a worker environment settings object</dfn>,
-  given a <a id=script-settings-for-workers:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution context</a> <var>execution context</var>, it must run the
-  following steps:</p>
+  given a <a id=script-settings-for-workers:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution context</a> <var>execution context</var> and
+  <a id=script-settings-for-workers:environment-settings-object href=webappapis.html#environment-settings-object>environment settings object</a> <var>outside settings</var>, it must run the following
+  steps:</p>
 
-  <ol><li><p>Let <var>inherited responsible browsing context</var> be the <a id=script-settings-for-workers:responsible-browsing-context href=webappapis.html#responsible-browsing-context>responsible
-   browsing context</a> specified by the <a id=script-settings-for-workers:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings object</a>.</li><li><p>Let <var>inherited origin</var> be the <a id=script-settings-for-workers:concept-origin href=browsers.html#concept-origin>origin</a> specified by the
-   <a id=script-settings-for-workers:incumbent-settings-object-2 href=webappapis.html#incumbent-settings-object>incumbent settings object</a>.</li><li><p>Let <var>worker event loop</var> be a newly created <a id=script-settings-for-workers:event-loop href=webappapis.html#event-loop>event
+  <ol><li><p>Let <var>inherited responsible browsing context</var> be <var>outside settings</var>'s
+   <a id=script-settings-for-workers:responsible-browsing-context href=webappapis.html#responsible-browsing-context>responsible browsing context</a>.</li><li><p>Let <var>inherited origin</var> be <var>outside settings</var>'s
+   <a id=script-settings-for-workers:concept-origin href=browsers.html#concept-origin>origin</a>.</li><li><p>Let <var>worker event loop</var> be a newly created <a id=script-settings-for-workers:event-loop href=webappapis.html#event-loop>event
    loop</a>.</li><li><p>Let <var>realm</var> be the value of <var>execution context</var>'s Realm
    component.</li><li><p>Let <var>worker global scope</var> be <var>realm</var>'s <a href=webappapis.html#concept-realm-global id=script-settings-for-workers:concept-realm-global>global object</a>.</li><li>
 
-    <p>Let <var>settings object</var> be a new <a id=script-settings-for-workers:environment-settings-object href=webappapis.html#environment-settings-object>environment settings object</a> whose algorithms
+    <p>Let <var>settings object</var> be a new <a id=script-settings-for-workers:environment-settings-object-2 href=webappapis.html#environment-settings-object>environment settings object</a> whose algorithms
     are defined as follows:</p>
 
     <dl><dt>The <a id=script-settings-for-workers:realm-execution-context href=webappapis.html#realm-execution-context>realm execution context</a><dd>
@@ -1953,8 +1955,10 @@ interface <dfn id=sharedworker>SharedWorker</dfn> : <a id=shared-workers-and-the
 
     <ol><li><p>Let <var>worker</var> be a new <code id=shared-workers-and-the-sharedworker-interface:sharedworker-4><a href=#sharedworker>SharedWorker</a></code> object.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner>owner</a> is <var>outside settings</var>. Let this be the
      <var>outside port</var>.</li><li><p>Assign <var>outside port</var> to the <code id=shared-workers-and-the-sharedworker-interface:dom-sharedworker-port-3><a href=#dom-sharedworker-port>port</a></code> attribute of <var>worker</var>.</li><li><p>Let <var>worker global scope</var> be null.</li><li><p>If there exists a <code id=shared-workers-and-the-sharedworker-interface:sharedworkerglobalscope><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object whose <a href=#dom-workerglobalscope-closing id=shared-workers-and-the-sharedworker-interface:dom-workerglobalscope-closing>closing</a> flag is false, whose <a href=#concept-sharedworkerglobalscope-name id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-name-2>name</a> is exactly equal to <var>name</var>,
-     and whose <a href=#concept-sharedworkerglobalscope-constructor-url id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-constructor-url>constructor url</a>
-     is equal to <var>urlString</var>, then let <var>worker global scope</var> be that
+     whose <a href=#concept-sharedworkerglobalscope-constructor-url id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-constructor-url>constructor url</a> is
+     equal to <var>urlString</var>, and whose <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a>'s
+     <a id=shared-workers-and-the-sharedworker-interface:concept-origin href=browsers.html#concept-origin>origin</a> is <a id=shared-workers-and-the-sharedworker-interface:same-origin-2 href=browsers.html#same-origin>same origin</a> with <var>outside settings</var>'s
+     <a id=shared-workers-and-the-sharedworker-interface:concept-origin-2 href=browsers.html#concept-origin>origin</a>, then let <var>worker global scope</var> be that
      <code id=shared-workers-and-the-sharedworker-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object.</li><li>
       <p>If <var>worker global scope</var> is not null, but the user agent has been
       configured to disallow communication between the worker represented by the <var>worker global
@@ -1968,7 +1972,7 @@ interface <dfn id=sharedworker>SharedWorker</dfn> : <a id=shared-workers-and-the
      </li><li>
       <p>If <var>worker global scope</var> is not null, then run these steps:</p>
 
-      <ol><li><p>Associate <var>worker</var> with <var>worker global scope</var>.</li><li><p>Let <var>settings object</var> be the <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a> for
+      <ol><li><p>Associate <var>worker</var> with <var>worker global scope</var>.</li><li><p>Let <var>settings object</var> be the <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object-2 href=webappapis.html#relevant-settings-object>relevant settings object</a> for
        <var>worker global scope</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object-2 href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner-2>owner</a> is <var>settings object</var>. Let this be
        the <var>inside port</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:entangle href=comms.html#entangle>Entangle</a> <var>outside port</var> and <var>inside port</var>.</li><li><p>Create a <a href=infrastructure.html#concept-events-trusted id=shared-workers-and-the-sharedworker-interface:concept-events-trusted>trusted</a> event that uses the
        <code id=shared-workers-and-the-sharedworker-interface:messageevent><a href=comms.html#messageevent>MessageEvent</a></code> interface, with the name <code id=shared-workers-and-the-sharedworker-interface:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code>, which does not bubble, is not
