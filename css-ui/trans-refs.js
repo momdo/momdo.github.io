@@ -18,17 +18,16 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-css21: 'http://momdo.github.io/css2/cover.html',
-css3bg: 'http://www.hcn.zaq.ne.jp/___/WEB/css-backgrounds-ja.html',
+css21: 'https://momdo.github.io/css2/cover.html',
+css3bg: 'https://triple-underscore.github.io/css-backgrounds-ja.html',
 css3color: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
-png: 'http://www.milk-island.net/document/png/',
-"css-cascade-4": 'http://www.hcn.zaq.ne.jp/___/WEB/css-cascade-ja.html', //そのうち削除するかも
-"css-images-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-images-ja.html',
-"css-values-3": [ 'http://momdo.github.io/css3-values/',
-	'http://www.hcn.zaq.ne.jp/___/WEB/css-values-ja.html',
+"css-cascade-4": 'https://triple-underscore.github.io/css-cascade-ja.html',
+"css-images-3": 'https://triple-underscore.github.io/css-images-ja.html',
+"css-values": [ 'https://momdo.github.io/css3-values/',
+	'https://triple-underscore.github.io/css-values-ja.html',
 ],
-"css-writing-modes-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-writing-modes-ja.html',
-"cssom-1": 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html',
+"css-writing-modes-3": 'https://triple-underscore.github.io/css-writing-modes-ja.html',
+"cssom-1": 'https://triple-underscore.github.io/cssom-ja.html',
 rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
           'http://www.studyinghttp.net/rfc_ja/rfc2119',
           'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
@@ -37,9 +36,10 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
 ],
 css1: 'http://www.doraneko.org/webauth/css1/19961217/Overview.html',
 css2: 'http://www.y-adagio.com/public/standards/tr_css2/toc.html',
-svg: 'http://www.hcn.zaq.ne.jp/___/SVG11-2nd/',
-html5: 'http://momdo.github.io/html5/Overview.html',
-
+svg: 'https://triple-underscore.github.io/SVG11/',
+html5: 'https://momdo.github.io/html5/Overview.html',
+html: 'https://momdo.github.io/html/',
+select: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-selectors/',
 	};
 
 	(function(){
