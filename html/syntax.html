@@ -296,7 +296,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>6 June 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>13 June 2016</span></h2></hgroup>
    
    
   </header>
@@ -6680,7 +6680,9 @@ document.body.appendChild(text);
    </li><li><p>The result of the algorithm is the string <var>s</var>.</li></ol>
 
   <p class=warning>It is possible that the output of this algorithm, if parsed with an <a href=#html-parser id=serialising-html-fragments:html-parser-3>HTML
-  parser</a>, will not return the original tree structure.</p>
+  parser</a>, will not return the original tree structure. Tree structures that do not roundtrip
+  a serialise and reparse step can also be produced by the <a href=#html-parser id=serialising-html-fragments:html-parser-4>HTML parser</a> itself, although
+  such cases are non-conforming.</p>
 
   <div class=example>
 
@@ -6702,6 +6704,49 @@ document.body.appendChild(text);
    "<code>&lt;/style&gt;&lt;script&gt;attack&lt;/script&gt;</code>" as a font family name, <code id=serialising-html-fragments:dom-innerhtml-2><a data-x-internal=dom-innerhtml href=https://w3c.github.io/DOM-Parsing/#widl-Element-innerHTML>innerHTML</a></code> will return markup that, if parsed in a different context,
    would contain a <code id=serialising-html-fragments:the-script-element-3><a href=scripting.html#the-script-element>script</a></code> node, even though no <code id=serialising-html-fragments:the-script-element-4><a href=scripting.html#the-script-element>script</a></code> node existed in the
    original DOM.</p>
+
+  </div>
+
+  <div class=example>
+
+   <p>For example, consider the following markup:</p>
+
+   <pre>&lt;form id="outer"&gt;&lt;div&gt;&lt;/form&gt;&lt;form id="inner"&gt;&lt;input&gt;</pre>
+
+   <p>This will be parsed into:</p>
+
+   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element><a href=semantics.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">outer</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-div-element><a href=semantics.html#the-div-element>div</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element-2><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute-2 class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">inner</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-input-element-2><a href=forms.html#the-input-element>input</a></code></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+   <p>The <code id=serialising-html-fragments:the-input-element-3><a href=forms.html#the-input-element>input</a></code> element will be associated with the inner <code id=serialising-html-fragments:the-form-element-3><a href=forms.html#the-form-element>form</a></code> element.
+   Now, if this tree structure is serialised and reparsed, the <code>&lt;form
+   id="inner"&gt;</code> start tag will be ignored, and so the <code id=serialising-html-fragments:the-input-element-4><a href=forms.html#the-input-element>input</a></code> element will be
+   associated with the outer <code id=serialising-html-fragments:the-form-element-4><a href=forms.html#the-form-element>form</a></code> element instead.</p>
+
+   <pre>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;form id="outer"&gt;&lt;div&gt;<mark>&lt;form id="inner"&gt;</mark>&lt;input&gt;&lt;/form&gt;&lt;/div&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element-2><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element-2><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element-2><a href=semantics.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element-5><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute-3 class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">outer</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-div-element-2><a href=semantics.html#the-div-element>div</a></code><ul><li class=t1><code id=serialising-html-fragments:the-input-element-5><a href=forms.html#the-input-element>input</a></code></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+  </div>
+
+  <div class=example>
+
+   <p>As another example, consider the following markup:</p>
+
+   <pre>&lt;a&gt;&lt;table&gt;&lt;a&gt;</pre>
+
+   <p>This will be parsed into:</p>
+
+   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element-3><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element-3><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element-3><a href=semantics.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-a-element><a href=semantics.html#the-a-element>a</a></code><ul><li class=t1><code id=serialising-html-fragments:the-a-element-2><a href=semantics.html#the-a-element>a</a></code></li><li class=t1><code id=serialising-html-fragments:the-table-element><a href=tables.html#the-table-element>table</a></code></li></ul></li></ul></li></ul></li></ul>
+
+   <p>That is, the <code id=serialising-html-fragments:the-a-element-3><a href=semantics.html#the-a-element>a</a></code> elements are nested, because the second <code id=serialising-html-fragments:the-a-element-4><a href=semantics.html#the-a-element>a</a></code> element is
+   <a href=#foster-parent id=serialising-html-fragments:foster-parent>foster parented</a>. After a serialise-reparse roundtrip, the
+   <code id=serialising-html-fragments:the-a-element-5><a href=semantics.html#the-a-element>a</a></code> elements and the <code id=serialising-html-fragments:the-table-element-2><a href=tables.html#the-table-element>table</a></code> element would all be siblings, because the
+   second <code>&lt;a&gt;</code> start tag implicitly closes the first <code id=serialising-html-fragments:the-a-element-6><a href=semantics.html#the-a-element>a</a></code>
+   element.</p>
+
+   <pre>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;a&gt;<mark>&lt;a&gt;</mark>&lt;/a&gt;&lt;table&gt;&lt;/table&gt;&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element-4><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element-4><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element-4><a href=semantics.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-a-element-7><a href=semantics.html#the-a-element>a</a></code></li><li class=t1><code id=serialising-html-fragments:the-a-element-8><a href=semantics.html#the-a-element>a</a></code></li><li class=t1><code id=serialising-html-fragments:the-table-element-3><a href=tables.html#the-table-element>table</a></code></li></ul></li></ul></li></ul>
 
   </div>
 
@@ -6750,11 +6795,10 @@ document.body.appendChild(text);
    </li><li>
 
     <p>Set the state of the <a href=#html-parser id=parsing-html-fragments:html-parser-2>HTML parser</a>'s <a href=#tokenization id=parsing-html-fragments:tokenization>tokenization</a> stage as
-    follows:</p>
+    follows, switching on the <var id=parsing-html-fragments:concept-frag-parse-context-3><a href=#concept-frag-parse-context>context</a></var> element:</p>
 
-    <dl class=switch><dt>If it is a <code id=parsing-html-fragments:the-title-element><a href=semantics.html#the-title-element>title</a></code> or <code id=parsing-html-fragments:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code> element<dd>Switch the tokenizer to the <a href=#rcdata-state id=parsing-html-fragments:rcdata-state>RCDATA state</a>.<dt>If it is a <code id=parsing-html-fragments:the-style-element><a href=semantics.html#the-style-element>style</a></code>, <code id=parsing-html-fragments:xmp><a href=obsolete.html#xmp>xmp</a></code>, <code id=parsing-html-fragments:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>,
-     <code id=parsing-html-fragments:noembed><a href=obsolete.html#noembed>noembed</a></code>, or <code id=parsing-html-fragments:noframes><a href=obsolete.html#noframes>noframes</a></code> element<dd>Switch the tokenizer to the <a href=#rawtext-state id=parsing-html-fragments:rawtext-state>RAWTEXT state</a>.<dt>If it is a <code id=parsing-html-fragments:the-script-element><a href=scripting.html#the-script-element>script</a></code> element<dd>Switch the tokenizer to the <a href=#script-data-state id=parsing-html-fragments:script-data-state>script data state</a>.<dt>If it is a <code id=parsing-html-fragments:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code> element<dd>If the <a href=#scripting-flag id=parsing-html-fragments:scripting-flag>scripting flag</a> is enabled, switch the tokenizer to the <a href=#rawtext-state id=parsing-html-fragments:rawtext-state-2>RAWTEXT
-     state</a>. Otherwise, leave the tokenizer in the <a href=#data-state id=parsing-html-fragments:data-state>data state</a>.<dt>If it is a <code id=parsing-html-fragments:plaintext><a href=obsolete.html#plaintext>plaintext</a></code> element<dd>Switch the tokenizer to the <a href=#plaintext-state id=parsing-html-fragments:plaintext-state>PLAINTEXT state</a>.<dt>そうでなければ<dd>Leave the tokenizer in the <a href=#data-state id=parsing-html-fragments:data-state-2>data state</a>.</dl>
+    <dl class=switch><dt><code id=parsing-html-fragments:the-title-element><a href=semantics.html#the-title-element>title</a></code><dt><code id=parsing-html-fragments:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code><dd>Switch the tokenizer to the <a href=#rcdata-state id=parsing-html-fragments:rcdata-state>RCDATA state</a>.<dt><code id=parsing-html-fragments:the-style-element><a href=semantics.html#the-style-element>style</a></code><dt><code id=parsing-html-fragments:xmp><a href=obsolete.html#xmp>xmp</a></code><dt><code id=parsing-html-fragments:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code><dt><code id=parsing-html-fragments:noembed><a href=obsolete.html#noembed>noembed</a></code><dt><code id=parsing-html-fragments:noframes><a href=obsolete.html#noframes>noframes</a></code><dd>Switch the tokenizer to the <a href=#rawtext-state id=parsing-html-fragments:rawtext-state>RAWTEXT state</a>.<dt><code id=parsing-html-fragments:the-script-element><a href=scripting.html#the-script-element>script</a></code><dd>Switch the tokenizer to the <a href=#script-data-state id=parsing-html-fragments:script-data-state>script data state</a>.<dt><code id=parsing-html-fragments:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code><dd>If the <a href=#scripting-flag id=parsing-html-fragments:scripting-flag>scripting flag</a> is enabled, switch the tokenizer to the <a href=#rawtext-state id=parsing-html-fragments:rawtext-state-2>RAWTEXT
+     state</a>. Otherwise, leave the tokenizer in the <a href=#data-state id=parsing-html-fragments:data-state>data state</a>.<dt><code id=parsing-html-fragments:plaintext><a href=obsolete.html#plaintext>plaintext</a></code><dd>Switch the tokenizer to the <a href=#plaintext-state id=parsing-html-fragments:plaintext-state>PLAINTEXT state</a>.<dt>Any other element<dd>Leave the tokenizer in the <a href=#data-state id=parsing-html-fragments:data-state-2>data state</a>.</dl>
 
     <p class=note>For performance reasons, an implementation that does not report errors and
     that uses the actual state machine described in this specification directly could use the
@@ -6779,17 +6823,17 @@ document.body.appendChild(text);
 
    </li><li>
 
-    <p>If the <var id=parsing-html-fragments:concept-frag-parse-context-3><a href=#concept-frag-parse-context>context</a></var> element is a
+    <p>If the <var id=parsing-html-fragments:concept-frag-parse-context-4><a href=#concept-frag-parse-context>context</a></var> element is a
     <code id=parsing-html-fragments:the-template-element><a href=scripting.html#the-template-element>template</a></code> element, push "<a href=#parsing-main-intemplate id=parsing-html-fragments:parsing-main-intemplate>in
     template</a>" onto the <a href=#stack-of-template-insertion-modes id=parsing-html-fragments:stack-of-template-insertion-modes>stack of template insertion modes</a> so that it is the new
     <a href=#current-template-insertion-mode id=parsing-html-fragments:current-template-insertion-mode>current template insertion mode</a>.</p>
 
    </li><li>
 
-    <p>Create a start tag token whose name is the local name of <var id=parsing-html-fragments:concept-frag-parse-context-4><a href=#concept-frag-parse-context>context</a></var> and whose attributes are the attributes of
-    <var id=parsing-html-fragments:concept-frag-parse-context-5><a href=#concept-frag-parse-context>context</a></var>.</p>
+    <p>Create a start tag token whose name is the local name of <var id=parsing-html-fragments:concept-frag-parse-context-5><a href=#concept-frag-parse-context>context</a></var> and whose attributes are the attributes of
+    <var id=parsing-html-fragments:concept-frag-parse-context-6><a href=#concept-frag-parse-context>context</a></var>.</p>
 
-    <p>Let this start tag token be the start tag token of the <var id=parsing-html-fragments:concept-frag-parse-context-6><a href=#concept-frag-parse-context>context</a></var> node, e.g. for the purposes of determining
+    <p>Let this start tag token be the start tag token of the <var id=parsing-html-fragments:concept-frag-parse-context-7><a href=#concept-frag-parse-context>context</a></var> node, e.g. for the purposes of determining
     if it is an <a href=#html-integration-point id=parsing-html-fragments:html-integration-point>HTML integration point</a>.</p>
 
    </li><li>
@@ -6797,12 +6841,12 @@ document.body.appendChild(text);
     <p><a href=#reset-the-insertion-mode-appropriately id=parsing-html-fragments:reset-the-insertion-mode-appropriately>Reset the parser's insertion mode
     appropriately</a>.</p>
 
-    <p class=note>The parser will reference the <var id=parsing-html-fragments:concept-frag-parse-context-7><a href=#concept-frag-parse-context>context</a></var> element as part of that algorithm.</p>
+    <p class=note>The parser will reference the <var id=parsing-html-fragments:concept-frag-parse-context-8><a href=#concept-frag-parse-context>context</a></var> element as part of that algorithm.</p>
 
    </li><li>
 
     <p>Set the parser's <a href=#form-element-pointer id=parsing-html-fragments:form-element-pointer><code>form</code> element pointer</a> to the nearest node to the
-    <var id=parsing-html-fragments:concept-frag-parse-context-8><a href=#concept-frag-parse-context>context</a></var> element that is a <code id=parsing-html-fragments:the-form-element><a href=forms.html#the-form-element>form</a></code>
+    <var id=parsing-html-fragments:concept-frag-parse-context-9><a href=#concept-frag-parse-context>context</a></var> element that is a <code id=parsing-html-fragments:the-form-element><a href=forms.html#the-form-element>form</a></code>
     element (going straight up the ancestor chain, and including the element itself, if it is a
     <code id=parsing-html-fragments:the-form-element-2><a href=forms.html#the-form-element>form</a></code> element), if any. (If there is no such <code id=parsing-html-fragments:the-form-element-3><a href=forms.html#the-form-element>form</a></code> element, the
     <a href=#form-element-pointer id=parsing-html-fragments:form-element-pointer-2><code>form</code> element pointer</a> keeps its initial value, null.)</p>

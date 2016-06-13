@@ -296,7 +296,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>6 June 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>13 June 2016</span></h2></hgroup>
    
    
   </header>
@@ -362,39 +362,35 @@
 
   <p>To <dfn id=creating-a-new-browsing-context>create a new browsing context</dfn>:</p>
 
-  <ol><li>
+  <ol><li><p>Let <var>browsingContext</var> be a new <a href=#browsing-context id=windows:browsing-context-17>browsing context</a>.</li><li>
     <p>Call the JavaScript <a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm id=windows:js-initializehostdefinedrealm data-x-internal=js-initializehostdefinedrealm>InitializeHostDefinedRealm()</a> abstract operation
     with the following customizations:</p>
 
     <ul><li><p>For the global object, create a new <code id=windows:window-5><a href=#window>Window</a></code> object
-     <var>window</var>.</li><li>
-      <p>For the global <b>this</b> value, create a new <code id=windows:windowproxy-2><a href=#windowproxy>WindowProxy</a></code> object
-      <var>windowProxy</var>, whose [[<a href=#concept-windowproxy-window id=windows:concept-windowproxy-window>Window</a>]]
-      internal slot value is <var>window</var>.</p>
+     <var>window</var>.</li><li><p>For the global <b>this</b> value, use <var>browsingContext</var>'s
+     <code id=windows:windowproxy-2><a href=#windowproxy>WindowProxy</a></code> object.</li><li><p>Let <var>realm execution context</var> be the created <a id=windows:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
+     context</a>.</li><li><p>Do not obtain any source texts for scripts or modules.</li></ul>
+   </li><li><p><a href=#set-up-a-browsing-context-environment-settings-object id=windows:set-up-a-browsing-context-environment-settings-object>Set up a browsing context environment settings object</a> with
+   <var>realm execution context</var>.</li><li><p>Set <var>window</var>'s <a href=#concept-document-window id=windows:concept-document-window>associated
+   <code>Document</code></a> to <var>document</var>.</li><li>
+    <p>Set <var>browsingContext</var>'s <code id=windows:windowproxy-3><a href=#windowproxy>WindowProxy</a></code> object's [[<a href=#concept-windowproxy-window id=windows:concept-windowproxy-window>Window</a>]] internal slot value to
+    <var>window</var>.</p>
 
-      <p class=note>The internal slot value is updated when navigations occur.</p>
-     </li><li><p>Let <var>realm execution context</var> be the created <a id=windows:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
-     context</a>.</li></ul>
-   </li><li><p>Set the new <a href=#browsing-context id=windows:browsing-context-17>browsing context</a>'s associated <code id=windows:windowproxy-3><a href=#windowproxy>WindowProxy</a></code> to
-   <var>windowProxy</var>.</li><li><p>Let <var>document</var> be a new <code id=windows:document-13><a href=dom.html#document>Document</a></code>, whose <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="windows:the-document's-address-2" data-x-internal="the-document's-address">URL</a> is <code id=windows:about:blank-2><a href=infrastructure.html#about:blank>about:blank</a></code>, which is marked as being an
+    <p class=note>The internal slot value is updated when navigations occur.</p>
+   </li><li><p>Let <var>document</var> be a new <code id=windows:document-13><a href=dom.html#document>Document</a></code>, whose <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="windows:the-document's-address-2" data-x-internal="the-document's-address">URL</a> is <code id=windows:about:blank-2><a href=infrastructure.html#about:blank>about:blank</a></code>, which is marked as being an
    <a href=https://triple-underscore.github.io/DOM4-ja.html#html-document id=windows:html-documents data-x-internal=html-documents>HTML document</a>, whose <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding id="windows:document's-character-encoding" data-x-internal="document's-character-encoding">character encoding</a> is UTF-8, and which is both <a id=windows:ready-for-post-load-tasks href=syntax.html#ready-for-post-load-tasks>ready for post-load
    tasks</a> and <a id=windows:completely-loaded href=syntax.html#completely-loaded>completely loaded</a> immediately.</li><li>
     <p id=about-blank-origin>Set the <a href=#concept-origin id=windows:concept-origin-2>origin</a> of <var>document</var>:</p>
 
-    <ul><li><p>If the new <a href=#browsing-context id=windows:browsing-context-18>browsing context</a> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-6>creator browsing context</a>,
-     then the <a href=#concept-origin id=windows:concept-origin-3>origin</a> of <var>document</var> is the <a href=#creator-origin id=windows:creator-origin>creator
-     origin</a>.</li><li><p>Otherwise, the <a href=#concept-origin id=windows:concept-origin-4>origin</a> of <var>document</var> is a unique <a href=#concept-origin-opaque id=windows:concept-origin-opaque>opaque origin</a> assigned when the new <a href=#browsing-context id=windows:browsing-context-19>browsing
-     context</a> is created.</li></ul>
-   </li><li><p>If the new <a href=#browsing-context id=windows:browsing-context-20>browsing context</a> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-7>creator browsing context</a>, then
-   set <var>document</var>'s <a href="dom.html#the-document's-referrer" id="windows:the-document's-referrer">referrer</a> to the
-   <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-serializer id=windows:concept-url-serialiser data-x-internal=concept-url-serialiser>serialisation</a> of <a href=#creator-url id=windows:creator-url>creator URL</a>.</li><li><p>If the new <a href=#browsing-context id=windows:browsing-context-21>browsing context</a> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-8>creator browsing context</a>, then
-   set <var>document</var>'s <a href=dom.html#concept-document-referrer-policy id=windows:concept-document-referrer-policy-2>referrer policy</a>
-   to the <a href=#creator-referrer-policy id=windows:creator-referrer-policy>creator referrer policy</a>.</li><li><p>Ensure that <var>document</var> has a single child <code id=windows:the-html-element><a href=semantics.html#the-html-element>html</a></code> node, which itself
+    <ul><li><p>If <var>browsingContext</var> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-6>creator browsing context</a>, then the
+     <a href=#concept-origin id=windows:concept-origin-3>origin</a> of <var>document</var> is the <a href=#creator-origin id=windows:creator-origin>creator origin</a>.</li><li><p>Otherwise, the <a href=#concept-origin id=windows:concept-origin-4>origin</a> of <var>document</var> is a unique <a href=#concept-origin-opaque id=windows:concept-origin-opaque>opaque origin</a>.</li></ul>
+   </li><li><p>If <var>browsingContext</var> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-7>creator browsing context</a>, then set
+   <var>document</var>'s <a href="dom.html#the-document's-referrer" id="windows:the-document's-referrer">referrer</a> to the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-serializer id=windows:concept-url-serialiser data-x-internal=concept-url-serialiser>serialisation</a> of <a href=#creator-url id=windows:creator-url>creator URL</a>.</li><li><p>If <var>browsingContext</var> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-8>creator browsing context</a>, then set
+   <var>document</var>'s <a href=dom.html#concept-document-referrer-policy id=windows:concept-document-referrer-policy-2>referrer policy</a> to
+   the <a href=#creator-referrer-policy id=windows:creator-referrer-policy>creator referrer policy</a>.</li><li><p>Ensure that <var>document</var> has a single child <code id=windows:the-html-element><a href=semantics.html#the-html-element>html</a></code> node, which itself
    has two empty child nodes: a <code id=windows:the-head-element><a href=semantics.html#the-head-element>head</a></code> element, and a <code id=windows:the-body-element><a href=semantics.html#the-body-element>body</a></code>
-   element.</li><li><p><a href=#implement-the-sandboxing id=windows:implement-the-sandboxing>Implement the sandboxing</a> for <var>document</var>.</li><li><p>Add <var>document</var> to the new <a href=#browsing-context id=windows:browsing-context-22>browsing context</a>'s <a href=#session-history id=windows:session-history-3>session
-   history</a>.</li><li><p>Set <var>window</var>'s <a href=#concept-document-window id=windows:concept-document-window>associated
-   <code>Document</code></a> to <var>document</var>.</li><li><p><a href=#set-up-a-browsing-context-environment-settings-object id=windows:set-up-a-browsing-context-environment-settings-object>Set up a browsing context environment settings object</a> with
-   <var>realm execution context</var>.</li></ol>
+   element.</li><li><p><a href=#implement-the-sandboxing id=windows:implement-the-sandboxing>Implement the sandboxing</a> for <var>document</var>.</li><li><p>Add <var>document</var> to <var>browsingContext</var>'s <a href=#session-history id=windows:session-history-3>session
+   history</a>.</li><li><p>Return <var>browsingContext</var>.</li></ol>
 
   
 
@@ -3545,7 +3541,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
          <code id=navigating-across-documents:windowproxy><a href=#windowproxy>WindowProxy</a></code> object.</li><li><p>Let <var>realm execution context</var> be the created <a id=navigating-across-documents:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
          context</a>.</li><li><p>Do not obtain any source texts for scripts or modules.</li></ul>
        </li><li><p><a href=#set-up-a-browsing-context-environment-settings-object id=navigating-across-documents:set-up-a-browsing-context-environment-settings-object>Set up a browsing context environment settings object</a> with <var>realm
-       execution context</var>, and let <var>settings object</var> be the result.</li><li><p>Set <var>window</var>'s <a href=#concept-document-window id=navigating-across-documents:concept-document-window>associated
+       execution context</var>.</li><li><p>Set <var>window</var>'s <a href=#concept-document-window id=navigating-across-documents:concept-document-window>associated
        <code>Document</code></a> to the new <code id=navigating-across-documents:document-13><a href=dom.html#document>Document</a></code>.</li></ol>
      </li><li><p>Set <var>browsingContext</var>'s <code id=navigating-across-documents:windowproxy-2><a href=#windowproxy>WindowProxy</a></code> object's [[<a href=#concept-windowproxy-window id=navigating-across-documents:concept-windowproxy-window>Window</a>]] internal slot value to
      <var>window</var>.</li><li><p>Set the <code id=navigating-across-documents:document-14><a href=dom.html#document>Document</a></code>'s <a href=dom.html#concept-document-https-state id=navigating-across-documents:concept-document-https-state>HTTPS
@@ -3966,40 +3962,50 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   there is no indicated part, or if the indicated part is not <a id=scroll-to-fragid:being-rendered-2 href=rendering.html#being-rendered>being rendered</a>, then the
   user agent must do nothing. The aforementioned algorithm is as follows:</p>
 
-  <ol><li><p>Let <var>target</var> be <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-3>the indicated part of the
-   document</a>, as defined below.</li><li><p>If <var>target</var> is the top of the document, then <a id=scroll-to-fragid:scroll-to-the-beginning-of-the-document href=https://triple-underscore.github.io/cssom-view-ja.html#scroll-to-the-beginning-of-the-document data-x-internal=scroll-to-the-beginning-of-the-document>scroll to the
-   beginning of the document</a> for the <code id=scroll-to-fragid:document-3><a href=dom.html#document>Document</a></code>, and abort these steps. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>Use the <a id=scroll-to-fragid:scroll-an-element-into-view href=https://triple-underscore.github.io/cssom-view-ja.html#scroll-an-element-into-view data-x-internal=scroll-an-element-into-view>scroll an element into view</a> algorithm to scroll <var>target</var> into view, with the <var>align to top flag</var> set. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>Run the <a id=scroll-to-fragid:focusing-steps href=interaction.html#focusing-steps>focusing steps</a> for that element, with the <code id=scroll-to-fragid:document-4><a href=dom.html#document>Document</a></code>'s
-   <a id=scroll-to-fragid:viewport href=https://momdo.github.io/css2/visuren.html#viewport data-x-internal=viewport>viewport</a> as the <i>fallback target</i>.</li><li><p>Move the <a id=scroll-to-fragid:sequential-focus-navigation-starting-point href=interaction.html#sequential-focus-navigation-starting-point>sequential focus navigation starting point</a> to <var>target</var>.</p>
+  <ol><li><p>If there is no <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-3>indicated part of the
+   document</a>, set the <code id=scroll-to-fragid:document-3><a href=dom.html#document>Document</a></code>'s <a href=#target-element id=scroll-to-fragid:target-element>target element</a> to null.</li><li>
+    <p>If the <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-4>indicated part of the
+    document</a> is the top of the document, then:</p>
 
-  </li></ol>
+    <ol><li><p>Set the <code id=scroll-to-fragid:document-4><a href=dom.html#document>Document</a></code>'s <a href=#target-element id=scroll-to-fragid:target-element-2>target element</a> to null.</li><li><p><a id=scroll-to-fragid:scroll-to-the-beginning-of-the-document href=https://triple-underscore.github.io/cssom-view-ja.html#scroll-to-the-beginning-of-the-document data-x-internal=scroll-to-the-beginning-of-the-document>Scroll to the beginning of the document</a> for the <code id=scroll-to-fragid:document-5><a href=dom.html#document>Document</a></code>. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li></ol>
+   </li><li>
+    <p>そうでなければ：</p>
+
+    <ol><li><p>Let <var>target</var> be element that is <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-5>the indicated part of the
+     document</a>.</li><li><p>Set the <code id=scroll-to-fragid:document-6><a href=dom.html#document>Document</a></code>'s <a href=#target-element id=scroll-to-fragid:target-element-3>target element</a> to
+     <var>target</var>.</li><li><p>Use the <a id=scroll-to-fragid:scroll-an-element-into-view href=https://triple-underscore.github.io/cssom-view-ja.html#scroll-an-element-into-view data-x-internal=scroll-an-element-into-view>scroll an element into view</a> algorithm to scroll <var>target</var>
+     into view, with the <var>align to top flag</var> set. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>Run the <a id=scroll-to-fragid:focusing-steps href=interaction.html#focusing-steps>focusing steps</a> for <var>target</var>, with the
+     <code id=scroll-to-fragid:document-7><a href=dom.html#document>Document</a></code>'s <a id=scroll-to-fragid:viewport href=https://momdo.github.io/css2/visuren.html#viewport data-x-internal=viewport>viewport</a> as the <i>fallback target</i>.</li><li><p>Move the <a id=scroll-to-fragid:sequential-focus-navigation-starting-point href=interaction.html#sequential-focus-navigation-starting-point>sequential focus navigation starting point</a> to
+     <var>target</var>.</p>
+    </li></ol>
+   </li></ol>
 
   <p><dfn id=the-indicated-part-of-the-document>The indicated part of the document</dfn> is the one that the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-2 data-x-internal=concept-url-fragment>fragment</a>, if any, identifies. The semantics of the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-3 data-x-internal=concept-url-fragment>fragment</a> in terms of mapping it to a node is defined by the
-  specification that defines the <a id=scroll-to-fragid:mime-type href=infrastructure.html#mime-type>MIME type</a> used by the <code id=scroll-to-fragid:document-5><a href=dom.html#document>Document</a></code> (for
+  specification that defines the <a id=scroll-to-fragid:mime-type href=infrastructure.html#mime-type>MIME type</a> used by the <code id=scroll-to-fragid:document-8><a href=dom.html#document>Document</a></code> (for
   example, the processing of <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-4 data-x-internal=concept-url-fragment>fragments</a> for <a href=infrastructure.html#xml-mime-type id=scroll-to-fragid:xml-mime-type>XML MIME types</a> is the responsibility of RFC7303). <a href=references.html#refsRFC7303>[RFC7303]</a></p>
 
+  <p>There is also a <dfn id=target-element>target element</dfn> for each <code id=scroll-to-fragid:document-9><a href=dom.html#document>Document</a></code>, which is used in
+  defining the <code id=scroll-to-fragid:selector-target><a href=scripting.html#selector-target>:target</a></code> pseudo-class and is updated by the
+  above algorithm. It is initially null.</p>
+
   <p>For HTML documents (and <a href=infrastructure.html#html-mime-type id=scroll-to-fragid:html-mime-type>HTML MIME types</a>), the following
-  processing model must be followed to determine what <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-4>the indicated part of the
+  processing model must be followed to determine what <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-6>the indicated part of the
   document</a> is.</p>
 
   <ol><li><p>Apply the <a id=scroll-to-fragid:url-parser href=https://triple-underscore.github.io/URL-ja.html#concept-url-parser data-x-internal=url-parser>URL parser</a> algorithm to the <a id=scroll-to-fragid:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, and let <var>fragid</var> be the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-5 data-x-internal=concept-url-fragment>fragment</a> component of the
-   resulting <a id=scroll-to-fragid:url-record href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL record</a>.</li><li><p>If <var>fragid</var> is the empty string, then <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-5>the indicated part of the
+   resulting <a id=scroll-to-fragid:url-record href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL record</a>.</li><li><p>If <var>fragid</var> is the empty string, then <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-7>the indicated part of the
    document</a> is the top of the document; stop the algorithm here.</li><li><p>Let <var>fragid bytes</var> be the result of <a href=https://triple-underscore.github.io/URL-ja.html#percent-decode id=scroll-to-fragid:percent-decode data-x-internal=percent-decode>percent-decoding</a> <var>fragid</var>.</li><li><p>Let <var>decoded fragid</var> be the result of running <a id=scroll-to-fragid:utf-8-decode-without-bom-or-fail href=https://triple-underscore.github.io/Encoding-ja.html#utf-8-decode-without-bom-or-fail data-x-internal=utf-8-decode-without-bom-or-fail>UTF-8 decode without BOM or
    fail</a> on <var>fragid bytes</var>. If <var>decoded fragid</var> is failure, jump to the step
    labeled <i>no decoded fragid</i>.</li><li><p>If there is an element <a href=https://triple-underscore.github.io/DOM4-ja.html#in-a-document id=scroll-to-fragid:in-a-document data-x-internal=in-a-document>in the document</a> that has an
    <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=scroll-to-fragid:concept-id-2 data-x-internal=concept-id>ID</a> exactly equal to <var>decoded fragid</var>, then the first
-   such element in <a id=scroll-to-fragid:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a> is <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-6>the indicated part of the document</a>; stop
+   such element in <a id=scroll-to-fragid:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a> is <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-8>the indicated part of the document</a>; stop
    the algorithm here.</li><li><p><i>No decoded fragid</i>: If there is an <code id=scroll-to-fragid:the-a-element><a href=semantics.html#the-a-element>a</a></code> element <a href=https://triple-underscore.github.io/DOM4-ja.html#in-a-document id=scroll-to-fragid:in-a-document-2 data-x-internal=in-a-document>in the document</a> that has a <code id=scroll-to-fragid:attr-a-name><a href=obsolete.html#attr-a-name>name</a></code> attribute
    whose value is exactly equal to <var>fragid</var> (<em>not</em> <var>decoded fragid</var>), then
-   the first such element in <a id=scroll-to-fragid:tree-order-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a> is <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-7>the indicated part of the
+   the first such element in <a id=scroll-to-fragid:tree-order-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a> is <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-9>the indicated part of the
    document</a>; stop the algorithm here.</li><li><p>If <var>fragid</var> is an <a id=scroll-to-fragid:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the
-   string <code>top</code>, then <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-8>the indicated part of the document</a> is the top
-   of the document; stop the algorithm here.</li><li><p>Otherwise, there is no <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-9>indicated part of
+   string <code>top</code>, then <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-10>the indicated part of the document</a> is the top
+   of the document; stop the algorithm here.</li><li><p>Otherwise, there is no <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-11>indicated part of
    the document</a>.</li></ol>
-
-  <p>For the purposes of the interaction of HTML with Selectors' <dfn id=selector-target data-noexport=""><code>:target</code></dfn> <a id=scroll-to-fragid:pseudo-class href=https://triple-underscore.github.io/selectors4-ja.html#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>, the
-  <dfn id=target-element><i>target element</i></dfn> is <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-10>the indicated part of the document</a>, if that is an
-  element; otherwise there is no <i id=scroll-to-fragid:target-element><a href=#target-element>target element</a></i>.
-  <a href=references.html#refsSELECTORS>[SELECTORS]</a></p>
 
   <p>The <a id=scroll-to-fragid:task-source href=webappapis.html#task-source>task source</a> for the task mentioned in this section must be the <a id=scroll-to-fragid:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM
   manipulation task source</a>.</p>
