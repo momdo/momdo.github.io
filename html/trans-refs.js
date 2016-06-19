@@ -18,63 +18,107 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-ARIA: 'http://momdo.github.io/wai-aria-1.1/',
-ARIAHTML: 'http://momdo.github.io/html-aria/',
+ARIA: 'https://momdo.github.io/wai-aria-1.1/',
+ARIAHTML: 'https://momdo.github.io/html-aria/',
 ATOM: [ 'http://momdo.s35.xrea.com/web-html-test/spec/rfc4287j.html',
-	'http://www.futomi.com/lecture/japanese/rfc4287.html',
-	'http://www.7key.jp/rfc/4287/rfc4287.html'
+    'http://www.futomi.com/lecture/japanese/rfc4287.html',
+    'http://www.7key.jp/rfc/4287/rfc4287.html'
 ],//RFC4287
-COOKIES: 'http://www.hcn.zaq.ne.jp/___/WEB/RFC6265-ja.html', //RFC6265
-CORS: 'http://www.hcn.zaq.ne.jp/___/WEB/Fetch-ja.html',
-CSS: 'http://momdo.s35.xrea.com/web-html-test/spec/CSS21/cover.html',
-CSSATTR: 'http://standards.mitsue.co.jp/public/standards/css-style-attr/',
-CSSANIMATIONS: 'http://www.hcn.zaq.ne.jp/___/WEB/css-animations-ja.html',
+COOKIES: 'https://triple-underscore.github.io/RFC6265-ja.html', //RFC6265
+CSP: ['https://triple-underscore.github.io/CSP3-ja.html',
+'https://hashedhyphen.github.io/webappsec-specjp/csp/index.html',],
+CORS: 'https://triple-underscore.github.io/Fetch-ja.html',
+CSS: 'https://momdo.github.io/css2/Overview.html',
+CSSATTR: 'https://triple-underscore.github.io/css-style-attr-ja.html',
+CSSANIMATIONS: 'https://triple-underscore.github.io/css-animations-ja.html',
+CSSBG: 'https://triple-underscore.github.io/css-backgrounds-ja.html',
+CSSCASCADE: 'https://triple-underscore.github.io/css-cascade-ja.html',
 CSSCOLOR: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
-CSSFONTS: 'http://www.hcn.zaq.ne.jp/___/WEB/css-fonts-ja.html',
+CSSFONTLOAD: 'https://triple-underscore.github.io/css-font-loading-ja.html',
+CSSFONTS: 'https://triple-underscore.github.io/css-fonts-ja.html',
 CSSIMAGES: 'http://momdo.s35.xrea.com/web-html-test/spec/CR-css3-images-20120417.html',
-CSSOM: 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html',
-CSSOMVIEW: 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-view-ja.html',
-CSSWM: [ 'http://www.hcn.zaq.ne.jp/___/WEB/css-writing-modes-ja.html',
-	'http://suzukima.github.io/css-ja/css3-writing-modes/', //writing modes
+CSSOM: 'https://triple-underscore.github.io/cssom-ja.html',
+CSSOMVIEW: 'https://triple-underscore.github.io/cssom-view-ja.html',
+CSSOVERFLOW: 'https://triple-underscore.github.io/css-overflow3-ja.html',
+CSSTRANSITIONS: 'https://triple-underscore.github.io/css-transitions-ja.html',
+CSSUI: ['https://momdo.github.io/css-ui/',
+    'https://triple-underscore.github.io/css-ui-ja.html',
 ],
-CSSTRANSITIONS: 'http://www.hcn.zaq.ne.jp/___/WEB/css-transitions-ja.html',
-CSSSCOPED: 'http://www.hcn.zaq.ne.jp/___/WEB/css-cascade-ja.html', //そのうち削除するかも
+CSSSYNTAX: 'https://triple-underscore.github.io/css-syntax-ja.html',
+CSSTEXT: 'https://triple-underscore.github.io/css-text-ja.html',
 CSSVALUES: [ 'http://momdo.s35.xrea.com/web-html-test/spec/CR-css3-values-20130404.html',
-	'http://www.hcn.zaq.ne.jp/___/WEB/css-values-ja.html',
+    'https://triple-underscore.github.io/css-values-ja.html',
 ],
-CSSUI: 'http://momdo.s35.xrea.com/web-html-test/spec/WD-css3-ui-20120117.html',
-DOM: 'http://www.hcn.zaq.ne.jp/___/WEB/DOM4-ja.html',
+CSSWM: 'https://triple-underscore.github.io/css-writing-modes-ja.html',
+    //'http://suzukima.github.io/css-ja/css3-writing-modes/', //writing modes
+DOM: 'https://triple-underscore.github.io/DOM4-ja.html',
 DOMEVENTS: 'http://www.y-adagio.com/public/standards/tr_dom2_events/expanded-toc.html', //DOM2 Event
 ECMA262: 'http://tsofthome.appspot.com/ecmascript.html',
-ENCODING: 'http://www.hcn.zaq.ne.jp/___/WEB/Encoding-ja.html',
-FILEAPI:  'http://www.hcn.zaq.ne.jp/___/WEB/File_API-ja.html',
-HTML4: 'http://www.asahi-net.or.jp/~sd5a-ucd/rec-html401j/cover.html',
-HTML5: 'http://momdo.github.io/html5/Overview.html',
-HTMLALTTECHS: 'http://momdo.github.io/html-alt-techniques/',
-HTMLDIFF: 'http://momdo.github.io/html5-diff/',
-//HTMLDIFF: ['http://www.html5.jp/trans/w3c_differences.html', //obs.
-//'http://standards.mitsue.co.jp/resources/w3c/TR/html5-diff/', //obs.
-//],
-HTTP: [ 'http://www.hcn.zaq.ne.jp/___/WEB/RFC2616-ja.html',
-'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202616'
-], //RFC2616 - old version.
-HTTPS:[ 'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202818',
-        'http://www.ipa.go.jp/security/rfc/RFC2818JA.html',
-        'http://www.studyinghttp.net/rfc_ja/rfc2818'
-],//RFC2818
+ENCODING: 'https://triple-underscore.github.io/Encoding-ja.html',
+FETCH: 'https://triple-underscore.github.io/Fetch-ja.html',
+FILEAPI:  'https://triple-underscore.github.io/File_API-ja.html',
+HTTP:  'https://triple-underscore.github.io/RFC723X-ja.html',
+JAVASCRIPT: 'https://triple-underscore.github.io/javascript-ja.html',
 JLREQ: 'http://www.w3.org/TR/jlreq/ja/',
-JSON: 'http://www.7key.jp/rfc/rfc4627.html', //RFC4627
-MQ:   'http://standards.mitsue.co.jp/standards/css3-mediaqueries/',
+//JSON: 'http://www.7key.jp/rfc/rfc4627.html', //RFC4627
+MQ: 'https://triple-underscore.github.io/mediaqueries4-ja.html',
 OPENSEARCH: 'https://sites.google.com/site/tsukamoto/doc/opensearch/spec-1-1-draft4',
-ORIGIN:[ 'http://www.hcn.zaq.ne.jp/___/WEB/RFC6454-ja.html',
+ORIGIN:[ 'https://triple-underscore.github.io/RFC6454-ja.html',
  'http://www.ipa.go.jp/security/rfc/RFC6454JA.html'
 ], //RFC6454
-PNG: 'http://www.milk-island.net/document/png/',
-POLYGLOT: 'http://momdo.s35.xrea.com/web-html-test/spec/CR-html-polyglot-20140717.html',
+//PNG: 'http://www.milk-island.net/document/png/', URL消失
 RFC1034:  'http://srgia.com/docs/rfc1034j.html',
 RFC1123:[ 'http://hp.vector.co.jp/authors/VA002682/rfc1123j.htm',
           'http://www2s.biglobe.ne.jp/~hig/tcpip/HostReq_Appl.html'
 ],
+
+RFC2046:[ 'http://www.y-adagio.com/public/standards/tr_mime-p2_2046/toc.htm',
+          'http://www.t-net.ne.jp/~cyfis/rfc/mime/rfc2046_ja-1.html',
+          'http://jbpe.tripod.com/rfcj/rfc2046.j.sjis.txt',
+          'http://www.akanko.net/marimo/data/rfc/rfc2046-jp.txt',
+],
+RFC2119:[ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
+          'http://www.studyinghttp.net/rfc_ja/rfc2119',
+          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
+          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
+          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+],
+RFC2318: [ 'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2318j.html',
+           'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202318',
+           'http://www.7key.jp/rfc/rfc2318.html',
+],
+RFC2397: [ 'http://d.hatena.ne.jp/tily/20071103/p1',
+           'http://www.darts.jp/reference/rfc/rfc2397-jp.txt',
+],
+RFC3490:   'http://www.jdna.jp/survey/rfc/rfc3490j.html',
+RFC3629:[  'http://www5d.biglobe.ne.jp/~stssk/rfc/rfc3629j.html',
+           'http://www.akanko.net/marimo/data/rfc/rfc3629-jp.txt'
+],
+RFC4329:   'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%204329',
+RFC4648:   'http://www5d.biglobe.ne.jp/~stssk/rfc/rfc4648j.html',
+RFC5280:   'http://www.ipa.go.jp/security/rfc/RFC5280-00JA.html',
+RFC5322: [ 'http://srgia.com/docs/rfc5322j.html',
+           'http://www.hde.co.jp/rfc/rfc5322_ja.txt'
+],
+SELECTORS: 'https://triple-underscore.github.io/selectors4-ja.html',
+           //'http://www.y-adagio.com/public/standards/css3-selectors/',
+SVG: 'http://www.hcn.zaq.ne.jp/___/SVG11-2nd/',
+SVGTINY12: 'http://www.hcn.zaq.ne.jp/___/SVGTiny12/', 
+URL: 'https://triple-underscore.github.io/URL-ja.html',
+UTF7: 'http://soft.bko.to/rfc/rfc2152jp.txt', //RFC2152
+WCAG: 'http://waic.jp/docs/WCAG20/Overview.html', //WCAG20
+WCAG20: 'http://waic.jp/docs/WCAG20/Overview.html',
+WEBIDL: 'https://triple-underscore.github.io/WebIDL-ja.html',
+WSP: 'https://triple-underscore.github.io/RFC6455-ja.html',//RGC6455
+XHR: 'https://triple-underscore.github.io/XHR-ja.html',
+XML: 'http://w4ard.eplusx.net/translation/W3C/REC-xml-20081126/',
+XMLNS: 'http://www.hcn.zaq.ne.jp/___/XML/Namespaces-ja.html',
+XPATH10: 'http://www.doraneko.org/xml/xpath10/19991116/',
+XSLT10: [ 'http://www.y-adagio.com/public/standards/tr_xslt10/toc.htm',
+          'http://www.infoteria.com/jp/contents/xml-data/REC-xslt-19991116-jpn.htm',
+          'http://www.hcn.zaq.ne.jp/___/XML/xslt10-ja.html'
+],
+/* //古い（すでにリファレンスにない）RFC
 RFC1321:[ 'http://www.ipa.go.jp/security/rfc/RFC1321JA.html',
           'http://www.t-net.ne.jp/~cyfis/rfc/algorithm/rfc1321_ja.html',
           'http://srgia.com/docs/rfc1321j.html',
@@ -97,17 +141,6 @@ RFC1922:  'http://www.akanko.net/marimo/data/rfc/rfc1922-jp.txt',
 RFC2045:[ 'http://www.akanko.net/marimo/data/rfc/rfc2045-jp.txt',
           'http://hp.vector.co.jp/authors/VA014833/rfc2045J.html',
 ],
-RFC2046:[ 'http://www.y-adagio.com/public/standards/tr_mime-p2_2046/toc.htm',
-          'http://www.t-net.ne.jp/~cyfis/rfc/mime/rfc2046_ja-1.html',
-          'http://jbpe.tripod.com/rfcj/rfc2046.j.sjis.txt',
-          'http://www.akanko.net/marimo/data/rfc/rfc2046-jp.txt',
-],
-RFC2119:[ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
-          'http://www.studyinghttp.net/rfc_ja/rfc2119',
-          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
-],
 RFC2237: [ 'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2237j.html',
            'http://jbpe.tripod.com/rfcj/rfc2237.j.sjis.txt',
 ],
@@ -115,55 +148,11 @@ RFC2246: [ 'http://www.ipa.go.jp/security/rfc/RFC2246-00JA.html',
            'http://www7b.biglobe.ne.jp/~k-west/SSLandTLS/rfc2246-Ja.txt',
 ],
 RFC2313:   'http://www7b.biglobe.ne.jp/~k-west/SSLandTLS/rfc2313-Ja.txt',
-RFC2318: [ 'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2318j.html',
-           'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202318',
-           'http://www.7key.jp/rfc/rfc2318.html',
-],
 RFC2388: [ 'http://www.studyinghttp.net/rfc_ja/rfc2388',
            'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202388',
            'http://hp.vector.co.jp/authors/VA014833/rfc2388J.html',
 ],
-RFC2397: [ 'http://d.hatena.ne.jp/tily/20071103/p1',
-           'http://www.darts.jp/reference/rfc/rfc2397-jp.txt',
-],
-RFC3490:   'http://www.jdna.jp/survey/rfc/rfc3490j.html',
-RFC3629:[  'http://www5d.biglobe.ne.jp/~stssk/rfc/rfc3629j.html',
-           'http://www.akanko.net/marimo/data/rfc/rfc3629-jp.txt'
-],
-RFC4329:   'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%204329',
-RFC4648:   'http://www5d.biglobe.ne.jp/~stssk/rfc/rfc4648j.html',
-RFC5280:   'http://www.ipa.go.jp/security/rfc/RFC5280-00JA.html',
-RFC5322: [ 'http://srgia.com/docs/rfc5322j.html',
-           'http://www.hde.co.jp/rfc/rfc5322_ja.txt'
-],
-SDP: 'http://www.softfront.co.jp/tech/ietfdoc/trans/rfc4566j.txt', //RFC4566
-SDPOFFERANSWER: 'http://www.softfront.co.jp/tech/ietfdoc/trans/rfc3264j.txt', //RFC3264
-SELECTORS: [ 'http://www.hcn.zaq.ne.jp/___/WEB/selectors4-ja.html',
-             'http://www.y-adagio.com/public/standards/css3-selectors/',
-],
-SVG: 'http://www.hcn.zaq.ne.jp/___/SVG11-2nd/',
-TYPEDARRAY: 'http://www.hcn.zaq.ne.jp/___/WEB/TypedArray-ja.html',
-URL: 'http://www.hcn.zaq.ne.jp/___/WEB/URL-ja.html',
-UTF7: 'http://soft.bko.to/rfc/rfc2152jp.txt', //RFC2152
-WCAG: 'http://waic.jp/docs/WCAG20/Overview.html', //WCAG20
-WCAG20: 'http://waic.jp/docs/WCAG20/Overview.html',
-WEBSOCKET:[ 'http://www.hcn.zaq.ne.jp/___/WEB/WebSocket-ja.html',
-            'http://www.html5.jp/trans/w3c_websockets.html'
-],
-WEBWORKERS: 'http://www.hcn.zaq.ne.jp/___/WEB/Workers-ja.html',
-WEBIDL: 'http://www.hcn.zaq.ne.jp/___/WEB/WebIDL-ja.html',
-WSP: 'http://www.hcn.zaq.ne.jp/___/WEB/RFC6455-ja.html',//RGC6455
-XHR: 'http://www.hcn.zaq.ne.jp/___/WEB/XHR-ja.html',
-XHTML1: 'http://msugai.fc2web.com/web/W3C/xhtml1SE/Cover.html',
-XHTMLMOD: 'http://msugai.fc2web.com/web/W3C/XHTMLMOD/Overview.html',
-XML: 'http://w4ard.eplusx.net/translation/W3C/REC-xml-20081126/',
-XMLBASE: 'http://www.toyfish.net/docs/xmlbase/',
-XMLNS: 'http://www.hcn.zaq.ne.jp/___/XML/Namespaces-ja.html',
-XPATH10: 'http://www.doraneko.org/xml/xpath10/19991116/',
-XSLT10: [ 'http://www.y-adagio.com/public/standards/tr_xslt10/toc.htm',
-          'http://www.infoteria.com/jp/contents/xml-data/REC-xslt-19991116-jpn.htm',
-          'http://www.hcn.zaq.ne.jp/___/XML/xslt10-ja.html'
-],
+*/
 	};
 
 	(function(){
