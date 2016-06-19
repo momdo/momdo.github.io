@@ -19,23 +19,24 @@ addEventListener("DOMContentLoaded", function(){
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
 css21: 'https://momdo.github.io/css2/cover.html',
-css3syn: 'http://www.hcn.zaq.ne.jp/___/WEB/css-syntax-ja.html',
+css3syn: 'https://triple-underscore.github.io/css-syntax-ja.html',
 css3val: [ 'https://momdo.github.io/css3-values/',
-	'http://www.hcn.zaq.ne.jp/___/WEB/css-values-ja.html',
+	'https://triple-underscore.github.io/css-values-ja.html',
 ],
 mediaq: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/',
-"css-cascade-4": 'http://www.hcn.zaq.ne.jp/___/WEB/css-cascade-ja.html',
-"css-fonts-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-fonts-ja.html',
-"css-page-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-page-ja.html',
-"css-writing-modes-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-writing-modes-ja.html',
-"cssom-1": 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html',
-"mediaqueries-4": 'http://www.hcn.zaq.ne.jp/___/WEB/mediaqueries4-ja.html',
+"css-cascade-4": 'https://triple-underscore.github.io/css-cascade-ja.html',
+"css-fonts-3": 'https://triple-underscore.github.io/css-fonts-ja.html',
+"css-page-3": 'https://triple-underscore.github.io/css-page-ja.html',
+"css-writing-modes-3": 'https://triple-underscore.github.io/css-writing-modes-ja.html',
+"cssom-1": 'https://triple-underscore.github.io/cssom-ja.html',
+"mediaqueries-4": 'https://triple-underscore.github.io/mediaqueries4-ja.html',
 rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
           'http://www.studyinghttp.net/rfc_ja/rfc2119',
           'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
           'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
           'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
+"css-conditional-3": 'https://triple-underscore.github.io/css-conditional-ja.html',
 	};
 
 	(function(){
