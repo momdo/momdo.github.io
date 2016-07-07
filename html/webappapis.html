@@ -296,7 +296,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>28 June 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>7 July 2016</span></h2></hgroup>
    
    
   </header>
@@ -498,14 +498,17 @@
 
   <h5 id=fetching-scripts>8.1.3.2 Fetching scripts</h5>
 
-  <p>The various script-fetching algorithms below have two hooks that may be customized by their
+  <p>The various script-fetching algorithms below have three hooks that may be customized by their
   callers:</p>
 
-  <ul><li><p><dfn id=fetching-scripts-set-up-request>Set up the request</dfn>, which takes a
-   <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request data-x-internal=concept-request>request</a> which it may modify before the algorithm
-   continues</li><li><p><dfn id=fetching-scripts-process-response>Process the response</dfn>, which takes
-   a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response data-x-internal=concept-response>response</a> and must either return true or false to
-   indicate success or failure, respectively</li></ul>
+  <ul><li><p><dfn data-dfn-for="fetching
+   scripts" id=fetching-scripts-set-up-request data-export="">Set up the request</dfn>, which takes a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request data-x-internal=concept-request>request</a>
+   which it may modify before the algorithm continues</li><li><p><dfn data-dfn-for="fetching
+   scripts" id=fetching-scripts-perform-fetch data-export="">Perform the fetch</dfn>, which takes a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-2 data-x-internal=concept-request>request</a> and
+   must asynchronously complete with a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response data-x-internal=concept-response>response</a> (which may be
+   a <a id=fetching-scripts:network-error href=https://fetch.spec.whatwg.org/#concept-network-error data-x-internal=network-error>network error</a>)</li><li><p><dfn data-dfn-for="fetching
+   scripts" id=fetching-scripts-process-response data-export="">Process the response</dfn>, which takes a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-2 data-x-internal=concept-response>response</a> and must either return true or false to indicate
+   success or failure, respectively</li></ul>
 
   <p class=note><cite>Service Workers</cite> is an example of a specification that runs these
   algorithms with its own options for the hooks. <a href=references.html#refsSW>[SW]</a></p>
@@ -516,16 +519,20 @@
   The algorithm will asynchronously complete with either null (on failure) or a new <a href=#classic-script id=fetching-scripts:classic-script>classic
   script</a> (on success).</p>
 
-  <ol><li><p>Let <var>request</var> be the result of <a href=infrastructure.html#create-a-potential-cors-request id=fetching-scripts:create-a-potential-cors-request>creating a potential-CORS request</a> given <var>url</var> and <var>CORS
-   setting</var>.</li><li><p>Set <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client data-x-internal=concept-request-client>client</a> to
-   <var>settings object</var>, its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type data-x-internal=concept-request-type>type</a> to "<code>script</code>", its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination data-x-internal=concept-request-destination>destination</a>
-   to "<code>script</code>", its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata id=fetching-scripts:concept-request-nonce-metadata data-x-internal=concept-request-nonce-metadata>cryptographic nonce metadata</a> to
-   <var>cryptographic nonce</var>, and its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata data-x-internal=concept-request-parser-metadata>parser
-   metadata</a> to <var>parser state</var>.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request>set
-   up the request</a>, perform them on <var>request</var>.</li><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=fetching-scripts:concept-fetch data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li>
-    <p>Return from this algorithm, and run the remaining steps as part of the fetch's
-    <a id=fetching-scripts:process-response href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-2 data-x-internal=concept-response>response</a>
-    <var>response</var>.</p>
+  <ol><li><p>Let <var>request</var> be the result of <a href=infrastructure.html#create-a-potential-cors-request id=fetching-scripts:create-a-potential-cors-request>creating a potential-CORS request</a> given <var>url</var>, "<code>script</code>", and <var>CORS setting</var>.</li><li><p>Set <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client data-x-internal=concept-request-client>client</a> to
+   <var>settings object</var>, its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type data-x-internal=concept-request-type>type</a> to "<code>script</code>", its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata id=fetching-scripts:concept-request-nonce-metadata data-x-internal=concept-request-nonce-metadata>cryptographic nonce
+   metadata</a> to <var>cryptographic nonce</var>, and its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata data-x-internal=concept-request-parser-metadata>parser metadata</a> to <var>parser
+   state</var>.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request>set
+   up the request</a>, perform them on <var>request</var>.</li><li>
+    <p>If the caller specified custom steps to <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch>perform
+    the fetch</a>, perform them on <var>request</var>. Return from this algorithm, and when the
+    custom <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-2>perform the fetch</a> steps complete
+    with <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-3 data-x-internal=concept-response>response</a> <var>response</var>, run the remaining
+    steps.</p>
+
+    <p>Otherwise, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=fetching-scripts:concept-fetch data-x-internal=concept-fetch>fetch</a> <var>request</var>. Return from this
+    algorithm, and run the remaining steps as part of the fetch's <a id=fetching-scripts:process-response href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for
+    the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-4 data-x-internal=concept-response>response</a> <var>response</var>.</p>
 
     <p class=note><var>response</var> can be either <a id=fetching-scripts:cors-same-origin href=infrastructure.html#cors-same-origin>CORS-same-origin</a> or
     <a id=fetching-scripts:cors-cross-origin href=infrastructure.html#cors-cross-origin>CORS-cross-origin</a>. This only affects how error reporting happens.</p>
@@ -554,13 +561,21 @@
   object</var>, and a <var>destination</var>, run these steps. The algorithm will asynchronously
   complete with either null (on failure) or a new <a href=#classic-script id=fetching-scripts:classic-script-2>classic script</a> (on success).</p>
 
-  <ol><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-2 data-x-internal=concept-request>request</a> whose
-   <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client-2 data-x-internal=concept-request-client>client</a> is <var>settings object</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-2 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination-2 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode data-x-internal=concept-request-mode>mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata-2 data-x-internal=concept-request-parser-metadata>parser
+  <ol><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-3 data-x-internal=concept-request>request</a> whose
+   <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client-2 data-x-internal=concept-request-client>client</a> is <var>settings object</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-2 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode data-x-internal=concept-request-mode>mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata-2 data-x-internal=concept-request-parser-metadata>parser
    metadata</a> is "<code>not parser-inserted</code>", and whose
    <a id=fetching-scripts:use-url-credentials-flag href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a> is set.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-2>set
-   up the request</a>, perform them on <var>request</var>.</li><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=fetching-scripts:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li><p>Return from this algorithm, and run the remaining steps as part of the fetch's
-   <a id=fetching-scripts:process-response-2 href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-3 data-x-internal=concept-response>response</a>
-   <var>response</var>.</li><li><p>If <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-type-2 data-x-internal=concept-response-type>type</a> is "<code>error</code>", or <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=fetching-scripts:concept-response-status-2 data-x-internal=concept-response-status>status</a> is not an <a id=fetching-scripts:ok-status-2 href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a>, asynchronously
+   up the request</a>, perform them on <var>request</var>.</li><li>
+    <p>If the caller specified custom steps to <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-3>perform
+    the fetch</a>, perform them on <var>request</var>. Return from this algorithm, and when the
+    custom <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-4>perform the fetch</a> steps complete
+    with <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-5 data-x-internal=concept-response>response</a> <var>response</var>, run the remaining
+    steps.</p>
+
+    <p>Otherwise, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=fetching-scripts:concept-fetch-2 data-x-internal=concept-fetch>fetch</a> <var>request</var>. Return from this
+    algorithm, and run the remaining steps as part of the fetch's <a id=fetching-scripts:process-response-2 href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for
+    the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-6 data-x-internal=concept-response>response</a> <var>response</var>.</p>
+   </li><li><p>If <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-type-2 data-x-internal=concept-response-type>type</a> is "<code>error</code>", or <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=fetching-scripts:concept-response-status-2 data-x-internal=concept-response-status>status</a> is not an <a id=fetching-scripts:ok-status-2 href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a>, asynchronously
    complete this algorithm with null, and abort these steps.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-2>process the response</a>, perform them on
    <var>response</var>. If they return false, complete this algorithm with null, and abort these
    steps.</li><li><p>Let <var>source text</var> be the result of <a href=https://triple-underscore.github.io/Encoding-ja.html#utf-8-decode id=fetching-scripts:utf-8-decode data-x-internal=utf-8-decode>UTF-8
@@ -580,7 +595,7 @@
    </li><li><p><a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script>Fetch a single module script</a> given <var>url</var>, <var>credentials
    mode</var>, <var>cryptographic nonce</var>, <var>parser state</var>, <var>destination</var>,
    <var>fetch client settings object</var>, <var>module map settings object</var>, and
-   <var>referrer</var>. If the caller of this algorithm specified custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-3>set up the request</a> or <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-3>process the response</a> steps, pass those along
+   <var>referrer</var>. If the caller of this algorithm specified custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-3>set up the request</a>, <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-5>perform the fetch</a>, or <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-3>process the response</a> steps, pass those along
    while <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-2>fetching a single module script</a>.</p>
 
    </li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-3>fetching a single module script</a> asynchronously completes with
@@ -615,16 +630,19 @@
     <var>module script</var>'s <a href=#concept-module-script-parser id=fetching-scripts:concept-module-script-parser>parser state</a>,
     <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>, <var>module
     script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>, <var>ancestor list</var>, and <var>module
-    script</var>'s <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a>.</p>
+    script</var>'s <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a>. If the caller of
+    this algorithm specified custom <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-6>perform the
+    fetch</a> steps, pass those along while <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-2>fetching a
+    module script tree</a>.</p>
 
     <p class=note>It is intentional that no custom <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-4>set up the request</a> or <a href=#fetching-scripts-process-response id=fetching-scripts:fetching-scripts-process-response-4>process the response</a> steps are passed along
     here. Those hooks only apply to the top-level fetch at the root of the module script tree.</p>
 
-    <p>If any of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-2>fetch a module script tree</a> invocations asynchronously complete
+    <p>If any of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-3>fetch a module script tree</a> invocations asynchronously complete
     with null, the user agent may <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch-terminate id=fetching-scripts:concept-fetch-terminate data-x-internal=concept-fetch-terminate>terminate</a> any or
     all of the other fetches, and must then asynchronously complete this algorithm with null.</p>
 
-    <p>Once all of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-3>fetch a module script tree</a> invocations asynchronously
+    <p>Once all of the <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-4>fetch a module script tree</a> invocations asynchronously
     complete with a <a href=#module-script id=fetching-scripts:module-script-3>module script</a>, asynchronously complete this algorithm with
     <var>module script</var>.</p>
    </li></ol>
@@ -640,16 +658,22 @@
    then proceed to the next step.</li><li><p>If <var>module map</var> contains an entry with key <var>url</var>, asynchronously
    complete this algorithm with that entry's value, and abort these steps.</li><li><p>Create an entry in <var>module map</var> with key <var>url</var> and value "<code>fetching</code>".</p>
 
-   </li><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-3 data-x-internal=concept-request>request</a> whose
-   <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-2 data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination-3 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-3 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode-2 data-x-internal=concept-request-mode>mode</a> is "<code>cors</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode-2 data-x-internal=concept-request-credentials-mode>credentials mode</a> is <var>credentials
+   </li><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-4 data-x-internal=concept-request>request</a> whose
+   <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-2 data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination-2 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-3 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode-2 data-x-internal=concept-request-mode>mode</a> is "<code>cors</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode-2 data-x-internal=concept-request-credentials-mode>credentials mode</a> is <var>credentials
    mode</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata id=fetching-scripts:concept-request-nonce-metadata-2 data-x-internal=concept-request-nonce-metadata>cryptographic nonce metadata</a> is
    <var>cryptographic nonce</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata-3 data-x-internal=concept-request-parser-metadata>parser
    metadata</a> is <var>parser state</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer id=fetching-scripts:concept-request-referrer data-x-internal=concept-request-referrer>referrer</a> is <var>referrer</var>, and <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client-3 data-x-internal=concept-request-client>client</a> is <var>fetch client settings
    object</var>.</li><li><p>If the caller specified custom steps to <a href=#fetching-scripts-set-up-request id=fetching-scripts:fetching-scripts-set-up-request-5>set
-   up the request</a>, perform them on <var>request</var>.</li><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=fetching-scripts:concept-fetch-3 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li>
-    <p>Return from this algorithm, and run the remaining steps as part of the fetch's
-    <a id=fetching-scripts:process-response-3 href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-4 data-x-internal=concept-response>response</a>
-    <var>response</var>.</p>
+   up the request</a>, perform them on <var>request</var>.</li><li>
+    <p>If the caller specified custom steps to <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-7>perform
+    the fetch</a>, perform them on <var>request</var>. Return from this algorithm, and when the
+    custom <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-8>perform the fetch</a> steps complete
+    with <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-7 data-x-internal=concept-response>response</a> <var>response</var>, run the remaining
+    steps.</p>
+
+    <p>Otherwise, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=fetching-scripts:concept-fetch-3 data-x-internal=concept-fetch>fetch</a> <var>request</var>. Return from this
+    algorithm, and run the remaining steps as part of the fetch's <a id=fetching-scripts:process-response-3 href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for
+    the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-8 data-x-internal=concept-response>response</a> <var>response</var>.</p>
 
     <p class=note><var>response</var> is always <a id=fetching-scripts:cors-same-origin-2 href=infrastructure.html#cors-same-origin>CORS-same-origin</a>.</p>
    </li><li>
@@ -759,7 +783,7 @@
     <p class=note>This step will recursively evaluate all of the module's dependencies.</p>
    </li><li><p>If <var>evaluationStatus</var> is an abrupt completion, <a href=#report-the-exception id=calling-scripts:report-the-exception-3>report the exception</a>
    given by <var>evaluationStatus</var>.[[Value]] for <var>s</var>. (Do not perform this step if
-   <a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation id=calling-scripts:js-scriptevaluation-3 data-x-internal=js-scriptevaluation>ScriptEvaluation</a> fails to complete as a result of the
+   <a href=https://tc39.github.io/ecma262/#sec-moduleevaluation id=calling-scripts:js-moduleevaluation-2 data-x-internal=js-moduleevaluation>ModuleEvaluation</a> fails to complete as a result of the
    user agent <a href=#abort-a-running-script id=calling-scripts:abort-a-running-script-3>aborting the running script</a>.)</li><li><p><a href=#clean-up-after-running-script id=calling-scripts:clean-up-after-running-script-2>Clean up after running script</a> with <var>settings</var>.</li></ol>
 
   <p>The steps to <dfn id=check-if-we-can-run-script>check if we can run script</dfn> with an <a href=#environment-settings-object id=calling-scripts:environment-settings-object>environment settings
@@ -1060,20 +1084,21 @@
    <pre>&lt;!DOCTYPE html&gt;
 &lt;iframe&gt;&lt;/iframe&gt;
 &lt;script&gt;
-  new frames[0].Worker('worker.js');
+  new frames[0].MessageChannel();
 &lt;/script&gt;</pre>
 
-   <p>When the <code id=incumbent:dom-worker><a href=workers.html#dom-worker>Worker()</a></code> constructor looks up the <a href=#incumbent-settings-object id=incumbent:incumbent-settings-object-7>incumbent
-   settings object</a> to use for various parts of its algorithm, the <a href=#topmost-script-having-execution-context id=incumbent:topmost-script-having-execution-context-5>topmost script-having
-   execution context</a> will be that corresponding to the <code id=incumbent:the-script-element><a href=scripting.html#the-script-element>script</a></code> element: it was
-   pushed onto the <a id=incumbent:javascript-execution-context-stack-3 href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a> as part of <a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation id=incumbent:js-scriptevaluation data-x-internal=js-scriptevaluation>ScriptEvaluation</a> during the <a href=#run-a-classic-script id=incumbent:run-a-classic-script>run a classic script</a>
-   algorithm. Since there are no Web IDL callback invocations involved, the context's
-   <a href=#skip-when-determining-incumbent-counter id=incumbent:skip-when-determining-incumbent-counter-4>skip-when-determining-incumbent counter</a> is zero, so it is used to determine the
-   <a href=#incumbent-settings-object id=incumbent:incumbent-settings-object-8>incumbent settings object</a>; the result is the <a href=#environment-settings-object id=incumbent:environment-settings-object-3>environment settings
-   object</a> of <code>window</code>.</p>
+   <p>When the <code id=incumbent:dom-messagechannel><a href=comms.html#dom-messagechannel>MessageChannel()</a></code> constructor looks up the
+   <a href=#incumbent-settings-object id=incumbent:incumbent-settings-object-7>incumbent settings object</a> to use as the <a href=comms.html#concept-port-owner id=incumbent:concept-port-owner>owner</a> of the new <code id=incumbent:messageport><a href=comms.html#messageport>MessagePort</a></code> objects, the
+   <a href=#topmost-script-having-execution-context id=incumbent:topmost-script-having-execution-context-5>topmost script-having execution context</a> will be that corresponding to the
+   <code id=incumbent:the-script-element><a href=scripting.html#the-script-element>script</a></code> element: it was pushed onto the <a id=incumbent:javascript-execution-context-stack-3 href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context
+   stack</a> as part of <a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation id=incumbent:js-scriptevaluation data-x-internal=js-scriptevaluation>ScriptEvaluation</a> during the
+   <a href=#run-a-classic-script id=incumbent:run-a-classic-script>run a classic script</a> algorithm. Since there are no Web IDL callback invocations
+   involved, the context's <a href=#skip-when-determining-incumbent-counter id=incumbent:skip-when-determining-incumbent-counter-4>skip-when-determining-incumbent counter</a> is zero, so it is
+   used to determine the <a href=#incumbent-settings-object id=incumbent:incumbent-settings-object-8>incumbent settings object</a>; the result is the <a href=#environment-settings-object id=incumbent:environment-settings-object-3>environment
+   settings object</a> of <code>window</code>.</p>
 
    <p>(In this example, the <a href=#environment-settings-object id=incumbent:environment-settings-object-4>environment settings object</a> of <code>frames[0]</code> is not involved at all. It is the <a href=#current-settings-object id=incumbent:current-settings-object>current settings
-   object</a>, but the <code id=incumbent:dom-worker-2><a href=workers.html#dom-worker>Worker()</a></code> constructor cares only about the
+   object</a>, but the <code id=incumbent:dom-worker><a href=workers.html#dom-worker>Worker()</a></code> constructor cares only about the
    incumbent, not current.)</p>
   </div>
 
@@ -1710,7 +1735,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
      steps</a> for that <code id=event-loop-processing-model:document-13><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-4 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-14><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=event-loop-processing-model:evaluate-media-queries-and-report-changes href=https://triple-underscore.github.io/cssom-view-ja.html#evaluate-media-queries-and-report-changes data-x-internal=evaluate-media-queries-and-report-changes>evaluate media queries
      and report changes</a> for that <code id=event-loop-processing-model:document-15><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-5 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-16><a href=dom.html#document>Document</a></code> in <var>docs</var>, <dfn id=run-css-animations-and-send-events>run CSS animations and send
      events</dfn> for that <code id=event-loop-processing-model:document-17><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSANIMATIONS>[CSSANIMATIONS]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-6 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-18><a href=dom.html#document>Document</a></code> in <var>docs</var>, <dfn id=run-the-fullscreen-rendering-steps>run the fullscreen rendering
-     steps</dfn> for that <code id=event-loop-processing-model:document-19><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsFULLSCREEN>[FULLSCREEN]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-7 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-20><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a href=#run-the-animation-frame-callbacks id=event-loop-processing-model:run-the-animation-frame-callbacks-2>run the animation frame
+     steps</dfn> for that <code id=event-loop-processing-model:document-19><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsFULLSCREEN>[FULLSCREEN]</a><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=28001" title="Formalize rendering tasks">28001</a></div></li><li><p>For each <a id=event-loop-processing-model:fully-active-7 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-20><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a href=#run-the-animation-frame-callbacks id=event-loop-processing-model:run-the-animation-frame-callbacks-2>run the animation frame
      callbacks</a> for that <code id=event-loop-processing-model:document-21><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the
      timestamp.</li><li><p>For each <a id=event-loop-processing-model:fully-active-8 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-22><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=event-loop-processing-model:run-the-update-intersection-observations-steps href=https://wicg.github.io/IntersectionObserver/#run-the-update-intersection-observations-steps data-x-internal=run-the-update-intersection-observations-steps>run the update
      intersection observations steps</a> for that <code id=event-loop-processing-model:document-23><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the
@@ -2505,7 +2530,7 @@ document.body.appendChild(frame)</pre>
   object's <span>relevant setting object</span>'s <a id=windoworworkerglobalscope-mixin:concept-origin-3 href=browsers.html#concept-origin>origin</a>, <a href=browsers.html#unicode-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:unicode-serialisation-of-an-origin>serialised</a>.</p>
 
 
-  <h3 id=atob>8.3 Base64のユーティリティーメソッド</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>50+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>5.0-8.0+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="ie_mob yes"><span>IE Mobile</span> <span>10+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob>8.3 Base64のユーティリティーメソッド</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>50+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>
@@ -3348,7 +3373,7 @@ scheduleWork(); // queues a task to do lots of work</pre>
   opportunity to <a id=printing:obtain-a-physical-form href=rendering.html#obtain-a-physical-form>obtain a physical form</a> (e.g. printed copy), or the representation of a
   physical form (e.g. PDF copy), of a document.</p>
 
-  <p>The <dfn id=printing-steps>printing steps</dfn> are as follows:</p>
+  <p>The <dfn id=printing-steps>printing steps</dfn> are as follows:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=27864" title='Printing steps should apply "img environment changed" algorithm before and after printing and wait u [...]'>27864</a></div>
 
   <ol><li>
 
@@ -3608,7 +3633,7 @@ interface <dfn id=navigatorlanguage>NavigatorLanguage</dfn> {
 
 
 
-  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><span class="ie_mob no"><span>IE Mobile</span> <span>None</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
+  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
 
   <pre class=idl>[NoInterfaceObject]
 interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
@@ -4604,8 +4629,8 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
      then return a promise rejected with an <a id=images:invalidstateerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
      <code id=images:domexception-6><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>If <var>image</var>'s media data has no <a id=images:intrinsic-dimensions-2 href=https://momdo.github.io/css2/conform.html#intrinsic data-x-internal=intrinsic-dimensions>intrinsic dimensions</a> (e.g. it's a vector
      graphics with no specified content size), it should be rendered to a bitmap of the size
-     specified by the <a href=#dom-imagebitmapoptions-resizewidth id=images:dom-imagebitmapoptions-resizewidth-2>resizeWidth</a> and the
-     <a href=#dom-imagebitmapoptions-resizeheight id=images:dom-imagebitmapoptions-resizeheight-2>resizeHeight</a> options.</li><li><p>If the <var>sw</var> and <var>sh</var> arguments are not specified and
+     specified by the <code id=images:dom-imagebitmapoptions-resizewidth-2><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code> and the
+     <code id=images:dom-imagebitmapoptions-resizeheight-2><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> options.</li><li><p>If the <var>sw</var> and <var>sh</var> arguments are not specified and
      <var>image</var>'s media data has both or either of its <a id=images:intrinsic-width-2 href=infrastructure.html#intrinsic-width>intrinsic width</a> and
      <a id=images:intrinsic-height-2 href=infrastructure.html#intrinsic-height>intrinsic height</a> values equal to 0, then return a promise rejected with an
      <a id=images:invalidstateerror-4 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-7><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these
@@ -4729,14 +4754,31 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
   the user agent must run the following steps:</p>
 
   <ol><li><p>Let <var>input</var> be the <a href=#concept-imagebitmap-bitmap-data id=images:concept-imagebitmap-bitmap-data-17>bitmap
-   data</a> being cropped.</li><li><p>If the <var>sx</var>, <var>sy</var>, <var>sw</var>, and <var>sh</var> arguments are omitted, return <var>input</var>.</li><li>Scale <var>input</var> to the size specified by the <a href=#dom-imagebitmapoptions-resizewidth id=images:dom-imagebitmapoptions-resizewidth-3>resizeWidth</a> and the <a href=#dom-imagebitmapoptions-resizeheight id=images:dom-imagebitmapoptions-resizeheight-3>resizeHeight</a> options. The user agent should use the
-   value of the <dfn id=dom-imagebitmapoptions-resizequality><code>resizeQuality</code></dfn>
-   option to guide the choice of scaling algorithm.<p>
+   data</a> being cropped.</li><li><p>If the <var>sx</var>, <var>sy</var>, <var>sw</var>, and <var>sh</var> arguments are omitted, return <var>input</var>.</li><li><p>If either or both of <code id=images:dom-imagebitmapoptions-resizewidth-3><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code>
+   and <code id=images:dom-imagebitmapoptions-resizeheight-3><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> members of
+   <var>options</var> are less than or equal to 0, then return a promise rejected with
+   <a id=images:invalidstateerror-14 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=images:domexception-22><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li>
+    <p>Let <var>outputWidth</var> be determined as follows:</p>
 
-   </li><li><p>Place <var>input</var> on an infinite transparent black grid plane, positioned so
-   that it's top left corner is at the origin of the plane, with the <var>x</var>-coordinate increasing to the right, and the <var>y</var>-coordinate
-   increasing down, and with each pixel in the <var>input</var> image data occupying a cell
-   on the plane's grid.</li><li>
+    <dl class=switch><dt>If the <code id=images:dom-imagebitmapoptions-resizewidth-4><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code> member of
+     <var>options</var> is specified<dd>the value of the <code id=images:dom-imagebitmapoptions-resizewidth-5><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code>
+     member of <var>options</var><dt>If the <code id=images:dom-imagebitmapoptions-resizewidth-6><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code> member of
+     <var>options</var> is not specified, but the <code id=images:dom-imagebitmapoptions-resizeheight-4><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> member is specified<dd>the intrinsic width of <var>input</var> times the value of the <code id=images:dom-imagebitmapoptions-resizeheight-5><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> member of <var>options</var>
+     divided by the intrinsic height of <var>input</var>, rounded up to the nearest integer<dt>If neither <code id=images:dom-imagebitmapoptions-resizewidth-7><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code> nor <code id=images:dom-imagebitmapoptions-resizeheight-6><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> are specified<dd>the intrinsic width of <var>input</var></dl>
+   </li><li>
+    <p>Let <var>outputHeight</var> be determined as follows:</p>
+
+    <dl class=switch><dt>If the <code id=images:dom-imagebitmapoptions-resizeheight-7><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> member of
+     <var>options</var> is specified<dd>the value of the <code id=images:dom-imagebitmapoptions-resizeheight-8><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code>
+     member of <var>options</var><dt>If the <code id=images:dom-imagebitmapoptions-resizeheight-9><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> member of
+     <var>options</var> is not specified, but the <code id=images:dom-imagebitmapoptions-resizewidth-8><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code> member is specified<dd>the intrinsic height of <var>input</var> times the value of the <code id=images:dom-imagebitmapoptions-resizewidth-9><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code> member of <var>options</var>
+     divided by the intrinsic width of <var>input</var>, rounded up to the nearest integer<dt>If neither <code id=images:dom-imagebitmapoptions-resizewidth-10><a href=#dom-imagebitmapoptions-resizewidth>resizeWidth</a></code> nor <code id=images:dom-imagebitmapoptions-resizeheight-10><a href=#dom-imagebitmapoptions-resizeheight>resizeHeight</a></code> are specified<dd>the intrinsic height of <var>input</var></dl>
+   </li><li><p>Scale <var>input</var> to the size specified by the <var>outputWidth</var> and the
+   <var>outputHeight</var>. The user agent should use the value of the <dfn id=dom-imagebitmapoptions-resizequality><code>resizeQuality</code></dfn> option to guide the
+   choice of scaling algorithm.</li><li><p>Place <var>input</var> on an infinite transparent black grid plane, positioned
+   so that it's top left corner is at the origin of the plane, with the <var>x</var>-coordinate
+   increasing to the right, and the <var>y</var>-coordinate increasing down, and with each pixel in
+   the <var>input</var> image data occupying a cell on the plane's grid.</li><li>
 
     <p>Let <var>output</var> be the rectangle on the plane denoted by the rectangle whose
     corners are the four points (<var>sx</var>, <var>sy</var>), (<span><var>sx</var>+<var>sw</var></span>, <var>sy</var>), (<span><var>sx</var>+<var>sw</var></span>, <span><var>sy</var>+<var>sh</var></span>), (<var>sx</var>, <span><var>sy</var>+<var>sh</var></span>).</p>
@@ -4744,7 +4786,8 @@ dictionary <dfn id=imagebitmapoptions>ImageBitmapOptions</dfn> {
     <p class=note>If either <var>sw</var> or <var>sh</var> are negative, then
     the top-left corner of this rectangle will be to the left or above the (<var>sx</var>,
     <var>sy</var>) point. If any of the pixels on this rectangle are outside the area where
-    the <var>input</var> bitmap was placed, then they will be transparent black in <var>output</var>.</p>
+    the <var>input</var> bitmap was placed, then they will be transparent black in
+    <var>output</var>.</p>
 
    </li><li>
 
@@ -4868,7 +4911,7 @@ loadMySprites().then(runDemo);</pre>
 
 
 
-  <h3 id=animation-frames>8.9 Animation Frames</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>50+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><span class="ie_mob yes"><span>IE Mobile</span> <span>10+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
+  <h3 id=animation-frames>8.9 Animation Frames</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>50+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
 
   <p>Each <code id=animation-frames:document><a href=dom.html#document>Document</a></code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
   initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback identifier</dfn>, which is a number which
