@@ -296,7 +296,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>7 July 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>16 July 2016</span></h2></hgroup>
    
    
   </header>
@@ -1552,19 +1552,20 @@ interface <dfn id=workerglobalscope>WorkerGlobalScope</dfn> : <a id=the-workergl
     <p>Obtain <var>script</var> by switching on the value of <var>options</var>'s <code>type</code> member:</p>
 
     <dl class=switch><dt>"<code>classic</code>"<dd><a id=worker-processing-model:fetch-a-classic-worker-script href=webappapis.html#fetch-a-classic-worker-script>Fetch a classic worker script</a> given <var>url</var>, <var>outside
-     settings</var>, and <var>destination</var>.<dt>"<code>module</code>"<dd><a id=worker-processing-model:fetch-a-module-script-tree href=webappapis.html#fetch-a-module-script-tree>Fetch a module script tree</a> given <var>url</var>, the value of the <code>credentials</code> member of <var>options</var>, the empty string (as no
-     <var>cryptographic nonce</var> is present for workers), "<code>not
-     parser-inserted</code>", <var>destination</var>, <var>outside settings</var>, and
-     <var>inside settings</var>.</dl>
+     settings</var>, and <var>destination</var>.<dt>"<code>module</code>"<dd><a id=worker-processing-model:fetch-a-module-worker-script-tree href=webappapis.html#fetch-a-module-worker-script-tree>Fetch a module worker script tree</a> given <var>url</var>, <var>outside
+     settings</var>, <var>destination</var>, the value of the <code>credentials</code>
+     member of <var>options</var>, and <var>inside settings</var>.</dl>
 
-    <p>In both cases, to <a href=webappapis.html#fetching-scripts-process-response id=worker-processing-model:fetching-scripts-process-response>process the
-    response</a> <var>response</var>, perform the following steps:</p>
+    <p>In both cases, to <a href=webappapis.html#fetching-scripts-perform-fetch id=worker-processing-model:fetching-scripts-perform-fetch>perform the fetch</a>
+    given <var>request</var>, perform the following steps if the <var id=worker-processing-model:fetching-scripts-is-top-level><a href=webappapis.html#fetching-scripts-is-top-level>is top-level</a></var> flag is set:</p>
 
-    <ol><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-url id=worker-processing-model:concept-workerglobalscope-url>url</a> to <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=worker-processing-model:concept-response-url data-x-internal=concept-response-url>url</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-https-state id=worker-processing-model:concept-workerglobalscope-https-state>HTTPS state</a> to <var>response</var>'s
+    <ol><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=worker-processing-model:concept-fetch data-x-internal=concept-fetch>Fetch</a> <var>request</var>, and asynchronously wait
+     to run the remaining steps as part of fetch's <a id=worker-processing-model:process-response href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> for the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=worker-processing-model:concept-response data-x-internal=concept-response>response</a> <var>response</var>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-url id=worker-processing-model:concept-workerglobalscope-url>url</a> to <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=worker-processing-model:concept-response-url data-x-internal=concept-response-url>url</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-https-state id=worker-processing-model:concept-workerglobalscope-https-state>HTTPS state</a> to <var>response</var>'s
      <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-https-state id=worker-processing-model:concept-response-https-state data-x-internal=concept-response-https-state>HTTPS state</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-workerglobalscope-referrer-policy id=worker-processing-model:concept-workerglobalscope-referrer-policy>referrer policy</a> to the result of
      <a href=https://w3c.github.io/webappsec-referrer-policy/#parse-referrer-policy-from-header id=worker-processing-model:parse-referrer-policy-header data-x-internal=parse-referrer-policy-header>parsing the `<code>Referrer-Policy</code>`
      header</a> of <var>response</var>.</li><li><p>Execute the <a id="worker-processing-model:initialize-a-global-object's-csp-list" href=https://hashedhyphen.github.io/webappsec-specjp/csp/#initialize-global-object-csp data-x-internal="initialize-a-global-object's-csp-list">Initialize a <code>global object</code>'s CSP list</a>
-     algorithm on <var>worker global scope</var> and <var>response</var>. <a href=references.html#refsCSP>[CSP]</a></li><li><p>Return true.</li></ol>
+     algorithm on <var>worker global scope</var> and <var>response</var>. <a href=references.html#refsCSP>[CSP]</a></li><li><p>Asynchronously complete the <a href=webappapis.html#fetching-scripts-perform-fetch id=worker-processing-model:fetching-scripts-perform-fetch-2>perform the
+     fetch</a> steps with <var>response</var>.</li></ol>
 
     <p>If the algorithm asynchronously completes with null, <a id=worker-processing-model:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a id=worker-processing-model:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire
     a simple event</a> named <code id=worker-processing-model:event-error><a href=indices.html#event-error>error</a></code> at <var>worker</var>, and
@@ -1944,8 +1945,12 @@ interface <dfn id=sharedworker>SharedWorker</dfn> : <a id=shared-workers-and-the
      </li><li>
       <p>If <var>worker global scope</var> is not null, then run these steps:</p>
 
-      <ol><li><p>Associate <var>worker</var> with <var>worker global scope</var>.</li><li><p>Let <var>settings object</var> be the <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object-2 href=webappapis.html#relevant-settings-object>relevant settings object</a> for
-       <var>worker global scope</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object-2 href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner-2>owner</a> is <var>settings object</var>. Let this be
+      <ol><li><p>Let <var>settings object</var> be the <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object-2 href=webappapis.html#relevant-settings-object>relevant settings object</a> for
+       <var>worker global scope</var>.</li><li><p>If the result of executing <a id=shared-workers-and-the-sharedworker-interface:is-environment-settings-object-a-secure-context href=https://w3c.github.io/webappsec-secure-contexts/#settings-object data-x-internal=is-environment-settings-object-a-secure-context>Is environment settings object a secure
+       context?</a> on <var>outside settings</var> does not match the result of executing
+       the same algorithm on <var>settings object</var>, then throw a
+       <a id=shared-workers-and-the-sharedworker-interface:securityerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=shared-workers-and-the-sharedworker-interface:domexception-3><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.
+       <a href=#refsSECURE-CONTEXTS>[SECURE-CONTEXTS]</a></li><li><p>Associate <var>worker</var> with <var>worker global scope</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object-2 href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner-2>owner</a> is <var>settings object</var>. Let this be
        the <var>inside port</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:entangle href=comms.html#entangle>Entangle</a> <var>outside port</var> and <var>inside port</var>.</li><li><p>Create a <a href=infrastructure.html#concept-events-trusted id=shared-workers-and-the-sharedworker-interface:concept-events-trusted>trusted</a> event that uses the
        <code id=shared-workers-and-the-sharedworker-interface:messageevent><a href=comms.html#messageevent>MessageEvent</a></code> interface, with the name <code id=shared-workers-and-the-sharedworker-interface:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code>, which does not bubble, is not
        cancelable, has no default action, has a <code id=shared-workers-and-the-sharedworker-interface:dom-messageevent-data><a href=comms.html#dom-messageevent-data>data</a></code>
@@ -1997,65 +2002,26 @@ interface <dfn id=navigatorconcurrenthardware>NavigatorConcurrentHardware</dfn> 
 
   <h4 id=importing-scripts-and-libraries>10.3.1 Importing scripts and libraries</h4>
 
-  <p>When a script invokes the <dfn id=dom-workerglobalscope-importscripts><code>importScripts(<var>urls</var>)</code></dfn> method on a <code id=importing-scripts-and-libraries:workerglobalscope><a href=#workerglobalscope>WorkerGlobalScope</a></code> object, the user agent must <a href=#import-scripts-into-worker-global-scope id=importing-scripts-and-libraries:import-scripts-into-worker-global-scope>import scripts into worker global scope</a>, with the following options:</p>
+  <p>When a script invokes the <dfn id=dom-workerglobalscope-importscripts><code>importScripts(<var>urls</var>)</code></dfn> method on
+  a <code id=importing-scripts-and-libraries:workerglobalscope><a href=#workerglobalscope>WorkerGlobalScope</a></code> object, the user agent must <a href=#import-scripts-into-worker-global-scope id=importing-scripts-and-libraries:import-scripts-into-worker-global-scope>import scripts into worker
+  global scope</a> given this <code id=importing-scripts-and-libraries:workerglobalscope-2><a href=#workerglobalscope>WorkerGlobalScope</a></code> object and <var>urls</var>.</p>
 
-  <ul><li>
+  <p>To <dfn id=import-scripts-into-worker-global-scope data-export="">import scripts into worker global scope</dfn>, given a
+  <code id=importing-scripts-and-libraries:workerglobalscope-3><a href=#workerglobalscope>WorkerGlobalScope</a></code> object <var>worker global scope</var> and a <code>sequence&lt;DOMString&gt;</code> <var>urls</var>, run these steps. The algorithm may
+  optionally be customized by supplying custom <a href=webappapis.html#fetching-scripts-perform-fetch id=importing-scripts-and-libraries:fetching-scripts-perform-fetch>perform
+  the fetch</a> hooks, which if provided will be used when invoking <a id=importing-scripts-and-libraries:fetch-a-classic-worker-imported-script href=webappapis.html#fetch-a-classic-worker-imported-script>fetch a classic
+  worker-imported script</a>.</p>
 
-    <p>To <a href=#validate-the-state id=importing-scripts-and-libraries:validate-the-state>validate the state</a>, the user agent must do nothing.</p>
-
-   </li><li>
-
-    <p>To <a href=#get-a-fetch-result id=importing-scripts-and-libraries:get-a-fetch-result>get a fetch result</a>, given a <var>url</var> and <var>settings object</var>,
-    the user agent must run these steps:
-
-    
-
-    <ol><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=importing-scripts-and-libraries:concept-request data-x-internal=concept-request>request</a> whose
-     <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=importing-scripts-and-libraries:concept-request-url data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=importing-scripts-and-libraries:concept-request-client data-x-internal=concept-request-client>client</a> is <var>settings object</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=importing-scripts-and-libraries:concept-request-type data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=importing-scripts-and-libraries:concept-request-destination data-x-internal=concept-request-destination>destination</a> is "<code>script</code>", <a id=importing-scripts-and-libraries:synchronous-flag href=https://triple-underscore.github.io/Fetch-ja.html#synchronous-flag data-x-internal=synchronous-flag>synchronous flag</a> is set, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=importing-scripts-and-libraries:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> is "<code>include</code>", and whose <a id=importing-scripts-and-libraries:use-url-credentials-flag href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a> is set.</li><li><p>Return the result of <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=importing-scripts-and-libraries:concept-fetch data-x-internal=concept-fetch>fetching</a>
-     <var>request</var>.
-    
-    </li></ol>
-
-   </li><li><p>To <a href=#postprocess-the-fetch-result id=importing-scripts-and-libraries:postprocess-the-fetch-result>postprocess the fetch result</a>, given a <var>response</var>, the user agent
-   must throw a <a id=importing-scripts-and-libraries:networkerror href=https://triple-underscore.github.io/WebIDL-ja.html#networkerror data-x-internal=networkerror>"<code>NetworkError</code>"</a> <code id=importing-scripts-and-libraries:domexception><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort all
-   these steps if <var>response</var>'s <a id=importing-scripts-and-libraries:unsafe-response href=infrastructure.html#unsafe-response>unsafe response</a>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=importing-scripts-and-libraries:concept-response-status data-x-internal=concept-response-status>status</a> is not an <a id=importing-scripts-and-libraries:ok-status href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a>.</li></ul>
-
-  <p>The <a href=#import-scripts-into-worker-global-scope id=importing-scripts-and-libraries:import-scripts-into-worker-global-scope-2>import scripts into worker global scope</a> algorithm has three hooks for
-  algorithm steps that may be customized by any callers: <dfn id=validate-the-state data-export="">validate the state</dfn>, <dfn id=get-a-fetch-result data-export="">get a fetch
-  result</dfn>, and  <dfn id=postprocess-the-fetch-result data-export="">postprocess the fetch
-  result</dfn>.</p>
-
-  <p>To <dfn id=import-scripts-into-worker-global-scope data-export="">import scripts into worker global scope</dfn>, the user agent must run
-  the following steps:</p>
-
-  <ol><li><p>If this <code id=importing-scripts-and-libraries:workerglobalscope-2><a href=#workerglobalscope>WorkerGlobalScope</a></code> object's <a href=#concept-workerglobalscope-type id=importing-scripts-and-libraries:concept-workerglobalscope-type>type</a> is
-   "<code>module</code>", throw a <code id=importing-scripts-and-libraries:typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these steps.</li><li><p>Let <var>settings object</var> be the <a id=importing-scripts-and-libraries:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings
-   object</a>.</li><li><p><a href=#validate-the-state id=importing-scripts-and-libraries:validate-the-state-2>Validate the state</a>.</li><li><p>If there are no arguments, return without doing anything. Abort these steps.</li><li><p><a href=infrastructure.html#parse-a-url id=importing-scripts-and-libraries:parse-a-url>Parse</a> each argument relative to <var>settings
-   object</var>.</li><li><p>If any fail, throw a <a id=importing-scripts-and-libraries:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code id=importing-scripts-and-libraries:domexception-2><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and
-   abort these steps.</li><li>
-
+  <ol><li><p>If <var>worker global scope</var>'s <a href=#concept-workerglobalscope-type id=importing-scripts-and-libraries:concept-workerglobalscope-type>type</a> is "<code>module</code>", throw a
+   <code id=importing-scripts-and-libraries:typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these steps.</li><li><p>Let <var>settings object</var> be the <a id=importing-scripts-and-libraries:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings object</a>.</li><li><p>If <var>urls</var> is empty, abort these steps.</li><li><p><a href=infrastructure.html#parse-a-url id=importing-scripts-and-libraries:parse-a-url>Parse</a> each value in <var>urls</var> relative to
+   <var>settings object</var>. If any fail, throw a <a id=importing-scripts-and-libraries:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a>
+   <code id=importing-scripts-and-libraries:domexception><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li>
     <p>For each <var>url</var> in the <a href=infrastructure.html#resulting-url-record id=importing-scripts-and-libraries:resulting-url-record>resulting URL
     records</a>, run these substeps:</p>
 
-    <ol><li><p>Let <var>response</var> be the result of <a href=#get-a-fetch-result id=importing-scripts-and-libraries:get-a-fetch-result-2>get a fetch result</a>, given
-     <var>url</var> and <var>settings object</var>.</li><li><p><a href=#postprocess-the-fetch-result id=importing-scripts-and-libraries:postprocess-the-fetch-result-2>Postprocess the fetch result</a>, given <var>response</var>.</li><li>
-
-      <p>Let <var>source</var> be the result of running the <a id=importing-scripts-and-libraries:utf-8-decode href=https://triple-underscore.github.io/Encoding-ja.html#utf-8-decode data-x-internal=utf-8-decode>UTF-8 decode</a> algorithm on
-      <var>response</var>'s <a id=importing-scripts-and-libraries:unsafe-response-2 href=infrastructure.html#unsafe-response>unsafe response</a>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-body id=importing-scripts-and-libraries:concept-response-body data-x-internal=concept-response-body>body</a>.</p>
-
-      <p class=note>As with the worker's script, the script here is always assumed to be
-      JavaScript, regardless of the MIME type.</p>
-
-     </li><li>
-
-      <p>Let <var>script</var> be the result of <a id=importing-scripts-and-libraries:creating-a-classic-script href=webappapis.html#creating-a-classic-script>creating a classic script</a> using
-      <var>source</var> and <var>settings object</var>.</p>
-
-      <p>If <var>response</var> is <a id=importing-scripts-and-libraries:cors-cross-origin href=infrastructure.html#cors-cross-origin>CORS-cross-origin</a>, pass the <var>muted errors</var>
-      flag to the <a href=webappapis.html#creating-a-classic-script id=importing-scripts-and-libraries:creating-a-classic-script-2>create a classic script</a> algorithm
-      as well.</p>
-
-     </li><li>
+    <ol><li><p><a id=importing-scripts-and-libraries:fetch-a-classic-worker-imported-script-2 href=webappapis.html#fetch-a-classic-worker-imported-script>Fetch a classic worker-imported script</a> given <var>url</var> and
+     <var>settings object</var>, passing along any custom <a href=webappapis.html#fetching-scripts-perform-fetch id=importing-scripts-and-libraries:fetching-scripts-perform-fetch-2>perform the fetch</a> steps provided. If this
+     succeeds, let <var>script</var> be the result. Otherwise, rethrow the exception.</li><li>
       <p><a href=webappapis.html#run-a-classic-script id=importing-scripts-and-libraries:run-a-classic-script>Run the classic script</a> <var>script</var>,
       passing the <var>rethrow errors</var> flag.</p>
 
@@ -2072,7 +2038,8 @@ interface <dfn id=navigatorconcurrenthardware>NavigatorConcurrentHardware</dfn> 
    </li></ol>
 
   <p class=note><cite>Service Workers</cite> is an example of a specification that runs this
-  algorithm with its own options for the hooks. <a href=references.html#refsSW>[SW]</a></p>
+  algorithm with its own options for the <a href=webappapis.html#fetching-scripts-perform-fetch id=importing-scripts-and-libraries:fetching-scripts-perform-fetch-3>perform the
+  fetch</a> hook. <a href=references.html#refsSW>[SW]</a></p>
 
   
 
