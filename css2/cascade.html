@@ -18,6 +18,7 @@
 <BODY>
 <div class="navbar">
 <p><a href="selector.html">前章</a> &nbsp; <a href="media.html">次章</a> &nbsp; <a href="Overview.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+
 </div>
 <hr class="navbar">
 
@@ -54,7 +55,11 @@
 <p>ユーザーエージェントは文書を解析し、<a
 href="conform.html#doctree">文書ツリー</a>を構築した時点で、ツリーのすべての要素に対して、対象の<a href="media.html">メディアタイプ</a>に適用されるすべてのプロパティに値を割り当てなければならない。 
 
+ 
+
 <p>プロパティの最終値は、4段階の計算結果である。値は仕様を通じて決定され（"指定値"）、その後、継承に使用される値（"算出値"）に解決される。さらに、必要に応じて絶対値に変換され（"使用値"）、そして最終的にローカル環境の制限に応じて変換される（"実効値"）。
+
+
 
 <h3>6.1.1 <span class="index-def" title="specified value"><a name="specified-value">指定値</a></span></h3>
 
@@ -63,8 +68,12 @@ href="conform.html#doctree">文書ツリー</a>を構築した時点で、ツリ
 <ol>
 <li><a href="#cascade">カスケード処理</a>で値を得られる場合、これを使用する。ただし、値が'inherit'である場合、指定値は、下記の<a href="#value-def-inherit" >“'inherit'値”</a>で定義される。
 
+
+
 </li><li>そうでなければ、プロパティが<a href="#inheritance">継承</a>し、かつ要素が<a>文書ツリー</a>のルートではない場合、親要素の算出値を使用する。
+
 </li><li>そうでなければ、プロパティの<a name="x1"><span class="index-def" title="初期値">初期値</span></a>を使用する。各プロパティの初期値は、プロパティの定義で示される。 
+ 
 </li></ol>
 
 
@@ -72,20 +81,34 @@ href="conform.html#doctree">文書ツリー</a>を構築した時点で、ツリ
 
 <p>指定値は、カスケード処理時に算出値に解決される。たとえば、URIは絶対URIが得られ、'em'や'ex'単位はピクセルまたは絶対長さに計算される。算出値は、ユーザーエージェントに文書のレンダリングを要求しない。
 
+
+
 <p>ユーザーエージェントが絶対URIに解決できないURIの算出値は、指定値である。
+
+
 
 <p>プロパティの算出値は、プロパティの定義における算出値の行により規定されるものとして決定される。指定値が'inherit'である算出値の定義については、<a href="#inheritance">継承</a>の節を参照のこと。
 
+
+
 <p>算出値は、<a href="about.html#applies-to">'適用対象'</a>の行で定義され、プロパティが適用されない場合でも存在する。ただし、一部のプロパティは、プロパティが要素に適用されるかどうかに依存する要素のプロパティの算出値を定義してもよい。
+
+
+
 
 
 <h3>6.1.3 <span class="index-def" title="used value"><a name="used-value">使用値</a></span></h3>
 
 <p>算出値は、できる限り文書を整形せずに処理される。しかし、一部の値は、文書が配置される場合にのみ決定できる。たとえば、ある要素の幅が要素の包含ブロックの特定の割合になるように設定される場合、包含ブロックの幅が決定されるまで幅を決定することができない。<dfn id="usedValue">使用値</dfn>とは、算出値を取り、残りの依存関係を解決した絶対値の結果である。
 
+
+
 <h3>6.1.4 <span class="index-def" title="actual value"><a name="actual-value">実効値</a></span></h3>
 
 <p>使用値は、原則としてレンダリングに使用される値であるが、ユーザーエージェントは、与えられた環境で値を利用できない場合がある。たとえば、ユーザーエージェントは、整数ピクセル幅のボーダーをレンダリングするため、計算された幅を近似する必要があってもよい。またユーザーエージェントは、白と黒の代わりにフルカラーを使用するように強制されてもよい。実効値は、使用値にすべての近似を適用した後の値である。
+
+
+
 
 
 <h2>6.2 <a name="inheritance">継承</a></h2>
@@ -95,7 +118,10 @@ href="#specified-value">上記</a>のように一部の値は、<a
 href="conform.html#doctree">文書ツリー</a>内の要素の子によって継承される。継承の有無は、各プロパティが<a
 href="about.html#property-defs">定義</a>する。
 
+
+
 <div class="html example"><P>
+
 内部に強調要素（EM）をもつH1要素があるとする：</p>
 
 <pre>
@@ -103,11 +129,15 @@ href="about.html#property-defs">定義</a>する。
 </pre>
 
 <p>EM要素に色が割り当てられていない場合、強調された"is"は、親要素の色を継承する。よって、H1が青色を持つ場合、EM要素も同様に青になる。
+
 </div>
 
 <p>継承が発生する際に、要素は算出値を継承する。親要素からの算出値は、指定値と子の算出値の両方となる。
 
+
+
 <div class="example"><P style="display:none">例：</P><P> 
+ 
 たとえば、以下のスタイルシートを与えられ：</P>
 
 <pre>
@@ -117,6 +147,8 @@ h1 { font-size: 130% }
 
 <p>次の文書断片があるとすると：
 
+
+
 <pre>
 &lt;BODY&gt;
   &lt;H1&gt;A &lt;EM&gt;large&lt;/EM&gt; heading&lt;/H1&gt;
@@ -125,10 +157,14 @@ h1 { font-size: 130% }
 
 <p>H1要素の<span class="prop-inst-font-size">'font-size'</span>プロパティは、算出値'13pt'（親の値10ptの130%）を持つ。<a href="fonts.html#propdef-font-size" class="noxref"><span
 class="propinst-font-size">'font-size'</span></a>の算出値が継承されるため、EM要素も同様に算出値'13pt'を持つ。ユーザーエージェントが13ptのフォントを入手できない場合、H1およびEMの<a href="fonts.html#propdef-font-size" class="noxref"><span class="propinst-font-size">'font-size'</span></a>の実効値は、たとえば、'12pt'となるかもしれない。
+
 </div>
 
 <p class=note>継承は文書ツリーに従い、<span class=index-inst><a name="x5"
 href="visuren.html#box-gen">匿名ボックス</a></span>によって横取りされないことに注意する。
+
+
+
 
 
 <h3>6.2.1 <span class="index-def" title="inherit, definition
@@ -136,11 +172,17 @@ of"><a name="value-def-inherit">'inherit'</a></span>値</h3>
 
 <P>各プロパティはまた、カスケードされた値'inherit'を持ってもよい。この値は、与えられた要素に対して、プロパティが要素の親の算出値を指定値として取ることを意味する。'inherit'値は、値の継承を強制するために使用でき、正常に継承されないプロパティにも使用することができる。
 
+
+
 <p>'inherit'値がルート要素に設定される場合、プロパティは初期値が代入される。
+
+
 
 <div class="example"><P style="display:none">例：</P><P>以下の例において、BODY要素に<a href="colors.html#propdef-color" class="noxref"><span
 class="propinst-color">'color'</span></a>および<a href="colors.html#propdef-background" class="noxref"><span
 class="propinst-background">'background'</span></a>プロパティが設定されている。他のすべての要素に'color'値は継承され、背景は透過となる。この規則がユーザースタイルシートの一部である場合、文書全体に白の背景色と黒の前景色が適用される。
+
+
 
 <PRE>
 body {
@@ -164,7 +206,10 @@ body {
 <P><a name="x7"><span class="index-def"
 title="@import"><dfn>'@import'</dfn></span></a>規則は、ユーザーが他のスタイルシートからスタイル規則の取り込みを可能にする。CSS&nbsp;2.2において、あらゆる@import規則は、他のすべての規則の前に置かなければならない（@charset規則が存在する場合を除く）。ユーザーエージェントが@import規則を無視しなければならない条件については、<a href="syndata.html#at-rules">構文解析</a>の節を参照のこと。'@import'キーワードは、組み込むスタイルシートのURIを続けなければならない。文字列も許容される。文字列は前後にurl(...)を持つかのように解釈される。
 
+
+
 <div class="example"><P style="display:none">例：</P><P> 
+ 
 次の行は意味上等価であり、2つの'@import'構文（裸の文字列と"url()"）を示している：</p>
 
 <PRE>
@@ -177,6 +222,8 @@ title="@import"><dfn>'@import'</dfn></span></a>規則は、ユーザーが他の
 title="@import">@import</span></a>規則を指定してもよい。この<a name="x9"><span class="index-def"
 title="conditional import|media-dependent import">条件付き取り込み</span></a>は、URIの後にコンマ区切りのメディアタイプを指定する。
 
+
+
 <div class="example"><P style="display:none">例：</P>
 <p>次の規則は、メディア依存な@import規則を作成する方法を指示する：</p>
 
@@ -188,11 +235,17 @@ title="conditional import|media-dependent import">条件付き取り込み</span
 
 <p>メディアタイプがない場合、無条件で取り込みがされる。これはメディアに対して'all'を指定するのと同じ効果を持つ。対象メディアがメディアリストとマッチする場合のみ、取り込みは有効である。
 
+
+
 <p>メディアリストにおける項目の1つが対象メディアであるまたは'all'の場合、対象メディアはマッチする。
+
+
 
 <p class=note>メディアクエリはメディアリストの構文とマッチングの定義を拡張することに注意する。<a href="refs.html#ref-MEDIAQ" rel="biblioentry" class="noxref"><span class="informref">[MEDIAQ]</span></a>
 
 <p>同じスタイルシートが、複数の場所で文書に取り込まれるまたはリンクされる場合、ユーザーエージェントは、各リンクをあたかも別のスタイルシートにリンクされているように処理（またはそうするかのように機能）しなければならない。
+
+
 
 <H2>6.4 <a name="cascade">カスケード</a></h2>
 
@@ -201,20 +254,34 @@ title="conditional import|media-dependent import">条件付き取り込み</span
 <ul>
 <li><strong>著者</strong>：著者は、文書言語の規則に従ってソース文書にスタイルシートを指定する。たとえばHTMLで、スタイルシートを文書に含める、または外部にリンクしてもよい。
 
+
+
 </li><li><strong>ユーザー</strong>：ユーザーは特定の文書に対してスタイル情報を指定してもよい。たとえば、ユーザーはスタイルシートを含むファイルを指定してよいし、ユーザーエージェントはユーザースタイルシートを生成する（またはそうしたかのように振る舞う）インタフェースを提供してもよい。
+
+
 
 </li><li><strong>ユーザーエージェント</strong>：<a
 href="conform.html#conformance">適合ユーザーエージェント</a>は<span class="index-def" title="default style sheet"><a
 name="default-style-sheet"><dfn>デフォルトスタイルシート</dfn></a></span>を適用（またはそうしたかのように動作）しなければならない。ユーザーエージェントのデフォルトスタイルシートは、文書言語の一般的な見栄えの期待を満たす方法で文書言語に対する要素を表現すべきである（たとえば視覚系ブラウザーに対して、HTMLにおけるEM要素を斜体フォントで表示する）。HTML文書に対して推奨されるデフォルトスタイルシートについては、<a href="sample.html">HTMLのサンプルスタイルシート</a>を参照のこと。
 
+
+
 <p class="note">ユーザーはデフォルトスタイルシートに影響を与えるシステム設定（たとえば、システム色）を変更してもよいことに注意する。それにもかかわらず、一部のユーザーエージェントの実装は、デフォルトスタイルシートの値を変更することができない。
+
 </li></ul>
 
 <P>これら3つの起源を持つスタイルシートは、範囲内で重複し、カスケードにしたがって相互に作用する。
 
+
+
 <P>CSS<a name="x12"><span class="index-def" title="cascade">カスケード</span></a>は、各スタイル規則に重みを割り当てる。複数の規則が適用される場合、最大の重みを持つ規則が優先される。
 
+
+
 <P>デフォルトで、著者のスタイルシートの規則は、ユーザースタイルシートの規則よりも重みを持つ。しかし、"!important"規則により、優先順位は逆になる。すべてのユーザーおよび著者の規則は、ユーザーエージェントのデフォルトスタイルシートの規則よりも重みを持つ。
+
+
+
 
 
 <H3>6.4.1 <a name="cascading-order">カスケード処理の順序</a></H3>
@@ -223,39 +290,64 @@ name="default-style-sheet"><dfn>デフォルトスタイルシート</dfn></a></
 
 <OL>
     <LI>
+      
       対象<a href="media.html">メディアタイプ</a>に対して、問題の要素とプロパティに適用されるすべての宣言を検索する。関連するセレクターが問題の要素に<A
       HREF="selector.html">マッチ</A>し、かつ対象メディアが　宣言を含むすべての@media規則上の、およにスタイルシートに到達するパス上のすべてのリンク上のメディアリストにマッチする場合、宣言は適用される。
 
+    
+
     </LI><LI>重要性（通常、important）および起源（著者、ユーザー、ユーザーエージェント）に従ってソートする。優先順位は昇順で：
+
+
 
 <ol>
 <li>ユーザーエージェントの宣言
+
 </li><li>ユーザーの通常宣言
+
 </li><li>著者の通常宣言
+
 </li><li>著者のimportant宣言
+
 </li><li>ユーザーのimportant宣言
+
 </li></ol>
 
     </LI><LI>
+      
       セレクターの<a href="#specificity">詳細度</a>によって、同じ重要性と起源をもつ規則をソートする：より詳細なセレクターが、より一般的なものを上書きする。疑似要素および疑似クラスはそれぞれ、通常の要素およびクラスとみなされる。
 
+    
+
     </LI><LI>最後に、指定された順序でソートする：2つの宣言が同じ重み、起源と詳細度を持つ場合、最後の指定された規則が適用される。取り込まれたスタイルシートの宣言は、スタイルシート自体の宣言に先行するものと考えられる。
+
+
 
 </LI></OL>
 
 <P>個々の宣言上の"!important"設定は別にして、この戦略は、ユーザーよりも著者のスタイルシートにより大きな重みを与える。ユーザーエージェントは、たとえばプルダウンメニューを通してなど、特定の著者スタイルシートの影響を抑えためのる機能をユーザーに付与しなければならない。UAAG 1.0のチェックポイント4.14への適合性は、この条件を満たす<a href="refs.html#ref-UAAG10" rel="biblioentry" class="noxref"><span class="normref">[UAAG10]</span></a>。
 
+
+
 <H3>6.4.2 <a name="important-rules">!important規則</a></H3>
 
 <P>CSSは、著者とユーザースタイルシート間のパワーバランスを作成しようとする。デフォルトで、著者スタイルシートの規則は、ユーザースタイルシートの規則を上書きする（カスケード規則3を参照）。 
 
+ 
+
 <P>しかし、バランスのために（宣言の後に区切りトークン"!"とキーワード"important"が続く）"!important"宣言は通常の宣言よりも優先される。著者スタイルシートとユーザースタイルシートのどちらも"!important"宣言を含んでもよく、ユーザー"!important"規則は、著者"!important"規則を上書きする。このCSSの機能は、見栄えを支配する特殊な要件（大きなフォント、色の組み合わせ、など）とともにユーザーに与えることにより、文書のアクセシビリティーを向上させる。
+
+
 
 <P><a name="x13"><span class="index-inst" title="shorthand property">略式プロパティ</span></a>を"!important"宣言すること（たとえば、<a href="colors.html#propdef-background" class="noxref"><span
 class="propinst-background">'background'</span></a>）は、そのサブプロパティのすべてを"!important"と宣言することと等価である。
 
+
+
 <div class="example"><P style="display:none">例：</P> 
 <P>次の例で、ユーザースタイルシートの最初の規則は"!important"宣言を含んでおり、著者スタイルシート内の対応する宣言を上書きする。2番目の宣言も、"!important"とマークされたものを優先する。しかし、ユーザースタイルシートの3番目の規則は"!important"ではないので、著者スタイルシートの2番目の規則（略式プロパティでスタイル設定するために起こる）に上書きされる。また、著者の3番目の規則は、2番目の規則に"!important"があるので、著者の2番目の規則に上書きされる。これは "!important" 宣言が、著者スタイルシート内でも機能することを示している。
+
+
 
 <PRE>
 /* ユーザースタイルシートから */
@@ -278,19 +370,33 @@ p { font-size: 24pt }
 <ul>
 <li>宣言がセレクターをもつ規則からではなく、'style'属性である場合は1をカウントし、そうでなければ0（=a）となる（HTMLにおいて、要素の"style"属性値はスタイルシート規則である。この規則はセレクターを持たないので、a=1、b=0、c=0、かつd=0となる。）
 
+
+
 </li><li>セレクター内のID属性の数を数えた、その数（=b）
+
+
 
 </li><li>セレクター内の他の属性と疑似クラスを数えた、その数（=c）
 
+
+
 </li><li>セレクター内の要素名と疑似要素を数えた、その数（=d）
+
 </li></ul>
 
 <p>詳細度は、セレクターの形式のみに基づく。具体的に、セレクター形式"[ID=P33]"のセレクターは、たとえid属性が"ID"としてソース文書のDTD内で定義されていても、属性セレクター（a=0、b=0、c=1、d=0）としてカウントされる。
 
+
+
 <P>（十分大きな基数の記進法で）abcdの4つの数値を連結すると、詳細度が得られる。 
 
+ 
+
 <div class="example"><P style="display:none">例：</P><P>
+
 いくつかの例を挙げる：
+
+
 
 <PRE>
  *             {}  /* a=0 b=0 c=0 d=0 -&gt; 詳細度 = 0,0,0,0 */
@@ -320,6 +426,7 @@ p { font-size: 24pt }
 </pre>
 
 <P>上記の例で、P要素の色は緑色となる。より高い詳細度を持っているので、"style"属性の宣言は、カスケーディング規則3のためにSTYLE要素内のものを上書きする。
+
 </div>
 
 
@@ -327,13 +434,21 @@ p { font-size: 24pt }
 
 <P>ユーザーエージェントは、HTMLソース文書における見栄え属性を尊重してもよい。その場合、これらの属性は0に等しい詳細度と対応するCSS規則に変換され、それらは著者スタイルシートの先頭に挿入されたかのように扱われる。したがって、後続のスタイルシート規則によって上書きされてもよい。移行段階において、この方針はスタイル属性のスタイルシートとの共存が容易となる。
 
+
+
 <P>HTMLに対して、次のリストにない任意の属性のための見栄えを考慮すべきである：abbr, accept-charset, accept, accesskey, action, alt, archive, axis, charset, checked, cite, class, classid, code, codebase, codetype, colspan, coords, data, datetime, declare, defer, dir, disabled, enctype, for, headers, href, hreflang, http-equiv, id, ismap, label, lang, language, longdesc, maxlength, media, method, multiple, name, nohref, object, onblur, onchange, onclick, ondblclick, onfocus, onkeydown, onkeypress, onkeyup, onload, onload, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup, onreset, onselect, onsubmit, onunload, onunload, profile, prompt, readonly, rel, rev, rowspan, scheme, scope, selected, shape, span, src, standby, start, style, summary, title, type （LI、OLとUL要素を除く）, usemap, value, valuetype, version.
 
+
+
 <P>他の言語の場合、すべての文書言語ベースのスタイルは、対応するCSSに変換されなければならず、ユーザーエージェントレベルでカスケードを入力するか、HTMLの見栄えのヒントと同様に、著者スタイルシートの先頭に置かれるような0の詳細度をもつ著者レベルの規則のいずれかとして扱われなければならない。
+
+
 
 <div class="example"><P style="display:none">例：</P>
 
 <p>次のユーザースタイルシートは、すべての文書で'B'要素のフォントの太さ、およびXMLドキュメント内のcolor属性を持つ'font'要素の色を上書きする。これは、HTML文書内のcolor属性を持つ任意の'font'要素の色には影響を与えない：
+
+
 
 <pre>
 b { font-weight: normal; }
@@ -341,6 +456,8 @@ font[color] { color: orange; }
 </pre>
 
 <P>しかし、以下はすべての文書のfont要素の色を上書きする。
+
+
 
 <pre>
 font[color] { color: orange ! important; }
@@ -353,6 +470,7 @@ font[color] { color: orange ! important; }
 
 <div class="navbar">
 <p><a href="selector.html">前章</a> &nbsp; <a href="media.html">次章</a> &nbsp; <a href="Overview.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
+
 </div>
 </BODY>
 </html>
