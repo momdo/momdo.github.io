@@ -18,7 +18,6 @@
 <BODY>
 <div class="navbar">
 <p><a href="propidx.html">前章</a> &nbsp; <a href="leftblank.html">次章</a> &nbsp; <a href="Overview.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
-
 </div>
 <hr class="navbar">
 
@@ -36,35 +35,24 @@
 
 <p>この付録は非規範的である。
 
-
-
 <P>以下の文法は、CSS&nbsp;2.2の構文を定義する。しかし、この仕様がこの文法で表現されない追加の意味制約を課すので、この文法はある意味で、CSS&nbsp;2.2のスーパーセットである。適合ユーザーエージェントはまた、<a href="./syndata.html#syntax">前方互換な構文解析規則</a>、セレクター記法、<a
 href="./about.html#property-defs">プロパティと値の表記</a>、単位表記に準拠しなければならない。しかし、文書言語はCSSにない制限を課すかもしれないので、すべての構文的に正しいCSSは効果を生じることができるとは限らない。たとえば、HTMLは"class"属性の取りうる値に制限を課している。
 
-
-
 <h2>G.1 <a name="grammar">文法</a></h2>
 
-<P>  以下の文法は、<a name="x0"><span class="index-inst"
+<P> 以下の文法は、<a name="x0"><span class="index-inst"
 title="LALR(1)">LALR(1)</span></a>である（これは、単なるCSS&nbsp;2.2構文であり、<a
 href="syndata.html#parsing-errors">解析規則</a>を表現しないため、ほとんどのユーザーエージェントは直接使用すべきでないことに注意する）。生成規則の形式は、人間の使い勝手に最適化され、Yacc（<a href="refs.html#ref-YACC" rel="biblioentry" class="noxref"><span class="normref">[YACC]</span></a>）を超えた一部の略式表記法が使用される。</P>
 
 <ul>
 <li><strong>*</strong>: 0回以上の繰り返し
-
 </li><li><strong>+</strong>: 1回以上の繰り返し
-
 </li><li><strong>?</strong>: 0または1回 
- 
 </li><li><strong>|</strong>: 選択肢の区切り 
- 
 </li><li><strong>[&nbsp;]</strong>: グループ化
-
 </li></ul>
 
 <p>生成規則は次のとおり：
-
-
 
 <pre>
 stylesheet
@@ -155,16 +143,12 @@ hexcolor
 
 <h2>G.2 <a name="scanner">語彙スキャナー</a></h2>
 
-<p>  以下は、Flex記法（<a href="refs.html#ref-FLEX" rel="biblioentry" class="noxref"><span class="normref">[FLEX]</span></a>参照）で書かれた、<a name="x3"><span class="index-def"
+<p> 以下は、Flex記法（<a href="refs.html#ref-FLEX" rel="biblioentry" class="noxref"><span class="normref">[FLEX]</span></a>参照）で書かれた、<a name="x3"><span class="index-def"
 title="tokenizer">トークナイザ</span></a>である。トークナイザは大文字と小文字を区別しない。
-
-
 
 <p>"\377"は、Flexの最新版（10進の255）で処理できる文字コードの最大値を表す。これは<a name="x4"><span class="index-inst"
 title="unicode">Unicode</span></a>/<a name="x5"><span class="index-inst"
 title="iso-10646">ISO-10646</span></a>における最大コードポイントである、"\4177777"（10進1114111）として読まれるべきである。
-
-
 
 <pre>
 %option case-insensitive
@@ -276,40 +260,25 @@ Z		z|\\0{0,4}(5a|7a)(\r\n|[ \t\r\n\f])?|\\z
 
 <p>CSS1勧告（<a href="refs.html#ref-CSS1" rel="biblioentry" class="noxref"><span class="informref">[CSS1]</span></a>）で規定された構文と上記の構文は、多少の相違点が存在する。相違点のほとんどは、CSS1に存在しなかったCSS2の新しいトークンによるものである。その他は文法が読みやすくなるように書き直されているためによる。しかし、CSS1の構文でエラーであると感じた一部の互換性のない変更が存在する。これら変更点を以下で説明する。
 
-
-
 <ul>
 <li>CSS1スタイルシートは、ASCIIやISO-8859-1のような1バイト文字エンコーディングのみが可能であった。CSS&nbsp;2.2はそのような制限はない。実際には、CSS1トークナイザを外挿することはまったく困難ではなく、一部のユーザーエージェントは2バイトエンコーディングを受け入れている。
-
-
 
 </li><li>CSS1はUnicode文字を参照するためにバックスラッシュ（\）の後に4桁の16進数のみ許可されたが、CSS2は<a
 href="syndata.html#escaped-characters">6桁が許可される</a>。また、CSS2は空白文字がエスケープシーケンスを区切ることを可能にする。たとえば、CSS1に従うと、文字列"\abcdef"は3文字（\ABCD、E、F）を持つが、CSS2に従うと、1つだけ（\ABCDEF）を持つ。
 
-
-
 </li><li>タブ文字（ASCII 9）は文字列で許可されなかった。しかし、CSS1の文字列はフォント名とURLのためにのみ使用されたので、CSS1とCSS2との間の非互換性につながるとすれば、スタイルシートがその名前でタブを持つフォントファミリーを含む場合に限られる。
-
-
 
 </li><li>同様に、（<a href="syndata.html#strings">バックスラッシュでエスケープされた</a>）改行はCSS1における文字列で許可されていなかった。
 
-
-
 </li><li>CSS2は、数字の直後に続く識別子をDIMENSIONトークンとして解析し（すなわち、未知の単位）、CSS1は数字と識別子として解析した。CSS1において、宣言'font: 10pt/1.2serif'が、'10pt/12pt serif'として正しく解析されたが、CSS2では、"serif"の前にスペースが要求されることを意味する。（一部のユーザーエージェントは、最初の例を受け入れたが、2番目を受け入れなかった。）
 
-
-
 </li><li>CSS1において、次元（".55in"）でない限り、クラス名は数字で開始可能であった（".55ft"）。CSS2において、このようなクラスは（将来の新しい単位の追加を可能にするために）未知の次元として解析される。".55ft"を妥当なクラスにするために、CSS2は最初の数字のエスケープを要求する（ "\35 5ft"）。
-
 </li></ul>
 
 <h2><a name="q4">G.4 実装ノート</a></h2>
 
 <p><a
 href="syndata.html#tokenization">4.1.1節</a>におけるCSSのコア構文の語彙スキャナーは、バックアップなしでスキャナーとして実装可能である。Lexの表記において、次のパターンの追加を必要する（スキャナーの効率のみを考え、返されたトークンを変更しない）：
-
-
 
 <pre>
 {ident}/\\          return IDENT;
@@ -336,7 +305,6 @@ u\+[0-9a-f?]{1,6}/- return UNICODE_RANGE;
 
 <div class="navbar">
 <p><a href="propidx.html">前章</a> &nbsp; <a href="leftblank.html">次章</a> &nbsp; <a href="Overview.html#minitoc">目次</a> &nbsp; <a href="propidx.html">プロパティ</a> &nbsp; <a href="indexlist.html">索引</a> &nbsp;
-
 </div>
 </body>
 </html>
