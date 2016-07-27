@@ -296,7 +296,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>16 July 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>27 July 2016</span></h2></hgroup>
    
    
   </header>
@@ -393,7 +393,7 @@ partial /*sealed*/ interface <dfn id=document>Document</dfn> {
 
   // <a id=the-document-object:dynamic-markup-insertion href=webappapis.html#dynamic-markup-insertion>dynamic markup insertion</a>
   [<a id=the-document-object:cereactions-4 href=scripting.html#cereactions>CEReactions</a>] <a href=#document id=the-document-object:document-2>Document</a> <a href=webappapis.html#dom-document-open id=the-document-object:dom-document-open>open</a>(optional DOMString type = "text/html", optional DOMString replace = "");
-  <a id=the-document-object:windowproxy href=browsers.html#windowproxy>WindowProxy</a> <a href=webappapis.html#dom-document-open id=the-document-object:dom-document-open-2>open</a>(USVString url, DOMString name, DOMString features, optional boolean replace = false);
+  <a id=the-document-object:windowproxy href=browsers.html#windowproxy>WindowProxy</a> <a href=webappapis.html#dom-document-open id=the-document-object:dom-document-open-2>open</a>(USVString url, DOMString name, DOMString features);
   [<a id=the-document-object:cereactions-5 href=scripting.html#cereactions>CEReactions</a>] void <a href=webappapis.html#dom-document-close id=the-document-object:dom-document-close>close</a>();
   [<a id=the-document-object:cereactions-6 href=scripting.html#cereactions>CEReactions</a>] void <a href=webappapis.html#dom-document-write id=the-document-object:dom-document-write>write</a>(DOMString... text);
   [<a id=the-document-object:cereactions-7 href=scripting.html#cereactions>CEReactions</a>] void <a href=webappapis.html#dom-document-writeln id=the-document-object:dom-document-writeln>writeln</a>(DOMString... text);
@@ -795,15 +795,14 @@ partial /*sealed*/ interface <dfn id=document>Document</dfn> {
 
    </li><li>
 
-    <p>If <var>elements</var> has only one element, and that element is an
-    <code id=dom-tree-accessors:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code> element, then return the <code id=dom-tree-accessors:windowproxy><a href=browsers.html#windowproxy>WindowProxy</a></code> object of the <a id=dom-tree-accessors:nested-browsing-context href=browsers.html#nested-browsing-context>nested
-    browsing context</a> represented by that <code id=dom-tree-accessors:the-iframe-element-3><a href=embedded-content.html#the-iframe-element>iframe</a></code> element, and abort these
-    steps.</p>
+    <p>If <var>elements</var> has only one element, and that element is an <code id=dom-tree-accessors:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code>
+    element, and that <code id=dom-tree-accessors:the-iframe-element-3><a href=embedded-content.html#the-iframe-element>iframe</a></code> element's <a id=dom-tree-accessors:nested-browsing-context href=browsers.html#nested-browsing-context>nested browsing context</a> is not
+    null, then return the <code id=dom-tree-accessors:windowproxy><a href=browsers.html#windowproxy>WindowProxy</a></code> object of the element's <a id=dom-tree-accessors:nested-browsing-context-2 href=browsers.html#nested-browsing-context>nested browsing
+    context</a>.</p>
 
    </li><li>
 
-    <p>Otherwise, if <var>elements</var> has only one element, return that element and
-    abort these steps.</p>
+    <p>Otherwise, if <var>elements</var> has only one element, return that element.</p>
 
    </li><li>
 
@@ -956,7 +955,7 @@ partial /*sealed*/ interface <dfn id=document>Document</dfn> {
 
    <p>In particular, the <code id=semantics-2:the-template-element><a href=scripting.html#the-template-element>template</a></code> element's <a id=semantics-2:template-contents href=scripting.html#template-contents>template contents</a>'s <a id=semantics-2:node-document-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
    document</a> does not have a <a id=semantics-2:browsing-context-2 href=browsers.html#browsing-context>browsing context</a>. For example, the <a href=#concept-element-content-model id=semantics-2:concept-element-content-model>content model</a> requirements and attribute value
-   microsyntax requirements to not apply to a <code id=semantics-2:the-template-element-2><a href=scripting.html#the-template-element>template</a></code> element's <a id=semantics-2:template-contents-2 href=scripting.html#template-contents>template
+   microsyntax requirements do not apply to a <code id=semantics-2:the-template-element-2><a href=scripting.html#the-template-element>template</a></code> element's <a id=semantics-2:template-contents-2 href=scripting.html#template-contents>template
    contents</a>. In this example an <code id=semantics-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element has attribute values that are
    placeholders that would be invalid outside a <code id=semantics-2:the-template-element-3><a href=scripting.html#the-template-element>template</a></code> element.</p>
 
@@ -1080,14 +1079,56 @@ interface <dfn id=htmlunknownelement>HTMLUnknownElement</dfn> : <a href=#htmlele
     <p class=note>Since there can be no entry in <var>registry</var> with a <a href=scripting.html#concept-custom-element-definition-constructor id=html-element-constructors:concept-custom-element-definition-constructor-2>constructor</a> of undefined, this
     step also prevents HTML element constructors from being called as functions (since in that case
     NewTarget will be undefined).</p>
+   </li><li>
+    <p>If <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name>local
+    name</a> is equal to <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-name id=html-element-constructors:concept-custom-element-definition-name>name</a> (i.e., <var>definition</var> is for
+    an <a id=html-element-constructors:autonomous-custom-element href=scripting.html#autonomous-custom-element>autonomous custom element</a>), then:</p>
+
+    <ol><li>
+      <p>If the <a id=html-element-constructors:active-function-object href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active function object</a> is not <code id=html-element-constructors:htmlelement><a href=#htmlelement>HTMLElement</a></code>, then throw a
+      <code id=html-element-constructors:typeerror-2><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> and abort these steps.</p>
+
+      <div class="example no-backref">
+       <p>This can occur when a custom element is defined to not extend any local names, but
+       inherits from a non-<code id=html-element-constructors:htmlelement-2><a href=#htmlelement>HTMLElement</a></code> class:</p>
+
+       <pre>customElements.define("bad-1", class Bad1 extends HTMLParagraphElement {});</pre>
+
+       <p>In this case, during the (implicit) <code>super()</code> call that occurs when
+       constructing an instance of <code>Bad1</code>, the <a id=html-element-constructors:active-function-object-2 href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active function
+       object</a> is <code id=html-element-constructors:htmlparagraphelement><a href=semantics.html#htmlparagraphelement>HTMLParagraphElement</a></code>, not <code id=html-element-constructors:htmlelement-3><a href=#htmlelement>HTMLElement</a></code>.</p>
+      </div>
+     </li></ol>
+   </li><li>
+    <p>Otherwise (i.e., if <var>definition</var> is for a <a id=html-element-constructors:customized-built-in-element href=scripting.html#customized-built-in-element>customized built-in
+    element</a>):</p>
+
+    <ol><li><p>Let <var>valid local names</var> be the list of local names for elements defined in this
+     specification or in <a id=html-element-constructors:other-applicable-specifications href=infrastructure.html#other-applicable-specifications>other applicable specifications</a> that use the <a id=html-element-constructors:active-function-object-3 href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active
+     function object</a> as their <a id=html-element-constructors:element-interface href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-interface data-x-internal=element-interface>element interface</a>.</li><li>
+      <p>If <var>valid local names</var> does not contain <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name-2>local name</a>, then throw a
+      <code id=html-element-constructors:typeerror-3><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> and abort these steps.</p>
+
+      <div class="example no-backref">
+       <p>This can occur when a custom element is defined to extend a given local name but inherits
+       from the wrong class:</p>
+
+       <pre>customElements.define("bad-2", class Bad2 extends HTMLQuoteElement {}, { extends: "p" });</pre>
+
+       <p>In this case, during the (implicit) <code>super()</code> call that occurs when
+       constructing an instance of <code>Bad2</code>, <var>valid local names</var> is the
+       list containing <code id=html-element-constructors:the-q-element><a href=semantics.html#the-q-element>q</a></code> and <code id=html-element-constructors:the-blockquote-element><a href=semantics.html#the-blockquote-element>blockquote</a></code>, but <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name-3>local name</a> is <code id=html-element-constructors:the-p-element><a href=semantics.html#the-p-element>p</a></code>,
+       which is not in that list.</p>
+      </div>
+     </li></ol>
    </li><li><p>Let <var>prototype</var> be <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-prototype id=html-element-constructors:concept-custom-element-definition-prototype>prototype</a>.</li><li>
     <p>If <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-construction-stack id=html-element-constructors:concept-custom-element-definition-construction-stack>construction stack</a> is
     empty, then:</p>
 
     <ol><li><p>Let <var>element</var> be a new element that implements the interface to which this
      constructor corresponds, with no attributes, namespace set to the <a id=html-element-constructors:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>,
-     local name set to <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name>local name</a>, and <a id=html-element-constructors:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
-     document</a> set to the <a id=html-element-constructors:current-global-object-2 href=webappapis.html#current-global-object>current global object</a>'s <a href=browsers.html#concept-document-window id=html-element-constructors:concept-document-window><code>Document</code> object</a>.</li><li><p>Perform <var>element</var>.[[SetPrototypeOf]](<var>prototype</var>). Rethrow any
+     local name set to <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name-4>local name</a>, and <a id=html-element-constructors:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
+     document</a> set to the <a id=html-element-constructors:current-global-object-2 href=webappapis.html#current-global-object>current global object</a>'s <a href=browsers.html#concept-document-window id=html-element-constructors:concept-document-window>associated <code>Document</code></a>.</li><li><p>Perform <var>element</var>.[[SetPrototypeOf]](<var>prototype</var>). Rethrow any
      exceptions.</li><li><p>Set <var>element</var>'s <a id=html-element-constructors:custom-element-state href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>custom</code>".</li><li><p>Return <var>element</var>.</li></ol>
 
     <p class=note>This occurs when author script constructs a new custom element directly, e.g.

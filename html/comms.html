@@ -296,7 +296,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>16 July 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>27 July 2016</span></h2></hgroup>
    
    
   </header>
@@ -1682,33 +1682,31 @@ function receiver(e) {
   <var>transfer</var>)</code></dfn> method on a <code id=posting-messages:window-3><a href=browsers.html#window>Window</a></code> object, the user agent must
   follow these steps:</p>
 
-  <ol><li><p>If the value of the <var>targetOrigin</var> argument is neither a single U+002A
-   ASTERISK character (*), a single U+002F SOLIDUS character (/), nor an <a id=posting-messages:absolute-url href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
-   then throw a <a id=posting-messages:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code id=posting-messages:domexception-2><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort the
-   overall set of steps.</li><li><p>Let <var>targetRealm</var> be this <code id=posting-messages:window-4><a href=browsers.html#window>Window</a></code> object's <a href=webappapis.html#concept-global-object-realm id=posting-messages:concept-global-object-realm>Realm</a>.</li><li><p>Let <var>entrySettings</var> be the <a id=posting-messages:entry-settings-object href=webappapis.html#entry-settings-object>entry settings object</a>.</li><li><p>Let <var>incumbentSettings</var> be the <a id=posting-messages:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings object</a>.</li><li><p>Let <var>cloneRecord</var> be <a id=posting-messages:structuredclonewithtransfer href=infrastructure.html#structuredclonewithtransfer>StructuredCloneWithTransfer</a>(<var>message</var>,
+  <ol><li>
+    <p>If the value of the <var>targetOrigin</var> argument is neither a single U+002A ASTERISK
+    character (*) nor a single U+002F SOLIDUS character (/), then:</p>
+
+    <ol><li><p>Let <var>parsedURL</var> be the result of running the <a id=posting-messages:url-parser href=https://triple-underscore.github.io/URL-ja.html#concept-url-parser data-x-internal=url-parser>URL parser</a> on
+     <var>targetOrigin</var>.</li><li><p>If <var>parsedURL</var> is failure, then throw a <a id=posting-messages:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a>
+     <code id=posting-messages:domexception-2><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code>.</li><li><p>Set <var>targetOrigin</var> to <var>parsedURL</var>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=posting-messages:concept-url-origin data-x-internal=concept-url-origin>origin</a>.</li></ol>
+   </li><li><p>Let <var>targetRealm</var> be this <code id=posting-messages:window-4><a href=browsers.html#window>Window</a></code> object's <a href=webappapis.html#concept-global-object-realm id=posting-messages:concept-global-object-realm>Realm</a>.</li><li><p>Let <var>incumbentSettings</var> be the <a id=posting-messages:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent settings object</a>.</li><li><p>Let <var>cloneRecord</var> be <a id=posting-messages:structuredclonewithtransfer href=infrastructure.html#structuredclonewithtransfer>StructuredCloneWithTransfer</a>(<var>message</var>,
    <var>transfer</var>, <var>targetRealm</var>). Rethrow any exceptions.</li><li><p>Let <var>message clone</var> be <var>cloneRecord</var>.[[Clone]].</li><li><p>Let <var>new ports</var> be a new <a id=posting-messages:frozen-array href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> consisting of all
    <code id=posting-messages:messageport><a href=#messageport>MessagePort</a></code> objects in <var>cloneRecord</var>.[[TransferList]], if any, maintaining
-   their relative order.</li><li><p>Return from the <code id=posting-messages:dom-window-postmessage-2><a href=#dom-window-postmessage>postMessage()</a></code> method, but
-   <a id=posting-messages:in-parallel href=infrastructure.html#in-parallel>in parallel</a> continue running these steps.</li><li>
+   their relative order.</li><li><p>Return, but continue running these steps in <a id=posting-messages:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li>
+    <p>If the <var>targetOrigin</var> argument is a single literal U+002F SOLIDUS character (/), and
+    this <code id=posting-messages:window-5><a href=browsers.html#window>Window</a></code> object's <a href=browsers.html#concept-document-window id=posting-messages:concept-document-window>associated
+    <code>Document</code></a>'s <a id=posting-messages:concept-origin href=browsers.html#concept-origin>origin</a> is not <a id=posting-messages:same-origin href=browsers.html#same-origin>same origin</a> with
+    <var>incumbentSettings</var>'s <a id=posting-messages:responsible-document href=webappapis.html#responsible-document>responsible document</a>'s <a id=posting-messages:concept-origin-2 href=browsers.html#concept-origin>origin</a>, then
+    abort these steps.</p>
 
-    <p>If the <var>targetOrigin</var> argument is a single literal U+002F SOLIDUS
-    character (/), and the <code id=posting-messages:document-3><a href=dom.html#document>Document</a></code> of the <code id=posting-messages:window-5><a href=browsers.html#window>Window</a></code> object on which the
-    method was invoked does not have the <a id=posting-messages:same-origin href=browsers.html#same-origin>same origin</a> as the <a id=posting-messages:responsible-document href=webappapis.html#responsible-document>responsible
-    document</a> specified by <var>entrySettings</var>, then abort these steps silently.</p>
-
-    <p>Otherwise, if the <var>targetOrigin</var> argument is an <a id=posting-messages:absolute-url-2 href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
-    and the <code id=posting-messages:document-4><a href=dom.html#document>Document</a></code> of the <code id=posting-messages:window-6><a href=browsers.html#window>Window</a></code> object on which the method was invoked
-    does not have the <a id=posting-messages:same-origin-2 href=browsers.html#same-origin>same origin</a> as <var>targetOrigin</var>, then abort
-    these steps silently.</p>
-
-    <p>Otherwise, the <var>targetOrigin</var> argument is a single literal U+002A ASTERISK
-    character (*), and no origin check is made.</p>
-
+    <p>Otherwise, if the <var>targetOrigin</var> argument is not a single literal U+002A ASTERISK
+    character (*) and this <code id=posting-messages:window-6><a href=browsers.html#window>Window</a></code> object's <a href=browsers.html#concept-document-window id=posting-messages:concept-document-window-2>associated <code>Document</code></a>'s <a id=posting-messages:concept-origin-3 href=browsers.html#concept-origin>origin</a>
+    is not <a id=posting-messages:same-origin-2 href=browsers.html#same-origin>same origin</a> with <var>targetOrigin</var>, then abort these steps.</p>
    </li><li><p>Create a <a href=infrastructure.html#concept-events-trusted id=posting-messages:concept-events-trusted>trusted</a> event that uses the
    <code id=posting-messages:messageevent><a href=#messageevent>MessageEvent</a></code> interface, with the event type <code id=posting-messages:event-message><a href=indices.html#event-message>message</a></code>, which does not bubble, is not cancelable, and has no
    default action. The <code id=posting-messages:dom-messageevent-data><a href=#dom-messageevent-data>data</a></code> attribute must be
    initialised to the value of <var>message clone</var>, the <code id=posting-messages:dom-messageevent-origin><a href=#dom-messageevent-origin>origin</a></code> attribute must be initialised to the <a href=browsers.html#unicode-serialisation-of-an-origin id=posting-messages:unicode-serialisation-of-an-origin>Unicode serialisation</a> of the
-   <a id=posting-messages:concept-origin href=browsers.html#concept-origin>origin</a> specified by <var>incumbentSettings</var>, the <code id=posting-messages:dom-messageevent-source><a href=#dom-messageevent-source>source</a></code> attribute must be initialised to the
+   <a id=posting-messages:concept-origin-4 href=browsers.html#concept-origin>origin</a> specified by <var>incumbentSettings</var>, the <code id=posting-messages:dom-messageevent-source><a href=#dom-messageevent-source>source</a></code> attribute must be initialised to the
    <code id=posting-messages:windowproxy><a href=browsers.html#windowproxy>WindowProxy</a></code> object corresponding to the <a href=webappapis.html#concept-settings-object-global id=posting-messages:concept-settings-object-global>global object</a> (a <code id=posting-messages:window-7><a href=browsers.html#window>Window</a></code> object)
    specified by <var>incumbentSettings</var>, and the <code id=posting-messages:dom-messageevent-ports><a href=#dom-messageevent-ports>ports</a></code> attribute must be initialised to the <var>new
    ports</var> array.</li><li><p><a id=posting-messages:queue-a-task href=webappapis.html#queue-a-task>Queue a task</a> to <a href=infrastructure.html#concept-event-dispatch id=posting-messages:concept-event-dispatch>dispatch</a> the
