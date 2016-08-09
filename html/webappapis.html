@@ -296,7 +296,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>27 July 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 August 2016</span></h2></hgroup>
    
    
   </header>
@@ -401,6 +401,15 @@
     <p>A base URL used for resolving module specifiers when <a href=#resolve-a-module-specifier id=definitions-2:resolve-a-module-specifier>resolving a module specifier</a>. This will either be the URL from which the
     script was obtained, for external module scripts, or the <a id=definitions-2:document-base-url href=infrastructure.html#document-base-url>document base URL</a> of the
     containing document, for inline module scripts.</p>
+
+   <dt>An <dfn id=concept-module-script-instantiation-state>instantiation state</dfn><dd>
+
+    <p>One of "<code>uninstantiated</code>", "<code>errored</code>", or "<code>instantiated</code>", used to prevent reinvocation of <a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=definitions-2:js-moduledeclarationinstantiation data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a> on modules that
+    failed to instantiate previously.</p>
+
+   <dt>An <dfn id=concept-module-script-instantiation-error>instantiation error</dfn><dd>
+
+    <p>A JavaScript value, which has meaning only if the <a href=#concept-module-script-instantiation-state id=definitions-2:concept-module-script-instantiation-state>instantiation state</a> is "<code>errored</code>".</p>
 
    <dt>A <dfn id=concept-module-script-credentials-mode>credentials mode</dfn><dd>
 
@@ -675,18 +684,65 @@
    <var>result</var>:</li><li><p>If <var>result</var> is null, asynchronously complete this algorithm with null and abort
    these steps.</li><li><p>Otherwise, <var>result</var> is a <a href=#module-script id=fetching-scripts:module-script-5>module script</a>. <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script>Fetch the descendants</a> of <var>result</var> given
    <var>destination</var> and an ancestor list obtained by appending <var>url</var> to <var>ancestor
-   list</var>.</li><li><p>When <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-2>fetching the descendants of
-   a module script</a> asynchronously completes with <var>descendants result</var>,
-   asynchronously complete this algorithm with <var>descendants result</var>.</li></ol>
+   list</var>. Wait for <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-2>fetching the
+   descendants of a module script</a> to asynchronously complete with <var>descendants
+   result</var> before proceeding to the next step.</li><li><p>Let <var>record</var> be <var>result</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record>module record</a>.</p>
+
+   </li><li>
+    <p>Let <var>instantiationStatus</var> be <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-moduledeclarationinstantiation data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a>().</p>
+
+    <p class=note>This step will recursively call <a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-moduledeclarationinstantiation-2 data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a> all of the
+    module's uninstantiated dependencies.</p>
+   </li><li>
+    <p>For each <a href=#module-script id=fetching-scripts:module-script-6>module script</a> <var>script</var> in <var>result</var>'s
+    <a href=#uninstantiated-inclusive-descendant-module-scripts id=fetching-scripts:uninstantiated-inclusive-descendant-module-scripts>uninstantiated inclusive descendant module scripts</a>, perform the following
+    steps:</p>
+
+    <ol><li><p>If <var>instantiationStatus</var> is an abrupt completion, then set <var>script</var>'s
+     <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state>instantiation state</a> to "<code>errored</code>", its <a href=#concept-module-script-instantiation-error id=fetching-scripts:concept-module-script-instantiation-error>instantiation error</a> to
+     <var>instantiationStatus</var>.[[Value]], and its <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-2>module record</a> to null.</li><li><p>Otherwise, set <var>script</var>'s <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state-2>instantiation state</a> to "<code>instantiated</code>".</li></ol>
+   </li><li>
+    <p>Asynchronously complete this algorithm with <var>descendants result</var>.</p>
+
+    <p class=note>It is intentional that we complete with <var>descendants result</var> here, and
+    not <var>result</var>, as this allows us to propagate error signals to the caller.</p>
+   </li></ol>
+
+  <p>In the above algorithm, a <a href=#module-script id=fetching-scripts:module-script-7>module script</a> <var>script</var>'s <dfn id=uninstantiated-inclusive-descendant-module-scripts>uninstantiated
+  inclusive descendant module scripts</dfn> is a set of <a href=#module-script id=fetching-scripts:module-script-8>module
+  scripts</a> determined as follows:</p>
+
+  <ol><li><p>Let <var>module map</var> be <var>script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>'s
+   <a href=#module-map id=fetching-scripts:module-map>module map</a>.</li><li><p>Let <var>stack</var> be a list containing <var>script</var>.</li><li><p>Let <var>inclusive descendants</var> be an empty set.</li><li>
+    <p>While <var>stack</var> is not empty:</p>
+
+    <ol><li><p>Let <var>current</var> be the last element of <var>stack</var>. Remove it from
+     <var>stack</var>.</li><li>
+      <p>If <var>current</var> is not in <var>inclusive descendants</var> and is not in
+      <var>stack</var>, then:</p>
+
+      <ol><li><p>Add <var>current</var> to <var>inclusive descendants</var>.</li><li><p>Let <var>child specifiers</var> be the value of <var>current</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-3>module record</a>'s [[RequestedModules]]
+       internal slot.</li><li><p>Let <var>child URLs</var> be the set obtained by calling <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier>resolve a module
+       specifier</a> once for each element of <var>child specifiers</var>, given
+       <var>current</var> and that element. Omit any failures.</li><li><p>Let <var>child modules</var> be the set obtained by looking up each value in
+       <var>module map</var> whose key is given by an element of <var>child URLs</var>.</li><li><p>For each <var>s</var> in <var>child modules</var> that is not in <var>inclusive
+       descendants</var>, add <var>s</var> to <var>stack</var>.</li></ol>
+     </li></ol>
+   </li><li><p>Return a list containing all elements of <var>inclusive descendants</var> whose <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state-3>instantiation state</a> is "<code>uninstantiated</code>".</li></ol>
+
+  <p class=note>The above algorithm gives a depth-first search of the module dependency graph. The
+  main interesting part is in how the "edges" of this graph are determined. The actual search
+  implementation is not important; any other technique for exploring the graph will suffice, given
+  that the output is an unordered set.</p>
 
   <p>To <dfn id=fetch-a-single-module-script>fetch a single module script</dfn>, given a <var>url</var>, a <var>fetch client
   settings object</var>, a <var>destination</var>, a <var>cryptographic nonce</var>, a <var>parser
   state</var>, a <var>credentials mode</var>, a <var>module map settings object</var>, a
   <var>referrer</var>, and a <var>top-level module fetch</var> flag, run these steps. The algorithm
-  will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-6>module script</a> (on
+  will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-9>module script</a> (on
   success).</p>
 
-  <ol><li><p>Let <var>module map</var> be <var>module map settings object</var>'s <a href=#module-map id=fetching-scripts:module-map>module
+  <ol><li><p>Let <var>module map</var> be <var>module map settings object</var>'s <a href=#module-map id=fetching-scripts:module-map-2>module
    map</a>.</li><li><p>If <var>module map</var> contains an entry with key <var>url</var> whose value is "<code>fetching</code>", wait (<a id=fetching-scripts:in-parallel href=infrastructure.html#in-parallel>in parallel</a>) until that entry's value changes,
    then proceed to the next step.</li><li><p>If <var>module map</var> contains an entry with key <var>url</var>, asynchronously
    complete this algorithm with that entry's value, and abort these steps.</li><li><p>Create an entry in <var>module map</var> with key <var>url</var> and value "<code>fetching</code>".</p>
@@ -729,7 +785,7 @@
     <var>module script</var>, and asynchronously complete this algorithm with <var>module
     script</var>.</p>
 
-    <p class=note>It is intentional that the <a href=#module-map id=fetching-scripts:module-map-2>module map</a> is keyed by the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-4 data-x-internal=concept-request-url>request URL</a>, whereas the <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a> for the <a href=#module-script id=fetching-scripts:module-script-7>module script</a> is
+    <p class=note>It is intentional that the <a href=#module-map id=fetching-scripts:module-map-3>module map</a> is keyed by the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-4 data-x-internal=concept-request-url>request URL</a>, whereas the <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a> for the <a href=#module-script id=fetching-scripts:module-script-10>module script</a> is
     set to the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=fetching-scripts:concept-response-url-2 data-x-internal=concept-response-url>response URL</a>. The former is used to
     deduplicate fetches, while the latter is used for URL resolution.</p>
    </li></ol>
@@ -739,11 +795,11 @@
   asynchronously complete with either null (on failure) or with <var>module script</var> (on
   success).</p>
 
-  <ol><li><p>Let <var>record</var> be <var>module script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record>module record</a>.</li><li><p>If <var>record</var>.[[RequestedModules]] is empty, asynchronously complete this
+  <ol><li><p>Let <var>record</var> be <var>module script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-4>module record</a>.</li><li><p>If <var>record</var>.[[RequestedModules]] is empty, asynchronously complete this
    algorithm with <var>module script</var>.</li><li><p>Let <var>urls</var> be a new empty list.</li><li>
     <p>For each string <var>requested</var> of <var>record</var>.[[RequestedModules]],</p>
 
-    <ol><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier>resolving
+    <ol><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier-2>resolving
      a module specifier</a> given <var>module script</var> and <var>requested</var>.</li><li>
       <p>If the result is error:</p>
 
@@ -756,19 +812,16 @@
     fetching procedure</a> given <var>url</var>, <var>module script</var>'s <a href=#concept-module-script-credentials-mode id=fetching-scripts:concept-module-script-credentials-mode>credentials mode</a>, <var>module
     script</var>'s <a href=#concept-module-script-nonce id=fetching-scripts:concept-module-script-nonce>cryptographic nonce</a>,
     <var>module script</var>'s <a href=#concept-module-script-parser id=fetching-scripts:concept-module-script-parser>parser state</a>,
-    <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>, <var>module
-    script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>, <var>ancestor list</var>, <var>module
+    <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>, <var>module
+    script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-3>settings object</a>, <var>ancestor list</var>, <var>module
     script</var>'s <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url-2>base URL</a>, and with the
     <var>top-level module fetch</var> flag unset. If the caller of this algorithm specified custom
     <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-14>perform the fetch</a> steps, pass those along
     while performing the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-6>internal module script tree fetching procedure</a>.</p>
 
-    <p>If any of the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-7>internal module script tree fetching procedure</a> invocations
-    asynchronously complete with null, the user agent may <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch-terminate id=fetching-scripts:concept-fetch-terminate data-x-internal=concept-fetch-terminate>terminate</a> any or all of the other fetches, and must then
-    asynchronously complete this algorithm with null.</p>
-
-    <p>Once all of the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-8>internal module script tree fetching procedure</a> invocations
-    asynchronously complete with a <a href=#module-script id=fetching-scripts:module-script-8>module script</a>, asynchronously complete this
+    <p>Wait for all of the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-7>internal module script tree fetching procedure</a> invocations
+    to asynchronously complete. If any of them asynchronously complete with null, then
+    asynchronously complete this algorithm with null. Otherwise, asynchronously complete this
     algorithm with <var>module script</var>.</p>
    </li></ol>
 
@@ -836,22 +889,20 @@
   <p>To <dfn id=run-a-module-script>run a module script</dfn> given a <a href=#module-script id=calling-scripts:module-script>module script</a> <var>s</var>:</p>
 
   <ol><li><p>Let <var>settings</var> be the <a href=#settings-object id=calling-scripts:settings-object-2>settings object</a> of <var>s</var>.</li><li><p><a href=#check-if-we-can-run-script id=calling-scripts:check-if-we-can-run-script-2>Check if we can run script</a> with <var>settings</var>. If this returns "do
-   not run" then abort these steps.</li><li><p>Let <var>record</var> be <var>s</var>'s <a href=#concept-module-script-module-record id=calling-scripts:concept-module-script-module-record>module record</a>.</p>
+   not run" then abort these steps.</li><li><p>If <var>s</var>'s <a href=#concept-module-script-instantiation-state id=calling-scripts:concept-module-script-instantiation-state>instantiation
+   state</a> is "<code>errored</code>", then <a href=#report-the-exception id=calling-scripts:report-the-exception-2>report the
+   exception</a> given by <var>s</var>'s <a href=#concept-module-script-instantiation-error id=calling-scripts:concept-module-script-instantiation-error>instantiation error</a> for <var>s</var>
+   and abort these steps.</li><li><p>Assert: <var>s</var>'s <a href=#concept-module-script-instantiation-state id=calling-scripts:concept-module-script-instantiation-state-2>instantiation state</a> is "<code>instantiated</code>" (and thus its <a href=#concept-module-script-module-record id=calling-scripts:concept-module-script-module-record>module record</a> is not null).</li><li><p>Let <var>record</var> be <var>s</var>'s <a href=#concept-module-script-module-record id=calling-scripts:concept-module-script-module-record-2>module record</a>.</p>
 
-   </li><li>
-    <p>Let <var>instantiationStatus</var> be <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=calling-scripts:js-moduledeclarationinstantiation data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a>().</p>
-
-    <p class=note>This step will recursively instantiate all of the module's dependencies.</p>
-   </li><li><p>If <var>instantiationStatus</var> is an abrupt completion, <a href=#report-the-exception id=calling-scripts:report-the-exception-2>report the
-   exception</a> given by <var>instantiationStatus</var>.[[Value]] for <var>s</var> and abort
-   these steps.</li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script-2>Prepare to run script</a> given <var>settings</var>.</li><li>
+   </li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script-2>Prepare to run script</a> given <var>settings</var>.</li><li>
     <p>Let <var>evaluationStatus</var> be <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduleevaluation id=calling-scripts:js-moduleevaluation data-x-internal=js-moduleevaluation>ModuleEvaluation</a>().</p>
 
     <p class=note>This step will recursively evaluate all of the module's dependencies.</p>
-   </li><li><p>If <var>evaluationStatus</var> is an abrupt completion, <a href=#report-the-exception id=calling-scripts:report-the-exception-3>report the exception</a>
-   given by <var>evaluationStatus</var>.[[Value]] for <var>s</var>. (Do not perform this step if
-   <a href=https://tc39.github.io/ecma262/#sec-moduleevaluation id=calling-scripts:js-moduleevaluation-2 data-x-internal=js-moduleevaluation>ModuleEvaluation</a> fails to complete as a result of the
-   user agent <a href=#abort-a-running-script id=calling-scripts:abort-a-running-script-3>aborting the running script</a>.)</li><li><p><a href=#clean-up-after-running-script id=calling-scripts:clean-up-after-running-script-2>Clean up after running script</a> with <var>settings</var>.</li></ol>
+   </li><li><p>If <var>evaluationStatus</var> is an abrupt completion, then <a href=#report-the-exception id=calling-scripts:report-the-exception-3>report the
+   exception</a> given by <var>evaluationStatus</var>.[[Value]] for <var>s</var>. (Do not perform
+   this step if <a href=https://tc39.github.io/ecma262/#sec-moduleevaluation id=calling-scripts:js-moduleevaluation-2 data-x-internal=js-moduleevaluation>ModuleEvaluation</a> fails to complete as a
+   result of the user agent <a href=#abort-a-running-script id=calling-scripts:abort-a-running-script-3>aborting the running
+   script</a>.)</li><li><p><a href=#clean-up-after-running-script id=calling-scripts:clean-up-after-running-script-2>Clean up after running script</a> with <var>settings</var>.</li></ol>
 
   <p>The steps to <dfn id=check-if-we-can-run-script>check if we can run script</dfn> with an <a href=#environment-settings-object id=calling-scripts:environment-settings-object>environment settings
   object</a> <var>settings</var> are as follows. They return either "run" or "do not run".</p>
@@ -1433,7 +1484,7 @@ document.querySelector("button").addEventListener("click", bound);
    module specifier</a> given <var>referencing module script</var> and <var>specifier</var>. If
    the result is failure, throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these steps.</li><li><p>Let <var>resolved module script</var> be the value of the entry in <var>module map</var>
    whose key is <var>url</var>. If no such entry exists, or if the value is null or "<code>fetching</code>", throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror-2><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these
-   steps.</li><li><p>Return <var>resolved module script</var>'s <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record>module record</a>.</li></ol>
+   steps.</li><li><p>If <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-state id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-state>instantiation state</a> is "<code>errored</code>", then throw <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-error id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-error>instantiation error</a>.</li><li><p>Assert: <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-state id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-state-2>instantiation state</a> is "<code>instantiated</code>" (and thus its <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record>module record</a> is not null).</li><li><p>Return <var>resolved module script</var>'s <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record-2>module record</a>.</li></ol>
 
   
 
@@ -2597,7 +2648,7 @@ document.body.appendChild(frame)</pre>
   object's <span>relevant setting object</span>'s <a id=windoworworkerglobalscope-mixin:concept-origin-3 href=browsers.html#concept-origin>origin</a>, <a href=browsers.html#unicode-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:unicode-serialisation-of-an-origin>serialised</a>.</p>
 
 
-  <h3 id=atob>8.3 Base64のユーティリティーメソッド</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>51+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob>8.3 Base64のユーティリティーメソッド</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>51+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>
@@ -3692,7 +3743,7 @@ interface <dfn id=navigatorlanguage>NavigatorLanguage</dfn> {
 
 
 
-  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
+  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
 
   <pre class=idl>[NoInterfaceObject]
 interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
@@ -4975,7 +5026,7 @@ loadMySprites().then(runDemo);</pre>
 
 
 
-  <h3 id=animation-frames>8.9 Animation Frames</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>51+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
+  <h3 id=animation-frames>8.9 Animation Frames</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>51+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
 
   <p>Each <code id=animation-frames:document><a href=dom.html#document>Document</a></code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
   initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback identifier</dfn>, which is a number which
