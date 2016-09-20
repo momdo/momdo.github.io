@@ -297,7 +297,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 September 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 September 2016</span></h2></hgroup>
    
    
   </header>
@@ -720,6 +720,11 @@ o............A....e
     <p class=note>If <a href=#concept-script-type id=script-processing-model:concept-script-type-5>the script's type</a> is "<code>module</code>", this encoding will be ignored.</p>
 
    </li><li><p>Let <var>CORS setting</var> be the current state of the element's <code id=script-processing-model:attr-script-crossorigin><a href=#attr-script-crossorigin>crossorigin</a></code> content attribute.</li><li>
+    <p>Let <var>module script credentials mode</var> be determined by switching on <var>CORS
+    setting</var>:</p>
+
+    <dl class=switch><dt><a href=infrastructure.html#attr-crossorigin-none id=script-processing-model:attr-crossorigin-none>No CORS</a><dd>"<code>omit</code>"<dt><a href=infrastructure.html#attr-crossorigin-anonymous id=script-processing-model:attr-crossorigin-anonymous>Anonymous</a><dd>"<code>same-origin</code>"<dt><a href=infrastructure.html#attr-crossorigin-none id=script-processing-model:attr-crossorigin-none-2>Use Credentials</a><dd>"<code>include</code>"</dl>
+   </li><li>
 
     <p>If the <code id=script-processing-model:the-script-element-36><a href=#the-script-element>script</a></code> element has a <code id=script-processing-model:attr-script-nonce><a href=#attr-script-nonce>nonce</a></code>
     attribute, then let <var>cryptographic nonce</var> be that attribute's value.</p>
@@ -748,14 +753,9 @@ o............A....e
         <var>cryptographic nonce</var>, <var>parser state</var>, <var>CORS setting</var>, and
         <var>encoding</var>.</p>
        <dt>"<code>module</code>"<dd>
-        <ol><li>
-          <p>Let <var>credentials mode</var> be determined by switching on <var>CORS
-          setting</var>:</p>
-
-          <dl class=switch><dt><a href=infrastructure.html#attr-crossorigin-none id=script-processing-model:attr-crossorigin-none>No CORS</a><dd>"<code>omit</code>"<dt><a href=infrastructure.html#attr-crossorigin-anonymous id=script-processing-model:attr-crossorigin-anonymous>Anonymous</a><dd>"<code>same-origin</code>"<dt><a href=infrastructure.html#attr-crossorigin-none id=script-processing-model:attr-crossorigin-none-2>Use Credentials</a><dd>"<code>include</code>"</dl>
-         </li><li><p><a id=script-processing-model:fetch-a-module-script-tree href=webappapis.html#fetch-a-module-script-tree>Fetch a module script tree</a> given <var>url</var>, <var>settings</var>,
-         "<code>script</code>", <var>cryptographic nonce</var>, <var>parser state</var>,
-         and <var>credentials mode</var>.</li></ol>
+        <p><a id=script-processing-model:fetch-a-module-script-tree href=webappapis.html#fetch-a-module-script-tree>Fetch a module script tree</a> given <var>url</var>, <var>settings</var>,
+        "<code>script</code>", <var>cryptographic nonce</var>, <var>parser state</var>,
+        and <var>module script credentials mode</var>.</p>
        </dl>
 
       <p>When the chosen algorithm asynchronously completes, set <a href=#concept-script-script id=script-processing-model:concept-script-script>the script's script</a> to the result. At that time,
@@ -787,8 +787,9 @@ o............A....e
        <dt>"<code>module</code>"<dd>
         <ol><li><p>Let <var>base URL</var> be the <code id=script-processing-model:the-script-element-38><a href=#the-script-element>script</a></code> element's <a id=script-processing-model:node-document-6 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
          document</a>'s <a id=script-processing-model:document-base-url href=infrastructure.html#document-base-url>document base URL</a>.</li><li><p>Let <var>script</var> be the result of <a id=script-processing-model:creating-a-module-script href=webappapis.html#creating-a-module-script>creating a module script</a> using
-         <var>source text</var>, <var>settings</var>, <var>base URL</var>, and <var>CORS
-         setting</var>.</li><li><p>If this returns null, set <a href=#concept-script-script id=script-processing-model:concept-script-script-3>the script's
+         <var>source text</var>, <var>settings</var>, <var>base URL</var>, <var>cryptographic
+         nonce</var>, <var>parser state</var>, and <var>module script credentials
+         mode</var>.</li><li><p>If this returns null, set <a href=#concept-script-script id=script-processing-model:concept-script-script-3>the script's
          script</a> to null and abort these substeps; <a href=#the-script-is-ready id=script-processing-model:the-script-is-ready-4>the script is ready</a>.</li><li><p><a href=webappapis.html#fetch-the-descendants-of-a-module-script id=script-processing-model:fetch-the-descendants-of-a-module-script>Fetch the
          descendants</a> of <var>script</var> (using an empty ancestor list). When this
          asynchronously completes, set <a href=#concept-script-script id=script-processing-model:concept-script-script-4>the script's
@@ -5980,7 +5981,7 @@ dictionary <dfn id=imagebitmaprenderingcontextsettings>ImageBitmapRenderingConte
 
   
 
-  <h3 id=custom-elements>4.13 Custom elements</h3>
+  <h3 id=custom-elements>4.13 Custom elements</h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>54+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>41+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=custom-elementsv1">caniuse.com</a></div>
 
   <h4 id=custom-elements-intro>4.13.1 導入</h4>
 
@@ -6418,7 +6419,7 @@ console.log(plasticButton2.getAttribute("is")); // will output "plastic-button"<
   <p>A <dfn id=custom-element-definition>custom element definition</dfn> describes a <a href=#custom-element id=custom-elements-core-concepts:custom-element-3>custom element</a> and consists
   of:</p>
 
-  <dl><dt>A <dfn data-dfn-for="custom element definition" id=concept-custom-element-definition-name data-export="">name</dfn><dd>A <a href=#valid-custom-element-name id=custom-elements-core-concepts:valid-custom-element-name-2>valid custom element name</a><dt>A <dfn data-dfn-for="custom element definition" id=concept-custom-element-definition-local-name data-export="">local name</dfn><dd>A local name<dt>A <dfn data-dfn-for="custom element definition" id=concept-custom-element-definition-constructor data-export="">constructor</dfn><dd>A <a href=#custom-element-constructor id=custom-elements-core-concepts:custom-element-constructor>custom element constructor</a><dt>A <dfn data-dfn-for="custom element definition" id=concept-custom-element-definition-prototype data-export="">prototype</dfn><dd>A JavaScript object<dt>A list of <dfn id=concept-custom-element-definition-observed-attributes>observed
+  <dl><dt>A <dfn data-dfn-for="custom element definition" id=concept-custom-element-definition-name data-export="">name</dfn><dd>A <a href=#valid-custom-element-name id=custom-elements-core-concepts:valid-custom-element-name-2>valid custom element name</a><dt>A <dfn data-dfn-for="custom element definition" id=concept-custom-element-definition-local-name data-export="">local name</dfn><dd>A local name<dt>A <dfn data-dfn-for="custom element definition" id=concept-custom-element-definition-constructor data-export="">constructor</dfn><dd>A <a href=#custom-element-constructor id=custom-elements-core-concepts:custom-element-constructor>custom element constructor</a><dt>A list of <dfn id=concept-custom-element-definition-observed-attributes>observed
    attributes</dfn><dd>A <code>sequence&lt;DOMString&gt;</code><dt>A collection of <dfn id=concept-custom-element-definition-lifecycle-callbacks>lifecycle callbacks</dfn><dd>A map, whose four keys are the strings "<code>connectedCallback</code>",
    "<code>disconnectedCallback</code>", "<code>adoptedCallback</code>", and
    "<code>attributeChangedCallback</code>". The corresponding values are either a Web IDL
@@ -6549,7 +6550,7 @@ dictionary <dfn id=elementdefinitionoptions>ElementDefinitionOptions</dfn> {
     terminate this algorithm. Otherwise, continue onward.</p>
    </li><li><p>Let <var>definition</var> be a new <a href=#custom-element-definition id=custom-elements-api:custom-element-definition-4>custom element definition</a> with <a href=#concept-custom-element-definition-name id=custom-elements-api:concept-custom-element-definition-name-5>name</a> <var>name</var>, <a href=#concept-custom-element-definition-local-name id=custom-elements-api:concept-custom-element-definition-local-name-2>local name</a> <var>localName</var>,
    <a href=#concept-custom-element-definition-constructor id=custom-elements-api:concept-custom-element-definition-constructor-3>constructor</a>
-   <var>constructor</var>, <a href=#concept-custom-element-definition-prototype id=custom-elements-api:concept-custom-element-definition-prototype>prototype</a> <var>prototype</var>, <a href=#concept-custom-element-definition-observed-attributes id=custom-elements-api:concept-custom-element-definition-observed-attributes>observed attributes</a>
+   <var>constructor</var>, <a href=#concept-custom-element-definition-observed-attributes id=custom-elements-api:concept-custom-element-definition-observed-attributes>observed attributes</a>
    <var>observedAttributes</var>, and <a href=#concept-custom-element-definition-lifecycle-callbacks id=custom-elements-api:concept-custom-element-definition-lifecycle-callbacks>lifecycle callbacks</a>
    <var>lifecycleCallbacks</var>.</li><li><p>Add <var>definition</var> to this <code id=custom-elements-api:customelementregistry-13><a href=#customelementregistry>CustomElementRegistry</a></code>.</li><li><p>Let <var>document</var> be this <code id=custom-elements-api:customelementregistry-14><a href=#customelementregistry>CustomElementRegistry</a></code>'s <a href=webappapis.html#concept-relevant-global id=custom-elements-api:concept-relevant-global>relevant global object</a>'s <a href=browsers.html#concept-document-window id=custom-elements-api:concept-document-window>associated <code>Document</code></a>.</li><li><p>Let <var>upgrade candidates</var> be all elements that are <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-shadow-including-descendant id=custom-elements-api:shadow-including-descendant data-x-internal=shadow-including-descendant>shadow-including descendants</a> of <var>document</var>, whose namespace
    is the <a id=custom-elements-api:html-namespace-2-2 href=infrastructure.html#html-namespace-2>HTML namespace</a> and whose local name is <var>localName</var>, in
@@ -6651,43 +6652,50 @@ customElements.define("x-foo", class extends HTMLElement {
    <var>attribute</var>'s local name, null, <var>attribute</var>'s value, and <var>attribute</var>'s
    namespace.</li><li><p>If <var>element</var> is <a id=upgrades:connected href=https://triple-underscore.github.io/DOM4-ja.html#connected data-x-internal=connected>connected</a>, then <a href=#enqueue-a-custom-element-callback-reaction id=upgrades:enqueue-a-custom-element-callback-reaction-2>enqueue a custom element
    callback reaction</a> with <var>element</var>, callback name "<code>connectedCallback</code>", and an empty argument list.</li><li><p>Add <var>element</var> to the end of <var>definition</var>'s <a href=#concept-custom-element-definition-construction-stack id=upgrades:concept-custom-element-definition-construction-stack>construction stack</a>.</li><li><p>Let <var>C</var> be <var>definition</var>'s <a href=#concept-custom-element-definition-constructor id=upgrades:concept-custom-element-definition-constructor>constructor</a>.</li><li>
-    <p>Let <var>constructResult</var> be <a id=upgrades:construct href=https://tc39.github.io/ecma262/#sec-construct data-x-internal=construct>Construct</a>(<var>C</var>).</p>
+    <p>Run the following substeps while catching any exceptions:</p>
 
-    <p class=note>If <var>C</var> <a href=#custom-element-conformance>non-conformantly</a> uses
-    an API decorated with the <code id=upgrades:cereactions><a href=#cereactions>[CEReactions]</a></code> extended attribute,
-    then the reactions enqueued at the beginning of this algorithm will execute during this step,
-    before <var>C</var> finishes and control returns to this algorithm. Otherwise, they will execute
-    after <var>C</var> and the rest of the upgrade process finishes.</p>
-   </li><li>
-    <p>Remove the last entry from the end of <var>definition</var>'s <a href=#concept-custom-element-definition-construction-stack id=upgrades:concept-custom-element-definition-construction-stack-2>construction stack</a>.</p>
+    <ol><li>
+      <p>Let <var>constructResult</var> be <a id=upgrades:construct href=https://tc39.github.io/ecma262/#sec-construct data-x-internal=construct>Construct</a>(<var>C</var>).</p>
 
-    <div class=note>
-     <p>Assuming <var>C</var> calls <code>super()</code> (as it will if it is <a href=#custom-element-conformance>conformant</a>), and that the call succeeds, this will be
-     the <a href=#concept-already-constructed-marker id=upgrades:concept-already-constructed-marker><i>already
-     constructed</i> marker</a> that replaced the <var>element</var> we pushed at the beginning
-     of this algorithm. (The <a href=dom.html#html-element-constructors>HTML element constructor</a>
-     carries out this replacement.)</p>
+      <p class=note>If <var>C</var> <a href=#custom-element-conformance>non-conformantly</a>
+      uses an API decorated with the <code id=upgrades:cereactions><a href=#cereactions>[CEReactions]</a></code> extended
+      attribute, then the reactions enqueued at the beginning of this algorithm will execute during
+      this step, before <var>C</var> finishes and control returns to this algorithm. Otherwise, they
+      will execute after <var>C</var> and the rest of the upgrade process finishes.</p>
+     </li><li>
+      <p>If <a id=upgrades:samevalue href=https://tc39.github.io/ecma262/#sec-samevalue data-x-internal=samevalue>SameValue</a>(<var>constructResult</var>, <var>element</var>) is false,
+      then throw an <a id=upgrades:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=upgrades:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</p>
 
-     <p>If <var>C</var> does not call <code>super()</code> (i.e. it is not <a href=#custom-element-conformance>conformant</a>), or if any step in the <a href=dom.html#html-element-constructors>HTML element constructor</a> throws, then this entry will
-     still be <var>element</var>.</p>
-    </div>
-   </li><li>
-    <p>If <var>constructResult</var> is an abrupt completion, then:</p>
+      <p class=note>This can occur if <var>C</var> constructs another instance of the same custom
+      element before calling <code>super()</code>, or if <var>C</var> uses JavaScript's
+      <code>return</code>-override feature to return an arbitrary object from the
+      constructor.</p>
+     </li></ol>
 
-    <ol><li><p>Set <var>element</var>'s <a id=upgrades:custom-element-state-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>failed</code>".</li><li><p>Return <var>constructResult</var> (i.e., rethrow the exception), and terminate these
-     steps.</li></ol>
-   </li><li>
-    <p>If <a id=upgrades:samevalue href=https://tc39.github.io/ecma262/#sec-samevalue data-x-internal=samevalue>SameValue</a>(<var>constructResult</var>.[[value]], <var>element</var>) is false,
-    then:</p>
+    <p>Then, perform the following substep, regardless of whether the above steps threw an exception
+    or not:</p>
 
-    <ol><li><p>Set <var>element</var>'s <a id=upgrades:custom-element-state-3 href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>failed</code>".</li><li><p>Throw an <a id=upgrades:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=upgrades:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>, and
-     terminate these steps.</li></ol>
+    <ol><li>
+      <p>Remove the last entry from the end of <var>definition</var>'s <a href=#concept-custom-element-definition-construction-stack id=upgrades:concept-custom-element-definition-construction-stack-2>construction stack</a>.</p>
 
-    <p class=note>This can occur if <var>C</var> constructs another instance of the same custom
-    element before calling <code>super()</code>, or if <var>C</var> uses JavaScript's
-    <code>return</code>-override feature to return an arbitrary object from the
-    constructor.</p>
-   </li><li><p>Set <var>element</var>'s <a id=upgrades:custom-element-state-4 href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>custom</code>".</li><li><p>Set <var>element</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-definition id=upgrades:concept-element-custom-element-definition data-x-internal=concept-element-custom-element-definition>custom
+      <div class=note>
+       <p>Assuming <var>C</var> calls <code>super()</code> (as it will if it is <a href=#custom-element-conformance>conformant</a>), and that the call succeeds, this will be
+       the <a href=#concept-already-constructed-marker id=upgrades:concept-already-constructed-marker><i>already
+       constructed</i> marker</a> that replaced the <var>element</var> we pushed at the beginning
+       of this algorithm. (The <a href=dom.html#html-element-constructors>HTML element constructor</a>
+       carries out this replacement.)</p>
+
+       <p>If <var>C</var> does not call <code>super()</code> (i.e. it is not <a href=#custom-element-conformance>conformant</a>), or if any step in the <a href=dom.html#html-element-constructors>HTML element constructor</a> throws, then this entry will
+       still be <var>element</var>.</p>
+      </div>
+     </li></ol>
+
+    <p>Finally, if the above steps threw an exception, then:</p>
+
+    <ol><li><p>Set <var>element</var>'s <a id=upgrades:custom-element-state-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>failed</code>".</li><li><p>Empty <var>element</var>'s <a href=#custom-element-reaction-queue id=upgrades:custom-element-reaction-queue>custom element reaction queue</a>.</p>
+
+     </li><li><p>Rethrow the exception, and terminate this algorithm.</li></ol>
+   </li><li><p>Set <var>element</var>'s <a id=upgrades:custom-element-state-3 href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>custom</code>".</li><li><p>Set <var>element</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-definition id=upgrades:concept-element-custom-element-definition data-x-internal=concept-element-custom-element-definition>custom
    element definition</a> to <var>definition</var>.</li></ol>
 
   <p>To <dfn id=concept-try-upgrade data-export="">try to upgrade an element</dfn>, given as

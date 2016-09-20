@@ -297,7 +297,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 September 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 September 2016</span></h2></hgroup>
    
    
   </header>
@@ -894,14 +894,14 @@ console.assert(iframeWindow.frameElement === null);
     <p>User agent implementors are encouraged to provide a way for users to configure the user agent
     to always reuse the current browsing context.</p>
 
-    <p>If the current browsing context's <a href=#active-document id=browsing-context-names:active-document-2>active document</a>'s <a href=#active-sandboxing-flag-set id=browsing-context-names:active-sandboxing-flag-set-2>active sandboxing flag
-    set</a> has both the <a href=#sandboxed-navigation-browsing-context-flag id=browsing-context-names:sandboxed-navigation-browsing-context-flag>sandboxed navigation browsing context flag</a> and
-    <a href=#sandbox-propagates-to-auxiliary-browsing-contexts-flag id=browsing-context-names:sandbox-propagates-to-auxiliary-browsing-contexts-flag>sandbox propagates to auxiliary browsing contexts flag</a> set, and the chosen browsing
-    context picked above, if any, is a new browsing context, then all the flags that are set in the
-    current browsing context's <a href=#active-document id=browsing-context-names:active-document-3>active document</a>'s <a href=#active-sandboxing-flag-set id=browsing-context-names:active-sandboxing-flag-set-3>active sandboxing flag
-    set</a> when the new browsing context is created must be set in the new browsing context's
-    <a href=#popup-sandboxing-flag-set id=browsing-context-names:popup-sandboxing-flag-set>popup sandboxing flag set</a>, and the current browsing context must be set as the new
-    browsing context's <a href=#one-permitted-sandboxed-navigator id=browsing-context-names:one-permitted-sandboxed-navigator-3>one permitted sandboxed navigator</a>.</p>
+    <p>If the chosen browsing context picked above, if any, is a new browsing context, then:</p>
+
+    <ol><li><p>Let <var>flagSet</var> be the current browsing context's <a href=#active-document id=browsing-context-names:active-document-2>active document</a>'s
+     <a href=#active-sandboxing-flag-set id=browsing-context-names:active-sandboxing-flag-set-2>active sandboxing flag set</a>.</li><li><p>If <var>flagSet</var>'s <a href=#sandboxed-navigation-browsing-context-flag id=browsing-context-names:sandboxed-navigation-browsing-context-flag>sandboxed navigation browsing context flag</a> is set,
+     then the current browsing context must be set as the new browsing context's <a href=#one-permitted-sandboxed-navigator id=browsing-context-names:one-permitted-sandboxed-navigator-3>one permitted
+     sandboxed navigator</a>.</li><li><p>If <var>flagSet</var>'s <a href=#sandbox-propagates-to-auxiliary-browsing-contexts-flag id=browsing-context-names:sandbox-propagates-to-auxiliary-browsing-contexts-flag>sandbox propagates to auxiliary browsing contexts
+     flag</a> is set, then all the flags that are set in <var>flagSet</var> must be set in the
+     new browsing context's <a href=#popup-sandboxing-flag-set id=browsing-context-names:popup-sandboxing-flag-set>popup sandboxing flag set</a>.</li></ol>
 
    </li></ol>
 
@@ -1147,6 +1147,13 @@ console.assert(iframeWindow.frameElement === null);
      </li></ol>
    </li><li><p>Return undefined.</li></ol>
 
+  <p class=note>The reason that the property descriptors produced here are configurable is to
+  preserve the <a id=crossorigingetownpropertyhelper-(-o,-p-):invariants-of-the-essential-internal-methods href=https://tc39.github.io/ecma262/#sec-invariants-of-the-essential-internal-methods data-x-internal=invariants-of-the-essential-internal-methods>invariants of the essential internal methods</a> required by the JavaScript
+  specification. In particular, since the value of the property can change as a consequence of
+  navigation, it is required that the property be configurable. (However, see <a href=https://github.com/tc39/ecma262/issues/672>tc39/ecma262 issue #672</a> and references to it
+  elsewhere in this specification for cases where we are not able to preserve these invariants, for
+  compatibility with existing Web content.) <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
+
   <h5 id=crossoriginget-(-o,-p,-receiver-)>7.2.3.4 <dfn>CrossOriginGet</dfn> ( <var>O</var>, <var>P</var>, <var>Receiver</var> )</h5>
 
   <ol><li><p>Let <var>desc</var> be ? <var>O</var>.[[GetOwnProperty]](<var>P</var>).</li><li><p>Assert: <var>desc</var> is not undefined.</li><li><p>If <a id=crossoriginget-(-o,-p,-receiver-):isdatadescriptor href=https://tc39.github.io/ecma262/#sec-isdatadescriptor data-x-internal=isdatadescriptor>IsDataDescriptor</a>(<var>desc</var>) is true, then return
@@ -1157,11 +1164,13 @@ console.assert(iframeWindow.frameElement === null);
   <var>Receiver</var> )</h5>
 
   <ol><li><p>Let <var>desc</var> be ? <var>O</var>.[[GetOwnProperty]](<var>P</var>).</li><li><p>Assert: <var>desc</var> is not undefined.</li><li>
-    <p>If <a id=crossoriginset-(-o,-p,-v,-receiver-):isaccessordescriptor href=https://tc39.github.io/ecma262/#sec-isaccessordescriptor data-x-internal=isaccessordescriptor>IsAccessorDescriptor</a>(<var>desc</var>) is true, then:</p>
+    <p>If <var>desc</var>.[[Set]] is present and its value is not undefined, then:
 
-    <ol><li><p>Let <var>setter</var> be <var>desc</var>.[[Set]].</li><li><p>If <var>setter</var> is undefined, return false.</li><li><p>Perform ? <a id=crossoriginset-(-o,-p,-v,-receiver-):call href=https://tc39.github.io/ecma262/#sec-call data-x-internal=call>Call</a>(<var>setter</var>, <var>Receiver</var>,
+    
+
+    <ol><li><p>Perform ? <a id=crossoriginset-(-o,-p,-v,-receiver-):call href=https://tc39.github.io/ecma262/#sec-call data-x-internal=call>Call</a>(<var>setter</var>, <var>Receiver</var>,
      «<var>V</var>»).</li><li><p>Return true.</li></ol>
-   </li><li><p>Return false.</li></ol>
+   </li><li><p>Throw a <a id=crossoriginset-(-o,-p,-v,-receiver-):securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=crossoriginset-(-o,-p,-v,-receiver-):domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li></ol>
 
   <h5 id=crossoriginownpropertykeys-(-o-)>7.2.3.6 <dfn>CrossOriginOwnPropertyKeys</dfn> ( <var>O</var> )</h5>
 
@@ -1762,9 +1771,10 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
     <p>If <a href=#isplatformobjectsameorigin-(-o-) id=windowproxy-getownproperty:isplatformobjectsameorigin-(-o-)>IsPlatformObjectSameOrigin</a>(<var>W</var>) is true, then return
     <a id=windowproxy-getownproperty:ordinarygetownproperty href=https://tc39.github.io/ecma262/#sec-ordinarygetownproperty data-x-internal=ordinarygetownproperty>OrdinaryGetOwnProperty</a>(<var>W</var>, <var>P</var>).</p>
 
-    <p class=note>This is a <a id=windowproxy-getownproperty:willful-violation href=introduction.html#willful-violation>willful violation</a> of the JavaScript specification to
-    maintain compatibility with existing Web content. See <a href=https://github.com/tc39/ecma262/issues/672>tc39/ecma262 issue 672</a> for more
-    information. <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
+    <p class=note>This is a <a id=windowproxy-getownproperty:willful-violation href=introduction.html#willful-violation>willful violation</a> of the JavaScript specification's
+    <a id=windowproxy-getownproperty:invariants-of-the-essential-internal-methods href=https://tc39.github.io/ecma262/#sec-invariants-of-the-essential-internal-methods data-x-internal=invariants-of-the-essential-internal-methods>invariants of the essential internal methods</a> to maintain compatibility with
+    existing Web content. See <a href=https://github.com/tc39/ecma262/issues/672>tc39/ecma262
+    issue #672</a> for more information. <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
    </li><li><p>Let <var>property</var> be <a href=#crossorigingetownpropertyhelper-(-o,-p-) id=windowproxy-getownproperty:crossorigingetownpropertyhelper-(-o,-p-)>CrossOriginGetOwnPropertyHelper</a>(<var>W</var>,
    <var>P</var>).</li><li><p>If <var>property</var> is not undefined, return <var>property</var>.</li><li>
     <p>If <var>property</var> is undefined and <var>P</var> is in <var>W</var>'s <a href=#document-tree-child-browsing-context-name-property-set id=windowproxy-getownproperty:document-tree-child-browsing-context-name-property-set>document-tree
@@ -1786,17 +1796,24 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
   <h4 id=windowproxy-defineownproperty>7.4.6 [[DefineOwnProperty]] ( <var>P</var>, <var>Desc</var>
   )</h4>
 
-  <ol><li><p>If <var>P</var> is an <a id=windowproxy-defineownproperty:array-index-property-name href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-array-index-property-name data-x-internal=array-index-property-name>array index property name</a>, return false.</li><li><p>Let <var>W</var> be the value of the
+  <ol><li><p>Let <var>W</var> be the value of the
    [[<a href=#concept-windowproxy-window id=windowproxy-defineownproperty:concept-windowproxy-window>Window</a>]] internal slot of
    <b>this</b>.</li><li>
-    <p>If <a href=#isplatformobjectsameorigin-(-o-) id=windowproxy-defineownproperty:isplatformobjectsameorigin-(-o-)>IsPlatformObjectSameOrigin</a>(<var>W</var>) is true, then return ?
-    <a id=windowproxy-defineownproperty:ordinarydefineownproperty href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty data-x-internal=ordinarydefineownproperty>OrdinaryDefineOwnProperty</a>(<var>W</var>, <var>P</var>, <var>Desc</var>).</p>
+    <p>If <a href=#isplatformobjectsameorigin-(-o-) id=windowproxy-defineownproperty:isplatformobjectsameorigin-(-o-)>IsPlatformObjectSameOrigin</a>(<var>W</var>) is true, then:
 
-    <p class=note>This is a <a id=windowproxy-defineownproperty:willful-violation href=introduction.html#willful-violation>willful violation</a> of the JavaScript specification to
-    maintain compatibility with existing Web content. See <a href=https://github.com/tc39/ecma262/issues/672>tc39/ecma262 issue 672</a> for more
-    information. <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
+    
 
-   </li><li><p>Return false.</li></ol>
+    <ol><li><p>If <var>P</var> is an <a id=windowproxy-defineownproperty:array-index-property-name href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-array-index-property-name data-x-internal=array-index-property-name>array index property name</a>, return false.</li><li>
+      <p>Return ? <a id=windowproxy-defineownproperty:ordinarydefineownproperty href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty data-x-internal=ordinarydefineownproperty>OrdinaryDefineOwnProperty</a>(<var>W</var>, <var>P</var>,
+      <var>Desc</var>).</p>
+
+      <p class=note>This is a <a id=windowproxy-defineownproperty:willful-violation href=introduction.html#willful-violation>willful violation</a> of the JavaScript specification's
+      <a id=windowproxy-defineownproperty:invariants-of-the-essential-internal-methods href=https://tc39.github.io/ecma262/#sec-invariants-of-the-essential-internal-methods data-x-internal=invariants-of-the-essential-internal-methods>invariants of the essential internal methods</a> to maintain compatibility with
+      existing Web content. See <a href=https://github.com/tc39/ecma262/issues/672>tc39/ecma262
+      issue #672</a> for more information. <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
+     </li></ol>
+
+   </li><li><p>Throw a <a id=windowproxy-defineownproperty:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=windowproxy-defineownproperty:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li></ol>
 
   <h4 id=windowproxy-get>7.4.7 [[Get]] ( <var>P</var>, <var>Receiver</var> )</h4>
 
@@ -1816,10 +1833,17 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
   <h4 id=windowproxy-delete>7.4.9 [[Delete]] ( <var>P</var> )</h4>
 
-  <ol><li><p>If <var>P</var> is an <a id=windowproxy-delete:array-index-property-name href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-array-index-property-name data-x-internal=array-index-property-name>array index property name</a>, return false.</li><li><p>Let <var>W</var> be the value of the
+  <ol><li><p>Let <var>W</var> be the value of the
    [[<a href=#concept-windowproxy-window id=windowproxy-delete:concept-windowproxy-window>Window</a>]] internal slot of
-   <b>this</b>.</li><li><p>If <a href=#isplatformobjectsameorigin-(-o-) id=windowproxy-delete:isplatformobjectsameorigin-(-o-)>IsPlatformObjectSameOrigin</a>(<var>W</var>) is true, then return ?
-   <a id=windowproxy-delete:ordinarydelete href=https://tc39.github.io/ecma262/#sec-ordinarydelete data-x-internal=ordinarydelete>OrdinaryDelete</a>(<var>W</var>, <var>P</var>).</li><li><p>Return false.</li></ol>
+   <b>this</b>.</li><li>
+    <p>If <a href=#isplatformobjectsameorigin-(-o-) id=windowproxy-delete:isplatformobjectsameorigin-(-o-)>IsPlatformObjectSameOrigin</a>(<var>W</var>) is true, then:
+
+    
+
+    <ol><li><p>If <var>P</var> is an <a id=windowproxy-delete:array-index-property-name href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-array-index-property-name data-x-internal=array-index-property-name>array index property name</a>, then return
+     false.</li><li><p>Return ? <a id=windowproxy-delete:ordinarydelete href=https://tc39.github.io/ecma262/#sec-ordinarydelete data-x-internal=ordinarydelete>OrdinaryDelete</a>(<var>W</var>, <var>P</var>).</li></ol>
+
+   </li><li><p>Throw a <a id=windowproxy-delete:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=windowproxy-delete:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li></ol>
 
   <h4 id=windowproxy-ownpropertykeys>7.4.10 [[OwnPropertyKeys]] ( )</h4>
 
@@ -1890,28 +1914,28 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
   <dl><dt>For <code id=origin:document-2><a href=dom.html#document>Document</a></code> objects<dd>
 
     <dl class=switch><dt id=sandboxOrigin>If the <code id=origin:document-3><a href=dom.html#document>Document</a></code>'s <a href=#active-sandboxing-flag-set id=origin:active-sandboxing-flag-set>active sandboxing flag set</a>
-     has its <a href=#sandboxed-origin-browsing-context-flag id=origin:sandboxed-origin-browsing-context-flag>sandboxed origin browsing context flag</a> set<dd><p>A unique <a href=#concept-origin-opaque id=origin:concept-origin-opaque-2>opaque origin</a> assigned when the
-     <code id=origin:document-4><a href=dom.html#document>Document</a></code> is created.<dt>If the <code id=origin:document-5><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address" data-x-internal="the-document's-address">URL</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=origin:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a> is a <a id=origin:network-scheme href=https://triple-underscore.github.io/URL-ja.html#network-scheme data-x-internal=network-scheme>network scheme</a><dd>
-      <p>A copy of the <code id=origin:document-6><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address-2" data-x-internal="the-document's-address">URL</a>'s
-      <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=origin:concept-url-origin data-x-internal=concept-url-origin>origin</a> assigned when the <code id=origin:document-7><a href=dom.html#document>Document</a></code> is
+     has its <a href=#sandboxed-origin-browsing-context-flag id=origin:sandboxed-origin-browsing-context-flag>sandboxed origin browsing context flag</a> set<dt>If the <code id=origin:document-4><a href=dom.html#document>Document</a></code> was generated from a <a href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2 id=origin:data-protocol data-x-internal=data-protocol><code>data:</code> URL</a><dd><p>A unique <a href=#concept-origin-opaque id=origin:concept-origin-opaque-2>opaque origin</a> assigned when the
+     <code id=origin:document-5><a href=dom.html#document>Document</a></code> is created.<dt>If the <code id=origin:document-6><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address" data-x-internal="the-document's-address">URL</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=origin:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a> is a <a id=origin:network-scheme href=https://triple-underscore.github.io/URL-ja.html#network-scheme data-x-internal=network-scheme>network scheme</a><dd>
+      <p>A copy of the <code id=origin:document-7><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address-2" data-x-internal="the-document's-address">URL</a>'s
+      <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=origin:concept-url-origin data-x-internal=concept-url-origin>origin</a> assigned when the <code id=origin:document-8><a href=dom.html#document>Document</a></code> is
       created.</p>
 
       <p class=note>The <code id=origin:dom-document-open><a href=webappapis.html#dom-document-open>document.open()</a></code> method can change
-      the <code id=origin:document-8><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address-3" data-x-internal="the-document's-address">URL</a> to
+      the <code id=origin:document-9><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address-3" data-x-internal="the-document's-address">URL</a> to
       "<code id=origin:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code>". Therefore the <a href=#concept-origin id=origin:concept-origin-6>origin</a> is assigned when the
-      <code id=origin:document-9><a href=dom.html#document>Document</a></code> is created.</p>
-     <dt>If the <code id=origin:document-10><a href=dom.html#document>Document</a></code> is the initial "<code id=origin:about:blank-2><a href=infrastructure.html#about:blank>about:blank</a></code>" document<dd><p><a href=#about-blank-origin>The one it was assigned when its browsing context was
-     created</a>.<dt>If the <code id=origin:document-11><a href=dom.html#document>Document</a></code> is a non-initial "<code id=origin:about:blank-3><a href=infrastructure.html#about:blank>about:blank</a></code>" document<dt>If the <code id=origin:document-12><a href=dom.html#document>Document</a></code> was generated from a <a href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2 id=origin:data-protocol data-x-internal=data-protocol><code>data:</code> URL</a> found in another <code id=origin:document-13><a href=dom.html#document>Document</a></code> or in a
-     script<dd><p>The <a href=webappapis.html#concept-settings-object-origin id=origin:concept-settings-object-origin>origin</a> of the <a id=origin:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent
+      <code id=origin:document-10><a href=dom.html#document>Document</a></code> is created.</p>
+     <dt>If the <code id=origin:document-11><a href=dom.html#document>Document</a></code> is the initial "<code id=origin:about:blank-2><a href=infrastructure.html#about:blank>about:blank</a></code>" document<dd><p><a href=#about-blank-origin>The one it was assigned when its browsing context was
+     created</a>.<dt>If the <code id=origin:document-12><a href=dom.html#document>Document</a></code> is a non-initial "<code id=origin:about:blank-3><a href=infrastructure.html#about:blank>about:blank</a></code>" document<dd><p>The <a href=webappapis.html#concept-settings-object-origin id=origin:concept-settings-object-origin>origin</a> of the <a id=origin:incumbent-settings-object href=webappapis.html#incumbent-settings-object>incumbent
      settings object</a> when the <a href=#navigate id=origin:navigate>navigate</a> algorithm was invoked, or, if no <a href=webappapis.html#concept-script id=origin:concept-script>script</a> was involved, the <a href=#concept-origin id=origin:concept-origin-7>origin</a> of the <a id=origin:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
      document</a> of the element that initiated the <a href=#navigate id=origin:navigate-2>navigation</a> to
-     that <a id=origin:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>.<dt>If the <code id=origin:document-14><a href=dom.html#document>Document</a></code> was created as part of the processing for <a href=#javascript-protocol id=origin:javascript-protocol><code>javascript:</code> URLs</a><dd><p>The <a href=#concept-origin id=origin:concept-origin-8>origin</a> of the <a href=#active-document id=origin:active-document>active document</a> of the <a href=#browsing-context id=origin:browsing-context>browsing
-     context</a> being navigated when the <a href=#navigate id=origin:navigate-3>navigate</a> algorithm was invoked.<dt>If the <code id=origin:document-15><a href=dom.html#document>Document</a></code> is <a id=origin:an-iframe-srcdoc-document href=embedded-content.html#an-iframe-srcdoc-document>an <code>iframe</code> <code>srcdoc</code> document</a><dd><p>The <a href=#concept-origin id=origin:concept-origin-9>origin</a> of the <code id=origin:document-16><a href=dom.html#document>Document</a></code>'s <a href=#concept-document-bc id=origin:concept-document-bc>browsing context</a>'s <a href=#browsing-context-container id=origin:browsing-context-container>browsing context
-     container</a>'s <a id=origin:node-document-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>.<dt>If the <code id=origin:document-17><a href=dom.html#document>Document</a></code> was obtained in some other manner (e.g. a <a href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2 id=origin:data-protocol-2 data-x-internal=data-protocol><code>data:</code> URL</a> typed in by the user or that was returned as the
-     location of a redirect, a <code id=origin:document-18><a href=dom.html#document>Document</a></code> created using the <code id=origin:dom-domimplementation-createdocument><a data-x-internal=dom-domimplementation-createdocument href=https://triple-underscore.github.io/DOM4-ja.htmlcreatedocument>createDocument()</a></code> API, etc)<dd>
+     that <a id=origin:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>.<dt>If the <code id=origin:document-13><a href=dom.html#document>Document</a></code> was created as part of the processing for <a href=#javascript-protocol id=origin:javascript-protocol><code>javascript:</code> URLs</a><dd><p>The <a href=#concept-origin id=origin:concept-origin-8>origin</a> of the <a href=#active-document id=origin:active-document>active document</a> of the <a href=#browsing-context id=origin:browsing-context>browsing
+     context</a> being navigated when the <a href=#navigate id=origin:navigate-3>navigate</a> algorithm was invoked.<dt>If the <code id=origin:document-14><a href=dom.html#document>Document</a></code> is <a id=origin:an-iframe-srcdoc-document href=embedded-content.html#an-iframe-srcdoc-document>an <code>iframe</code> <code>srcdoc</code> document</a><dd><p>The <a href=#concept-origin id=origin:concept-origin-9>origin</a> of the <code id=origin:document-15><a href=dom.html#document>Document</a></code>'s <a href=#concept-document-bc id=origin:concept-document-bc>browsing context</a>'s <a href=#browsing-context-container id=origin:browsing-context-container>browsing context
+     container</a>'s <a id=origin:node-document-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>.<dt>If the <code id=origin:document-16><a href=dom.html#document>Document</a></code> was obtained in some other manner (e.g. a <code id=origin:document-17><a href=dom.html#document>Document</a></code>
+     created using the <code id=origin:dom-domimplementation-createdocument><a data-x-internal=dom-domimplementation-createdocument href=https://triple-underscore.github.io/DOM4-ja.htmlcreatedocument>createDocument()</a></code>
+     API, etc)<dd>
       <p>The default behavior as defined in the WHATWG DOM standard applies. <a href=references.html#refsDOM>[DOM]</a>.</p>
 
-      <p class=note>The <a href=#concept-origin id=origin:concept-origin-10>origin</a> is a unique <a href=#concept-origin-opaque id=origin:concept-origin-opaque-3>opaque origin</a> assigned when the <code id=origin:document-19><a href=dom.html#document>Document</a></code> is
+      <p class=note>The <a href=#concept-origin id=origin:concept-origin-10>origin</a> is a unique <a href=#concept-origin-opaque id=origin:concept-origin-opaque-3>opaque origin</a> assigned when the <code id=origin:document-18><a href=dom.html#document>Document</a></code> is
       created.</p>
      </dl>
 
@@ -1930,7 +1954,7 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
    </dl>
 
   <p>Other specifications can override the above definitions by themselves specifying the origin of
-  a particular <code id=origin:document-20><a href=dom.html#document>Document</a></code> object, image, or <a id=origin:media-element-2 href=embedded-content.html#media-element>media element</a>.</p>
+  a particular <code id=origin:document-19><a href=dom.html#document>Document</a></code> object, image, or <a id=origin:media-element-2 href=embedded-content.html#media-element>media element</a>.</p>
 
   <hr>
 
@@ -2796,17 +2820,17 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   
 
-  <p>The <dfn id=dom-document-location><code>location</code></dfn> attribute of the
-  <code id=the-location-interface:document><a href=dom.html#document>Document</a></code> interface must return the <code id=the-location-interface:location-7><a href=#location>Location</a></code> object for that
-  <code id=the-location-interface:document-2><a href=dom.html#document>Document</a></code> object's global object, if it has a <a href=#concept-document-bc id=the-location-interface:concept-document-bc>browsing context</a>, and null otherwise.</p>
+  <p>The <code id=the-location-interface:document><a href=dom.html#document>Document</a></code> object's <dfn id=dom-document-location><code>location</code></dfn> attribute's getter must return this
+  <code id=the-location-interface:document-2><a href=dom.html#document>Document</a></code> object's <span>relevant global object</span>'s <code id=the-location-interface:location-7><a href=#location>Location</a></code> object,
+  if this <code id=the-location-interface:document-3><a href=dom.html#document>Document</a></code> object is <a href=#fully-active id=the-location-interface:fully-active>fully active</a>, and null otherwise.</p>
 
-  <p>The <dfn id=dom-location><code>location</code></dfn> attribute of the <code id=the-location-interface:window-3><a href=#window>Window</a></code>
-  interface must return the <code id=the-location-interface:location-8><a href=#location>Location</a></code> object for that <code id=the-location-interface:window-4><a href=#window>Window</a></code> object.</p>
+  <p>The <code id=the-location-interface:window-3><a href=#window>Window</a></code> object's <dfn id=dom-location><code>location</code></dfn>
+  attribute's getter must return this <code id=the-location-interface:window-4><a href=#window>Window</a></code> object's <code id=the-location-interface:location-8><a href=#location>Location</a></code> object.</p>
 
   
 
   <p><code id=the-location-interface:location-9><a href=#location>Location</a></code> objects provide a representation of the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-location-interface:the-document's-address" data-x-internal="the-document's-address">URL</a> of the <a href=#active-document id=the-location-interface:active-document>active document</a> of their
-  <code id=the-location-interface:document-3><a href=dom.html#document>Document</a></code>'s <a href=#concept-document-bc id=the-location-interface:concept-document-bc-2>browsing context</a>, and allow the
+  <code id=the-location-interface:document-4><a href=dom.html#document>Document</a></code>'s <a href=#concept-document-bc id=the-location-interface:concept-document-bc>browsing context</a>, and allow the
   <a href=#current-entry id=the-location-interface:current-entry>current entry</a> of the <a href=#browsing-context id=the-location-interface:browsing-context>browsing context</a>'s session history to be changed,
   by adding or replacing entries in the <code id=the-location-interface:dom-history><a href=#dom-history>history</a></code> object.</p>
 
@@ -2870,7 +2894,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   <p>A <code id=the-location-interface:location-19><a href=#location>Location</a></code> object has an associated <dfn id=relevant-document data-noexport="">relevant
   <code>Document</code></dfn>, which is this <code id=the-location-interface:location-20><a href=#location>Location</a></code> object's associated
-  <code id=the-location-interface:document-4><a href=dom.html#document>Document</a></code> object's <a href=#concept-document-bc id=the-location-interface:concept-document-bc-3>browsing context</a>'s
+  <code id=the-location-interface:document-5><a href=dom.html#document>Document</a></code> object's <a href=#concept-document-bc id=the-location-interface:concept-document-bc-2>browsing context</a>'s
   <a href=#active-document id=the-location-interface:active-document-2>active document</a>.</p>
 
   <p>A <code id=the-location-interface:location-21><a href=#location>Location</a></code> object has an associated <dfn id=concept-location-url data-noexport="">url</dfn>, which is this <code id=the-location-interface:location-22><a href=#location>Location</a></code> object's
@@ -2881,8 +2905,8 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <a id=the-location-interface:frozen-array href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> created from the list of strings that the following steps would
   produce:</p>
 
-  <ol><li><p>Let <var>output</var> be an empty ordered list of strings.</li><li><p>Let <var>current</var> be the <a href=#concept-document-bc id=the-location-interface:concept-document-bc-4>browsing context</a>
-   of the <code id=the-location-interface:document-5><a href=dom.html#document>Document</a></code> with which this <code id=the-location-interface:location-25><a href=#location>Location</a></code> object is associated.</li><li><p><i>Loop</i>: If <var>current</var> has no <a href=#parent-browsing-context id=the-location-interface:parent-browsing-context-2>parent browsing context</a>, jump to
+  <ol><li><p>Let <var>output</var> be an empty ordered list of strings.</li><li><p>Let <var>current</var> be the <a href=#concept-document-bc id=the-location-interface:concept-document-bc-3>browsing context</a>
+   of the <code id=the-location-interface:document-6><a href=dom.html#document>Document</a></code> with which this <code id=the-location-interface:location-25><a href=#location>Location</a></code> object is associated.</li><li><p><i>Loop</i>: If <var>current</var> has no <a href=#parent-browsing-context id=the-location-interface:parent-browsing-context-2>parent browsing context</a>, jump to
    the step labeled <i>end</i>.</li><li><p>Let <var>current</var> be <var>current</var>'s <a href=#parent-browsing-context id=the-location-interface:parent-browsing-context-3>parent browsing
    context</a>.</li><li><p>Append the <a href=#unicode-serialisation-of-an-origin id=the-location-interface:unicode-serialisation-of-an-origin>Unicode serialization</a>
    of <var>current</var>'s <a href=#active-document id=the-location-interface:active-document-3>active document</a>'s <a href=#concept-origin id=the-location-interface:concept-origin>origin</a> to <var>output</var>
@@ -2912,8 +2936,8 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     exceptions.</p>
 
     <p>If the <var>replacement flag</var> is set or the <a href=#browsing-context id=the-location-interface:browsing-context-4>browsing context</a>'s
-    <a href=#session-history id=the-location-interface:session-history>session history</a> contains only one <code id=the-location-interface:document-6><a href=dom.html#document>Document</a></code>, and that was the
-    <code id=the-location-interface:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=the-location-interface:document-7><a href=dom.html#document>Document</a></code> created when the <a href=#browsing-context id=the-location-interface:browsing-context-5>browsing context</a>
+    <a href=#session-history id=the-location-interface:session-history>session history</a> contains only one <code id=the-location-interface:document-7><a href=dom.html#document>Document</a></code>, and that was the
+    <code id=the-location-interface:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=the-location-interface:document-8><a href=dom.html#document>Document</a></code> created when the <a href=#browsing-context id=the-location-interface:browsing-context-5>browsing context</a>
     was created, then the navigation must be done with <a href=#replacement-enabled id=the-location-interface:replacement-enabled>replacement enabled</a>.</p>
     
    </li></ol>
@@ -3155,7 +3179,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   <p>When a user requests that the <a href=#active-document id=the-location-interface:active-document-6>active document</a> of a <a href=#browsing-context id=the-location-interface:browsing-context-15>browsing context</a>
   be reloaded through a user interface element, the user agent should <a href=#navigate id=the-location-interface:navigate-3>navigate</a> the <a href=#browsing-context id=the-location-interface:browsing-context-16>browsing context</a> to the same resource as that
-  <code id=the-location-interface:document-8><a href=dom.html#document>Document</a></code>, to perform an <a href=#entry-update id=the-location-interface:entry-update-2>entry update</a> of the <a href=#browsing-context id=the-location-interface:browsing-context-17>browsing
+  <code id=the-location-interface:document-9><a href=dom.html#document>Document</a></code>, to perform an <a href=#entry-update id=the-location-interface:entry-update-2>entry update</a> of the <a href=#browsing-context id=the-location-interface:browsing-context-17>browsing
   context</a>'s <a href=#current-entry id=the-location-interface:current-entry-3>current entry</a>. This is a <a href=#reload-triggered-navigation id=the-location-interface:reload-triggered-navigation-2>reload-triggered navigation</a>.
   In the case of non-idempotent methods (e.g. HTTP POST), the user agent should prompt the user to
   confirm the operation first, since otherwise transactions (e.g. purchases or database
@@ -3222,7 +3246,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     <ol><li><p>If the value of the [[<a href=#defaultproperties id=location-defineownproperty:defaultproperties>DefaultProperties</a>]] internal slot of <b>this</b>
      contains <var>P</var>, then return false.</li><li><p>Return ? <a id=location-defineownproperty:ordinarydefineownproperty href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty data-x-internal=ordinarydefineownproperty>OrdinaryDefineOwnProperty</a>(<b>this</b>, <var>P</var>,
      <var>Desc</var>).</li></ol>
-   </li><li><p>Return false.</li></ol>
+   </li><li><p>Throw a <a id=location-defineownproperty:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=location-defineownproperty:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li></ol>
 
   <h5 id=location-get>7.7.4.7 [[Get]] ( <var>P</var>, <var>Receiver</var> )</h5>
 
@@ -3239,7 +3263,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <h5 id=location-delete>7.7.4.9 [[Delete]] ( <var>P</var> )</h5>
 
   <ol><li><p>If <a href=#isplatformobjectsameorigin-(-o-) id=location-delete:isplatformobjectsameorigin-(-o-)>IsPlatformObjectSameOrigin</a>(<b>this</b>) is true, then return ?
-   <a id=location-delete:ordinarydelete href=https://tc39.github.io/ecma262/#sec-ordinarydelete data-x-internal=ordinarydelete>OrdinaryDelete</a>(<b>this</b>, <var>P</var>).</li><li><p>Return false.</li></ol>
+   <a id=location-delete:ordinarydelete href=https://tc39.github.io/ecma262/#sec-ordinarydelete data-x-internal=ordinarydelete>OrdinaryDelete</a>(<b>this</b>, <var>P</var>).</li><li><p>Throw a <a id=location-delete:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=location-delete:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li></ol>
 
   <h5 id=location-ownpropertykeys>7.7.4.10 [[OwnPropertyKeys]] ( )</h5>
 
@@ -3296,20 +3320,13 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
      </li></ol>
    </li><li><p>If there is a preexisting attempt to navigate <var>browsingContext</var>, and the
    <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-3>source browsing context</a> is the same as <var>browsingContext</var>, and that attempt
-   is currently running the <a href=#unload-a-document id=navigating-across-documents:unload-a-document>unload a document</a> algorithm, and the <a href=#concept-origin id=navigating-across-documents:concept-origin>origin</a> of
-   the <a id=navigating-across-documents:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the resource being loaded in that navigation is not the <a href=#same-origin id=navigating-across-documents:same-origin>same
-   origin</a> as the <a href=#concept-origin id=navigating-across-documents:concept-origin-2>origin</a> of the <a id=navigating-across-documents:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of <var>resource</var>, then
-   abort these steps without affecting the preexisting attempt to navigate
-   <var>browsingContext</var>.</li><li><p>If a <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task>task</a> queued by the <a href=#traverse-the-history-by-a-delta id=navigating-across-documents:traverse-the-history-by-a-delta>traverse the history by a
-   delta</a> algorithm is running the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-2>unload a document</a> algorithm for the
+   is currently running the <a href=#unload-a-document id=navigating-across-documents:unload-a-document>unload a document</a> algorithm, then abort these steps without
+   affecting the preexisting attempt to navigate <var>browsingContext</var>.</li><li><p>If the <a href=#prompt-to-unload-a-document id=navigating-across-documents:prompt-to-unload-a-document>prompt to unload a document</a> algorithm is being run for the
    <a href=#active-document id=navigating-across-documents:active-document>active document</a> of <var>browsingContext</var>, then abort these steps without
-   affecting the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-3>unload a document</a> algorithm or the aforementioned history traversal
-   task.</li><li><p>If the <a href=#prompt-to-unload-a-document id=navigating-across-documents:prompt-to-unload-a-document>prompt to unload a document</a> algorithm is being run for the
-   <a href=#active-document id=navigating-across-documents:active-document-2>active document</a> of <var>browsingContext</var>, then abort these steps without
    affecting the <a href=#prompt-to-unload-a-document id=navigating-across-documents:prompt-to-unload-a-document-2>prompt to unload a document</a> algorithm.</li><li id=navigate-fragid-step><p>If this is not a <dfn id=reload-triggered-navigation>reload-triggered navigation</dfn>,
    <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-2 data-x-internal=concept-request>request</a>, <var>resource</var>'s
    <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-2 data-x-internal=concept-request-url>url</a> <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-equals id=navigating-across-documents:concept-url-equals data-x-internal=concept-url-equals>equals</a>
-   <var>browsingContext</var>'s <a href=#active-document id=navigating-across-documents:active-document-3>active document</a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address" data-x-internal="the-document's-address">URL</a> with <var>exclude fragments flag</var> set, and
+   <var>browsingContext</var>'s <a href=#active-document id=navigating-across-documents:active-document-2>active document</a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address" data-x-internal="the-document's-address">URL</a> with <var>exclude fragments flag</var> set, and
    <var>resource</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-3 data-x-internal=concept-request-url>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=navigating-across-documents:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a> is non-null, then <a href=#scroll-to-fragid id=navigating-across-documents:scroll-to-fragid>navigate to that fragment</a> and abort these steps.</li><li><p>Cancel any preexisting but not yet <a href=#concept-navigate-mature id=navigating-across-documents:concept-navigate-mature>mature</a>
    attempt to navigate <var>browsingContext</var>, including canceling any instances of the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=navigating-across-documents:concept-fetch data-x-internal=concept-fetch>fetch</a> algorithm started by those attempts. If one of those attempts
    has already created and <a href=#initialise-the-document-object id=navigating-across-documents:initialise-the-document-object>initialized a new
@@ -3318,13 +3335,13 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
    therefore handled during the <a href=#update-the-session-history-with-the-new-page id=navigating-across-documents:update-the-session-history-with-the-new-page>update the session history with the new page</a> algorithm,
    later.)</li><li>
 
-    <p><a href=#prompt-to-unload-a-document id=navigating-across-documents:prompt-to-unload-a-document-3>Prompt to unload</a> the <a href=#active-document id=navigating-across-documents:active-document-4>active document</a> of <var>browsingContext</var>. ユーザーが<a href=#refused-to-allow-the-document-to-be-unloaded id=navigating-across-documents:refused-to-allow-the-document-to-be-unloaded>文書をアンロードできるようにすることを拒否した</a>場合、これらの手順を中止する。</p>
+    <p><a href=#prompt-to-unload-a-document id=navigating-across-documents:prompt-to-unload-a-document-3>Prompt to unload</a> the <a href=#active-document id=navigating-across-documents:active-document-3>active document</a> of <var>browsingContext</var>. ユーザーが<a href=#refused-to-allow-the-document-to-be-unloaded id=navigating-across-documents:refused-to-allow-the-document-to-be-unloaded>文書をアンロードできるようにすることを拒否した</a>場合、これらの手順を中止する。</p>
 
     <p>If this instance of the <a href=#navigate id=navigating-across-documents:navigate-3>navigation</a> algorithm gets canceled
     while this step is running, the <a href=#prompt-to-unload-a-document id=navigating-across-documents:prompt-to-unload-a-document-4>prompt to unload a document</a> algorithm must
     nonetheless be run to completion.</p>
 
-   </li><li><p><a href=#abort-a-document id=navigating-across-documents:abort-a-document-2>Abort</a> the <a href=#active-document id=navigating-across-documents:active-document-5>active document</a> of
+   </li><li><p><a href=#abort-a-document id=navigating-across-documents:abort-a-document-2>Abort</a> the <a href=#active-document id=navigating-across-documents:active-document-4>active document</a> of
    <var>browsingContext</var>.</li><li>
 
     <p>If <var>browsingContext</var> is a <a href=#nested-browsing-context id=navigating-across-documents:nested-browsing-context>nested browsing context</a>, then put it in the
@@ -3351,18 +3368,18 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
       
 
       <p><a id=navigating-across-documents:queue-a-task href=webappapis.html#queue-a-task>Queue a task</a> to run <dfn id=javascript-protocol>these
-      "<code>javascript:</code> URL" steps</dfn>, associated with the <a href=#active-document id=navigating-across-documents:active-document-6>active document</a>
+      "<code>javascript:</code> URL" steps</dfn>, associated with the <a href=#active-document id=navigating-across-documents:active-document-5>active document</a>
       of <var>browsingContext</var>:</p>
 
-      <ol id=concept-js-deref><li><p>If the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-5>source browsing context</a>'s <a href=#active-document id=navigating-across-documents:active-document-7>active document</a>'s
-       <a href=#concept-origin id=navigating-across-documents:concept-origin-3>origin</a> is not the <a href=#same-origin id=navigating-across-documents:same-origin-2>same origin</a> as <var>browsingContext</var>'s
-       <a href=#active-document id=navigating-across-documents:active-document-8>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-4>origin</a>, then let <var>result</var> be undefined,
+      <ol id=concept-js-deref><li><p>If the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-5>source browsing context</a>'s <a href=#active-document id=navigating-across-documents:active-document-6>active document</a>'s
+       <a href=#concept-origin id=navigating-across-documents:concept-origin>origin</a> is not the <a href=#same-origin id=navigating-across-documents:same-origin>same origin</a> as <var>browsingContext</var>'s
+       <a href=#active-document id=navigating-across-documents:active-document-7>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-2>origin</a>, then let <var>result</var> be undefined,
        and jump to the step labeled <i>process result</i> below.</li><li><p>Let <var>urlString</var> be the result of running the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-serializer id=navigating-across-documents:concept-url-serializer data-x-internal=concept-url-serializer>URL serializer</a> on <var>resource</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-5 data-x-internal=concept-request-url>url</a>.</li><li><p>Remove the leading "<code>javascript:</code>" string from
        <var>urlString</var>.</li><li><p>Let <var>script source</var> be the result of applying the <a id=navigating-across-documents:percent-decode href=https://triple-underscore.github.io/URL-ja.html#percent-decode data-x-internal=percent-decode>percent decode</a>
        algorithm to <var>urlString</var>.</li><li><p>Replace <var>script source</var> with the result of applying the <a id=navigating-across-documents:utf-8-decode href=https://triple-underscore.github.io/Encoding-ja.html#utf-8-decode data-x-internal=utf-8-decode>UTF-8
        decode</a> algorithm to <var>script source</var>.</li><li><p>Let <var>address</var> be the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-2" data-x-internal="the-document's-address">URL</a> of the
-       <a href=#active-document id=navigating-across-documents:active-document-9>active document</a> of <var>browsingContext</var>.</li><li><p>Let <var>settings</var> be the <a id=navigating-across-documents:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a> for the
-       <a href=#active-document id=navigating-across-documents:active-document-10>active document</a> of <var>browsingContext</var>.</li><li><p>Let <var>script</var> be the result of <a id=navigating-across-documents:creating-a-classic-script href=webappapis.html#creating-a-classic-script>creating a classic script</a> given
+       <a href=#active-document id=navigating-across-documents:active-document-8>active document</a> of <var>browsingContext</var>.</li><li><p>Let <var>settings</var> be the <a id=navigating-across-documents:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a> for the
+       <a href=#active-document id=navigating-across-documents:active-document-9>active document</a> of <var>browsingContext</var>.</li><li><p>Let <var>script</var> be the result of <a id=navigating-across-documents:creating-a-classic-script href=webappapis.html#creating-a-classic-script>creating a classic script</a> given
        <var>script source</var> and <var>settings</var>.</li><li><p>Let <var>result</var> be the result of <a href=webappapis.html#run-a-classic-script id=navigating-across-documents:run-a-classic-script>running the
        classic script</a> <var>script</var>. If evaluation was unsuccessful, let
        <var>result</var> be undefined instead. (The result will also be undefined if <a href=webappapis.html#concept-bc-noscript id=navigating-across-documents:concept-bc-noscript>scripting is disabled</a>.)</li><li><p>Let <var>response</var> be null.</li><li>
@@ -3386,7 +3403,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
        <var>response</var>, <var>navigationType</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-6>source browsing context</a>, and
        <var>browsingContext</var>, and then abort these steps.</li></ol>
 
-      <p>The <a id=navigating-across-documents:task-source href=webappapis.html#task-source>task source</a> for this <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-2>task</a> is the
+      <p>The <a id=navigating-across-documents:task-source href=webappapis.html#task-source>task source</a> for this <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task>task</a> is the
       <a id=navigating-across-documents:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM manipulation task source</a>.</p>
 
       <div class=example>
@@ -3404,7 +3421,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
      <dt>If <var>resource</var> is to be fetched using `<code>GET</code>`, and there are
      <a href=#relevant-application-cache id=navigating-across-documents:relevant-application-cache>relevant application caches</a> that are
-     identified by a URL with the <a href=#same-origin id=navigating-across-documents:same-origin-3>same origin</a> as the URL in question, and that have
+     identified by a URL with the <a href=#same-origin id=navigating-across-documents:same-origin-2>same origin</a> as the URL in question, and that have
      this URL as one of their entries, excluding entries marked as <a href=#concept-appcache-foreign id=navigating-across-documents:concept-appcache-foreign>foreign</a>, and whose <a href=#concept-appcache-mode id=navigating-across-documents:concept-appcache-mode>mode</a> is <a href=#concept-appcache-mode-fast id=navigating-across-documents:concept-appcache-mode-fast>fast</a>, and the user agent is not in a mode where it
      will avoid using <a href=#application-cache id=navigating-across-documents:application-cache>application caches</a><dd>
 
@@ -3436,7 +3453,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   string <var>type</var>, run these steps:</p>
 
   <ol><li><p>Let <var>response</var> be null.</li><li><p>Set <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=navigating-across-documents:concept-request-client data-x-internal=concept-request-client>client</a> to
-   <var>sourceBrowsingContext</var>'s <a href=#active-document id=navigating-across-documents:active-document-11>active document</a>'s <a id=navigating-across-documents:relevant-settings-object-2 href=webappapis.html#relevant-settings-object>relevant settings
+   <var>sourceBrowsingContext</var>'s <a href=#active-document id=navigating-across-documents:active-document-10>active document</a>'s <a id=navigating-across-documents:relevant-settings-object-2 href=webappapis.html#relevant-settings-object>relevant settings
    object</a>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-target-browsing-context id=navigating-across-documents:concept-request-target-browsing-context data-x-internal=concept-request-target-browsing-context>target browsing
    context</a> to <var>browsingContext</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=navigating-across-documents:concept-request-destination data-x-internal=concept-request-destination>destination</a> to "<code>document</code>",
    <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=navigating-across-documents:concept-request-mode data-x-internal=concept-request-mode>mode</a> to "<code>navigate</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=navigating-across-documents:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> to "<code>include</code>", <a id=navigating-across-documents:use-url-credentials-flag href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a>, and <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-redirect-mode id=navigating-across-documents:concept-request-redirect-mode data-x-internal=concept-request-redirect-mode>redirect mode</a> to "<code>manual</code>".</li><li><p>Set <var>request</var>'s <a id=navigating-across-documents:omit-origin-header-flag href=https://triple-underscore.github.io/Fetch-ja.html#omit-origin-header-flag data-x-internal=omit-origin-header-flag>omit-<code>Origin</code>-header flag</a>.
@@ -3444,7 +3461,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
    
 
    </li><li><p>If <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-method id=navigating-across-documents:concept-request-method data-x-internal=concept-request-method>method</a> is not `<code>GET</code>`, or, if <var>type</var> is "<code>form-submission</code>", then
-   if there is an <a href=#concept-origin id=navigating-across-documents:concept-origin-5>origin</a> of the <a href=#active-document id=navigating-across-documents:active-document-12>active document</a> of
+   if there is an <a href=#concept-origin id=navigating-across-documents:concept-origin-3>origin</a> of the <a href=#active-document id=navigating-across-documents:active-document-11>active document</a> of
    <var>sourceBrowsingContext</var>, unset <var>request</var>'s
    <a id=navigating-across-documents:omit-origin-header-flag-2 href=https://triple-underscore.github.io/Fetch-ja.html#omit-origin-header-flag data-x-internal=omit-origin-header-flag>omit-<code>Origin</code>-header flag</a>.</li><li><p>Otherwise, if <var>browsingContext</var> is a <a href=#child-browsing-context id=navigating-across-documents:child-browsing-context>child browsing context</a>, and the
    <a href=#browsing-context-container id=navigating-across-documents:browsing-context-container>browsing context container</a> of <var>browsingContext</var> has a <a href=#browsing-context-scope-origin id=navigating-across-documents:browsing-context-scope-origin>browsing
@@ -3458,33 +3475,33 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
     <p>そうでなければ：</p>
 
-    <ol><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=navigating-across-documents:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li><p>Wait for the <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-3>task</a> on the <a id=navigating-across-documents:networking-task-source href=webappapis.html#networking-task-source>networking task
+    <ol><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=navigating-across-documents:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li><p>Wait for the <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-2>task</a> on the <a id=navigating-across-documents:networking-task-source href=webappapis.html#networking-task-source>networking task
      source</a> to <a id=navigating-across-documents:process-response href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> and set <var>response</var> to the
      result.</li></ol>
    </li><li id=navigate-redirect-step>
     <p>If <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url data-x-internal=concept-response-location-url>location URL</a>
-    and it is either failure or a <a id=navigating-across-documents:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is an <a id=navigating-across-documents:http(s)-scheme href=https://triple-underscore.github.io/URL-ja.html#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, then set
+    and it is either failure or a <a id=navigating-across-documents:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is an <a id=navigating-across-documents:http(s)-scheme href=https://triple-underscore.github.io/URL-ja.html#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, then set
     <var>response</var> to the result of performing <a id=navigating-across-documents:http-redirect-fetch href=https://triple-underscore.github.io/Fetch-ja.html#concept-http-redirect-fetch data-x-internal=http-redirect-fetch>HTTP-redirect fetch</a> using
     <var>request</var> and <var>response</var> and then run this step again.</p>
 
     <p class=note>Navigation handles redirects manually as navigation is the only place in the web
     platform that cares for redirects to <code id=navigating-across-documents:mailto-protocol><a data-x-internal=mailto-protocol href=https://tools.ietf.org/html/rfc6068#section-2>mailto:</a></code> URLs and
     such.</p>
-   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-2 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-5 data-x-internal=concept-url-scheme>scheme</a> is "<code>blob</code>", "<code>file</code>", "<code>filesystem</code>", or "<code>javascript</code>", then set <var>response</var> to a network error.</li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-3 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-6 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-6 data-x-internal=concept-url-scheme>scheme</a> is a <a id=navigating-across-documents:fetch-scheme-3 href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a>, then run
+   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-2 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-5 data-x-internal=concept-url-scheme>scheme</a> is "<code>blob</code>", "<code>file</code>", "<code>filesystem</code>", or "<code>javascript</code>", then set <var>response</var> to a network error.</li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-3 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-6 data-x-internal=concept-url-scheme>scheme</a> is a <a id=navigating-across-documents:fetch-scheme-3 href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a>, then run
    <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch-2>process a navigate fetch</a> with a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-7 data-x-internal=concept-request>request</a>
    whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-9 data-x-internal=concept-request-url>url</a> is <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-4 data-x-internal=concept-response-location-url>location URL</a>, <var>sourceBrowsingContext</var>,
    <var>browsingContext</var>, and <var>type</var>.
 
    
 
-   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-5 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-7 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, run the
+   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-5 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, run the
    <a href=#process-a-navigate-url-scheme id=navigating-across-documents:process-a-navigate-url-scheme-2>process a navigate URL scheme</a> given <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-6 data-x-internal=concept-response-location-url>location URL</a> and
    <var>browsingContext</var>.</li><li>
 
     <p><strong>Fallback in prefer-online mode</strong>: If <var>response</var> was not fetched from
     an <a href=#application-cache id=navigating-across-documents:application-cache-2>application cache</a>, and was to be fetched using `<code>GET</code>`, and
     there are <a href=#relevant-application-cache id=navigating-across-documents:relevant-application-cache-2>relevant application caches</a> that are
-    identified by a URL with the <a href=#same-origin id=navigating-across-documents:same-origin-4>same origin</a> as the URL in question, and that have this
+    identified by a URL with the <a href=#same-origin id=navigating-across-documents:same-origin-3>same origin</a> as the URL in question, and that have this
     URL as one of their entries, excluding entries marked as <a href=#concept-appcache-foreign id=navigating-across-documents:concept-appcache-foreign-2>foreign</a>, and whose <a href=#concept-appcache-mode id=navigating-across-documents:concept-appcache-mode-2>mode</a> is <a href=#concept-appcache-mode-prefer-online id=navigating-across-documents:concept-appcache-mode-prefer-online>prefer-online</a>, and the user didn't cancel
     the navigation attempt during the earlier step, and <var>response</var> is either a network
     error or its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=navigating-across-documents:concept-response-status-2 data-x-internal=concept-response-status>status</a> is not an <a id=navigating-across-documents:ok-status href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok
@@ -3507,7 +3524,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     of one or more <a href=#relevant-application-cache id=navigating-across-documents:relevant-application-cache-3>relevant application caches</a>, and
     the <a href=#concept-appcache-selection id=navigating-across-documents:concept-appcache-selection-3>most appropriate application cache</a> of those
     that match does not have an entry in its <a href=#concept-appcache-onlinesafelist id=navigating-across-documents:concept-appcache-onlinesafelist>online
-    safelist</a> that has the <a href=#same-origin id=navigating-across-documents:same-origin-5>same origin</a> as <var>response</var>'s URL and that is a
+    safelist</a> that has the <a href=#same-origin id=navigating-across-documents:same-origin-4>same origin</a> as <var>response</var>'s URL and that is a
     <a id=navigating-across-documents:prefix-match href=infrastructure.html#prefix-match>prefix match</a> for <var>response</var>'s URL, and the user didn't cancel the
     navigation attempt during the earlier step, and <var>response</var> is either a network error or
     its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=navigating-across-documents:concept-response-status-3 data-x-internal=concept-response-status>status</a> is not an <a id=navigating-across-documents:ok-status-2 href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a>,
@@ -3537,7 +3554,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <ol><li>
     <p>If any of the following are true, then <a href=#read-ua-inline id=navigating-across-documents:read-ua-inline>display the inline
     content with an appropriate error shown to the user</a>, with the newly created
-    <code id=navigating-across-documents:document-3><a href=dom.html#document>Document</a></code> object's <a href=#concept-origin id=navigating-across-documents:concept-origin-6>origin</a> set to a new <a href=#concept-origin-opaque id=navigating-across-documents:concept-origin-opaque>opaque origin</a>, and abort these steps.</p>
+    <code id=navigating-across-documents:document-3><a href=dom.html#document>Document</a></code> object's <a href=#concept-origin id=navigating-across-documents:concept-origin-4>origin</a> set to a new <a href=#concept-origin-opaque id=navigating-across-documents:concept-origin-opaque>opaque origin</a>, and abort these steps.</p>
 
     <ul><li><p><var>response</var> is a network error.</li><li><p class=XXX>TODO: Define <code>X-Frame-Options</code>
      processing here [<a href=https://github.com/whatwg/html/issue/1230>whatwg/html#1230</a>].</li><li><p>The <a id=navigating-across-documents:should-navigation-response-to-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy href=https://triple-underscore.github.io/CSP3-ja.html#should-block-navigation-response data-x-internal=should-navigation-response-to-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy>Should navigation response to navigation request of type from source in target
@@ -3590,11 +3607,11 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
     <p><dfn id="set-the-document's-address">Setting the document's address</dfn>: If there is no
     <dfn id=override-url>override URL</dfn>, then any <code id=navigating-across-documents:document-4><a href=dom.html#document>Document</a></code> created by these steps must have its
-    <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-4" data-x-internal="the-document's-address">URL</a> set to the <a id=navigating-across-documents:url-8 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that was
+    <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-4" data-x-internal="the-document's-address">URL</a> set to the <a id=navigating-across-documents:url-6 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that was
     originally to be fetched, ignoring any other data that was used to obtain the resource. However,
     if there <em>is</em> an <a href=#override-url id=navigating-across-documents:override-url-2>override URL</a>, then any <code id=navigating-across-documents:document-5><a href=dom.html#document>Document</a></code> created by
     these steps must have its <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-5" data-x-internal="the-document's-address">URL</a> set to that
-    <a id=navigating-across-documents:url-9 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> instead.</p>
+    <a id=navigating-across-documents:url-7 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> instead.</p>
 
     <p class=note>An <a href=#override-url id=navigating-across-documents:override-url-3>override URL</a> is set when <a href=#javascript-protocol id=navigating-across-documents:javascript-protocol-4>dereferencing a <code>javascript:</code> URL</a> and when
     performing <a id=navigating-across-documents:an-overridden-reload href=dom.html#an-overridden-reload>an overridden reload</a>.</p>
@@ -3606,7 +3623,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     <ol><li><p>Let <var>window</var> be null.</li><li><p>If <var>browsingContext</var>'s only entry in its <a href=#session-history id=navigating-across-documents:session-history>session history</a> is the
      <code id=navigating-across-documents:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=navigating-across-documents:document-7><a href=dom.html#document>Document</a></code> that was added when <var>browsingContext</var>
      was <a href=#creating-a-new-browsing-context id=navigating-across-documents:creating-a-new-browsing-context>created</a>, and navigation is occurring
-     with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled>replacement enabled</a>, and that <code id=navigating-across-documents:document-8><a href=dom.html#document>Document</a></code> has the <a href=#same-origin id=navigating-across-documents:same-origin-6>same
+     with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled>replacement enabled</a>, and that <code id=navigating-across-documents:document-8><a href=dom.html#document>Document</a></code> has the <a href=#same-origin id=navigating-across-documents:same-origin-5>same
      origin</a> as the new <code id=navigating-across-documents:document-9><a href=dom.html#document>Document</a></code>, then set <var>window</var> to the
      <code id=navigating-across-documents:window-2><a href=#window>Window</a></code> object of that <code id=navigating-across-documents:document-10><a href=dom.html#document>Document</a></code>.</li><li>
       <p>Otherwise,</p>
@@ -3656,7 +3673,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   </li></ol>
 
-  <p>To <dfn id=process-a-navigate-url-scheme>process a navigate URL scheme</dfn>, given a <a id=navigating-across-documents:url-10 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> <var>url</var> and
+  <p>To <dfn id=process-a-navigate-url-scheme>process a navigate URL scheme</dfn>, given a <a id=navigating-across-documents:url-8 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> <var>url</var> and
   <a href=#browsing-context id=navigating-across-documents:browsing-context-7>browsing context</a> <var>browsingContext</var>, run these steps:</p>
 
   <ol><li><p>If <var>url</var> is to be handled using a mechanism that does not affect
@@ -3675,7 +3692,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   data to an external software package</dfn> separate from the user agent (e.g. handing a <code id=navigating-across-documents:mailto-protocol-2><a data-x-internal=mailto-protocol href=https://tools.ietf.org/html/rfc6068#section-2>mailto:</a></code> URL to a mail client, or a Word document to a word
   processor), user agents should attempt to mitigate the risk that this is an attempt to exploit the
   target software, e.g. by prompting the user to confirm that the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-9>source browsing
-  context</a>'s <a href=#active-document id=navigating-across-documents:active-document-13>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-7>origin</a> is to be allowed to invoke the
+  context</a>'s <a href=#active-document id=navigating-across-documents:active-document-12>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-5>origin</a> is to be allowed to invoke the
   specified software. In particular, if the <a href=#navigate id=navigating-across-documents:navigate-13>navigate</a> algorithm, when it was invoked,
   was not <a id=navigating-across-documents:triggered-by-user-activation href=interaction.html#triggered-by-user-activation>triggered by user activation</a>, the user agent should not invoke the external
   software package without prior user confirmation.</p>
@@ -3692,11 +3709,11 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   <ol><li>
 
-    <p><a href=#unload-a-document id=navigating-across-documents:unload-a-document-4>Unload</a> the <code id=navigating-across-documents:document-17><a href=dom.html#document>Document</a></code> object of the
+    <p><a href=#unload-a-document id=navigating-across-documents:unload-a-document-2>Unload</a> the <code id=navigating-across-documents:document-17><a href=dom.html#document>Document</a></code> object of the
     <a href=#current-entry id=navigating-across-documents:current-entry-2>current entry</a>, with the <var>recycle</var> parameter set to false.</p>
 
     <p>If this instance of the <a href=#navigate id=navigating-across-documents:navigate-14>navigation</a> algorithm is canceled while
-    this step is running the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-5>unload a document</a> algorithm, then the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-6>unload a
+    this step is running the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-3>unload a document</a> algorithm, then the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-4>unload a
     document</a> algorithm must be allowed to run to completion, but this instance of the <a href=#navigate id=navigating-across-documents:navigate-15>navigation</a> algorithm must not run beyond this step. (In particular, for
     instance, the cancelation of this algorithm does not abort any event dispatch or script
     execution occurring as part of unloading the document or its descendants.)</p>
@@ -3736,7 +3753,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
    these steps.</li><li><p><a href=#scroll-to-the-fragment-identifier id=navigating-across-documents:scroll-to-the-fragment-identifier>Scroll to the fragment</a> given in the document's <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-6" data-x-internal="the-document's-address">URL</a>. If this fails to find <a href=#the-indicated-part-of-the-document id=navigating-across-documents:the-indicated-part-of-the-document>an indicated part of the document</a>, then return to the <i>fragment
    loop</i> step.</li></ol>
 
-  <p>The <a id=navigating-across-documents:task-source-2 href=webappapis.html#task-source>task source</a> for this <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-4>task</a> is the
+  <p>The <a id=navigating-across-documents:task-source-2 href=webappapis.html#task-source>task source</a> for this <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-3>task</a> is the
   <a id=navigating-across-documents:networking-task-source-2 href=webappapis.html#networking-task-source>networking task source</a>.</p>
 
 
@@ -4240,7 +4257,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   <h5 id=the-popstateevent-interface>7.8.10.2 The <code id=the-popstateevent-interface:popstateevent><a href=#popstateevent>PopStateEvent</a></code> interface</h5>
 
-  <pre class=idl>[Constructor(DOMString type, optional <a href=#popstateeventinit id=the-popstateevent-interface:popstateeventinit>PopStateEventInit</a> eventInitDict), Exposed=(Window,Worker)]
+  <pre class=idl>[Constructor(DOMString type, optional <a href=#popstateeventinit id=the-popstateevent-interface:popstateeventinit>PopStateEventInit</a> eventInitDict)]
 interface <dfn id=popstateevent>PopStateEvent</dfn> : <a id=the-popstateevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
   readonly attribute any <a href=#dom-popstateevent-state id=the-popstateevent-interface:dom-popstateevent-state>state</a>;
 };
@@ -4266,7 +4283,7 @@ dictionary <dfn id=popstateeventinit>PopStateEventInit</dfn> : <a id=the-popstat
 
   <h5 id=the-hashchangeevent-interface>7.8.10.3 The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>51+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=hashchange">caniuse.com</a></div>
 
-  <pre class=idl>[Constructor(DOMString type, optional <a href=#hashchangeeventinit id=the-hashchangeevent-interface:hashchangeeventinit>HashChangeEventInit</a> eventInitDict), Exposed=(Window,Worker)]
+  <pre class=idl>[Constructor(DOMString type, optional <a href=#hashchangeeventinit id=the-hashchangeevent-interface:hashchangeeventinit>HashChangeEventInit</a> eventInitDict)]
 interface <dfn id=hashchangeevent>HashChangeEvent</dfn> : <a id=the-hashchangeevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
   readonly attribute USVString <a href=#dom-hashchangeevent-oldurl id=the-hashchangeevent-interface:dom-hashchangeevent-oldurl>oldURL</a>;
   readonly attribute USVString <a href=#dom-hashchangeevent-newurl id=the-hashchangeevent-interface:dom-hashchangeevent-newurl>newURL</a>;
@@ -4302,7 +4319,7 @@ dictionary <dfn id=hashchangeeventinit>HashChangeEventInit</dfn> : <a id=the-has
 
   <h5 id=the-pagetransitionevent-interface>7.8.10.4 The <code id=the-pagetransitionevent-interface:pagetransitionevent><a href=#pagetransitionevent>PageTransitionEvent</a></code> interface</h5>
 
-  <pre class=idl>[Constructor(DOMString type, optional <a href=#pagetransitioneventinit id=the-pagetransitionevent-interface:pagetransitioneventinit>PageTransitionEventInit</a> eventInitDict), Exposed=(Window,Worker)]
+  <pre class=idl>[Constructor(DOMString type, optional <a href=#pagetransitioneventinit id=the-pagetransitionevent-interface:pagetransitioneventinit>PageTransitionEventInit</a> eventInitDict)]
 interface <dfn id=pagetransitionevent>PageTransitionEvent</dfn> : <a id=the-pagetransitionevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
   readonly attribute boolean <a href=#dom-pagetransitionevent-persisted id=the-pagetransitionevent-interface:dom-pagetransitionevent-persisted>persisted</a>;
 };

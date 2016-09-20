@@ -297,7 +297,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 September 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 September 2016</span></h2></hgroup>
    
    
   </header>
@@ -1112,12 +1112,26 @@ document.createElement("bad-1");  // (2)</pre>
        which is not in that list.</p>
       </div>
      </li></ol>
-   </li><li><p>Let <var>prototype</var> be <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-prototype id=html-element-constructors:concept-custom-element-definition-prototype>prototype</a>.</li><li>
+   </li><li><p>Let <var>prototype</var> be <a href=https://tc39.github.io/ecma262/#sec-get-o-p id=html-element-constructors:js-get data-x-internal=js-get>Get</a>(NewTarget, "prototype").
+   Rethrow any exceptions.</li><li>
+    <p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=html-element-constructors:js-type data-x-internal=js-type>Type</a>(<var>prototype</var>) is not Object, then:</p>
+
+    <ol><li><p>Let <var>realm</var> be <a id=html-element-constructors:getfunctionrealm href=https://tc39.github.io/ecma262/#sec-getfunctionrealm data-x-internal=getfunctionrealm>GetFunctionRealm</a>(NewTarget).</li><li><p>Set <var>prototype</var> to the <a id=html-element-constructors:interface-prototype-object href=https://heycam.github.io/webidl/#dfn-interface-prototype-object data-x-internal=interface-prototype-object>interface prototype object</a> of
+     <var>realm</var> whose interface is the same as the interface of the <a id=html-element-constructors:active-function-object-6 href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active function
+     object</a>.</li></ol>
+
+    <p class=note>The realm of the <a id=html-element-constructors:active-function-object-7 href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active function object</a> might not be
+    <var>realm</var>, so we are using the more general concept of "the same interface" across
+    realms; we are not looking for equality of <a href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-interface-object id=html-element-constructors:interface-object-2 data-x-internal=interface-object>interface
+    objects</a>. This fallback behavior, including using the realm of NewTarget and looking up
+    the appropriate prototype there, is designed to match analogous behavior for the JavaScript
+    built-ins.</p>
+   </li><li>
     <p>If <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-construction-stack id=html-element-constructors:concept-custom-element-definition-construction-stack>construction stack</a> is
     empty, then:</p>
 
     <ol><li><p>Let <var>element</var> be a new element that implements the interface to which the
-     <a id=html-element-constructors:active-function-object-6 href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active function object</a> corresponds, with no attributes, namespace set to the
+     <a id=html-element-constructors:active-function-object-8 href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active function object</a> corresponds, with no attributes, namespace set to the
      <a id=html-element-constructors:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, local name set to <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name-4>local name</a>, and <a id=html-element-constructors:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
      document</a> set to the <a id=html-element-constructors:current-global-object-2 href=webappapis.html#current-global-object>current global object</a>'s <a href=browsers.html#concept-document-window id=html-element-constructors:concept-document-window>associated <code>Document</code></a>.</li><li><p>Perform <var>element</var>.[[SetPrototypeOf]](<var>prototype</var>). Rethrow any
      exceptions.</li><li><p>Set <var>element</var>'s <a id=html-element-constructors:custom-element-state href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>custom</code>".</li><li><p>Set <var>element</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-definition id=html-element-constructors:concept-element-custom-element-definition data-x-internal=concept-element-custom-element-definition>custom
@@ -2150,7 +2164,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   </div>
 
 
-  <h4 id=the-innertext-idl-attribute>3.2.7 <code id=the-innertext-idl-attribute:dom-innertext><a href=#dom-innertext>innerText</a></code> IDL属性</h4>
+  <h4 id=the-innertext-idl-attribute>3.2.7 <code id=the-innertext-idl-attribute:dom-innertext><a href=#dom-innertext>innerText</a></code> IDL属性</h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>51+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="firefox yes"><span>Firefox</span> <span>45+</span></span><span class="ie yes"><span>IE</span> <span>6+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>3.2+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9.5-9.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=innertext">caniuse.com</a></div>
 
   <dl class=domintro><dt><var>element</var> . <code id=the-innertext-idl-attribute:dom-innertext-2><a href=#dom-innertext>innerText</a></code> [ = <var>value</var> ]<dd>
 
