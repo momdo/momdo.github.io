@@ -44,7 +44,7 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
 ],
 "selectors-4": 'https://triple-underscore.github.io/selectors4-ja.html',
 "url": 'https://triple-underscore.github.io/URL-ja.html',
-"whatwg-dom": 'https://triple-underscore.github.io/DOM4-ja.html',
+//"whatwg-dom": 'https://triple-underscore.github.io/DOM4-ja.html',
 
 "css-animations-1": 'https://triple-underscore.github.io/css-animations-ja.html',
 "css-break-3": 'https://triple-underscore.github.io/css-break-ja.html',
