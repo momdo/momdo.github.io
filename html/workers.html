@@ -152,6 +152,7 @@
    .status > .support > span { padding: 0.2em 0; display: block; display: table; }
    .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
    .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span.no::before { opacity: 0.5; }
    .status > .support > span:first-of-type { padding-top: 0.5em; }
    .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
    .status > .support > span > span:first-child { width: 100%; }
@@ -172,6 +173,7 @@
    .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
    .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
    .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .support > .samsung::before { background-image: url(https://resources.whatwg.org/browser-logos/samsung.png); }
    .status > .caniuse { text-align: right; font-style: italic; }
 
    @media (max-width: 767px) {
@@ -297,7 +299,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>3 October 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>12 October 2016</span></h2></hgroup>
    
    
   </header>
@@ -625,7 +627,7 @@ export function brighten({ data: d }) {
   <p><a href=/demos/workers/modules/page.html>この例をオンラインで見る</a>。</p>
 
 
-  <h5 id=shared-workers-introduction>10.1.2.4 Shared workers introduction</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>9.9+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>29+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=sharedworkers">caniuse.com</a></div>
+  <h5 id=shared-workers-introduction>10.1.2.4 Shared workers introduction</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>29+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=sharedworkers">caniuse.com</a></div>
 
   <p><i>この節は非規範的である。</i></p>
 
@@ -1391,11 +1393,13 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
   attribute <a id=shared-workers-and-the-sharedworkerglobalscope-interface:eventhandler href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-sharedworkerglobalscope-onconnect id=shared-workers-and-the-sharedworkerglobalscope-interface:handler-sharedworkerglobalscope-onconnect>onconnect</a>;
 };</pre>
 
-  <p>A <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object has an associated <dfn data-dfn-for=SharedWorkerGlobalScope id=concept-sharedworkerglobalscope-constructor-url>constructor url</dfn> and <dfn data-dfn-for=SharedWorkerGlobalScope id=concept-sharedworkerglobalscope-name>name</dfn>.
+  <p>A <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object has an associated <dfn data-dfn-for=SharedWorkerGlobalScope id=concept-sharedworkerglobalscope-constructor-origin>constructor origin</dfn>, <dfn data-dfn-for=SharedWorkerGlobalScope id=concept-sharedworkerglobalscope-constructor-url>constructor url</dfn>, and <dfn data-dfn-for=SharedWorkerGlobalScope id=concept-sharedworkerglobalscope-name>name</dfn>. They are initialized when the
+  <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-3><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object is created, in the <a href=#run-a-worker id=shared-workers-and-the-sharedworkerglobalscope-interface:run-a-worker>run a worker</a>
+  algorithm.
 
   
 
-  <p>Shared workers receive message ports through <code id=shared-workers-and-the-sharedworkerglobalscope-interface:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code> events on their <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-3><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object for each
+  <p>Shared workers receive message ports through <code id=shared-workers-and-the-sharedworkerglobalscope-interface:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code> events on their <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-4><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object for each
   connection.</p>
 
   <dl class=domintro><dt><var>sharedWorkerGlobal</var> . <code id=shared-workers-and-the-sharedworkerglobalscope-interface:dom-sharedworkerglobalscope-name-2><a href=#dom-sharedworkerglobalscope-name>name</a></code><dd>Returns <var>sharedWorkerGlobal</var>'s <a href=#concept-sharedworkerglobalscope-name id=shared-workers-and-the-sharedworkerglobalscope-interface:concept-sharedworkerglobalscope-name>name</a>.<dt><var>sharedWorkerGlobal</var> . <code id=shared-workers-and-the-sharedworkerglobalscope-interface:dom-sharedworkerglobalscope-close-2><a href=#dom-sharedworkerglobalscope-close>close</a></code>()<dd>Aborts <var>sharedWorkerGlobal</var>.</dl>
@@ -1403,11 +1407,11 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
   
 
   <p>The <dfn id=dom-sharedworkerglobalscope-name><code>name</code></dfn> attribute must
-  return the <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-4><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object's <a href=#concept-sharedworkerglobalscope-name id=shared-workers-and-the-sharedworkerglobalscope-interface:concept-sharedworkerglobalscope-name-2>name</a>. Its value represents the name that can
+  return the <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-5><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object's <a href=#concept-sharedworkerglobalscope-name id=shared-workers-and-the-sharedworkerglobalscope-interface:concept-sharedworkerglobalscope-name-2>name</a>. Its value represents the name that can
   be used to obtain a reference to the worker using the <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworker><a href=#sharedworker>SharedWorker</a></code> constructor.</p>
 
   <p>The <dfn id=dom-sharedworkerglobalscope-close><code>close()</code></dfn> method, when
-  invoked, must <a href=#close-a-worker id=shared-workers-and-the-sharedworkerglobalscope-interface:close-a-worker>close a worker</a> with this <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-5><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code>
+  invoked, must <a href=#close-a-worker id=shared-workers-and-the-sharedworkerglobalscope-interface:close-a-worker>close a worker</a> with this <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-6><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code>
   object.</p>
 
   
@@ -1415,7 +1419,7 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
   <hr>
 
   <p>The following are the <a id=shared-workers-and-the-sharedworkerglobalscope-interface:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <a href=webappapis.html#event-handler-event-type id=shared-workers-and-the-sharedworkerglobalscope-interface:event-handler-event-type>event handler event types</a>) that must be supported, as <a id=shared-workers-and-the-sharedworkerglobalscope-interface:event-handler-idl-attributes href=webappapis.html#event-handler-idl-attributes>event
-  handler IDL attributes</a>, by objects implementing the <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-6><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code>
+  handler IDL attributes</a>, by objects implementing the <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-7><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code>
   interface:</p>
 
   <table><thead><tr><th><a href=webappapis.html#event-handlers id=shared-workers-and-the-sharedworkerglobalscope-interface:event-handlers-2>イベントハンドラー</a> </th><th><a id=shared-workers-and-the-sharedworkerglobalscope-interface:event-handler-event-type-2 href=webappapis.html#event-handler-event-type>イベントハンドラーイベント型</a>
@@ -1423,7 +1427,7 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
   </td></tr></table>
 
   <p>For the purposes of the <a id=shared-workers-and-the-sharedworkerglobalscope-interface:application-cache href=browsers.html#application-cache>application cache</a> networking model, a shared worker is its
-  own <a id=shared-workers-and-the-sharedworkerglobalscope-interface:cache-host href=browsers.html#cache-host>cache host</a>. The <a href=#run-a-worker id=shared-workers-and-the-sharedworkerglobalscope-interface:run-a-worker>run a worker</a> algorithm takes care of associating the
+  own <a id=shared-workers-and-the-sharedworkerglobalscope-interface:cache-host href=browsers.html#cache-host>cache host</a>. The <a href=#run-a-worker id=shared-workers-and-the-sharedworkerglobalscope-interface:run-a-worker-2>run a worker</a> algorithm takes care of associating the
   worker with an <a id=shared-workers-and-the-sharedworkerglobalscope-interface:application-cache-2 href=browsers.html#application-cache>application cache</a>.</p>
 
   <p class=note>The <code id=shared-workers-and-the-sharedworkerglobalscope-interface:dom-sharedworkerglobalscope-applicationcache-2><a href=browsers.html#dom-sharedworkerglobalscope-applicationcache>applicationCache</a></code> attribute returns the
@@ -1520,8 +1524,9 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
   <p>When a user agent is to <dfn id=run-a-worker data-export="">run a worker</dfn> for a script with
   <code id=worker-processing-model:worker><a href=#worker>Worker</a></code> or <code id=worker-processing-model:sharedworker><a href=#sharedworker>SharedWorker</a></code> object <var>worker</var>, <a id=worker-processing-model:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>
   <var>url</var>, <a id=worker-processing-model:environment-settings-object href=webappapis.html#environment-settings-object>environment settings object</a> <var>outside settings</var>,
-  <code id=worker-processing-model:messageport><a href=comms.html#messageport>MessagePort</a></code> <var>outside port</var>, and a <code id=worker-processing-model:workeroptions><a href=#workeroptions>WorkerOptions</a></code> dictionary
-  <var>options</var>, it must run the following steps:</p>
+  <code id=worker-processing-model:messageport><a href=comms.html#messageport>MessagePort</a></code> <var>outside port</var>, a <code id=worker-processing-model:workeroptions><a href=#workeroptions>WorkerOptions</a></code> dictionary
+  <var>options</var>, and an optional string <var>name</var>, it must run the following steps.
+  (<var>name</var> is always provided when <var>worker</var> is a <code id=worker-processing-model:sharedworker-2><a href=#sharedworker>SharedWorker</a></code>.)</p>
 
   <ol><li id=worker-processing-model-top>
 
@@ -1531,7 +1536,7 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
     <p>For the purposes of timing APIs, this is the <dfn id=official-moment-of-creation data-export="">official moment of
     creation</dfn> of the worker.</p>
 
-   </li><li><p>Let <var>is shared</var> be true if <var>worker</var> is a <code id=worker-processing-model:sharedworker-2><a href=#sharedworker>SharedWorker</a></code>
+   </li><li><p>Let <var>is shared</var> be true if <var>worker</var> is a <code id=worker-processing-model:sharedworker-3><a href=#sharedworker>SharedWorker</a></code>
    object, and false otherwise.</li><li><p>Let <var>docs</var> be the <a href=#list-of-relevant-document-objects-to-add id=worker-processing-model:list-of-relevant-document-objects-to-add>list of relevant <code>Document</code> objects to
    add</a> given <var>outside settings</var>.</li><li><p>Let <var>parent worker global scope</var> be null.</p>
 
@@ -1548,7 +1553,13 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
      context</a>.</li></ul>
    </li><li><p><a href=#set-up-a-worker-environment-settings-object id=worker-processing-model:set-up-a-worker-environment-settings-object>Set up a worker environment settings object</a> with <var>realm execution
    context</var> and <var>outside settings</var>, and let <var>inside settings</var> be the
-   result.</li><li><p>Let <var>destination</var> be "<code>sharedworker</code>" if <var>is
+   result.</li><li>
+    <p>If <var>is shared</var> is true, then:</p>
+
+    <ol><li><p>Set <var>worker global scope</var>'s <a href=#concept-sharedworkerglobalscope-constructor-origin id=worker-processing-model:concept-sharedworkerglobalscope-constructor-origin>constructor origin</a> to
+     <var>outside settings</var>'s <a href=webappapis.html#concept-settings-object-origin id=worker-processing-model:concept-settings-object-origin>origin</a>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-sharedworkerglobalscope-constructor-url id=worker-processing-model:concept-sharedworkerglobalscope-constructor-url>constructor url</a> to
+     <var>url</var>.</li><li><p>Set <var>worker global scope</var>'s <a href=#concept-sharedworkerglobalscope-name id=worker-processing-model:concept-sharedworkerglobalscope-name>name</a> to <var>name</var>.</li></ol>
+   </li><li><p>Let <var>destination</var> be "<code>sharedworker</code>" if <var>is
    shared</var> is true, and "<code>worker</code>" otherwise.</li><li>
     <p>Obtain <var>script</var> by switching on the value of <var>options</var>'s <code>type</code> member:</p>
 
@@ -1773,7 +1784,7 @@ interface <dfn id=abstractworker>AbstractWorker</dfn> {
 
      <dt>The <a id=script-settings-for-workers:api-url-character-encoding href=webappapis.html#api-url-character-encoding>API URL character encoding</a><dd>
 
-      <p>Return UTF-8.</p>
+      <p>Return <a id=script-settings-for-workers:utf-8 href=https://triple-underscore.github.io/Encoding-ja.html#utf-8 data-x-internal=utf-8>UTF-8</a>.</p>
 
      <dt>The <a id=script-settings-for-workers:api-base-url href=webappapis.html#api-base-url>API base URL</a><dd>
 
@@ -1781,11 +1792,13 @@ interface <dfn id=abstractworker>AbstractWorker</dfn> {
 
      <dt>The <a href=webappapis.html#concept-settings-object-origin id=script-settings-for-workers:concept-settings-object-origin-2>origin</a><dd>
 
-      <p>Return <var>inherited origin</var>.</p>
+      <p>Return a unique <a href=browsers.html#concept-origin-opaque id=script-settings-for-workers:concept-origin-opaque>opaque origin</a> if <var>worker
+      global scope</var>'s <a href=#concept-workerglobalscope-url id=script-settings-for-workers:concept-workerglobalscope-url-2>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=script-settings-for-workers:concept-url-scheme data-x-internal=concept-url-scheme>scheme</a> is "<code>data</code>", and <var>inherited
+      origin</var> otherwise.</p>
 
      <dt>The <a id=script-settings-for-workers:creation-url href=webappapis.html#creation-url>creation URL</a><dd>
 
-      <p>Return <var>worker global scope</var>'s <a href=#concept-workerglobalscope-url id=script-settings-for-workers:concept-workerglobalscope-url-2>url</a>.</p>
+      <p>Return <var>worker global scope</var>'s <a href=#concept-workerglobalscope-url id=script-settings-for-workers:concept-workerglobalscope-url-3>url</a>.</p>
 
      <dt>The <a id=script-settings-for-workers:https-state href=webappapis.html#https-state>HTTPS state</a><dd>
 
@@ -1881,7 +1894,8 @@ enum <dfn id=workertype>WorkerType</dfn> { "classic", "module" };
    and abort these steps.</li><li>
     <p>Let <var>worker URL</var> be the <a id=dedicated-workers-and-the-worker-interface:resulting-url-record href=infrastructure.html#resulting-url-record>resulting URL record</a>.</p>
 
-    <p class=note>Any <a href=browsers.html#same-origin id=dedicated-workers-and-the-worker-interface:same-origin>same-origin</a> URL will do, including <code id=dedicated-workers-and-the-worker-interface:blob-protocol><a data-x-internal=blob-protocol href=https://triple-underscore.github.io/File_API-ja.html#DefinitionOfScheme>blob:</a></code> URLs.</p>
+    <p class=note>Any <a href=browsers.html#same-origin id=dedicated-workers-and-the-worker-interface:same-origin>same-origin</a> URL (including <code id=dedicated-workers-and-the-worker-interface:blob-protocol><a data-x-internal=blob-protocol href=https://triple-underscore.github.io/File_API-ja.html#DefinitionOfScheme>blob:</a></code> URLs) can be used. <code id=dedicated-workers-and-the-worker-interface:data-protocol><a data-x-internal=data-protocol href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2>data:</a></code>
+    URLs can also be used, but they create a worker with an <a href=browsers.html#concept-origin-opaque id=dedicated-workers-and-the-worker-interface:concept-origin-opaque>opaque origin</a>.</p>
    </li><li><p>Let <var>worker</var> be a new <code id=dedicated-workers-and-the-worker-interface:worker-9><a href=#worker>Worker</a></code> object.</li><li><p><a id=dedicated-workers-and-the-worker-interface:create-a-new-messageport-object href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=dedicated-workers-and-the-worker-interface:concept-port-owner>owner</a> is <var>outside settings</var>. Let this be the
    <var>outside port</var>.</li><li><p>Associate the <var>outside port</var> with <var>worker</var>.</li><li><p>Let <var>docs</var> be the <a href=#list-of-relevant-document-objects-to-add id=dedicated-workers-and-the-worker-interface:list-of-relevant-document-objects-to-add>list of relevant <code>Document</code> objects to
    add</a> given <var>outside settings</var>.</li><li><p>Return <var>worker</var>, and run the following step <a id=dedicated-workers-and-the-worker-interface:in-parallel href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p><a href=#run-a-worker id=dedicated-workers-and-the-worker-interface:run-a-worker>Run a worker</a> given <var>worker</var>, <var>worker URL</var>, <var>outside
@@ -1921,22 +1935,27 @@ interface <dfn id=sharedworker>SharedWorker</dfn> : <a id=shared-workers-and-the
    if the user agent is configured to not allow the page to start shared workers).</li><li><p>Let <var>outside settings</var> be the <a id=shared-workers-and-the-sharedworker-interface:current-settings-object href=webappapis.html#current-settings-object>current settings object</a>.</li><li><p><a href=infrastructure.html#parse-a-url id=shared-workers-and-the-sharedworker-interface:parse-a-url>Parse</a> <var>scriptURL</var> relative to <var>outside
    settings</var>.</li><li><p>If this fails, throw a <a id=shared-workers-and-the-sharedworker-interface:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code id=shared-workers-and-the-sharedworker-interface:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>
    and abort these steps.</li><li>
-    <p>Let <var>urlString</var> be the <a id=shared-workers-and-the-sharedworker-interface:resulting-url-string href=infrastructure.html#resulting-url-string>resulting URL string</a> and <var>urlRecord</var> be
-    the <a id=shared-workers-and-the-sharedworker-interface:resulting-url-record href=infrastructure.html#resulting-url-record>resulting URL record</a>.</p>
+    <p>Otherwise, let <var>urlRecord</var> be the <a id=shared-workers-and-the-sharedworker-interface:resulting-url-record href=infrastructure.html#resulting-url-record>resulting URL record</a>.</p>
 
-    <p class=note>Any <a href=browsers.html#same-origin id=shared-workers-and-the-sharedworker-interface:same-origin>same-origin</a> URL will do, including <code id=shared-workers-and-the-sharedworker-interface:blob-protocol><a data-x-internal=blob-protocol href=https://triple-underscore.github.io/File_API-ja.html#DefinitionOfScheme>blob:</a></code> URLs.</p>
-   </li><li>
+    <p class=note>Any <a href=browsers.html#same-origin id=shared-workers-and-the-sharedworker-interface:same-origin>same-origin</a> URL (including <code id=shared-workers-and-the-sharedworker-interface:blob-protocol><a data-x-internal=blob-protocol href=https://triple-underscore.github.io/File_API-ja.html#DefinitionOfScheme>blob:</a></code> URLs) can be used. <code id=shared-workers-and-the-sharedworker-interface:data-protocol><a data-x-internal=data-protocol href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2>data:</a></code>
+    URLs can also be used, but they create a worker with an <a href=browsers.html#concept-origin-opaque id=shared-workers-and-the-sharedworker-interface:concept-origin-opaque>opaque origin</a>.</p>
+   </li><li><p>Let <var>worker</var> be a new <code id=shared-workers-and-the-sharedworker-interface:sharedworker-4><a href=#sharedworker>SharedWorker</a></code> object.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner>owner</a> is <var>outside settings</var>. Let this be the
+   <var>outside port</var>.</li><li><p>Assign <var>outside port</var> to the <code id=shared-workers-and-the-sharedworker-interface:dom-sharedworker-port-3><a href=#dom-sharedworker-port>port</a></code>
+   attribute of <var>worker</var>.</li><li><p>Let <var>isSecureContext</var> be the result of executing <a id=shared-workers-and-the-sharedworker-interface:is-environment-settings-object-a-secure-context href=https://w3c.github.io/webappsec-secure-contexts/#settings-object data-x-internal=is-environment-settings-object-a-secure-context>Is environment settings
+   object a secure context?</a> on <var>outside settings</var>.</li><li>
+    <p>Run these substeps <a id=shared-workers-and-the-sharedworker-interface:in-parallel href=infrastructure.html#in-parallel>in parallel</a>:</p>
 
-    <p>Execute the following substeps atomically:</p>
+    <ol><li><p>Let <var>worker global scope</var> be null.</li><li>
+      <p>If there exists a <code id=shared-workers-and-the-sharedworker-interface:sharedworkerglobalscope><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object whose <a href=#dom-workerglobalscope-closing id=shared-workers-and-the-sharedworker-interface:dom-workerglobalscope-closing>closing</a> flag is false, <a href=#concept-sharedworkerglobalscope-constructor-origin id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-constructor-origin>constructor origin</a> is
+      <a id=shared-workers-and-the-sharedworker-interface:same-origin-2 href=browsers.html#same-origin>same origin</a> with <var>outside settings</var>'s <a href=webappapis.html#concept-settings-object-origin id=shared-workers-and-the-sharedworker-interface:concept-settings-object-origin>origin</a>, <a href=#concept-sharedworkerglobalscope-constructor-url id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-constructor-url>constructor url</a> <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-equals id=shared-workers-and-the-sharedworker-interface:concept-url-equals data-x-internal=concept-url-equals>equals</a> <var>urlRecord</var>, and <a href=#concept-sharedworkerglobalscope-name id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-name-2>name</a> is <var>name</var>, then set
+      <var>worker global scope</var> to that <code id=shared-workers-and-the-sharedworker-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object.</p>
 
-    <ol><li><p>Let <var>worker</var> be a new <code id=shared-workers-and-the-sharedworker-interface:sharedworker-4><a href=#sharedworker>SharedWorker</a></code> object.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner>owner</a> is <var>outside settings</var>. Let this be the
-     <var>outside port</var>.</li><li><p>Assign <var>outside port</var> to the <code id=shared-workers-and-the-sharedworker-interface:dom-sharedworker-port-3><a href=#dom-sharedworker-port>port</a></code> attribute of <var>worker</var>.</li><li><p>Let <var>worker global scope</var> be null.</li><li><p>If there exists a <code id=shared-workers-and-the-sharedworker-interface:sharedworkerglobalscope><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object whose <a href=#dom-workerglobalscope-closing id=shared-workers-and-the-sharedworker-interface:dom-workerglobalscope-closing>closing</a> flag is false, whose <a href=#concept-sharedworkerglobalscope-name id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-name-2>name</a> is exactly equal to <var>name</var>,
-     whose <a href=#concept-sharedworkerglobalscope-constructor-url id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-constructor-url>constructor url</a> is
-     equal to <var>urlString</var>, and whose <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a>'s
-     <a href=webappapis.html#concept-settings-object-origin id=shared-workers-and-the-sharedworker-interface:concept-settings-object-origin>origin</a> is <a id=shared-workers-and-the-sharedworker-interface:same-origin-2 href=browsers.html#same-origin>same origin</a> with
-     <var>outside settings</var>'s <a href=webappapis.html#concept-settings-object-origin id=shared-workers-and-the-sharedworker-interface:concept-settings-object-origin-2>origin</a>, then
-     let <var>worker global scope</var> be that <code id=shared-workers-and-the-sharedworker-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code>
-     object.</li><li>
+      <p class=note><code id=shared-workers-and-the-sharedworker-interface:data-protocol-2><a data-x-internal=data-protocol href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2>data:</a></code> URLs create a worker with an <a href=browsers.html#concept-origin-opaque id=shared-workers-and-the-sharedworker-interface:concept-origin-opaque-2>opaque origin</a>. Both the <a href=#concept-sharedworkerglobalscope-constructor-origin id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-constructor-origin-2>constructor origin</a> and
+      <a href=#concept-sharedworkerglobalscope-constructor-url id=shared-workers-and-the-sharedworker-interface:concept-sharedworkerglobalscope-constructor-url-2>constructor url</a> are
+      compared so the same <code id=shared-workers-and-the-sharedworker-interface:data-protocol-3><a data-x-internal=data-protocol href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2>data:</a></code> URL can be used within an
+      <a id=shared-workers-and-the-sharedworker-interface:concept-origin href=browsers.html#concept-origin>origin</a> to get to the same <code id=shared-workers-and-the-sharedworker-interface:sharedworkerglobalscope-3><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object, but cannot
+      be used to bypass the <a id=shared-workers-and-the-sharedworker-interface:same-origin-3 href=browsers.html#same-origin>same origin</a> restriction.</p>
+     </li><li>
       <p>If <var>worker global scope</var> is not null, but the user agent has been
       configured to disallow communication between the worker represented by the <var>worker global
       scope</var> and the <a href=webappapis.html#concept-script id=shared-workers-and-the-sharedworker-interface:concept-script>scripts</a> whose <a href=webappapis.html#settings-object id=shared-workers-and-the-sharedworker-interface:settings-object>settings object</a> is <var>outside settings</var>, then set <var>worker global
@@ -1947,31 +1966,30 @@ interface <dfn id=sharedworker>SharedWorker</dfn> : <a id=shared-workers-and-the
       development mode could be blocked from connecting to shared workers running in the normal
       browser mode.</p>
      </li><li>
-      <p>If <var>worker global scope</var> is not null, then run these steps:</p>
+      <p>If <var>worker global scope</var> is not null, then run these subsubsteps:</p>
 
-      <ol><li><p>Let <var>settings object</var> be the <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object-2 href=webappapis.html#relevant-settings-object>relevant settings object</a> for
-       <var>worker global scope</var>.</li><li><p>If the result of executing <a id=shared-workers-and-the-sharedworker-interface:is-environment-settings-object-a-secure-context href=https://w3c.github.io/webappsec-secure-contexts/#settings-object data-x-internal=is-environment-settings-object-a-secure-context>Is environment settings object a secure
-       context?</a> on <var>outside settings</var> does not match the result of executing
-       the same algorithm on <var>settings object</var>, then throw a
-       <a id=shared-workers-and-the-sharedworker-interface:securityerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=shared-workers-and-the-sharedworker-interface:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these steps.
-       <a href=#refsSECURE-CONTEXTS>[SECURE-CONTEXTS]</a></li><li><p>Associate <var>worker</var> with <var>worker global scope</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object-2 href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner-2>owner</a> is <var>settings object</var>. Let this be
+      <ol><li><p>Let <var>settings object</var> be the <a id=shared-workers-and-the-sharedworker-interface:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a> for
+       <var>worker global scope</var>.</li><li><p>If the result of executing <a id=shared-workers-and-the-sharedworker-interface:is-environment-settings-object-a-secure-context-2 href=https://w3c.github.io/webappsec-secure-contexts/#settings-object data-x-internal=is-environment-settings-object-a-secure-context>Is environment settings object a secure
+       context?</a> on <var>settings object</var> is not <var>isSecureContext</var>, then
+       <a id=shared-workers-and-the-sharedworker-interface:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a id=shared-workers-and-the-sharedworker-interface:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code id=shared-workers-and-the-sharedworker-interface:event-error><a href=indices.html#event-error>error</a></code> at <var>worker</var> and abort these subsubsteps. <a href=#refsSECURE-CONTEXTS>[SECURE-CONTEXTS]</a></li><li><p>Associate <var>worker</var> with <var>worker global scope</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:create-a-new-messageport-object-2 href=comms.html#create-a-new-messageport-object>Create a new <code>MessagePort</code> object</a> whose <a href=comms.html#concept-port-owner id=shared-workers-and-the-sharedworker-interface:concept-port-owner-2>owner</a> is <var>settings object</var>. Let this be
        the <var>inside port</var>.</li><li><p><a id=shared-workers-and-the-sharedworker-interface:entangle href=comms.html#entangle>Entangle</a> <var>outside port</var> and <var>inside port</var>.</li><li><p>Create a <a href=infrastructure.html#concept-events-trusted id=shared-workers-and-the-sharedworker-interface:concept-events-trusted>trusted</a> event that uses the
        <code id=shared-workers-and-the-sharedworker-interface:messageevent><a href=comms.html#messageevent>MessageEvent</a></code> interface, with the name <code id=shared-workers-and-the-sharedworker-interface:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code>, which does not bubble, is not
-       cancelable, has no default action, has a <code id=shared-workers-and-the-sharedworker-interface:dom-messageevent-data><a href=comms.html#dom-messageevent-data>data</a></code>
-       attribute whose value is initialized to the empty string, has a <code id=shared-workers-and-the-sharedworker-interface:dom-messageevent-ports><a href=comms.html#dom-messageevent-ports>ports</a></code> attribute whose value is initialized to a new
-       <a id=shared-workers-and-the-sharedworker-interface:frozen-array href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> containing only the newly created port, and has a <code id=shared-workers-and-the-sharedworker-interface:dom-messageevent-source><a href=comms.html#dom-messageevent-source>source</a></code> attribute whose value is initialized to the
-       newly created port. <a id=shared-workers-and-the-sharedworker-interface:queue-a-task href=webappapis.html#queue-a-task>Queue a task</a>, using the <a id=shared-workers-and-the-sharedworker-interface:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM manipulation task
-       source</a>, to <a href=infrastructure.html#concept-event-dispatch id=shared-workers-and-the-sharedworker-interface:concept-event-dispatch>dispatch</a> the event at
-       <var>worker global scope</var>.</li><li><p><a href="#add-a-document-to-the-worker's-documents" id="shared-workers-and-the-sharedworker-interface:add-a-document-to-the-worker's-documents">Add to <var>worker global
+       cancelable, has a <code id=shared-workers-and-the-sharedworker-interface:dom-messageevent-data><a href=comms.html#dom-messageevent-data>data</a></code> attribute whose value is
+       initialized to the empty string, has a <code id=shared-workers-and-the-sharedworker-interface:dom-messageevent-ports><a href=comms.html#dom-messageevent-ports>ports</a></code>
+       attribute whose value is initialized to a new <a id=shared-workers-and-the-sharedworker-interface:frozen-array href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> containing only the
+       newly created port, and has a <code id=shared-workers-and-the-sharedworker-interface:dom-messageevent-source><a href=comms.html#dom-messageevent-source>source</a></code> attribute
+       whose value is initialized to the newly created port. <a id=shared-workers-and-the-sharedworker-interface:queue-a-task-2 href=webappapis.html#queue-a-task>Queue a task</a>, using the
+       <a id=shared-workers-and-the-sharedworker-interface:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM manipulation task source</a>, to <a href=infrastructure.html#concept-event-dispatch id=shared-workers-and-the-sharedworker-interface:concept-event-dispatch>dispatch</a> the event at <var>worker global
+       scope</var>.</li><li><p><a href="#add-a-document-to-the-worker's-documents" id="shared-workers-and-the-sharedworker-interface:add-a-document-to-the-worker's-documents">Add to <var>worker global
        scope</var>'s list of <span>the worker's <code>Document</code>s</span></a> the
        <a href=#list-of-relevant-document-objects-to-add id=shared-workers-and-the-sharedworker-interface:list-of-relevant-document-objects-to-add>list of relevant <code>Document</code> objects to add</a> given <var>outside
        settings</var>.</li><li><p>If <var>outside settings</var>'s <a href=webappapis.html#concept-settings-object-global id=shared-workers-and-the-sharedworker-interface:concept-settings-object-global>global
        object</a> is a <code id=shared-workers-and-the-sharedworker-interface:workerglobalscope><a href=#workerglobalscope>WorkerGlobalScope</a></code> object, add <var>worker global scope</var>
-       to the list of <a href="#the-worker's-workers" id="shared-workers-and-the-sharedworker-interface:the-worker's-workers">the worker's workers</a> of <var>outside settings</var>'s <a href=webappapis.html#concept-settings-object-global id=shared-workers-and-the-sharedworker-interface:concept-settings-object-global-2>global object</a>.</li><li><p>Return <var>worker</var> and abort all these steps.</li></ol>
-     </li></ol>
-   </li><li><p>Return <var>worker</var> and perform the remaining steps <a id=shared-workers-and-the-sharedworker-interface:in-parallel href=infrastructure.html#in-parallel>in
-   parallel</a>.</li><li><p><a href=#run-a-worker id=shared-workers-and-the-sharedworker-interface:run-a-worker>Run a worker</a> given <var>worker</var>, <var>urlRecord</var>, <var>outside
-   settings</var>, <var>outside port</var>, and <var>options</var>.</li></ol>
+       to the list of <a href="#the-worker's-workers" id="shared-workers-and-the-sharedworker-interface:the-worker's-workers">the worker's workers</a> of <var>outside settings</var>'s <a href=webappapis.html#concept-settings-object-global id=shared-workers-and-the-sharedworker-interface:concept-settings-object-global-2>global object</a>.</li></ol>
+     </li><li><p>Otherwise, <a href=#run-a-worker id=shared-workers-and-the-sharedworker-interface:run-a-worker>run a worker</a> given <var>worker</var>, <var>urlRecord</var>,
+     <var>outside settings</var>, <var>outside port</var>, <var>options</var>, and
+     <var>name</var>.</li></ol>
+   </li><li><p>Return <var>worker</var>.</li></ol>
 
   
 
