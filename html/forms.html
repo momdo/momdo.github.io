@@ -299,7 +299,7 @@
 <body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>12 October 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>21 October 2016</span></h2></hgroup>
    
    
   </header>
@@ -1007,8 +1007,8 @@ interface <dfn id=htmllabelelement>HTMLLabelElement</dfn> : <a id=the-label-elem
   <a href=#labeled-control id=the-label-element:labeled-control-4>labeled control</a>.</p>
 
   <p>The <code id=the-label-element:the-label-element-10><a href=#the-label-element>label</a></code> element's exact default presentation and behavior, in particular what
-  its <a id=the-label-element:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a> might be, if anything, should match the platform's label
-  behavior. The <a id=the-label-element:activation-behaviour-2 href=interaction.html#activation-behaviour>activation behavior</a> of a <code id=the-label-element:the-label-element-11><a href=#the-label-element>label</a></code> element for events targeted
+  its <a id=the-label-element:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> might be, if anything, should match the platform's label
+  behavior. The <a id=the-label-element:activation-behaviour-2 href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> of a <code id=the-label-element:the-label-element-11><a href=#the-label-element>label</a></code> element for events targeted
   at <a id=the-label-element:interactive-content-2-2 href=dom.html#interactive-content-2>interactive content</a> descendants of a <code id=the-label-element:the-label-element-12><a href=#the-label-element>label</a></code> element, and any
   descendants of those <a id=the-label-element:interactive-content-2-3 href=dom.html#interactive-content-2>interactive content</a> descendants, must be to do nothing.</p>
 
@@ -1017,9 +1017,8 @@ interface <dfn id=htmllabelelement>HTMLLabelElement</dfn> : <a id=the-label-elem
   <div class=example>
 
    <p>For example, on platforms where clicking a checkbox label checks the checkbox, clicking the
-   <code id=the-label-element:the-label-element-13><a href=#the-label-element>label</a></code> in the following snippet could trigger the user agent to <a id=the-label-element:run-synthetic-click-activation-steps href=interaction.html#run-synthetic-click-activation-steps>run synthetic
-   click activation steps</a> on the <code id=the-label-element:the-input-element><a href=#the-input-element>input</a></code> element, as if the element itself had
-   been triggered by the user:</p>
+   <code id=the-label-element:the-label-element-13><a href=#the-label-element>label</a></code> in the following snippet could trigger the user agent to <a id=the-label-element:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code> event</a> at the <code id=the-label-element:the-input-element><a href=#the-input-element>input</a></code> element, as if the
+   element itself had been triggered by the user:</p>
 
    <pre>&lt;label&gt;&lt;input type=checkbox name=lost&gt; Lost&lt;/label&gt;</pre>
 
@@ -3238,41 +3237,73 @@ interface <dfn id=htmlinputelement>HTMLInputElement</dfn> : <a id=the-input-elem
   must propagate the <a href=#concept-fe-value id=the-input-element:concept-fe-value-7>value</a>, <a href=#concept-input-value-dirty-flag id=the-input-element:concept-input-value-dirty-flag-4>dirty value flag</a>, <a href=#concept-fe-checked id=the-input-element:concept-fe-checked-8>checkedness</a>, and <a href=#concept-input-checked-dirty-flag id=the-input-element:concept-input-checked-dirty-flag-3>dirty checkedness flag</a> from the node being cloned
   to the copy.</p>
 
+  <p>The <a id=the-input-element:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> for <code id=the-input-element:the-input-element-15><a href=#the-input-element>input</a></code> elements are these steps:</p>
+
+  <ol><li><p>If this element is not <i id=the-input-element:concept-fe-mutable-5><a href=#concept-fe-mutable>mutable</a></i>, then abort these
+   steps.</li><li><p>Run this element's <dfn id=input-activation-behavior>input activation behavior</dfn>, if any, and do nothing
+   otherwise.</li></ol>
+
+  <p>The <a id=the-input-element:legacy-pre-activation-behavior href=https://dom.spec.whatwg.org/#eventtarget-legacy-pre-activation-behavior data-x-internal=legacy-pre-activation-behavior>legacy-pre-activation behavior</a> for <code id=the-input-element:the-input-element-16><a href=#the-input-element>input</a></code> elements are these
+  steps:</p>
+
+  <ol><li><p>If this element is not <i id=the-input-element:concept-fe-mutable-6><a href=#concept-fe-mutable>mutable</a></i>, then abort these
+   steps.</li><li><p>If this element's <code id=the-input-element:attr-input-type-9><a href=#attr-input-type>type</a></code> attribute is in the <a href="#checkbox-state-(type=checkbox)" id="the-input-element:checkbox-state-(type=checkbox)-4">Checkbox state</a>, then set this element's <a href=#concept-fe-checked id=the-input-element:concept-fe-checked-9>checkedness</a> to its opposite value (i.e. true if it is false,
+   false if it is true) and set this element's <code id=the-input-element:dom-input-indeterminate-2><a href=#dom-input-indeterminate>indeterminate</a></code> IDL attribute to false.</li><li><p>If this element's <code id=the-input-element:attr-input-type-10><a href=#attr-input-type>type</a></code> attribute is in the <a href="#radio-button-state-(type=radio)" id="the-input-element:radio-button-state-(type=radio)-3">Radio Button state</a>, then get a reference to the element in
+   this element's <a href=#radio-button-group id=the-input-element:radio-button-group>radio button group</a> that has its <a href=#concept-fe-checked id=the-input-element:concept-fe-checked-10>checkedness</a> set to true, if any, and then set this element's
+   <a href=#concept-fe-checked id=the-input-element:concept-fe-checked-11>checkedness</a> to true.</li></ol>
+
+  <p>The <a id=the-input-element:legacy-canceled-activation-behavior href=https://dom.spec.whatwg.org/#eventtarget-legacy-canceled-activation-behavior data-x-internal=legacy-canceled-activation-behavior>legacy-canceled-activation behavior</a> for <code id=the-input-element:the-input-element-17><a href=#the-input-element>input</a></code> elements are these
+  steps:</p>
+
+  <ol><li><p>If the element is not <i id=the-input-element:concept-fe-mutable-7><a href=#concept-fe-mutable>mutable</a></i>, then abort these
+   steps.</li><li><p>If the element's <code id=the-input-element:attr-input-type-11><a href=#attr-input-type>type</a></code> attribute is in the <a href="#checkbox-state-(type=checkbox)" id="the-input-element:checkbox-state-(type=checkbox)-5">Checkbox state</a>, then set the element's <a href=#concept-fe-checked id=the-input-element:concept-fe-checked-12>checkedness</a> and the element's <code id=the-input-element:dom-input-indeterminate-3><a href=#dom-input-indeterminate>indeterminate</a></code> IDL attribute back to the values they had
+   before the <a id=the-input-element:legacy-pre-activation-behavior-2 href=https://dom.spec.whatwg.org/#eventtarget-legacy-pre-activation-behavior data-x-internal=legacy-pre-activation-behavior>legacy-pre-activation behavior</a> was run.</li><li><p>If this element's <code id=the-input-element:attr-input-type-12><a href=#attr-input-type>type</a></code> attribute is in the <a href="#radio-button-state-(type=radio)" id="the-input-element:radio-button-state-(type=radio)-4">Radio Button state</a>, then if the element to which a
+   reference was obtained in the <a id=the-input-element:legacy-pre-activation-behavior-3 href=https://dom.spec.whatwg.org/#eventtarget-legacy-pre-activation-behavior data-x-internal=legacy-pre-activation-behavior>legacy-pre-activation behavior</a>, if any, is still in
+   what is now this element's <a href=#radio-button-group id=the-input-element:radio-button-group-2>radio button group</a>, if it still has one, and if so,
+   setting that element's <a href=#concept-fe-checked id=the-input-element:concept-fe-checked-13>checkedness</a> to true; or else, if
+   there was no such element, or that element is no longer in this element's <a href=#radio-button-group id=the-input-element:radio-button-group-3>radio button
+   group</a>, or if this element no longer has a <a href=#radio-button-group id=the-input-element:radio-button-group-4>radio button group</a>, setting this
+   element's <a href=#concept-fe-checked id=the-input-element:concept-fe-checked-14>checkedness</a> to false.
+  
+  </li></ol>
+
+  
+
   <hr>
 
-  <p>When an <code id=the-input-element:the-input-element-15><a href=#the-input-element>input</a></code> element is first created, the element's rendering and behavior must
-  be set to the rendering and behavior defined for the <code id=the-input-element:attr-input-type-9><a href=#attr-input-type>type</a></code>
+  <p>When an <code id=the-input-element:the-input-element-18><a href=#the-input-element>input</a></code> element is first created, the element's rendering and behavior must
+  be set to the rendering and behavior defined for the <code id=the-input-element:attr-input-type-13><a href=#attr-input-type>type</a></code>
   attribute's state, and the <a href=#value-sanitization-algorithm id=the-input-element:value-sanitization-algorithm-3>value sanitization algorithm</a>, if one is defined for the
-  <code id=the-input-element:attr-input-type-10><a href=#attr-input-type>type</a></code> attribute's state, must be invoked.</p>
+  <code id=the-input-element:attr-input-type-14><a href=#attr-input-type>type</a></code> attribute's state, must be invoked.</p>
 
   
 
   <div id=input-type-change>
 
-  <p>When an <code id=the-input-element:the-input-element-16><a href=#the-input-element>input</a></code> element's <code id=the-input-element:attr-input-type-11><a href=#attr-input-type>type</a></code> attribute
+  <p>When an <code id=the-input-element:the-input-element-19><a href=#the-input-element>input</a></code> element's <code id=the-input-element:attr-input-type-15><a href=#attr-input-type>type</a></code> attribute
   changes state, the user agent must run the following steps:</p>
 
-  <ol><li><p>If the previous state of the element's <code id=the-input-element:attr-input-type-12><a href=#attr-input-type>type</a></code> attribute
+  <ol><li><p>If the previous state of the element's <code id=the-input-element:attr-input-type-16><a href=#attr-input-type>type</a></code> attribute
    put the <code id=the-input-element:dom-input-value-5><a href=#dom-input-value>value</a></code> IDL attribute in the <i id=the-input-element:dom-input-value-value-10><a href=#dom-input-value-value>value</a></i> mode, and the element's <a href=#concept-fe-value id=the-input-element:concept-fe-value-8>value</a> is not the empty string, and the new state of the element's
-   <code id=the-input-element:attr-input-type-13><a href=#attr-input-type>type</a></code> attribute puts the <code id=the-input-element:dom-input-value-6><a href=#dom-input-value>value</a></code> IDL attribute in either the <i id=the-input-element:dom-input-value-default-5><a href=#dom-input-value-default>default</a></i> mode or the <i id=the-input-element:dom-input-value-default-on-2><a href=#dom-input-value-default-on>default/on</a></i> mode, then set the element's <code id=the-input-element:attr-input-value-5><a href=#attr-input-value>value</a></code> content attribute to the element's <a href=#concept-fe-value id=the-input-element:concept-fe-value-9>value</a>.</li><li><p>Otherwise, if the previous state of the element's <code id=the-input-element:attr-input-type-14><a href=#attr-input-type>type</a></code> attribute put the <code id=the-input-element:dom-input-value-7><a href=#dom-input-value>value</a></code>
+   <code id=the-input-element:attr-input-type-17><a href=#attr-input-type>type</a></code> attribute puts the <code id=the-input-element:dom-input-value-6><a href=#dom-input-value>value</a></code> IDL attribute in either the <i id=the-input-element:dom-input-value-default-5><a href=#dom-input-value-default>default</a></i> mode or the <i id=the-input-element:dom-input-value-default-on-2><a href=#dom-input-value-default-on>default/on</a></i> mode, then set the element's <code id=the-input-element:attr-input-value-5><a href=#attr-input-value>value</a></code> content attribute to the element's <a href=#concept-fe-value id=the-input-element:concept-fe-value-9>value</a>.</li><li><p>Otherwise, if the previous state of the element's <code id=the-input-element:attr-input-type-18><a href=#attr-input-type>type</a></code> attribute put the <code id=the-input-element:dom-input-value-7><a href=#dom-input-value>value</a></code>
    IDL attribute in any mode other than the <i id=the-input-element:dom-input-value-value-11><a href=#dom-input-value-value>value</a></i> mode, and the
-   new state of the element's <code id=the-input-element:attr-input-type-15><a href=#attr-input-type>type</a></code> attribute puts the <code id=the-input-element:dom-input-value-8><a href=#dom-input-value>value</a></code> IDL attribute in the <i id=the-input-element:dom-input-value-value-12><a href=#dom-input-value-value>value</a></i> mode, then set the <a href=#concept-fe-value id=the-input-element:concept-fe-value-10>value</a> of the element to the value of the <code id=the-input-element:attr-input-value-6><a href=#attr-input-value>value</a></code> content attribute, if there is one, or the empty string
+   new state of the element's <code id=the-input-element:attr-input-type-19><a href=#attr-input-type>type</a></code> attribute puts the <code id=the-input-element:dom-input-value-8><a href=#dom-input-value>value</a></code> IDL attribute in the <i id=the-input-element:dom-input-value-value-12><a href=#dom-input-value-value>value</a></i> mode, then set the <a href=#concept-fe-value id=the-input-element:concept-fe-value-10>value</a> of the element to the value of the <code id=the-input-element:attr-input-value-6><a href=#attr-input-value>value</a></code> content attribute, if there is one, or the empty string
    otherwise, and then set the control's <a href=#concept-input-value-dirty-flag id=the-input-element:concept-input-value-dirty-flag-5>dirty value
-   flag</a> to false.</li><li><p>Otherwise, if the previous state of the element's <code id=the-input-element:attr-input-type-16><a href=#attr-input-type>type</a></code> attribute put the <code id=the-input-element:dom-input-value-9><a href=#dom-input-value>value</a></code> IDL attribute in any mode other than the <i id=the-input-element:dom-input-value-filename-2><a href=#dom-input-value-filename>filename</a></i> mode, and the new state of the element's <code id=the-input-element:attr-input-type-17><a href=#attr-input-type>type</a></code> attribute puts the <code id=the-input-element:dom-input-value-10><a href=#dom-input-value>value</a></code> IDL attribute in the <i id=the-input-element:dom-input-value-filename-3><a href=#dom-input-value-filename>filename</a></i> mode, then set the <a href=#concept-fe-value id=the-input-element:concept-fe-value-11>value</a> of the element to the empty string.</li><li><p>Update the element's rendering and behavior to the new state's.</li><li><p><dfn id=signal-a-type-change>Signal a type change</dfn> for the element. (The <a href="#radio-button-state-(type=radio)" id="the-input-element:radio-button-state-(type=radio)-3">Radio Button</a> state uses this, in particular.)</li><li><p>Invoke the <a href=#value-sanitization-algorithm id=the-input-element:value-sanitization-algorithm-4>value sanitization algorithm</a>, if one is defined for the <code id=the-input-element:attr-input-type-18><a href=#attr-input-type>type</a></code> attribute's new state.</li></ol>
+   flag</a> to false.</li><li><p>Otherwise, if the previous state of the element's <code id=the-input-element:attr-input-type-20><a href=#attr-input-type>type</a></code> attribute put the <code id=the-input-element:dom-input-value-9><a href=#dom-input-value>value</a></code> IDL attribute in any mode other than the <i id=the-input-element:dom-input-value-filename-2><a href=#dom-input-value-filename>filename</a></i> mode, and the new state of the element's <code id=the-input-element:attr-input-type-21><a href=#attr-input-type>type</a></code> attribute puts the <code id=the-input-element:dom-input-value-10><a href=#dom-input-value>value</a></code> IDL attribute in the <i id=the-input-element:dom-input-value-filename-3><a href=#dom-input-value-filename>filename</a></i> mode, then set the <a href=#concept-fe-value id=the-input-element:concept-fe-value-11>value</a> of the element to the empty string.</li><li><p>Update the element's rendering and behavior to the new state's.</li><li><p><dfn id=signal-a-type-change>Signal a type change</dfn> for the element. (The <a href="#radio-button-state-(type=radio)" id="the-input-element:radio-button-state-(type=radio)-5">Radio Button</a> state uses this, in particular.)</li><li><p>Invoke the <a href=#value-sanitization-algorithm id=the-input-element:value-sanitization-algorithm-4>value sanitization algorithm</a>, if one is defined for the <code id=the-input-element:attr-input-type-22><a href=#attr-input-type>type</a></code> attribute's new state.</li></ol>
 
   </div>
 
   <hr>
 
   <p>
-  <code id=the-input-element:attr-fe-name-2><a href=#attr-fe-name>name</a></code>属性は要素の名前を表す。<code id=the-input-element:attr-fe-dirname-4><a href=#attr-fe-dirname>dirname</a></code>属性は、要素の<a href=dom.html#the-directionality id=the-input-element:the-directionality-2>方向</a>がどのように送信されるかを制御する。<code id=the-input-element:attr-fe-disabled-2><a href=#attr-fe-disabled>disabled</a></code>属性は、コントロールが非インタラクティブにするためおよびその値を送信するのを防ぐために使用される。<code id=the-input-element:attr-fae-form-2><a href=#attr-fae-form>form</a></code>属性は、<a href=#form-owner id=the-input-element:form-owner>フォームの所有者</a>と<code id=the-input-element:the-input-element-17><a href=#the-input-element>input</a></code>要素を明示的に関連付けるために使用される。<code id=the-input-element:attr-fe-autofocus-2><a href=#attr-fe-autofocus>autofocus</a></code>属性はフォーカスを制御する。<code id=the-input-element:attr-fe-inputmode-4><a href=#attr-fe-inputmode>inputmode</a></code>属性はコントロールに対するユーザーインターフェイスの入力モダリティを制御する。<code id=the-input-element:attr-fe-autocomplete-4><a href=#attr-fe-autocomplete>autocomplete</a></code>属性は、どのようにユーザーエージェントがオートフィルの振る舞いを提供するかを制御する。
+  <code id=the-input-element:attr-fe-name-2><a href=#attr-fe-name>name</a></code>属性は要素の名前を表す。<code id=the-input-element:attr-fe-dirname-4><a href=#attr-fe-dirname>dirname</a></code>属性は、要素の<a href=dom.html#the-directionality id=the-input-element:the-directionality-2>方向</a>がどのように送信されるかを制御する。<code id=the-input-element:attr-fe-disabled-2><a href=#attr-fe-disabled>disabled</a></code>属性は、コントロールが非インタラクティブにするためおよびその値を送信するのを防ぐために使用される。<code id=the-input-element:attr-fae-form-2><a href=#attr-fae-form>form</a></code>属性は、<a href=#form-owner id=the-input-element:form-owner>フォームの所有者</a>と<code id=the-input-element:the-input-element-20><a href=#the-input-element>input</a></code>要素を明示的に関連付けるために使用される。<code id=the-input-element:attr-fe-autofocus-2><a href=#attr-fe-autofocus>autofocus</a></code>属性はフォーカスを制御する。<code id=the-input-element:attr-fe-inputmode-4><a href=#attr-fe-inputmode>inputmode</a></code>属性はコントロールに対するユーザーインターフェイスの入力モダリティを制御する。<code id=the-input-element:attr-fe-autocomplete-4><a href=#attr-fe-autocomplete>autocomplete</a></code>属性は、どのようにユーザーエージェントがオートフィルの振る舞いを提供するかを制御する。
   </p>
 
   
 
   <p>The <dfn id=dom-input-indeterminate><code>indeterminate</code></dfn> IDL attribute must
   initially be set to false. On getting, it must return the last value it was set to. On setting, it
-  must be set to the new value. It has no effect except for changing the appearance of <a href="#checkbox-state-(type=checkbox)" id="the-input-element:checkbox-state-(type=checkbox)-4">checkbox</a> controls.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>28+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>6+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=indeterminate-checkbox">caniuse.com</a></div>
+  must be set to the new value. It has no effect except for changing the appearance of <a href="#checkbox-state-(type=checkbox)" id="the-input-element:checkbox-state-(type=checkbox)-6">checkbox</a> controls.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>28+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>6+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=indeterminate-checkbox">caniuse.com</a></div>
 
   <p>The <dfn id=dom-input-accept><code>accept</code></dfn>, <dfn id=dom-input-alt><code>alt</code></dfn>, <dfn id=dom-input-max><code>max</code></dfn>,
   <dfn id=dom-input-min><code>min</code></dfn>, <dfn id=dom-input-multiple><code>multiple</code></dfn>, <dfn id=dom-input-pattern><code>pattern</code></dfn>, <dfn id=dom-input-placeholder><code>placeholder</code></dfn>, <dfn id=dom-input-required><code>required</code></dfn>, <dfn id=dom-input-size><code>size</code></dfn>, <dfn id=dom-input-src><code>src</code></dfn>,
@@ -3298,8 +3329,8 @@ interface <dfn id=htmlinputelement>HTMLInputElement</dfn> : <a id=the-input-elem
   image, in <a href=https://momdo.github.io/css3-values/#px id="the-input-element:'px'" data-x-internal="'px'">CSS pixels</a>, if an image is <a id=the-input-element:being-rendered href=rendering.html#being-rendered>being rendered</a>, and
   is being rendered to a visual medium; or else the <a href=https://momdo.github.io/css2/conform.html#intrinsic id=the-input-element:intrinsic-dimensions data-x-internal=intrinsic-dimensions>intrinsic
   width and height</a> of the image, in <a href=https://momdo.github.io/css3-values/#px id="the-input-element:'px'-2" data-x-internal="'px'">CSS pixels</a>, if an image is <i id=the-input-element:input-img-available><a href=#input-img-available>available</a></i> but not being rendered to a visual medium; or else 0,
-  if no image is <i id=the-input-element:input-img-available-2><a href=#input-img-available>available</a></i>. When the <code id=the-input-element:the-input-element-18><a href=#the-input-element>input</a></code>
-  element's <code id=the-input-element:attr-input-type-19><a href=#attr-input-type>type</a></code> attribute is not in the <a href="#image-button-state-(type=image)" id="the-input-element:image-button-state-(type=image)-3">Image Button</a> state, then no image is <i id=the-input-element:input-img-available-3><a href=#input-img-available>available</a></i>. <a href=references.html#refsCSS>[CSS]</a></p>
+  if no image is <i id=the-input-element:input-img-available-2><a href=#input-img-available>available</a></i>. When the <code id=the-input-element:the-input-element-21><a href=#the-input-element>input</a></code>
+  element's <code id=the-input-element:attr-input-type-23><a href=#attr-input-type>type</a></code> attribute is not in the <a href="#image-button-state-(type=image)" id="the-input-element:image-button-state-(type=image)-3">Image Button</a> state, then no image is <i id=the-input-element:input-img-available-3><a href=#input-img-available>available</a></i>. <a href=references.html#refsCSS>[CSS]</a></p>
 
   <p>On setting, they must act as if they <a href=infrastructure.html#reflect id=the-input-element:reflect-10>reflected</a> the respective
   content attributes of the same name.</p>
@@ -3383,7 +3414,8 @@ interface <dfn id=htmlinputelement>HTMLInputElement</dfn> : <a id=the-input-elem
 
   <ol><li><p>Set the element's <code id="text-(type=text)-state-and-search-state-(type=search):the-dir-attribute"><a href=dom.html#the-dir-attribute>dir</a></code> attribute to "<code id="text-(type=text)-state-and-search-state-(type=search):attr-dir-ltr"><a href=dom.html#attr-dir-ltr>ltr</a></code>" if the user selected a left-to-right writing direction, and
    "<code id="text-(type=text)-state-and-search-state-(type=search):attr-dir-rtl"><a href=dom.html#attr-dir-rtl>rtl</a></code>" if the user selected a right-to-left writing
-   direction.</li><li><p><a id="text-(type=text)-state-and-search-state-(type=search):queue-a-task" href=webappapis.html#queue-a-task>Queue a task</a> to <a id="text-(type=text)-state-and-search-state-(type=search):fire-a-simple-event" href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id="text-(type=text)-state-and-search-state-(type=search):event-input"><a href=indices.html#event-input>input</a></code> at the <code id="text-(type=text)-state-and-search-state-(type=search):the-input-element-3"><a href=#the-input-element>input</a></code> element.</li></ol>
+   direction.</li><li><p><a id="text-(type=text)-state-and-search-state-(type=search):queue-a-task" href=webappapis.html#queue-a-task>Queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id="text-(type=text)-state-and-search-state-(type=search):concept-event-fire" data-x-internal=concept-event-fire>fire an event</a> named
+   <code id="text-(type=text)-state-and-search-state-(type=search):event-input"><a href=indices.html#event-input>input</a></code> at the <code id="text-(type=text)-state-and-search-state-(type=search):the-input-element-3"><a href=#the-input-element>input</a></code> element, with the <code id="text-(type=text)-state-and-search-state-(type=search):dom-event-bubbles"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true.</li></ol>
 
   
 
@@ -4558,24 +4590,19 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
   
 
-  <p>If the element is <i id="checkbox-state-(type=checkbox):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, then: The <a id="checkbox-state-(type=checkbox):pre-click-activation-steps" href=interaction.html#pre-click-activation-steps>pre-click
-  activation steps</a> consist of setting the element's <a href=#concept-fe-checked id="checkbox-state-(type=checkbox):concept-fe-checked-3">checkedness</a> to its opposite value (i.e. true if it is false,
-  false if it is true), and of setting the element's <code id="checkbox-state-(type=checkbox):dom-input-indeterminate-4"><a href=#dom-input-indeterminate>indeterminate</a></code> IDL attribute to false. The <a id="checkbox-state-(type=checkbox):canceled-activation-steps" href=interaction.html#canceled-activation-steps>canceled
-  activation steps</a> consist of setting the <a href=#concept-fe-checked id="checkbox-state-(type=checkbox):concept-fe-checked-4">checkedness</a> and the element's <code id="checkbox-state-(type=checkbox):dom-input-indeterminate-5"><a href=#dom-input-indeterminate>indeterminate</a></code> IDL attribute back to the values they had
-  before the <a id="checkbox-state-(type=checkbox):pre-click-activation-steps-2" href=interaction.html#pre-click-activation-steps>pre-click activation steps</a> were run. The <a id="checkbox-state-(type=checkbox):activation-behaviour" href=interaction.html#activation-behaviour>activation behavior</a>
-  is to <a id="checkbox-state-(type=checkbox):fire-a-simple-event" href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id="checkbox-state-(type=checkbox):event-input"><a href=indices.html#event-input>input</a></code> at the element and then <a id="checkbox-state-(type=checkbox):fire-a-simple-event-2" href=webappapis.html#fire-a-simple-event>fire a simple event</a>
-  that bubbles named <code id="checkbox-state-(type=checkbox):event-change"><a href=indices.html#event-change>change</a></code> at the element.  </p>
+  <p>The <a href=#input-activation-behavior id="checkbox-state-(type=checkbox):input-activation-behavior">input activation behavior</a> is to <a href=https://dom.spec.whatwg.org/#concept-event-fire id="checkbox-state-(type=checkbox):concept-event-fire" data-x-internal=concept-event-fire>fire an
+  event</a> named <code id="checkbox-state-(type=checkbox):event-input"><a href=indices.html#event-input>input</a></code> at the element, with the <code id="checkbox-state-(type=checkbox):dom-event-bubbles"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, and then <a href=https://dom.spec.whatwg.org/#concept-event-fire id="checkbox-state-(type=checkbox):concept-event-fire-2" data-x-internal=concept-event-fire>fire an event</a> named <code id="checkbox-state-(type=checkbox):event-change"><a href=indices.html#event-change>change</a></code>
+  at the element, with the <code id="checkbox-state-(type=checkbox):dom-event-bubbles-2"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to
+  true.</p>
+  
 
-  <p>If the element is not <i id="checkbox-state-(type=checkbox):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, it has no <a id="checkbox-state-(type=checkbox):activation-behaviour-2" href=interaction.html#activation-behaviour>activation
-  behavior</a>.</p>
-
-  <p><strong>Constraint validation</strong>: If the element is <i id="checkbox-state-(type=checkbox):concept-input-required"><a href=#concept-input-required>required</a></i> and its <a href=#concept-fe-checked id="checkbox-state-(type=checkbox):concept-fe-checked-5">checkedness</a> is false, then the element is <a href=#suffering-from-being-missing id="checkbox-state-(type=checkbox):suffering-from-being-missing">suffering from
+  <p><strong>Constraint validation</strong>: If the element is <i id="checkbox-state-(type=checkbox):concept-input-required"><a href=#concept-input-required>required</a></i> and its <a href=#concept-fe-checked id="checkbox-state-(type=checkbox):concept-fe-checked-3">checkedness</a> is false, then the element is <a href=#suffering-from-being-missing id="checkbox-state-(type=checkbox):suffering-from-being-missing">suffering from
   being missing</a>.</p>
 
   
 
 
-  <dl class=domintro><dt><var>input</var> . <code id="checkbox-state-(type=checkbox):dom-input-indeterminate-6"><a href=#dom-input-indeterminate>indeterminate</a></code> [ = <var>value</var> ]<dd>
+  <dl class=domintro><dt><var>input</var> . <code id="checkbox-state-(type=checkbox):dom-input-indeterminate-4"><a href=#dom-input-indeterminate>indeterminate</a></code> [ = <var>value</var> ]<dd>
 
     <p>設定する場合、<a href="#checkbox-state-(type=checkbox)" id="checkbox-state-(type=checkbox):checkbox-state-(type=checkbox)-2">checkbox</a>コントロールの表示は、現在の値が表示されないように上書きする。</p>
 
@@ -4625,27 +4652,15 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
    whatever reason).</li><li>The element's <code id="radio-button-state-(type=radio):attr-fe-name-5"><a href=#attr-fe-name>name</a></code> attribute is set, changed, or
    removed.</li><li>The element's <a href=#form-owner id="radio-button-state-(type=radio):form-owner-3">form owner</a> changes.</li><li><a href=#signal-a-type-change id="radio-button-state-(type=radio):signal-a-type-change">A type change is signalled</a> for the element.</li></ul>
 
-  <p>If the element <var>R</var> is <i id="radio-button-state-(type=radio):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, then: The
-  <a id="radio-button-state-(type=radio):pre-click-activation-steps" href=interaction.html#pre-click-activation-steps>pre-click activation steps</a> for <var>R</var> consist of getting a reference to the
-  element in <var>R</var>'s <a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-4">radio button group</a> that has its <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-6">checkedness</a> set to true, if any, and then setting
-  <var>R</var>'s <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-7">checkedness</a> to true. The <a id="radio-button-state-(type=radio):canceled-activation-steps" href=interaction.html#canceled-activation-steps>canceled
-  activation steps</a> for <var>R</var> consist of checking if the element to which a reference
-  was obtained in the <a id="radio-button-state-(type=radio):pre-click-activation-steps-2" href=interaction.html#pre-click-activation-steps>pre-click activation steps</a>, if any, is still in what is now
-  <var>R</var>'s <a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-5">radio button group</a>, if it still has one, and if so, setting that
-  element's <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-8">checkedness</a> to true; or else, if there was no
-  such element, or that element is no longer in <var>R</var>'s <a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-6">radio button group</a>, or
-  if <var>R</var> no longer has a <a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-7">radio button group</a>, setting <var>R</var>'s <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-9">checkedness</a> to false. The <a id="radio-button-state-(type=radio):activation-behaviour" href=interaction.html#activation-behaviour>activation behavior</a> for
-  <var>R</var> is to <a id="radio-button-state-(type=radio):fire-a-simple-event" href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id="radio-button-state-(type=radio):event-input"><a href=indices.html#event-input>input</a></code> at <var>R</var> and then <a id="radio-button-state-(type=radio):fire-a-simple-event-2" href=webappapis.html#fire-a-simple-event>fire a simple event</a>
-  that bubbles named <code id="radio-button-state-(type=radio):event-change"><a href=indices.html#event-change>change</a></code> at <var>R</var>.  </p>
-
+  <p>The <a href=#input-activation-behavior id="radio-button-state-(type=radio):input-activation-behavior">input activation behavior</a> is to <a href=https://dom.spec.whatwg.org/#concept-event-fire id="radio-button-state-(type=radio):concept-event-fire" data-x-internal=concept-event-fire>fire an
+  event</a> named <code id="radio-button-state-(type=radio):event-input"><a href=indices.html#event-input>input</a></code> at the element, with the <code id="radio-button-state-(type=radio):dom-event-bubbles"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, and then <a href=https://dom.spec.whatwg.org/#concept-event-fire id="radio-button-state-(type=radio):concept-event-fire-2" data-x-internal=concept-event-fire>fire an event</a> named <code id="radio-button-state-(type=radio):event-change"><a href=indices.html#event-change>change</a></code>
+  at the element, with the <code id="radio-button-state-(type=radio):dom-event-bubbles-2"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to
+  true.</p>
   
 
-  <p>If the element is not <i id="radio-button-state-(type=radio):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, it has no <a id="radio-button-state-(type=radio):activation-behaviour-2" href=interaction.html#activation-behaviour>activation
-  behavior</a>.</p>
-
-  <p><strong>Constraint validation</strong>: If an element in the <i id="radio-button-state-(type=radio):radio-button-group-8"><a href=#radio-button-group>radio button group</a></i> is <i id="radio-button-state-(type=radio):concept-input-required"><a href=#concept-input-required>required</a></i>, and all of the
-  <code id="radio-button-state-(type=radio):the-input-element-8"><a href=#the-input-element>input</a></code> elements in the <i id="radio-button-state-(type=radio):radio-button-group-9"><a href=#radio-button-group>radio button group</a></i> have a
-  <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-10">checkedness</a> that is false, then the element is
+  <p><strong>Constraint validation</strong>: If an element in the <i id="radio-button-state-(type=radio):radio-button-group-4"><a href=#radio-button-group>radio button group</a></i> is <i id="radio-button-state-(type=radio):concept-input-required"><a href=#concept-input-required>required</a></i>, and all of the
+  <code id="radio-button-state-(type=radio):the-input-element-8"><a href=#the-input-element>input</a></code> elements in the <i id="radio-button-state-(type=radio):radio-button-group-5"><a href=#radio-button-group>radio button group</a></i> have a
+  <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-6">checkedness</a> that is false, then the element is
   <a href=#suffering-from-being-missing id="radio-button-state-(type=radio):suffering-from-being-missing">suffering from being missing</a>.</p>
 
   <div class=example>
@@ -4659,17 +4674,17 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
    <p>If the user tries to submit this form without first selecting "Doggo", then <em>both</em>
    <code id="radio-button-state-(type=radio):the-input-element-9"><a href=#the-input-element>input</a></code> elements will be <a href=#suffering-from-being-missing id="radio-button-state-(type=radio):suffering-from-being-missing-2">suffering from being missing</a>, since an element
-   in the <a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-10">radio button group</a> is <a href=#concept-input-required id="radio-button-state-(type=radio):concept-input-required-3">required</a>
-   (viz. the first element), and both of the elements in the radio button group have a false <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-11">checkedness</a>.</p>
+   in the <a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-6">radio button group</a> is <a href=#concept-input-required id="radio-button-state-(type=radio):concept-input-required-3">required</a>
+   (viz. the first element), and both of the elements in the radio button group have a false <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-7">checkedness</a>.</p>
 
    <p>On the other hand, if the user selects "Doggo" and then submits the form, then neither
    <code id="radio-button-state-(type=radio):the-input-element-10"><a href=#the-input-element>input</a></code> element will be <a href=#suffering-from-being-missing id="radio-button-state-(type=radio):suffering-from-being-missing-3">suffering from being missing</a>, since while one of
-   them is <a href=#concept-input-required id="radio-button-state-(type=radio):concept-input-required-4">required</a>, not all of them have a false <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-12">checkedness</a>.</p>
+   them is <a href=#concept-input-required id="radio-button-state-(type=radio):concept-input-required-4">required</a>, not all of them have a false <a href=#concept-fe-checked id="radio-button-state-(type=radio):concept-fe-checked-8">checkedness</a>.</p>
   </div>
 
   
 
-  <p class=note><a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-11">ラジオボタングループ</a>内のラジオボタンがいずれもチェックされない場合、（ユーザーまたはスクリプトのいずれかによって）ボタンの1つがチェックされるようになるまで、インターフェイスで初期にチェックされない。</p>
+  <p class=note><a href=#radio-button-group id="radio-button-state-(type=radio):radio-button-group-7">ラジオボタングループ</a>内のラジオボタンがいずれもチェックされない場合、（ユーザーまたはスクリプトのいずれかによって）ボタンの1つがチェックされるようになるまで、インターフェイスで初期にチェックされない。</p>
 
   <div class=bookkeeping>
 
@@ -4713,8 +4728,7 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
   no more than one file in the list of <a href=#concept-input-type-file-selected id="file-upload-state-(type=file):concept-input-type-file-selected">selected
   files</a>.</p>
 
-  <p>If the element is <i id="file-upload-state-(type=file):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, then the element's
-  <a id="file-upload-state-(type=file):activation-behaviour" href=interaction.html#activation-behaviour>activation behavior</a> is to run the following steps:</p>
+  <p>The element's <a href=#input-activation-behavior id="file-upload-state-(type=file):input-activation-behavior">input activation behavior</a> is to run the following steps:</p>
 
   <ol><li><p>If the algorithm is not <a id="file-upload-state-(type=file):triggered-by-user-activation" href=interaction.html#triggered-by-user-activation>triggered by user activation</a>, then abort these steps
    without doing anything else.</li><li><p>Return, but continue running these steps <a id="file-upload-state-(type=file):in-parallel" href=infrastructure.html#in-parallel>in parallel</a>.</li><li><p>Optionally, wait until any prior execution of this algorithm has terminated.</p>
@@ -4724,20 +4738,21 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
    on the fly, e.g. a picture taken from a camera connected to the user's device.</p>
 
    </li><li><p>Wait for the user to have made their selection.</li><li><p><a id="file-upload-state-(type=file):queue-a-task" href=webappapis.html#queue-a-task>Queue a task</a> to first update the element's <a href=#concept-input-type-file-selected id="file-upload-state-(type=file):concept-input-type-file-selected-2">selected files</a> so that it represents the user's
-   selection, then <a id="file-upload-state-(type=file):fire-a-simple-event" href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id="file-upload-state-(type=file):event-input"><a href=indices.html#event-input>input</a></code> at the <code id="file-upload-state-(type=file):the-input-element-3"><a href=#the-input-element>input</a></code> element, and finally <a id="file-upload-state-(type=file):fire-a-simple-event-2" href=webappapis.html#fire-a-simple-event>fire
-   a simple event</a> that bubbles named <code id="file-upload-state-(type=file):event-change"><a href=indices.html#event-change>change</a></code> at the
-   <code id="file-upload-state-(type=file):the-input-element-4"><a href=#the-input-element>input</a></code> element.</li></ol>
+   selection, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id="file-upload-state-(type=file):concept-event-fire" data-x-internal=concept-event-fire>fire an event</a> named <code id="file-upload-state-(type=file):event-input"><a href=indices.html#event-input>input</a></code> at the <code id="file-upload-state-(type=file):the-input-element-3"><a href=#the-input-element>input</a></code> element, with the <code id="file-upload-state-(type=file):dom-event-bubbles"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, and finally <a href=https://dom.spec.whatwg.org/#concept-event-fire id="file-upload-state-(type=file):concept-event-fire-2" data-x-internal=concept-event-fire>fire an event</a> named <code id="file-upload-state-(type=file):event-change"><a href=indices.html#event-change>change</a></code>
+   at the <code id="file-upload-state-(type=file):the-input-element-4"><a href=#the-input-element>input</a></code> element, with the <code id="file-upload-state-(type=file):dom-event-bubbles-2"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code>
+   attribute initialized to true.</li></ol>
 
-  <p>If the element is <i id="file-upload-state-(type=file):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, the user agent should allow the
+  <p>If the element is <i id="file-upload-state-(type=file):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, the user agent should allow the
   user to change the files on the list in other ways also, e.g. adding or removing files by
   drag-and-drop. When the user does so, the user agent must <a id="file-upload-state-(type=file):queue-a-task-2" href=webappapis.html#queue-a-task>queue a task</a> to first
   update the element's <a href=#concept-input-type-file-selected id="file-upload-state-(type=file):concept-input-type-file-selected-3">selected files</a> so that
-  it represents the user's new selection, then <a id="file-upload-state-(type=file):fire-a-simple-event-3" href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named
-  <code id="file-upload-state-(type=file):event-input-2"><a href=indices.html#event-input>input</a></code> at the <code id="file-upload-state-(type=file):the-input-element-5"><a href=#the-input-element>input</a></code> element, and finally
-  <a id="file-upload-state-(type=file):fire-a-simple-event-4" href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id="file-upload-state-(type=file):event-change-2"><a href=indices.html#event-change>change</a></code> at the <code id="file-upload-state-(type=file):the-input-element-6"><a href=#the-input-element>input</a></code> element.</p>
+  it represents the user's new selection, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id="file-upload-state-(type=file):concept-event-fire-3" data-x-internal=concept-event-fire>fire an
+  event</a> named <code id="file-upload-state-(type=file):event-input-2"><a href=indices.html#event-input>input</a></code> at the <code id="file-upload-state-(type=file):the-input-element-5"><a href=#the-input-element>input</a></code> element, with
+  the <code id="file-upload-state-(type=file):dom-event-bubbles-3"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, and finally
+  <a href=https://dom.spec.whatwg.org/#concept-event-fire id="file-upload-state-(type=file):concept-event-fire-4" data-x-internal=concept-event-fire>fire an event</a> named <code id="file-upload-state-(type=file):event-change-2"><a href=indices.html#event-change>change</a></code> at the <code id="file-upload-state-(type=file):the-input-element-6"><a href=#the-input-element>input</a></code> element, with the <code id="file-upload-state-(type=file):dom-event-bubbles-4"><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true.</p>
 
-  <p>If the element is not <i id="file-upload-state-(type=file):concept-fe-mutable-3"><a href=#concept-fe-mutable>mutable</a></i>, it has no <a id="file-upload-state-(type=file):activation-behaviour-2" href=interaction.html#activation-behaviour>activation
-  behavior</a> and the user agent must not allow the user to change the element's selection.</p>
+  <p>If the element is not <i id="file-upload-state-(type=file):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, the user agent must not allow
+  the user to change the element's selection.</p>
 
   <p><strong>Constraint validation</strong>: If the element is <i id="file-upload-state-(type=file):concept-input-required"><a href=#concept-input-required>required</a></i> and the list of <a href=#concept-input-type-file-selected id="file-upload-state-(type=file):concept-input-type-file-selected-4">selected files</a> is empty, then the element is
   <a href=#suffering-from-being-missing id="file-upload-state-(type=file):suffering-from-being-missing">suffering from being missing</a>.</p>
@@ -4858,14 +4873,10 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
   
 
-  <p>If the element is <i id="submit-button-state-(type=submit):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, then the element's
-  <a id="submit-button-state-(type=submit):activation-behaviour" href=interaction.html#activation-behaviour>activation behavior</a> is as follows: if the element has a <a href=#form-owner id="submit-button-state-(type=submit):form-owner">form owner</a>,
-  and the element's <a id="submit-button-state-(type=submit):node-document" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is <a id="submit-button-state-(type=submit):fully-active" href=browsers.html#fully-active>fully active</a>,
-  <a href=#concept-form-submit id="submit-button-state-(type=submit):concept-form-submit">submit</a> the <a href=#form-owner id="submit-button-state-(type=submit):form-owner-2">form owner</a> from the
-  <code id="submit-button-state-(type=submit):the-input-element-3"><a href=#the-input-element>input</a></code> element; otherwise, do nothing.</p>
-
-  <p>If the element is not <i id="submit-button-state-(type=submit):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, it has no <a id="submit-button-state-(type=submit):activation-behaviour-2" href=interaction.html#activation-behaviour>activation
-  behavior</a>.</p>
+  <p>The element's <a href=#input-activation-behavior id="submit-button-state-(type=submit):input-activation-behavior">input activation behavior</a> is as follows: if the element has a
+  <a href=#form-owner id="submit-button-state-(type=submit):form-owner">form owner</a>, and the element's <a id="submit-button-state-(type=submit):node-document" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is <a id="submit-button-state-(type=submit):fully-active" href=browsers.html#fully-active>fully
+  active</a>, <a href=#concept-form-submit id="submit-button-state-(type=submit):concept-form-submit">submit</a> the <a href=#form-owner id="submit-button-state-(type=submit):form-owner-2">form owner</a> from
+  the <code id="submit-button-state-(type=submit):the-input-element-3"><a href=#the-input-element>input</a></code> element; otherwise, do nothing.</p>
 
   
 
@@ -4956,9 +4967,10 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
   <p>The <a href=webappapis.html#concept-task id="image-button-state-(type=image):concept-task-3">task</a> that is <a href=webappapis.html#queue-a-task id="image-button-state-(type=image):queue-a-task-3">queued</a>
   by the <a id="image-button-state-(type=image):networking-task-source-3" href=webappapis.html#networking-task-source>networking task source</a> once the resource has been fetched, must, if the
   download was successful and the image is <i id="image-button-state-(type=image):input-img-available"><a href=#input-img-available>available</a></i>,
-  <a id="image-button-state-(type=image):queue-a-task-4" href=webappapis.html#queue-a-task>queue a task</a> to <a id="image-button-state-(type=image):fire-a-simple-event" href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code id="image-button-state-(type=image):event-load"><a href=indices.html#event-load>load</a></code> at the <code id="image-button-state-(type=image):the-input-element-7"><a href=#the-input-element>input</a></code> element; and otherwise, if the fetching
+  <a id="image-button-state-(type=image):queue-a-task-4" href=webappapis.html#queue-a-task>queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id="image-button-state-(type=image):concept-event-fire" data-x-internal=concept-event-fire>fire an event</a> named <code id="image-button-state-(type=image):event-load"><a href=indices.html#event-load>load</a></code> at the <code id="image-button-state-(type=image):the-input-element-7"><a href=#the-input-element>input</a></code> element; and otherwise, if the fetching
   process fails without a response from the remote server, or completes but the image is not a valid
-  or supported image, <a id="image-button-state-(type=image):queue-a-task-5" href=webappapis.html#queue-a-task>queue a task</a> to <a id="image-button-state-(type=image):fire-a-simple-event-2" href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code id="image-button-state-(type=image):event-error"><a href=indices.html#event-error>error</a></code> on the <code id="image-button-state-(type=image):the-input-element-8"><a href=#the-input-element>input</a></code> element.</p>
+  or supported image, <a id="image-button-state-(type=image):queue-a-task-5" href=webappapis.html#queue-a-task>queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id="image-button-state-(type=image):concept-event-fire-2" data-x-internal=concept-event-fire>fire an
+  event</a> named <code id="image-button-state-(type=image):event-error"><a href=indices.html#event-error>error</a></code> on the <code id="image-button-state-(type=image):the-input-element-8"><a href=#the-input-element>input</a></code> element.</p>
 
   <hr>
 
@@ -4974,22 +4986,21 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
   <p>If the <code id="image-button-state-(type=image):attr-input-src-7"><a href=#attr-input-src>src</a></code> attribute is set, and the image is <i id="image-button-state-(type=image):input-img-available-2"><a href=#input-img-available>available</a></i> and the user agent is configured to display that image,
   then: The element <a id="image-button-state-(type=image):represents-2" href=dom.html#represents>represents</a> a control for selecting a <a href=#concept-input-type-image-coordinate id="image-button-state-(type=image):concept-input-type-image-coordinate">coordinate</a> from the image specified by the
-  <code id="image-button-state-(type=image):attr-input-src-8"><a href=#attr-input-src>src</a></code> attribute; if the element is <i id="image-button-state-(type=image):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, the user agent should allow the user to select this <a href=#concept-input-type-image-coordinate id="image-button-state-(type=image):concept-input-type-image-coordinate-2">coordinate</a>, and the element's <a id="image-button-state-(type=image):activation-behaviour" href=interaction.html#activation-behaviour>activation
-  behavior</a> is as follows: if the element has a <a href=#form-owner id="image-button-state-(type=image):form-owner">form owner</a>, and the element's
-  <a id="image-button-state-(type=image):node-document-4" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is <a id="image-button-state-(type=image):fully-active" href=browsers.html#fully-active>fully active</a>, take the user's selected <a href=#concept-input-type-image-coordinate id="image-button-state-(type=image):concept-input-type-image-coordinate-3">coordinate</a>, and <a href=#concept-form-submit id="image-button-state-(type=image):concept-form-submit">submit</a> the <code id="image-button-state-(type=image):the-input-element-10"><a href=#the-input-element>input</a></code> element's <a href=#form-owner id="image-button-state-(type=image):form-owner-2">form owner</a>
+  <code id="image-button-state-(type=image):attr-input-src-8"><a href=#attr-input-src>src</a></code> attribute; if the element is <i id="image-button-state-(type=image):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, the user agent should allow the user to select this <a href=#concept-input-type-image-coordinate id="image-button-state-(type=image):concept-input-type-image-coordinate-2">coordinate</a>, and the element's <a href=#input-activation-behavior id="image-button-state-(type=image):input-activation-behavior">input
+  activation behavior</a> is as follows: if the element has a <a href=#form-owner id="image-button-state-(type=image):form-owner">form owner</a>, and the
+  element's <a id="image-button-state-(type=image):node-document-4" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is <a id="image-button-state-(type=image):fully-active" href=browsers.html#fully-active>fully active</a>, take the user's selected <a href=#concept-input-type-image-coordinate id="image-button-state-(type=image):concept-input-type-image-coordinate-3">coordinate</a>, and <a href=#concept-form-submit id="image-button-state-(type=image):concept-form-submit">submit</a> the <code id="image-button-state-(type=image):the-input-element-10"><a href=#the-input-element>input</a></code> element's <a href=#form-owner id="image-button-state-(type=image):form-owner-2">form owner</a>
   from the <code id="image-button-state-(type=image):the-input-element-11"><a href=#the-input-element>input</a></code> element. If the user activates the control without explicitly
   selecting a coordinate, then the coordinate (0,0) must be assumed.</p>
 
   <p>Otherwise, the element <a id="image-button-state-(type=image):represents-3" href=dom.html#represents>represents</a> a submit button whose label is given by the
-  value of the <code id="image-button-state-(type=image):attr-input-alt-2"><a href=#attr-input-alt>alt</a></code> attribute; if the element is <i id="image-button-state-(type=image):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, then the element's <a id="image-button-state-(type=image):activation-behaviour-2" href=interaction.html#activation-behaviour>activation behavior</a> is as
-  follows: if the element has a <a href=#form-owner id="image-button-state-(type=image):form-owner-3">form owner</a>, and the element's <a id="image-button-state-(type=image):node-document-5" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is
-  <a id="image-button-state-(type=image):fully-active-2" href=browsers.html#fully-active>fully active</a>, set the <a href=#concept-input-type-image-coordinate id="image-button-state-(type=image):concept-input-type-image-coordinate-4">selected
-  coordinate</a> to (0,0), and <a href=#concept-form-submit id="image-button-state-(type=image):concept-form-submit-2">submit</a> the
-  <code id="image-button-state-(type=image):the-input-element-12"><a href=#the-input-element>input</a></code> element's <a href=#form-owner id="image-button-state-(type=image):form-owner-4">form owner</a> from the <code id="image-button-state-(type=image):the-input-element-13"><a href=#the-input-element>input</a></code> element.</p>
+  value of the <code id="image-button-state-(type=image):attr-input-alt-2"><a href=#attr-input-alt>alt</a></code> attribute; the element's <a href=#input-activation-behavior id="image-button-state-(type=image):input-activation-behavior-2">input
+  activation behavior</a> is as follows: if the element has a <a href=#form-owner id="image-button-state-(type=image):form-owner-3">form owner</a>, and the
+  element's <a id="image-button-state-(type=image):node-document-5" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is <a id="image-button-state-(type=image):fully-active-2" href=browsers.html#fully-active>fully active</a>, set the <a href=#concept-input-type-image-coordinate id="image-button-state-(type=image):concept-input-type-image-coordinate-4">selected coordinate</a> to (0,0), and <a href=#concept-form-submit id="image-button-state-(type=image):concept-form-submit-2">submit</a> the <code id="image-button-state-(type=image):the-input-element-12"><a href=#the-input-element>input</a></code> element's <a href=#form-owner id="image-button-state-(type=image):form-owner-4">form
+  owner</a> from the <code id="image-button-state-(type=image):the-input-element-13"><a href=#the-input-element>input</a></code> element.</p>
 
-  <p>In either case, if the element is <i id="image-button-state-(type=image):concept-fe-mutable-3"><a href=#concept-fe-mutable>mutable</a></i> but has no
-  <a href=#form-owner id="image-button-state-(type=image):form-owner-5">form owner</a> or the element's <a id="image-button-state-(type=image):node-document-6" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is not <a id="image-button-state-(type=image):fully-active-3" href=browsers.html#fully-active>fully active</a>,
-  then its <a id="image-button-state-(type=image):activation-behaviour-3" href=interaction.html#activation-behaviour>activation behavior</a> must be to do nothing. If the element is not <i id="image-button-state-(type=image):concept-fe-mutable-4"><a href=#concept-fe-mutable>mutable</a></i>, it has no <a id="image-button-state-(type=image):activation-behaviour-4" href=interaction.html#activation-behaviour>activation behavior</a>.</p>
+  <p>In either case, if the element has no <a href=#form-owner id="image-button-state-(type=image):form-owner-5">form owner</a> or the element's <a id="image-button-state-(type=image):node-document-6" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
+  document</a> is not <a id="image-button-state-(type=image):fully-active-3" href=browsers.html#fully-active>fully active</a>, then its <a href=#input-activation-behavior id="image-button-state-(type=image):input-activation-behavior-3">input activation behavior</a>
+  must be to do nothing..</p>
 
   <p>The <dfn id=concept-input-type-image-coordinate>selected coordinate</dfn> must consist of
   an <var>x</var>-component and a <var>y</var>-component. The coordinates
@@ -5079,13 +5090,10 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
   
 
-  <p>If the element is <i id="reset-button-state-(type=reset):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, then the element's
-  <a id="reset-button-state-(type=reset):activation-behaviour" href=interaction.html#activation-behaviour>activation behavior</a>, if the element has a <a href=#form-owner id="reset-button-state-(type=reset):form-owner">form owner</a> and the element's
-  <a id="reset-button-state-(type=reset):node-document" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is <a id="reset-button-state-(type=reset):fully-active" href=browsers.html#fully-active>fully active</a>, is to <a href=#concept-form-reset id="reset-button-state-(type=reset):concept-form-reset">reset</a> the <a href=#form-owner id="reset-button-state-(type=reset):form-owner-2">form owner</a>; otherwise, it is to do
+  <p>The element's <a href=#input-activation-behavior id="reset-button-state-(type=reset):input-activation-behavior">input activation behavior</a>, if the element has a <a href=#form-owner id="reset-button-state-(type=reset):form-owner">form
+  owner</a> and the element's <a id="reset-button-state-(type=reset):node-document" href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is <a id="reset-button-state-(type=reset):fully-active" href=browsers.html#fully-active>fully active</a>, is to
+  <a href=#concept-form-reset id="reset-button-state-(type=reset):concept-form-reset">reset</a> the <a href=#form-owner id="reset-button-state-(type=reset):form-owner-2">form owner</a>; otherwise, it is to do
   nothing.</p>
-
-  <p>If the element is not <i id="reset-button-state-(type=reset):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, it has no <a id="reset-button-state-(type=reset):activation-behaviour-2" href=interaction.html#activation-behaviour>activation
-  behavior</a>.</p>
 
   <p><strong>Constraint validation</strong>: The element is <a href=#barred-from-constraint-validation id="reset-button-state-(type=reset):barred-from-constraint-validation">barred from constraint
   validation</a>.</p>
@@ -5118,11 +5126,7 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
   
 
-  <p>If the element is <i id="button-state-(type=button):concept-fe-mutable"><a href=#concept-fe-mutable>mutable</a></i>, the element's <a id="button-state-(type=button):activation-behaviour" href=interaction.html#activation-behaviour>activation
-  behavior</a> is to do nothing.</p>
-
-  <p>If the element is not <i id="button-state-(type=button):concept-fe-mutable-2"><a href=#concept-fe-mutable>mutable</a></i>, it has no <a id="button-state-(type=button):activation-behaviour-2" href=interaction.html#activation-behaviour>activation
-  behavior</a>.</p>
+  <p>The element has no <a href=#input-activation-behavior id="button-state-(type=button):input-activation-behavior">input activation behavior</a>.</p>
 
   <p><strong>Constraint validation</strong>: The element is <a href=#barred-from-constraint-validation id="button-state-(type=button):barred-from-constraint-validation">barred from constraint
   validation</a>.</p>
@@ -5242,7 +5246,21 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
   
 
-  <p class=note><code id=the-readonly-attribute:attr-fe-disabled><a href=#attr-fe-disabled>disabled</a></code>と<code id=the-readonly-attribute:attr-input-readonly-3><a href=#attr-input-readonly>readonly</a></code>との違いは、無効なコントロールに非対話型であるのに対し、読み取り専用コントロールは、依然としてフォーカス可能であるので、ユーザーはまだテキストを選択し対話できる。（このような理由から、テキストのみのコントロールは読み取り専用にできる。たとえば、チェックボックスやボタンの意味をなさないだろう。）</p>
+  <div class=note>
+   <p>The difference between <code id=the-readonly-attribute:attr-fe-disabled><a href=#attr-fe-disabled>disabled</a></code> and <code id=the-readonly-attribute:attr-input-readonly-3><a href=#attr-input-readonly>readonly</a></code> is that read-only controls can still function,
+   whereas disabled controls generally do not function as controls until they are enabled. This is
+   spelled out in more detail elsewhere in this specification with normative requirements that refer
+   to the <a href=#concept-fe-disabled id=the-readonly-attribute:concept-fe-disabled>disabled</a> concept (for example, the element's
+   <a id=the-readonly-attribute:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a>, whether or not it is a <a id=the-readonly-attribute:focusable-area href=interaction.html#focusable-area>focusable area</a>, or when
+   <a href=#constructing-the-form-data-set id=the-readonly-attribute:constructing-the-form-data-set>constructing the form data set</a>). Any other behavior related to user interaction with
+   disabled controls, such as whether text can be selected or copied, is not defined in this
+   specification.</p>
+
+   <p>Only text controls can be made read-only, since for other controls (such as checkboxes and
+   buttons) there is no useful distinction between being read-only and being disabled, so the
+   <code id=the-readonly-attribute:attr-input-readonly-4><a href=#attr-input-readonly>readonly</a></code> attribute <a href=#do-not-apply id=the-readonly-attribute:do-not-apply>does not
+   apply</a>.</p>
+  </div>
 
   <div class=example>
 
@@ -5333,18 +5351,19 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
 
   <div class=example>
 
-   <p>以下の抜粋は、電子メールクライアントの"Cc"のフィールドが複数の電子メールアドレスを受け入れることができる方法を示す。</p>
+   <p>The following extract shows how an e-mail client's "To" field could accept multiple e-mail
+   addresses.</p>
 
-   <pre>&lt;label&gt;Cc: &lt;input type=email multiple name=cc&gt;&lt;/label&gt;</pre>
+   <pre>&lt;label&gt;To: &lt;input type=email multiple name=to&gt;&lt;/label&gt;</pre>
 
    <p>ユーザーの連絡先データベースで多くの友人の間で、ユーザーが、2人の友人"Arthur Dent"（アドレス"art@example.net"）と"Adam Josh"（アドレス"adamjosh@example.net"）持っていた場合、ユーザーが"a"を入力した後に、ユーザーエージェントは、ユーザーにこれら2つの電子メールアドレスを推奨するかもしれない。</p>
 
    
-   <p><img src=https://html.spec.whatwg.org/multipage/images/sample-email-1.png width=500 alt="" height=140></p>
+   <p><img src=/images/sample-email-1.svg width=330 alt="" height=100></p>
 
    <p>このページはまた、サイトからユーザーの連絡先データベースにリンクすることができる：</p>
 
-   <pre>&lt;label&gt;Cc: &lt;input type=email multiple name=cc list=contacts&gt;&lt;/label&gt;
+   <pre>&lt;label&gt;To: &lt;input type=email multiple name=to list=contacts&gt;&lt;/label&gt;
 ...
 &lt;datalist id="contacts"&gt;
  &lt;option value="hedral@damowmow.com"&gt;
@@ -5353,10 +5372,13 @@ ldh-str       = &lt; <a href=https://tools.ietf.org/html/rfc1034#section-3.5>RFC
  &lt;option value="astronomy@science.example.org"&gt;
 &lt;/datalist&gt;</pre>
 
-   <p>Suppose the user had entered "bob@example.net" into this text control, and then started typing a second e-mail address starting with "a". ユーザーエージェントは、前述した2人の友人だけでなく、<code id=the-multiple-attribute:the-datalist-element><a href=#the-datalist-element>datalist</a></code>要素で指定された"astrophy"と"astronomy"の値の両方を表示するかもしれない。</p>
+   <p>Suppose the user had entered "<kbd>bob@example.net</kbd>" into this text control, and then
+   started typing a second e-mail address starting with "<kbd>a</kbd>". The user agent might show
+   both the two friends mentioned earlier, as well as the "astrophy" and "astronomy" values given in
+   the <code id=the-multiple-attribute:the-datalist-element><a href=#the-datalist-element>datalist</a></code> element.</p>
 
    
-   <p><img src=https://html.spec.whatwg.org/multipage/images/sample-email-2.png width=500 alt="" height=171></p>
+   <p><img src=/images/sample-email-2.svg width=330 alt="" height=140></p>
 
   </div>
 
@@ -5997,19 +6019,19 @@ You cannot submit this form when the field is incorrect.</samp></pre>
   In all cases, the <code id=common-input-element-events:event-input-3><a href=indices.html#event-input>input</a></code> event comes before the corresponding
   <code id=common-input-element-events:event-change-3><a href=indices.html#event-change>change</a></code> event (if any).</p>
 
-  <p>When an <code id=common-input-element-events:the-input-element-2><a href=#the-input-element>input</a></code> element has a defined <a id=common-input-element-events:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a>, the rules
-  for dispatching these events, if they <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-2>apply</a>, are given
-  in the section above that defines the <code id=common-input-element-events:attr-input-type-2><a href=#attr-input-type>type</a></code> attribute's
+  <p>When an <code id=common-input-element-events:the-input-element-2><a href=#the-input-element>input</a></code> element has a defined <a href=#input-activation-behavior id=common-input-element-events:input-activation-behavior>input activation behavior</a>, the
+  rules for dispatching these events, if they <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-2>apply</a>, are
+  given in the section above that defines the <code id=common-input-element-events:attr-input-type-2><a href=#attr-input-type>type</a></code> attribute's
   state. (This is the case for all <code id=common-input-element-events:the-input-element-3><a href=#the-input-element>input</a></code> controls with the <code id=common-input-element-events:attr-input-type-3><a href=#attr-input-type>type</a></code> attribute in the <a href="#checkbox-state-(type=checkbox)" id="common-input-element-events:checkbox-state-(type=checkbox)">Checkbox</a> state, the <a href="#radio-button-state-(type=radio)" id="common-input-element-events:radio-button-state-(type=radio)">Radio Button</a> state, or the <a href="#file-upload-state-(type=file)" id="common-input-element-events:file-upload-state-(type=file)">File Upload</a> state.)</p>
 
-  <p>For <code id=common-input-element-events:the-input-element-4><a href=#the-input-element>input</a></code> elements without a defined <a id=common-input-element-events:activation-behaviour-2 href=interaction.html#activation-behaviour>activation behavior</a>, but to
-  which these events <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-3>apply</a>, and for which the user
+  <p>For <code id=common-input-element-events:the-input-element-4><a href=#the-input-element>input</a></code> elements without a defined <a href=#input-activation-behavior id=common-input-element-events:input-activation-behavior-2>input activation behavior</a>, but
+  to which these events <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-3>apply</a>, and for which the user
   interface involves both interactive manipulation and an explicit commit action, then when the user
   changes the element's <a href=#concept-fe-value id=common-input-element-events:concept-fe-value>value</a>, the user agent must
-  <a id=common-input-element-events:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a id=common-input-element-events:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=common-input-element-events:event-input-4><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-5><a href=#the-input-element>input</a></code> element, and any time the user
-  commits the change, the user agent must <a id=common-input-element-events:queue-a-task-2 href=webappapis.html#queue-a-task>queue a task</a> to <a id=common-input-element-events:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple
-  event</a> that bubbles named <code id=common-input-element-events:event-change-4><a href=indices.html#event-change>change</a></code> at the
-  <code id=common-input-element-events:the-input-element-6><a href=#the-input-element>input</a></code> element.</p>
+  <a id=common-input-element-events:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=common-input-element-events:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=common-input-element-events:event-input-4><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-5><a href=#the-input-element>input</a></code> element, with the <code id=common-input-element-events:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, and any time the user
+  commits the change, the user agent must <a id=common-input-element-events:queue-a-task-2 href=webappapis.html#queue-a-task>queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=common-input-element-events:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named <code id=common-input-element-events:event-change-4><a href=indices.html#event-change>change</a></code>
+  at the <code id=common-input-element-events:the-input-element-6><a href=#the-input-element>input</a></code> element, with the <code id=common-input-element-events:dom-event-bubbles-2><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code>
+  attribute initialized to true.</p>
 
   <p class=example>An example of a user interface involving both interactive manipulation and a
   commit action would be a <a href="#range-state-(type=range)" id="common-input-element-events:range-state-(type=range)">Range</a> controls that use a
@@ -6018,13 +6040,15 @@ You cannot submit this form when the field is incorrect.</samp></pre>
   whereas the <code id=common-input-element-events:event-change-5><a href=indices.html#event-change>change</a></code> event would only fire when the user
   let go of the knob, committing to a specific value.</p>
 
-  <p>For <code id=common-input-element-events:the-input-element-7><a href=#the-input-element>input</a></code> elements without a defined <a id=common-input-element-events:activation-behaviour-3 href=interaction.html#activation-behaviour>activation behavior</a>, but to
-  which these events <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-4>apply</a>, and for which the user
+  <p>For <code id=common-input-element-events:the-input-element-7><a href=#the-input-element>input</a></code> elements without a defined <a href=#input-activation-behavior id=common-input-element-events:input-activation-behavior-3>input activation behavior</a>, but
+  to which these events <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-4>apply</a>, and for which the user
   interface involves an explicit commit action but no intermediate manipulation, then any time the
   user commits a change to the element's <a href=#concept-fe-value id=common-input-element-events:concept-fe-value-2>value</a>, the user
-  agent must <a id=common-input-element-events:queue-a-task-3 href=webappapis.html#queue-a-task>queue a task</a> to first <a id=common-input-element-events:fire-a-simple-event-3 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named
-  <code id=common-input-element-events:event-input-6><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-8><a href=#the-input-element>input</a></code> element, and then
-  <a id=common-input-element-events:fire-a-simple-event-4 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=common-input-element-events:event-change-6><a href=indices.html#event-change>change</a></code> at the <code id=common-input-element-events:the-input-element-9><a href=#the-input-element>input</a></code> element.</p>
+  agent must <a id=common-input-element-events:queue-a-task-3 href=webappapis.html#queue-a-task>queue a task</a> to first <a href=https://dom.spec.whatwg.org/#concept-event-fire id=common-input-element-events:concept-event-fire-3 data-x-internal=concept-event-fire>fire an
+  event</a> named <code id=common-input-element-events:event-input-6><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-8><a href=#the-input-element>input</a></code> element, with
+  the <code id=common-input-element-events:dom-event-bubbles-3><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, and then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=common-input-element-events:concept-event-fire-4 data-x-internal=concept-event-fire>fire an event</a> named <code id=common-input-element-events:event-change-6><a href=indices.html#event-change>change</a></code>
+  at the <code id=common-input-element-events:the-input-element-9><a href=#the-input-element>input</a></code> element, with the <code id=common-input-element-events:dom-event-bubbles-4><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code>
+  attribute initialized to true.</p>
 
   <p class=example>An example of a user interface with a commit action would be a <a href="#color-state-(type=color)" id="common-input-element-events:color-state-(type=color)">Color</a> control that consists of a single button that brings
   up a color wheel: if the <a href=#concept-fe-value id=common-input-element-events:concept-fe-value-3>value</a> only changes when the dialog
@@ -6036,11 +6060,12 @@ You cannot submit this form when the field is incorrect.</samp></pre>
   selecting a date from the drop down calendar and then dismissing the drop down would be a commit
   action.</p>
 
-  <p>For <code id=common-input-element-events:the-input-element-10><a href=#the-input-element>input</a></code> elements without a defined <a id=common-input-element-events:activation-behaviour-4 href=interaction.html#activation-behaviour>activation behavior</a>, but to
-  which these events <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-5>apply</a>, any time the user causes the
-  element's <a href=#concept-fe-value id=common-input-element-events:concept-fe-value-4>value</a> to change without an explicit commit
-  action, the user agent must <a id=common-input-element-events:queue-a-task-4 href=webappapis.html#queue-a-task>queue a task</a> to <a id=common-input-element-events:fire-a-simple-event-5 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that
-  bubbles named <code id=common-input-element-events:event-input-7><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-11><a href=#the-input-element>input</a></code> element. The
+  <p>For <code id=common-input-element-events:the-input-element-10><a href=#the-input-element>input</a></code> elements without a defined <a href=#input-activation-behavior id=common-input-element-events:input-activation-behavior-4>input activation behavior</a>, but
+  to which these events <a href=#concept-input-apply id=common-input-element-events:concept-input-apply-5>apply</a>, any time the user causes
+  the element's <a href=#concept-fe-value id=common-input-element-events:concept-fe-value-4>value</a> to change without an explicit commit
+  action, the user agent must <a id=common-input-element-events:queue-a-task-4 href=webappapis.html#queue-a-task>queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=common-input-element-events:concept-event-fire-5 data-x-internal=concept-event-fire>fire an
+  event</a> named <code id=common-input-element-events:event-input-7><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-11><a href=#the-input-element>input</a></code> element, with
+  the <code id=common-input-element-events:dom-event-bubbles-5><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true. The
   corresponding <code id=common-input-element-events:event-change-7><a href=indices.html#event-change>change</a></code> event, if any, will be fired when
   the control <a href=interaction.html#unfocus-causes-change-event>loses focus</a>.</p>
 
@@ -6063,9 +6088,11 @@ You cannot submit this form when the field is incorrect.</samp></pre>
    
 
   <p>When the user agent is to change an <code id=common-input-element-events:the-input-element-12><a href=#the-input-element>input</a></code> element's <a href=#concept-fe-value id=common-input-element-events:concept-fe-value-7>value</a> on behalf of the user (e.g. as part of a form prefilling
-  feature), the user agent must <a id=common-input-element-events:queue-a-task-6 href=webappapis.html#queue-a-task>queue a task</a> to first update the <a href=#concept-fe-value id=common-input-element-events:concept-fe-value-8>value</a> accordingly, then <a id=common-input-element-events:fire-a-simple-event-6 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that
-  bubbles named <code id=common-input-element-events:event-input-9><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-13><a href=#the-input-element>input</a></code> element,
-  then <a id=common-input-element-events:fire-a-simple-event-7 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=common-input-element-events:event-change-8><a href=indices.html#event-change>change</a></code> at the <code id=common-input-element-events:the-input-element-14><a href=#the-input-element>input</a></code> element.</p>
+  feature), the user agent must <a id=common-input-element-events:queue-a-task-6 href=webappapis.html#queue-a-task>queue a task</a> to first update the <a href=#concept-fe-value id=common-input-element-events:concept-fe-value-8>value</a> accordingly, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=common-input-element-events:concept-event-fire-6 data-x-internal=concept-event-fire>fire an
+  event</a> named <code id=common-input-element-events:event-input-9><a href=indices.html#event-input>input</a></code> at the <code id=common-input-element-events:the-input-element-13><a href=#the-input-element>input</a></code> element, with
+  the <code id=common-input-element-events:dom-event-bubbles-6><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=common-input-element-events:concept-event-fire-7 data-x-internal=concept-event-fire>fire an event</a> named <code id=common-input-element-events:event-change-8><a href=indices.html#event-change>change</a></code>
+  at the <code id=common-input-element-events:the-input-element-14><a href=#the-input-element>input</a></code> element, with the <code id=common-input-element-events:dom-event-bubbles-7><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code>
+  attribute initialized to true.</p>
 
   <p class=note>These events are not fired in response to changes made to the values of form
   controls by scripts. (This is to make it easier to update the values of form controls in response
@@ -6142,9 +6169,8 @@ interface <dfn id=htmlbuttonelement>HTMLButtonElement</dfn> : <a id=the-button-e
   <a href=#attr-button-type-button-state id=the-button-element:attr-button-type-button-state-2>Button</a> state, or the <a href=#attr-button-type-menu-state id=the-button-element:attr-button-type-menu-state-2>Menu</a> state, the element is <a href=#barred-from-constraint-validation id=the-button-element:barred-from-constraint-validation>barred from constraint
   validation</a>.</p>
 
-  <p>When a <code id=the-button-element:the-button-element-2><a href=#the-button-element>button</a></code> element is not <a href=#concept-fe-disabled id=the-button-element:concept-fe-disabled>disabled</a>,
-  its <a id=the-button-element:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a> element is to run the steps defined in the following list for
-  the current state of the element's <code id=the-button-element:attr-button-type-4><a href=#attr-button-type>type</a></code> attribute:</p>
+  <p>A <code id=the-button-element:the-button-element-2><a href=#the-button-element>button</a></code> element's <a id=the-button-element:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> is to run the steps defined in
+  the following list for the current state of this element's <code id=the-button-element:attr-button-type-4><a href=#attr-button-type>type</a></code> attribute, if this element is not <a href=#concept-fe-disabled id=the-button-element:concept-fe-disabled>disabled</a>, and do nothing otherwise:</p>
 
   <dl><dt> <dfn id=attr-button-type-submit-state>Submit Button</dfn> <dd><p>If the element has a <a href=#form-owner id=the-button-element:form-owner>form owner</a> and the element's <a id=the-button-element:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is
    <a id=the-button-element:fully-active href=browsers.html#fully-active>fully active</a>, the element must <a href=#concept-form-submit id=the-button-element:concept-form-submit>submit</a> the
@@ -6161,9 +6187,11 @@ interface <dfn id=htmlbuttonelement>HTMLButtonElement</dfn> : <a id=the-button-e
     <ol><li><p>If the <code id=the-button-element:the-button-element-4><a href=#the-button-element>button</a></code> is not <a id=the-button-element:being-rendered href=rendering.html#being-rendered>being rendered</a>, abort these
      steps.</li><li><p>If the <code id=the-button-element:the-button-element-5><a href=#the-button-element>button</a></code> element's <a id=the-button-element:node-document-3 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> is not <a id=the-button-element:fully-active-3 href=browsers.html#fully-active>fully
      active</a>, abort these steps.</li><li><p>Let <var>menu</var> be the element's <a href=#designated-pop-up-menu id=the-button-element:designated-pop-up-menu-2>designated pop-up menu</a>, if
-     any. If there isn't one, then abort these steps.</li><li><p><a href=infrastructure.html#concept-event-fire id=the-button-element:concept-event-fire>Fire</a> a <a href=infrastructure.html#concept-events-trusted id=the-button-element:concept-events-trusted>trusted</a> event with the name <code id=the-button-element:event-show><a href=indices.html#event-show>show</a></code> at <var>menu</var>, using the <code id=the-button-element:relatedevent><a href=#relatedevent>RelatedEvent</a></code>
-     interface, with the <code id=the-button-element:dom-relatedevent-relatedtarget><a href=#dom-relatedevent-relatedtarget>relatedTarget</a></code> attribute
-     initialized to the <code id=the-button-element:the-button-element-6><a href=#the-button-element>button</a></code> element. The event must be cancelable.  </li><li><p>If the event is not canceled, then <a href=#build-and-show-a-menu id=the-button-element:build-and-show-a-menu>build and
+     any. If there isn't one, then abort these steps.</li><li><p>Let <var>build</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-button-element:concept-event-fire data-x-internal=concept-event-fire>firing an
+     event</a> named <code id=the-button-element:event-show><a href=indices.html#event-show>show</a></code> at <var>menu</var>, using
+     <code id=the-button-element:relatedevent><a href=#relatedevent>RelatedEvent</a></code>, with the <code id=the-button-element:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code>
+     attribute initialized to true and the <code id=the-button-element:dom-relatedevent-relatedtarget><a href=#dom-relatedevent-relatedtarget>relatedTarget</a></code> attribute initialized to the
+     <code id=the-button-element:the-button-element-6><a href=#the-button-element>button</a></code> element.</li><li><p>If <var>build</var> is true, then <a href=#build-and-show-a-menu id=the-button-element:build-and-show-a-menu>build and
      show</a> the menu for <var>menu</var>, with the <code id=the-button-element:the-button-element-7><a href=#the-button-element>button</a></code> element as the
      subject.</li></ol>
 
@@ -6346,12 +6374,12 @@ interface <dfn id=htmlselectelement>HTMLSelectElement</dfn> : <a id=the-select-e
   user agent must <a href=#send-select-update-notifications id=the-select-element:send-select-update-notifications-3>send <code>select</code> update notifications</a>.</p>
 
   <p>When the user agent is to <dfn id=send-select-update-notifications>send <code>select</code> update notifications</dfn>, <a id=the-select-element:queue-a-task href=webappapis.html#queue-a-task>queue
-  a task</a> to first <a id=the-select-element:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=the-select-element:event-input><a href=indices.html#event-input>input</a></code> at the <code id=the-select-element:the-select-element-23><a href=#the-select-element>select</a></code> element, and then <a id=the-select-element:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple
-  event</a> that bubbles named <code id=the-select-element:event-change><a href=indices.html#event-change>change</a></code> at the
-  <code id=the-select-element:the-select-element-24><a href=#the-select-element>select</a></code> element, using the <a id=the-select-element:user-interaction-task-source href=webappapis.html#user-interaction-task-source>user interaction task source</a> as the task
-  source. If the <a id=the-select-element:javascript-execution-context-stack href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a> was not empty when the user agent
-  was to <a href=#send-select-update-notifications id=the-select-element:send-select-update-notifications-4>send <code>select</code> update notifications</a>, then the resulting <code id=the-select-element:event-input-2><a href=indices.html#event-input>input</a></code> and <code id=the-select-element:event-change-2><a href=indices.html#event-change>change</a></code> events must not be
-  <a href=infrastructure.html#concept-events-trusted id=the-select-element:concept-events-trusted>trusted</a>.</p>
+  a task</a>, using the <a id=the-select-element:user-interaction-task-source href=webappapis.html#user-interaction-task-source>user interaction task source</a>, to run these steps:</p>
+
+  <ol><li><p>Let <var>isTrusted</var> be false, if the <a id=the-select-element:javascript-execution-context-stack href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a>
+   is not empty, and true otherwise.</li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-select-element:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=the-select-element:event-input><a href=indices.html#event-input>input</a></code> at the <code id=the-select-element:the-select-element-23><a href=#the-select-element>select</a></code> element, with the <code id=the-select-element:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true and the <code id=the-select-element:dom-event-istrusted><a data-x-internal=dom-event-istrusted href=https://triple-underscore.github.io/DOM4-ja.html#dom-event-istrusted>isTrusted</a></code> attribute initialized to
+   <var>isTrusted</var>.</li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-select-element:concept-event-fire-2 data-x-internal=concept-event-fire>Fire an event</a> named <code id=the-select-element:event-change><a href=indices.html#event-change>change</a></code> at the <code id=the-select-element:the-select-element-24><a href=#the-select-element>select</a></code> element, with the <code id=the-select-element:dom-event-bubbles-2><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true and the <code id=the-select-element:dom-event-istrusted-2><a data-x-internal=dom-event-istrusted href=https://triple-underscore.github.io/DOM4-ja.html#dom-event-istrusted>isTrusted</a></code> attribute initialized to
+   <var>isTrusted</var>.</li></ol>
 
   <p>The <a href=#concept-form-reset-control id=the-select-element:concept-form-reset-control>reset algorithm</a> for <code id=the-select-element:the-select-element-25><a href=#the-select-element>select</a></code>
   elements is to go through all the <code id=the-select-element:the-option-element-25><a href=#the-option-element>option</a></code> elements in the element's <a href=#concept-select-option-list id=the-select-element:concept-select-option-list-17>list of options</a>, set their <a href=#concept-option-selectedness id=the-select-element:concept-option-selectedness-16>selectedness</a> to true if the <code id=the-select-element:the-option-element-26><a href=#the-option-element>option</a></code>
@@ -6967,10 +6995,11 @@ interface <dfn id=htmltextareaelement>HTMLTextAreaElement</dfn> : <a id=the-text
   <p>When a <code id=the-textarea-element:the-textarea-element-5><a href=#the-textarea-element>textarea</a></code> is <a href=#concept-fe-mutable id=the-textarea-element:concept-fe-mutable-2>mutable</a>, its <a href=#concept-textarea-raw-value id=the-textarea-element:concept-textarea-raw-value-2>raw value</a> should be editable by the user: the user agent
   should allow the user to edit, insert, and remove text, and to insert and remove line breaks in
   the form of U+000A LINE FEED (LF) characters. Any time the user causes the element's <a href=#concept-textarea-raw-value id=the-textarea-element:concept-textarea-raw-value-3>raw value</a> to change, the user agent must <a id=the-textarea-element:queue-a-task href=webappapis.html#queue-a-task>queue a
-  task</a> to <a id=the-textarea-element:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=the-textarea-element:event-input><a href=indices.html#event-input>input</a></code> at the <code id=the-textarea-element:the-textarea-element-6><a href=#the-textarea-element>textarea</a></code> element. User agents may wait for a
-  suitable break in the user's interaction before queuing the task; for example, a user agent could
-  wait for the user to have not hit a key for 100ms, so as to only fire the event when the user
-  pauses, instead of continuously for each keystroke.</p> 
+  task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-textarea-element:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=the-textarea-element:event-input><a href=indices.html#event-input>input</a></code> at the <code id=the-textarea-element:the-textarea-element-6><a href=#the-textarea-element>textarea</a></code> element, with the <code id=the-textarea-element:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true. User agents may wait for
+  a suitable break in the user's interaction before queuing the task; for example, a user agent
+  could wait for the user to have not hit a key for 100ms, so as to only fire the event when the
+  user pauses, instead of continuously for each keystroke.</p>
+  
 
   <p>A <code id=the-textarea-element:the-textarea-element-7><a href=#the-textarea-element>textarea</a></code> element has a <dfn id=concept-textarea-dirty>dirty value
   flag</dfn>, which must be initially set to false, and must be set to true whenever the user
@@ -7004,7 +7033,8 @@ interface <dfn id=htmltextareaelement>HTMLTextAreaElement</dfn> : <a id=the-text
 
   <ol><li><p>Set the element's <code id=the-textarea-element:the-dir-attribute><a href=dom.html#the-dir-attribute>dir</a></code> attribute to "<code id=the-textarea-element:attr-dir-ltr><a href=dom.html#attr-dir-ltr>ltr</a></code>" if the user selected a left-to-right writing direction, and
    "<code id=the-textarea-element:attr-dir-rtl><a href=dom.html#attr-dir-rtl>rtl</a></code>" if the user selected a right-to-left writing
-   direction.</li><li><p><a id=the-textarea-element:queue-a-task-2 href=webappapis.html#queue-a-task>Queue a task</a> to <a id=the-textarea-element:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=the-textarea-element:event-input-2><a href=indices.html#event-input>input</a></code> at the <code id=the-textarea-element:the-textarea-element-12><a href=#the-textarea-element>textarea</a></code> element.</li></ol>
+   direction.</li><li><p><a id=the-textarea-element:queue-a-task-2 href=webappapis.html#queue-a-task>Queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-textarea-element:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named
+   <code id=the-textarea-element:event-input-2><a href=indices.html#event-input>input</a></code> at the <code id=the-textarea-element:the-textarea-element-12><a href=#the-textarea-element>textarea</a></code> element, with the <code id=the-textarea-element:dom-event-bubbles-2><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true.</li></ol>
 
   
 
@@ -10236,9 +10266,8 @@ MIT Room 32-G524
   <p>The <dfn id=dom-textarea/input-select><code>select()</code></dfn> method must cause the
   contents of the text control to be fully selected, with the selection direction being none, if the
   platform support selections with the direction <i>none</i>, or otherwise <i>forward</i>. The user
-  agent must then <a id=textFieldSelection:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a id=textFieldSelection:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named
-  <code id=textFieldSelection:event-select><a href=indices.html#event-select>select</a></code> at the element, using the <a id=textFieldSelection:user-interaction-task-source href=webappapis.html#user-interaction-task-source>user interaction task
-  source</a> as the task source.</p>
+  agent must then <a id=textFieldSelection:queue-a-task href=webappapis.html#queue-a-task>queue a task</a>, using the <a id=textFieldSelection:user-interaction-task-source href=webappapis.html#user-interaction-task-source>user interaction task source</a>, to
+  <a href=https://dom.spec.whatwg.org/#concept-event-fire id=textFieldSelection:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=textFieldSelection:event-select><a href=indices.html#event-select>select</a></code> at the element, with the <code id=textFieldSelection:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true.</p>
 
   <p>In the case of <code id=textFieldSelection:the-input-element-7><a href=#the-input-element>input</a></code> elements, if the control has no selectable text, then the
   method must do nothing.</p>
@@ -10298,8 +10327,9 @@ MIT Room 32-G524
    string "<code>backward</code>", <i>forward</i> if <var>direction</var> is a
    <a id=textFieldSelection:case-sensitive-2 href=infrastructure.html#case-sensitive>case-sensitive</a> match for the string "<code>forward</code>" or if the
    platform does not support selections with the direction <i>none</i>, and <i>none</i> otherwise
-   (including if the argument is omitted).</li><li><p><a id=textFieldSelection:queue-a-task-2 href=webappapis.html#queue-a-task>Queue a task</a> to <a id=textFieldSelection:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=textFieldSelection:event-select-2><a href=indices.html#event-select>select</a></code> at the element, using the <a id=textFieldSelection:user-interaction-task-source-2 href=webappapis.html#user-interaction-task-source>user interaction task
-   source</a> as the task source.</li></ol>
+   (including if the argument is omitted).</li><li><p><a id=textFieldSelection:queue-a-task-2 href=webappapis.html#queue-a-task>Queue a task</a>, using the <a id=textFieldSelection:user-interaction-task-source-2 href=webappapis.html#user-interaction-task-source>user interaction task source</a>, to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=textFieldSelection:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named <code id=textFieldSelection:event-select-2><a href=indices.html#event-select>select</a></code>
+   at the element, with the <code id=textFieldSelection:dom-event-bubbles-2><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to
+   true.</li></ol>
 
 
   <p>The <dfn id=dom-textarea/input-setrangetext><code>setRangeText(<var>replacement</var>, <var>start</var>, <var>end</var>, <var>selectMode</var>)</code></dfn> method must run the following steps:</p>
@@ -10377,8 +10407,9 @@ MIT Room 32-G524
     <i>forward</i> if the platform does not support selections with the direction <i>none</i>, and
     <i>none</i> otherwise.</p>
 
-   </li><li><p><a id=textFieldSelection:queue-a-task-3 href=webappapis.html#queue-a-task>Queue a task</a> to <a id=textFieldSelection:fire-a-simple-event-3 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles named <code id=textFieldSelection:event-select-3><a href=indices.html#event-select>select</a></code> at the element, using the <a id=textFieldSelection:user-interaction-task-source-3 href=webappapis.html#user-interaction-task-source>user interaction task
-   source</a> as the task source.</li></ol>
+   </li><li><p><a id=textFieldSelection:queue-a-task-3 href=webappapis.html#queue-a-task>Queue a task</a>, using the <a id=textFieldSelection:user-interaction-task-source-3 href=webappapis.html#user-interaction-task-source>user interaction task source</a>, to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=textFieldSelection:concept-event-fire-3 data-x-internal=concept-event-fire>fire an event</a> named <code id=textFieldSelection:event-select-3><a href=indices.html#event-select>select</a></code>
+   at the element, with the <code id=textFieldSelection:dom-event-bubbles-3><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to
+   true.</li></ol>
 
   <p>All elements to which this API <a href=#concept-input-apply id=textFieldSelection:concept-input-apply>applies</a> have either a
   selection or a text entry cursor position at all times (even for elements that are not <a id=textFieldSelection:being-rendered href=rendering.html#being-rendered>being
@@ -10497,8 +10528,10 @@ control.setSelectionRange(oldStart + prefix.length, oldEnd + prefix.length, oldD
     <p>For each element <var>field</var> in <var>invalid controls</var>, if any,
     in <a id=constraint-validation:tree-order-3 href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a>, run the following substeps:</p>
 
-    <ol><li><p><a id=constraint-validation:fire-a-simple-event href=webappapis.html#fire-a-simple-event>Fire a simple event</a> named <code id=constraint-validation:event-invalid><a href=indices.html#event-invalid>invalid</a></code> that
-     is cancelable at <var>field</var>.</li><li><p>If the event was not canceled, then add <var>field</var> to <var>unhandled invalid controls</var>.</li></ol>
+    <ol><li><p>Let <var>notCanceled</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=constraint-validation:concept-event-fire data-x-internal=concept-event-fire>firing an
+     event</a> named <code id=constraint-validation:event-invalid><a href=indices.html#event-invalid>invalid</a></code> at <var>field</var>, with the
+     <code id=constraint-validation:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute initialized to true.</li><li><p>If <var>notCanceled</var> is true, then add <var>field</var> to <var>unhandled invalid
+     controls</var>.</li></ol>
 
    </li><li><p>Return a <i>negative</i> result with the list of elements in the <var>unhandled
    invalid controls</var> list.</li></ol>
@@ -10652,9 +10685,11 @@ control.setSelectionRange(oldStart + prefix.length, oldEnd + prefix.length, oldD
   <p>The <dfn id=dom-cva-checkvalidity><code>checkValidity()</code></dfn> method, when
   invoked, must run these steps:</p>
 
-  <ol><li><p>If this element is a <a href=#candidate-for-constraint-validation id=the-constraint-validation-api:candidate-for-constraint-validation-2>candidate for constraint validation</a> and does not <a href=#concept-fv-valid id=the-constraint-validation-api:concept-fv-valid>satisfy its constraints</a>, then <a id=the-constraint-validation-api:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a>
-   named <code id=the-constraint-validation-api:event-invalid-3><a href=indices.html#event-invalid>invalid</a></code> that is cancelable (though canceling has no
-   effect) at this element and return false.</p>
+  <ol><li>
+    <p>If this element is a <a href=#candidate-for-constraint-validation id=the-constraint-validation-api:candidate-for-constraint-validation-2>candidate for constraint validation</a> and does not <a href=#concept-fv-valid id=the-constraint-validation-api:concept-fv-valid>satisfy its constraints</a>, then:</p>
+
+    <ol><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-constraint-validation-api:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=the-constraint-validation-api:event-invalid-3><a href=indices.html#event-invalid>invalid</a></code> at this element, with the <code id=the-constraint-validation-api:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute initialized to true (though canceling
+     has no effect).</li><li><p>Return false.</li></ol>
 
    </li><li><p>Return true.</li></ol>
 
@@ -10668,15 +10703,15 @@ control.setSelectionRange(oldStart + prefix.length, oldEnd + prefix.length, oldD
 
     
 
-    <ol><li><p><a id=the-constraint-validation-api:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>Fire a simple event</a> named <code id=the-constraint-validation-api:event-invalid-4><a href=indices.html#event-invalid>invalid</a></code> that
-     is cancelable at this element.</li><li><p>If that event is not canceled, report the problems with the constraints of this element
-     to the user. When reporting the problem with the constraints to the user, the user agent may
-     run the <a id=the-constraint-validation-api:focusing-steps href=interaction.html#focusing-steps>focusing steps</a> for this element, and may change the scrolling position of
-     the document, or perform some other action that brings this element to the user's attention.
-     User agents may report more than one constraint violation, if this element suffers from
-     multiple problems at once. If this element is not <a id=the-constraint-validation-api:being-rendered href=rendering.html#being-rendered>being rendered</a>, then the user
-     agent may, instead of notifying the user, <a id=the-constraint-validation-api:report-the-error href=webappapis.html#report-the-error>report the error</a> for the <a id=the-constraint-validation-api:running-script href=webappapis.html#running-script>running
-     script</a>.</p>
+    <ol><li><p>Let <var>report</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-constraint-validation-api:concept-event-fire-2 data-x-internal=concept-event-fire>firing an
+     event</a> named <code id=the-constraint-validation-api:event-invalid-4><a href=indices.html#event-invalid>invalid</a></code> at this element, with the <code id=the-constraint-validation-api:dom-event-cancelable-2><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute initialized to true.</li><li><p>If <var>report</var> is true, then report the problems with the constraints of this
+     element to the user. When reporting the problem with the constraints to the user, the user
+     agent may run the <a id=the-constraint-validation-api:focusing-steps href=interaction.html#focusing-steps>focusing steps</a> for this element, and may change the scrolling
+     position of the document, or perform some other action that brings this element to the user's
+     attention. User agents may report more than one constraint violation, if this element suffers
+     from multiple problems at once. If this element is not <a id=the-constraint-validation-api:being-rendered href=rendering.html#being-rendered>being rendered</a>, then the
+     user agent may, instead of notifying the user, <a id=the-constraint-validation-api:report-the-error href=webappapis.html#report-the-error>report the error</a> for the
+     <a id=the-constraint-validation-api:running-script href=webappapis.html#running-script>running script</a>.</p>
 
      </li><li><p>Return false.</li></ol>
 
@@ -10761,13 +10796,10 @@ fur
 
   <p>If the user agent supports letting the user submit a form implicitly (for example, on some
   platforms hitting the "enter" key while a text control is <a id=implicit-submission:focused href=interaction.html#focused>focused</a> implicitly submits
-  the form), then doing so for a form whose <a href=#default-button id=implicit-submission:default-button>default button</a> has a defined
-  <a id=implicit-submission:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a> must cause the user agent to <a id=implicit-submission:run-synthetic-click-activation-steps href=interaction.html#run-synthetic-click-activation-steps>run synthetic click
-  activation steps</a> on that <a href=#default-button id=implicit-submission:default-button-2>default button</a>.</p>
-
-  <p class=note>Consequently, if the <a href=#default-button id=implicit-submission:default-button-3>default button</a> is <a href=#concept-fe-disabled id=implicit-submission:concept-fe-disabled>disabled</a>, the form is not submitted when such an implicit
-  submission mechanism is used. (A button has no <a id=implicit-submission:activation-behaviour-2 href=interaction.html#activation-behaviour>activation behavior</a> when
-  disabled.)</p>
+  the form), then doing so for a form, whose <a href=#default-button id=implicit-submission:default-button>default button</a> has <a id=implicit-submission:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation
+  behavior</a> and is not <a href=#concept-fe-disabled id=implicit-submission:concept-fe-disabled>disabled</a>, must cause the user
+  agent to <a id=implicit-submission:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code> event</a> at that <a href=#default-button id=implicit-submission:default-button-2>default
+  button</a>.</p>
 
   <p class=note>There are pages on the Web that are only usable if there is a way to implicitly
   submit forms, so user agents are strongly encouraged to support this.</p>
@@ -10800,7 +10832,7 @@ fur
 
   
 
-  <h5 id=form-submission-algorithm>4.10.22.3 Form submission algorithm</h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=12230" title="Some synthetic events cause actions">12230</a></div>
+  <h5 id=form-submission-algorithm>4.10.22.3 Form submission algorithm</h5>
 
   <p>When a <code id=form-submission-algorithm:the-form-element><a href=#the-form-element>form</a></code> element <var>form</var> is <dfn id=concept-form-submit>submitted</dfn> from an element <var>submitter</var>
   (typically a button), optionally with a <var>submitted from <code id=form-submission-algorithm:dom-form-submit><a href=#dom-form-submit>submit()</a></code> method</var> flag set, the user agent must run the
@@ -10815,12 +10847,25 @@ fur
    method</var> flag is not set, and the <var>submitter</var> element's <a href=#concept-fs-novalidate id=form-submission-algorithm:concept-fs-novalidate>no-validate state</a> is false, then <a href=#interactively-validate-the-constraints id=form-submission-algorithm:interactively-validate-the-constraints>interactively
    validate the constraints</a> of <var>form</var> and examine the result: if the result
    is negative (the constraint validation concluded that there were invalid fields and probably
-   informed the user of this) then <a id=form-submission-algorithm:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code id=form-submission-algorithm:event-invalid><a href=indices.html#event-invalid>invalid</a></code> at the <var>form</var> element and then abort these
-   steps.</li><li><p>If the <var>submitted from <code id=form-submission-algorithm:dom-form-submit-3><a href=#dom-form-submit>submit()</a></code>
-   method</var> flag is not set, then <a id=form-submission-algorithm:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple event</a> that bubbles and is
-   cancelable named <code id=form-submission-algorithm:event-submit><a href=indices.html#event-submit>submit</a></code>, at <var>form</var>. If the
-   event's default action is prevented (i.e. if the event is canceled) then abort these steps.
-   Otherwise, continue (effectively the default action is to perform the submission).</li><li><p>Let <var>form data set</var> be the result of <a href=#constructing-the-form-data-set id=form-submission-algorithm:constructing-the-form-data-set>constructing the form data
+   informed the user of this) then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=form-submission-algorithm:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named
+   <code id=form-submission-algorithm:event-invalid><a href=indices.html#event-invalid>invalid</a></code> at the <var>form</var> element and then abort these
+   steps.</li><li>
+    <p>If the <var>submitted from <code id=form-submission-algorithm:dom-form-submit-3><a href=#dom-form-submit>submit()</a></code> method</var> flag
+    is not set, then:
+
+    
+
+    <ol><li><p>Let <var>continue</var> be the result of <span title=concept-event-fire>firing an
+     event</span> named <code id=form-submission-algorithm:event-submit><a href=indices.html#event-submit>submit</a></code> at <var>form</var>, with the
+     <code id=form-submission-algorithm:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true and the <code id=form-submission-algorithm:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute initialized to true.</li><li><p>If <var>continue</var> is false, then abort these steps.
+    
+    </li></ol>
+
+   
+
+   
+
+   </li><li><p>Let <var>form data set</var> be the result of <a href=#constructing-the-form-data-set id=form-submission-algorithm:constructing-the-form-data-set>constructing the form data
    set</a> for <var>form</var> in the context of <var>submitter</var>.</li><li><p>Let <var>encoding</var> be the result of <a href=#picking-an-encoding-for-the-form id=form-submission-algorithm:picking-an-encoding-for-the-form>picking an encoding for the
    form</a>.</p>
 
@@ -11248,11 +11293,12 @@ fur
 
   <h4 id=resetting-a-form>4.10.23 フォームをリセットする</h4>
 
-  <p>When a <code id=resetting-a-form:the-form-element><a href=#the-form-element>form</a></code> element <var>form</var> is <dfn id=concept-form-reset>reset</dfn>, the user agent must <a id=resetting-a-form:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> named
-  <code id=resetting-a-form:event-reset><a href=indices.html#event-reset>reset</a></code>, that bubbles and is cancelable, at <var>form</var>, and then, if that event is not canceled, must invoke the <a href=#concept-form-reset-control id=resetting-a-form:concept-form-reset-control>reset algorithm</a> of each <a href=#category-reset id=resetting-a-form:category-reset>resettable element</a> whose <a href=#form-owner id=resetting-a-form:form-owner>form owner</a> is <var>form</var>.</p>
+  <p>When a <code id=resetting-a-form:the-form-element><a href=#the-form-element>form</a></code> element <var>form</var> is <dfn id=concept-form-reset>reset</dfn>, run these steps:</p>
 
-  <p>When the <a href=#concept-form-reset id=resetting-a-form:concept-form-reset>reset</a> algorithm is invoked by the <code id=resetting-a-form:dom-form-reset><a href=#dom-form-reset>reset()</a></code> method, the <code id=resetting-a-form:event-reset-2><a href=indices.html#event-reset>reset</a></code> event
-  fired by the <a href=#concept-form-reset id=resetting-a-form:concept-form-reset-2>reset</a> algorithm must not be <a href=infrastructure.html#concept-events-trusted id=resetting-a-form:concept-events-trusted>trusted</a>.</p>
+  <ol><li><p>Let <var>isTrusted</var> false, if this algorithm is invoked by the <code id=resetting-a-form:dom-form-reset><a href=#dom-form-reset>reset()</a></code> method, and true otherwise.</li><li><p>Let <var>reset</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=resetting-a-form:concept-event-fire data-x-internal=concept-event-fire>firing an
+   event</a> named <code id=resetting-a-form:event-reset><a href=indices.html#event-reset>reset</a></code> at <var>form</var>, with the <code id=resetting-a-form:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to true, <code id=resetting-a-form:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute initialized to true, and <code id=resetting-a-form:dom-event-istrusted><a data-x-internal=dom-event-istrusted href=https://triple-underscore.github.io/DOM4-ja.html#dom-event-istrusted>isTrusted</a></code> attribute initialized to
+   <var>isTrusted</var>.</li><li><p>If <var>reset</var> is true, then invoke the <a href=#concept-form-reset-control id=resetting-a-form:concept-form-reset-control>reset algorithm</a> of each <a href=#category-reset id=resetting-a-form:category-reset>resettable element</a> whose <a href=#form-owner id=resetting-a-form:form-owner>form owner</a> is
+   <var>form</var>.</li></ol>
 
   <p>Each <a href=#category-reset id=resetting-a-form:category-reset-2>resettable element</a> defines its own <dfn id=concept-form-reset-control>reset algorithm</dfn>. Changes made to form controls as part of
   these algorithms do not count as changes caused by the user (and thus, e.g., do not cause <code id=resetting-a-form:event-input><a href=indices.html#event-input>input</a></code> events to fire).</p>
@@ -11307,8 +11353,7 @@ interface <dfn id=htmldetailselement>HTMLDetailsElement</dfn> : <a id=the-detail
     several times in succession, these steps essentially get coalesced so that only one event is
     fired.</p>
 
-   </li><li><p><a id=the-details-element:fire-a-simple-event href=webappapis.html#fire-a-simple-event>Fire a simple event</a> named <code id=the-details-element:event-toggle><a href=indices.html#event-toggle>toggle</a></code> at the
-   <code id=the-details-element:the-details-element-6><a href=#the-details-element>details</a></code> element.</li></ol>
+   </li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-details-element:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=the-details-element:event-toggle><a href=indices.html#event-toggle>toggle</a></code> at the <code id=the-details-element:the-details-element-6><a href=#the-details-element>details</a></code> element.</li></ol>
 
   <p>このタスクのための<a id=the-details-element:task-source href=webappapis.html#task-source>タスクソース</a>は、<a id=the-details-element:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM操作タスクソース</a>である。</p>
 
@@ -11431,9 +11476,7 @@ interface <dfn id=htmlmenuelement>HTMLMenuElement</dfn> : <a id=the-menu-element
     <p>Display <var>pop-up menu</var> to the user, and let the algorithm that invoked this one continue.</p>
 
     <p>If the user selects a <a href=#menu-item-construct id=the-menu-element:menu-item-construct>menu item construct</a> that corresponds to an element that still represents a <a href=#concept-command id=the-menu-element:concept-command-2>command</a> when the user selects it, then the UA must invoke that
-    command's <a href=#command-facet-action id=the-menu-element:command-facet-action>Action</a>. If the command's <a href=#command-facet-action id=the-menu-element:command-facet-action-2>Action</a> is defined as <a href=webappapis.html#fire-a-click-event id=the-menu-element:fire-a-click-event>firing
-    a <code>click</code> event</a>, either directly or via the <a id=the-menu-element:run-synthetic-click-activation-steps href=interaction.html#run-synthetic-click-activation-steps>run
-    synthetic click activation steps</a> algorithm, then the <code id=the-menu-element:dom-mouseevent-relatedtarget><a data-x-internal=dom-mouseevent-relatedtarget href=https://w3c.github.io/uievents/#widl-MouseEvent-relatedTarget>relatedTarget</a></code> attribute of that <code id=the-menu-element:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> event must be initialized to <var>subject</var>.</p>
+    command's <a href=#command-facet-action id=the-menu-element:command-facet-action>Action</a>. If the command's <a href=#command-facet-action id=the-menu-element:command-facet-action-2>Action</a> is defined as <a href=webappapis.html#fire-a-click-event id=the-menu-element:fire-a-click-event>firing a <code>click</code> event</a>, then the <code id=the-menu-element:dom-mouseevent-relatedtarget><a data-x-internal=dom-mouseevent-relatedtarget href=https://w3c.github.io/uievents/#widl-MouseEvent-relatedTarget>relatedTarget</a></code> attribute of that <code id=the-menu-element:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> event must be initialized to <var>subject</var>.</p>
 
     <p>Pop-up menus must not, while being shown, reflect changes in the DOM. The menu is constructed
     from the DOM before being shown, and is then immutable.</p>
@@ -11540,7 +11583,11 @@ interface <dfn id=htmlmenuitemelement>HTMLMenuItemElement</dfn> : <a id=the-menu
 
   <p>ユーザーに示されるように、<dfn id=attr-menuitem-label><code>label</code></dfn>属性はコマンドの名前を与える。<code id=the-menuitem-element:attr-menuitem-label-2><a href=#attr-menuitem-label>label</a></code>属性が指定される場合、属性は空文字列でない値を持たなければならない。</p>
 
-  <p>存在しかつその値が空文字列でない場合、<code id=the-menuitem-element:the-menuitem-element-6><a href=#the-menuitem-element>menuitem</a></code>要素の<dfn id=concept-menuitem-label>ラベル</dfn>は、<code id=the-menuitem-element:attr-menuitem-label-3><a href=#attr-menuitem-label>label</a></code>コンテンツ属性の値である。そうでなければ、<code id=the-menuitem-element:the-menuitem-element-7><a href=#the-menuitem-element>menuitem</a></code>要素の<a id=the-menuitem-element:child-text-content href=infrastructure.html#child-text-content>子テキストコンテンツ</a>から<span>空白を除去して折りたたんだ</span>結果となる。The <a href=#concept-menuitem-label id=the-menuitem-element:concept-menuitem-label-2>label</a> must not be the empty string if the element is in the <span>explicit command</span> mode.</p>
+  <p>The <dfn id=concept-menuitem-label>label</dfn> of a <code id=the-menuitem-element:the-menuitem-element-6><a href=#the-menuitem-element>menuitem</a></code> element is the
+  value of the <code id=the-menuitem-element:attr-menuitem-label-3><a href=#attr-menuitem-label>label</a></code> content attribute, if there is one
+  and its value is not the empty string, or, otherwise, the result of <a href=infrastructure.html#strip-and-collapse-whitespace id=the-menuitem-element:strip-and-collapse-whitespace>stripping and collapsing whitespace</a> from the
+  <a id=the-menuitem-element:child-text-content href=infrastructure.html#child-text-content>child text content</a> of the <code id=the-menuitem-element:the-menuitem-element-7><a href=#the-menuitem-element>menuitem</a></code> element. The <a href=#concept-menuitem-label id=the-menuitem-element:concept-menuitem-label-2>label</a> must not be the empty string if the element is in the
+  <span>explicit command</span> mode.</p>
 
   <p><dfn id=attr-menuitem-icon><code>icon</code></dfn>属性は、コマンドを表す画像を提供する。属性が指定される場合、属性値は<a id=the-menuitem-element:valid-non-empty-url-potentially-surrounded-by-spaces href=infrastructure.html#valid-non-empty-url-potentially-surrounded-by-spaces>潜在的にスペースで囲まれた妥当な空でないURL</a>を含めなければならない。属性の値が空文字列でない場合にアイコンの<a id=the-menuitem-element:absolute-url href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>絶対URL</a>を取得するためには、属性の値は要素の<a id=the-menuitem-element:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>ノード文書</a>に対して<a href=infrastructure.html#parse-a-url id=the-menuitem-element:parse-a-url>解析</a>されなければならない。属性が存在しない、またはその値が空文字列である、またはその値を<a href=infrastructure.html#parse-a-url id=the-menuitem-element:parse-a-url-2>解析する</a>と失敗する場合、アイコンは存在しない。</p> 
 
@@ -11573,8 +11620,10 @@ interface <dfn id=htmlmenuitemelement>HTMLMenuItemElement</dfn> : <a id=the-menu
 
   <hr>
 
-  <p>If the element's <a href=#command-facet-disabledstate id=the-menuitem-element:command-facet-disabledstate>Disabled State</a> is false
-  (enabled) then the element's <a id=the-menuitem-element:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a> depends on the element's <code id=the-menuitem-element:attr-menuitem-type-6><a href=#attr-menuitem-type>type</a></code> attribute, as follows:</p>
+  <p>The element's <a id=the-menuitem-element:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> is to run the steps defined in the following
+  list for the current state of this <code id=the-menuitem-element:attr-menuitem-type-6><a href=#attr-menuitem-type>type</a></code> attribute, if
+  this element's <a href=#command-facet-disabledstate id=the-menuitem-element:command-facet-disabledstate>Disabled State</a> is false
+  (enabled), and do nothing otherwse:</p>
 
   <dl class=switch><dt>If the <code id=the-menuitem-element:attr-menuitem-type-7><a href=#attr-menuitem-type>type</a></code> attribute is in the <a href=#attr-menuitem-type-state-checkbox id=the-menuitem-element:attr-menuitem-type-state-checkbox-3>Checkbox</a> state<dd><p>If the element has a <code id=the-menuitem-element:attr-menuitem-checked-3><a href=#attr-menuitem-checked>checked</a></code> attribute, the UA
    must remove that attribute. Otherwise, the UA must add a <code id=the-menuitem-element:attr-menuitem-checked-4><a href=#attr-menuitem-checked>checked</a></code> attribute, with the literal value "<code>checked</code>".<dt>If the <code id=the-menuitem-element:attr-menuitem-type-8><a href=#attr-menuitem-type>type</a></code> attribute is in the <a href=#attr-menuitem-type-state-radio id=the-menuitem-element:attr-menuitem-type-state-radio-4>Radio</a> state<dd><p>If the element has a parent, then the UA must walk the list of child nodes of that parent
@@ -11583,15 +11632,12 @@ interface <dfn id=htmlmenuitemelement>HTMLMenuItemElement</dfn> : <a id=the-menu
    attributes as if they were the empty string), and has a <code id=the-menuitem-element:attr-menuitem-checked-5><a href=#attr-menuitem-checked>checked</a></code> attribute, must remove that attribute.</p>
 
    <p>Then, the element's <code id=the-menuitem-element:attr-menuitem-checked-6><a href=#attr-menuitem-checked>checked</a></code> attribute must be set
-   to the literal value "<code>checked</code>".<dt>そうでなければ<dd><p>The element's <a id=the-menuitem-element:activation-behaviour-2 href=interaction.html#activation-behaviour>activation behavior</a> is to do nothing.</dl>
+   to the literal value "<code>checked</code>".<dt>そうでなければ<dd><p>The element's <a id=the-menuitem-element:activation-behaviour-2 href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> is to do nothing.</dl>
 
   <p class=note>Firing a synthetic <code id=the-menuitem-element:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> event at the element
   does not cause any of the actions described above to happen.</p>
 
   
-
-  <p>If the element's <a href=#command-facet-disabledstate id=the-menuitem-element:command-facet-disabledstate-2>Disabled State</a> is true
-  (disabled) then the element has no <a id=the-menuitem-element:activation-behaviour-3 href=interaction.html#activation-behaviour>activation behavior</a>.</p>
 
   
 
@@ -11661,13 +11707,13 @@ interface <dfn id=htmlmenuitemelement>HTMLMenuItemElement</dfn> : <a id=the-menu
   pressing a context menu key), the user agent must apply the appropriate rules from the following
   list:</p>
 
-  <dl class=switch><dt>If the user requested a context menu using a pointing device<dd><p>The user agent must <a href=infrastructure.html#concept-event-fire id=context-menu-processing-model:concept-event-fire>fire</a> a <a href=infrastructure.html#concept-events-trusted id=context-menu-processing-model:concept-events-trusted>trusted</a> event with the name <code id=context-menu-processing-model:event-contextmenu><a href=indices.html#event-contextmenu>contextmenu</a></code>, that bubbles and is cancelable, and that uses the
-   <code id=context-menu-processing-model:mouseevent><a data-x-internal=mouseevent href=https://w3c.github.io/uievents/#interface-MouseEvent>MouseEvent</a></code> interface, at the element for which the menu was requested. The context
-   information of the event must be initialized to the same values as the last
-   <code id=context-menu-processing-model:mouseevent-2><a data-x-internal=mouseevent href=https://w3c.github.io/uievents/#interface-MouseEvent>MouseEvent</a></code> user interaction event that was fired as part of the gesture that was
-   interpreted as a request for the context menu.<dt>そうでなければ<dd><p>The user agent must <a href=webappapis.html#fire-a-synthetic-mouse-event id=context-menu-processing-model:fire-a-synthetic-mouse-event>fire a synthetic mouse
-   event named <code>contextmenu</code></a> that bubbles and is
-   cancelable at the element for which the menu was requested.</dl>
+  <dl class=switch><dt>If the user requested a context menu using a pointing device<dd><p>The user agent must <a href=https://dom.spec.whatwg.org/#concept-event-fire id=context-menu-processing-model:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=context-menu-processing-model:event-contextmenu><a href=indices.html#event-contextmenu>contextmenu</a></code> at the element for which the menu was requested,
+   using <code id=context-menu-processing-model:mouseevent><a data-x-internal=mouseevent href=https://w3c.github.io/uievents/#interface-MouseEvent>MouseEvent</a></code>, with the <code id=context-menu-processing-model:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> and <code id=context-menu-processing-model:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attributes initialized to true, and other
+   attributes initialized to the same values as the last <code id=context-menu-processing-model:mouseevent-2><a data-x-internal=mouseevent href=https://w3c.github.io/uievents/#interface-MouseEvent>MouseEvent</a></code> user interaction
+   event that was fired as part of the gesture that was interpreted as a request for the context
+   menu.<dt>そうでなければ<dd><p>The user agent must <a href=webappapis.html#fire-a-synthetic-mouse-event id=context-menu-processing-model:fire-a-synthetic-mouse-event>fire a synthetic mouse
+   event named <code>contextmenu</code></a> at the element for which
+   the menu was requested.</dl>
 
   <p class=note>Typically, therefore, the firing of the <code id=context-menu-processing-model:event-contextmenu-2><a href=indices.html#event-contextmenu>contextmenu</a></code> event will be the default action of a <code id=context-menu-processing-model:event-mouseup><a data-x-internal=event-mouseup href=https://w3c.github.io/uievents/#event-type-mouseup>mouseup</a></code> or <code id=context-menu-processing-model:event-keyup><a data-x-internal=event-keyup href=https://w3c.github.io/uievents/#event-type-keyup>keyup</a></code> event. The exact
   sequence of events is UA-dependent, as it will vary based on platform conventions.</p>
@@ -11683,13 +11729,17 @@ interface <dfn id=htmlmenuitemelement>HTMLMenuItemElement</dfn> : <a id=the-menu
   <p>Otherwise, let <var>subject</var> be the element for which the menu was requested, and let
   <var>menu</var> be the <a href=#assigned-context-menu id=context-menu-processing-model:assigned-context-menu-7>assigned context menu</a> of <var>target</var> immediately after
   the <code id=context-menu-processing-model:event-contextmenu-4><a href=indices.html#event-contextmenu>contextmenu</a></code> event's dispatch has completed. The user
-  agent must <a href=infrastructure.html#concept-event-fire id=context-menu-processing-model:concept-event-fire-2>fire</a> a <a href=infrastructure.html#concept-events-trusted id=context-menu-processing-model:concept-events-trusted-2>trusted</a> event with the name <code id=context-menu-processing-model:event-show><a href=indices.html#event-show>show</a></code> at <var>menu</var>, using the <code id=context-menu-processing-model:relatedevent><a href=#relatedevent>RelatedEvent</a></code> interface,
-  with the <code id=context-menu-processing-model:dom-relatedevent-relatedtarget><a href=#dom-relatedevent-relatedtarget>relatedTarget</a></code> attribute initialized
-  to <var>subject</var>. The event must be cancelable.  </p>
+  agent must run these steps:</p>
 
-  <p>If <em>this</em> event (the <code id=context-menu-processing-model:event-show-2><a href=indices.html#event-show>show</a></code> event) is not canceled, then
-  the user agent must <a href=#build-and-show-a-menu id=context-menu-processing-model:build-and-show-a-menu>build and show</a> the menu for
-  <var>menu</var> with <var>subject</var> as the subject.</p>
+  <ol><li><p>Let <var>build</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=context-menu-processing-model:concept-event-fire-2 data-x-internal=concept-event-fire>firing an
+   event</a> named <code id=context-menu-processing-model:event-show><a href=indices.html#event-show>show</a></code> at <var>menu</var>, using
+   <code id=context-menu-processing-model:relatedevent><a href=#relatedevent>RelatedEvent</a></code>, with the <code id=context-menu-processing-model:dom-event-cancelable-2><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code>
+   attribute initialized to true and the <code id=context-menu-processing-model:dom-relatedevent-relatedtarget><a href=#dom-relatedevent-relatedtarget>relatedTarget</a></code> attribute initialized to
+   <var>subject</var>.</p>
+   
+
+   </li><li><p>If <var>build</var> is true, then <a href=#build-and-show-a-menu id=context-menu-processing-model:build-and-show-a-menu>build and
+   show</a> the menu for <var>menu</var> with <var>subject</var> as the subject.</li></ol>
 
   <p>The user agent may also provide access to its default context menu, if any, with the context
   menu shown. For example, it could merge the menu items from the two menus together, or provide the
@@ -11801,10 +11851,7 @@ dictionary <dfn id=relatedeventinit>RelatedEventInit</dfn> : <a id=the-relatedev
   <p>The <a href=#command-facet-disabledstate id=using-the-a-element-to-define-a-command:command-facet-disabledstate>Disabled State</a> facet of the command is
   true if the element or one of its ancestors is <a id=using-the-a-element-to-define-a-command:inert href=interaction.html#inert>inert</a>, and false otherwise.</p>
 
-  <p>The <a href=#command-facet-action id=using-the-a-element-to-define-a-command:command-facet-action>Action</a> of the command, if the element has a
-  defined <a id=using-the-a-element-to-define-a-command:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a>, is to <a id=using-the-a-element-to-define-a-command:run-synthetic-click-activation-steps href=interaction.html#run-synthetic-click-activation-steps>run synthetic click activation steps</a>
-  on the element. Otherwise, it is just to <a id=using-the-a-element-to-define-a-command:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code>
-  event</a> at the element.</p>
+  <p>The <a href=#command-facet-action id=using-the-a-element-to-define-a-command:command-facet-action>Action</a> of the command is to <a id=using-the-a-element-to-define-a-command:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code> event</a> at the element.</p>
 
 
   <h5 id=using-the-button-element-to-define-a-command>4.11.6.3 <dfn>Using the <code>button</code> element to define a command</dfn></h5>
@@ -11850,10 +11897,7 @@ dictionary <dfn id=relatedeventinit>RelatedEventInit</dfn> : <a id=the-relatedev
   <p>The <a href=#command-facet-disabledstate id=using-the-input-element-to-define-a-command:command-facet-disabledstate>Disabled State</a> of the command is true if
   the element or one of its ancestors is <a id=using-the-input-element-to-define-a-command:inert href=interaction.html#inert>inert</a>, or if the element's <a href=#concept-fe-disabled id=using-the-input-element-to-define-a-command:concept-fe-disabled>disabled</a> state is set, and false otherwise.</p>
 
-  <p>The <a href=#command-facet-action id=using-the-input-element-to-define-a-command:command-facet-action>Action</a> of the command, if the element has a
-  defined <a id=using-the-input-element-to-define-a-command:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a>, is to <a id=using-the-input-element-to-define-a-command:run-synthetic-click-activation-steps href=interaction.html#run-synthetic-click-activation-steps>run synthetic click activation steps</a>
-  on the element. Otherwise, it is just to <a id=using-the-input-element-to-define-a-command:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code>
-  event</a> at the element.</p>
+  <p>The <a href=#command-facet-action id=using-the-input-element-to-define-a-command:command-facet-action>Action</a> of the command is to <a id=using-the-input-element-to-define-a-command:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code> event</a> at the element.</p>
 
 
   <h5 id=using-the-option-element-to-define-a-command>4.11.6.5 <dfn>Using the <code>option</code> element to define a command</dfn></h5>
@@ -11899,11 +11943,7 @@ dictionary <dfn id=relatedeventinit>RelatedEventInit</dfn> : <a id=the-relatedev
   <p>The <a href=#command-facet-disabledstate id=using-the-menuitem-element-to-define-a-command:command-facet-disabledstate>Disabled State</a> of the command is true if
   the element or one of its ancestors is <a id=using-the-menuitem-element-to-define-a-command:inert href=interaction.html#inert>inert</a>, or if the element has a <code id=using-the-menuitem-element-to-define-a-command:attr-menuitem-disabled><a href=#attr-menuitem-disabled>disabled</a></code> attribute, and false otherwise.</p>
 
-  <p>The <a href=#command-facet-action id=using-the-menuitem-element-to-define-a-command:command-facet-action>Action</a> of the command, if the element has a
-  defined <a id=using-the-menuitem-element-to-define-a-command:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a>, is to
-  <a id=using-the-menuitem-element-to-define-a-command:run-synthetic-click-activation-steps href=interaction.html#run-synthetic-click-activation-steps>run synthetic click activation steps</a> on the element. Otherwise, it is just to
-  <a id=using-the-menuitem-element-to-define-a-command:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code> event</a> at the element.</p>
-
+  <p>The <a href=#command-facet-action id=using-the-menuitem-element-to-define-a-command:command-facet-action>Action</a> of the command is to <a id=using-the-menuitem-element-to-define-a-command:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code> event</a> at the element.</p>
 
   <h5 id=using-the-accesskey-attribute-on-a-label-element-to-define-a-command>4.11.6.7 <dfn>Using the <code>accesskey</code> attribute
   on a <code>label</code> element to define a command</dfn></h5>
@@ -11974,9 +12014,7 @@ dictionary <dfn id=relatedeventinit>RelatedEventInit</dfn> : <a id=the-relatedev
   <p>The <a href=#command-facet-action id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:command-facet-action>Action</a> of the command is to run the following
   steps:</p>
 
-  <ol><li>Run the <a id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:focusing-steps href=interaction.html#focusing-steps>focusing steps</a> for the element.</li><li>If the element has a defined <a id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:activation-behaviour href=interaction.html#activation-behaviour>activation behavior</a>, <a id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:run-synthetic-click-activation-steps href=interaction.html#run-synthetic-click-activation-steps>run synthetic click
-   activation steps</a> on the element.</li><li>Otherwise, if the element does not have a defined <a id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:activation-behaviour-2 href=interaction.html#activation-behaviour>activation behavior</a>,
-   <a id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:fire-a-click-event href=webappapis.html#fire-a-click-event>fire a <code>click</code> event</a> at the element.</li></ol>
+  <ol><li>Run the <a id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:focusing-steps href=interaction.html#focusing-steps>focusing steps</a> for the element.</li><li><a id=using-the-accesskey-attribute-to-define-a-command-on-other-elements:fire-a-click-event href=webappapis.html#fire-a-click-event>Fire a <code>click</code> event</a> at the element.</li></ol>
 
   
 
@@ -12119,7 +12157,8 @@ interface <dfn id=htmldialogelement>HTMLDialogElement</dfn> : <a id=the-dialog-e
      stack</a>. Otherwise, let <var>document</var> be no longer <a id=the-dialog-element:blocked-by-a-modal-dialog-5 href=interaction.html#blocked-by-a-modal-dialog>blocked by a modal
      dialog</a> at all.</li></ol>
 
-   </li><li><p><a id=the-dialog-element:queue-a-task href=webappapis.html#queue-a-task>Queue a task</a> to <a id=the-dialog-element:fire-a-simple-event href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code id=the-dialog-element:event-close><a href=indices.html#event-close>close</a></code> at <var>subject</var>.</li></ol>
+   </li><li><p><a id=the-dialog-element:queue-a-task href=webappapis.html#queue-a-task>Queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-dialog-element:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named
+   <code id=the-dialog-element:event-close><a href=indices.html#event-close>close</a></code> at <var>subject</var>.</li></ol>
 
 
   <p>The <dfn id=dom-dialog-returnvalue><code>returnValue</code></dfn> IDL attribute, on
@@ -12130,10 +12169,14 @@ interface <dfn id=htmldialogelement>HTMLDialogElement</dfn> : <a id=the-dialog-e
   <hr>
 
   <p><strong>Canceling dialogs</strong>: When a <code id=the-dialog-element:document-6><a href=dom.html#document>Document</a></code>'s <a href=#pending-dialog-stack id=the-dialog-element:pending-dialog-stack-12>pending dialog
-  stack</a> is not empty, user agents may provide a user interface that, upon activation, <a href=webappapis.html#queue-a-task id=the-dialog-element:queue-a-task-2>queues a task</a> to <a id=the-dialog-element:fire-a-simple-event-2 href=webappapis.html#fire-a-simple-event>fire a simple event</a> named <code id=the-dialog-element:event-cancel><a href=indices.html#event-cancel>cancel</a></code> that is cancelable at the top <code id=the-dialog-element:the-dialog-element-21><a href=#the-dialog-element>dialog</a></code> element on
-  the <code id=the-dialog-element:document-7><a href=dom.html#document>Document</a></code>'s <a href=#pending-dialog-stack id=the-dialog-element:pending-dialog-stack-13>pending dialog stack</a>. The default action of this event
-  must be to check if that element has an <code id=the-dialog-element:attr-dialog-open-9><a href=#attr-dialog-open>open</a></code> attribute, and
-  if it does, <a href=#close-the-dialog id=the-dialog-element:close-the-dialog-2>close the dialog</a> with no return value.</p>
+  stack</a> is not empty, user agents may provide a user interface that, upon activation, <a href=webappapis.html#queue-a-task id=the-dialog-element:queue-a-task-2>queues a task</a> to run these steps:
+
+  
+
+  <ol><li><p>Let <var>dialog</var> be the top <code id=the-dialog-element:the-dialog-element-21><a href=#the-dialog-element>dialog</a></code> element on the
+   <code id=the-dialog-element:document-7><a href=dom.html#document>Document</a></code>'s <a href=#pending-dialog-stack id=the-dialog-element:pending-dialog-stack-13>pending dialog stack</a>.</li><li><p>Let <var>close</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-dialog-element:concept-event-fire-2 data-x-internal=concept-event-fire>firing an
+   event</a> named <code id=the-dialog-element:event-cancel><a href=indices.html#event-cancel>cancel</a></code> at <var>dialog</var>, with the <code id=the-dialog-element:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute initialized to true.</li><li><p>If <var>close</var> is true and <var>dialog</var> has an <code id=the-dialog-element:attr-dialog-open-9><a href=#attr-dialog-open>open</a></code> attribute, then <a href=#close-the-dialog id=the-dialog-element:close-the-dialog-2>close the dialog</a> with no
+   return value.</li></ol>
 
   <p class=note>An example of such a UI mechanism would be the user pressing the "Escape" key.</p>
 
