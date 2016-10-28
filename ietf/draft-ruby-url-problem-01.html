@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="DC.Creator" content="Masinter, Larry" />
+<meta name="DC.Creator" content="Ruby, Sam" />
+<meta name="DC.Date.Issued" content="2015-01-11" />
+<meta name="DC.Title" content="URL Problem Statement and Directions" />
+<title>draft-ruby-url-problem-01 - URLの問題提起と動向</title>
+<style>
+html {
+	background-color: #f7f7f0;
+	color: #000;
+	padding: 0;
+	margin: 0;
+}
+body {
+	padding: 0;
+	margin: 1em 1.5em 2em 1.5em;
+	font-family: sans-serif;
+	line-height:1.5;
+}
+h1 {
+	clear:both;
+	text-align:center;
+}
+ul.toc {
+  list-style: disc;    /* Mac NS has problem with 'none' */
+  list-style: none;
+}
+pre {
+	line-height:120%;
+	font-family: monospace;
+	font-size:0.95em;
+}
+pre.number {
+	float:left;
+	margin:0.5em;
+ 	white-space:pre;
+}
+pre.author {
+	border:none;
+	float:right;
+	margin:0.5em;
+	white-space:pre;
+}
+pre.atom-ex {
+	border:1px solid black;
+	padding:1ex;
+	background-color:aliceblue;
+}
+
+pre.dtd {
+	border:1px solid black;
+	padding:1ex;
+	background-color:ivory;
+}
+</style>
+</head>
+<body>
+<ul>
+<li>
+
+この文書は、<a href="http://www.ietf.org/">IETF</a>が発行した"<cite><a href="https://tools.ietf.org/html/draft-ruby-url-problem-01">URL Problem Statement and Directions</a></cite>" (Network Working Group, Internet-Draft <time datetime="2015-01-11">2015年1月11日</time>付け) の日本語訳です。  </li>
+<li>訳文についての二次著作権声明： <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja">パブリックドメイン</a></li>
+<li>この文書は、パブリックドメイン扱いとします。以下の点に注意して、ご自身の責任のもとにご利用ください。
+
+<ul>
+<li>この文書は、訳者が理解を深めるために翻訳したものであり、翻訳の正確性を保証しません。この文書は翻訳上の誤りを含んでおり、訳者は一切の責任を負いません。</li>
+<li>この文書の著作権は放棄ないし譲渡しますが、原RFCの著作権声明はなお有効ですから、原文の著作権声明に反しない範囲において利用する必要があります。</li>
+</ul>
+</li>
+<li>
+
+この文書へのコメント、訳者へ連絡先は<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照してください。</li>
+</ul><!--
+履歴とか
+2015-06-28　- HTML ver. 作成
+-->
+
+
+<hr />
+
+<pre class="number">
+Network Working Group
+Internet-Draft
+Intended status: Informational
+Expires: July 15, 2015
+
+</pre>
+
+<pre class="author">
+                              S. Ruby, Ed.
+                                       IBM
+　                             L. Masinter
+                                     Adobe
+                          January 11, 2015
+</pre>
+
+<h1>URL Problem Statement and Directions（URLの問題提起と動向）<br /><span class="h1">draft-ruby-url-problem-01</span></h1>
+
+<h2>概要</h2>
+<p>この文書は、複数のURLのための組織とURLのようなものとの間におそらく競合する規格の問題空間を説明し、競合を解決するためにいくつかのアクションを提案します。ユーザーや開発者の視点から、URLの定義の増殖が存在することは意味もなく、また互換性のない実装の増殖が存在することも意味がありません。これは、競争力のある機能ではありません。したがって、この領域における様々なインターネットドラフト、勧告、および規格を更新・調整に関連する組織の必要性があります。
+</p>
+<h2>このメモのステータス</h2>
+
+   <p>このインターネットドラフトは、<a href="https://tools.ietf.org/html/bcp78">BCP 78</a>および<a href="https://tools.ietf.org/html/bcp79">BCP 79</a>の規定に完全に準拠して提出されます。</p>
+
+   <p>インターネットドラフトは、Internet Engineering Task Force（IETF）の作業中の文書です。他のグループはまた、インターネットドラフトとして作業中の文書を配布するかもしれないことに注意してください。現在のインターネットドラフトのリストは<a href="http://datatracker.ietf.org/drafts/current/">http://datatracker.ietf.org/drafts/current/</a>にあります。</p>
+
+   <p>インターネットドラフトは最大6ヶ月間有効な草稿文書であり、更新、置換、またはいつでも他の文書によって廃止されるかもしれません。参照資料としてインターネットドラフトを使用することまたは「進行中の作業」として以外に引用することは不適切です。</p>
+
+   <p>このインターネットドラフトは、2015年7月15日に失効します。</p>
+
+<h2>著作権表示</h2>
+
+   <p>Copyright (c) 2015 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.</p>
+
+   <p>This document is subject to <a href="https://tools.ietf.org/html/bcp78">BCP 78</a> and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (<a href="http://trustee.ietf.org/license-info">http://trustee.ietf.org/license-info</a>) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+   
+   </p>
+
+<h2>目次</h2>
+<div class="toc">
+<ul class="toc">
+<li>1. <a href="#sec_1">前書き</a></li>
+<li>2. <a href="#sec_2">URL標準の簡潔な歴史</a></li>
+<li>3. <a href="#sec_3">現在の組織と開発中の仕様</a>
+<ul class="toc">
+<li>3.1. <a href="#sec_3.1">IETF</a>
+</li><li>3.2. <a href="#sec_3.2">WHATWG</a></li>
+<li>3.3. <a href="#sec_3.3">W3C</a></li>
+<li>3.4. <a href="#sec_3.4">WebPlatform</a></li>
+<li>3.5. <a href="#sec_3.5">Unicode Consortium</a></li>
+</ul>
+</li>
+<li>4. <a href="#sec_4">問題提起</a></li>
+<li>5. <a href="#sec_5">次の段階、解決策</a>
+<ul class="toc">
+<li>5.1. <a href="#sec_5.1">Working Groupと議論の場</a></li>
+<li>5.2. <a href="#sec_5.2">RFC 3986 (URI)をそのままにする、更新するまたは廃止する</a></li>
+<li>5.3. <a href="#sec_5.3">RFC 3987 (IRI)を廃止する</a></li>
+<li>5.4. <a href="#sec_5.4">RFC 6454 (Origin)を廃止する</a></li>
+<li>5.5. <a href="#sec_5.5">file: URIスキーム</a></li>
+<li>5.6. <a href="#sec_5.6">他のアクション</a></li>
+</ul>
+</li>
+<li>6. <a href="#sec_6">謝辞</a></li>
+<li>7. <a href="#sec_7">IANAの考慮</a></li>
+<li>8. <a href="#sec_8">セキュリティーの考慮</a></li>
+<li>9. <a href="#sec_9">参考文献</a></li>
+<li><a href="#appendix">著者のアドレス</a></li>
+</ul>
+</div>
+
+
+<h2 id="sec_1">1. 前書き</h2>
+
+<p>この文書では、それらのようなURLや物事のための標準の周り問題空間をレイアウトし、競合を解決するためにいくつかのアクションを提案しています。ユーザーや開発者の視点から、URLの定義の増殖が存在することは意味もなく、また互換性のない実装の増殖が存在することも意味がありません。これは、競争力のある機能ではありません。したがって、この領域における様々なインターネットドラフト、勧告、および規格を更新・調整に関連する組織の必要性があります。
+
+   <p>考えられる次の段階は、<a href="#section-5">5章</a>で検討されます。
+
+   <p>議論はpublic-ietf-w3c@w3.org[1]（アーカイブ[2]）とpublic-ietf-w3c@w3.org[3]（アーカイブ[4]）で行われています。さらに、W3C TAGがミーティングとメーリングリストでこの問題を議論しました。
+</p>
+
+<p>
+   この文書だけでなく、テストスイート、参考実装、および[<a href="#ref-WP-URL" title='"URL Standard"'>WP-URL</a>]は、issue tracker、Wiki、および関連リソースを含め、[5]で開発されています。文書やテストに編集するためのプルリクエスト[6]を歓迎します。GitHub tracker[7]でissueを問題を作成することも有用です。編集者または電子メールでのメーリングリストへのコメントも歓迎します。
+</p>
+
+
+<h2 id="sec_2">2. URL標準の簡潔な歴史</h2>
+
+<p>この章は、事情を示すために十分詳細に、URL標準の非常に圧縮された歴史を含みます。レビュアー：歴史は必ずしも完全なものではないですが、誤ったまたは欠落している本質的な事実を報告してください。
+
+<p>URLの最初の標準化過程仕様は、1994年の[<a href="https://tools.ietf.org/html/rfc1738">RFC1738</a>]でした。（その仕様はより多くの背景資料が含まれます。）これはASCIIのみとしてURLを定義しました。[<a href="https://tools.ietf.org/html/rfc2396">RFC2396</a>] 後に別々のRFCで定義される具体的なスキームの定義から一般的な構文を分離しました。このスキームの定義の多くは、必要な関心を得ないようになりました。
+
+<p>非ASCII文字を許可することが望ましかったことが明らかとなったとき、ASCIIのみのシステムに基づいてUnicodeに対するサポートが問題であることが判明するだろうことが広く懸念されました。したがってその取り組みは、単独の"URI"を離れ、新しいプロトコル要素、"IRI"を定義することになりました。[<a href="https://tools.ietf.org/html/rfc3987">RFC3987</a>]は（[<a href="https://tools.ietf.org/html/rfc3986">RFC3986</a>] URI定義の更新と同期して）2005年に発行されました。これはまた、必要な関心を得ないようになりました。</p>
+
+<p>IETFとHTML5（詳細は<a href="#section-4">4章</a>を参照）の両方で提起された問題に対処するために、IRI working group [8]が2009年にIETFに設立されました。しかし、これは主として噛み合いの欠如のために、IRI working groupで開発されていた文書は、個々の提案として、あるいはIETF applications area working group内で更新することができた計画とともに、IRIグループは2014年に閉鎖されました。具体的には、IRI working groupの項目の1つは[<a href="https://tools.ietf.org/html/rfc4395">RFC4395</a>]を更新することでした。これは現在IETFのapplication area（[<a href="#ref-appsawg-uri-scheme-reg">appsawg-uri-scheme-reg</a>]参照）で開発中です。</p>
+
+<p>独立して、WHATWGとW3CにおけるHTML仕様は、一部のブラウザーがしていたものと一致させる試みで、"URL"を再定義しました。この定義は、後に"URL Living Standard" [<a href="#ref-URL-LS">URL-LS</a>]に移動しました。
+</p>
+
+<p>W3CはHTML5勧告[9]を作成したとき、WHATWG URL標準への引用規格は、ゲーティングの問題であって、稀な妥協に達しました[10]。これは[URL]参照が単一の文書の参照ではなく、説明の段落で与えられます。</p>
+
+   <p>時代は他の方法で移動しました。ICANNは、非ASCIIトップレベルドメインを承認しましたが、IDNA仕様（[<a href="https://tools.ietf.org/html/rfc3490">RFC3490</a>]と[<a href="https://tools.ietf.org/html/rfc5895">RFC5895</a>]）は、完全にIRI処理に対処しませんでした。続いて、Unicode consortiumは、通過中のURL処理に言及している、[<a href="#ref-UTS-46">UTS-46</a>]を作成しました。</p>
+
+   <p>web security working groupは、[<a href="#ref-URL-LS" title='"URL Living Standard"'>URL-LS</a>]が再定義する、W3C [<a href="#ref-CORS" title='"Cross-Origin Resource Sharing"'>CORS</a>]仕様で洗練された[<a href="https://tools.ietf.org/html/rfc6454" title='"The Web Origin Concept"'>RFC6454</a>]（"ウェブ生成元の概念"）を開発しました。IETFでの更新は放棄されました。WHATWGでの作業は[<a href="#ref-FETCH" title='"Fetch Living Standard"'>FETCH</a>]仕様で続いています。
+</p>
+
+<h2 id="sec_3">3. 現在の組織と開発中の仕様</h2>
+
+<p>複数の文書を作成している複数の包括的な組織が存在し、また一貫して作成する軌道があるかどうかは不確かです。この章は、現在アクティブな組織と仕様の列挙を試みます。レビュアー：我々が逃したまたは誤って得た重要な進行中の活動はありますか？その現在の作業が影響を受ける利害関係者は誰ですか？（この提供に役立つ必要な組織の調整を決定します。）</p>
+
+<p>組織は、IETF [11]、WHATWG [12]、W3C [13]、Web Platform.org [14]およびUnicode consortium [15]が含まれます。各組織の開発中の関連する仕様があります。
+</p>
+
+<h3 id="sec_3.1">3.1. IETF</h3>
+
+<p>[<a href="#ref-appsawg-uri-scheme-reg">appsawg-uri-scheme-reg</a>]は、working groupのlast callをパスし、IESGのレビューに入りました。</p>
+
+<p>'file:' [<a href="#ref-kerwin-file-scheme">kerwin-file-scheme</a>]と'urn:'を含む、新しいスキームと古いスキームの更新は継続します。</p>
+
+<p>IRI working groupは終了しましたが、作業はApplications Area working groupで継続することができます。現在放棄された、更新を必要とする文書は、3つのドラフト（[<a href="#ref-iri-3987bis">iri-3987bis</a>]、[<a href="#ref-iri-comparison">iri-comparison</a>]および[<a href="#ref-iri-bidi-guidelines">iri-bidi-guidelines</a>]）があります。これは当初 [<a href="https://tools.ietf.org/html/rfc3987" title='"Internationalized Resource Identifiers (IRIs)"'>RFC3987</a>]を廃止することを意図していました。</p>
+
+<p>URNBis working group [16]は、URNの定義を更新するために作業していましたが、[<a href="https://tools.ietf.org/html/rfc3986">RFC3986</a>]での文言の一部の難しさがあります。具体的には、[17]は更新[<a href="https://tools.ietf.org/html/rfc3986">RFC3986</a>]を更新します。
+</p>
+
+<h3 id="sec_3.2">3.2. WHATWG</h3>
+
+<p>
+   [<a href="#ref-URL-LS">URL-LS</a>]は、living standard [18]として開発されています。これは、主にブラウザーのために重要なものを指定することに焦点を当てています。新しいスキームが登録されるかもしれない手段はまだ定義されていません。この作業は[<a href="#ref-UTS-46">UTS-46</a>]に基づいており、[<a href="https://tools.ietf.org/html/rfc3986">RFC3986</a>]と[<a href="https://tools.ietf.org/html/rfc3987">RFC3987</a>]の両方を時代遅れにする明確な目標が含まれています。
+</p>
+
+
+<h3 id="sec_3.3">3.3. W3C</h3>
+
+<p>Web Applications Working Group [19]は、TAG[20]と協力して、[<a href="#ref-W3C-URL" title='"URL Working Draft"'>W3C-URL</a>]として技術的な内容の違いのないWHATWGの作業を散発的に再発行しています。この関係を形式化するために、[<a href="#ref-url-workmode">url-workmode</a>]の提案があります。</p>
+
+   <p>W3C TAG [21]は、URLの'フラグメント'部分の定義にいくつかの問題点を指摘する、フラグメント識別子とメディアタイプの定義[22]のためのベストプラクティスを開発しました。TAGはリエゾン交換が起こることを確実にするために取り組んでいます。</p>
+
+   <p>また、HTML working group [24]によって更新される、[URL] [23]へのHTML5の参照は暫定的な解決策であることに注意してください。</p>
+
+<h3 id="sec_3.4">3.4. WebPlatform</h3>
+
+<p>
+   WebPlatform.orgは、W3Cとウェブベンダー[25]が後援する活動です。[<a href="#ref-WP-URL">WP-URL</a>]は、[<a href="#ref-URL-LS">URL-LS</a>]に基づいてGitHubのブランチ[26]で開発されています。これは現在、主により分かりやすく親しみある方法でパーサーのロジックを書き換えるために、依然として[<a href="#ref-URL-LS">URL-LS</a>]に折り返させる必要がある作業が含まれています。意図は、一度準備が整うとこの作業をマージすることであり、同期して2つのバージョンを維持するために積極的に作業することです。
+</p>
+
+<h3 id="sec_3.5">3.5. Unicode Consortium</h3>
+
+<p>[<a href="#ref-UTS-46">UTS-46</a>]は、ドメイン名をマッピングするパラメータ化された関数を定義します。[<a href="#ref-URL-LS" title='"URL Living Standard"'>URL-LS</a>]は、パラメーターに使用される特定の値を指定する、この作業をベースにしています。Unicode Consortiumは、[<a href="https://tools.ietf.org/html/rfc3490" title='"Internationalizing Domain Names in Applications (IDNA)"'>RFC3490</a>]から[<a href="https://tools.ietf.org/html/rfc5895" title='"Mapping Characters for Internationalized Domain Names in Applications (IDNA) 2008"'>RFC5895</a>]へ移動するレジストリー（例えばDENIC）として[<a href="#ref-UTS-46" title='"Unicode IDNA Compatibility Processing"'>UTS-46</a>]を適応させる計画です。
+</p>
+
+
+<h2 id="sec_4">4. 問題提起</h2>
+
+<p>
+   この章は、我々が協調して解決を必要とみなす問題を提示します。レビュアー：我々が見逃しているものはありますか？これら問題のいずれかを解決する価値がありますか？
+</p>
+
+<p>
+   主な問題は、重複するが互いに適合しない矛盾する仕様が存在することです。</p>
+
+   <p>加えて、URLの処理が曖昧でなく安定させるために解決される必要がある問題は、次のとおりです。</p>
+
+  <ul>
+      <li>命名：長年にわたって、用語の多数の異なるセットが使用されてきました。URL / URI / IRIだけが違いではありません。[<a href="#ref-tantek-slice">tantek-slice</a>]は多数の相違点を記録に留めています。</li>
+
+      <li>決定論的な解析と変換：[<a href="https://tools.ietf.org/html/rfc3987" title='"Internationalized Resource Identifiers (IRIs)"'>RFC3987</a>]で指定されたIRI-to-URI変換は、オプションを持っていました。それは決定論的なパスではありませんでした。特に、Unicodeの中のURL中のサブ文字列のうち、文字列がPunycodeにまたは%-escaped-utf8に変換される場合。URI内の%xxエンコードされたバイトが、Unicode文字列のUTF-8エンコーディングの%xxのパーセント16進数エンコードされたバイトであることを本当に意味したという保証がなかったので、URI-to-IRI変換はまた、ヒューリスティックでした。</li>
+
+      <li>パラメーター化：この領域の標準は、このようなUseSTD3ASCIIRulesなどのパラメーターのための正規化形式と値のような事項を定義する必要があります。</li>
+
+      <li>相互運用性：上記を考慮した後でさえ、人気のライブラリーとブラウザー間での相互運用性の実証不足があります。[<a href="#ref-whatwg-interop">whatwg-interop</a>]は、多数のこのような差異を特定します。</li>
+
+      <li>安定性：任意の標準文書が時代遅れ（obsoleted）としてマークする前に、参照が宙ぶらりんになるのを避けるために、廃止されるべき標準を規範的な参照をするその他の仕様の要件は、考慮される必要があります。</li>
+
+      <li>IDNA：[<a href="https://tools.ietf.org/html/rfc3490">RFC3490</a>] は'IDNを意識したドメイン名スロット'のための処理を定義します（ここで、"HTML &lt;IMG&gt;タグのsrc属性におけるURIのホスト部分"が一例として与えられます。その後、"IDNAは、すべてのドメイン名スロット内のすべてのドメイン名に適用可能です"。そうするとmailto:user@hostにおいて、ホストはIDN対応のドメイン名スロットか？そもそもドメイン名スロットか？）</li>
+
+      <li>双方向のURL：専門家の間ではよく知られている右から左に記述する言語の文字を使用してURLを記述する問題。何が未知なのかが、この問題のための解決策となります。[<a href="https://tools.ietf.org/html/rfc3987">RFC3987</a>]で与えられた解決策は、いくつかの明白なエラーがあります（マークを組み合わせて処理する方法）。これはまた、おそらく改善することができる一般的なアプローチですが、方法が確かではありません。</li>
+
+      <li>具体的なスキームの定義：いくつかのUR*スキームの定義は、ひどく旧式であり、不完全であり、または現在の慣例に対応していませんが、その定義を更新することは明確さに欠けます。これは、現在の成果がある'file:'を含みますが、レビューを必要とするものがあります（ 'ftp:'、'data:'を含む）。</li>
+</ul>
+
+<h2 id="sec_5">5. 次の段階、解決策</h2>
+
+
+<p>
+   上記の問題の多くは、いくつかの組織横断的な協力を必要とします。この章は、文書に関して、可能な更新と手続き上の問題の両面から、選択肢と可能な次の手順を説明します。
+</p>
+<p>
+   レビュアー：必須？十分？見逃しているもの、誤りはありますか？
+</p>
+
+<h3 id="sec_5.1">5.1. Working Groupと議論の場</h3>
+
+<p>
+   XML Signature WG [27]は、合同IETF/W3C Working Groupの例です。おそらく、URLとURIのトピックをカバーする合同working groupを形成することができます。[<a href="#ref-url-workmode">url-workmode</a>]提案の要素は、この新しいWGの憲章に組み込まれ、それによってこの活動の第3の共同参加者としてWHATWGを確立することができます。</p>
+
+   <p>それに失敗するならば、それぞれの組織のworking groupにIETFとW3Cにおける責任のいくつかの組織の割り当てをすることが望ましいです。</p>
+
+   <p>IETFへのW3CのリエゾンはIETFが応答するまで正式なリエゾン要求を行うことを提案とともに、IETF/W3Cのリエゾンを巻き込む議論がありました。おそらく、リエゾン要求はこの文書を参照するかもしれません。</p>
+
+   <p>IETFにおいて、提案された変更の範囲は、IETFコンセンサスを得ることのできる最良の方法を決定することができます。IETF文書に必要な変更の範囲は、個別の提出を通して管理することができたとは考えにくいです。いくつかの意見は、[<a href="https://tools.ietf.org/html/rfc3986">RFC3986</a>]を更新するおよび/または[<a href="https://tools.ietf.org/html/rfc3987">RFC3987</a>]を廃止することが、完全なIETF working groupに要求されるというものです。（おそらく問題提起/範囲としてこの文書を使用して）別のグループが起草されない限りおよびされるまで、議論はIETF apps領域で行われています。一致した努力がそれらを復活させるためになされない限り、関連するトピックの前の場（public-iri@w3.org [28]、uri@w3.org [29]）は、重要なコミュニティーの貧しい表現が可能性がある程度に十分に古いものです。</p>
+
+
+   <p>W3Cにおいて、W3C WebApps、TAG、HTMLまたはいくつかの新しい活動のいずれかが変更を管理する必要があるかもしれませんが、レビューに必要なグループの性質は、必要な変更の程度に依存します。</p>
+
+   <p>現時点で、この文書についてのフィードバックをする最も確実な方法は、GitHub issue list [30]で問題について提起したりコメントすることです。
+</p>
+
+
+<h3 id="sec_5.2">5.2. <a href="https://tools.ietf.org/html/rfc3986">RFC 3986</a> (URI)をそのままにする、更新するまたは廃止する</h3>
+
+<p>
+   種々の時点で、多くはIETF URI標準[<a href="https://tools.ietf.org/html/rfc3986" title='"Uniform Resource Identifier (URI): Generic Syntax"'>RFC3986</a>]を置き換える、または更新することが求められています。これは物議を醸すアプローチですが、次のものが必要とされる最低限となります：
+
+</p>
+
+<ul>
+   <li>（現在[<a href="https://tools.ietf.org/html/rfc3986" title='"Uniform Resource Identifier (URI): Generic Syntax"'>RFC3986</a>]で定義されるような）ASCIIのみのURIが主としてウェブ上で使用されていないという立場を明確にします。</li>
+
+   <li>URNの更新を組み込みます。</li>
+
+   <li>フラグメント識別子のセマンティクスの更新を組み込みます。</li>
+
+   <li>用語の問題と解決に注意します。</li>
+</ul>
+   <p>より物議を醸すものは、これが厳密に"need- to"ベースに行うことができるかどうか、または[<a href="https://tools.ietf.org/html/rfc3986" title='"Uniform Resource Identifier (URI): Generic Syntax"'>RFC3986</a>]由来のURIと[<a href="https://tools.ietf.org/html/rfc3987" title='"Internationalized Resource Identifiers (IRIs)"'>RFC3987</a>] 由来のIRIの合併が実装するためのより明確な仕様をもたらすかどうかです。
+</p>
+
+<h3 id="sec_5.3">5.3. <a href="https://tools.ietf.org/html/rfc3987">RFC 3987</a> (IRI)を廃止する</h3>
+
+<p>再始動し、エラーを修正し、そしてエラッタを統合することによって、[<a href="https://tools.ietf.org/html/rfc3987">RFC3987</a>]を更新する作業を再起動するためにいくつかの意見があります。しかし、このパスは、URLに対する決定論的な処理とブラウザーとオペレーティングシステムの処理に対する参照の両方を設計する、単一の仕様に対する欲求を満足していないようです。</p>
+
+   <p>[<a href="https://tools.ietf.org/html/rfc3987">RFC3987</a>]でカバーされるトピックがW3C URL勧告によってもカバーされることを確認した後、この文書で説明された条件を指摘する短いRFCで廃止（obsolete）として[<a href="https://tools.ietf.org/html/rfc3987">RFC3987</a>]をマークします。
+</p>
+
+<h3 id="sec_5.4">5.4. <a href="https://tools.ietf.org/html/rfc6454">RFC 6454</a> (Origin)を廃止する</h3>
+
+<p>[<a href="#ref-CORS">CORS</a>]、[<a href="#ref-URL-LS">URL-LS</a>]および/または[<a href="#ref-FETCH">FETCH</a>]で置換されます。</p>
+
+<h3 id="sec_5.5">5.5. file: URIスキーム</h3>
+
+   URL-LSの'file:'部分を別の文書におそらく移動することで、[<a href="#ref-URL-LS">URL-LS</a>]と[<a href="#ref-kerwin-file-scheme">kerwin-file-scheme</a>]に'file:'構文を統合します。
+
+<h3 id="sec_5.6">5.6. 他のアクション</h3>
+<ul>
+   <li>[<a href="#ref-URL-LS" title='"URL Living Standard"'>URL-LS</a>]と[<a href="#ref-UTS-46" title='"Unicode IDNA Compatibility Processing"'>UTS-46</a>]と一致するように[<a href="https://tools.ietf.org/html/rfc5895" title='"Mapping Characters for Internationalized Domain Names in Applications (IDNA) 2008"'>RFC5895</a>]を更新します。命名法のみを明確にする場合、これは、更新された他の仕様を取得するために作業して取り込むかもしれません。</li>
+
+   <li> 以前のx-url-encodedの定義を廃止します。</li>
+
+   <li>更新されない上記の仕様を廃止することのみに[<a href="#ref-URL-LS" title='"URL Living Standard"'>URL-LS</a>]の目標を変更します。[<a href="https://tools.ietf.org/html/rfc3986" title='"Uniform Resource Identifier (URI): Generic Syntax"'>RFC3986</a>]が更新されることを仮定すると、適合URLは妥当なURIの適切なサブセットであることを明示的に宣言し、さらに権威のあるURL（すなわち、URLパーサーの出力）がラウンドトリップするだけでなく、妥当なURIであることを宣言します。</li>
+
+   <li>読者がどの用語を使用しどのようにマッピングされているかを理解するために、おそらく[<a href="#ref-URL-LS" title='"URL Living Standard"'>URL-LS</a>]の付録として、[<a href="#ref-tantek-slice">tantek-slice</a>]で現在提示されるコンテンツを更新し、組み込みます（または参照します）。</li>
+
+   <li>[<a href="#ref-appsawg-uri-scheme-reg">appsawg-uri-scheme-reg</a>]と[<a href="#ref-URL-LS" title='"URL Living Standard"'>URL-LS</a>]が不明なスキームを現在処理する方法を調整し、登録がURIとURLの両方に適用されるように宣言するために[<a href="#ref-appsawg-uri-scheme-reg">appsawg-uri-scheme-reg</a>]を更新し、[<a href="#ref-appsawg-uri-scheme-reg">appsawg-uri-scheme-reg</a>]がスキームを登録するための方法であることを示すよう[<a href="#ref-URL-LS" title='"URL Living Standard"'>URL-LS</a>]を更新します。</li>
+
+   <li>W3Cは[<a href="#ref-url-workmode">url-workmode</a>]を採用しています。</li>
+
+   <li>[<a href="#ref-UTS-46" title='"Unicode IDNA Compatibility Processing"'>UTS-46</a>]の上を保持し、提供できる任意のフィードバックへの対応以外に、任意のUnicode Consortium生成物への変更は必要ありません。</li>
+</ul>
+
+<h2 id="sec_6">6. 謝辞</h2>
+
+
+<p>この文書に役立つコメントや改善がAnne van Kesteren, Bjoern Hoehrmann, Graham Klyne, Julian Reschke, Martin Duerstからありました。</p>
+
+
+<h2 id="sec_7">7. IANAの考慮</h2>
+
+<p>更新された[<a href="#ref-appsawg-uri-scheme-reg">appsawg-uri-scheme-reg</a>]が、スキームがURIスキームだけでなくURLスキームやIRIスキームとして供給するものを明確にするためにIANA  URI scheme registry [31]にいくつかの追加要件や情報を追加するかもしれませんが、このメモは現在、IANAへのリクエストを含みません。
+</p>
+
+<h2 id="sec_8">8. セキュリティーの考慮</h2>
+
+<p>URLが異なるシステムで異なる動作をするときに作成されるセキュリティーの露出（exposure）に加えて、[<a href="https://tools.ietf.org/html/rfc3490" title='"Internationalizing Domain Names in Applications (IDNA)"'>RFC3490</a>]、[<a href="https://tools.ietf.org/html/rfc3986" title='"Uniform Resource Identifier (URI): Generic Syntax"'>RFC3986</a>]、[<a href="https://tools.ietf.org/html/rfc3987" title='"Internationalized Resource Identifiers (IRIs)"'>RFC3987</a>]、および[<a href="https://tools.ietf.org/html/rfc5895" title='"Mapping Characters for Internationalized Domain Names in Applications (IDNA) 2008"'>RFC5895</a>]で定義されたセキュリティーの考慮全てがURLに適用されます。
+</p>
+
+
+<h2 id="sec_9">9. 参考文献</h2>
+<dl>
+<dt id="ref-CORS">[CORS]<dt>
+<dd>van Kesteren, A., "Cross-Origin Resource Sharing", 2014, &lt;<a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a>&gt;.</dd>
+
+<dt id="ref-FETCH">[FETCH]</dt>
+<dd>van Kesteren, A., "Fetch Living Standard", 2014, &lt;<a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>&gt;.</dd>
+
+<dt id="ref-RFC1738">[RFC1738]</dt>
+<dd>Berners-Lee, T., Masinter, L., and M. McCahill, "Uniform Resource Locators (URL)", <a href="https://tools.ietf.org/html/rfc1738">RFC 1738</a>, December 1994.</dd>
+
+<dt id="ref-RFC2396">[RFC2396]</dt>
+<dd>Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform Resource Identifiers (URI): Generic Syntax", <a href="https://tools.ietf.org/html/rfc2396">RFC 2396</a>, August 1998.</dd>
+
+<dt id="ref-RFC3490">[RFC3490]</dt>
+<dd>Faltstrom, P., Hoffman, P., and A. Costello, "Internationalizing Domain Names in Applications (IDNA)", <a href="https://tools.ietf.org/html/rfc3490">RFC 3490</a>, March 2003.</dd>
+
+<dt id="ref-RFC3986">[RFC3986]</dt>
+<dd>Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform Resource Identifier (URI): Generic Syntax", STD 66, <a href="https://tools.ietf.org/html/rfc3986">RFC 3986</a>, January 2005.</dd>
+
+<dt id="ref-RFC3987">[RFC3987]</dt>
+<dd>Duerst, M. and M. Suignard, "Internationalized Resource Identifiers (IRIs)", <a href="https://tools.ietf.org/html/rfc3987">RFC 3987</a>, January 2005.</dd>
+
+<dt id="ref-RFC4395">[RFC4395]</dt>
+<dd>Hansen, T., Hardie, T., and L. Masinter, "Guidelines and Registration Procedures for New URI Schemes", <a href="./bcp35">BCP 35</a>, <a href="https://tools.ietf.org/html/rfc4395">RFC 4395</a>, February 2006.</dd>
+
+<dt id="ref-RFC5895">[RFC5895]</dt>
+<dd>Resnick, P. and P. Hoffman, "Mapping Characters for Internationalized Domain Names in Applications (IDNA) 2008", <a href="https://tools.ietf.org/html/rfc5895">RFC 5895</a>, September 2010.</dd>
+
+<dt id="ref-RFC6454">[RFC6454]</dt>
+<dd>Barth, A., "The Web Origin Concept", <a href="https://tools.ietf.org/html/rfc6454">RFC 6454</a>, December 2011.</dd>
+
+<dt id="ref-URL-LS">[URL-LS]</dt>
+<dd>van Kesteren, A. and S. Ruby, "URL Living Standard", 2014, &lt;<a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>&gt;.</dd>
+
+<dt id="ref-UTS-46">[UTS-46]</dt>
+<dd>Davis, M. and M. Suignard, "Unicode IDNA Compatibility Processing", 2014, &lt;<a href="http://unicode.org/reports/tr46/">http://unicode.org/reports/tr46/</a>&gt;.</dd>
+
+<dt id="ref-W3C-URL">[W3C-URL]</dt>
+<dd>van Kesteren, A. and S. Ruby, "URL Working Draft", 2014, &lt;<a href="http://www.w3.org/TR/url/">http://www.w3.org/TR/url/</a>&gt;.</dd>
+
+<dt id="ref-WP-URL">[WP-URL]</dt>
+<dd>van Kesteren, A. and S. Ruby, "URL Standard", 2014, &lt;<a href="https://specs.webplatform.org/url/webspecs/develop/">https://specs.webplatform.org/url/webspecs/develop/</a>&gt;.</dd>
+
+<dt id="ref-appsawg-uri-scheme-reg">[appsawg-uri-scheme-reg]</dt>
+<dd>Thaler, D., Hansen, T., Hardie, T., and L. Masinter, "Guidelines and Registration Procedures for New URI Schemes", <a href="https://tools.ietf.org/html/draft-ietf-appsawg-uri-scheme-reg-04">draft-ietf-appsawg-uri-scheme-reg-04</a> (work in progress), October 2014.</dd>
+
+<dt id="ref-iri-3987bis">[iri-3987bis]</dt>
+<dd>Duerst, M., Suignard, M., and L. Masinter, "Internationalized Resource Identifiers (IRIs)", <a href="https://tools.ietf.org/html/draft-ietf-iri-3987bis-13">draft-ietf-iri-3987bis-13</a> (work in progress), October 2012.</dd>
+
+<dt id="ref-iri-bidi-guidelines">[iri-bidi-guidelines]</dt>
+<dd>Duerst, M., Masinter, L., and A. Allawi, "Guidelines for Internationalized Resource Identifiers with Bi-directional Characters (Bidi IRIs)", <a href="https://tools.ietf.org/html/draft-ietf-iri-bidi-guidelines-03">draft-ietf-iri-bidi-guidelines-03</a> (work in progress), October 2012.</dd>
+
+<dt id="ref-iri-comparison">[iri-comparison]</dt>
+<dd>Masinter, L. and M. Duerst, "Comparison, Equivalence and Canonicalization of Internationalized Resource Identifiers", <a href="https://tools.ietf.org/html/draft-ietf-iri-comparison-02">draft-ietf-iri-comparison-02</a> (work in progress), October 2012.</dd>
+
+<dt id="ref-kerwin-file-scheme">[kerwin-file-scheme]</dt>
+<dd>Kerwin, M., "The file URI Scheme", <a href="https://tools.ietf.org/html/draft-kerwin-file-scheme-13">draft-kerwin-file-scheme-13</a> (work in progress), September 2014.</dd>
+
+<dt id="ref-tantek-slice">[tantek-slice]</dt>
+<dd>Celik, T., "How many ways can you slice a URL and name the pieces?", 2011, &lt;<a href="http://tantek.com/2011/238/b1/many-ways-slice-url-name-pieces">http://tantek.com/2011/238/b1/many-ways-slice-url-name-pieces</a>&gt;.</dd>
+
+<dt id="ref-url-workmode">[url-workmode]</dt>
+<dd>Ruby, S., "URL WorkMode", 2014, &lt;<a href="https://github.com/webspecs/url/blob/develop/docs/workmode.md#preface">https://github.com/webspecs/url/blob/develop/docs/workmode.md#preface</a>&gt;.</dd>
+
+<dt id="ref-whatwg-interop">[whatwg-interop]</dt>
+<dd>Ruby, S., "URL test results", 2014, &lt;<a href="https://url.spec.whatwg.org/interop/test-results/">https://url.spec.whatwg.org/interop/test-results/</a>&gt;.</dd>
+</dl>
+
+<h2 id="ap_a">著者のアドレス</h2>
+
+<pre>
+   Sam Ruby (editor)
+   IBM
+   Raleigh, NC
+   USA
+
+   Email: rubys@intertwingly.net
+   URI:   <a href="http://intertwingly.net/">http://intertwingly.net/</a>
+
+
+   Larry Masinter
+   Adobe
+   345 Park Ave
+   San Jose, CA  95110
+   USA
+
+   Email: masinter@adobe.com
+   URI:   <a href="http://larry.masinter.net/">http://larry.masinter.net/</a>
+</pre>
+
+
+
+
+</body>
+</html>
