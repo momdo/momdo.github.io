@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -318,7 +193,7 @@
 
   <nav><a href=webstorage.html>← 11 Web storage</a> — <a href=index.html>目次</a> — <a href=xhtml.html>13 XHTML構文 →</a></nav><ol class=toc><li id=toc-syntax><a href=syntax.html#syntax>12 HTML構文</a><ol><li><a href=syntax.html#writing>12.1 HTML文書を記述する</a><ol><li><a href=syntax.html#the-doctype>12.1.1 DOCTYPE</a></li><li><a href=syntax.html#elements-2>12.1.2 要素</a><ol><li><a href=syntax.html#start-tags>12.1.2.1 開始タグ</a></li><li><a href=syntax.html#end-tags>12.1.2.2 終了タグ</a></li><li><a href=syntax.html#attributes-2>12.1.2.3 属性</a></li><li><a href=syntax.html#optional-tags>12.1.2.4 任意のタグ</a></li><li><a href=syntax.html#element-restrictions>12.1.2.5 コンテンツモデルの制約</a></li><li><a href=syntax.html#cdata-rcdata-restrictions>12.1.2.6 生テキストおよびエスケープ可能な生テキスト要素のコンテンツの制約</a></li></ol></li><li><a href=syntax.html#text-2>12.1.3 テキスト</a><ol><li><a href=syntax.html#newlines>12.1.3.1 改行</a></li></ol></li><li><a href=syntax.html#character-references>12.1.4 文字参照</a></li><li><a href=syntax.html#cdata-sections>12.1.5 CDATAセクション</a></li><li><a href=syntax.html#comments>12.1.6 コメント</a></li></ol></li><li><a href=syntax.html#parsing>12.2 Parsing HTML documents</a><ol><li><a href=syntax.html#overview-of-the-parsing-model>12.2.1 Overview of the parsing model</a></li><li><a href=syntax.html#the-input-byte-stream>12.2.2 The input byte stream</a><ol><li><a href=syntax.html#parsing-with-a-known-character-encoding>12.2.2.1 Parsing with a known character encoding</a></li><li><a href=syntax.html#determining-the-character-encoding>12.2.2.2 Determining the character encoding</a></li><li><a href=syntax.html#character-encodings>12.2.2.3 文字エンコーディング</a></li><li><a href=syntax.html#changing-the-encoding-while-parsing>12.2.2.4 Changing the encoding while parsing</a></li><li><a href=syntax.html#preprocessing-the-input-stream>12.2.2.5 Preprocessing the input stream</a></li></ol></li><li><a href=syntax.html#parse-state>12.2.3 Parse state</a><ol><li><a href=syntax.html#the-insertion-mode>12.2.3.1 The insertion mode</a></li><li><a href=syntax.html#the-stack-of-open-elements>12.2.3.2 The stack of open elements</a></li><li><a href=syntax.html#the-list-of-active-formatting-elements>12.2.3.3 The list of active formatting elements</a></li><li><a href=syntax.html#the-element-pointers>12.2.3.4 The element pointers</a></li><li><a href=syntax.html#other-parsing-state-flags>12.2.3.5 Other parsing state flags</a></li></ol></li><li><a href=syntax.html#tokenization>12.2.4 Tokenization</a><ol><li><a href=syntax.html#data-state>12.2.4.1 Data state</a></li><li><a href=syntax.html#rcdata-state>12.2.4.2 RCDATA state</a></li><li><a href=syntax.html#rawtext-state>12.2.4.3 RAWTEXT state</a></li><li><a href=syntax.html#script-data-state>12.2.4.4 Script data state</a></li><li><a href=syntax.html#plaintext-state>12.2.4.5 PLAINTEXT state</a></li><li><a href=syntax.html#tag-open-state>12.2.4.6 Tag open state</a></li><li><a href=syntax.html#end-tag-open-state>12.2.4.7 End tag open state</a></li><li><a href=syntax.html#tag-name-state>12.2.4.8 Tag name state</a></li><li><a href=syntax.html#rcdata-less-than-sign-state>12.2.4.9 RCDATA less-than sign state</a></li><li><a href=syntax.html#rcdata-end-tag-open-state>12.2.4.10 RCDATA end tag open state</a></li><li><a href=syntax.html#rcdata-end-tag-name-state>12.2.4.11 RCDATA end tag name state</a></li><li><a href=syntax.html#rawtext-less-than-sign-state>12.2.4.12 RAWTEXT less-than sign state</a></li><li><a href=syntax.html#rawtext-end-tag-open-state>12.2.4.13 RAWTEXT end tag open state</a></li><li><a href=syntax.html#rawtext-end-tag-name-state>12.2.4.14 RAWTEXT end tag name state</a></li><li><a href=syntax.html#script-data-less-than-sign-state>12.2.4.15 Script data less-than sign state</a></li><li><a href=syntax.html#script-data-end-tag-open-state>12.2.4.16 Script data end tag open state</a></li><li><a href=syntax.html#script-data-end-tag-name-state>12.2.4.17 Script data end tag name state</a></li><li><a href=syntax.html#script-data-escape-start-state>12.2.4.18 Script data escape start state</a></li><li><a href=syntax.html#script-data-escape-start-dash-state>12.2.4.19 Script data escape start dash state</a></li><li><a href=syntax.html#script-data-escaped-state>12.2.4.20 Script data escaped state</a></li><li><a href=syntax.html#script-data-escaped-dash-state>12.2.4.21 Script data escaped dash state</a></li><li><a href=syntax.html#script-data-escaped-dash-dash-state>12.2.4.22 Script data escaped dash dash state</a></li><li><a href=syntax.html#script-data-escaped-less-than-sign-state>12.2.4.23 Script data escaped less-than sign state</a></li><li><a href=syntax.html#script-data-escaped-end-tag-open-state>12.2.4.24 Script data escaped end tag open state</a></li><li><a href=syntax.html#script-data-escaped-end-tag-name-state>12.2.4.25 Script data escaped end tag name state</a></li><li><a href=syntax.html#script-data-double-escape-start-state>12.2.4.26 Script data double escape start state</a></li><li><a href=syntax.html#script-data-double-escaped-state>12.2.4.27 Script data double escaped state</a></li><li><a href=syntax.html#script-data-double-escaped-dash-state>12.2.4.28 Script data double escaped dash state</a></li><li><a href=syntax.html#script-data-double-escaped-dash-dash-state>12.2.4.29 Script data double escaped dash dash state</a></li><li><a href=syntax.html#script-data-double-escaped-less-than-sign-state>12.2.4.30 Script data double escaped less-than sign state</a></li><li><a href=syntax.html#script-data-double-escape-end-state>12.2.4.31 Script data double escape end state</a></li><li><a href=syntax.html#before-attribute-name-state>12.2.4.32 Before attribute name state</a></li><li><a href=syntax.html#attribute-name-state>12.2.4.33 Attribute name state</a></li><li><a href=syntax.html#after-attribute-name-state>12.2.4.34 After attribute name state</a></li><li><a href=syntax.html#before-attribute-value-state>12.2.4.35 Before attribute value state</a></li><li><a href=syntax.html#attribute-value-(double-quoted)-state>12.2.4.36 Attribute value (double-quoted) state</a></li><li><a href=syntax.html#attribute-value-(single-quoted)-state>12.2.4.37 Attribute value (single-quoted) state</a></li><li><a href=syntax.html#attribute-value-(unquoted)-state>12.2.4.38 Attribute value (unquoted) state</a></li><li><a href=syntax.html#after-attribute-value-(quoted)-state>12.2.4.39 After attribute value (quoted) state</a></li><li><a href=syntax.html#self-closing-start-tag-state>12.2.4.40 Self-closing start tag state</a></li><li><a href=syntax.html#bogus-comment-state>12.2.4.41 Bogus comment state</a></li><li><a href=syntax.html#markup-declaration-open-state>12.2.4.42 Markup declaration open state</a></li><li><a href=syntax.html#comment-start-state>12.2.4.43 Comment start state</a></li><li><a href=syntax.html#comment-start-dash-state>12.2.4.44 Comment start dash state</a></li><li><a href=syntax.html#comment-state>12.2.4.45 Comment state</a></li><li><a href=syntax.html#comment-less-than-sign-state>12.2.4.46 Comment less-than sign state</a></li><li><a href=syntax.html#comment-less-than-sign-bang-state>12.2.4.47 Comment less-than sign bang state</a></li><li><a href=syntax.html#comment-less-than-sign-bang-dash-state>12.2.4.48 Comment less-than sign bang dash state</a></li><li><a href=syntax.html#comment-less-than-sign-bang-dash-dash-state>12.2.4.49 Comment less-than sign bang dash dash state</a></li><li><a href=syntax.html#comment-end-dash-state>12.2.4.50 Comment end dash state</a></li><li><a href=syntax.html#comment-end-state>12.2.4.51 Comment end state</a></li><li><a href=syntax.html#comment-end-bang-state>12.2.4.52 Comment end bang state</a></li><li><a href=syntax.html#doctype-state>12.2.4.53 DOCTYPE state</a></li><li><a href=syntax.html#before-doctype-name-state>12.2.4.54 Before DOCTYPE name state</a></li><li><a href=syntax.html#doctype-name-state>12.2.4.55 DOCTYPE name state</a></li><li><a href=syntax.html#after-doctype-name-state>12.2.4.56 After DOCTYPE name state</a></li><li><a href=syntax.html#after-doctype-public-keyword-state>12.2.4.57 After DOCTYPE public keyword state</a></li><li><a href=syntax.html#before-doctype-public-identifier-state>12.2.4.58 Before DOCTYPE public identifier state</a></li><li><a href=syntax.html#doctype-public-identifier-(double-quoted)-state>12.2.4.59 DOCTYPE public identifier (double-quoted) state</a></li><li><a href=syntax.html#doctype-public-identifier-(single-quoted)-state>12.2.4.60 DOCTYPE public identifier (single-quoted) state</a></li><li><a href=syntax.html#after-doctype-public-identifier-state>12.2.4.61 After DOCTYPE public identifier state</a></li><li><a href=syntax.html#between-doctype-public-and-system-identifiers-state>12.2.4.62 Between DOCTYPE public and system identifiers state</a></li><li><a href=syntax.html#after-doctype-system-keyword-state>12.2.4.63 After DOCTYPE system keyword state</a></li><li><a href=syntax.html#before-doctype-system-identifier-state>12.2.4.64 Before DOCTYPE system identifier state</a></li><li><a href=syntax.html#doctype-system-identifier-(double-quoted)-state>12.2.4.65 DOCTYPE system identifier (double-quoted) state</a></li><li><a href=syntax.html#doctype-system-identifier-(single-quoted)-state>12.2.4.66 DOCTYPE system identifier (single-quoted) state</a></li><li><a href=syntax.html#after-doctype-system-identifier-state>12.2.4.67 After DOCTYPE system identifier state</a></li><li><a href=syntax.html#bogus-doctype-state>12.2.4.68 Bogus DOCTYPE state</a></li><li><a href=syntax.html#cdata-section-state>12.2.4.69 CDATA section state</a></li><li><a href=syntax.html#cdata-section-bracket-state>12.2.4.70 CDATA section bracket state</a></li><li><a href=syntax.html#cdata-section-end-state>12.2.4.71 CDATA section end state</a></li><li><a href=syntax.html#character-reference-state>12.2.4.72 Character reference state</a></li><li><a href=syntax.html#numeric-character-reference-state>12.2.4.73 Numeric character reference state</a></li><li><a href=syntax.html#hexademical-character-reference-start-state>12.2.4.74 Hexademical character reference start state</a></li><li><a href=syntax.html#decimal-character-reference-start-state>12.2.4.75 Decimal character reference start state</a></li><li><a href=syntax.html#hexademical-character-reference-state>12.2.4.76 Hexademical character reference state</a></li><li><a href=syntax.html#decimal-character-reference-state>12.2.4.77 Decimal character reference state</a></li><li><a href=syntax.html#numeric-character-reference-end-state>12.2.4.78 Numeric character reference end state</a></li><li><a href=syntax.html#character-reference-end-state>12.2.4.79 Character reference end state</a></li></ol></li><li><a href=syntax.html#tree-construction>12.2.5 Tree construction</a><ol><li><a href=syntax.html#creating-and-inserting-nodes>12.2.5.1 Creating and inserting nodes</a></li><li><a href=syntax.html#parsing-elements-that-contain-only-text>12.2.5.2 Parsing elements that contain only text</a></li><li><a href=syntax.html#closing-elements-that-have-implied-end-tags>12.2.5.3 Closing elements that have implied end tags</a></li><li><a href=syntax.html#parsing-main-inhtml>12.2.5.4 The rules for parsing tokens in HTML content</a><ol><li><a href=syntax.html#the-initial-insertion-mode>12.2.5.4.1 The "initial" insertion mode</a></li><li><a href=syntax.html#the-before-html-insertion-mode>12.2.5.4.2 The "before html" insertion mode</a></li><li><a href=syntax.html#the-before-head-insertion-mode>12.2.5.4.3 The "before head" insertion mode</a></li><li><a href=syntax.html#parsing-main-inhead>12.2.5.4.4 The "in head" insertion mode</a></li><li><a href=syntax.html#parsing-main-inheadnoscript>12.2.5.4.5 The "in head noscript" insertion mode</a></li><li><a href=syntax.html#the-after-head-insertion-mode>12.2.5.4.6 The "after head" insertion mode</a></li><li><a href=syntax.html#parsing-main-inbody>12.2.5.4.7 The "in body" insertion mode</a></li><li><a href=syntax.html#parsing-main-incdata>12.2.5.4.8 The "text" insertion mode</a></li><li><a href=syntax.html#parsing-main-intable>12.2.5.4.9 The "in table" insertion mode</a></li><li><a href=syntax.html#parsing-main-intabletext>12.2.5.4.10 The "in table text" insertion mode</a></li><li><a href=syntax.html#parsing-main-incaption>12.2.5.4.11 The "in caption" insertion mode</a></li><li><a href=syntax.html#parsing-main-incolgroup>12.2.5.4.12 The "in column group" insertion mode</a></li><li><a href=syntax.html#parsing-main-intbody>12.2.5.4.13 The "in table body" insertion mode</a></li><li><a href=syntax.html#parsing-main-intr>12.2.5.4.14 The "in row" insertion mode</a></li><li><a href=syntax.html#parsing-main-intd>12.2.5.4.15 The "in cell" insertion mode</a></li><li><a href=syntax.html#parsing-main-inselect>12.2.5.4.16 The "in select" insertion mode</a></li><li><a href=syntax.html#parsing-main-inselectintable>12.2.5.4.17 The "in select in table" insertion mode</a></li><li><a href=syntax.html#parsing-main-intemplate>12.2.5.4.18 The "in template" insertion mode</a></li><li><a href=syntax.html#parsing-main-afterbody>12.2.5.4.19 The "after body" insertion mode</a></li><li><a href=syntax.html#parsing-main-inframeset>12.2.5.4.20 The "in frameset" insertion mode</a></li><li><a href=syntax.html#parsing-main-afterframeset>12.2.5.4.21 The "after frameset" insertion mode</a></li><li><a href=syntax.html#the-after-after-body-insertion-mode>12.2.5.4.22 The "after after body" insertion mode</a></li><li><a href=syntax.html#the-after-after-frameset-insertion-mode>12.2.5.4.23 The "after after frameset" insertion mode</a></li></ol></li><li><a href=syntax.html#parsing-main-inforeign>12.2.5.5 The rules for parsing tokens in foreign content</a></li></ol></li><li><a href=syntax.html#the-end>12.2.6 The end</a></li><li><a href=syntax.html#coercing-an-html-dom-into-an-infoset>12.2.7 Coercing an HTML DOM into an infoset</a></li><li><a href=syntax.html#an-introduction-to-error-handling-and-strange-cases-in-the-parser>12.2.8 An introduction to error handling and strange cases in the parser</a><ol><li><a href=syntax.html#misnested-tags:-b-i-/b-/i>12.2.8.1 Misnested tags: &lt;b&gt;&lt;i&gt;&lt;/b&gt;&lt;/i&gt;</a></li><li><a href=syntax.html#misnested-tags:-b-p-/b-/p>12.2.8.2 Misnested tags: &lt;b&gt;&lt;p&gt;&lt;/b&gt;&lt;/p&gt;</a></li><li><a href=syntax.html#unexpected-markup-in-tables>12.2.8.3 Unexpected markup in tables</a></li><li><a href=syntax.html#scripts-that-modify-the-page-as-it-is-being-parsed>12.2.8.4 Scripts that modify the page as it is being parsed</a></li><li><a href=syntax.html#the-execution-of-scripts-that-are-moving-across-multiple-documents>12.2.8.5 The execution of scripts that are moving across multiple documents</a></li><li><a href=syntax.html#unclosed-formatting-elements>12.2.8.6 Unclosed formatting elements</a></li></ol></li></ol></li><li><a href=syntax.html#serialising-html-fragments>12.3 Serializing HTML fragments</a></li><li><a href=syntax.html#parsing-html-fragments>12.4 Parsing HTML fragments</a></li><li><a href=syntax.html#named-character-references>12.5 名前文字参照</a></li></ol></li></ol><h2 id=syntax>12 <dfn>HTML構文</dfn><a href=#syntax class=self-link></a></h2>
 
-  <p class=note>このセクションは、<a id=syntax:html-mime-type href=infrastructure.html#html-mime-type>HTML MIMEタイプ</a>で標識されたリソースのための規則のみを説明する。XMLリソースのための規則は、"<a id=syntax:the-xhtml-syntax href=xhtml.html#the-xhtml-syntax>XHTML構文</a>"と題する以降のセクションで説明する。</p>
+  <p class=note>このセクションは、<a id=syntax:html-mime-type href=https://mimesniff.spec.whatwg.org/#html-mime-type data-x-internal=html-mime-type>HTML MIMEタイプ</a>で標識されたリソースのための規則のみを説明する。XMLリソースのための規則は、"<a id=syntax:the-xhtml-syntax href=xhtml.html#the-xhtml-syntax>XHTML構文</a>"と題する以降のセクションで説明する。</p>
 
 
   <h3 id=writing>12.1 HTML文書を記述する<a href=#writing class=self-link></a></h3>
@@ -358,7 +233,7 @@
 
   <p>次の順序で、DOCTYPEは以下のコンポーネントで構成されなければならない：</p>
 
-  <ol class=brief><li>"<code>&lt;!DOCTYPE</code>"に一致する<a id=the-doctype:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>の文字列。</li><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character>空白文字</a>。</li><li>"<code>html</code>"に一致する<a id=the-doctype:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>の文字列。</li><li>任意で、<a href=#doctype-legacy-string id=the-doctype:doctype-legacy-string>DOCTYPEレガシー文字列</a>または<a href=#obsolete-permitted-doctype-string id=the-doctype:obsolete-permitted-doctype-string>旧式の許可されたDOCTYPE文字列</a>（以下に定義）。</li><li>0個以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-2>空白文字</a>。</li><li>U+003E GREATER-THAN SIGN文字（&gt;）。</li></ol>
+  <ol class=brief><li>"<code>&lt;!DOCTYPE</code>"に一致する<a id=the-doctype:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>の文字列。</li><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character>空白文字</a>。</li><li>"<code>html</code>"に一致する<a id=the-doctype:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>の文字列。</li><li>Optionally, a <a href=#doctype-legacy-string id=the-doctype:doctype-legacy-string>DOCTYPE legacy string</a>.</li><li>0個以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-2>空白文字</a>。</li><li>U+003E GREATER-THAN SIGN文字（&gt;）。</li></ol>
 
   <p class=note>言い換えると、大文字・小文字不区別で<code>&lt;!DOCTYPE html&gt;</code>。</p>
 
@@ -366,40 +241,11 @@
 
   <p>短いDOCTYPE"<code>&lt;!DOCTYPE html&gt;</code>"でHTMLマークアップを出力できないHTMLの出力器の目的に対して、<dfn id=doctype-legacy-string>DOCTYPEレガシー文字列</dfn>は（上記で定義された位置で）DOCTYPEに挿入してもよい。この文字列は以下で構成されなければならない：</p>
 
-  <ol class=brief><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-3>空白文字</a>。</li><li>"<code>SYSTEM</code>"に一致する<a id=the-doctype:ascii-case-insensitive-3 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>の文字列。</li><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-4>空白文字</a>。</li><li>U+0022 QUOTATION MARKまたはU+0027 APOSTROPHE文字（<i>引用符</i>）。</li><li>リテラルに文字列"<code id=the-doctype:about:legacy-compat><a href=infrastructure.html#about:legacy-compat>about:legacy-compat</a></code>"。</li><li>U+0022 QUOTATION MARKまたはU+0027 APOSTROPHEに一致する文字（すなわち、前のステップで<i>引用符</i>とラベル付けされたものと同じ文字）。</li></ol>
+  <ol class=brief><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-3>空白文字</a>。</li><li>"<code>SYSTEM</code>"に一致する<a id=the-doctype:ascii-case-insensitive-3 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>の文字列。</li><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-4>空白文字</a>。</li><li>U+0022 QUOTATION MARKまたはU+0027 APOSTROPHE文字（<i>引用符</i>）。</li><li>リテラルに文字列"<code id=the-doctype:about:legacy-compat><a href=infrastructure.html#about:legacy-compat>about:legacy-compat</a></code>"。</li><li>U+0022 QUOTATION MARKまたはU+0027 APOSTROPHEに一致する文字（すなわち、前のステップで<i>引用符</i>とラベル付けされたものと同じ文字）。</li></ol>
 
   <p class=note>言い換えると、単一または二重引用符の部分を除いて大文字・小文字不区別で、<code>&lt;!DOCTYPE html SYSTEM "about:legacy-compat"&gt;</code>または<code>&lt;!DOCTYPE html SYSTEM 'about:legacy-compat'&gt;</code>。</p>
 
   <p>文書が短い文字列を出力できないシステムから生成されない限り、<a href=#doctype-legacy-string id=the-doctype:doctype-legacy-string-2>DOCTYPEレガシー文字列</a>は使用すべきではない。</p>
-
-  <hr>
-
-  
-
-  <p>HTML4やXHTML1から著者の移行を支援するために、<dfn id=obsolete-permitted-doctype-string>旧式の許可されたDOCTYPE文字列</dfn>は、（上で定義した位置で）DOCTYPEに挿入することができる。この文字列は以下で構成されなければならない：</p>
-
-  <ol class=brief><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-5>空白文字</a>。</li><li>"<code>PUBLIC</code>"に一致する<a id=the-doctype:ascii-case-insensitive-4 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>の文字列。</li><li>1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-6>空白文字</a>。</li><li>A U+0022 QUOTATION MARKまたはU+0027 APOSTROPHE文字（<i>1つ目の引用符</i>）。</li><li>下記表の最初の列でセルのいずれかの文字列。このセルが属する行が<i>選択された行</i>である。</li><li>U+0022 QUOTATION MARKまたはU+0027 APOSTROPHEに一致する文字（すなわち、前のステップで<i>1つ目の引用符</i>とラベル付けされたものと同じ文字）。</li><li><i>選択した行</i>の2列目のセルが空白でない場合、1つ以上の<a href=infrastructure.html#space-character id=the-doctype:space-character-7>空白文字</a>。</li><li><i>選択した行</i>の2列目のセルが空白でない場合、U+0022 QUOTATION MARKまたはU+0027 APOSTROPHE文字（<i>3つ目の引用符</i>）。</li><li><i>選択した行</i>の2列目のセルが空白でない場合、<i>選択した行</i>の2列目のセルから文字列を指定する。</li><li><i>選択した行</i>の2列目のセルが空白でない場合は、U+0022 QUOTATION MARKまたはU+0027 APOSTROPHE文字（すなわち、前のステップで<i>3つ目の引用符</i>とラベル付けされたものと同じ文字）。</li></ol>
-
-  <table><caption>
-    <a href=#obsolete-permitted-doctype-string id=the-doctype:obsolete-permitted-doctype-string-2>旧式の許可されたDOCTYPE文字列</a>で公開識別子およびシステム識別子に対する許容値。
-   </caption><thead><tr><th> 公開識別子
-     </th><th> システム識別子
-   </th></tr></thead><tbody><tr><td> <code>-//W3C//DTD&nbsp;HTML&nbsp;4.0//EN</code>
-     </td><td>
-    </td></tr><tr><td> <code>-//W3C//DTD&nbsp;HTML&nbsp;4.0//EN</code>
-     </td><td> <code>http://www.w3.org/TR/REC-html40/strict.dtd</code>
-    </td></tr><tr><td> <code>-//W3C//DTD&nbsp;HTML&nbsp;4.01//EN</code>
-     </td><td>
-    </td></tr><tr><td> <code>-//W3C//DTD&nbsp;HTML&nbsp;4.01//EN</code>
-     </td><td> <code>http://www.w3.org/TR/html4/strict.dtd</code>
-    </td></tr><tr><td> <code>-//W3C//DTD&nbsp;XHTML&nbsp;1.0&nbsp;Strict//EN</code>
-     </td><td> <code>http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd</code>
-    </td></tr><tr><td> <code>-//W3C//DTD&nbsp;XHTML&nbsp;1.1//EN</code>
-     </td><td> <code>http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd</code>
-  </td></tr></table>
-
-  <p><a href=#obsolete-permitted-doctype-string id=the-doctype:obsolete-permitted-doctype-string-3>旧式の許可されたDOCTYPE文字列</a>を含む<a href=#syntax-doctype id=the-doctype:syntax-doctype>DOCTYPE</a>は<dfn id=obsolete-permitted-doctype>旧式の許可されたDOCTYPE</dfn>である。不必要に長くなるので、著者は<a href=#obsolete-permitted-doctype id=the-doctype:obsolete-permitted-doctype>旧式の許可されたDOCTYPE</a>を使うべきでない。</p>
-
 
 
 
@@ -407,7 +253,7 @@
 
   <p>5つの異なる種類の<dfn id=syntax-elements>要素</dfn>が存在する。<a href=#void-elements id=elements-2:void-elements>空要素</a>、<a href=#raw-text-elements id=elements-2:raw-text-elements>生テキスト要素</a>、<a href=#escapable-raw-text-elements id=elements-2:escapable-raw-text-elements>エスケープ可能な生テキスト要素</a>、<a href=#foreign-elements id=elements-2:foreign-elements>外来要素</a>、<a href=#normal-elements id=elements-2:normal-elements>通常要素</a>。</p>
 
-  <dl><dt><dfn id=void-elements>空要素</dfn><dd><code id=elements-2:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>、<code id=elements-2:the-base-element><a href=semantics.html#the-base-element>base</a></code>、<code id=elements-2:the-br-element><a href=semantics.html#the-br-element>br</a></code>、<code id=elements-2:the-col-element><a href=tables.html#the-col-element>col</a></code>、<code id=elements-2:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code>、<code id=elements-2:the-hr-element><a href=semantics.html#the-hr-element>hr</a></code>、<code id=elements-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>、<code id=elements-2:the-input-element><a href=forms.html#the-input-element>input</a></code>、<code id=elements-2:the-keygen-element><a href=forms.html#the-keygen-element>keygen</a></code>、<code id=elements-2:the-link-element><a href=semantics.html#the-link-element>link</a></code>、<code id=elements-2:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>、<code id=elements-2:the-param-element><a href=embedded-content.html#the-param-element>param</a></code>、<code id=elements-2:the-source-element><a href=embedded-content.html#the-source-element>source</a></code>、<code id=elements-2:the-track-element><a href=embedded-content.html#the-track-element>track</a></code>、<code id=elements-2:the-wbr-element><a href=semantics.html#the-wbr-element>wbr</a></code><dt><dfn id=raw-text-elements>生テキスト要素</dfn><dd><code id=elements-2:the-script-element><a href=scripting.html#the-script-element>script</a></code>、<code id=elements-2:the-style-element><a href=semantics.html#the-style-element>style</a></code><dt><dfn id=escapable-raw-text-elements>エスケープ可能な生テキスト要素</dfn><dd><code id=elements-2:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code>、<code id=elements-2:the-title-element><a href=semantics.html#the-title-element>title</a></code><dt><dfn id=foreign-elements>外来要素</dfn><dd><a id=elements-2:mathml-namespace href=infrastructure.html#mathml-namespace>MathML名前空間</a>および<a id=elements-2:svg-namespace href=infrastructure.html#svg-namespace>SVG名前空間</a>由来の要素。<dt><dfn id=normal-elements>通常要素</dfn><dd>他の許容されるすべての<a id=elements-2:html-elements href=infrastructure.html#html-elements>HTML要素</a>が通常要素である。</dl>
+  <dl><dt><dfn id=void-elements>空要素</dfn><dd><code id=elements-2:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>、<code id=elements-2:the-base-element><a href=semantics.html#the-base-element>base</a></code>、<code id=elements-2:the-br-element><a href=semantics.html#the-br-element>br</a></code>、<code id=elements-2:the-col-element><a href=tables.html#the-col-element>col</a></code>、<code id=elements-2:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code>、<code id=elements-2:the-hr-element><a href=semantics.html#the-hr-element>hr</a></code>、<code id=elements-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>、<code id=elements-2:the-input-element><a href=forms.html#the-input-element>input</a></code>、<code id=elements-2:the-keygen-element><a href=forms.html#the-keygen-element>keygen</a></code>、<code id=elements-2:the-link-element><a href=semantics.html#the-link-element>link</a></code>、<code id=elements-2:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>、<code id=elements-2:the-param-element><a href=embedded-content.html#the-param-element>param</a></code>、<code id=elements-2:the-source-element><a href=embedded-content.html#the-source-element>source</a></code>、<code id=elements-2:the-track-element><a href=embedded-content.html#the-track-element>track</a></code>、<code id=elements-2:the-wbr-element><a href=semantics.html#the-wbr-element>wbr</a></code><dt><dfn id=raw-text-elements>生テキスト要素</dfn><dd><code id=elements-2:the-script-element><a href=scripting.html#the-script-element>script</a></code>、<code id=elements-2:the-style-element><a href=semantics.html#the-style-element>style</a></code><dt><dfn id=escapable-raw-text-elements>エスケープ可能な生テキスト要素</dfn><dd><code id=elements-2:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code>、<code id=elements-2:the-title-element><a href=semantics.html#the-title-element>title</a></code><dt><dfn id=foreign-elements>外来要素</dfn><dd><a id=elements-2:mathml-namespace href=https://infra.spec.whatwg.org/#mathml-namespace data-x-internal=mathml-namespace>MathML名前空間</a>および<a id=elements-2:svg-namespace href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG名前空間</a>由来の要素。<dt><dfn id=normal-elements>通常要素</dfn><dd>他の許容されるすべての<a id=elements-2:html-elements href=infrastructure.html#html-elements>HTML要素</a>が通常要素である。</dl>
 
   <p><dfn id=syntax-tags>タグ</dfn>は、マークアップで要素の開始と終了を区切るために使用される。<a href=#raw-text-elements id=elements-2:raw-text-elements-2>生テキスト</a>、<a href=#escapable-raw-text-elements id=elements-2:escapable-raw-text-elements-2>エスケープ可能な生テキスト</a>、および<a href=#normal-elements id=elements-2:normal-elements-2>通常</a>要素は、開始する場所を示すための<a href=#syntax-start-tag id=elements-2:syntax-start-tag>開始タグ</a>を持ち、終了する場所を示すための<a href=#syntax-end-tag id=elements-2:syntax-end-tag>終了タグ</a>を持つ。<a href=#syntax-tag-omission id=elements-2:syntax-tag-omission-2>任意タグ</a>のセクションで後述するように、特定の<a href=#normal-elements id=elements-2:normal-elements-3>通常要素</a>の開始タグおよび終了タグは<a href=#syntax-tag-omission id=elements-2:syntax-tag-omission>省略</a>できる。省略できないものは省略してはならない。<a href=#void-elements id=elements-2:void-elements-2>空要素</a>は開始タグのみを持つ。<a href=#void-elements id=elements-2:void-elements-3>空要素</a>に対して終了タグは指定してはならない。<a href=#foreign-elements id=elements-2:foreign-elements-2>外来要素</a>は、開始タグと終了タグを持つ、または終了タグを持ってはならない場合、自己終了としてマークされる開始タグのいずれかを持たなければならない。</p>
 
@@ -463,7 +309,7 @@
 
   <p>要素の<dfn id=syntax-attributes>属性</dfn>は要素の開始タグの中で表現される。</p>
 
-  <p>属性は名前および値を持つ。<dfn id=syntax-attribute-name>属性名</dfn>は、<a href=infrastructure.html#space-character id=attributes-2:space-character>空白文字</a>、U+0000 NULL、U+0022 QUOTATION MARK（"）、U+0027 APOSTROPHE（'）、U+003E GREATER-THAN SIGN（&gt;）、U+002F SOLIDUS（/）、U+003D EQUALS SIGN（=）文字、<a id=attributes-2:control-characters href=infrastructure.html#control-characters>制御文字</a>、およびUnicodeで定義されない任意の文字以外の1つ以上の文字で構成されなければならない。HTML構文において、<a href=#foreign-elements id=attributes-2:foreign-elements>外来要素</a>に対するものでさえ、属性名は、属性名に<a id=attributes-2:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチする小文字と大文字の任意の組み合わせで書かれてもよい。</p>
+  <p>属性は名前および値を持つ。<dfn id=syntax-attribute-name>属性名</dfn>は、<a href=infrastructure.html#space-character id=attributes-2:space-character>空白文字</a>、U+0000 NULL、U+0022 QUOTATION MARK（"）、U+0027 APOSTROPHE（'）、U+003E GREATER-THAN SIGN（&gt;）、U+002F SOLIDUS（/）、U+003D EQUALS SIGN（=）文字、<a id=attributes-2:control-characters href=infrastructure.html#control-characters>制御文字</a>、およびUnicodeで定義されない任意の文字以外の1つ以上の文字で構成されなければならない。HTML構文において、<a href=#foreign-elements id=attributes-2:foreign-elements>外来要素</a>に対するものでさえ、属性名は、属性名に<a id=attributes-2:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチする小文字と大文字の任意の組み合わせで書かれてもよい。</p>
 
   <p><dfn id=syntax-attribute-value>属性値</dfn>は、テキストが<a href=#syntax-ambiguous-ampersand id=attributes-2:syntax-ambiguous-ampersand>曖昧なアンパサンド</a>を含めることができない追加の制限をもつ場合を除き、<a href=#syntax-text id=attributes-2:syntax-text>テキスト</a>および<a href=#syntax-charref id=attributes-2:syntax-charref>文字参照</a>の混合物である。</p>
 
@@ -530,24 +376,24 @@
 
    </dl>
 
-  <p>名前が互いに<a id=attributes-2:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチする同じ開始タグで2つ以上の属性があってはならない。</p>
+  <p>名前が互いに<a id=attributes-2:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチする同じ開始タグで2つ以上の属性があってはならない。</p>
 
   <hr>
 
   <p><a href=#foreign-elements id=attributes-2:foreign-elements-2>外来要素</a>が以下の表から行の1番目のローカル名および2番目のセルの名前空間によって与えられた名前空間属性のいずれかが含まれる場合、同じ行から3番目のセルで指定した名前を使用して書かれなければならない。</p>
 
   <table><thead><tr><th> ローカル名 </th><th> 名前空間 </th><th> 属性名
-   </th></tr></thead><tbody><tr><td> <code>actuate</code> </td><td> <a id=attributes-2:xlink-namespace href=infrastructure.html#xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:actuate</code>
-    </td></tr><tr><td> <code>arcrole</code> </td><td> <a id=attributes-2:xlink-namespace-2 href=infrastructure.html#xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:arcrole</code>
-    </td></tr><tr><td> <code>href</code> </td><td> <a id=attributes-2:xlink-namespace-3 href=infrastructure.html#xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:href</code>
-    </td></tr><tr><td> <code>role</code> </td><td> <a id=attributes-2:xlink-namespace-4 href=infrastructure.html#xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:role</code>
-    </td></tr><tr><td> <code>show</code> </td><td> <a id=attributes-2:xlink-namespace-5 href=infrastructure.html#xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:show</code>
-    </td></tr><tr><td> <code>title</code> </td><td> <a id=attributes-2:xlink-namespace-6 href=infrastructure.html#xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:title</code>
-    </td></tr><tr><td> <code>type</code> </td><td> <a id=attributes-2:xlink-namespace-7 href=infrastructure.html#xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:type</code>
-    </td></tr><tr><td> <code>lang</code> </td><td> <a id=attributes-2:xml-namespace href=infrastructure.html#xml-namespace>XML名前空間</a> </td><td> <code>xml:lang</code>
-    </td></tr><tr><td> <code>space</code> </td><td> <a id=attributes-2:xml-namespace-2 href=infrastructure.html#xml-namespace>XML名前空間</a> </td><td> <code>xml:space</code>
-    </td></tr><tr><td> <code>xmlns</code> </td><td> <a id=attributes-2:xmlns-namespace href=infrastructure.html#xmlns-namespace>XMLNS名前空間</a> </td><td> <code>xmlns</code>
-    </td></tr><tr><td> <code>xlink</code> </td><td> <a id=attributes-2:xmlns-namespace-2 href=infrastructure.html#xmlns-namespace>XMLNS名前空間</a> </td><td> <code>xmlns:xlink</code>
+   </th></tr></thead><tbody><tr><td> <code>actuate</code> </td><td> <a id=attributes-2:xlink-namespace href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:actuate</code>
+    </td></tr><tr><td> <code>arcrole</code> </td><td> <a id=attributes-2:xlink-namespace-2 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:arcrole</code>
+    </td></tr><tr><td> <code>href</code> </td><td> <a id=attributes-2:xlink-namespace-3 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:href</code>
+    </td></tr><tr><td> <code>role</code> </td><td> <a id=attributes-2:xlink-namespace-4 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:role</code>
+    </td></tr><tr><td> <code>show</code> </td><td> <a id=attributes-2:xlink-namespace-5 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:show</code>
+    </td></tr><tr><td> <code>title</code> </td><td> <a id=attributes-2:xlink-namespace-6 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:title</code>
+    </td></tr><tr><td> <code>type</code> </td><td> <a id=attributes-2:xlink-namespace-7 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a> </td><td> <code>xlink:type</code>
+    </td></tr><tr><td> <code>lang</code> </td><td> <a id=attributes-2:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a> </td><td> <code>xml:lang</code>
+    </td></tr><tr><td> <code>space</code> </td><td> <a id=attributes-2:xml-namespace-2 href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a> </td><td> <code>xml:space</code>
+    </td></tr><tr><td> <code>xmlns</code> </td><td> <a id=attributes-2:xmlns-namespace href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS名前空間</a> </td><td> <code>xmlns</code>
+    </td></tr><tr><td> <code>xlink</code> </td><td> <a id=attributes-2:xmlns-namespace-2 href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS名前空間</a> </td><td> <code>xmlns:xlink</code>
   </td></tr></table>
 
   <p>それ以外の名前空間つき属性は、<a href=#syntax id=attributes-2:syntax>HTML構文</a>で表現できない。</p>
@@ -1006,7 +852,7 @@
 
   <p class=note>As stated <a href=infrastructure.html#html-elements id=parsing:html-elements class=no-backref>in the terminology
   section</a>, references to <a href=infrastructure.html#element-type id=parsing:element-type>element types</a> that do not
-  explicitly specify a namespace always refer to elements in the <a id=parsing:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>. For
+  explicitly specify a namespace always refer to elements in the <a id=parsing:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>. For
   example, if the spec talks about "a <code id=parsing:the-menuitem-element><a href=forms.html#the-menuitem-element>menuitem</a></code> element", then that is an element with
   the local name "<code>menuitem</code>", the namespace "<code>http://www.w3.org/1999/xhtml</code>", and the interface <code id=parsing:htmlmenuitemelement><a href=forms.html#htmlmenuitemelement>HTMLMenuItemElement</a></code>.
   Where possible, references to such elements are hyperlinked to their definition.</p>
@@ -1104,8 +950,8 @@
 
   <h5 id=parsing-with-a-known-character-encoding>12.2.2.1 Parsing with a known character encoding<a href=#parsing-with-a-known-character-encoding class=self-link></a></h5>
 
-  <p>When the HTML parser is to operate on an input byte stream that has <dfn id=a-known-definite-encoding>a known definite
-  encoding</dfn>, then the character encoding is that encoding and the <a href=#concept-encoding-confidence id=parsing-with-a-known-character-encoding:concept-encoding-confidence>confidence</a> is <i>certain</i>.</p>
+  <p>When the HTML parser is to operate on an input byte stream that has <dfn id=a-known-definite-encoding data-export="">a known
+  definite encoding</dfn>, then the character encoding is that encoding and the <a href=#concept-encoding-confidence id=parsing-with-a-known-character-encoding:concept-encoding-confidence>confidence</a> is <i>certain</i>.</p>
 
 
   <h5 id=determining-the-character-encoding>12.2.2.2 Determining the character encoding<a href=#determining-the-character-encoding class=self-link></a></h5>
@@ -1642,8 +1488,8 @@
 
   <hr>
 
-  <p>When an algorithm requires a user agent to <dfn id=prescan-a-byte-stream-to-determine-its-encoding>prescan a byte stream to determine its
-  encoding</dfn>, given some defined <var>end condition</var>, then it must run the
+  <p>When an algorithm requires a user agent to <dfn id=prescan-a-byte-stream-to-determine-its-encoding data-export="">prescan a byte stream to
+  determine its encoding</dfn>, given some defined <var>end condition</var>, then it must run the
   following steps. These steps either abort unsuccessfully or return a character encoding. If at any
   point during these steps (including during instances of the <a href=#concept-get-attributes-when-sniffing id=determining-the-character-encoding:concept-get-attributes-when-sniffing>get an attribute</a> algorithm invoked by this
   one) the user agent either runs out of bytes (meaning the <var>position</var> pointer
@@ -2087,22 +1933,22 @@
   <p>The <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-9>stack of open elements</a> is said to <dfn id=has-an-element-in-list-item-scope>have a particular element in list item scope</dfn> when it <a href=#has-an-element-in-the-specific-scope id=the-stack-of-open-elements:has-an-element-in-the-specific-scope-2>has that element in the specific scope</a> consisting of the following
   element types:</p>
 
-  <ul class=brief><li>All the element types listed above for the <i id=the-stack-of-open-elements:has-an-element-in-scope><a href=#has-an-element-in-scope>has an element in scope</a></i> algorithm.</li><li><code id=the-stack-of-open-elements:the-ol-element-2><a href=semantics.html#the-ol-element>ol</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-ul-element-2><a href=semantics.html#the-ul-element>ul</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-2 href=infrastructure.html#html-namespace-2>HTML namespace</a></li></ul>
+  <ul class=brief><li>All the element types listed above for the <i id=the-stack-of-open-elements:has-an-element-in-scope><a href=#has-an-element-in-scope>has an element in scope</a></i> algorithm.</li><li><code id=the-stack-of-open-elements:the-ol-element-2><a href=semantics.html#the-ol-element>ol</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-ul-element-2><a href=semantics.html#the-ul-element>ul</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li></ul>
 
   <p>The <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-10>stack of open elements</a> is said to <dfn id=has-an-element-in-button-scope>have a particular element in button scope</dfn> when it <a href=#has-an-element-in-the-specific-scope id=the-stack-of-open-elements:has-an-element-in-the-specific-scope-3>has that element in the specific scope</a> consisting of the following element
   types:</p>
 
-  <ul class=brief><li>All the element types listed above for the <i id=the-stack-of-open-elements:has-an-element-in-scope-2><a href=#has-an-element-in-scope>has an element in scope</a></i> algorithm.</li><li><code id=the-stack-of-open-elements:the-button-element-2><a href=forms.html#the-button-element>button</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-3 href=infrastructure.html#html-namespace-2>HTML namespace</a></li></ul>
+  <ul class=brief><li>All the element types listed above for the <i id=the-stack-of-open-elements:has-an-element-in-scope-2><a href=#has-an-element-in-scope>has an element in scope</a></i> algorithm.</li><li><code id=the-stack-of-open-elements:the-button-element-2><a href=forms.html#the-button-element>button</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-3 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li></ul>
 
   <p>The <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-11>stack of open elements</a> is said to <dfn id=has-an-element-in-table-scope>have a particular element in table scope</dfn> when it <a href=#has-an-element-in-the-specific-scope id=the-stack-of-open-elements:has-an-element-in-the-specific-scope-4>has that element in the specific scope</a> consisting of the following element
   types:</p>
 
-  <ul class=brief><li><code id=the-stack-of-open-elements:the-html-element-7><a href=semantics.html#the-html-element>html</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-4 href=infrastructure.html#html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-table-element-3><a href=tables.html#the-table-element>table</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-5 href=infrastructure.html#html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-template-element-3><a href=scripting.html#the-template-element>template</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-6 href=infrastructure.html#html-namespace-2>HTML namespace</a></li></ul>
+  <ul class=brief><li><code id=the-stack-of-open-elements:the-html-element-7><a href=semantics.html#the-html-element>html</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-4 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-table-element-3><a href=tables.html#the-table-element>table</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-5 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-template-element-3><a href=scripting.html#the-template-element>template</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-6 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li></ul>
 
   <p>The <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-12>stack of open elements</a> is said to <dfn id=has-an-element-in-select-scope>have a particular element in select scope</dfn> when it <a href=#has-an-element-in-the-specific-scope id=the-stack-of-open-elements:has-an-element-in-the-specific-scope-5>has that element in the specific scope</a> consisting of all element types
   <em>except</em> the following:</p>
 
-  <ul class=brief><li><code id=the-stack-of-open-elements:the-optgroup-element><a href=forms.html#the-optgroup-element>optgroup</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-7 href=infrastructure.html#html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-option-element-2><a href=forms.html#the-option-element>option</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-8 href=infrastructure.html#html-namespace-2>HTML namespace</a></li></ul>
+  <ul class=brief><li><code id=the-stack-of-open-elements:the-optgroup-element><a href=forms.html#the-optgroup-element>optgroup</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-7 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li><li><code id=the-stack-of-open-elements:the-option-element-2><a href=forms.html#the-option-element>option</a></code> in the <a id=the-stack-of-open-elements:html-namespace-2-8 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a></li></ul>
 
   <p>Nothing happens if at any time any of the elements in the <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-13>stack of open elements</a>
   are moved to a new location in, or removed from, the <code id=the-stack-of-open-elements:document><a href=dom.html#document>Document</a></code> tree. In particular,
@@ -2733,12 +2579,12 @@
   characters, create a comment token whose data is the empty string, and switch to the <a href=#comment-start-state id=markup-declaration-open-state:comment-start-state>comment
   start state</a>.</p>
 
-  <p>Otherwise, if the next seven characters are an <a id=markup-declaration-open-state:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for
+  <p>Otherwise, if the next seven characters are an <a id=markup-declaration-open-state:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for
   the word "DOCTYPE", then consume those characters and switch to the <a href=#doctype-state id=markup-declaration-open-state:doctype-state>DOCTYPE
   state</a>.</p>
 
   <p>Otherwise, if there is an <a href=#adjusted-current-node id=markup-declaration-open-state:adjusted-current-node>adjusted current node</a> and it is not an element in the
-  <a id=markup-declaration-open-state:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a> and the next seven characters are a <a id=markup-declaration-open-state:case-sensitive href=infrastructure.html#case-sensitive>case-sensitive</a> match
+  <a id=markup-declaration-open-state:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a> and the next seven characters are a <a id=markup-declaration-open-state:case-sensitive href=infrastructure.html#case-sensitive>case-sensitive</a> match
   for the string "[CDATA[" (the five uppercase letters "CDATA" with a U+005B LEFT SQUARE BRACKET
   character before and after), then consume those characters and switch to the <a href=#cdata-section-state id=markup-declaration-open-state:cdata-section-state>CDATA section
   state</a>.</p>
@@ -2864,11 +2710,11 @@
    flag</a></i> to <i>on</i>. Emit that DOCTYPE token. Emit an end-of-file token.<dt>Anything else<dd>
 
     <p>If the six characters starting from the <a href=#current-input-character id=after-doctype-name-state:current-input-character>current input character</a> are an
-    <a id=after-doctype-name-state:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the word "PUBLIC", then consume those characters
+    <a id=after-doctype-name-state:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the word "PUBLIC", then consume those characters
     and switch to the <a href=#after-doctype-public-keyword-state id=after-doctype-name-state:after-doctype-public-keyword-state>after DOCTYPE public keyword state</a>.</p>
 
     <p>Otherwise, if the six characters starting from the <a href=#current-input-character id=after-doctype-name-state:current-input-character-2>current input character</a> are
-    an <a id=after-doctype-name-state:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the word "SYSTEM", then consume those
+    an <a id=after-doctype-name-state:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the word "SYSTEM", then consume those
     characters and switch to the <a href=#after-doctype-system-keyword-state id=after-doctype-name-state:after-doctype-system-keyword-state>after DOCTYPE system keyword state</a>.</p>
 
     <p>Otherwise, this is a <a href=#parse-error id=after-doctype-name-state:parse-error-2>parse error</a>. Set the DOCTYPE token's <i id=after-doctype-name-state:force-quirks-flag-2><a href=#force-quirks-flag>force-quirks flag</a></i> to <i>on</i>. Switch to the <a href=#bogus-doctype-state id=after-doctype-name-state:bogus-doctype-state>bogus DOCTYPE state</a>.</p>
@@ -3276,7 +3122,7 @@
   <p>As each token is emitted from the tokenizer, the user agent must follow the appropriate steps
   from the following list, known as the <dfn id=tree-construction-dispatcher>tree construction dispatcher</dfn>:</p>
 
-  <dl class=switch><dt>If the <a href=#stack-of-open-elements id=tree-construction:stack-of-open-elements>stack of open elements</a> is empty<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node>adjusted current node</a> is an element in the <a id=tree-construction:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a><dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-2>adjusted current node</a> is a <a href=#mathml-text-integration-point id=tree-construction:mathml-text-integration-point>MathML text integration point</a> and the token is a start tag whose tag name is neither "mglyph" nor "malignmark"<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-3>adjusted current node</a> is a <a href=#mathml-text-integration-point id=tree-construction:mathml-text-integration-point-2>MathML text integration point</a> and the token is a character token<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-4>adjusted current node</a> is a <a id=tree-construction:mathml-annotation-xml href=https://www.w3.org/Math/draft-spec/chapter5.html#mixing.elements.annotation.xml data-x-internal=mathml-annotation-xml>MathML <code>annotation-xml</code></a> element and the token is a start tag whose tag name is "svg"<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-5>adjusted current node</a> is an <a href=#html-integration-point id=tree-construction:html-integration-point>HTML integration point</a> and the token is a start tag<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-6>adjusted current node</a> is an <a href=#html-integration-point id=tree-construction:html-integration-point-2>HTML integration point</a> and the token is a character token<dt>If the token is an end-of-file token<dd>Process the token according to the rules given in the section corresponding to the current
+  <dl class=switch><dt>If the <a href=#stack-of-open-elements id=tree-construction:stack-of-open-elements>stack of open elements</a> is empty<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node>adjusted current node</a> is an element in the <a id=tree-construction:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a><dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-2>adjusted current node</a> is a <a href=#mathml-text-integration-point id=tree-construction:mathml-text-integration-point>MathML text integration point</a> and the token is a start tag whose tag name is neither "mglyph" nor "malignmark"<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-3>adjusted current node</a> is a <a href=#mathml-text-integration-point id=tree-construction:mathml-text-integration-point-2>MathML text integration point</a> and the token is a character token<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-4>adjusted current node</a> is a <a id=tree-construction:mathml-annotation-xml href=https://www.w3.org/Math/draft-spec/chapter5.html#mixing.elements.annotation.xml data-x-internal=mathml-annotation-xml>MathML <code>annotation-xml</code></a> element and the token is a start tag whose tag name is "svg"<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-5>adjusted current node</a> is an <a href=#html-integration-point id=tree-construction:html-integration-point>HTML integration point</a> and the token is a start tag<dt>If the <a href=#adjusted-current-node id=tree-construction:adjusted-current-node-6>adjusted current node</a> is an <a href=#html-integration-point id=tree-construction:html-integration-point-2>HTML integration point</a> and the token is a character token<dt>If the token is an end-of-file token<dd>Process the token according to the rules given in the section corresponding to the current
    <a href=#insertion-mode id=tree-construction:insertion-mode>insertion mode</a> in HTML content.<dt>そうでなければ<dd>Process the token according to the rules given in the section for parsing tokens <a href=#parsing-main-inforeign id=tree-construction:parsing-main-inforeign>in foreign content</a>.</dl>
 
   <p>The <dfn id=next-token>next token</dfn> is the token that is about to be processed by the <a href=#tree-construction-dispatcher id=tree-construction:tree-construction-dispatcher>tree
@@ -3290,9 +3136,9 @@
   <p>A node is an <dfn id=html-integration-point>HTML integration point</dfn> if it is one of the following elements:</p>
 
   <ul class=brief><li>A <a id=tree-construction:mathml-annotation-xml-2 href=https://www.w3.org/Math/draft-spec/chapter5.html#mixing.elements.annotation.xml data-x-internal=mathml-annotation-xml>MathML <code>annotation-xml</code></a> element whose start tag token had an
-   attribute with the name "encoding" whose value was an <a id=tree-construction:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match
+   attribute with the name "encoding" whose value was an <a id=tree-construction:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match
    for the string "<code>text/html</code>"</li><li>A <a id=tree-construction:mathml-annotation-xml-3 href=https://www.w3.org/Math/draft-spec/chapter5.html#mixing.elements.annotation.xml data-x-internal=mathml-annotation-xml>MathML <code>annotation-xml</code></a> element whose start tag token had an
-   attribute with the name "encoding" whose value was an <a id=tree-construction:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match
+   attribute with the name "encoding" whose value was an <a id=tree-construction:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match
    for the string "<code>application/xhtml+xml</code>"</li><li>An <a id=tree-construction:svg-foreignobject href=https://triple-underscore.github.io/SVG11/extend.html#ForeignObjectElement data-x-internal=svg-foreignobject>SVG <code>foreignObject</code></a> element</li><li>An <a id=tree-construction:svg-desc href=https://triple-underscore.github.io/SVG11/struct.html#DescElement data-x-internal=svg-desc>SVG <code>desc</code></a> element</li><li>An <a id=tree-construction:svg-title href=https://triple-underscore.github.io/SVG11/struct.html#TitleElement data-x-internal=svg-title>SVG <code>title</code></a> element</li></ul>
 
   <p class=note>If the node in question is the <var id=tree-construction:concept-frag-parse-context><a href=#concept-frag-parse-context>context</a></var> element passed to the <a href=#html-fragment-parsing-algorithm id=tree-construction:html-fragment-parsing-algorithm>HTML fragment
@@ -3426,10 +3272,10 @@
      from the <a id=creating-and-inserting-nodes:custom-element-reactions-stack-2 href=scripting.html#custom-element-reactions-stack>custom element reactions stack</a>. (This will be the same <a id=creating-and-inserting-nodes:element-queue-2 href=scripting.html#element-queue>element
      queue</a> as was pushed above.)</li><li><p><a id=creating-and-inserting-nodes:invoke-custom-element-reactions href=scripting.html#invoke-custom-element-reactions>Invoke custom element reactions</a> in <var>queue</var>.</li><li><p>Decrement <var>document</var>'s <a id=creating-and-inserting-nodes:throw-on-dynamic-markup-insertion-counter-3 href=webappapis.html#throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion
      counter</a>.</li></ol>
-   </li><li><p>If <var>element</var> has an <code>xmlns</code> attribute <em>in the <a id=creating-and-inserting-nodes:xmlns-namespace href=infrastructure.html#xmlns-namespace>XMLNS
+   </li><li><p>If <var>element</var> has an <code>xmlns</code> attribute <em>in the <a id=creating-and-inserting-nodes:xmlns-namespace href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS
    namespace</a></em> whose value is not exactly the same as the element's namespace, that is a
-   <a href=#parse-error id=creating-and-inserting-nodes:parse-error>parse error</a>. Similarly, if <var>element</var> has an <code>xmlns:xlink</code> attribute in the <a id=creating-and-inserting-nodes:xmlns-namespace-2 href=infrastructure.html#xmlns-namespace>XMLNS namespace</a> whose value is not the
-   <a id=creating-and-inserting-nodes:xlink-namespace href=infrastructure.html#xlink-namespace>XLink Namespace</a>, that is a <a href=#parse-error id=creating-and-inserting-nodes:parse-error-2>parse error</a>.</li><li><p>If <var>element</var> is a <a href=forms.html#category-reset id=creating-and-inserting-nodes:category-reset>resettable element</a>, invoke
+   <a href=#parse-error id=creating-and-inserting-nodes:parse-error>parse error</a>. Similarly, if <var>element</var> has an <code>xmlns:xlink</code> attribute in the <a id=creating-and-inserting-nodes:xmlns-namespace-2 href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS namespace</a> whose value is not the
+   <a id=creating-and-inserting-nodes:xlink-namespace href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink Namespace</a>, that is a <a href=#parse-error id=creating-and-inserting-nodes:parse-error-2>parse error</a>.</li><li><p>If <var>element</var> is a <a href=forms.html#category-reset id=creating-and-inserting-nodes:category-reset>resettable element</a>, invoke
    its <a href=forms.html#concept-form-reset-control id=creating-and-inserting-nodes:concept-form-reset-control>reset algorithm</a>. (This initializes the
    element's <a href=forms.html#concept-fe-value id=creating-and-inserting-nodes:concept-fe-value>value</a> and <a href=forms.html#concept-fe-checked id=creating-and-inserting-nodes:concept-fe-checked>checkedness</a> based on the element's attributes.)</li><li><p>If <var>element</var> is a <a id=creating-and-inserting-nodes:form-associated-element href=forms.html#form-associated-element>form-associated element</a>, and the <a href=#form-element-pointer id=creating-and-inserting-nodes:form-element-pointer><code>form</code> element pointer</a> is not null, and there is no <code id=creating-and-inserting-nodes:the-template-element-4><a href=scripting.html#the-template-element>template</a></code>
    element on the <a href=#stack-of-open-elements id=creating-and-inserting-nodes:stack-of-open-elements-6>stack of open elements</a>, and <var>element</var> is either not <a href=forms.html#category-listed id=creating-and-inserting-nodes:category-listed>listed</a> or doesn't have a <code id=creating-and-inserting-nodes:attr-fae-form><a href=forms.html#attr-fae-form>form</a></code> attribute, and the <var>intended parent</var> is in
@@ -3463,7 +3309,7 @@
    <a href=#current-node id=creating-and-inserting-nodes:current-node-2>current node</a>.</li><li><p>Return <var>element</var>.</li></ol>
 
   <p>When the steps below require the user agent to <dfn id=insert-an-html-element>insert an HTML element</dfn> for a token,
-  the user agent must <a href=#insert-a-foreign-element id=creating-and-inserting-nodes:insert-a-foreign-element>insert a foreign element</a> for the token, in the <a id=creating-and-inserting-nodes:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML
+  the user agent must <a href=#insert-a-foreign-element id=creating-and-inserting-nodes:insert-a-foreign-element>insert a foreign element</a> for the token, in the <a id=creating-and-inserting-nodes:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
   namespace</a>.</p>
 
   <hr>
@@ -3549,17 +3395,17 @@
   namespace</span></a>.)</p>
 
   <table><thead><tr><th> 属性名 </th><th>  Prefix  </th><th> ローカル名 </th><th> 名前空間
-   </th></tr></thead><tbody><tr><td> <code>xlink:actuate</code> </td><td> <code>xlink</code> </td><td> <code>actuate</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-2 href=infrastructure.html#xlink-namespace>XLink名前空間</a>
-    </td></tr><tr><td> <code>xlink:arcrole</code> </td><td> <code>xlink</code> </td><td> <code>arcrole</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-3 href=infrastructure.html#xlink-namespace>XLink名前空間</a>
-    </td></tr><tr><td> <code>xlink:href</code> </td><td> <code>xlink</code> </td><td> <code>href</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-4 href=infrastructure.html#xlink-namespace>XLink名前空間</a>
-    </td></tr><tr><td> <code>xlink:role</code> </td><td> <code>xlink</code> </td><td> <code>role</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-5 href=infrastructure.html#xlink-namespace>XLink名前空間</a>
-    </td></tr><tr><td> <code>xlink:show</code> </td><td> <code>xlink</code> </td><td> <code>show</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-6 href=infrastructure.html#xlink-namespace>XLink名前空間</a>
-    </td></tr><tr><td> <code>xlink:title</code> </td><td> <code>xlink</code> </td><td> <code>title</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-7 href=infrastructure.html#xlink-namespace>XLink名前空間</a>
-    </td></tr><tr><td> <code>xlink:type</code> </td><td> <code>xlink</code> </td><td> <code>type</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-8 href=infrastructure.html#xlink-namespace>XLink名前空間</a>
-    </td></tr><tr><td> <code>xml:lang</code> </td><td> <code>xml</code> </td><td> <code>lang</code> </td><td> <a id=creating-and-inserting-nodes:xml-namespace href=infrastructure.html#xml-namespace>XML名前空間</a>
-    </td></tr><tr><td> <code>xml:space</code> </td><td> <code>xml</code> </td><td> <code>space</code> </td><td> <a id=creating-and-inserting-nodes:xml-namespace-2 href=infrastructure.html#xml-namespace>XML名前空間</a>
-    </td></tr><tr><td> <code>xmlns</code> </td><td>  (none)  </td><td> <code>xmlns</code> </td><td> <a id=creating-and-inserting-nodes:xmlns-namespace-3 href=infrastructure.html#xmlns-namespace>XMLNS名前空間</a>
-    </td></tr><tr><td> <code>xmlns:xlink</code> </td><td> <code>xmlns</code> </td><td> <code>xlink</code> </td><td> <a id=creating-and-inserting-nodes:xmlns-namespace-4 href=infrastructure.html#xmlns-namespace>XMLNS名前空間</a>
+   </th></tr></thead><tbody><tr><td> <code>xlink:actuate</code> </td><td> <code>xlink</code> </td><td> <code>actuate</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-2 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a>
+    </td></tr><tr><td> <code>xlink:arcrole</code> </td><td> <code>xlink</code> </td><td> <code>arcrole</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-3 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a>
+    </td></tr><tr><td> <code>xlink:href</code> </td><td> <code>xlink</code> </td><td> <code>href</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-4 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a>
+    </td></tr><tr><td> <code>xlink:role</code> </td><td> <code>xlink</code> </td><td> <code>role</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-5 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a>
+    </td></tr><tr><td> <code>xlink:show</code> </td><td> <code>xlink</code> </td><td> <code>show</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-6 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a>
+    </td></tr><tr><td> <code>xlink:title</code> </td><td> <code>xlink</code> </td><td> <code>title</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-7 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a>
+    </td></tr><tr><td> <code>xlink:type</code> </td><td> <code>xlink</code> </td><td> <code>type</code> </td><td> <a id=creating-and-inserting-nodes:xlink-namespace-8 href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink名前空間</a>
+    </td></tr><tr><td> <code>xml:lang</code> </td><td> <code>xml</code> </td><td> <code>lang</code> </td><td> <a id=creating-and-inserting-nodes:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a>
+    </td></tr><tr><td> <code>xml:space</code> </td><td> <code>xml</code> </td><td> <code>space</code> </td><td> <a id=creating-and-inserting-nodes:xml-namespace-2 href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a>
+    </td></tr><tr><td> <code>xmlns</code> </td><td>  (none)  </td><td> <code>xmlns</code> </td><td> <a id=creating-and-inserting-nodes:xmlns-namespace-3 href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS名前空間</a>
+    </td></tr><tr><td> <code>xmlns:xlink</code> </td><td> <code>xmlns</code> </td><td> <code>xlink</code> </td><td> <a id=creating-and-inserting-nodes:xmlns-namespace-4 href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS名前空間</a>
   </td></tr></table>
 
   <hr>
@@ -3716,23 +3562,7 @@ document.body.appendChild(text);
 
     <p>If the DOCTYPE token's name is not a <a id=the-initial-insertion-mode:case-sensitive href=infrastructure.html#case-sensitive>case-sensitive</a> match for the string "<code>html</code>", or the token's public identifier is not missing, or the token's system
     identifier is neither missing nor a <a id=the-initial-insertion-mode:case-sensitive-2 href=infrastructure.html#case-sensitive>case-sensitive</a> match for the string
-    "<code id=the-initial-insertion-mode:about:legacy-compat><a href=infrastructure.html#about:legacy-compat>about:legacy-compat</a></code>", and none of the sets of conditions in the following list are
-    matched, then there is a <a href=#parse-error id=the-initial-insertion-mode:parse-error>parse error</a>.</p>
-
-    <ul><li>The DOCTYPE token's name is a <a id=the-initial-insertion-mode:case-sensitive-3 href=infrastructure.html#case-sensitive>case-sensitive</a> match for the string "<code>html</code>", the token's public identifier is the <a id=the-initial-insertion-mode:case-sensitive-4 href=infrastructure.html#case-sensitive>case-sensitive</a> string
-     "<code>-//W3C//DTD&nbsp;HTML&nbsp;4.0//EN</code>", and the token's system identifier
-     is either missing or the <a id=the-initial-insertion-mode:case-sensitive-5 href=infrastructure.html#case-sensitive>case-sensitive</a> string "<code>http://www.w3.org/TR/REC-html40/strict.dtd</code>".</li><li>The DOCTYPE token's name is a <a id=the-initial-insertion-mode:case-sensitive-6 href=infrastructure.html#case-sensitive>case-sensitive</a> match for the string "<code>html</code>", the token's public identifier is the <a id=the-initial-insertion-mode:case-sensitive-7 href=infrastructure.html#case-sensitive>case-sensitive</a> string
-     "<code>-//W3C//DTD&nbsp;HTML&nbsp;4.01//EN</code>", and the token's system identifier
-     is either missing or the <a id=the-initial-insertion-mode:case-sensitive-8 href=infrastructure.html#case-sensitive>case-sensitive</a> string "<code>http://www.w3.org/TR/html4/strict.dtd</code>".</li><li>The DOCTYPE token's name is a <a id=the-initial-insertion-mode:case-sensitive-9 href=infrastructure.html#case-sensitive>case-sensitive</a> match for the string "<code>html</code>", the token's public identifier is the <a id=the-initial-insertion-mode:case-sensitive-10 href=infrastructure.html#case-sensitive>case-sensitive</a> string
-     "<code>-//W3C//DTD&nbsp;XHTML&nbsp;1.0&nbsp;Strict//EN</code>", and the token's system
-     identifier is the <a id=the-initial-insertion-mode:case-sensitive-11 href=infrastructure.html#case-sensitive>case-sensitive</a> string "<code>http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd</code>".</li><li>The DOCTYPE token's name is a <a id=the-initial-insertion-mode:case-sensitive-12 href=infrastructure.html#case-sensitive>case-sensitive</a> match for the string "<code>html</code>", the token's public identifier is the <a id=the-initial-insertion-mode:case-sensitive-13 href=infrastructure.html#case-sensitive>case-sensitive</a> string
-     "<code>-//W3C//DTD&nbsp;XHTML&nbsp;1.1//EN</code>", and the token's system identifier
-     is the <a id=the-initial-insertion-mode:case-sensitive-14 href=infrastructure.html#case-sensitive>case-sensitive</a> string "<code>http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd</code>".</li></ul>
-
-    <p>Conformance checkers may, based on the values (including presence or lack thereof) of the
-    DOCTYPE token's name, public identifier, or system identifier, switch to a conformance checking
-    mode for another language (e.g. based on the DOCTYPE token a conformance checker could recognize
-    that the document is an HTML4-era document, and defer to an HTML4 conformance checker.)</p>
+    "<code id=the-initial-insertion-mode:about:legacy-compat><a href=infrastructure.html#about:legacy-compat>about:legacy-compat</a></code>", then there is a <a href=#parse-error id=the-initial-insertion-mode:parse-error>parse error</a>.</p>
 
     <p>Append a <code id=the-initial-insertion-mode:documenttype><a data-x-internal=documenttype href=https://triple-underscore.github.io/DOM4-ja.html#interface-documenttype>DocumentType</a></code> node to the <code id=the-initial-insertion-mode:document-2><a href=dom.html#document>Document</a></code> node, with the <code>name</code> attribute set to the name given in the DOCTYPE token, or the empty string
     if the name was missing; the <code>publicId</code> attribute set to the public
@@ -3749,7 +3579,7 @@ document.body.appendChild(text);
     one of the conditions in the following list, then set the <code id=the-initial-insertion-mode:document-5><a href=dom.html#document>Document</a></code> to <a id=the-initial-insertion-mode:quirks-mode href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-quirks data-x-internal=quirks-mode>quirks
     mode</a>:</p>
 
-    <ul class=brief><li>  The <i id=the-initial-insertion-mode:force-quirks-flag><a href=#force-quirks-flag>force-quirks flag</a></i> is set to <i>on</i>.  </li><li>  The name is set to anything other than "<code>html</code>" (compared <a href=infrastructure.html#case-sensitive id=the-initial-insertion-mode:case-sensitive-15>case-sensitively</a>).  </li><li>  The public identifier is set to: "<code>-//W3O//DTD W3 HTML Strict 3.0//EN//</code>"  </li><li>  The public identifier is set to: "<code>-/W3C/DTD HTML 4.0 Transitional/EN</code>"  </li><li>  The public identifier is set to: "<code>HTML</code>"  </li><li>  The system identifier is set to: "<code>http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd</code>"  </li><li>  The public identifier starts with: "<code>+//Silmaril//dtd html Pro v0r11 19970101//</code>"  </li><li>  The public identifier starts with: "<code>-//AS//DTD HTML 3.0 asWedit + extensions//</code>"  </li><li>  The public identifier starts with: "<code>-//AdvaSoft Ltd//DTD HTML 3.0 asWedit + extensions//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Strict Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Strict Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.1E//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3.0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3.2 Final//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3.2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 3//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 3//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Metrius//DTD Metrius Presentational//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 2.0 HTML Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 2.0 HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 2.0 Tables//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 3.0 HTML Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 3.0 HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 3.0 Tables//</code>"  </li><li>  The public identifier starts with: "<code>-//Netscape Comm. Corp.//DTD HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Netscape Comm. Corp.//DTD Strict HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//O'Reilly and Associates//DTD HTML 2.0//</code>"  </li><li>  The public identifier starts with: "<code>-//O'Reilly and Associates//DTD HTML Extended 1.0//</code>"  </li><li>  The public identifier starts with: "<code>-//O'Reilly and Associates//DTD HTML Extended Relaxed 1.0//</code>"  </li><li>  The public identifier starts with: "<code>-//SQ//DTD HTML 2.0 HoTMetaL + extensions//</code>"  </li><li>  The public identifier starts with: "<code>-//SoftQuad Software//DTD HoTMetaL PRO 6.0::19990601::extensions to HTML 4.0//</code>"  </li><li>  The public identifier starts with: "<code>-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//</code>"  </li><li>  The public identifier starts with: "<code>-//Spyglass//DTD HTML 2.0 Extended//</code>"  </li><li>  The public identifier starts with: "<code>-//Sun Microsystems Corp.//DTD HotJava HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Sun Microsystems Corp.//DTD HotJava Strict HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3 1995-03-24//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2 Draft//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2 Final//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2S Draft//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 4.0 Frameset//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 4.0 Transitional//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML Experimental 19960712//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML Experimental 970421//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD W3 HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//W3O//DTD W3 HTML 3.0//</code>"  </li><li>  The public identifier starts with: "<code>-//WebTechs//DTD Mozilla HTML 2.0//</code>"  </li><li>  The public identifier starts with: "<code>-//WebTechs//DTD Mozilla HTML//</code>"  </li><li>  The system identifier is missing and the public identifier starts with: "<code>-//W3C//DTD HTML 4.01 Frameset//</code>"  </li><li>  The system identifier is missing and the public identifier starts with: "<code>-//W3C//DTD HTML 4.01 Transitional//</code>"  </li></ul>
+    <ul class=brief><li>  The <i id=the-initial-insertion-mode:force-quirks-flag><a href=#force-quirks-flag>force-quirks flag</a></i> is set to <i>on</i>.  </li><li>  The name is set to anything other than "<code>html</code>" (compared <a href=infrastructure.html#case-sensitive id=the-initial-insertion-mode:case-sensitive-3>case-sensitively</a>).  </li><li>  The public identifier is set to: "<code>-//W3O//DTD W3 HTML Strict 3.0//EN//</code>"  </li><li>  The public identifier is set to: "<code>-/W3C/DTD HTML 4.0 Transitional/EN</code>"  </li><li>  The public identifier is set to: "<code>HTML</code>"  </li><li>  The system identifier is set to: "<code>http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd</code>"  </li><li>  The public identifier starts with: "<code>+//Silmaril//dtd html Pro v0r11 19970101//</code>"  </li><li>  The public identifier starts with: "<code>-//AS//DTD HTML 3.0 asWedit + extensions//</code>"  </li><li>  The public identifier starts with: "<code>-//AdvaSoft Ltd//DTD HTML 3.0 asWedit + extensions//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Strict Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Strict Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0 Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 2.1E//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3.0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3.2 Final//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3.2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML 3//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Level 3//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 0//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 1//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 2//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict Level 3//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//IETF//DTD HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Metrius//DTD Metrius Presentational//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 2.0 HTML Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 2.0 HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 2.0 Tables//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 3.0 HTML Strict//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 3.0 HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Microsoft//DTD Internet Explorer 3.0 Tables//</code>"  </li><li>  The public identifier starts with: "<code>-//Netscape Comm. Corp.//DTD HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Netscape Comm. Corp.//DTD Strict HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//O'Reilly and Associates//DTD HTML 2.0//</code>"  </li><li>  The public identifier starts with: "<code>-//O'Reilly and Associates//DTD HTML Extended 1.0//</code>"  </li><li>  The public identifier starts with: "<code>-//O'Reilly and Associates//DTD HTML Extended Relaxed 1.0//</code>"  </li><li>  The public identifier starts with: "<code>-//SQ//DTD HTML 2.0 HoTMetaL + extensions//</code>"  </li><li>  The public identifier starts with: "<code>-//SoftQuad Software//DTD HoTMetaL PRO 6.0::19990601::extensions to HTML 4.0//</code>"  </li><li>  The public identifier starts with: "<code>-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//</code>"  </li><li>  The public identifier starts with: "<code>-//Spyglass//DTD HTML 2.0 Extended//</code>"  </li><li>  The public identifier starts with: "<code>-//Sun Microsystems Corp.//DTD HotJava HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//Sun Microsystems Corp.//DTD HotJava Strict HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3 1995-03-24//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2 Draft//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2 Final//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 3.2S Draft//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 4.0 Frameset//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML 4.0 Transitional//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML Experimental 19960712//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD HTML Experimental 970421//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD W3 HTML//</code>"  </li><li>  The public identifier starts with: "<code>-//W3O//DTD W3 HTML 3.0//</code>"  </li><li>  The public identifier starts with: "<code>-//WebTechs//DTD Mozilla HTML 2.0//</code>"  </li><li>  The public identifier starts with: "<code>-//WebTechs//DTD Mozilla HTML//</code>"  </li><li>  The system identifier is missing and the public identifier starts with: "<code>-//W3C//DTD HTML 4.01 Frameset//</code>"  </li><li>  The system identifier is missing and the public identifier starts with: "<code>-//W3C//DTD HTML 4.01 Transitional//</code>"  </li></ul>
 
     <p>Otherwise, if the document is <em>not</em> <a id=the-initial-insertion-mode:an-iframe-srcdoc-document-2 href=embedded-content.html#an-iframe-srcdoc-document>an <code>iframe</code> <code>srcdoc</code> document</a>, and the DOCTYPE token matches one of
     the conditions in the following list, then set the <code id=the-initial-insertion-mode:document-6><a href=dom.html#document>Document</a></code> to <a id=the-initial-insertion-mode:limited-quirks-mode href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-limited-quirks data-x-internal=limited-quirks-mode>limited-quirks
@@ -3758,7 +3588,7 @@ document.body.appendChild(text);
     <ul class=brief><li>  The public identifier starts with: "<code>-//W3C//DTD XHTML 1.0 Frameset//</code>"  </li><li>  The public identifier starts with: "<code>-//W3C//DTD XHTML 1.0 Transitional//</code>"  </li><li>  The system identifier is not missing and the public identifier starts with: "<code>-//W3C//DTD HTML 4.01 Frameset//</code>"  </li><li>  The system identifier is not missing and the public identifier starts with: "<code>-//W3C//DTD HTML 4.01 Transitional//</code>"  </li></ul>
 
     <p>The system identifier and public identifier strings must be compared to the values given in
-    the lists above in an <a id=the-initial-insertion-mode:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> manner. A system identifier whose
+    the lists above in an <a id=the-initial-insertion-mode:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> manner. A system identifier whose
     value is the empty string is not considered missing for the purposes of the conditions
     above.</p>
 
@@ -3788,7 +3618,7 @@ document.body.appendChild(text);
     <p>Ignore the token.</p>
    <dt>A start tag whose tag name is "html"<dd>
 
-    <p><a href=#create-an-element-for-the-token id=the-before-html-insertion-mode:create-an-element-for-the-token>Create an element for the token</a> in the <a id=the-before-html-insertion-mode:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, with the
+    <p><a href=#create-an-element-for-the-token id=the-before-html-insertion-mode:create-an-element-for-the-token>Create an element for the token</a> in the <a id=the-before-html-insertion-mode:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, with the
     <code id=the-before-html-insertion-mode:document-2><a href=dom.html#document>Document</a></code> as the intended parent. Append it to the <code id=the-before-html-insertion-mode:document-3><a href=dom.html#document>Document</a></code> object. Put
     this element in the <a href=#stack-of-open-elements id=the-before-html-insertion-mode:stack-of-open-elements>stack of open elements</a>.</p>
 
@@ -3926,7 +3756,7 @@ document.body.appendChild(text);
     <a href=#change-the-encoding id=parsing-main-inhead:change-the-encoding>change the encoding</a> to the resulting encoding.</p>
 
     <p>Otherwise, if the element has an <code id=parsing-main-inhead:attr-meta-http-equiv><a href=semantics.html#attr-meta-http-equiv>http-equiv</a></code>
-    attribute whose value is an <a id=parsing-main-inhead:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>Content-Type</code>", and the element has a <code id=parsing-main-inhead:attr-meta-content><a href=semantics.html#attr-meta-content>content</a></code> attribute, and applying the <a id=parsing-main-inhead:algorithm-for-extracting-a-character-encoding-from-a-meta-element href=infrastructure.html#algorithm-for-extracting-a-character-encoding-from-a-meta-element>algorithm for
+    attribute whose value is an <a id=parsing-main-inhead:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>Content-Type</code>", and the element has a <code id=parsing-main-inhead:attr-meta-content><a href=semantics.html#attr-meta-content>content</a></code> attribute, and applying the <a id=parsing-main-inhead:algorithm-for-extracting-a-character-encoding-from-a-meta-element href=infrastructure.html#algorithm-for-extracting-a-character-encoding-from-a-meta-element>algorithm for
     extracting a character encoding from a <code>meta</code> element</a> to that attribute's
     value returns an <a id=parsing-main-inhead:encoding-2 href=https://triple-underscore.github.io/Encoding-ja.html#encoding data-x-internal=encoding>encoding</a>, and the
     <a href=#concept-encoding-confidence id=parsing-main-inhead:concept-encoding-confidence-2>confidence</a> is currently <i>tentative</i>, then
@@ -3948,7 +3778,7 @@ document.body.appendChild(text);
     <p>次の手順を実行する：</p>
 
     <ol><li><p>Let the <var>adjusted insertion location</var> be the <a href=#appropriate-place-for-inserting-a-node id=parsing-main-inhead:appropriate-place-for-inserting-a-node>appropriate place
-     for inserting a node</a>.</li><li><p><a href=#create-an-element-for-the-token id=parsing-main-inhead:create-an-element-for-the-token>Create an element for the token</a> in the <a id=parsing-main-inhead:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, with
+     for inserting a node</a>.</li><li><p><a href=#create-an-element-for-the-token id=parsing-main-inhead:create-an-element-for-the-token>Create an element for the token</a> in the <a id=parsing-main-inhead:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, with
      the intended parent being the element in which the <var>adjusted insertion
      location</var> finds itself.</li><li>
 
@@ -4639,7 +4469,7 @@ document.body.appendChild(text);
     flag</i></a>, if it is set.</p>
 
     <p>If the token does not have an attribute with the name "type", or if it does, but that
-    attribute's value is not an <a id=parsing-main-inbody:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>hidden</code>", then: set the <a href=#frameset-ok-flag id=parsing-main-inbody:frameset-ok-flag-11>frameset-ok flag</a> to "not ok".</p>
+    attribute's value is not an <a id=parsing-main-inbody:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>hidden</code>", then: set the <a href=#frameset-ok-flag id=parsing-main-inbody:frameset-ok-flag-11>frameset-ok flag</a> to "not ok".</p>
 
    <dt>A start tag whose tag name is one of: "param", "source", "track"<dd>
 
@@ -4764,7 +4594,7 @@ document.body.appendChild(text);
     <p><a href=#adjust-foreign-attributes id=parsing-main-inbody:adjust-foreign-attributes>Adjust foreign attributes</a> for the token. (This fixes the use of namespaced
     attributes, in particular XLink.)</p>
 
-    <p><a href=#insert-a-foreign-element id=parsing-main-inbody:insert-a-foreign-element>Insert a foreign element</a> for the token, in the <a id=parsing-main-inbody:mathml-namespace href=infrastructure.html#mathml-namespace>MathML
+    <p><a href=#insert-a-foreign-element id=parsing-main-inbody:insert-a-foreign-element>Insert a foreign element</a> for the token, in the <a id=parsing-main-inbody:mathml-namespace href=https://infra.spec.whatwg.org/#mathml-namespace data-x-internal=mathml-namespace>MathML
     namespace</a>.</p>
 
     
@@ -4783,7 +4613,7 @@ document.body.appendChild(text);
     <p><a href=#adjust-foreign-attributes id=parsing-main-inbody:adjust-foreign-attributes-2>Adjust foreign attributes</a> for the token. (This fixes the use of namespaced
     attributes, in particular XLink in SVG.)</p>
 
-    <p><a href=#insert-a-foreign-element id=parsing-main-inbody:insert-a-foreign-element-2>Insert a foreign element</a> for the token, in the <a id=parsing-main-inbody:svg-namespace href=infrastructure.html#svg-namespace>SVG namespace</a>.</p>
+    <p><a href=#insert-a-foreign-element id=parsing-main-inbody:insert-a-foreign-element-2>Insert a foreign element</a> for the token, in the <a id=parsing-main-inbody:svg-namespace href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG namespace</a>.</p>
 
     
 
@@ -4875,7 +4705,7 @@ document.body.appendChild(text);
      was removed.</li><li><p>If <var>node</var> is <var>formatting element</var>, then go to the
      next step in the overall algorithm.</li><li><p>If <var>inner loop counter</var> is greater than three and <var>node</var> is in the <a href=#list-of-active-formatting-elements id=parsing-main-inbody:list-of-active-formatting-elements-8>list of active formatting elements</a>, then remove <var>node</var> from the <a href=#list-of-active-formatting-elements id=parsing-main-inbody:list-of-active-formatting-elements-9>list of active formatting elements</a>.</li><li><p>If <var>node</var> is not in the <a href=#list-of-active-formatting-elements id=parsing-main-inbody:list-of-active-formatting-elements-10>list of active
      formatting elements</a>, then remove <var>node</var> from the <a href=#stack-of-open-elements id=parsing-main-inbody:stack-of-open-elements-79>stack of open
-     elements</a> and then go back to the step labeled <i>inner loop</i>.</li><li><p><a href=#create-an-element-for-the-token id=parsing-main-inbody:create-an-element-for-the-token>Create an element for the token</a> for which the element <var>node</var> was created, in the <a id=parsing-main-inbody:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, with <var>common
+     elements</a> and then go back to the step labeled <i>inner loop</i>.</li><li><p><a href=#create-an-element-for-the-token id=parsing-main-inbody:create-an-element-for-the-token>Create an element for the token</a> for which the element <var>node</var> was created, in the <a id=parsing-main-inbody:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, with <var>common
      ancestor</var> as the intended parent; replace the entry for <var>node</var> in the
      <a href=#list-of-active-formatting-elements id=parsing-main-inbody:list-of-active-formatting-elements-11>list of active formatting elements</a> with an entry for the new element, replace the
      entry for <var>node</var> in the <a href=#stack-of-open-elements id=parsing-main-inbody:stack-of-open-elements-80>stack of open elements</a> with an entry for
@@ -4887,7 +4717,7 @@ document.body.appendChild(text);
    </li><li><p>Insert whatever <var>last node</var> ended up being in the previous step at the
    <a href=#appropriate-place-for-inserting-a-node id=parsing-main-inbody:appropriate-place-for-inserting-a-node>appropriate place for inserting a node</a>, but using <var>common
    ancestor</var> as the <i>override target</i>.</li><li><p><a href=#create-an-element-for-the-token id=parsing-main-inbody:create-an-element-for-the-token-2>Create an element for the token</a> for which <var>formatting
-   element</var> was created, in the <a id=parsing-main-inbody:html-namespace-2-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, with <var>furthest
+   element</var> was created, in the <a id=parsing-main-inbody:html-namespace-2-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, with <var>furthest
    block</var> as the intended parent.</li><li><p>Take all of the child nodes of <var>furthest block</var> and append them to the
    element created in the last step.</li><li><p>Append that new element to <var>furthest block</var>.</li><li><p>Remove <var>formatting element</var> from the <a href=#list-of-active-formatting-elements id=parsing-main-inbody:list-of-active-formatting-elements-13>list of active formatting
    elements</a>, and insert the new element into the <a href=#list-of-active-formatting-elements id=parsing-main-inbody:list-of-active-formatting-elements-14>list of active formatting
@@ -5119,7 +4949,7 @@ document.body.appendChild(text);
    <dt>A start tag whose tag name is "input"<dd>
 
     <p>If the token does not have an attribute with the name "type", or if it does, but that
-    attribute's value is not an <a id=parsing-main-intable:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>hidden</code>", then: act as described in the "anything else" entry below.</p>
+    attribute's value is not an <a id=parsing-main-intable:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>hidden</code>", then: act as described in the "anything else" entry below.</p>
 
     <p>Otherwise:</p>
 
@@ -6028,17 +5858,17 @@ document.body.appendChild(text);
     <p>Pop an element from the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements>stack of open elements</a>, and then keep popping more
     elements from the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-2>stack of open elements</a> until the <a href=#current-node id=parsing-main-inforeign:current-node>current node</a> is a
     <a href=#mathml-text-integration-point id=parsing-main-inforeign:mathml-text-integration-point>MathML text integration point</a>, an <a href=#html-integration-point id=parsing-main-inforeign:html-integration-point>HTML integration point</a>, or an
-    element in the <a id=parsing-main-inforeign:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>.</p>
+    element in the <a id=parsing-main-inforeign:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>.</p>
 
     <p>Then, reprocess the token.</p>
 
    <dt>Any other start tag<dd>
 
-    <p>If the <a href=#adjusted-current-node id=parsing-main-inforeign:adjusted-current-node>adjusted current node</a> is an element in the <a id=parsing-main-inforeign:mathml-namespace href=infrastructure.html#mathml-namespace>MathML namespace</a>,
+    <p>If the <a href=#adjusted-current-node id=parsing-main-inforeign:adjusted-current-node>adjusted current node</a> is an element in the <a id=parsing-main-inforeign:mathml-namespace href=https://infra.spec.whatwg.org/#mathml-namespace data-x-internal=mathml-namespace>MathML namespace</a>,
     <a href=#adjust-mathml-attributes id=parsing-main-inforeign:adjust-mathml-attributes>adjust MathML attributes</a> for the token. (This fixes the case of MathML attributes
     that are not all lowercase.)</p>
 
-    <p>If the <a href=#adjusted-current-node id=parsing-main-inforeign:adjusted-current-node-2>adjusted current node</a> is an element in the <a id=parsing-main-inforeign:svg-namespace href=infrastructure.html#svg-namespace>SVG namespace</a>, and the
+    <p>If the <a href=#adjusted-current-node id=parsing-main-inforeign:adjusted-current-node-2>adjusted current node</a> is an element in the <a id=parsing-main-inforeign:svg-namespace href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG namespace</a>, and the
     token's tag name is one of the ones in the first column of the following table, change the tag
     name to the name given in the corresponding cell in the second column. (This fixes the case of
     SVG elements that are not all lowercase.)</p>
@@ -6085,7 +5915,7 @@ document.body.appendChild(text);
       </td></tr><tr><td> <code>textpath</code> </td><td> <code>textPath</code>
     </td></tr></table>
 
-    <p>If the <a href=#adjusted-current-node id=parsing-main-inforeign:adjusted-current-node-3>adjusted current node</a> is an element in the <a id=parsing-main-inforeign:svg-namespace-2 href=infrastructure.html#svg-namespace>SVG namespace</a>,
+    <p>If the <a href=#adjusted-current-node id=parsing-main-inforeign:adjusted-current-node-3>adjusted current node</a> is an element in the <a id=parsing-main-inforeign:svg-namespace-2 href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG namespace</a>,
     <a href=#adjust-svg-attributes id=parsing-main-inforeign:adjust-svg-attributes>adjust SVG attributes</a> for the token. (This fixes the case of SVG attributes that
     are not all lowercase.)</p>
 
@@ -6098,7 +5928,7 @@ document.body.appendChild(text);
     <p>If the token has its <i id=parsing-main-inforeign:self-closing-flag><a href=#self-closing-flag>self-closing flag</a></i> set, then run the appropriate steps from the
     following list:</p>
 
-    <dl class=switch><dt>If the token's tag name is "script", and the new <a href=#current-node id=parsing-main-inforeign:current-node-2>current node</a> is in the <a id=parsing-main-inforeign:svg-namespace-3 href=infrastructure.html#svg-namespace>SVG namespace</a><dd>
+    <dl class=switch><dt>If the token's tag name is "script", and the new <a href=#current-node id=parsing-main-inforeign:current-node-2>current node</a> is in the <a id=parsing-main-inforeign:svg-namespace-3 href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG namespace</a><dd>
 
       <p><a href=#acknowledge-self-closing-flag id=parsing-main-inforeign:acknowledge-self-closing-flag>Acknowledge the token's <i>self-closing
       flag</i></a>, and then act as described in the steps for a "script" end tag below.</p>
@@ -6142,13 +5972,13 @@ document.body.appendChild(text);
     <p>次の手順を実行する：</p>
 
     <ol><li><p>Initialize <var>node</var> to be the <a href=#current-node id=parsing-main-inforeign:current-node-6>current node</a> (the bottommost
-     node of the stack).</li><li><p>If <var>node</var>'s tag name, <a id=parsing-main-inforeign:converted-to-ascii-lowercase href=infrastructure.html#converted-to-ascii-lowercase>converted to ASCII lowercase</a>, is
+     node of the stack).</li><li><p>If <var>node</var>'s tag name, <a id=parsing-main-inforeign:converted-to-ascii-lowercase href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, is
      not the same as the tag name of the token, then this is a <a href=#parse-error id=parsing-main-inforeign:parse-error-4>parse error</a>.</li><li><p><i>Loop</i>: If <var>node</var> is the topmost element in the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-5>stack of
-     open elements</a>, abort these steps. (<a href=#fragment-case id=parsing-main-inforeign:fragment-case-2>fragment case</a>)</li><li><p>If <var>node</var>'s tag name, <a id=parsing-main-inforeign:converted-to-ascii-lowercase-2 href=infrastructure.html#converted-to-ascii-lowercase>converted to ASCII lowercase</a>, is
+     open elements</a>, abort these steps. (<a href=#fragment-case id=parsing-main-inforeign:fragment-case-2>fragment case</a>)</li><li><p>If <var>node</var>'s tag name, <a id=parsing-main-inforeign:converted-to-ascii-lowercase-2 href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, is
      the same as the tag name of the token, pop elements from the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-6>stack of open
      elements</a> until <var>node</var> has been popped from the stack, and then abort
      these steps.</li><li><p>Set <var>node</var> to the previous entry in the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-7>stack of open
-     elements</a>.</li><li><p>If <var>node</var> is not an element in the <a id=parsing-main-inforeign:html-namespace-2-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, return
+     elements</a>.</li><li><p>If <var>node</var> is not an element in the <a id=parsing-main-inforeign:html-namespace-2-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, return
      to the step labeled <i>loop</i>.</li><li><p>Otherwise, process the token according to the rules given in the section corresponding
      to the current <a href=#insertion-mode id=parsing-main-inforeign:insertion-mode>insertion mode</a> in HTML content.</li></ol>
 
@@ -6162,7 +5992,7 @@ document.body.appendChild(text);
   <h4 id=the-end>12.2.6 The end<a href=#the-end class=self-link></a></h4>
 
   <p>Once the user agent <dfn id=stop-parsing>stops parsing</dfn> the document, the user agent
-  must run the following steps:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=domcontentloaded">caniuse.com</a></div>
+  must run the following steps:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=domcontentloaded">caniuse.com</a></div>
 
   <ol><li><p>Set the <a id=the-end:current-document-readiness href=dom.html#current-document-readiness>current document readiness</a> to "<code>interactive</code>"
     and the <a href=#insertion-point id=the-end:insertion-point>insertion point</a> to
@@ -6187,10 +6017,8 @@ document.body.appendChild(text);
     <ol><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-end:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=the-end:event-domcontentloaded><a href=indices.html#event-domcontentloaded>DOMContentLoaded</a></code> at the <code id=the-end:document-2><a href=dom.html#document>Document</a></code>
      object, with its <code id=the-end:dom-event-bubbles><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute initialized to
      true.</li><li><p>Enable the <a href=https://w3c.github.io/ServiceWorker/#dfn-client-message-queue id=the-end:dfn-client-message-queue data-x-internal=dfn-client-message-queue>client message queue</a> of the
-     <a href=https://w3c.github.io/ServiceWorker/#service-worker-container-interface id=the-end:service-worker-container-interface data-x-internal=service-worker-container-interface>ServiceWorkerContainer</a> object whose
-     associated <a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker-container-interface-client id=the-end:dfn-service-worker-container-interface-client data-x-internal=dfn-service-worker-container-interface-client>service worker
-     client</a> is the <code id=the-end:document-3><a href=dom.html#document>Document</a></code> object's <a id=the-end:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings
-     object</a>.</li></ol>
+     <code id=the-end:serviceworkercontainer><a data-x-internal=serviceworkercontainer href=https://w3c.github.io/ServiceWorker/#serviceworkercontainer>ServiceWorkerContainer</a></code> object whose associated <a href=https://w3c.github.io/ServiceWorker/#serviceworkercontainer-service-worker-client id=the-end:serviceworkercontainer-service-worker-client data-x-internal=serviceworkercontainer-service-worker-client>service worker client</a> is the
+     <code id=the-end:document-3><a href=dom.html#document>Document</a></code> object's <a id=the-end:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a>.</li></ol>
    </li><li><p><a id=the-end:spin-the-event-loop-2 href=webappapis.html#spin-the-event-loop>Spin the event loop</a> until the <a id=the-end:set-of-scripts-that-will-execute-as-soon-as-possible href=scripting.html#set-of-scripts-that-will-execute-as-soon-as-possible>set of scripts that will execute as soon
    as possible</a> and the <a id=the-end:list-of-scripts-that-will-execute-in-order-as-soon-as-possible href=scripting.html#list-of-scripts-that-will-execute-in-order-as-soon-as-possible>list of scripts that will execute in order as soon as
    possible</a> are empty.</li><li><p><a id=the-end:spin-the-event-loop-3 href=webappapis.html#spin-the-event-loop>Spin the event loop</a> until there is nothing that <dfn id=delay-the-load-event>delays the load event</dfn> in the <code id=the-end:document-4><a href=dom.html#document>Document</a></code>.</li><li>
@@ -6242,7 +6070,7 @@ document.body.appendChild(text);
   <p>If the XML API being used doesn't support DOCTYPEs, the tool may drop DOCTYPEs altogether.</p>
 
   <p>If the XML API doesn't support attributes in no namespace that are named "<code>xmlns</code>", attributes whose names start with "<code>xmlns:</code>", or
-  attributes in the <a id=coercing-an-html-dom-into-an-infoset:xmlns-namespace href=infrastructure.html#xmlns-namespace>XMLNS namespace</a>, then the tool may drop such attributes.</p>
+  attributes in the <a id=coercing-an-html-dom-into-an-infoset:xmlns-namespace href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS namespace</a>, then the tool may drop such attributes.</p>
 
   <p>The tool may annotate the output with any namespace declarations required for proper
   operation.</p>
@@ -6604,8 +6432,8 @@ document.body.appendChild(text);
 
       <dl class=switch><dt>If <var>current node</var> is an <code>Element</code><dd>
 
-        <p>If <var>current node</var> is an element in the <a id=serialising-html-fragments:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, the
-        <a id=serialising-html-fragments:mathml-namespace href=infrastructure.html#mathml-namespace>MathML namespace</a>, or the <a id=serialising-html-fragments:svg-namespace href=infrastructure.html#svg-namespace>SVG namespace</a>, then let <var>tagname</var> be <var>current node</var>'s local name. Otherwise, let <var>tagname</var> be <var>current node</var>'s qualified name.</p>
+        <p>If <var>current node</var> is an element in the <a id=serialising-html-fragments:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, the
+        <a id=serialising-html-fragments:mathml-namespace href=https://infra.spec.whatwg.org/#mathml-namespace data-x-internal=mathml-namespace>MathML namespace</a>, or the <a id=serialising-html-fragments:svg-namespace href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG namespace</a>, then let <var>tagname</var> be <var>current node</var>'s local name. Otherwise, let <var>tagname</var> be <var>current node</var>'s qualified name.</p>
 
         <p>Append a U+003C LESS-THAN SIGN character (&lt;), followed by <var>tagname</var>.</p>
 
@@ -6629,11 +6457,11 @@ document.body.appendChild(text);
           parser</a> or by <code>Element.setAttribute()</code>, the local name will be
           lowercase.</p>
 
-         <dt>If the attribute is in the <a id=serialising-html-fragments:xml-namespace href=infrastructure.html#xml-namespace>XML namespace</a><dd><p>The attribute's serialized name is the string "<code>xml:</code>" followed
-         by the attribute's local name.<dt>If the attribute is in the <a id=serialising-html-fragments:xmlns-namespace href=infrastructure.html#xmlns-namespace>XMLNS namespace</a> and the attribute's local name
-         is <code>xmlns</code><dd><p>The attribute's serialized name is the string "<code>xmlns</code>".<dt>If the attribute is in the <a id=serialising-html-fragments:xmlns-namespace-2 href=infrastructure.html#xmlns-namespace>XMLNS namespace</a> and the attribute's local name
+         <dt>If the attribute is in the <a id=serialising-html-fragments:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML namespace</a><dd><p>The attribute's serialized name is the string "<code>xml:</code>" followed
+         by the attribute's local name.<dt>If the attribute is in the <a id=serialising-html-fragments:xmlns-namespace href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS namespace</a> and the attribute's local name
+         is <code>xmlns</code><dd><p>The attribute's serialized name is the string "<code>xmlns</code>".<dt>If the attribute is in the <a id=serialising-html-fragments:xmlns-namespace-2 href=https://infra.spec.whatwg.org/#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS namespace</a> and the attribute's local name
          is not <code>xmlns</code><dd><p>The attribute's serialized name is the string "<code>xmlns:</code>"
-         followed by the attribute's local name.<dt>If the attribute is in the <a id=serialising-html-fragments:xlink-namespace href=infrastructure.html#xlink-namespace>XLink namespace</a><dd><p>The attribute's serialized name is the string "<code>xlink:</code>"
+         followed by the attribute's local name.<dt>If the attribute is in the <a id=serialising-html-fragments:xlink-namespace href=https://infra.spec.whatwg.org/#xlink-namespace data-x-internal=xlink-namespace>XLink namespace</a><dd><p>The attribute's serialized name is the string "<code>xlink:</code>"
          followed by the attribute's local name.<dt>If the attribute is in some other namespace<dd><p>The attribute's serialized name is the attribute's qualified name.</dl>
 
         <p>While the exact order of attributes is UA-defined, and may depend on factors such as the
@@ -6925,4 +6753,4 @@ Hello.&lt;/pre&gt;</pre>
 
 
   <nav><a href=webstorage.html>← 11 Web storage</a> — <a href=index.html>目次</a> — <a href=xhtml.html>13 XHTML構文 →</a></nav>
-</body></html>
+</html>

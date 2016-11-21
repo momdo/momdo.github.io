@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -662,6 +537,7 @@
   Ignacio Javier,
   Igor Oliveira,
   Ingvar Stepanyan,
+  isonmad,
   Iurii Kucherov,
   Ivan Enderlin,
   Ivo Emanuel Gonçalves,
@@ -715,6 +591,7 @@
   Jerry Smith,
   Jesse Renée Beach,
   Jessica Jong,
+  jfkthame, 
   Jian Li,
   Jim Jewett,
   Jim Ley,
@@ -1324,4 +1201,4 @@
  
 
 <nav><a href=references.html>← 参考文献</a> — <a href=index.html>目次</a></nav>
-</body></html>
+</html>

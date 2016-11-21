@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -368,7 +243,8 @@ gave me some of the songs they wrote. I love sharing my music.&lt;/p&gt;
   <h4 id=the-head-element data-dfn-type=element data-lt=head>4.2.1 <dfn><code>head</code></dfn>要素<a href=#the-head-element class=self-link></a></h4>
 
   <dl class=element><dt><a href=dom.html#concept-element-categories id=the-head-element:concept-element-categories>カテゴリー</a>：<dd>なし。<dt><a href=dom.html#concept-element-contexts id=the-head-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><code id=the-head-element:the-html-element><a href=#the-html-element>html</a></code>要素での最初の要素として。<dt><a href=dom.html#concept-element-content-model id=the-head-element:concept-element-content-model>コンテンツモデル</a>：<dd>文書が<a id=the-head-element:an-iframe-srcdoc-document href=embedded-content.html#an-iframe-srcdoc-document><code>iframe</code> <code>srcdoc</code>文書</a>であるか、タイトル情報がより上位プロトコルから利用可能な場合、1つより多くない<code id=the-head-element:the-title-element><a href=#the-title-element>title</a></code>要素および1つより多くない<code id=the-head-element:the-base-element><a href=#the-base-element>base</a></code>要素である、0個以上の<a id=the-head-element:metadata-content-2 href=dom.html#metadata-content-2>メタデータコンテンツ</a>。<dd>そうでなければ、厳密に1つの<code id=the-head-element:the-title-element-2><a href=#the-title-element>title</a></code>要素が存在しかつ1つより多くない<code id=the-head-element:the-base-element-2><a href=#the-base-element>base</a></code>要素である、1つ以上の<a id=the-head-element:metadata-content-2-2 href=dom.html#metadata-content-2>メタデータコンテンツ</a>。<dt><a href=dom.html#concept-element-tag-omission id=the-head-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd>要素が空である場合、または<code id=the-head-element:the-head-element-2><a href=#the-head-element>head</a></code>要素内の最初の文が要素である場合、<code id=the-head-element:the-head-element><a href=#the-head-element>head</a></code>要素の<a href=syntax.html#syntax-start-tag id=the-head-element:syntax-start-tag>開始タグ</a>は省略することができる。<dd><code id=the-head-element:the-head-element-4><a href=#the-head-element>head</a></code>要素の直前が<a id=the-head-element:space-character href=infrastructure.html#space-character>空白文字</a>または<a href=syntax.html#syntax-comments id=the-head-element:syntax-comments>コメント</a>でない場合、<code id=the-head-element:the-head-element-3><a href=#the-head-element>head</a></code>要素の<a href=syntax.html#syntax-end-tag id=the-head-element:syntax-end-tag>終了タグ</a>は省略することができる。<dt><a href=dom.html#concept-element-attributes id=the-head-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-head-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-head-element:concept-element-dom>DOMインターフェイス</a>：<dd>
-    <pre class=idl>interface <dfn id=htmlheadelement>HTMLHeadElement</dfn> : <a id=the-head-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {};</pre>
+    <pre class=idl>[<a id=the-head-element:htmlconstructor href=dom.html#htmlconstructor>HTMLConstructor</a>]
+interface <dfn id=htmlheadelement>HTMLHeadElement</dfn> : <a id=the-head-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {};</pre>
    </dl>
 
   <p><code id=the-head-element:the-head-element-5><a href=#the-head-element>head</a></code>要素は、<code id=the-head-element:document><a href=dom.html#document>Document</a></code>に関するメタデータの集まりを<a id=the-head-element:represents href=dom.html#represents>表す</a>。</p>
@@ -575,7 +451,7 @@ interface <dfn id=htmlbaseelement>HTMLBaseElement</dfn> : <a id=the-base-element
 
   <h4 id=the-link-element data-dfn-type=element data-lt=link>4.2.4 <dfn><code>link</code></dfn>要素<a href=#the-link-element class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=21622" title='CSSOM defines algorithms named "create a style sheet" and various other similar ones.  These need to be explicitly invoked somehow so that &lt;link rel=stylesheet&gt; elements correctly contribute to document.styleSheets.'>21622</a></div>
 
-  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-link-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-link-element:metadata-content-2 href=dom.html#metadata-content-2>メタデータコンテンツ</a>。<dd>要素が<a href=#allowed-in-the-body id=the-link-element:allowed-in-the-body>body内で許可される場合</a>：<a id=the-link-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dd>要素が<a href=#allowed-in-the-body id=the-link-element:allowed-in-the-body-2>body内で許可される場合</a>：<a id=the-link-element:phrasing-content-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>。<dt><a href=dom.html#concept-element-contexts id=the-link-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><a id=the-link-element:metadata-content-2-2 href=dom.html#metadata-content-2>メタデータコンテンツ</a>が期待される場所。<dd><code id=the-link-element:the-head-element><a href=#the-head-element>head</a></code>の子である<code id=the-link-element:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code>要素内。<dd>要素が<a href=#allowed-in-the-body id=the-link-element:allowed-in-the-body-3>body内で許可される場合</a>：<a id=the-link-element:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>が期待される場所。<dt><a href=dom.html#concept-element-content-model id=the-link-element:concept-element-content-model>コンテンツモデル</a>：<dd><a href=dom.html#concept-content-nothing id=the-link-element:concept-content-nothing>Nothing</a>。<dt><a href=dom.html#concept-element-tag-omission id=the-link-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><a href=syntax.html#syntax-end-tag id=the-link-element:syntax-end-tag>終了タグ</a>なし。<dt><a href=dom.html#concept-element-attributes id=the-link-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-link-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-link-element:attr-link-href><a href=#attr-link-href>href</a></code> — <a href=#hyperlink id=the-link-element:hyperlink>ハイパーリンク</a>のアドレス<dd><code id=the-link-element:attr-link-crossorigin><a href=#attr-link-crossorigin>crossorigin</a></code> — 要素がcrossorigin要求を処理する方法<dd><code id=the-link-element:attr-link-rel><a href=#attr-link-rel>rel</a></code> — ハイパーリンクと宛先のリソースを含む文書の関係<dd><code id=the-link-element:attr-link-as><a href=#attr-link-as>as</a></code> — プリロードリクエストの宛先（<code id=the-link-element:attr-link-rel-2><a href=#attr-link-rel>rel</a></code>="<code id=the-link-element:link-type-preload><a href=#link-type-preload>preload</a></code>"に対する）<dd><code id=the-link-element:attr-link-media><a href=#attr-link-media>media</a></code> — 受け入れ可能なメディア<dd><code id=the-link-element:attr-link-nonce><a href=#attr-link-nonce>nonce</a></code> — <cite>Content Security Policy</cite>チェックで使用される暗号nonce <a href=references.html#refsCSP>[CSP]</a><dd><code id=the-link-element:attr-link-hreflang><a href=#attr-link-hreflang>hreflang</a></code> — リンクされたリソースの言語<dd><code id=the-link-element:attr-link-type><a href=#attr-link-type>type</a></code> — 参照されるリソースタイプのヒント<dd><code id=the-link-element:attr-link-sizes><a href=#attr-link-sizes>sizes</a></code> — アイコンのサイズ（<code id=the-link-element:attr-link-rel-3><a href=#attr-link-rel>rel</a></code>="<code id=the-link-element:rel-icon><a href=#rel-icon>icon</a></code>"に対する）<dd><code id=the-link-element:attr-link-referrerpolicy><a href=#attr-link-referrerpolicy>referrerpolicy</a></code> — 要素によって開始された<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=the-link-element:concept-fetch data-x-internal=concept-fetch>フェッチ</a>のための<a id=the-link-element:referrer-policy href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>リファラポリシー</a>を決定する<dd>また、<code id=the-link-element:attr-link-title><a href=#attr-link-title>title</a></code>属性はこの要素で<a href=#attr-link-title id=the-link-element:attr-link-title-2>特別なセマンティックスを持つ</a>：リンクのタイトル、<a id=the-link-element:css-style-sheet-set-name href=https://triple-underscore.github.io/cssom-ja.html#css-style-sheet-set-name data-x-internal=css-style-sheet-set-name>CSSスタイルシート設定名</a>。<dt><a href=dom.html#concept-element-dom id=the-link-element:concept-element-dom>DOMインターフェイス</a>：<dd>
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-link-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-link-element:metadata-content-2 href=dom.html#metadata-content-2>メタデータコンテンツ</a>。<dd>要素が<a href=#allowed-in-the-body id=the-link-element:allowed-in-the-body>body内で許可される場合</a>：<a id=the-link-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dd>要素が<a href=#allowed-in-the-body id=the-link-element:allowed-in-the-body-2>body内で許可される場合</a>：<a id=the-link-element:phrasing-content-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>。<dt><a href=dom.html#concept-element-contexts id=the-link-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><a id=the-link-element:metadata-content-2-2 href=dom.html#metadata-content-2>メタデータコンテンツ</a>が期待される場所。<dd><code id=the-link-element:the-head-element><a href=#the-head-element>head</a></code>の子である<code id=the-link-element:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code>要素内。<dd>要素が<a href=#allowed-in-the-body id=the-link-element:allowed-in-the-body-3>body内で許可される場合</a>：<a id=the-link-element:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>が期待される場所。<dt><a href=dom.html#concept-element-content-model id=the-link-element:concept-element-content-model>コンテンツモデル</a>：<dd><a href=dom.html#concept-content-nothing id=the-link-element:concept-content-nothing>Nothing</a>。<dt><a href=dom.html#concept-element-tag-omission id=the-link-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><a href=syntax.html#syntax-end-tag id=the-link-element:syntax-end-tag>終了タグ</a>なし。<dt><a href=dom.html#concept-element-attributes id=the-link-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-link-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-link-element:attr-link-href><a href=#attr-link-href>href</a></code> — <a href=#hyperlink id=the-link-element:hyperlink>ハイパーリンク</a>のアドレス<dd><code id=the-link-element:attr-link-crossorigin><a href=#attr-link-crossorigin>crossorigin</a></code> — 要素がcrossorigin要求を処理する方法<dd><code id=the-link-element:attr-link-rel><a href=#attr-link-rel>rel</a></code> — ハイパーリンクと宛先のリソースを含む文書の関係<dd><code id=the-link-element:attr-link-as><a href=#attr-link-as>as</a></code> — プリロードリクエストの宛先（<code id=the-link-element:attr-link-rel-2><a href=#attr-link-rel>rel</a></code>="<code id=the-link-element:link-type-preload><a href=#link-type-preload>preload</a></code>"に対する）<dd><code id=the-link-element:attr-link-media><a href=#attr-link-media>media</a></code> — 受け入れ可能なメディア<dd><code id=the-link-element:attr-link-nonce><a href=#attr-link-nonce>nonce</a></code> — <cite>Content Security Policy</cite>チェックで使用される暗号nonce <a href=references.html#refsCSP>[CSP]</a><dd><code id=the-link-element:attr-link-integrity><a href=#attr-link-integrity>integrity</a></code> — Integrity metadata used in <cite>Subresource Integrity</cite> checks <a href=references.html#refsSRI>[SRI]</a><dd><code id=the-link-element:attr-link-hreflang><a href=#attr-link-hreflang>hreflang</a></code> — リンクされたリソースの言語<dd><code id=the-link-element:attr-link-type><a href=#attr-link-type>type</a></code> — 参照されるリソースタイプのヒント<dd><code id=the-link-element:attr-link-sizes><a href=#attr-link-sizes>sizes</a></code> — アイコンのサイズ（<code id=the-link-element:attr-link-rel-3><a href=#attr-link-rel>rel</a></code>="<code id=the-link-element:rel-icon><a href=#rel-icon>icon</a></code>"に対する）<dd><code id=the-link-element:attr-link-referrerpolicy><a href=#attr-link-referrerpolicy>referrerpolicy</a></code> — 要素によって開始された<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=the-link-element:concept-fetch data-x-internal=concept-fetch>フェッチ</a>のための<a id=the-link-element:referrer-policy href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>リファラポリシー</a>を決定する<dd>また、<code id=the-link-element:attr-link-title><a href=#attr-link-title>title</a></code>属性はこの要素で<a href=#attr-link-title id=the-link-element:attr-link-title-2>特別なセマンティックスを持つ</a>：リンクのタイトル、<a id=the-link-element:css-style-sheet-set-name href=https://triple-underscore.github.io/cssom-ja.html#css-style-sheet-set-name data-x-internal=css-style-sheet-set-name>CSSスタイルシート設定名</a>。<dt><a href=dom.html#concept-element-dom id=the-link-element:concept-element-dom>DOMインターフェイス</a>：<dd>
 <pre class=idl>[<a id=the-link-element:htmlconstructor href=dom.html#htmlconstructor>HTMLConstructor</a>]
 interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
   [<a id=the-link-element:cereactions href=scripting.html#cereactions>CEReactions</a>] attribute USVString <a href=#dom-link-href id=the-link-element:dom-link-href>href</a>;
@@ -585,10 +461,11 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
   [<a id=the-link-element:cereactions-5 href=scripting.html#cereactions>CEReactions</a>, SameObject, PutForwards=<a href=https://triple-underscore.github.io/DOM4-ja.html#dom-domtokenlist-value id=the-link-element:dom-domtokenlist-value data-x-internal=dom-domtokenlist-value>value</a>] readonly attribute <a id=the-link-element:domtokenlist href=https://triple-underscore.github.io/DOM4-ja.html#interface-domtokenlist data-x-internal=domtokenlist>DOMTokenList</a> <a href=#dom-link-rellist id=the-link-element:dom-link-rellist>relList</a>;
   [<a id=the-link-element:cereactions-6 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-media id=the-link-element:dom-link-media>media</a>;
   [<a id=the-link-element:cereactions-7 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-nonce id=the-link-element:dom-link-nonce>nonce</a>;
-  [<a id=the-link-element:cereactions-8 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-hreflang id=the-link-element:dom-link-hreflang>hreflang</a>;
-  [<a id=the-link-element:cereactions-9 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-type id=the-link-element:dom-link-type>type</a>;
-  [<a id=the-link-element:cereactions-10 href=scripting.html#cereactions>CEReactions</a>, SameObject, PutForwards=<a href=https://triple-underscore.github.io/DOM4-ja.html#dom-domtokenlist-value id=the-link-element:dom-domtokenlist-value-2 data-x-internal=dom-domtokenlist-value>value</a>] readonly attribute <a id=the-link-element:domtokenlist-2 href=https://triple-underscore.github.io/DOM4-ja.html#interface-domtokenlist data-x-internal=domtokenlist>DOMTokenList</a> <a href=#dom-link-sizes id=the-link-element:dom-link-sizes>sizes</a>;
-  [<a id=the-link-element:cereactions-11 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-referrerpolicy id=the-link-element:dom-link-referrerpolicy>referrerPolicy</a>;
+  [<a id=the-link-element:cereactions-8 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-integrity id=the-link-element:dom-link-integrity>integrity</a>;
+  [<a id=the-link-element:cereactions-9 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-hreflang id=the-link-element:dom-link-hreflang>hreflang</a>;
+  [<a id=the-link-element:cereactions-10 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-type id=the-link-element:dom-link-type>type</a>;
+  [<a id=the-link-element:cereactions-11 href=scripting.html#cereactions>CEReactions</a>, SameObject, PutForwards=<a href=https://triple-underscore.github.io/DOM4-ja.html#dom-domtokenlist-value id=the-link-element:dom-domtokenlist-value-2 data-x-internal=dom-domtokenlist-value>value</a>] readonly attribute <a id=the-link-element:domtokenlist-2 href=https://triple-underscore.github.io/DOM4-ja.html#interface-domtokenlist data-x-internal=domtokenlist>DOMTokenList</a> <a href=#dom-link-sizes id=the-link-element:dom-link-sizes>sizes</a>;
+  [<a id=the-link-element:cereactions-12 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-link-referrerpolicy id=the-link-element:dom-link-referrerpolicy>referrerPolicy</a>;
 };
 <a href=#htmllinkelement id=the-link-element:htmllinkelement>HTMLLinkElement</a> implements <a id=the-link-element:linkstyle href=https://triple-underscore.github.io/cssom-ja.html#the-linkstyle-interface data-x-internal=linkstyle>LinkStyle</a>;</pre>
    </dl>
@@ -625,6 +502,8 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
 
   <p><dfn id=attr-link-nonce><code>nonce</code></dfn>属性は、リンクで指定された外部リソースが文書に読み込まれて適用されるかどうかを決定するために<cite>Content Security Policy</cite>によって使用することができる（「一度に使用される数」）暗号ノンスを表す。値はテキストである。<a href=references.html#refsCSP>[CSP]</a></p>
 
+  <p>The <dfn data-dfn-for=link id=attr-link-integrity data-dfn-type=element-attr data-export=""><code>integrity</code></dfn> attribute represents the <a href=https://fetch.spec.whatwg.org/#concept-request-integrity-metadata id=the-link-element:concept-request-integrity-metadata data-x-internal=concept-request-integrity-metadata>integrity metadata</a> for requests which this element is responsible for. 値はテキストである。The attribute must not be specified on <code id=the-link-element:the-link-element-12><a href=#the-link-element>link</a></code> elements that do not have a <code id=the-link-element:attr-link-rel-13><a href=#attr-link-rel>rel</a></code> attribute that contains the <code id=the-link-element:link-type-stylesheet-3><a href=#link-type-stylesheet>stylesheet</a></code> keyword. <a href=references.html#refsSRI>[SRI]</a></p>
+
   <p><dfn id=attr-link-crossorigin><code>crossorigin</code></dfn>属性は<a id=the-link-element:cors-settings-attribute href=infrastructure.html#cors-settings-attribute>CORS設定属性</a>である。これは、外部リソースリンクでの使用を意図される。</p>
 
   <p><dfn id=attr-link-referrerpolicy><code>referrerpolicy</code></dfn>属性は、<a id=the-link-element:referrer-policy-attribute href=infrastructure.html#referrer-policy-attribute>リファラポリシー属性</a>である。属性が外部リソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain>取得する</a>際に使用される<a id=the-link-element:referrer-policy-2 href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>リファラポリシー</a>を設定するのを手伝う場合、この属性はまた外部リソースへのリンクとともに使用するためのものである。<a href=references.html#refsREFERRERPOLICY>[REFERRERPOLICY]</a>.</p>
@@ -647,15 +526,16 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
    
 
    </li><li><p>Set <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=the-link-element:concept-request-client data-x-internal=concept-request-client>client</a> to the
-   <code id=the-link-element:the-link-element-12><a href=#the-link-element>link</a></code> element's <a id=the-link-element:node-document-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>'s <code id=the-link-element:window><a href=browsers.html#window>Window</a></code> object's
+   <code id=the-link-element:the-link-element-13><a href=#the-link-element>link</a></code> element's <a id=the-link-element:node-document-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>'s <code id=the-link-element:window><a href=browsers.html#window>Window</a></code> object's
    <a id=the-link-element:environment-settings-object href=webappapis.html#environment-settings-object>environment settings object</a>.
 
    
 
    </li><li><p>Set <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata id=the-link-element:concept-request-nonce-metadata data-x-internal=concept-request-nonce-metadata>cryptographic
-   nonce metadata</a> to the current state of the <code id=the-link-element:the-link-element-13><a href=#the-link-element>link</a></code> element's <code id=the-link-element:attr-link-nonce-2><a href=#attr-link-nonce>nonce</a></code> content attribute.</li><li><p>Set <var>request</var>'s
+   nonce metadata</a> to the current value of the <code id=the-link-element:the-link-element-14><a href=#the-link-element>link</a></code> element's <code id=the-link-element:attr-link-nonce-2><a href=#attr-link-nonce>nonce</a></code> content attribute.</li><li><p>Set <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-integrity-metadata id=the-link-element:concept-request-integrity-metadata-2 data-x-internal=concept-request-integrity-metadata>integrity
+   metadata</a> to the current value of the <code id=the-link-element:the-link-element-15><a href=#the-link-element>link</a></code> element's <code id=the-link-element:attr-link-integrity-2><a href=#attr-link-integrity>integrity</a></code> content attribute.</li><li><p>Set <var>request</var>'s
    <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer-policy id=the-link-element:concept-request-referrer-policy data-x-internal=concept-request-referrer-policy>referrer policy</a> to the current state of the
-   <code id=the-link-element:the-link-element-14><a href=#the-link-element>link</a></code> element's <code id=the-link-element:attr-link-referrerpolicy-2><a href=#attr-link-referrerpolicy>referrerpolicy</a></code>
+   <code id=the-link-element:the-link-element-16><a href=#the-link-element>link</a></code> element's <code id=the-link-element:attr-link-referrerpolicy-2><a href=#attr-link-referrerpolicy>referrerpolicy</a></code>
    attribute.</li><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=the-link-element:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li></ol>
 
   <p>User agents may opt to only try to obtain such resources when they are needed, instead of
@@ -667,10 +547,10 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
   <p>Once the attempts to obtain the resource and its <a id=the-link-element:critical-subresources href=infrastructure.html#critical-subresources>critical subresources</a> are
   complete, the user agent must, if the loads were successful, <a id=the-link-element:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to
   <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-link-element:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=the-link-element:event-load><a href=indices.html#event-load>load</a></code>
-  at the<code id=the-link-element:the-link-element-15><a href=#the-link-element>link</a></code> element, or, if the resource or one of its <a id=the-link-element:critical-subresources-2 href=infrastructure.html#critical-subresources>critical
+  at the<code id=the-link-element:the-link-element-17><a href=#the-link-element>link</a></code> element, or, if the resource or one of its <a id=the-link-element:critical-subresources-2 href=infrastructure.html#critical-subresources>critical
   subresources</a> failed to completely load for any reason (e.g. DNS error, HTTP 404 response, a
   connection being prematurely closed, unsupported Content-Type), <a id=the-link-element:queue-a-task-2 href=webappapis.html#queue-a-task>queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-link-element:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named <code id=the-link-element:event-error><a href=indices.html#event-error>error</a></code> at
-  the <code id=the-link-element:the-link-element-16><a href=#the-link-element>link</a></code> element. Non-network errors in processing the resource or its subresources
+  the <code id=the-link-element:the-link-element-18><a href=#the-link-element>link</a></code> element. Non-network errors in processing the resource or its subresources
   (e.g. CSS parse errors, PNG decoding errors) are not failures for the purposes of this
   paragraph.</p>
 
@@ -681,15 +561,15 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
 
   <hr>
 
-  <p id=linkui>インタラクティブなユーザーエージェントは、ユーザーインターフェイス内のどこかで、<code id=the-link-element:the-link-element-17><a href=#the-link-element>link</a></code>要素を使用して作成される<a href=#following-hyperlinks-2 id=the-link-element:following-hyperlinks-2>ハイパーリンクを追跡する</a>手段をユーザーに提供してもよい。正確なインターフェイスはこの仕様で定義されないが、文書で各<code id=the-link-element:the-link-element-18><a href=#the-link-element>link</a></code>要素とともに作成される各ハイパーリンクに対して、一部のフォームまたは別のもの（おそらく単純化された）中で、（以下に再び定義されるように、要素の属性から得られる）次の情報を含めることができる：</p>
+  <p id=linkui>インタラクティブなユーザーエージェントは、ユーザーインターフェイス内のどこかで、<code id=the-link-element:the-link-element-19><a href=#the-link-element>link</a></code>要素を使用して作成される<a href=#following-hyperlinks-2 id=the-link-element:following-hyperlinks-2>ハイパーリンクを追跡する</a>手段をユーザーに提供してもよい。正確なインターフェイスはこの仕様で定義されないが、文書で各<code id=the-link-element:the-link-element-20><a href=#the-link-element>link</a></code>要素とともに作成される各ハイパーリンクに対して、一部のフォームまたは別のもの（おそらく単純化された）中で、（以下に再び定義されるように、要素の属性から得られる）次の情報を含めることができる：</p>
 
-  <ul><li>この文書とリソースの間の関係（<code id=the-link-element:attr-link-rel-13><a href=#attr-link-rel>rel</a></code>属性で与えられる）</li><li>リソースのタイトル（<code id=the-link-element:attr-link-title-4><a href=#attr-link-title>title</a></code>属性で与えられる）。</li><li>リソースのアドレス（<code id=the-link-element:attr-link-href-6><a href=#attr-link-href>href</a></code>属性で与えられる）。</li><li>リソースの言語（<code id=the-link-element:attr-link-hreflang-2><a href=#attr-link-hreflang>hreflang</a></code>属性で与えられる）。</li><li>リソースの最適なメディア（<code id=the-link-element:attr-link-media-3><a href=#attr-link-media>media</a></code>属性で与えられる）。</li></ul>
+  <ul><li>この文書とリソースの間の関係（<code id=the-link-element:attr-link-rel-14><a href=#attr-link-rel>rel</a></code>属性で与えられる）</li><li>リソースのタイトル（<code id=the-link-element:attr-link-title-4><a href=#attr-link-title>title</a></code>属性で与えられる）。</li><li>リソースのアドレス（<code id=the-link-element:attr-link-href-6><a href=#attr-link-href>href</a></code>属性で与えられる）。</li><li>リソースの言語（<code id=the-link-element:attr-link-hreflang-2><a href=#attr-link-hreflang>hreflang</a></code>属性で与えられる）。</li><li>リソースの最適なメディア（<code id=the-link-element:attr-link-media-3><a href=#attr-link-media>media</a></code>属性で与えられる）。</li></ul>
 
   <p>ユーザーエージェントはまた、（<code id=the-link-element:attr-link-type-2><a href=#attr-link-type>type</a></code>属性によって与えられるような）リソースのタイプなどの情報を含めることができる。</p>
 
   
 
-  <p class=note><code id=the-link-element:the-link-element-19><a href=#the-link-element>link</a></code>要素と<code id=the-link-element:attr-link-rel-14><a href=#attr-link-rel>rel</a></code>属性で作成されるハイパーリンクは、文書全体に適用される。これは、コンテキストが文書内のリンク位置によって与えられるリンク型を示す、<code id=the-link-element:the-a-element><a href=#the-a-element>a</a></code>および<code id=the-link-element:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>要素の<code id=the-link-element:attr-hyperlink-rel><a href=#attr-hyperlink-rel>rel</a></code>属性とは対照的である。</p>
+  <p class=note><code id=the-link-element:the-link-element-21><a href=#the-link-element>link</a></code>要素と<code id=the-link-element:attr-link-rel-15><a href=#attr-link-rel>rel</a></code>属性で作成されるハイパーリンクは、文書全体に適用される。これは、コンテキストが文書内のリンク位置によって与えられるリンク型を示す、<code id=the-link-element:the-a-element><a href=#the-a-element>a</a></code>および<code id=the-link-element:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>要素の<code id=the-link-element:attr-hyperlink-rel><a href=#attr-hyperlink-rel>rel</a></code>属性とは対照的である。</p>
 
   <p><dfn id=attr-link-media><code>media</code></dfn>属性は、リソースが適用されるメディアを表す。値は<a id=the-link-element:valid-media-query-list href=infrastructure.html#valid-media-query-list>妥当なメディアクエリーリスト</a>でなければならない。</p>
 
@@ -705,11 +585,11 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
 
   <p id=default-media><code id=the-link-element:attr-link-media-7><a href=#attr-link-media>media</a></code>属性が省略される場合、デフォルトでは"<code>all</code>"であり、デフォルトのリンクにより、すべてのメディアに適用されることを意味する。</p>
 
-  <p><code id=the-link-element:the-link-element-20><a href=#the-link-element>link</a></code>要素の<dfn id=attr-link-hreflang><code>hreflang</code></dfn>属性は、<a href=#attr-hyperlink-hreflang id=the-link-element:attr-hyperlink-hreflang><code>a</code>要素の<code>hreflang</code>属性</a>と同じセマンティックスを持つ。</p>
+  <p><code id=the-link-element:the-link-element-22><a href=#the-link-element>link</a></code>要素の<dfn id=attr-link-hreflang><code>hreflang</code></dfn>属性は、<a href=#attr-hyperlink-hreflang id=the-link-element:attr-hyperlink-hreflang><code>a</code>要素の<code>hreflang</code>属性</a>と同じセマンティックスを持つ。</p>
 
-  <p><dfn id=attr-link-type><code>type</code></dfn>属性は、リンクされたリソースの<a id=the-link-element:mime-type href=infrastructure.html#mime-type>MIMEタイプ</a>を提供する。これは単なる助言である。値は<a id=the-link-element:valid-mime-type href=infrastructure.html#valid-mime-type>妥当なMIMEタイプ</a>でなければならない。</p>
+  <p><dfn id=attr-link-type><code>type</code></dfn>属性は、リンクされたリソースの<a id=the-link-element:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>を提供する。これは単なる助言である。値は<a id=the-link-element:valid-mime-type href=https://mimesniff.spec.whatwg.org/#valid-mime-type data-x-internal=valid-mime-type>妥当なMIMEタイプ</a>でなければならない。</p>
 
-  <p><a href=#external-resource-link id=the-link-element:external-resource-link-4>外部リソースへのリンク</a>について、それらがサポートしないリソースの再取得を回避できるように、<code id=the-link-element:attr-link-type-3><a href=#attr-link-type>type</a></code>属性はユーザーエージェントへのヒントとして使用される。属性が存在する場合、ユーザーエージェントは、（たとえそれが空文字列などの<a id=the-link-element:valid-mime-type-2 href=infrastructure.html#valid-mime-type>妥当なMIMEタイプ</a>でない場合であっても）リソースが与えられたタイプのものであると仮定しなければならない。属性を省略するが、外部リソースのリンクタイプがデフォルトタイプを定義させる場合、ユーザーエージェントは、リソースがその型であることを仮定しなければならない。ユーザーエージェントが指定されるリンク関係に対して指定される<a id=the-link-element:mime-type-2 href=infrastructure.html#mime-type>MIMEタイプ</a>をサポートしない場合、ユーザーエージェントはリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-2>取得する</a>べきではない。ユーザーエージェントが指定されるリンク関係に対して指定される<a id=the-link-element:mime-type-3 href=infrastructure.html#mime-type>MIMEタイプ</a>をサポートする場合、ユーザーエージェントは<a href=#external-resource-link id=the-link-element:external-resource-link-5>外部リソースリンク</a>の特定のタイプに対して指定されるように適切な時間でリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-3>取得す</a>べきである。属性が省略され、かつ外部リソースのリンクタイプがデフォルトのタイプが定義せないが、タイプが知られておりかつサポートされていた場合にユーザーエージェントがリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-4>取得する</a>場合、ユーザーエージェントは、タイプがサポートされるという仮定の下でリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-5>取得す</a>べきである。</p>
+  <p><a href=#external-resource-link id=the-link-element:external-resource-link-4>外部リソースへのリンク</a>について、それらがサポートしないリソースの再取得を回避できるように、<code id=the-link-element:attr-link-type-3><a href=#attr-link-type>type</a></code>属性はユーザーエージェントへのヒントとして使用される。属性が存在する場合、ユーザーエージェントは、（たとえそれが空文字列などの<a id=the-link-element:valid-mime-type-2 href=https://mimesniff.spec.whatwg.org/#valid-mime-type data-x-internal=valid-mime-type>妥当なMIMEタイプ</a>でない場合であっても）リソースが与えられたタイプのものであると仮定しなければならない。属性を省略するが、外部リソースのリンクタイプがデフォルトタイプを定義させる場合、ユーザーエージェントは、リソースがその型であることを仮定しなければならない。ユーザーエージェントが指定されるリンク関係に対して指定される<a id=the-link-element:mime-type-2 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>をサポートしない場合、ユーザーエージェントはリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-2>取得する</a>べきではない。ユーザーエージェントが指定されるリンク関係に対して指定される<a id=the-link-element:mime-type-3 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>をサポートする場合、ユーザーエージェントは<a href=#external-resource-link id=the-link-element:external-resource-link-5>外部リソースリンク</a>の特定のタイプに対して指定されるように適切な時間でリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-3>取得す</a>べきである。属性が省略され、かつ外部リソースのリンクタイプがデフォルトのタイプが定義せないが、タイプが知られておりかつサポートされていた場合にユーザーエージェントがリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-4>取得する</a>場合、ユーザーエージェントは、タイプがサポートされるという仮定の下でリソースを<a href=#concept-link-obtain id=the-link-element:concept-link-obtain-5>取得す</a>べきである。</p>
 
   
 
@@ -717,7 +597,7 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
 
   <p id=concept-link-type-sniffing>外部リソースのリンクタイプがリソースの<a href=infrastructure.html#content-type id=the-link-element:content-type>Content-Typeメタデータ</a>を処理するための規則を定義する場合、この規則が適用される。そうでなければ、リソースが画像であることが予想される場合、ユーザーエージェントは、リソースの<a href=infrastructure.html#content-type id=the-link-element:content-type-2>Content-Typeメタデータ</a>から決定されるタイプであるとする<var>official type</var>をもつ、<a href=https://mimesniff.spec.whatwg.org/#rules-for-sniffing-images-specifically id=the-link-element:content-type-sniffing:-image data-x-internal=content-type-sniffing:-image>規則を傍受する画像</a>を適用してもよく、かつあたかも実際のタイプがあったかのように結果として<a href=https://mimesniff.spec.whatwg.org/#computed-mime-type id=the-link-element:content-type-sniffing-2 data-x-internal=content-type-sniffing-2>リソースの計算されたタイプ</a>を使用する。そうでなければ、この条件のいずれも適用しない場合、またはユーザーエージェントが規則を傍受する画像を適用しないことを選択する場合、ユーザーエージェントはリソースのタイプを判断するためにリソースの<a href=infrastructure.html#content-type id=the-link-element:content-type-3>Content-Typeメタデータ</a>を使用しなければならない。どのタイプのメタデータも存在しないが、外部リソースのリンクタイプがデフォルトタイプを定義させる場合、ユーザーエージェントはリソースがその型であることを仮定しなければならない。</p>
 
-  <p class=note><code id=the-link-element:link-type-stylesheet-3><a href=#link-type-stylesheet>stylesheet</a></code>リンクタイプは、<a href=infrastructure.html#content-type id=the-link-element:content-type-4>リソースのContent-Typeメタデータ</a>を処理するための規則を定義する。</p>
+  <p class=note><code id=the-link-element:link-type-stylesheet-4><a href=#link-type-stylesheet>stylesheet</a></code>リンクタイプは、<a href=infrastructure.html#content-type id=the-link-element:content-type-4>リソースのContent-Typeメタデータ</a>を処理するための規則を定義する。</p>
 
   <p>ユーザーエージェントがリソースのタイプを一度確立すると、タイプがサポートされるタイプでありかつその他の条件が適用される場合、ユーザーエージェントはリソースを適用しなければならず、そうでなければリソースを無視しなければならない。</p>
 
@@ -729,11 +609,11 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
 &lt;link rel="stylesheet" href="B" type="text/css"&gt;
 &lt;link rel="stylesheet" href="C"&gt;</pre>
 
-   <p>（<code id=the-link-element:text/plain><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code>はCSSスタイルシートのための<a id=the-link-element:mime-type-4 href=infrastructure.html#mime-type>MIMEタイプ</a>ではないので）CSSスタイルシートのみをサポートする適合ユーザーエージェントは、BとCのファイルを取得し、Aファイルをスキップする。</p>
+   <p>（<code id=the-link-element:text/plain><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code>はCSSスタイルシートのための<a id=the-link-element:mime-type-4 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>ではないので）CSSスタイルシートのみをサポートする適合ユーザーエージェントは、BとCのファイルを取得し、Aファイルをスキップする。</p>
 
    <p>ファイルBとCの場合、その後サーバーから返される実際のタイプをチェックする。<code id=the-link-element:text/css><a href=indices.html#text/css>text/css</a></code>として送信されるものに対して、スタイルを適用するが、<code id=the-link-element:text/plain-2><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code>としてラベル付けされるものに対して、スタイルを適用しない。</p>
 
-   <p>2つのファイルのいずれかが<a id=the-link-element:content-type-5 href=infrastructure.html#content-type>Content-Type</a>メタデータなしで、または<code>Content-Type:&nbsp;"null"</code>のような構文的に誤ったタイプとともに返された場合、<code id=the-link-element:link-type-stylesheet-4><a href=#link-type-stylesheet>stylesheet</a></code>のリンクに対するデフォルトタイプは蹴られる。デフォルトタイプは<code>text/css</code>であるので、それにもかかわらずスタイルシートは<em>適用される</em>。</p>
+   <p>2つのファイルのいずれかが<a id=the-link-element:content-type-5 href=infrastructure.html#content-type>Content-Type</a>メタデータなしで、または<code>Content-Type:&nbsp;"null"</code>のような構文的に誤ったタイプとともに返された場合、<code id=the-link-element:link-type-stylesheet-5><a href=#link-type-stylesheet>stylesheet</a></code>のリンクに対するデフォルトタイプは蹴られる。デフォルトタイプは<code>text/css</code>であるので、それにもかかわらずスタイルシートは<em>適用される</em>。</p>
 
   </div>
 
@@ -741,31 +621,34 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
 
   <p><dfn id=attr-link-title><code>title</code></dfn>属性は、リンクのタイトルを与える。一つの例外を除いて、これは純粋に助言的である。値はテキストである。例外は、<code id=the-link-element:attr-link-title-5><a href=#attr-link-title>title</a></code>属性が<a href=https://triple-underscore.github.io/cssom-ja.html#css-style-sheet id=the-link-element:css-style-sheet-set data-x-internal=css-style-sheet-set>CSSスタイルシートセット</a>を定義する、<a id=the-link-element:in-a-document-tree href=https://triple-underscore.github.io/DOM4-ja.html#in-a-document data-x-internal=in-a-document-tree>文書ツリー内</a>であるスタイルシートリンクである。</p>
 
-  <p class=note><code id=the-link-element:the-link-element-21><a href=#the-link-element>link</a></code>要素の<code id=the-link-element:attr-link-title-6><a href=#attr-link-title>title</a></code>属性は、タイトルをもたないリンクが親要素のタイトルを継承しない点で、他のほとんどの要素に属するグローバル<code id=the-link-element:attr-title><a href=dom.html#attr-title>title</a></code>属性とは異なる。それは単にタイトルを持たない。</p>
+  <p class=note><code id=the-link-element:the-link-element-23><a href=#the-link-element>link</a></code>要素の<code id=the-link-element:attr-link-title-6><a href=#attr-link-title>title</a></code>属性は、タイトルをもたないリンクが親要素のタイトルを継承しない点で、他のほとんどの要素に属するグローバル<code id=the-link-element:attr-title><a href=dom.html#attr-title>title</a></code>属性とは異なる。それは単にタイトルを持たない。</p>
 
-  <p><code id=the-link-element:attr-link-sizes-2><a href=#attr-link-sizes>sizes</a></code>属性は、<code id=the-link-element:rel-icon-3><a href=#rel-icon>icon</a></code>リンクタイプとともに使用される。属性は、<code id=the-link-element:rel-icon-4><a href=#rel-icon>icon</a></code>のキーワードを指定する<code id=the-link-element:attr-link-rel-15><a href=#attr-link-rel>rel</a></code>属性を持たない<code id=the-link-element:the-link-element-22><a href=#the-link-element>link</a></code>要素を指定してはならない。</p>
+  <p><code id=the-link-element:attr-link-sizes-2><a href=#attr-link-sizes>sizes</a></code>属性は、<code id=the-link-element:rel-icon-3><a href=#rel-icon>icon</a></code>リンクタイプとともに使用される。属性は、<code id=the-link-element:rel-icon-4><a href=#rel-icon>icon</a></code>のキーワードを指定する<code id=the-link-element:attr-link-rel-16><a href=#attr-link-rel>rel</a></code>属性を持たない<code id=the-link-element:the-link-element-24><a href=#the-link-element>link</a></code>要素を指定してはならない。</p>
 
   
 
-  <p><a href=#hyperlink id=the-link-element:hyperlink-5>ハイパーリンク</a>を作成する<code id=the-link-element:the-link-element-23><a href=#the-link-element>link</a></code>要素の<a id=the-link-element:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>活性化挙動</a>は、次のステップを実行することである：</p>
+  <p><a href=#hyperlink id=the-link-element:hyperlink-5>ハイパーリンク</a>を作成する<code id=the-link-element:the-link-element-25><a href=#the-link-element>link</a></code>要素の<a id=the-link-element:activation-behaviour href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>活性化挙動</a>は、次のステップを実行することである：</p>
 
-  <ol><li><p><code id=the-link-element:the-link-element-24><a href=#the-link-element>link</a></code>要素の<a id=the-link-element:node-document-4 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>ノード文書</a>が<a id=the-link-element:fully-active href=browsers.html#fully-active>完全にアクティブ</a>でない場合、この手順を中止する。</li><li><p><code id=the-link-element:the-link-element-25><a href=#the-link-element>link</a></code>要素によって作成される<a href=#following-hyperlinks-2 id=the-link-element:following-hyperlinks-2-2>ハイパーリンクを追跡する</a>。</li></ol>
+  <ol><li><p><code id=the-link-element:the-link-element-26><a href=#the-link-element>link</a></code>要素の<a id=the-link-element:node-document-4 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>ノード文書</a>が<a id=the-link-element:fully-active href=browsers.html#fully-active>完全にアクティブ</a>でない場合、この手順を中止する。</li><li><p><code id=the-link-element:the-link-element-27><a href=#the-link-element>link</a></code>要素によって作成される<a href=#following-hyperlinks-2 id=the-link-element:following-hyperlinks-2-2>ハイパーリンクを追跡する</a>。</li></ol>
 
   <p>サポートされる場合、HTTP `<code id=the-link-element:http-link><a data-x-internal=http-link href=https://tools.ietf.org/html/rfc5988#section-5>Link:</a></code>`ヘッダーは、HTTPメッセージで指定された順序で、文書内のリンクの前に来ると想定しなければならない。このヘッダーは、関連する仕様に指定される規則に従って処理される。<a href=references.html#refsHTTP>[HTTP]</a> <a href=references.html#refsWEBLINK>[WEBLINK]</a></p> 
 
   <p class=note>HTTP `<code id=the-link-element:http-link-2><a data-x-internal=http-link href=https://tools.ietf.org/html/rfc5988#section-5>Link</a></code>`ヘッダーにおける関係タイプの登録は、<a href=#linkTypes>HTMLリンクタイプ</a>から区別され、したがってそのセマンティックスは同じ名前のHTML種類と異なるかもしれない。</p>
 
-  <p>IDL属性<dfn id=dom-link-href><code>href</code></dfn>、<dfn id=dom-link-rel><code>rel</code></dfn>、<dfn id=dom-link-as><code>as</code></dfn>、<dfn id=dom-link-media><code>media</code></dfn>、<dfn id=dom-link-hreflang><code>hreflang</code></dfn>、<dfn id=dom-link-type><code>type</code></dfn>、<dfn id=dom-link-nonce><code>nonce</code></dfn>、<dfn id=dom-link-sizes><code>sizes</code></dfn>のそれぞれは、同じ名前の各コンテンツ属性を<a id=the-link-element:reflect href=infrastructure.html#reflect>反映</a>しなければならない。</p>
+  <p>The IDL attributes <dfn id=dom-link-href><code>href</code></dfn>, <dfn id=dom-link-rel><code>rel</code></dfn>, <dfn id=dom-link-as><code>as</code></dfn>,
+  <dfn id=dom-link-media><code>media</code></dfn>, <dfn id=dom-link-hreflang><code>hreflang</code></dfn>, <dfn id=dom-link-type><code>type</code></dfn>, <dfn id=dom-link-nonce><code>nonce</code></dfn>,
+  <dfn id=dom-link-integrity><code>integrity</code></dfn> and <dfn id=dom-link-sizes><code>sizes</code></dfn> each must <a id=the-link-element:reflect href=infrastructure.html#reflect>reflect</a> the respective content
+  attributes of the same name.</p>
 
   <p><dfn id=dom-link-crossorigin><code>crossOrigin</code></dfn> IDL属性は、<code id=the-link-element:attr-link-crossorigin-3><a href=#attr-link-crossorigin>crossorigin</a></code>コンテンツ属性を<a id=the-link-element:reflect-2 href=infrastructure.html#reflect>反映</a>しなければならない。</p>
 
-  <p>IDL属性<dfn id=dom-link-rellist><code>relList</code></dfn>は、<code id=the-link-element:attr-link-rel-16><a href=#attr-link-rel>rel</a></code>コンテンツ属性を<a href=infrastructure.html#reflect id=the-link-element:reflect-3>反映</a>しなければならない。</p>
+  <p>IDL属性<dfn id=dom-link-rellist><code>relList</code></dfn>は、<code id=the-link-element:attr-link-rel-17><a href=#attr-link-rel>rel</a></code>コンテンツ属性を<a href=infrastructure.html#reflect id=the-link-element:reflect-3>反映</a>しなければならない。</p>
 
   <p>IDL属性<dfn id=dom-link-referrerpolicy><code>referrerPolicy</code></dfn>は、<a id=the-link-element:limited-to-only-known-values href=infrastructure.html#limited-to-only-known-values>既知の値に制限され</a>、<code id=the-link-element:attr-link-referrerpolicy-3><a href=#attr-link-referrerpolicy>referrerpolicy</a></code>コンテンツ属性を<a id=the-link-element:reflect-4 href=infrastructure.html#reflect>反映し</a>なければならない。</p>
 
   <p>Other specifications may add <a href=#linkTypes>HTML link types</a> as defined in <a href=#other-link-types>Other link types</a>, with the following additional requirements:</p>
 
-  <ul><li>Such specifications may require that their link types be included in <code id=the-link-element:attr-link-rel-17><a href=#attr-link-rel>rel</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-supported-tokens id=the-link-element:concept-supported-tokens-4 data-x-internal=concept-supported-tokens>supported
+  <ul><li>Such specifications may require that their link types be included in <code id=the-link-element:attr-link-rel-18><a href=#attr-link-rel>rel</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-supported-tokens id=the-link-element:concept-supported-tokens-4 data-x-internal=concept-supported-tokens>supported
    tokens</a>.</li><li>Such specifications may specify that their link types are <a href=#body-ok id=the-link-element:body-ok-2>body-ok</a>.</li></ul>
 
   
@@ -774,7 +657,7 @@ interface <dfn id=htmllinkelement>HTMLLinkElement</dfn> : <a id=the-link-element
 
   <div class=example>
 
-   <p>ここで、<code id=the-link-element:the-link-element-26><a href=#the-link-element>link</a></code>要素のセットは、スタイルシートを提供する：</p>
+   <p>ここで、<code id=the-link-element:the-link-element-28><a href=#the-link-element>link</a></code>要素のセットは、スタイルシートを提供する：</p>
 
    <pre>&lt;!-- a persistent style sheet --&gt;
 &lt;link rel="stylesheet" href="default.css"&gt;
@@ -825,7 +708,7 @@ interface <dfn id=htmlmetaelement>HTMLMetaElement</dfn> : <a id=the-meta-element
 
   <p><code id=the-meta-element:attr-meta-name-5><a href=#attr-meta-name>name</a></code>、<code id=the-meta-element:attr-meta-http-equiv-7><a href=#attr-meta-http-equiv>http-equiv</a></code>または<code id=the-meta-element:names:-the-itemprop-attribute-6><a href=microdata.html#names:-the-itemprop-attribute>itemprop</a></code>のいずれかが指定される場合、<code id=the-meta-element:attr-meta-content-2><a href=#attr-meta-content>content</a></code>属性も指定しなければならない。そうでなければ、省略されなければならない。</p>
 
-  <p><dfn id=attr-meta-charset><code>charset</code></dfn>属性は、文書で使用される文字エンコーディングを指定する。これは、<a href=#character-encoding-declaration id=the-meta-element:character-encoding-declaration-3>文字エンコーディング宣言</a>である。属性が<a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=the-meta-element:xml-documents data-x-internal=xml-documents>XML文書</a>内に存在する場合、その値は、文字列"<code>UTF-8</code>"と<a id=the-meta-element:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならない（したがって、文書は、エンコーディングとして<a id=the-meta-element:utf-8 href=https://triple-underscore.github.io/Encoding-ja.html#utf-8 data-x-internal=utf-8>UTF-8</a>を使用するよう強制される）。</p>
+  <p><dfn id=attr-meta-charset><code>charset</code></dfn>属性は、文書で使用される文字エンコーディングを指定する。これは、<a href=#character-encoding-declaration id=the-meta-element:character-encoding-declaration-3>文字エンコーディング宣言</a>である。属性が<a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=the-meta-element:xml-documents data-x-internal=xml-documents>XML文書</a>内に存在する場合、その値は、文字列"<code>UTF-8</code>"と<a id=the-meta-element:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならない（したがって、文書は、エンコーディングとして<a id=the-meta-element:utf-8 href=https://triple-underscore.github.io/Encoding-ja.html#utf-8 data-x-internal=utf-8>UTF-8</a>を使用するよう強制される）。</p>
 
   <p class=note><code id=the-meta-element:the-meta-element-3><a href=#the-meta-element>meta</a></code>要素上の<code id=the-meta-element:attr-meta-charset-5><a href=#attr-meta-charset>charset</a></code>属性は、XML文書では効果がなく、単にXHTMLからの移行を容易にするために許可される。</p>
 
@@ -846,7 +729,7 @@ interface <dfn id=htmlmetaelement>HTMLMetaElement</dfn> : <a id=the-meta-element
 
   <p>この仕様は、<code id=standard-metadata-names:the-meta-element><a href=#the-meta-element>meta</a></code>要素の<code id=standard-metadata-names:attr-meta-name><a href=#attr-meta-name>name</a></code>属性の名前を定義する。</p>
 
-  <p>名前は大文字・小文字を区別せず<span class=impl>、かつ<a id=standard-metadata-names:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字を区別しない</a>方法で比較されなければならない</span>。</p>
+  <p>名前は大文字・小文字を区別せず<span class=impl>、かつ<a id=standard-metadata-names:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字を区別しない</a>方法で比較されなければならない</span>。</p>
 
   <dl><dt><dfn id=meta-application-name><code>application-name</code></dfn><dd>
 
@@ -949,7 +832,7 @@ interface <dfn id=htmlmetaelement>HTMLMetaElement</dfn> : <a id=the-meta-element
       <p>For each <var>element</var> in <var>candidate elements</var>, run the following
       substeps:</p>
 
-      <ol><li><p>Let <var>value</var> be the value of <var>element</var>'s <code id=standard-metadata-names:attr-meta-content-5><a href=#attr-meta-content>content</a></code> attribute, <a id=standard-metadata-names:converted-to-ascii-lowercase href=infrastructure.html#converted-to-ascii-lowercase>converted to ASCII
+      <ol><li><p>Let <var>value</var> be the value of <var>element</var>'s <code id=standard-metadata-names:attr-meta-content-5><a href=#attr-meta-content>content</a></code> attribute, <a id=standard-metadata-names:converted-to-ascii-lowercase href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
        lowercase</a>.</li><li>
         <p>If <var>value</var> is one of the values given in the first column of the following
         table, then set <var>value</var> to the value given in the second column:</p>
@@ -1131,7 +1014,7 @@ interface <dfn id=htmlmetaelement>HTMLMetaElement</dfn> : <a id=the-meta-element
 
     <p><a href=#attr-meta-http-equiv-content-type id=pragma-directives:attr-meta-http-equiv-content-type-2>エンコーディング宣言状態</a>は、<code id=pragma-directives:attr-meta-charset><a href=#attr-meta-charset>charset</a></code>属性の設定の単なる代替形式である。これは<a href=#character-encoding-declaration id=pragma-directives:character-encoding-declaration>文字エンコーディング宣言</a>である。この状態のユーザーエージェントの要件は、仕様の解析セクションによってすべて処理される。</p>
 
-    <p><a href=#attr-meta-http-equiv-content-type id=pragma-directives:attr-meta-http-equiv-content-type-3>エンコーディング宣言状態</a>の<code id=pragma-directives:attr-meta-http-equiv-3><a href=#attr-meta-http-equiv>http-equiv</a></code>属性をもつ<code id=pragma-directives:the-meta-element-4><a href=#the-meta-element>meta</a></code>要素に対して、<code id=pragma-directives:attr-meta-content-4><a href=#attr-meta-content>content</a></code>属性は、リテラルに文字列"<code>text/html;</code>"、その後に任意の数の<a href=infrastructure.html#space-character id=pragma-directives:space-character-2>空白文字</a>が任意で続き、その後にリテラルに文字列"<code>charset=</code>"が続き、その後に<a href=#character-encoding-declaration id=pragma-directives:character-encoding-declaration-2>文字エンコーディング宣言</a>の<a href=https://triple-underscore.github.io/Encoding-ja.html#encoding id=pragma-directives:encoding data-x-internal=encoding>文字エンコーディング</a>の<a href=https://encoding.spec.whatwg.org/#label id=pragma-directives:encoding-label data-x-internal=encoding-label>ラベル</a>が続くものからなる文字列と<a id=pragma-directives:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致する値を持たなければならない。</p>
+    <p><a href=#attr-meta-http-equiv-content-type id=pragma-directives:attr-meta-http-equiv-content-type-3>エンコーディング宣言状態</a>の<code id=pragma-directives:attr-meta-http-equiv-3><a href=#attr-meta-http-equiv>http-equiv</a></code>属性をもつ<code id=pragma-directives:the-meta-element-4><a href=#the-meta-element>meta</a></code>要素に対して、<code id=pragma-directives:attr-meta-content-4><a href=#attr-meta-content>content</a></code>属性は、リテラルに文字列"<code>text/html;</code>"、その後に任意の数の<a href=infrastructure.html#space-character id=pragma-directives:space-character-2>空白文字</a>が任意で続き、その後にリテラルに文字列"<code>charset=</code>"が続き、その後に<a href=#character-encoding-declaration id=pragma-directives:character-encoding-declaration-2>文字エンコーディング宣言</a>の<a href=https://triple-underscore.github.io/Encoding-ja.html#encoding id=pragma-directives:encoding data-x-internal=encoding>文字エンコーディング</a>の<a href=https://encoding.spec.whatwg.org/#label id=pragma-directives:encoding-label data-x-internal=encoding-label>ラベル</a>が続くものからなる文字列と<a id=pragma-directives:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致する値を持たなければならない。</p>
 
     <p>文書は、<a href=#attr-meta-http-equiv-content-type id=pragma-directives:attr-meta-http-equiv-content-type-4>エンコーディング宣言状態</a>の<code id=pragma-directives:attr-meta-http-equiv-4><a href=#attr-meta-http-equiv>http-equiv</a></code>属性をもつ<code id=pragma-directives:the-meta-element-5><a href=#the-meta-element>meta</a></code>要素と、<code id=pragma-directives:attr-meta-charset-2><a href=#attr-meta-charset>charset</a></code>属性の存在する<code id=pragma-directives:the-meta-element-6><a href=#the-meta-element>meta</a></code>要素の両方を含んではならない。</p>
 
@@ -1233,7 +1116,7 @@ interface <dfn id=htmlmetaelement>HTMLMetaElement</dfn> : <a id=the-meta-element
 
     <p><a href=#attr-meta-http-equiv-refresh id=pragma-directives:attr-meta-http-equiv-refresh-3>リフレッシュ状態</a>の<code id=pragma-directives:attr-meta-http-equiv-7><a href=#attr-meta-http-equiv>http-equiv</a></code>属性をもつ<code id=pragma-directives:the-meta-element-14><a href=#the-meta-element>meta</a></code>に対して、<code id=pragma-directives:attr-meta-content-9><a href=#attr-meta-content>content</a></code>属性はいずれかからなる値を持たなければならない：</p>
 
-    <ul><li><a id=pragma-directives:valid-non-negative-integer href=infrastructure.html#valid-non-negative-integer>妥当な負でない整数</a>のみ、または</li><li><a id=pragma-directives:valid-non-negative-integer-2 href=infrastructure.html#valid-non-negative-integer>妥当な負でない整数</a>、その後にU+003B SEMICOLON文字（;）が続き、その後に1つ以上の<a href=infrastructure.html#space-character id=pragma-directives:space-character-4>空白文字</a>が続き、その後に<a id=pragma-directives:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で文字列"<code>URL</code>"に一致するサブ文字列が続き、その後にU+003D EQUALS SIGN 文字（=）が続き、その後にリテラルにU+0027 APOSTROPHE（'）またはU+0022 QUOTATION MARK（"）で開始しない<a id=pragma-directives:valid-url href=infrastructure.html#valid-url>妥当なURL</a>が続くもの。</li></ul>
+    <ul><li><a id=pragma-directives:valid-non-negative-integer href=infrastructure.html#valid-non-negative-integer>妥当な負でない整数</a>のみ、または</li><li><a id=pragma-directives:valid-non-negative-integer-2 href=infrastructure.html#valid-non-negative-integer>妥当な負でない整数</a>、その後にU+003B SEMICOLON文字（;）が続き、その後に1つ以上の<a href=infrastructure.html#space-character id=pragma-directives:space-character-4>空白文字</a>が続き、その後に<a id=pragma-directives:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で文字列"<code>URL</code>"に一致するサブ文字列が続き、その後にU+003D EQUALS SIGN 文字（=）が続き、その後にリテラルにU+0027 APOSTROPHE（'）またはU+0022 QUOTATION MARK（"）で開始しない<a id=pragma-directives:valid-url href=infrastructure.html#valid-url>妥当なURL</a>が続くもの。</li></ul>
 
     <p>前者の場合、整数は、そのページが再読み込みされるよりも前の秒数を表す。後者の場合、整数は、与えられた<a id=pragma-directives:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>のページで置き換えられるよりも前の秒数を表す。</p>
 
@@ -1273,7 +1156,7 @@ interface <dfn id=htmlmetaelement>HTMLMetaElement</dfn> : <a id=the-meta-element
 
     <p>実際問題として、このプラグマは、仕様により密接に従うようにInternet Explorerに勧める。</p>
 
-    <p><a href=#attr-meta-http-equiv-x-ua-compatible id=pragma-directives:attr-meta-http-equiv-x-ua-compatible-2>X-UA-Compatible状態</a>における<code id=pragma-directives:attr-meta-http-equiv-8><a href=#attr-meta-http-equiv>http-equiv</a></code>属性をもつ<code id=pragma-directives:the-meta-element-16><a href=#the-meta-element>meta</a></code>要素の場合、<code id=pragma-directives:attr-meta-content-12><a href=#attr-meta-content>content</a></code>属性は、文字列"<code>IE=edge</code>"に <a id=pragma-directives:ascii-case-insensitive-3 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>である値を持たなければならない。</p>
+    <p><a href=#attr-meta-http-equiv-x-ua-compatible id=pragma-directives:attr-meta-http-equiv-x-ua-compatible-2>X-UA-Compatible状態</a>における<code id=pragma-directives:attr-meta-http-equiv-8><a href=#attr-meta-http-equiv>http-equiv</a></code>属性をもつ<code id=pragma-directives:the-meta-element-16><a href=#the-meta-element>meta</a></code>要素の場合、<code id=pragma-directives:attr-meta-content-12><a href=#attr-meta-content>content</a></code>属性は、文字列"<code>IE=edge</code>"に <a id=pragma-directives:ascii-case-insensitive-3 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>である値を持たなければならない。</p>
 
     <p>ユーザーエージェントは、このプラグマを無視することが要求される。</p>
 
@@ -1336,7 +1219,7 @@ interface <dfn id=htmlmetaelement>HTMLMetaElement</dfn> : <a id=the-meta-element
 
   <p>以下の制限が<a href=#character-encoding-declaration id=charset:character-encoding-declaration>文字エンコーディング宣言</a>に適用される。</p>
 
-  <ul><li>与えられた文字エンコーディング名は、ファイルをシリアル化するために使用される<a href=https://triple-underscore.github.io/Encoding-ja.html#encoding id=charset:encoding-2 data-x-internal=encoding>文字エンコーディング</a>の<a href=https://encoding.spec.whatwg.org/#label id=charset:encoding-label data-x-internal=encoding-label>ラベル</a>と<a id=charset:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならない。<a href=references.html#refsENCODING>[ENCODING]</a></li><li>文字エンコーディング宣言は、<a href=syntax.html#syntax-charref id=charset:syntax-charref>文字参照</a>または任意の種類の文字エスケープを使用することなくシリアル化されなければならない。</li><li id=charset1024><span id=charset512>文字エンコーディング宣言を含む要素は、文書の最初の1024バイト内に完全にシリアル化されなければならない。</span></li></ul>
+  <ul><li>与えられた文字エンコーディング名は、ファイルをシリアル化するために使用される<a href=https://triple-underscore.github.io/Encoding-ja.html#encoding id=charset:encoding-2 data-x-internal=encoding>文字エンコーディング</a>の<a href=https://encoding.spec.whatwg.org/#label id=charset:encoding-label data-x-internal=encoding-label>ラベル</a>と<a id=charset:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならない。<a href=references.html#refsENCODING>[ENCODING]</a></li><li>文字エンコーディング宣言は、<a href=syntax.html#syntax-charref id=charset:syntax-charref>文字参照</a>または任意の種類の文字エスケープを使用することなくシリアル化されなければならない。</li><li id=charset1024><span id=charset512>文字エンコーディング宣言を含む要素は、文書の最初の1024バイト内に完全にシリアル化されなければならない。</span></li></ul>
 
   <p>さらに、<code id=charset:the-meta-element><a href=#the-meta-element>meta</a></code>要素には多くの制限があるため、文書ごとに1つの<code id=charset:the-meta-element-2><a href=#the-meta-element>meta</a></code>ベースの文字エンコーディング宣言のみがあるかもしれない。</p> 
 
@@ -1392,11 +1275,11 @@ interface <dfn id=htmlstyleelement>HTMLStyleElement</dfn> : <a id=the-style-elem
 
   <p><code id=the-style-element:the-style-element><a href=#the-style-element>style</a></code>要素は、著者が文書にスタイル情報の埋め込みを許可する。<code id=the-style-element:the-style-element-2><a href=#the-style-element>style</a></code>要素は、スタイリング処理モデルへの、複数の入力の1つである。この要素は、ユーザーへのコンテンツを<a href=dom.html#represents id=the-style-element:represents>表す</a>ものでない。</p>
 
-  <p><dfn id=attr-style-type><code>type</code></dfn>属性はスタイル言語を与える。属性が存在する場合、その値はスタイル言語を示す<a id=the-style-element:valid-mime-type href=infrastructure.html#valid-mime-type>妥当なMIMEタイプ</a>でなければならない。<code>charset</code>パラメーターを指定してはならない。属性が存在しない場合に用いられる<code id=the-style-element:attr-style-type-3><a href=#attr-style-type>type</a></code>属性に対するデフォルト値は、"<code>text/css</code>"である。<a href=references.html#refsRFC2318>[RFC2318]</a></p>
+  <p><dfn id=attr-style-type><code>type</code></dfn>属性はスタイル言語を与える。属性が存在する場合、その値はスタイル言語を示す<a id=the-style-element:valid-mime-type href=https://mimesniff.spec.whatwg.org/#valid-mime-type data-x-internal=valid-mime-type>妥当なMIMEタイプ</a>でなければならない。<code>charset</code>パラメーターを指定してはならない。属性が存在しない場合に用いられる<code id=the-style-element:attr-style-type-3><a href=#attr-style-type>type</a></code>属性に対するデフォルト値は、"<code>text/css</code>"である。<a href=references.html#refsRFC2318>[RFC2318]</a></p>
 
   
 
-   <p>言語をサポートするかどうかを判断するためにタイプを検査する際、ユーザーエージェントは、未知のMIMEパラメーターを無視してはならない―未知のパラメーターをもつタイプがサポートされないことを仮定しなければならない。<code>charset</code>パラメーターは、ここでは<a href=infrastructure.html#mime-type id=the-style-element:mime-type>MIMEタイプ</a>を比較するために未知のパラメーターとして扱われなければならない。</p>
+   <p>言語をサポートするかどうかを判断するためにタイプを検査する際、ユーザーエージェントは、未知のMIMEパラメーターを無視してはならない―未知のパラメーターをもつタイプがサポートされないことを仮定しなければならない。<code>charset</code>パラメーターは、ここでは<a href=https://mimesniff.spec.whatwg.org/#mime-type id=the-style-element:mime-type data-x-internal=mime-type>MIMEタイプ</a>を比較するために未知のパラメーターとして扱われなければならない。</p>
 
   
 
@@ -1566,7 +1449,7 @@ c-end         = "--&gt;"</pre>
 
 
 
-  <h3 id=sections>4.3 セクション<a href=#sections class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>26+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc partial"><span><span>UC Browser for Android</span> (limited) </span><span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>21+</span></span><span class="ie partial"><span><span>IE</span> (limited) </span><span>9+</span></span><span class="op_mini partial"><span><span>Opera Mini</span> (limited) </span><span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=html5semantic">caniuse.com</a></div>
+  <h3 id=sections>4.3 セクション<a href=#sections class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>26+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc partial"><span><span>UC Browser for Android</span> (limited) </span><span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>21+</span></span><span class="op_mini partial"><span><span>Opera Mini</span> (limited) </span><span>all+</span></span><span class="ie partial"><span><span>IE</span> (limited) </span><span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=html5semantic">caniuse.com</a></div>
 
   <h4 id=the-body-element>4.3.1 <dfn><code>body</code></dfn>要素<a href=#the-body-element class=self-link></a></h4>
 
@@ -3844,9 +3727,11 @@ interface <dfn id=htmlolistelement>HTMLOListElement</dfn> : <a id=the-ol-element
 
   <p>リストの項目は、<a id=the-ol-element:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>ツリー順</a>で<code id=the-ol-element:the-ol-element-2><a href=#the-ol-element>ol</a></code>要素の<code id=the-ol-element:the-li-element-3><a href=#the-li-element>li</a></code>要素の子ノードである。</p>
 
-  <p><dfn id=attr-ol-reversed><code>reversed</code></dfn>属性は、<a id=the-ol-element:boolean-attribute href=infrastructure.html#boolean-attribute>真偽属性</a>である。存在する場合、リストが降順リストであることを示す（..., 3, 2, 1）。属性が省略される場合、リストは昇順リストである（1, 2, 3, ...）。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>20+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>6.0-6.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>18+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>12.1+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=ol-reversed">caniuse.com</a></div>
+  <p><dfn id=attr-ol-reversed><code>reversed</code></dfn>属性は、<a id=the-ol-element:boolean-attribute href=infrastructure.html#boolean-attribute>真偽属性</a>である。存在する場合、リストが降順リストであることを示す（..., 3, 2, 1）。属性が省略される場合、リストは昇順リストである（1, 2, 3, ...）。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>20+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>6.0-6.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>18+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>12.1+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=ol-reversed">caniuse.com</a></div>
 
   <p>存在する場合、<dfn id=attr-ol-start><code>start</code></dfn>属性は、<a id=the-ol-element:valid-integer href=infrastructure.html#valid-integer>妥当な整数</a>でなければならない。これはリストの <a href=#concept-ol-start id=the-ol-element:concept-ol-start-2>開始値</a>を決定するために使用される。</p>
+
+  
 
   
 
@@ -3860,7 +3745,8 @@ interface <dfn id=htmlolistelement>HTMLOListElement</dfn> : <a id=the-ol-element
     <ol><li><p>Let <var>parsed</var> be the result of <a href=infrastructure.html#rules-for-parsing-integers id=the-ol-element:rules-for-parsing-integers>parsing
      the value of the attribute as an integer</a>.</li><li><p>If <var>parsed</var> is not an error, then return <var>parsed</var>.</li></ol>
    </li><li><p>If the <code id=the-ol-element:the-ol-element-5><a href=#the-ol-element>ol</a></code> element has a <code id=the-ol-element:attr-ol-reversed-2><a href=#attr-ol-reversed>reversed</a></code>
-   attribute, then return the number of child <code id=the-ol-element:the-li-element-4><a href=#the-li-element>li</a></code> elements.</li><li><p>Return 1.</li></ol>
+   attribute, then return the number of <a href=#list-owner id=the-ol-element:list-owner>owned <code>li</code>
+   elements</a>.</li><li><p>Return 1.</li></ol>
 
   
 
@@ -4003,29 +3889,54 @@ interface <dfn id=htmllielement>HTMLLIElement</dfn> : <a id=the-li-element:htmle
 
   <p><code id=the-li-element:the-li-element-4><a href=#the-li-element>li</a></code>要素は、リスト項目を<a id=the-li-element:represents href=dom.html#represents>表す</a>。親要素が<code id=the-li-element:the-ol-element-2><a href=#the-ol-element>ol</a></code>、<code id=the-li-element:the-ul-element-3><a href=#the-ul-element>ul</a></code>、または<code id=the-li-element:the-menu-element-3><a href=forms.html#the-menu-element>menu</a></code>要素の場合、要素は、それらの要素に対して定義されるような、親要素のリスト項目である。そうでなければ、リスト項目は、他の<code id=the-li-element:the-li-element-5><a href=#the-li-element>li</a></code>要素にリスト関連の関係を定義されていない。</p>
 
-  <p>存在する場合、<dfn id=attr-li-value><code>value</code></dfn>属性は、<a id=the-li-element:valid-integer href=infrastructure.html#valid-integer>妥当な整数</a>でなければならない。親要素が<code id=the-li-element:the-ol-element-3><a href=#the-ol-element>ol</a></code>要素である場合、リスト項目の<a href=#ordinal-value id=the-li-element:ordinal-value-2>順序値</a>を決定するために使用される。</p>
+  <p>存在する場合、<dfn id=attr-li-value><code>value</code></dfn>属性は、<a id=the-li-element:valid-integer href=infrastructure.html#valid-integer>妥当な整数</a>でなければならない。It is used to determine the <a href=#ordinal-value id=the-li-element:ordinal-value-2>ordinal value</a> of the list item, when the <code id=the-li-element:the-li-element-6><a href=#the-li-element>li</a></code>'s <a href=#list-owner id=the-li-element:list-owner>list owner</a> is an <code id=the-li-element:the-ol-element-3><a href=#the-ol-element>ol</a></code> element.</p>
 
   
 
-  <p>If the parent element is an <code id=the-li-element:the-ol-element-4><a href=#the-ol-element>ol</a></code> element, then the <code id=the-li-element:the-li-element-6><a href=#the-li-element>li</a></code> element has an
-  <dfn id=ordinal-value>ordinal value</dfn>, which is an integer determined as follows:</p>
+  <hr>
 
-  <ol><li>
-    <p>If the <code id=the-li-element:the-li-element-7><a href=#the-li-element>li</a></code> element has a <code id=the-li-element:attr-li-value-2><a href=#attr-li-value>value</a></code> attribute,
-    then:</p>
+  <p>Any element whose <a id=the-li-element:computed-value href=https://drafts.csswg.org/css-cascade/#computed-value data-x-internal=computed-value>computed value</a> of <a id="the-li-element:'display'" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> is 'list-item' has a
+  <dfn id=list-owner>list owner</dfn>, which is determined as follows:</p>
+
+  <ol><li><p>If the element is not <a id=the-li-element:being-rendered href=rendering.html#being-rendered>being rendered</a>, return null; the element has no
+   <a href=#list-owner id=the-li-element:list-owner-2>list owner</a>.</p>
+
+   </li><li><p>Let <var>ancestor</var> be the element's parent.</li><li><p>If the element has an <code id=the-li-element:the-ol-element-4><a href=#the-ol-element>ol</a></code>, <code id=the-li-element:the-ul-element-4><a href=#the-ul-element>ul</a></code>, or <code id=the-li-element:the-menu-element-4><a href=forms.html#the-menu-element>menu</a></code> ancestor, set
+   <var>ancestor</var> to the closest such ancestor element.</li><li><p>Return the closest inclusive ancestor of <var>ancestor</var> that produces a CSS box, if
+   any. If no such inclusive ancestor exists, then return null; the element has no <a href=#list-owner id=the-li-element:list-owner-3>list
+   owner</a>.</li></ol>
+
+  <p>To determine the <dfn id=ordinal-value>ordinal value</dfn> of each element owned by a given <a href=#list-owner id=the-li-element:list-owner-4>list
+  owner</a> <var>owner</var>, perform the following steps:</p>
+
+  <ol><li><p>Let <var>i</var> be 1.</li><li><p>If <var>owner</var> is an <code id=the-li-element:the-ol-element-5><a href=#the-ol-element>ol</a></code> element, let <var>numbering</var> be
+   <var>owner</var>'s <a href=#concept-ol-start id=the-li-element:concept-ol-start>starting value</a>. Otherwise, let
+   <var>numbering</var> be 1.</li><li><p><i>Loop:</i> If <var>i</var> is greater than the number of <a href=#list-owner id=the-li-element:list-owner-5>list items that <var>owner</var> owns</a>, then abort this algorithm; all
+   of <var>owner</var>'s <a href=#list-owner id=the-li-element:list-owner-6>owned list items</a> have been assigned <a href=#ordinal-value id=the-li-element:ordinal-value-3>ordinal values</a>.</li><li><p>Let <var>item</var> be the <var>i</var>th of <var>owner</var>'s <a href=#list-owner id=the-li-element:list-owner-7>owned list items</a>, in <a id=the-li-element:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a>.</p>
+
+   </li><li>
+    <p>If <var>item</var> is an <code id=the-li-element:the-li-element-7><a href=#the-li-element>li</a></code> element that has a <code id=the-li-element:attr-li-value-2><a href=#attr-li-value>value</a></code> attribute, then:</p>
 
     <ol><li><p>Let <var>parsed</var> be the result of <a href=infrastructure.html#rules-for-parsing-integers id=the-li-element:rules-for-parsing-integers>parsing
-     the value of the attribute as an integer</a>.</li><li><p>If <var>parsed</var> is not an error, then return <var>parsed</var>.</li></ol>
-   </li><li><p>If the <code id=the-li-element:the-li-element-8><a href=#the-li-element>li</a></code> element is the first <code id=the-li-element:the-li-element-9><a href=#the-li-element>li</a></code> child of its parent
-   <code id=the-li-element:the-ol-element-5><a href=#the-ol-element>ol</a></code> element, then return the <code id=the-li-element:the-ol-element-6><a href=#the-ol-element>ol</a></code> element's <a href=#concept-ol-start id=the-li-element:concept-ol-start>starting value</a>.</li><li><p>Let <var>previous</var> be the <a href=#ordinal-value id=the-li-element:ordinal-value-3>ordinal value</a> of the first preceding sibling
-   that is an <code id=the-li-element:the-li-element-10><a href=#the-li-element>li</a></code> element.</li><li><p>If the parent <code id=the-li-element:the-ol-element-7><a href=#the-ol-element>ol</a></code> element has a <code id=the-li-element:attr-ol-reversed><a href=#attr-ol-reversed>reversed</a></code> attribute, then return <var>previous</var> −
-   1.</li><li><p>Return <var>previous</var> + 1.</li></ol>
+     the value of the attribute as an integer</a>.</li><li><p>If <var>parsed</var> is not an error, then set <var>numbering</var> to
+     <var>parsed</var>.</li></ol>
+   </li><li><p>The <a href=#ordinal-value id=the-li-element:ordinal-value-4>ordinal value</a> of <var>item</var> is <var>numbering</var>.</li><li><p>If <var>owner</var> is an <code id=the-li-element:the-ol-element-6><a href=#the-ol-element>ol</a></code> element, and <var>owner</var> has a <code id=the-li-element:attr-ol-reversed><a href=#attr-ol-reversed>reversed</a></code> attribute, decrement <var>numbering</var> by 1;
+   otherwise, increment <var>numbering</var> by 1.</li><li><p>Increment <var>i</var> by 1.</li><li><p>Go to the step labeled <i>loop</i>.</p>
+  </li></ol>
+
+  <p>The <a href=#ordinal-value id=the-li-element:ordinal-value-5>ordinal value</a> of any element with a <a href=#list-owner id=the-li-element:list-owner-8>list owner</a> of null is 0.</p>
+
+  <p class=note>This can only impact the rendered counter when all of the element's ancestors do
+  not produce CSS boxes, such as if they are all styled with <code>display:
+  contents</code>.</p>
+
+  <hr>
 
   <p><dfn id=dom-li-value><code>value</code></dfn> IDL属性は、<code id=the-li-element:attr-li-value-3><a href=#attr-li-value>value</a></code>コンテンツ属性の値を<a id=the-li-element:reflect href=infrastructure.html#reflect>反映</a>しなければならない。</p>
 
   <div class=example>
    <p>The element's <code id=the-li-element:dom-li-value-2><a href=#dom-li-value>value</a></code> IDL attribute does not directly
-   correspond to its <a href=#ordinal-value id=the-li-element:ordinal-value-4>ordinal value</a>; it simply <a href=infrastructure.html#reflect id=the-li-element:reflect-2>reflects</a>
+   correspond to its <a href=#ordinal-value id=the-li-element:ordinal-value-6>ordinal value</a>; it simply <a href=infrastructure.html#reflect id=the-li-element:reflect-2>reflects</a>
    the content attribute. For example, given this list:
 
    
@@ -4036,7 +3947,7 @@ interface <dfn id=htmllielement>HTMLLIElement</dfn> : <a id=the-li-element:htmle
  &lt;li&gt;Item 4
 &lt;/ol&gt;</pre>
 
-   <p>The <a href=#ordinal-value id=the-li-element:ordinal-value-5>ordinal values</a> are 1, 3, and 4, whereas the <code id=the-li-element:dom-li-value-3><a href=#dom-li-value>value</a></code> IDL attributes return 0, 3, 0 on getting.</p>
+   <p>The <a href=#ordinal-value id=the-li-element:ordinal-value-7>ordinal values</a> are 1, 3, and 4, whereas the <code id=the-li-element:dom-li-value-3><a href=#dom-li-value>value</a></code> IDL attributes return 0, 3, 0 on getting.</p>
   </div>
 
   
@@ -4061,7 +3972,7 @@ interface <dfn id=htmllielement>HTMLLIElement</dfn> : <a id=the-li-element:htmle
  &lt;/ol&gt;
 &lt;/figure&gt;</pre>
 
-   <p>マークアップはまた、<code id=the-li-element:the-ol-element-8><a href=#the-ol-element>ol</a></code>要素に<code id=the-li-element:attr-ol-reversed-2><a href=#attr-ol-reversed>reversed</a></code>属性を使用して、次のように記述できる：</p>
+   <p>マークアップはまた、<code id=the-li-element:the-ol-element-7><a href=#the-ol-element>ol</a></code>要素に<code id=the-li-element:attr-ol-reversed-2><a href=#attr-ol-reversed>reversed</a></code>属性を使用して、次のように記述できる：</p>
 
    <pre>&lt;figure&gt;
  &lt;figcaption&gt;The top 10 movies of all time&lt;/figcaption&gt;
@@ -4080,7 +3991,7 @@ interface <dfn id=htmllielement>HTMLLIElement</dfn> : <a id=the-li-element:htmle
 &lt;/figure&gt;</pre>
   </div>
 
-  <p class=note><code id=the-li-element:the-li-element-11><a href=#the-li-element>li</a></code>要素の内側の見出し要素（たとえば<code id=the-li-element:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code>）を含むことは適合するが、それはおそらく著者が意図したセマンティックスを伝えることはない。見出しは新しいセクションを開始し、リストの見出しが暗黙的に複数のセクションにまたがるようにリストを分割する。</p>
+  <p class=note><code id=the-li-element:the-li-element-8><a href=#the-li-element>li</a></code>要素の内側の見出し要素（たとえば<code id=the-li-element:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code>）を含むことは適合するが、それはおそらく著者が意図したセマンティックスを伝えることはない。見出しは新しいセクションを開始し、リストの見出しが暗黙的に複数のセクションにまたがるようにリストを分割する。</p>
 
 
 
@@ -4693,7 +4604,7 @@ interface <dfn id=htmlanchorelement>HTMLAnchorElement</dfn> : <a id=the-a-elemen
 
   <p>IDL属性<dfn id=dom-a-download><code>download</code></dfn>、<dfn data-dfn-for=a id=dom-a-ping data-dfn-type=element-attr data-export=""><code>ping</code></dfn>、<dfn id=dom-a-target><code>target</code></dfn>、<dfn id=dom-a-rel><code>rel</code></dfn>、<dfn id=dom-a-hreflang><code>hreflang</code></dfn>および<dfn id=dom-a-type><code>type</code></dfn>は、同じ名前のそれぞれのコンテンツ属性を<a id=the-a-element:reflect href=infrastructure.html#reflect>反映</a>しなければならない。</p>
 
-  <p>IDL属性<dfn id=dom-a-rellist><code>relList</code></dfn>は、<code id=the-a-element:attr-hyperlink-rel-4><a href=#attr-hyperlink-rel>rel</a></code>コンテンツ属性を<a id=the-a-element:reflect-2 href=infrastructure.html#reflect>反映</a>しなければならない。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome partial"><span><span>Chrome</span> (limited) </span><span>50+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>9.0-9.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>30+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android partial"><span><span>Android Browser</span> (limited) </span><span>53+</span></span><span class="safari yes"><span>Safari</span> <span>9+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera partial"><span><span>Opera</span> (limited) </span><span>37+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=rellist">caniuse.com</a></div>
+  <p>IDL属性<dfn id=dom-a-rellist><code>relList</code></dfn>は、<code id=the-a-element:attr-hyperlink-rel-4><a href=#attr-hyperlink-rel>rel</a></code>コンテンツ属性を<a id=the-a-element:reflect-2 href=infrastructure.html#reflect>反映</a>しなければならない。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome partial"><span><span>Chrome</span> (limited) </span><span>50+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>9.0-9.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>30+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android partial"><span><span>Android Browser</span> (limited) </span><span>53+</span></span><span class="safari yes"><span>Safari</span> <span>9+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera partial"><span><span>Opera</span> (limited) </span><span>37+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=rellist">caniuse.com</a></div>
 
   <p>IDL属性<dfn id=dom-a-referrerpolicy><code>referrerPolicy</code></dfn>は、<a id=the-a-element:limited-to-only-known-values href=infrastructure.html#limited-to-only-known-values>既知の値に制限され</a>、<code id=the-a-element:attr-hyperlink-referrerpolicy-4><a href=#attr-hyperlink-referrerpolicy>referrerpolicy</a></code>コンテンツ属性を<a id=the-a-element:reflect-3 href=infrastructure.html#reflect>反映し</a>なければならない。</p>
 
@@ -5668,11 +5579,11 @@ interface <dfn id=htmltimeelement>HTMLTimeElement</dfn> : <a id=the-time-element
 
    <pre>&lt;div class="vevent"&gt;
  &lt;a class="url" href="http://www.web2con.com/"&gt;http://www.web2con.com/&lt;/a&gt;
-  &lt;span class="summary"&gt;Web 2.0 Conference&lt;/span&gt;:
-  &lt;time class="dtstart" datetime="2005-10-05"&gt;October 5&lt;/time&gt; -
-  &lt;time class="dtend" datetime="2005-10-07"&gt;7&lt;/time&gt;,
-  at the &lt;span class="location"&gt;Argent Hotel, San Francisco, CA&lt;/span&gt;
- &lt;/div&gt;</pre>
+ &lt;span class="summary"&gt;Web 2.0 Conference&lt;/span&gt;:
+ &lt;time class="dtstart" datetime="2005-10-05"&gt;October 5&lt;/time&gt; -
+ &lt;time class="dtend" datetime="2005-10-07"&gt;7&lt;/time&gt;,
+ at the &lt;span class="location"&gt;Argent Hotel, San Francisco, CA&lt;/span&gt;
+&lt;/div&gt;</pre>
 
   </div>
 
@@ -6277,7 +6188,7 @@ Sydney&lt;/p&gt;</pre>
   
 
 
-  <h4 id=the-wbr-element>4.5.28 <dfn><code>wbr</code></dfn>要素<a href=#the-wbr-element class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>3.2+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9.5-9.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=wbr-element">caniuse.com</a></div>
+  <h4 id=the-wbr-element>4.5.28 <dfn><code>wbr</code></dfn>要素<a href=#the-wbr-element class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>3.2+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9.5-9.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=wbr-element">caniuse.com</a></div>
 
   <dl class=element><dt><a href=dom.html#concept-element-categories id=the-wbr-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-wbr-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dd><a id=the-wbr-element:phrasing-content-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>。<dt><a href=dom.html#concept-element-contexts id=the-wbr-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><a id=the-wbr-element:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>が期待される場所。<dt><a href=dom.html#concept-element-content-model id=the-wbr-element:concept-element-content-model>コンテンツモデル</a>：<dd><a href=dom.html#concept-content-nothing id=the-wbr-element:concept-content-nothing>Nothing</a>。<dt><a href=dom.html#concept-element-tag-omission id=the-wbr-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd><a href=syntax.html#syntax-end-tag id=the-wbr-element:syntax-end-tag>終了タグ</a>なし。<dt><a href=dom.html#concept-element-attributes id=the-wbr-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-wbr-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dt><a href=dom.html#concept-element-dom id=the-wbr-element:concept-element-dom>DOMインターフェイス</a>：<dd><code id=the-wbr-element:htmlelement><a href=dom.html#htmlelement>HTMLElement</a></code>を使用する。</dl>
 
@@ -6457,7 +6368,7 @@ document.body.appendChild(wbr);</pre>
   <p><dfn id=attr-hyperlink-download><code>download</code></dfn>属性が存在する場合、著者は<a href=#downloading-hyperlinks id=links-created-by-a-and-area-elements:downloading-hyperlinks-2>リソースをダウンロードする</a>ために使用されるハイパーリンクを意図することを示す。属性は値を持ってもよい。値が存在する場合、ローカルファイルシステムでリソースの標識付けに使用するための著者に推奨されるデフォルトのファイル名を指定する。許可される値に制限はないが、ほとんどのファイルシステムが句読点をファイル名にサポートするものに関して制限があるため、ユーザーエージェントはそれに応じてファイル名を調整する可能性を著者に警告する。</p>
 
 
-  <p><dfn id=ping><code>ping</code></dfn>属性が存在する場合は、ユーザーがハイパーリンクを辿る場合に、通知されることに興味を持つリソースのURLを与える。値は、それぞれの<a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=links-created-by-a-and-area-elements:concept-url-scheme data-x-internal=concept-url-scheme>scheme</a>が<a id=links-created-by-a-and-area-elements:http(s)-scheme href=https://triple-underscore.github.io/URL-ja.html#http-scheme data-x-internal=http(s)-scheme>HTTP(S) スキーマ</a>となる<a id=links-created-by-a-and-area-elements:valid-non-empty-url href=infrastructure.html#valid-non-empty-url>妥当な空でないURL</a>でなければならない、<a id=links-created-by-a-and-area-elements:set-of-space-separated-tokens href=infrastructure.html#set-of-space-separated-tokens>スペース区切りトークン</a>のセットでなければならない。値は、<a href=#hyperlink-auditing id=links-created-by-a-and-area-elements:hyperlink-auditing>ハイパーリンク監査</a>に対してユーザーエージェントによって使用される。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>15+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=ping">caniuse.com</a></div>
+  <p><dfn id=ping><code>ping</code></dfn>属性が存在する場合は、ユーザーがハイパーリンクを辿る場合に、通知されることに興味を持つリソースのURLを与える。値は、それぞれの<a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=links-created-by-a-and-area-elements:concept-url-scheme data-x-internal=concept-url-scheme>scheme</a>が<a id=links-created-by-a-and-area-elements:http(s)-scheme href=https://triple-underscore.github.io/URL-ja.html#http-scheme data-x-internal=http(s)-scheme>HTTP(S) スキーマ</a>となる<a id=links-created-by-a-and-area-elements:valid-non-empty-url href=infrastructure.html#valid-non-empty-url>妥当な空でないURL</a>でなければならない、<a id=links-created-by-a-and-area-elements:set-of-space-separated-tokens href=infrastructure.html#set-of-space-separated-tokens>スペース区切りトークン</a>のセットでなければならない。値は、<a href=#hyperlink-auditing id=links-created-by-a-and-area-elements:hyperlink-auditing>ハイパーリンク監査</a>に対してユーザーエージェントによって使用される。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>15+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=ping">caniuse.com</a></div>
 
   <p><code id=links-created-by-a-and-area-elements:the-a-element-5><a href=#the-a-element>a</a></code>要素および<code id=links-created-by-a-and-area-elements:the-area-element-5><a href=embedded-content.html#the-area-element>area</a></code>要素が作成するリンクタイプは<dfn id=attr-hyperlink-rel><code>rel</code></dfn>属性値によって決定される。その属性値は、<a id=links-created-by-a-and-area-elements:set-of-space-separated-tokens-2 href=infrastructure.html#set-of-space-separated-tokens>スペース区切りのトークンのセット</a>でなければならない。<a href=#linkTypes>使用できるキーワードと値が持つ意味</a>は後述する。 </p>
 
@@ -6469,7 +6380,7 @@ document.body.appendChild(wbr);</pre>
 
   <p>存在する場合、<a href=#hyperlink id=links-created-by-a-and-area-elements:hyperlink>ハイパーリンク</a>を作成する<code id=links-created-by-a-and-area-elements:the-a-element-7><a href=#the-a-element>a</a></code>要素の<dfn id=attr-hyperlink-hreflang><code>hreflang</code></dfn>属性は、リンク先リソースの言語を与える。これは単なる助言である。値は、妥当なBCP 47言語タグでなければならない。<a href=references.html#refsBCP47>[BCP47]</a> ユーザーエージェントは、この属性を権威あるものと見なしてはならない―リソースを取得する際に、ユーザーエージェントは、リソースへのリンクに含まれるメタデータでない、その言語を判断するためにリソースに関連付けられる言語情報のみを使用しなければならない。</p>
 
-  <p><dfn id=attr-hyperlink-type><code>type</code></dfn>属性が存在する場合、この属性はリンク先のリソースの<a id=links-created-by-a-and-area-elements:mime-type href=infrastructure.html#mime-type>MIMEタイプ</a>を表す。これは単なる助言である。値は<a id=links-created-by-a-and-area-elements:valid-mime-type href=infrastructure.html#valid-mime-type>妥当なMIMEタイプ</a>でなければならない。ユーザーエージェントは、<code id=links-created-by-a-and-area-elements:attr-hyperlink-type><a href=#attr-hyperlink-type>type</a></code>を権威あるものと見なしてはならない―リソースを取得する際に、ユーザーエージェントは、そのタイプを決定するためにリソースへのリンクに含まれるメタデータを使用してはならない。</p>
+  <p><dfn id=attr-hyperlink-type><code>type</code></dfn>属性が存在する場合、この属性はリンク先のリソースの<a id=links-created-by-a-and-area-elements:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>を表す。これは単なる助言である。値は<a id=links-created-by-a-and-area-elements:valid-mime-type href=https://mimesniff.spec.whatwg.org/#valid-mime-type data-x-internal=valid-mime-type>妥当なMIMEタイプ</a>でなければならない。ユーザーエージェントは、<code id=links-created-by-a-and-area-elements:attr-hyperlink-type><a href=#attr-hyperlink-type>type</a></code>を権威あるものと見なしてはならない―リソースを取得する際に、ユーザーエージェントは、そのタイプを決定するためにリソースへのリンクに含まれるメタデータを使用してはならない。</p>
 
   <p><dfn id=attr-hyperlink-referrerpolicy><code>referrerpolicy</code></dfn>属性は、<a id=links-created-by-a-and-area-elements:referrer-policy-attribute href=infrastructure.html#referrer-policy-attribute>リファラポリシー属性</a>である。その目的は、<a href=#following-hyperlinks-2 id=links-created-by-a-and-area-elements:following-hyperlinks-2-3>ハイパーリンクを辿る</a>際に使用される<a id=links-created-by-a-and-area-elements:referrer-policy href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>リファラポリシー</a>を設定することにある。<a href=references.html#refsREFERRERPOLICY>[REFERRERPOLICY]</a></p>
 
@@ -6784,7 +6695,7 @@ interface <dfn id=htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</dfn> {
 
 
 
-  <h4 id=downloading-resources>4.6.5 リソースのダウンロード<a href=#downloading-resources class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>14+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>20+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>TP+</span></span><span class="edge yes"><span>Edge</span> <span>13+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=download">caniuse.com</a></div>
+  <h4 id=downloading-resources>4.6.5 リソースのダウンロード<a href=#downloading-resources class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>14+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>20+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>TP+</span></span><span class="edge yes"><span>Edge</span> <span>13+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=download">caniuse.com</a></div>
 
   <p>リソースには、すぐに閲覧されるのではなく、後に使用されることが意図されているものもある。そのような意図を示すために、問題のリソースへの<a href=#hyperlink id=downloading-resources:hyperlink>ハイパーリンク</a>を作成する<code id=downloading-resources:the-a-element><a href=#the-a-element>a</a></code>要素や<code id=downloading-resources:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>要素に<code id=downloading-resources:attr-hyperlink-download><a href=#attr-hyperlink-download>download</a></code>属性を指定できる。</p>
 
@@ -6850,7 +6761,7 @@ interface <dfn id=htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</dfn> {
 
     <p class=example>たとえば、これはファイル名で正当でない文字を削除する、または先頭と末尾の空白をトリミングすることを伴う可能性がある。</p>
 
-   </li><li><p>プラットフォームの規約がファイルシステム上のファイルの種類を決定するために一切<a href=#concept-extension id=downloading-resources:concept-extension>拡張子</a>を使用しない場合、ファイル名として<var>filename</var>を返し、この手順を中止する。</li><li><p>いずれかがわかっている場合は記載のタイプは、リソースの<a href=infrastructure.html#content-type id=downloading-resources:content-type>Content-Typeメタデータ</a>によって<var>claimed type</var>とする。いずれかが既知である場合、<var>named type</var>を<var>filename</var>の<a href=#concept-extension id=downloading-resources:concept-extension-2>拡張子</a>によって指定された種類とする。この手順の目的のために、<i>タイプ</i>は<a href=#concept-extension id=downloading-resources:concept-extension-3>拡張子</a>への<a id=downloading-resources:mime-type href=infrastructure.html#mime-type>MIMEタイプ</a>のマッピングである。</li><li><p>（たとえば、<var>filename</var>がユーザーにメッセージを表示することによって決定されるなど）<var>named type</var>がユーザーの好みと一致する場合、ファイル名として<var>filename</var>を返し、この手順を中止する。</li><li><p><var>claimed type</var>と<var>named type</var>が同じ型である（すなわちリソースの<a href=infrastructure.html#content-type id=downloading-resources:content-type-2>Content-Typeメタデータ</a>によって与えられる型が<var>filename</var>の<a href=#concept-extension id=downloading-resources:concept-extension-4>拡張子</a>によって与えられる型と一致する）場合、ファイル名として<var>filename</var>を返し、この手順を中止する。</li><li>
+   </li><li><p>プラットフォームの規約がファイルシステム上のファイルの種類を決定するために一切<a href=#concept-extension id=downloading-resources:concept-extension>拡張子</a>を使用しない場合、ファイル名として<var>filename</var>を返し、この手順を中止する。</li><li><p>いずれかがわかっている場合は記載のタイプは、リソースの<a href=infrastructure.html#content-type id=downloading-resources:content-type>Content-Typeメタデータ</a>によって<var>claimed type</var>とする。いずれかが既知である場合、<var>named type</var>を<var>filename</var>の<a href=#concept-extension id=downloading-resources:concept-extension-2>拡張子</a>によって指定された種類とする。この手順の目的のために、<i>タイプ</i>は<a href=#concept-extension id=downloading-resources:concept-extension-3>拡張子</a>への<a id=downloading-resources:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>のマッピングである。</li><li><p>（たとえば、<var>filename</var>がユーザーにメッセージを表示することによって決定されるなど）<var>named type</var>がユーザーの好みと一致する場合、ファイル名として<var>filename</var>を返し、この手順を中止する。</li><li><p><var>claimed type</var>と<var>named type</var>が同じ型である（すなわちリソースの<a href=infrastructure.html#content-type id=downloading-resources:content-type-2>Content-Typeメタデータ</a>によって与えられる型が<var>filename</var>の<a href=#concept-extension id=downloading-resources:concept-extension-4>拡張子</a>によって与えられる型と一致する）場合、ファイル名として<var>filename</var>を返し、この手順を中止する。</li><li>
 
     <p><var>claimed type</var>が既知である場合、<var>claimed type</var>に対応する<a href=#concept-extension id=downloading-resources:concept-extension-5>拡張子</a>を追加するために<var>filename</var>を変更する。</p>
 
@@ -6954,13 +6865,13 @@ interface <dfn id=htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</dfn> {
 
   <p>下記テーブルに続くセクションの一部は、特定のキーワードのためのシノニムを列挙する。指示されたシノニムは、ユーザーエージェントによって指定されるように処理されるが、文書で使用されてはならない（たとえば、キーワード"<code>copyright</code>"）。</p>
 
-  <p>キーワードは常に<a id=linkTypes:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>であり、そのように比較されなければならない。</p>
+  <p>キーワードは常に<a id=linkTypes:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>であり、そのように比較されなければならない。</p>
 
   <p class=example>つまり、<code>rel="next"</code>と<code>rel="NEXT"</code>は同義である。</p>
 
   <p><dfn id=body-ok>body-ok</dfn>であるキーワードは、<code id=linkTypes:the-link-element-2><a href=#the-link-element>link</a></code>要素が<a href=#allowed-in-the-body id=linkTypes:allowed-in-the-body>body内で許可される</a>かどうかに影響を与える。この仕様によって定義される<a href=#body-ok id=linkTypes:body-ok>body-ok</a>キーワードは、<code id=linkTypes:link-type-pingback><a href=#link-type-pingback>pingback</a></code>、<code id=linkTypes:link-type-preconnect><a href=#link-type-preconnect>preconnect</a></code>、<code id=linkTypes:link-type-prefetch><a href=#link-type-prefetch>prefetch</a></code>、<code id=linkTypes:link-type-preload><a href=#link-type-preload>preload</a></code>、<code id=linkTypes:link-type-prerender><a href=#link-type-prerender>prerender</a></code>、および<code id=linkTypes:link-type-stylesheet><a href=#link-type-stylesheet>stylesheet</a></code>である。他の仕様も<a href=#body-ok id=linkTypes:body-ok-2>body-ok</a>キーワードを定義することができる。</p>
 
-  <table class=yesno><thead><tr><th rowspan=2>リンクタイプ</th><th colspan=2>効果</th><th rowspan=2><a href=#body-ok id=linkTypes:body-ok-3>body-ok</a></th><th rowspan=2>概要</th></tr><tr><th><code id=linkTypes:the-link-element-3><a href=#the-link-element>link</a></code></th><th><code id=linkTypes:the-a-element-2><a href=#the-a-element>a</a></code>と<code id=linkTypes:the-area-element-2><a href=embedded-content.html#the-area-element>area</a></code><tbody></th></tr><tr><td><code id=linkTypes:rel-alternate><a href=#rel-alternate>alternate</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-2>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書の代替表現を与える。</td></tr><tr><td><code id=linkTypes:link-type-author><a href=#link-type-author>author</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-3>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-4>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書または記事の著者へのリンクを与える。</td></tr><tr><td><code id=linkTypes:link-type-bookmark><a href=#link-type-bookmark>bookmark</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink id=linkTypes:hyperlink-5>ハイパーリンク</a></td><td class=no>  ·  </td><td>最も近い祖先セクションへのパーマリンクを与える。</td></tr><tr><td><code id=linkTypes:link-type-dns-prefetch-2><a href=#link-type-dns-prefetch>dns-prefetch</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントがターゲットリソースの<a id=linkTypes:concept-origin href=browsers.html#concept-origin>生成元</a>のDNS解決を先制して実行するように指定する。</td></tr><tr><td><code id=linkTypes:link-type-external><a href=#link-type-external>external</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation>注釈</a></td><td class=no>  ·  </td><td>参照される文書が現在の文書と同じサイトの一部でないことを示す。</td></tr><tr><td><code id=linkTypes:link-type-help><a href=#link-type-help>help</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-6>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-7>ハイパーリンク</a></td><td class=no>  ·  </td><td>コンテキストに応じたヘルプへのリンクを提供する。</td></tr><tr><td><code id=linkTypes:rel-icon><a href=#rel-icon>icon</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-2>外部リソース</a></td><td><em>使用不可</em></td><td class=no>  ·  </td><td>現在の文書を表現するアイコンを取り込む。</td></tr><tr><td><code id=linkTypes:link-type-license><a href=#link-type-license>license</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-8>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-9>ハイパーリンク</a></td><td class=no>  ·  </td><td>参照される文書で説明される著作権許諾で保護される現在の文書のメインコンテンツを示す。</td></tr><tr><td><code id=linkTypes:link-type-next><a href=#link-type-next>next</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-10>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-11>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書があるシリーズの一部であり、かつそのシリーズの次の文書が参照される文書であることを示す。</td></tr><tr><td><code id=linkTypes:link-type-nofollow><a href=#link-type-nofollow>nofollow</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation-2>注釈</a></td><td class=no>  ·  </td><td>現在の文書の原作者や発行者が参照される文書を推奨しないことを示す。</td></tr><tr><td><code id=linkTypes:link-type-noreferrer><a href=#link-type-noreferrer>noreferrer</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation-3>注釈</a></td><td class=no>  ·  </td><td>ユーザーがハイパーリンクをたどる際にユーザーエージェントがHTTP `<code id=linkTypes:http-referer><a data-x-internal=http-referer href=https://triple-underscore.github.io/RFC7231-ja.html#section-5.5.2>Referer</a></code>`ヘッダーを送信しないよう要求する。</td></tr><tr><td><code id=linkTypes:link-type-noopener><a href=#link-type-noopener>noopener</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation-4>注釈</a></td><td class=no>  ·  </td><td>ハイパーリンクを追跡することによって作成される任意の<a id=linkTypes:browsing-context href=browsers.html#browsing-context>ブラウジングコンテキスト</a>が<a id=linkTypes:opener-browsing-context href=browsers.html#opener-browsing-context>オープナーブラウジングコンテキスト</a>を持ってはならないことを要求する。</td></tr><tr><td><code id=linkTypes:link-type-pingback-2><a href=#link-type-pingback>pingback</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-3>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>現在の文書にpingbackを扱うpingbackサーバーのアドレスを与える。</td></tr><tr><td><code id=linkTypes:link-type-preconnect-2><a href=#link-type-preconnect>preconnect</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-4>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントがターゲットリソースの<a id=linkTypes:concept-origin-2 href=browsers.html#concept-origin>生成元</a>に先制して接続すべきであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-prefetch-2><a href=#link-type-prefetch>prefetch</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-5>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントが先制して<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=linkTypes:concept-fetch data-x-internal=concept-fetch>フェッチ</a>し、フォローアップ<a href=browsers.html#navigate id=linkTypes:navigate>ナビゲーション</a>に必要とされる可能性があるとして、ターゲットリソースをキャッシュすべきであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-preload-2><a href=#link-type-preload>preload</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-6>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントが先制<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=linkTypes:concept-fetch-2 data-x-internal=concept-fetch>フェッチ</a>し、<code id=linkTypes:attr-link-as><a href=#attr-link-as>as</a></code>属性（およびその<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=linkTypes:concept-request-destination-2 data-x-internal=concept-request-destination>宛先</a>に関連付けられた<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-priority id=linkTypes:concept-request-priority data-x-internal=concept-request-priority>優先度</a>）によって与えられた<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=linkTypes:concept-request-destination data-x-internal=concept-request-destination>宛先</a>に応じて、現在の<a href=browsers.html#navigate id=linkTypes:navigate-2>ナビゲーション</a>に対するターゲットリソースをキャッシュすべきであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-prerender-2><a href=#link-type-prerender>prerender</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-7>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントがターゲットリソースを先制<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=linkTypes:concept-fetch-3 data-x-internal=concept-fetch>フェッチ</a>し、将来的により高速な応答を提供するのに役立つように処理すできであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-prev><a href=#link-type-prev>prev</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-12>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-13>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書があるシリーズの一部であり、かつそのシリーズの前の文書が参照される文書であることを示す。</td></tr><tr><td><code id=linkTypes:link-type-search><a href=#link-type-search>search</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-14>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-15>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書と関連する文書を通して検索に使用できるリソースへのリンクを与える。</td></tr><tr><td><code id=linkTypes:link-type-stylesheet-2><a href=#link-type-stylesheet>stylesheet</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-8>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>スタイルシートを取り込む。</td></tr><tr><td><code id=linkTypes:link-type-tag><a href=#link-type-tag>tag</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink id=linkTypes:hyperlink-16>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書に適用される（与えられたアドレスにより識別される）タグを与える。</td></tr></table>
+  <table class=yesno><thead><tr><th rowspan=2>リンクタイプ</th><th colspan=2>効果</th><th rowspan=2><a href=#body-ok id=linkTypes:body-ok-3>body-ok</a></th><th rowspan=2>概要</th></tr><tr><th><code id=linkTypes:the-link-element-3><a href=#the-link-element>link</a></code></th><th><code id=linkTypes:the-a-element-2><a href=#the-a-element>a</a></code>と<code id=linkTypes:the-area-element-2><a href=embedded-content.html#the-area-element>area</a></code><tbody></th></tr><tr><td><code id=linkTypes:rel-alternate><a href=#rel-alternate>alternate</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-2>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書の代替表現を与える。</td></tr><tr><td><code id=linkTypes:link-type-author><a href=#link-type-author>author</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-3>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-4>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書または記事の著者へのリンクを与える。</td></tr><tr><td><code id=linkTypes:link-type-bookmark><a href=#link-type-bookmark>bookmark</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink id=linkTypes:hyperlink-5>ハイパーリンク</a></td><td class=no>  ·  </td><td>最も近い祖先セクションへのパーマリンクを与える。</td></tr><tr><td><code id=linkTypes:link-type-dns-prefetch-2><a href=#link-type-dns-prefetch>dns-prefetch</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントがターゲットリソースの<a id=linkTypes:concept-origin href=browsers.html#concept-origin>生成元</a>のDNS解決を先制して実行するように指定する。</td></tr><tr><td><code id=linkTypes:link-type-external><a href=#link-type-external>external</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation>注釈</a></td><td class=no>  ·  </td><td>参照される文書が現在の文書と同じサイトの一部でないことを示す。</td></tr><tr><td><code id=linkTypes:link-type-help><a href=#link-type-help>help</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-6>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-7>ハイパーリンク</a></td><td class=no>  ·  </td><td>コンテキストに応じたヘルプへのリンクを提供する。</td></tr><tr><td><code id=linkTypes:rel-icon><a href=#rel-icon>icon</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-2>外部リソース</a></td><td><em>使用不可</em></td><td class=no>  ·  </td><td>現在の文書を表現するアイコンを取り込む。</td></tr><tr><td><code id=linkTypes:link-type-license><a href=#link-type-license>license</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-8>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-9>ハイパーリンク</a></td><td class=no>  ·  </td><td>参照される文書で説明される著作権許諾で保護される現在の文書のメインコンテンツを示す。</td></tr><tr><td><code id=linkTypes:link-type-next><a href=#link-type-next>next</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-10>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-11>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書があるシリーズの一部であり、かつそのシリーズの次の文書が参照される文書であることを示す。</td></tr><tr><td><code id=linkTypes:link-type-nofollow><a href=#link-type-nofollow>nofollow</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation-2>注釈</a></td><td class=no>  ·  </td><td>現在の文書の原作者や発行者が参照される文書を推奨しないことを示す。</td></tr><tr><td><code id=linkTypes:link-type-noreferrer><a href=#link-type-noreferrer>noreferrer</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation-3>注釈</a></td><td class=no>  ·  </td><td>ユーザーがハイパーリンクをたどる際にユーザーエージェントがHTTP `<code id=linkTypes:http-referer><a data-x-internal=http-referer href=https://triple-underscore.github.io/RFC7231-ja.html#section-5.5.2>Referer</a></code>`ヘッダーを送信しないよう要求する。</td></tr><tr><td><code id=linkTypes:link-type-noopener><a href=#link-type-noopener>noopener</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink-annotation id=linkTypes:hyperlink-annotation-4>注釈</a></td><td class=no>  ·  </td><td>Requires any <a id=linkTypes:browsing-context href=browsers.html#browsing-context>browsing context</a> created by following the hyperlink to <a href=browsers.html#disowned-its-opener id=linkTypes:disowned-its-opener>disown its opener</a>.</td></tr><tr><td><code id=linkTypes:link-type-pingback-2><a href=#link-type-pingback>pingback</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-3>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>現在の文書にpingbackを扱うpingbackサーバーのアドレスを与える。</td></tr><tr><td><code id=linkTypes:link-type-preconnect-2><a href=#link-type-preconnect>preconnect</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-4>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントがターゲットリソースの<a id=linkTypes:concept-origin-2 href=browsers.html#concept-origin>生成元</a>に先制して接続すべきであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-prefetch-2><a href=#link-type-prefetch>prefetch</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-5>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントが先制して<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=linkTypes:concept-fetch data-x-internal=concept-fetch>フェッチ</a>し、フォローアップ<a href=browsers.html#navigate id=linkTypes:navigate>ナビゲーション</a>に必要とされる可能性があるとして、ターゲットリソースをキャッシュすべきであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-preload-2><a href=#link-type-preload>preload</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-6>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントが先制<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=linkTypes:concept-fetch-2 data-x-internal=concept-fetch>フェッチ</a>し、<code id=linkTypes:attr-link-as><a href=#attr-link-as>as</a></code>属性（およびその<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=linkTypes:concept-request-destination-2 data-x-internal=concept-request-destination>宛先</a>に関連付けられた<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-priority id=linkTypes:concept-request-priority data-x-internal=concept-request-priority>優先度</a>）によって与えられた<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=linkTypes:concept-request-destination data-x-internal=concept-request-destination>宛先</a>に応じて、現在の<a href=browsers.html#navigate id=linkTypes:navigate-2>ナビゲーション</a>に対するターゲットリソースをキャッシュすべきであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-prerender-2><a href=#link-type-prerender>prerender</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-7>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>ユーザーエージェントがターゲットリソースを先制<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=linkTypes:concept-fetch-3 data-x-internal=concept-fetch>フェッチ</a>し、将来的により高速な応答を提供するのに役立つように処理すできであると指定する。</td></tr><tr><td><code id=linkTypes:link-type-prev><a href=#link-type-prev>prev</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-12>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-13>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書があるシリーズの一部であり、かつそのシリーズの前の文書が参照される文書であることを示す。</td></tr><tr><td><code id=linkTypes:link-type-search><a href=#link-type-search>search</a></code></td><td><a href=#hyperlink id=linkTypes:hyperlink-14>ハイパーリンク</a></td><td><a href=#hyperlink id=linkTypes:hyperlink-15>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書と関連する文書を通して検索に使用できるリソースへのリンクを与える。</td></tr><tr><td><code id=linkTypes:link-type-stylesheet-2><a href=#link-type-stylesheet>stylesheet</a></code></td><td><a href=#external-resource-link id=linkTypes:external-resource-link-8>外部リソース</a></td><td><em>使用不可</em></td><td class=yes>  Yes  </td><td>スタイルシートを取り込む。</td></tr><tr><td><code id=linkTypes:link-type-tag><a href=#link-type-tag>tag</a></code></td><td><em>使用不可</em></td><td><a href=#hyperlink id=linkTypes:hyperlink-16>ハイパーリンク</a></td><td class=no>  ·  </td><td>現在の文書に適用される（与えられたアドレスにより識別される）タグを与える。</td></tr></table>
 
   
 
@@ -7123,7 +7034,7 @@ interface <dfn id=htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</dfn> {
   <p><code id=link-type-help:the-a-element-3><a href=#the-a-element>a</a></code>、<code id=link-type-help:the-area-element-3><a href=embedded-content.html#the-area-element>area</a></code>の各要素について、ブラウザーは<code id=link-type-help:link-type-help-4><a href=#link-type-help>help</a></code>キーワードがリンクに異なるカーソルを表示することがある。</p>
 
 
-  <h5 id=rel-icon>4.6.6.7 リンクタイプ"<dfn><code>icon</code></dfn>"<a href=#rel-icon class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>11+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=link-icon-png">caniuse.com</a></div>
+  <h5 id=rel-icon>4.6.6.7 リンクタイプ"<dfn><code>icon</code></dfn>"<a href=#rel-icon class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>11+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=link-icon-png">caniuse.com</a></div>
 
   <p><code id=rel-icon:rel-icon><a href=#rel-icon>icon</a></code>キーワードは<code id=rel-icon:the-link-element><a href=#the-link-element>link</a></code>要素で使用してもよい。このキーワードは<a href=#external-resource-link id=rel-icon:external-resource-link>外部リソースへのリンク</a>を生成する。</p>
 
@@ -7145,7 +7056,7 @@ interface <dfn id=htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</dfn> {
 
   <p><dfn id=attr-link-sizes><code>sizes</code></dfn>属性は、視覚形式のアイコンのサイズを与える。存在する場合、この値は単に助言を与えるだけである。複数のアイコンが利用可能な場合、ユーザーエージェントは、どのアイコンを使用するかを決定するためにこの値を使用してもよい。</p>
 
-  <p>存在する場合、この属性は、<a id=rel-icon:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>である<a id=rel-icon:unordered-set-of-unique-space-separated-tokens href=infrastructure.html#unordered-set-of-unique-space-separated-tokens>一意なスペース区切りトークンの順不同の組</a>である値を持たなければならない。値はそれぞれ、"<code id=rel-icon:attr-link-sizes-any><a href=#attr-link-sizes-any>any</a></code>"に一致する<a id=rel-icon:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>である文字列か、2つの<a href=infrastructure.html#valid-non-negative-integer id=rel-icon:valid-non-negative-integer>妥当な非負整数</a>からなる値のいずれかでなければならない。この数値は、先行するU+0030 DIGIT ZERO（0）文字を持たず、かつ1つのU+0078 LATIN SMALL LETTER XまたはU+0058 LATIN CAPITAL LETTER X文字により分離される。</p>
+  <p>存在する場合、この属性は、<a id=rel-icon:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>である<a id=rel-icon:unordered-set-of-unique-space-separated-tokens href=infrastructure.html#unordered-set-of-unique-space-separated-tokens>一意なスペース区切りトークンの順不同の組</a>である値を持たなければならない。値はそれぞれ、"<code id=rel-icon:attr-link-sizes-any><a href=#attr-link-sizes-any>any</a></code>"に一致する<a id=rel-icon:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>である文字列か、2つの<a href=infrastructure.html#valid-non-negative-integer id=rel-icon:valid-non-negative-integer>妥当な非負整数</a>からなる値のいずれかでなければならない。この数値は、先行するU+0030 DIGIT ZERO（0）文字を持たず、かつ1つのU+0078 LATIN SMALL LETTER XまたはU+0058 LATIN CAPITAL LETTER X文字により分離される。</p>
 
   <p>キーワードは、（<a href=https://momdo.github.io/css3-values/#px id="rel-icon:'px'" data-x-internal="'px'">CSSピクセル</a>とは対照的に）生ピクセルでアイコンサイズを表す。</p>
 
@@ -7207,7 +7118,7 @@ interface <dfn id=htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</dfn> {
 
   </div>
 
-  <p>歴史的な経緯により、<code id=rel-icon:rel-icon-5><a href=#rel-icon>icon</a></code>キーワードは、"<code>shortcut</code>"キーワードが先行してもよい。"<code>shortcut</code>"キーワードが存在する場合、<code id=rel-icon:attr-hyperlink-rel><a href=#attr-hyperlink-rel>rel</a></code>属性の全体の値は、（トークンと他の<a href=infrastructure.html#space-character id=rel-icon:space-character>空白文字</a>でないものの間に単一のU+0020 SPACE文字を伴う）文字列"<code>shortcut&nbsp;icon</code>"に<a id=rel-icon:ascii-case-insensitive-3 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチしなければならない。</p>
+  <p>歴史的な経緯により、<code id=rel-icon:rel-icon-5><a href=#rel-icon>icon</a></code>キーワードは、"<code>shortcut</code>"キーワードが先行してもよい。"<code>shortcut</code>"キーワードが存在する場合、<code id=rel-icon:attr-hyperlink-rel><a href=#attr-hyperlink-rel>rel</a></code>属性の全体の値は、（トークンと他の<a href=infrastructure.html#space-character id=rel-icon:space-character>空白文字</a>でないものの間に単一のU+0020 SPACE文字を伴う）文字列"<code>shortcut&nbsp;icon</code>"に<a id=rel-icon:ascii-case-insensitive-3 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチしなければならない。</p>
 
 
   <h5 id=link-type-license>4.6.6.8 リンクタイプ"<dfn><code>license</code></dfn>"<a href=#link-type-license class=self-link></a></h5>
@@ -7280,11 +7191,13 @@ interface <dfn id=htmlhyperlinkelementutils>HTMLHyperlinkElementUtils</dfn> {
 
   
 
-  <h5 id=link-type-noopener>4.6.6.11 リンクタイプ"<dfn><code>noopener</code></dfn>"<a href=#link-type-noopener class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>53+</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=rel-noopener">caniuse.com</a></div>
+  <h5 id=link-type-noopener>4.6.6.11 リンクタイプ"<dfn><code>noopener</code></dfn>"<a href=#link-type-noopener class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>53+</span></span><span class="safari yes"><span>Safari</span> <span>TP+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=rel-noopener">caniuse.com</a></div>
 
   <p><code id=link-type-noopener:link-type-noopener><a href=#link-type-noopener>noopener</a></code>キーワードは、<code id=link-type-noopener:the-a-element><a href=#the-a-element>a</a></code>および<code id=link-type-noopener:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>要素とともに使用されてもよい。このキーワードは<a href=#hyperlink id=link-type-noopener:hyperlink>ハイパーリンク</a>を生成しないが、要素によって作成される他のハイパーリンク（他のキーワードがハイパーリンクを生成しない場合は暗黙のハイパーリンク）の<a href=#hyperlink-annotation id=link-type-noopener:hyperlink-annotation>注釈をつける</a>。</p>
 
-  <p>キーワードは、<a href=#hyperlink id=link-type-noopener:hyperlink-2>ハイパーリンク</a>をたどることに由来する任意の新しく作成された<a id=link-type-noopener:browsing-context href=browsers.html#browsing-context>ブラウジングコンテキスト</a>が<code id=link-type-noopener:dom-opener><a href=browsers.html#dom-opener>window.opener</a></code>プロパティが<code>null</code>になることを意味する、<a id=link-type-noopener:opener-browsing-context href=browsers.html#opener-browsing-context>オープナーブラウジングコンテキスト</a>を持たないことを示す。</p>
+  <p>The keyword indicates that any newly created <a id=link-type-noopener:browsing-context href=browsers.html#browsing-context>browsing context</a> which results from
+  following the <a href=#hyperlink id=link-type-noopener:hyperlink-2>hyperlink</a> will have <a id=link-type-noopener:disowned-its-opener href=browsers.html#disowned-its-opener>disowned its opener</a>, which means that
+  its <code id=link-type-noopener:dom-opener><a href=browsers.html#dom-opener>window.opener</a></code> property will be <code>null</code>.</p>
 
   <h5 id=link-type-pingback>4.6.6.12 リンクタイプ"<dfn><code>pingback</code></dfn>"<a href=#link-type-pingback class=self-link></a></h5>
 
@@ -7834,4 +7747,4 @@ interface <dfn id=htmlmodelement>HTMLModElement</dfn> : <a id=attributes-common-
 
 
   <nav><a href=dom.html>← 3 セマンティックス、構造、HTML文書のAPI群</a> — <a href=index.html>目次</a> — <a href=embedded-content.html>4.8 埋め込みコンテンツ →</a></nav>
-</body></html>
+</html>

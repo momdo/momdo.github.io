@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -316,19 +191,20 @@
 
   
 
-  <nav><a href=xhtml.html>← 13 XHTML構文</a> — <a href=index.html>目次</a> — <a href=obsolete.html>15 旧式の機能 →</a></nav><ol class=toc><li id=toc-rendering><a href=rendering.html#rendering>14 レンダリング</a><ol><li><a href=rendering.html#introduction-15>14.1 導入</a></li><li><a href=rendering.html#the-css-user-agent-style-sheet-and-presentational-hints>14.2 The CSS user agent style sheet and presentational hints</a></li><li><a href=rendering.html#non-replaced-elements>14.3 Non-replaced elements</a><ol><li><a href=rendering.html#hidden-elements>14.3.1 Hidden elements</a></li><li><a href=rendering.html#the-page>14.3.2 The page</a></li><li><a href=rendering.html#flow-content-3>14.3.3 フローコンテンツ</a></li><li><a href=rendering.html#phrasing-content-3>14.3.4 フレージングコンテンツ</a></li><li><a href=rendering.html#bidi-rendering>14.3.5 Bidirectional text</a></li><li><a href=rendering.html#quotes>14.3.6 Quotes</a></li><li><a href=rendering.html#sections-and-headings>14.3.7 Sections and headings</a></li><li><a href=rendering.html#lists>14.3.8 リスト</a></li><li><a href=rendering.html#tables-2>14.3.9 テーブル</a></li><li><a href=rendering.html#margin-collapsing-quirks>14.3.10 Margin collapsing quirks</a></li><li><a href=rendering.html#form-controls>14.3.11 フォームのコントロール</a></li><li><a href=rendering.html#the-hr-element-2>14.3.12 <code>hr</code>要素</a></li><li><a href=rendering.html#the-fieldset-and-legend-elements>14.3.13 The <code>fieldset</code> and <code>legend</code> elements</a></li></ol></li><li><a href=rendering.html#replaced-elements>14.4 置換要素</a><ol><li><a href=rendering.html#embedded-content-rendering-rules>14.4.1 エンベディッドコンテンツ</a></li><li><a href=rendering.html#images-3>14.4.2 画像</a></li><li><a href=rendering.html#attributes-for-embedded-content-and-images>14.4.3 Attributes for embedded content and images</a></li><li><a href=rendering.html#image-maps-2>14.4.4 イメージマップ</a></li></ol></li><li><a href=rendering.html#widgets>14.5 Widgets</a><ol><li><a href=rendering.html#introduction-16>14.5.1 導入</a></li><li><a href=rendering.html#the-button-element-2>14.5.2 <code>button</code>要素</a></li><li><a href=rendering.html#the-details-and-summary-elements>14.5.3 The <code>details</code> and <code>summary</code> elements</a></li><li><a href=rendering.html#the-input-element-as-a-text-entry-widget>14.5.4 The <code>input</code> element as a text entry widget</a></li><li><a href=rendering.html#the-input-element-as-domain-specific-widgets>14.5.5 The <code>input</code> element as domain-specific widgets</a></li><li><a href=rendering.html#the-input-element-as-a-range-control>14.5.6 The <code>input</code> element as a range control</a></li><li><a href=rendering.html#the-input-element-as-a-colour-well>14.5.7 The <code>input</code> element as a color
+  <nav><a href=xhtml.html>← 13 XHTML構文</a> — <a href=index.html>目次</a> — <a href=obsolete.html>15 旧式の機能 →</a></nav><ol class=toc><li id=toc-rendering><a href=rendering.html#rendering>14 レンダリング</a><ol><li><a href=rendering.html#introduction-16>14.1 導入</a></li><li><a href=rendering.html#the-css-user-agent-style-sheet-and-presentational-hints>14.2 The CSS user agent style sheet and presentational hints</a></li><li><a href=rendering.html#non-replaced-elements>14.3 Non-replaced elements</a><ol><li><a href=rendering.html#hidden-elements>14.3.1 Hidden elements</a></li><li><a href=rendering.html#the-page>14.3.2 The page</a></li><li><a href=rendering.html#flow-content-3>14.3.3 フローコンテンツ</a></li><li><a href=rendering.html#phrasing-content-3>14.3.4 フレージングコンテンツ</a></li><li><a href=rendering.html#bidi-rendering>14.3.5 Bidirectional text</a></li><li><a href=rendering.html#quotes>14.3.6 Quotes</a></li><li><a href=rendering.html#sections-and-headings>14.3.7 Sections and headings</a></li><li><a href=rendering.html#lists>14.3.8 リスト</a></li><li><a href=rendering.html#tables-2>14.3.9 テーブル</a></li><li><a href=rendering.html#margin-collapsing-quirks>14.3.10 Margin collapsing quirks</a></li><li><a href=rendering.html#form-controls>14.3.11 フォームのコントロール</a></li><li><a href=rendering.html#the-hr-element-2>14.3.12 <code>hr</code>要素</a></li><li><a href=rendering.html#the-fieldset-and-legend-elements>14.3.13 The <code>fieldset</code> and <code>legend</code> elements</a></li></ol></li><li><a href=rendering.html#replaced-elements>14.4 置換要素</a><ol><li><a href=rendering.html#embedded-content-rendering-rules>14.4.1 エンベディッドコンテンツ</a></li><li><a href=rendering.html#images-3>14.4.2 画像</a></li><li><a href=rendering.html#attributes-for-embedded-content-and-images>14.4.3 Attributes for embedded content and images</a></li><li><a href=rendering.html#image-maps-2>14.4.4 イメージマップ</a></li></ol></li><li><a href=rendering.html#widgets>14.5 Widgets</a><ol><li><a href=rendering.html#introduction-17>14.5.1 導入</a></li><li><a href=rendering.html#the-button-element-2>14.5.2 <code>button</code>要素</a></li><li><a href=rendering.html#the-details-and-summary-elements>14.5.3 The <code>details</code> and <code>summary</code> elements</a></li><li><a href=rendering.html#the-input-element-as-a-text-entry-widget>14.5.4 The <code>input</code> element as a text entry widget</a></li><li><a href=rendering.html#the-input-element-as-domain-specific-widgets>14.5.5 The <code>input</code> element as domain-specific widgets</a></li><li><a href=rendering.html#the-input-element-as-a-range-control>14.5.6 The <code>input</code> element as a range control</a></li><li><a href=rendering.html#the-input-element-as-a-colour-well>14.5.7 The <code>input</code> element as a color
   well</a></li><li><a href=rendering.html#the-input-element-as-a-checkbox-and-radio-button-widgets>14.5.8 The <code>input</code> element as a checkbox and radio button widgets</a></li><li><a href=rendering.html#the-input-element-as-a-file-upload-control>14.5.9 The <code>input</code> element as a file upload control</a></li><li><a href=rendering.html#the-input-element-as-a-button>14.5.10 The <code>input</code> element as a button</a></li><li><a href=rendering.html#the-marquee-element-2>14.5.11 <code>marquee</code>要素</a></li><li><a href=rendering.html#the-meter-element-2>14.5.12 <code>meter</code>要素</a></li><li><a href=rendering.html#the-progress-element-2>14.5.13 <code>progress</code>要素</a></li><li><a href=rendering.html#the-select-element-2>14.5.14 <code>select</code>要素</a></li><li><a href=rendering.html#the-textarea-element-2>14.5.15 <code>textarea</code>要素</a></li><li><a href=rendering.html#the-keygen-element-2>14.5.16 <code>keygen</code>要素</a></li></ol></li><li><a href=rendering.html#frames-and-framesets>14.6 Frames and framesets</a></li><li><a href=rendering.html#interactive-media>14.7 Interactive media</a><ol><li><a href=rendering.html#links,-forms,-and-navigation>14.7.1 Links, forms, and navigation</a></li><li><a href=rendering.html#the-title-attribute-2>14.7.2 <code>title</code>属性</a></li><li><a href=rendering.html#editing-hosts>14.7.3 Editing hosts</a></li><li><a href=rendering.html#text-rendered-in-native-user-interfaces>14.7.4 Text rendered in native user interfaces</a></li></ol></li><li><a href=rendering.html#print-media>14.8 Print media</a></li><li><a href=rendering.html#unstyled-xml-documents>14.9 Unstyled XML documents</a></li></ol></li></ol><h2 id=rendering>14 レンダリング<a href=#rendering class=self-link></a></h2>
 
   <p><i>User agents are not required to present HTML documents in any particular way. However, this
   section provides a set of suggestions for rendering HTML documents that, if followed, are likely
   to lead to a user experience that closely resembles the experience intended by the documents'
-  authors. So as to avoid confusion regarding the normativity of this section, RFC2119 terms have
-  not been used. Instead, the term "expected" is used to indicate behavior that will lead to this
-  experience. For the purposes of conformance for user agents designated as <a href=infrastructure.html#renderingUA>supporting the suggested default rendering</a>, the term "expected" in this
-  section has the same conformance implications as the RFC2119-defined term "must".</i></p>
+  authors. So as to avoid confusion regarding the normativity of this section, "must" has not been
+  used. Instead, the term "expected" is used to indicate behavior that will lead to this experience.
+  For the purposes of conformance for user agents designated as <a href=infrastructure.html#renderingUA>supporting
+  the suggested default rendering</a>, the term "expected" in this section has the same conformance
+  implications as "must".</i></p>
 
 
-  <h3 id=introduction-15>14.1 導入<a href=#introduction-15 class=self-link></a></h3>
+  <h3 id=introduction-16>14.1 導入<a href=#introduction-16 class=self-link></a></h3>
 
   <p>In general, user agents are expected to support CSS, and many of the suggestions in this
   section are expressed in CSS terms. User agents that use other presentation mechanisms can derive
@@ -336,7 +212,7 @@
 
   <p>In the absence of style-layer rules to the contrary (e.g. author style sheets), user agents are
   expected to render an element so that it conveys to the user the meaning that the element
-  <a id=introduction-15:represents href=dom.html#represents>represents</a>, as described by this specification.</p>
+  <a id=introduction-16:represents href=dom.html#represents>represents</a>, as described by this specification.</p>
 
   <p>The suggestions in this section generally assume a visual output medium with a resolution of
   96dpi or greater, but HTML is intended to apply to multiple media (it is a
@@ -348,9 +224,9 @@
   <p>An element is <dfn id=being-rendered>being rendered</dfn> if it has any associated CSS layout boxes, SVG layout
   boxes, or some equivalent in other styling languages.</p>
 
-  <p class=note>Just being off-screen does not mean the element is not <a href=#being-rendered id=introduction-15:being-rendered>being
-  rendered</a>. The presence of the <code id=introduction-15:the-hidden-attribute><a href=interaction.html#the-hidden-attribute>hidden</a></code> attribute normally
-  means the element is not <a href=#being-rendered id=introduction-15:being-rendered-2>being rendered</a>, though this might be overridden by the style
+  <p class=note>Just being off-screen does not mean the element is not <a href=#being-rendered id=introduction-16:being-rendered>being
+  rendered</a>. The presence of the <code id=introduction-16:the-hidden-attribute><a href=interaction.html#the-hidden-attribute>hidden</a></code> attribute normally
+  means the element is not <a href=#being-rendered id=introduction-16:being-rendered-2>being rendered</a>, though this might be overridden by the style
   sheets.</p>
 
   <hr>
@@ -359,8 +235,8 @@
   if they applied the CSS rules given in these sections in a manner consistent with this
   specification and the relevant CSS and Unicode specifications. <a href=references.html#refsCSS>[CSS]</a> <a href=references.html#refsUNICODE>[UNICODE]</a> <a href=references.html#refsBIDI>[BIDI]</a></p>
 
-  <p class=note>This is especially important for issues relating to the <a id="introduction-15:'display'" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a>,
-  <a id="introduction-15:'unicode-bidi'" href=https://triple-underscore.github.io/css-writing-modes-ja.html#unicode-bidi data-x-internal="'unicode-bidi'">'unicode-bidi'</a>, and <a id="introduction-15:'direction'" href=https://triple-underscore.github.io/css-writing-modes-ja.html#direction data-x-internal="'direction'">'direction'</a> properties.</p>
+  <p class=note>This is especially important for issues relating to the <a id="introduction-16:'display'" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a>,
+  <a id="introduction-16:'unicode-bidi'" href=https://triple-underscore.github.io/css-writing-modes-ja.html#unicode-bidi data-x-internal="'unicode-bidi'">'unicode-bidi'</a>, and <a id="introduction-16:'direction'" href=https://triple-underscore.github.io/css-writing-modes-ja.html#direction data-x-internal="'direction'">'direction'</a> properties.</p>
 
 
 
@@ -505,7 +381,7 @@ html, body { display: block; }</pre>
 
   <p>If the <code id=the-page:document-2><a href=dom.html#document>Document</a></code> is in a <a id=the-page:nested-browsing-context-4 href=browsers.html#nested-browsing-context>nested browsing context</a>, and the
   <a id=the-page:browsing-context-container-4 href=browsers.html#browsing-context-container>browsing context container</a> of that <a id=the-page:nested-browsing-context-5 href=browsers.html#nested-browsing-context>nested browsing context</a> is a
-  <code id=the-page:frame-3><a href=obsolete.html#frame>frame</a></code> or <code id=the-page:the-iframe-element-4><a href=embedded-content.html#the-iframe-element>iframe</a></code> element, and that element has a <code>scrolling</code> attribute, and that attribute's value is an <a id=the-page:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII
+  <code id=the-page:frame-3><a href=obsolete.html#frame>frame</a></code> or <code id=the-page:the-iframe-element-4><a href=embedded-content.html#the-iframe-element>iframe</a></code> element, and that element has a <code>scrolling</code> attribute, and that attribute's value is an <a id=the-page:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
   case-insensitive</a> match for the string "<code>off</code>", "<code>noscroll</code>", or "<code>no</code>", then the user agent is expected to
   prevent any scroll bars from being shown for the <a id=the-page:viewport-2 href=https://momdo.github.io/css2/visuren.html#viewport data-x-internal=viewport>viewport</a> of the
   <a id=the-page:nested-browsing-context-6 href=browsers.html#nested-browsing-context>nested browsing context</a>, regardless of the <a id="the-page:'overflow'" href=https://drafts.csswg.org/css-overflow/#propdef-overflow data-x-internal="'overflow'">'overflow'</a> property that
@@ -614,21 +490,21 @@ form { margin-block-end: 1em; }</pre>
 
   <hr>
 
-  <p>The <code id=flow-content-3:center><a href=obsolete.html#center>center</a></code> element, and the <code id=flow-content-3:the-div-element><a href=semantics.html#the-div-element>div</a></code> element when it has an <code id=flow-content-3:attr-div-align><a href=obsolete.html#attr-div-align>align</a></code> attribute whose value is an <a id=flow-content-3:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII
+  <p>The <code id=flow-content-3:center><a href=obsolete.html#center>center</a></code> element, and the <code id=flow-content-3:the-div-element><a href=semantics.html#the-div-element>div</a></code> element when it has an <code id=flow-content-3:attr-div-align><a href=obsolete.html#attr-div-align>align</a></code> attribute whose value is an <a id=flow-content-3:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
   case-insensitive</a> match for either the string "<code>center</code>" or the string
   "<code>middle</code>", are expected to center text within themselves, as if they had
   their <a id="flow-content-3:'text-align'" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'center' in a <a href=#presentational-hints id=flow-content-3:presentational-hints-2>presentational hint</a>, and to <a href=#align-descendants id=flow-content-3:align-descendants>align descendants</a> to the center.</p>
 
   <p>The <code id=flow-content-3:the-div-element-2><a href=semantics.html#the-div-element>div</a></code> element, when it has an <code id=flow-content-3:attr-div-align-2><a href=obsolete.html#attr-div-align>align</a></code>
-  attribute whose value is an <a id=flow-content-3:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>left</code>", is expected to left-align text within itself, as if it had its
+  attribute whose value is an <a id=flow-content-3:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>left</code>", is expected to left-align text within itself, as if it had its
   <a id="flow-content-3:'text-align'-2" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'left' in a <a href=#presentational-hints id=flow-content-3:presentational-hints-3>presentational hint</a>, and to <a href=#align-descendants id=flow-content-3:align-descendants-2>align descendants</a> to the left.</p>
 
   <p>The <code id=flow-content-3:the-div-element-3><a href=semantics.html#the-div-element>div</a></code> element, when it has an <code id=flow-content-3:attr-div-align-3><a href=obsolete.html#attr-div-align>align</a></code>
-  attribute whose value is an <a id=flow-content-3:ascii-case-insensitive-3 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>right</code>", is expected to right-align text within itself, as if it had its
+  attribute whose value is an <a id=flow-content-3:ascii-case-insensitive-3 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>right</code>", is expected to right-align text within itself, as if it had its
   <a id="flow-content-3:'text-align'-3" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'right' in a <a href=#presentational-hints id=flow-content-3:presentational-hints-4>presentational hint</a>, and to <a href=#align-descendants id=flow-content-3:align-descendants-3>align descendants</a> to the right.</p>
 
   <p>The <code id=flow-content-3:the-div-element-4><a href=semantics.html#the-div-element>div</a></code> element, when it has an <code id=flow-content-3:attr-div-align-4><a href=obsolete.html#attr-div-align>align</a></code>
-  attribute whose value is an <a id=flow-content-3:ascii-case-insensitive-4 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>justify</code>", is expected to full-justify text within itself, as if it had its
+  attribute whose value is an <a id=flow-content-3:ascii-case-insensitive-4 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>justify</code>", is expected to full-justify text within itself, as if it had its
   <a id="flow-content-3:'text-align'-4" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'justify' in a <a href=#presentational-hints id=flow-content-3:presentational-hints-5>presentational hint</a>, and to <a href=#align-descendants id=flow-content-3:align-descendants-4>align descendants</a> to the left.</p>
 
 
@@ -1408,24 +1284,24 @@ table {
 
   <p>The <code id=tables-2:the-thead-element><a href=tables.html#the-thead-element>thead</a></code>, <code id=tables-2:the-tbody-element><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=tables-2:the-tfoot-element><a href=tables.html#the-tfoot-element>tfoot</a></code>, <code id=tables-2:the-tr-element-3><a href=tables.html#the-tr-element>tr</a></code>,
   <code id=tables-2:the-td-element-5><a href=tables.html#the-td-element>td</a></code>, and <code id=tables-2:the-th-element-5><a href=tables.html#the-th-element>th</a></code> elements, when they have an <code>align</code>
-  attribute whose value is an <a id=tables-2:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for either the string "<code>center</code>" or the string "<code>middle</code>", are expected to center
+  attribute whose value is an <a id=tables-2:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for either the string "<code>center</code>" or the string "<code>middle</code>", are expected to center
   text within themselves, as if they had their <a id="tables-2:'text-align'" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'center' in
   a <a href=#presentational-hints id=tables-2:presentational-hints-2>presentational hint</a>, and to <a href=#align-descendants id=tables-2:align-descendants>align
   descendants</a> to the center.</p>
 
   <p>The <code id=tables-2:the-thead-element-2><a href=tables.html#the-thead-element>thead</a></code>, <code id=tables-2:the-tbody-element-2><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=tables-2:the-tfoot-element-2><a href=tables.html#the-tfoot-element>tfoot</a></code>, <code id=tables-2:the-tr-element-4><a href=tables.html#the-tr-element>tr</a></code>,
   <code id=tables-2:the-td-element-6><a href=tables.html#the-td-element>td</a></code>, and <code id=tables-2:the-th-element-6><a href=tables.html#the-th-element>th</a></code> elements, when they have an <code>align</code>
-  attribute whose value is an <a id=tables-2:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>left</code>", are expected to left-align text within themselves, as if they had their
+  attribute whose value is an <a id=tables-2:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>left</code>", are expected to left-align text within themselves, as if they had their
   <a id="tables-2:'text-align'-2" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'left' in a <a href=#presentational-hints id=tables-2:presentational-hints-3>presentational hint</a>, and to <a href=#align-descendants id=tables-2:align-descendants-2>align descendants</a> to the left.</p>
 
   <p>The <code id=tables-2:the-thead-element-3><a href=tables.html#the-thead-element>thead</a></code>, <code id=tables-2:the-tbody-element-3><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=tables-2:the-tfoot-element-3><a href=tables.html#the-tfoot-element>tfoot</a></code>, <code id=tables-2:the-tr-element-5><a href=tables.html#the-tr-element>tr</a></code>,
   <code id=tables-2:the-td-element-7><a href=tables.html#the-td-element>td</a></code>, and <code id=tables-2:the-th-element-7><a href=tables.html#the-th-element>th</a></code> elements, when they have an <code>align</code>
-  attribute whose value is an <a id=tables-2:ascii-case-insensitive-3 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>right</code>", are expected to right-align text within themselves, as if they had their
+  attribute whose value is an <a id=tables-2:ascii-case-insensitive-3 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>right</code>", are expected to right-align text within themselves, as if they had their
   <a id="tables-2:'text-align'-3" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'right' in a <a href=#presentational-hints id=tables-2:presentational-hints-4>presentational hint</a>, and to <a href=#align-descendants id=tables-2:align-descendants-3>align descendants</a> to the right.</p>
 
   <p>The <code id=tables-2:the-thead-element-4><a href=tables.html#the-thead-element>thead</a></code>, <code id=tables-2:the-tbody-element-4><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=tables-2:the-tfoot-element-4><a href=tables.html#the-tfoot-element>tfoot</a></code>, <code id=tables-2:the-tr-element-6><a href=tables.html#the-tr-element>tr</a></code>,
   <code id=tables-2:the-td-element-8><a href=tables.html#the-td-element>td</a></code>, and <code id=tables-2:the-th-element-8><a href=tables.html#the-th-element>th</a></code> elements, when they have an <code>align</code>
-  attribute whose value is an <a id=tables-2:ascii-case-insensitive-4 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>justify</code>", are expected to full-justify text within themselves, as if they had
+  attribute whose value is an <a id=tables-2:ascii-case-insensitive-4 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>justify</code>", are expected to full-justify text within themselves, as if they had
   their <a id="tables-2:'text-align'-4" href=https://triple-underscore.github.io/css-text-ja.html#text-align-property data-x-internal="'text-align'">'text-align'</a> property set to 'justify' in a <a href=#presentational-hints id=tables-2:presentational-hints-5>presentational hint</a>, and to <a href=#align-descendants id=tables-2:align-descendants-4>align descendants</a> to the left.</p>
 
   <p>User agents are expected to have a rule in their user agent stylesheet that matches
@@ -1624,7 +1500,7 @@ legend {
   element as a <a id=the-fieldset-and-legend-elements:block-box href=https://momdo.github.io/css2/visuren.html#x9 data-x-internal=block-box>block box</a> (overriding any explicit <a id="the-fieldset-and-legend-elements:'display'" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> value). In the
   absence of an explicit <a id=the-fieldset-and-legend-elements:inline-size href=https://drafts.csswg.org/css-writing-modes/#inline-size data-x-internal=inline-size>inline size</a>, the box should shrink-wrap. If the
   <code id=the-fieldset-and-legend-elements:the-legend-element-3><a href=forms.html#the-legend-element>legend</a></code> element in question has an <code id=the-fieldset-and-legend-elements:attr-legend-align><a href=obsolete.html#attr-legend-align>align</a></code>
-  attribute, and its value is an <a id=the-fieldset-and-legend-elements:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for one of the strings in
+  attribute, and its value is an <a id=the-fieldset-and-legend-elements:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for one of the strings in
   the first column of the following table, then the <code id=the-fieldset-and-legend-elements:the-legend-element-4><a href=forms.html#the-legend-element>legend</a></code> is expected to be rendered
   aligned in the inline direction over the <a id=the-fieldset-and-legend-elements:border-edge-2 href=https://momdo.github.io/css2/box.html#border-edge data-x-internal=border-edge>border edge</a> in the position given in the
   corresponding cell on the same row in the second column. If the attribute is absent or has a value
@@ -1837,7 +1713,7 @@ object[align=bottom i] {
 
   <p>When an <code id=attributes-for-embedded-content-and-images:the-applet-element><a href=obsolete.html#the-applet-element>applet</a></code>, <code id=attributes-for-embedded-content-and-images:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code>, <code id=attributes-for-embedded-content-and-images:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>, <code id=attributes-for-embedded-content-and-images:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>, or
   <code id=attributes-for-embedded-content-and-images:the-object-element><a href=embedded-content.html#the-object-element>object</a></code> element, or an <code id=attributes-for-embedded-content-and-images:the-input-element><a href=forms.html#the-input-element>input</a></code> element whose <code id=attributes-for-embedded-content-and-images:attr-input-type><a href=forms.html#attr-input-type>type</a></code> attribute is in the <a href="forms.html#image-button-state-(type=image)" id="attributes-for-embedded-content-and-images:image-button-state-(type=image)">Image Button</a> state, has an <code>align</code>
-  attribute whose value is an <a id=attributes-for-embedded-content-and-images:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>center</code>" or the string "<code>middle</code>", the user agent is expected
+  attribute whose value is an <a id=attributes-for-embedded-content-and-images:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>center</code>" or the string "<code>middle</code>", the user agent is expected
   to act as if the element's <a id="attributes-for-embedded-content-and-images:'vertical-align'" href=https://momdo.github.io/css2/visudet.html#propdef-vertical-align data-x-internal="'vertical-align'">'vertical-align'</a> property was set to a value that aligns
   the vertical middle of the element with the parent element's baseline.</p>
 
@@ -1899,10 +1775,10 @@ object[align=bottom i] {
 
   <h3 id=widgets>14.5 <span id=bindings></span>Widgets<a href=#widgets class=self-link></a></h3>
 
-  <h4 id=introduction-16>14.5.1 導入<a href=#introduction-16 class=self-link></a></h4>
+  <h4 id=introduction-17>14.5.1 導入<a href=#introduction-17 class=self-link></a></h4>
 
   <p>The elements defined in this section can be rendered in a variety of manners, within the
-  guidelines provided below. User agents are encouraged to set the <a id="introduction-16:'appearance'" href=https://drafts.csswg.org/css-ui-4/#appearance-switching data-x-internal="'appearance'">'appearance'</a> CSS
+  guidelines provided below. User agents are encouraged to set the <a id="introduction-17:'appearance'" href=https://drafts.csswg.org/css-ui-4/#appearance-switching data-x-internal="'appearance'">'appearance'</a> CSS
   property appropriately to achieve platform-native appearances for widgets, and are expected to
   implement any relevant animations, etc, that are appropriate for the platform.</p>
   
@@ -2409,7 +2285,7 @@ details[open] &gt; summary {
   <a href=https://momdo.github.io/css3-values/#px id="the-textarea-element-2:'px'-3" data-x-internal="'px'">CSS pixels</a> of the number of lines specified the element's <a href=forms.html#attr-textarea-rows-value id=the-textarea-element-2:attr-textarea-rows-value>character height</a>, plus the height of a scrollbar in <a href=https://momdo.github.io/css3-values/#px id="the-textarea-element-2:'px'-4" data-x-internal="'px'">CSS pixels</a>.</p>
 
   <p>User agents are expected to apply the <a id="the-textarea-element-2:'white-space'" href=https://triple-underscore.github.io/css-text-ja.html#white-space-property data-x-internal="'white-space'">'white-space'</a> CSS property to
-  <code id=the-textarea-element-2:the-textarea-element-5><a href=forms.html#the-textarea-element>textarea</a></code> elements. For historical reasons, if the element has a <code id=the-textarea-element-2:attr-textarea-wrap><a href=forms.html#attr-textarea-wrap>wrap</a></code> attribute whose value is an <a id=the-textarea-element-2:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII
+  <code id=the-textarea-element-2:the-textarea-element-5><a href=forms.html#the-textarea-element>textarea</a></code> elements. For historical reasons, if the element has a <code id=the-textarea-element-2:attr-textarea-wrap><a href=forms.html#attr-textarea-wrap>wrap</a></code> attribute whose value is an <a id=the-textarea-element-2:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
   case-insensitive</a> match for the string "<code>off</code>", then the user agent is expected to treat the attribute as a <a href=#presentational-hints id=the-textarea-element-2:presentational-hints-3>presentational hint</a> setting the element's
   <a id="the-textarea-element-2:'white-space'-2" href=https://triple-underscore.github.io/css-text-ja.html#white-space-property data-x-internal="'white-space'">'white-space'</a> property to 'pre'.</p>
 
@@ -2885,7 +2761,7 @@ if (s = prompt('What is your name?')) {
    
    </li><li>None of the elements in the <code id=unstyled-xml-documents:document-5><a href=dom.html#document>Document</a></code> have any <a href=https://triple-underscore.github.io/css-style-attr-ja.html#style-attribute id=unstyled-xml-documents:css-styling-attribute data-x-internal=css-styling-attribute>style attributes</a>.
    
-   </li><li>None of the elements in the <code id=unstyled-xml-documents:document-6><a href=dom.html#document>Document</a></code> are in any of the following namespaces: <a id=unstyled-xml-documents:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, <a id=unstyled-xml-documents:svg-namespace href=infrastructure.html#svg-namespace>SVG namespace</a>, <a id=unstyled-xml-documents:mathml-namespace href=infrastructure.html#mathml-namespace>MathML namespace</a>
+   </li><li>None of the elements in the <code id=unstyled-xml-documents:document-6><a href=dom.html#document>Document</a></code> are in any of the following namespaces: <a id=unstyled-xml-documents:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, <a id=unstyled-xml-documents:svg-namespace href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG namespace</a>, <a id=unstyled-xml-documents:mathml-namespace href=https://infra.spec.whatwg.org/#mathml-namespace data-x-internal=mathml-namespace>MathML namespace</a>
    </li><li>The <code id=unstyled-xml-documents:document-7><a href=dom.html#document>Document</a></code> has no <i>focusable area</i> (e.g. from XLink) other than the <a id=unstyled-xml-documents:viewport href=https://momdo.github.io/css2/visuren.html#viewport data-x-internal=viewport>viewport</a>.
    
    </li><li>The <code id=unstyled-xml-documents:document-8><a href=dom.html#document>Document</a></code> has no <a href=semantics.html#hyperlink id=unstyled-xml-documents:hyperlink>hyperlinks</a> (e.g. from XLink).
@@ -2914,4 +2790,4 @@ if (s = prompt('What is your name?')) {
 
 
   <nav><a href=xhtml.html>← 13 XHTML構文</a> — <a href=index.html>目次</a> — <a href=obsolete.html>15 旧式の機能 →</a></nav>
-</body></html>
+</html>

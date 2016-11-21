@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -316,15 +191,15 @@
 
   
 
-  <nav><a href=browsers.html>← 7 ウェブページの読み込み</a> — <a href=index.html>目次</a> — <a href=comms.html>9 コミュニケーション →</a></nav><ol class=toc><li id=toc-webappapis><a href=webappapis.html#webappapis>8 ウェブアプリケーションAPI</a><ol><li><a href=webappapis.html#scripting>8.1 スクリプティング</a><ol><li><a href=webappapis.html#introduction-10>8.1.1 導入</a></li><li><a href=webappapis.html#enabling-and-disabling-scripting>8.1.2 Enabling and disabling scripting</a></li><li><a href=webappapis.html#scripting-processing-model>8.1.3 Processing model</a><ol><li><a href=webappapis.html#definitions-2>8.1.3.1 定義</a></li><li><a href=webappapis.html#fetching-scripts>8.1.3.2 Fetching scripts</a></li><li><a href=webappapis.html#creating-scripts>8.1.3.3 Creating scripts</a></li><li><a href=webappapis.html#calling-scripts>8.1.3.4 Calling scripts</a></li><li><a href=webappapis.html#realms-settings-objects-global-objects>8.1.3.5 Realms, settings objects, and global objects</a><ol><li><a href=webappapis.html#entry>8.1.3.5.1 Entry</a></li><li><a href=webappapis.html#incumbent>8.1.3.5.2 Incumbent</a></li><li><a href=webappapis.html#current>8.1.3.5.3 Current</a></li><li><a href=webappapis.html#relevant>8.1.3.5.4 Relevant</a></li></ol></li><li><a href=webappapis.html#killing-scripts>8.1.3.6 Killing scripts</a></li><li><a href=webappapis.html#integration-with-the-javascript-job-queue>8.1.3.7 Integration with the JavaScript job queue</a><ol><li><a href=webappapis.html#enqueuejob(queuename,-job,-arguments)>8.1.3.7.1 EnqueueJob(<var>queueName</var>, <var>job</var>, <var>arguments</var>)</a></li></ol></li><li><a href=webappapis.html#integration-with-the-javascript-module-system>8.1.3.8 Integration with the JavaScript module system</a><ol><li><a href=webappapis.html#hostresolveimportedmodule(referencingmodule,-specifier)>8.1.3.8.1 HostResolveImportedModule(<var>referencingModule</var>, <var>specifier</var>)</a></li></ol></li><li><a href=webappapis.html#runtime-script-errors>8.1.3.9 Runtime script errors</a><ol><li><a href=webappapis.html#runtime-script-errors-in-documents>8.1.3.9.1 Runtime script errors in documents</a></li><li><a href=webappapis.html#the-errorevent-interface>8.1.3.9.2 The <code>ErrorEvent</code> interface</a></li></ol></li><li><a href=webappapis.html#unhandled-promise-rejections>8.1.3.10 Unhandled promise rejections</a><ol><li><a href=webappapis.html#the-hostpromiserejectiontracker-implementation>8.1.3.10.1 HostPromiseRejectionTracker(<var>promise</var>, <var>operation</var>)</a></li><li><a href=webappapis.html#the-promiserejectionevent-interface>8.1.3.10.2 The <code>PromiseRejectionEvent</code> interface</a></li></ol></li><li><a href=webappapis.html#hostensurecancompilestrings(callerrealm,-calleerealm)>8.1.3.11 HostEnsureCanCompileStrings(<var>callerRealm</var>, <var>calleeRealm</var>)</a></li></ol></li><li><a href=webappapis.html#event-loops>8.1.4 Event loops</a><ol><li><a href=webappapis.html#definitions-3>8.1.4.1 定義</a></li><li><a href=webappapis.html#event-loop-processing-model>8.1.4.2 Processing model</a></li><li><a href=webappapis.html#generic-task-sources>8.1.4.3 Generic task sources</a></li></ol></li><li><a href=webappapis.html#events>8.1.5 イベント</a><ol><li><a href=webappapis.html#event-handler-attributes>8.1.5.1 イベントハンドラー</a></li><li><a href=webappapis.html#event-handlers-on-elements,-document-objects,-and-window-objects>8.1.5.2 Event handlers on elements, <code>Document</code> objects, and <code>Window</code> objects</a><ol><li><a href=webappapis.html#idl-definitions>8.1.5.2.1 IDL定義</a></li></ol></li><li><a href=webappapis.html#event-firing>8.1.5.3 Event firing</a></li></ol></li></ol></li><li><a href=webappapis.html#windoworworkerglobalscope-mixin>8.2 The <code>WindowOrWorkerGlobalScope</code> mixin</a></li><li><a href=webappapis.html#atob>8.3 Base64のユーティリティーメソッド</a></li><li><a href=webappapis.html#dynamic-markup-insertion>8.4 動的マークアップの挿入</a><ol><li><a href=webappapis.html#opening-the-input-stream>8.4.1 入力ストリームを開く</a></li><li><a href=webappapis.html#closing-the-input-stream>8.4.2 入力ストリームを閉じる</a></li><li><a href=webappapis.html#document.write()>8.4.3 <code>document.write()</code></a></li><li><a href=webappapis.html#document.writeln()>8.4.4 <code>document.writeln()</code></a></li></ol></li><li><a href=webappapis.html#timers>8.5 タイマー</a></li><li><a href=webappapis.html#user-prompts>8.6 ユーザープロンプト</a><ol><li><a href=webappapis.html#simple-dialogs>8.6.1 単純ダイアログ</a></li><li><a href=webappapis.html#printing>8.6.2 印刷</a></li></ol></li><li><a href=webappapis.html#system-state-and-capabilities>8.7 システム状態および性能</a><ol><li><a href=webappapis.html#the-navigator-object>8.7.1 The <code>Navigator</code> object</a><ol><li><a href=webappapis.html#client-identification>8.7.1.1 Client identification</a></li><li><a href=webappapis.html#language-preferences>8.7.1.2 言語の好み</a></li><li><a href=webappapis.html#custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code>registerProtocolHandler()</code> and <code>registerContentHandler()</code> methods</a><ol><li><a href=webappapis.html#security-and-privacy>8.7.1.3.1 Security and privacy</a></li><li><a href=webappapis.html#sample-handler-impl>8.7.1.3.2 単純ユーザーインターフェイス</a></li></ol></li><li><a href=webappapis.html#cookies>8.7.1.4 クッキー</a></li><li><a href=webappapis.html#plugins-2>8.7.1.5 プラグイン</a></li></ol></li></ol></li><li><a href=webappapis.html#images-2>8.8 画像</a></li><li><a href=webappapis.html#animation-frames>8.9 Animation Frames</a></li></ol></li></ol><h2 id=webappapis>8 ウェブアプリケーションAPI<a href=#webappapis class=self-link></a></h2>
+  <nav><a href=browsers.html>← 7 ウェブページの読み込み</a> — <a href=index.html>目次</a> — <a href=comms.html>9 コミュニケーション →</a></nav><ol class=toc><li id=toc-webappapis><a href=webappapis.html#webappapis>8 ウェブアプリケーションAPI</a><ol><li><a href=webappapis.html#scripting>8.1 スクリプティング</a><ol><li><a href=webappapis.html#introduction-11>8.1.1 導入</a></li><li><a href=webappapis.html#enabling-and-disabling-scripting>8.1.2 Enabling and disabling scripting</a></li><li><a href=webappapis.html#scripting-processing-model>8.1.3 Processing model</a><ol><li><a href=webappapis.html#definitions-2>8.1.3.1 定義</a></li><li><a href=webappapis.html#fetching-scripts>8.1.3.2 Fetching scripts</a></li><li><a href=webappapis.html#creating-scripts>8.1.3.3 Creating scripts</a></li><li><a href=webappapis.html#calling-scripts>8.1.3.4 Calling scripts</a></li><li><a href=webappapis.html#realms-settings-objects-global-objects>8.1.3.5 Realms, settings objects, and global objects</a><ol><li><a href=webappapis.html#entry>8.1.3.5.1 Entry</a></li><li><a href=webappapis.html#incumbent>8.1.3.5.2 Incumbent</a></li><li><a href=webappapis.html#current>8.1.3.5.3 Current</a></li><li><a href=webappapis.html#relevant>8.1.3.5.4 Relevant</a></li></ol></li><li><a href=webappapis.html#killing-scripts>8.1.3.6 Killing scripts</a></li><li><a href=webappapis.html#integration-with-the-javascript-job-queue>8.1.3.7 Integration with the JavaScript job queue</a><ol><li><a href=webappapis.html#enqueuejob(queuename,-job,-arguments)>8.1.3.7.1 EnqueueJob(<var>queueName</var>, <var>job</var>, <var>arguments</var>)</a></li></ol></li><li><a href=webappapis.html#integration-with-the-javascript-module-system>8.1.3.8 Integration with the JavaScript module system</a><ol><li><a href=webappapis.html#hostresolveimportedmodule(referencingmodule,-specifier)>8.1.3.8.1 HostResolveImportedModule(<var>referencingModule</var>, <var>specifier</var>)</a></li></ol></li><li><a href=webappapis.html#runtime-script-errors>8.1.3.9 Runtime script errors</a><ol><li><a href=webappapis.html#runtime-script-errors-in-documents>8.1.3.9.1 Runtime script errors in documents</a></li><li><a href=webappapis.html#the-errorevent-interface>8.1.3.9.2 The <code>ErrorEvent</code> interface</a></li></ol></li><li><a href=webappapis.html#unhandled-promise-rejections>8.1.3.10 Unhandled promise rejections</a><ol><li><a href=webappapis.html#the-hostpromiserejectiontracker-implementation>8.1.3.10.1 HostPromiseRejectionTracker(<var>promise</var>, <var>operation</var>)</a></li><li><a href=webappapis.html#the-promiserejectionevent-interface>8.1.3.10.2 The <code>PromiseRejectionEvent</code> interface</a></li></ol></li><li><a href=webappapis.html#hostensurecancompilestrings(callerrealm,-calleerealm)>8.1.3.11 HostEnsureCanCompileStrings(<var>callerRealm</var>, <var>calleeRealm</var>)</a></li></ol></li><li><a href=webappapis.html#event-loops>8.1.4 Event loops</a><ol><li><a href=webappapis.html#definitions-3>8.1.4.1 定義</a></li><li><a href=webappapis.html#event-loop-processing-model>8.1.4.2 Processing model</a></li><li><a href=webappapis.html#generic-task-sources>8.1.4.3 Generic task sources</a></li></ol></li><li><a href=webappapis.html#events>8.1.5 イベント</a><ol><li><a href=webappapis.html#event-handler-attributes>8.1.5.1 イベントハンドラー</a></li><li><a href=webappapis.html#event-handlers-on-elements,-document-objects,-and-window-objects>8.1.5.2 Event handlers on elements, <code>Document</code> objects, and <code>Window</code> objects</a><ol><li><a href=webappapis.html#idl-definitions>8.1.5.2.1 IDL定義</a></li></ol></li><li><a href=webappapis.html#event-firing>8.1.5.3 Event firing</a></li></ol></li></ol></li><li><a href=webappapis.html#windoworworkerglobalscope-mixin>8.2 The <code>WindowOrWorkerGlobalScope</code> mixin</a></li><li><a href=webappapis.html#atob>8.3 Base64のユーティリティーメソッド</a></li><li><a href=webappapis.html#dynamic-markup-insertion>8.4 動的マークアップの挿入</a><ol><li><a href=webappapis.html#opening-the-input-stream>8.4.1 入力ストリームを開く</a></li><li><a href=webappapis.html#closing-the-input-stream>8.4.2 入力ストリームを閉じる</a></li><li><a href=webappapis.html#document.write()>8.4.3 <code>document.write()</code></a></li><li><a href=webappapis.html#document.writeln()>8.4.4 <code>document.writeln()</code></a></li></ol></li><li><a href=webappapis.html#timers>8.5 タイマー</a></li><li><a href=webappapis.html#user-prompts>8.6 ユーザープロンプト</a><ol><li><a href=webappapis.html#simple-dialogs>8.6.1 単純ダイアログ</a></li><li><a href=webappapis.html#printing>8.6.2 印刷</a></li></ol></li><li><a href=webappapis.html#system-state-and-capabilities>8.7 システム状態および性能</a><ol><li><a href=webappapis.html#the-navigator-object>8.7.1 The <code>Navigator</code> object</a><ol><li><a href=webappapis.html#client-identification>8.7.1.1 Client identification</a></li><li><a href=webappapis.html#language-preferences>8.7.1.2 言語の好み</a></li><li><a href=webappapis.html#custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code>registerProtocolHandler()</code> and <code>registerContentHandler()</code> methods</a><ol><li><a href=webappapis.html#security-and-privacy>8.7.1.3.1 Security and privacy</a></li><li><a href=webappapis.html#sample-handler-impl>8.7.1.3.2 単純ユーザーインターフェイス</a></li></ol></li><li><a href=webappapis.html#cookies>8.7.1.4 クッキー</a></li><li><a href=webappapis.html#plugins-2>8.7.1.5 プラグイン</a></li></ol></li></ol></li><li><a href=webappapis.html#images-2>8.8 画像</a></li><li><a href=webappapis.html#animation-frames>8.9 Animation Frames</a></li></ol></li></ol><h2 id=webappapis>8 ウェブアプリケーションAPI<a href=#webappapis class=self-link></a></h2>
 
   <h3 id=scripting>8.1 スクリプティング<a href=#scripting class=self-link></a></h3>
 
-  <h4 id=introduction-10>8.1.1 導入<a href=#introduction-10 class=self-link></a></h4>
+  <h4 id=introduction-11>8.1.1 導入<a href=#introduction-11 class=self-link></a></h4>
 
   <p>様々なメカニズムが文書のコンテキストで実行するよう著者が提供する実行可能コードを引き起こすかもしれない。これらのメカニズムは以下を含むが、おそらく以下に限定されない：</p>
 
-  <ul><li><code id=introduction-10:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素の処理。</li><li><a href=browsers.html#javascript-protocol id=introduction-10:javascript-protocol><code>javascript:</code> URL</a>をナビゲートする。</li><li><code>addEventListener()</code>を使用するDOMを介して、明示的な<a href=#event-handler-content-attributes id=introduction-10:event-handler-content-attributes>イベントハンドラーコンテンツ属性</a>によって、<a href=#event-handler-idl-attributes id=introduction-10:event-handler-idl-attributes>イベントハンドラーIDL属性</a>によって、またはそれ以外で、登録されるかどうかのイベントハンドラー。</li><li>独自のスクリプト機能を持つSVGのような技術の処理。</li></ul>
+  <ul><li><code id=introduction-11:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素の処理。</li><li><a href=browsers.html#javascript-protocol id=introduction-11:javascript-protocol><code>javascript:</code> URL</a>をナビゲートする。</li><li><code>addEventListener()</code>を使用するDOMを介して、明示的な<a href=#event-handler-content-attributes id=introduction-11:event-handler-content-attributes>イベントハンドラーコンテンツ属性</a>によって、<a href=#event-handler-idl-attributes id=introduction-11:event-handler-idl-attributes>イベントハンドラーIDL属性</a>によって、またはそれ以外で、登録されるかどうかのイベントハンドラー。</li><li>独自のスクリプト機能を持つSVGのような技術の処理。</li></ul>
 
 
   
@@ -445,7 +320,8 @@
     distinct from the <a href=#environment-settings-object id=definitions-2:environment-settings-object-3>environment settings object</a>'s <a href=#responsible-document id=definitions-2:responsible-document>responsible
     document</a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="definitions-2:the-document's-address" data-x-internal="the-document's-address">URL</a>, due to mechanisms such as
     <code id=definitions-2:dom-history-pushstate><a href=browsers.html#dom-history-pushstate>history.pushState()</a></code>.</p>
-   <dt>A <dfn data-dfn-for=environment id=concept-environment-target-browsing-context data-export="">target browsing context</dfn><dd><p>Null or a target <a id=definitions-2:browsing-context href=browsers.html#browsing-context>browsing context</a> for a <a href=https://fetch.spec.whatwg.org/#navigation-request id=definitions-2:navigation-request data-x-internal=navigation-request>navigation request</a>.<dt>An <dfn data-dfn-for=environment id=concept-environment-active-service-worker data-export="">active service worker</dfn><dd><p>Null or a <a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker id=definitions-2:dfn-service-worker data-x-internal=dfn-service-worker>service worker</a> that <a href=https://w3c.github.io/ServiceWorker/#dfn-control id=definitions-2:dfn-control data-x-internal=dfn-control>controls</a> the <a href=#environment id=definitions-2:environment-4>environment</a>.</dl>
+   <dt>A <dfn data-dfn-for=environment id=concept-environment-target-browsing-context data-export="">target browsing context</dfn><dd><p>Null or a target <a id=definitions-2:browsing-context href=browsers.html#browsing-context>browsing context</a> for a <a href=https://fetch.spec.whatwg.org/#navigation-request id=definitions-2:navigation-request data-x-internal=navigation-request>navigation request</a>.<dt>An <dfn data-dfn-for=environment id=concept-environment-active-service-worker data-export="">active service worker</dfn><dd><p>Null or a <a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker id=definitions-2:dfn-service-worker data-x-internal=dfn-service-worker>service worker</a> that <a href=https://w3c.github.io/ServiceWorker/#dfn-control id=definitions-2:dfn-control data-x-internal=dfn-control>controls</a> the <a href=#environment id=definitions-2:environment-4>environment</a>.<dt>An <dfn data-dfn-for=environment id=concept-environment-execution-ready-flag data-export="">execution ready flag</dfn><dd><p>A flag that indicates whether the environment setup is done. It is initially
+   unset.</dl>
 
   <p>An <dfn id=environment-settings-object data-export="">environment settings object</dfn> is an <a href=#environment id=definitions-2:environment-5>environment</a> that
   additionally specifies algorithms for:</p>
@@ -533,8 +409,8 @@
   top-level</var></dfn> flag. The algorithm must complete with a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response data-x-internal=concept-response>response</a> (which may be a <a id=fetching-scripts:network-error href=https://triple-underscore.github.io/Fetch-ja.html#concept-network-error data-x-internal=network-error>network error</a>), either
   synchronously (when using <a href=#fetch-a-classic-worker-imported-script id=fetching-scripts:fetch-a-classic-worker-imported-script>fetch a classic worker-imported script</a>) or asynchronously
   (otherwise). The <var id=fetching-scripts:fetching-scripts-is-top-level><a href=#fetching-scripts-is-top-level>is top-level</a></var> flag will be set
-  for all <a href=#classic-script id=fetching-scripts:classic-script-2>classic script</a> fetches, and for the initial fetch when <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree>fetching a module script tree</a> or <a href=#fetch-a-module-worker-script-tree id=fetching-scripts:fetch-a-module-worker-script-tree>fetching a module worker script tree</a>, but not for the fetches resulting from
-  <code>import</code> statements encountered throughout the tree.</p>
+  for all <a href=#classic-script id=fetching-scripts:classic-script-2>classic script</a> fetches, and for the initial fetch when <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree>fetching a module script graph</a> or <a href=#fetch-a-module-worker-script-tree id=fetching-scripts:fetch-a-module-worker-script-tree>fetching a module worker script graph</a>, but not for the fetches resulting from
+  <code>import</code> statements encountered throughout the graph.</p>
 
   <div class=note>
    <p>By default, not supplying the <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch>perform the
@@ -555,15 +431,16 @@
   algorithms with its own options for the hook. <a href=references.html#refsSW>[SW]</a></p>
 
   <p>To <dfn id=fetch-a-classic-script data-export="">fetch a classic script</dfn> given a <var>url</var>, a <var>settings
-  object</var>, a <var>cryptographic nonce</var>, a <var>parser state</var>, a <var>CORS
-  setting</var>, and a <var>character encoding</var>, run these steps. The algorithm will
-  asynchronously complete with either null (on failure) or a new <a href=#classic-script id=fetching-scripts:classic-script-3>classic script</a> (on
-  success).</p>
+  object</var>, a <var>cryptographic nonce</var>, an <var>integrity metadata</var>, a <var>parser
+  state</var>, a <var>CORS setting</var>, and a <var>character encoding</var>, run these steps. The
+  algorithm will asynchronously complete with either null (on failure) or a new <a href=#classic-script id=fetching-scripts:classic-script-3>classic
+  script</a> (on success).</p>
 
   <ol><li><p>Let <var>request</var> be the result of <a href=infrastructure.html#create-a-potential-cors-request id=fetching-scripts:create-a-potential-cors-request>creating a potential-CORS request</a> given <var>url</var>, "<code>script</code>", and <var>CORS setting</var>.</li><li><p>Set <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client data-x-internal=concept-request-client>client</a> to
    <var>settings object</var>, its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type data-x-internal=concept-request-type>type</a> to "<code>script</code>", its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata id=fetching-scripts:concept-request-nonce-metadata data-x-internal=concept-request-nonce-metadata>cryptographic nonce
-   metadata</a> to <var>cryptographic nonce</var>, and its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata data-x-internal=concept-request-parser-metadata>parser metadata</a> to <var>parser
-   state</var>.</li><li>
+   metadata</a> to <var>cryptographic nonce</var>, its <a href=https://fetch.spec.whatwg.org/#concept-request-integrity-metadata id=fetching-scripts:concept-request-integrity-metadata data-x-internal=concept-request-integrity-metadata>integrity metadata</a> to <var>integrity
+   metadata</var> and its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata data-x-internal=concept-request-parser-metadata>parser metadata</a> to
+   <var>parser state</var>.</li><li>
     <p>If the caller specified custom steps to <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-3>perform
     the fetch</a>, perform them on <var>request</var>, with the <var id=fetching-scripts:fetching-scripts-is-top-level-2><a href=#fetching-scripts-is-top-level>is top-level</a></var> flag set. Return from this algorithm,
     and when the custom <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-4>perform the fetch</a> steps
@@ -647,29 +524,30 @@
     script</a> algorithm as well.</p>
    </li><li><p>Return <var>script</var>.</li></ol>
 
-  <p>To <dfn id=fetch-a-module-script-tree data-export="">fetch a module script tree</dfn> given a <var>url</var>, a <var>settings
-  object</var>, a <var>destination</var>, a <var>cryptographic nonce</var>, a <var>parser
-  state</var>, and a <var>credentials mode</var>, run these steps. The algorithm will
-  asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-2>module script</a> (on
-  success).</p>
+  <p>To <dfn id=fetch-a-module-script-tree data-export="">fetch a module script graph</dfn> given
+  a <var>url</var>, a <var>settings object</var>, a <var>destination</var>, a <var>cryptographic
+  nonce</var>, a <var>parser state</var>, and a <var>credentials mode</var>, run these steps. The
+  algorithm will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-2>module
+  script</a> (on success).</p>
 
-  <ol><li><p>Perform the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure>internal module script tree fetching procedure</a> given
+  <ol><li><p>Perform the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure>internal module script graph fetching procedure</a> given
    <var>url</var>, <var>settings object</var>, <var>destination</var>, <var>cryptographic
    nonce</var>, <var>parser state</var>, <var>credentials mode</var>, <var>settings object</var>, a
    new empty list, "<code>client</code>", and with the <var>top-level module fetch
    flag</var> set. If the caller of this algorithm specified custom <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-9>perform the fetch</a> steps, pass those along as
    well.</p>
 
-   </li><li><p>When the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-2>internal module script tree fetching procedure</a> asynchronously
+   </li><li><p>When the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-2>internal module script graph fetching procedure</a> asynchronously
    completes with <var>result</var>, asynchronously complete this algorithm with
    <var>result</var>.</li></ol>
 
-  <p>To <dfn id=fetch-a-module-worker-script-tree data-export="">fetch a module worker script tree</dfn> given a <var>url</var>, a
-  <var>fetch client settings object</var>, a <var>destination</var>, a <var>credentials mode</var>,
-  and a <var>module map settings object</var>, run these steps. The algorithm will asynchronously
-  complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-3>module script</a> (on success).</p>
+  <p>To <dfn id=fetch-a-module-worker-script-tree data-export="">fetch a module worker script
+  graph</dfn> given a <var>url</var>, a <var>fetch client settings object</var>, a
+  <var>destination</var>, a <var>credentials mode</var>, and a <var>module map settings
+  object</var>, run these steps. The algorithm will asynchronously complete with either null (on
+  failure) or a <a href=#module-script id=fetching-scripts:module-script-3>module script</a> (on success).</p>
 
-  <ol><li><p>Perform the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-3>internal module script tree fetching procedure</a> given
+  <ol><li><p>Perform the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-3>internal module script graph fetching procedure</a> given
    <var>url</var>, <var>fetch client settings object</var>, <var>destination</var>, the empty
    string, "<code>not parser-inserted</code>", <var>credentials mode</var>, <var>module
    map settings object</var>, a new empty list, "<code>client</code>", and with the
@@ -677,15 +555,15 @@
    <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-10>perform the fetch</a> steps, pass those along as
    well.</p>
 
-   </li><li><p>When the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-4>internal module script tree fetching procedure</a> asynchronously
+   </li><li><p>When the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-4>internal module script graph fetching procedure</a> asynchronously
    completes with <var>result</var>, asynchronously complete this algorithm with
    <var>result</var>.</li></ol>
 
   <hr>
 
-  <p>The following algorithms are meant for internal use by this specification only as part of <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-2>fetching a module script tree</a> or <a href=scripting.html#prepare-a-script id=fetching-scripts:prepare-a-script>preparing a script</a>, and should not be used directly by other specifications.</p>
+  <p>The following algorithms are meant for internal use by this specification only as part of <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-2>fetching a module script graph</a> or <a href=scripting.html#prepare-a-script id=fetching-scripts:prepare-a-script>preparing a script</a>, and should not be used directly by other specifications.</p>
 
-  <p>To perform the <dfn id=internal-module-script-tree-fetching-procedure>internal module script tree fetching procedure</dfn> given a
+  <p>To perform the <dfn id=internal-module-script-graph-fetching-procedure>internal module script graph fetching procedure</dfn> given a
   <var>url</var>, a <var>fetch client settings object</var>, a <var>destination</var>, a
   <var>cryptographic nonce</var>, a <var>parser state</var>, a <var>credentials mode</var>, a
   <var>module map settings object</var>, an <var>ancestor list</var>, a <var>referrer</var>, and a
@@ -727,31 +605,34 @@
    </li></ol>
 
   <p>In the above algorithm, a <a href=#module-script id=fetching-scripts:module-script-7>module script</a> <var>script</var>'s <dfn id=uninstantiated-inclusive-descendant-module-scripts>uninstantiated
-  inclusive descendant module scripts</dfn> is a set of <a href=#module-script id=fetching-scripts:module-script-8>module
-  scripts</a> determined as follows:</p>
+  inclusive descendant module scripts</dfn> is a <a id=fetching-scripts:set href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> of <a href=#module-script id=fetching-scripts:module-script-8>module scripts</a> determined as follows:</p>
 
-  <ol><li><p>Let <var>module map</var> be <var>script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>'s
-   <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map>module map</a>.</li><li><p>Let <var>stack</var> be a list containing <var>script</var>.</li><li><p>Let <var>inclusive descendants</var> be an empty set.</li><li>
-    <p>While <var>stack</var> is not empty:</p>
+  <ol><li><p>Let <var>moduleMap</var> be <var>script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>'s
+   <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map>module map</a>.</li><li><p>Let <var>stack</var> be the <a id=fetching-scripts:stack href=https://infra.spec.whatwg.org/#stack data-x-internal=stack>stack</a> « <var>script</var> ».</li><li><p>Let <var>inclusive descendants</var> be an empty <a id=fetching-scripts:set-2 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a>.</li><li>
+    <p>While <var>stack</var> <a href=https://infra.spec.whatwg.org/#list-is-empty id=fetching-scripts:list-is-empty data-x-internal=list-is-empty>is not empty</a>:</p>
 
-    <ol><li><p>Let <var>current</var> be the last element of <var>stack</var>. Remove it from
+    <ol><li><p>Let <var>current</var> the result of <a href=https://infra.spec.whatwg.org/#stack-pop id=fetching-scripts:stack-pop data-x-internal=stack-pop>popping</a> from
      <var>stack</var>.</li><li>
-      <p>If <var>current</var> is not in <var>inclusive descendants</var> and is not in
-      <var>stack</var>, then:</p>
+      <p>If <var>inclusive descendants</var> and <var>stack</var> both do not <a href=https://infra.spec.whatwg.org/#list-contains id=fetching-scripts:list-contains data-x-internal=list-contains>contain</a> <var>current</var>, then:</p>
 
-      <ol><li><p>Add <var>current</var> to <var>inclusive descendants</var>.</li><li><p>Let <var>child specifiers</var> be the value of <var>current</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-3>module record</a>'s [[RequestedModules]]
-       internal slot.</li><li><p>Let <var>child URLs</var> be the set obtained by calling <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier>resolve a module
-       specifier</a> once for each element of <var>child specifiers</var>, given
-       <var>current</var> and that element. Omit any failures.</li><li><p>Let <var>child modules</var> be the set obtained by looking up each value in
-       <var>module map</var> whose key is given by an element of <var>child URLs</var>.</li><li><p>For each <var>s</var> in <var>child modules</var> that is not in <var>inclusive
-       descendants</var>, add <var>s</var> to <var>stack</var>.</li></ol>
+      <ol><li><p><a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append data-x-internal=list-append>Append</a> <var>current</var> to
+       <var>inclusive descendants</var>.</li><li><p>Let <var>child specifiers</var> be the value of <var>current</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-3>module record</a>'s [[RequestedModules]]
+       internal slot.</li><li><p>Let <var>child URLs</var> be the <a id=fetching-scripts:list href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> obtained by calling
+       <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier>resolve a module specifier</a> once for each item of <var>child specifiers</var>,
+       given <var>current</var> and that item. Omit any failures.</li><li><p>Let <var>child modules</var> be the <a id=fetching-scripts:list-2 href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> obtained by <a href=https://infra.spec.whatwg.org/#map-get id=fetching-scripts:map-get data-x-internal=map-get>getting each value</a> in <var>moduleMap</var> whose key is given by an
+       item of <var>child URLs</var>.</li><li><p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate data-x-internal=list-iterate>For each</a> <var>s</var> in <var>child modules</var>
+       that is not <a href=https://infra.spec.whatwg.org/#list-contains id=fetching-scripts:list-contains-2 data-x-internal=list-contains>contained by</a> <var>inclusive
+       descendants</var>, <a href=https://infra.spec.whatwg.org/#stack-push id=fetching-scripts:stack-push data-x-internal=stack-push>push</a> <var>s</var> onto
+       <var>stack</var>.</li></ol>
      </li></ol>
-   </li><li><p>Return a list containing all elements of <var>inclusive descendants</var> whose <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state-3>instantiation state</a> is "<code>uninstantiated</code>".</li></ol>
+   </li><li><p>Return a <a id=fetching-scripts:set-3 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> containing all items of <var>inclusive descendants</var> whose
+   <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state-3>instantiation state</a> is "<code>uninstantiated</code>".</li></ol>
 
   <p class=note>The above algorithm gives a depth-first search of the module dependency graph. The
   main interesting part is in how the "edges" of this graph are determined. The actual search
   implementation is not important; any other technique for exploring the graph will suffice, given
-  that the output is an unordered set.</p>
+  that the output is a <a id=fetching-scripts:set-4 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> only used for membership testing and whose order is thus not
+  important.</p>
 
   <p>To <dfn id=fetch-a-single-module-script>fetch a single module script</dfn>, given a <var>url</var>, a <var>fetch client
   settings object</var>, a <var>destination</var>, a <var>cryptographic nonce</var>, a <var>parser
@@ -760,9 +641,11 @@
   will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-9>module script</a> (on
   success).</p>
 
-  <ol><li><p>Let <var>module map</var> be <var>module map settings object</var>'s <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map-2>module map</a>.</li><li><p>If <var>module map</var> contains an entry with key <var>url</var> whose value is "<code>fetching</code>", wait (<a id=fetching-scripts:in-parallel href=infrastructure.html#in-parallel>in parallel</a>) until that entry's value changes,
-   then proceed to the next step.</li><li><p>If <var>module map</var> contains an entry with key <var>url</var>, asynchronously
-   complete this algorithm with that entry's value, and abort these steps.</li><li><p>Create an entry in <var>module map</var> with key <var>url</var> and value "<code>fetching</code>".</p>
+  <ol><li><p>Let <var>moduleMap</var> be <var>module map settings object</var>'s <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map-2>module map</a>.</li><li><p>If <var>moduleMap</var>[<var>url</var>] is "<code>fetching</code>", wait
+   (<a id=fetching-scripts:in-parallel href=infrastructure.html#in-parallel>in parallel</a>) until that entry's value changes, then proceed to the next
+   step.</li><li><p>If <var>moduleMap</var>[<var>url</var>] <a href=https://infra.spec.whatwg.org/#map-exists id=fetching-scripts:map-exists data-x-internal=map-exists>exists</a>,
+   asynchronously complete this algorithm with <var>moduleMap</var>[<var>url</var>], and abort these
+   steps.</li><li><p><a href=https://infra.spec.whatwg.org/#map-set id=fetching-scripts:map-set data-x-internal=map-set>Set</a> <var>moduleMap</var>[<var>url</var>] to "<code>fetching</code>".</p>
 
    </li><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-7 data-x-internal=concept-request>request</a> whose
    <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-3 data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination-3 data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-4 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode-2 data-x-internal=concept-request-mode>mode</a> is "<code>cors</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode-2 data-x-internal=concept-request-credentials-mode>credentials mode</a> is <var>credentials
@@ -780,9 +663,9 @@
 
     <p class=note><var>response</var> is always <a id=fetching-scripts:cors-same-origin-2 href=infrastructure.html#cors-same-origin>CORS-same-origin</a>.</p>
    </li><li>
-    <p>If any of the following conditions are met, set the value of the entry in <var>module
-    map</var> whose key is <var>url</var> to null, asynchronously complete this algorithm with
-    null, and abort these steps:</p>
+    <p>If any of the following conditions are met, <a href=https://infra.spec.whatwg.org/#map-set id=fetching-scripts:map-set-2 data-x-internal=map-set>set</a>
+    <var>moduleMap</var>[<var>url</var>] to null, asynchronously complete this algorithm with null,
+    and abort these steps:</p>
 
     <ul class=compact><li><p><var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-type-4 data-x-internal=concept-response-type>type</a> is "<code>error</code>"</li><li><p><var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=fetching-scripts:concept-response-status-4 data-x-internal=concept-response-status>status</a> is not an
      <a id=fetching-scripts:ok-status-4 href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a></li><li>
@@ -798,9 +681,8 @@
    decoding</a> <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-body id=fetching-scripts:concept-response-body-4 data-x-internal=concept-response-body>body</a>.</li><li><p>Let <var>module script</var> be the result of <a href=#creating-a-module-script id=fetching-scripts:creating-a-module-script>creating a module script</a> given
    <var>source text</var>, <var>module map settings object</var>, <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=fetching-scripts:concept-response-url data-x-internal=concept-response-url>url</a>, <var>cryptographic
    nonce</var>, <var>parser state</var>, and <var>credentials mode</var>.</li><li>
-    <p>Set the value of the entry in <var>module map</var> whose key is <var>url</var> to
-    <var>module script</var>, and asynchronously complete this algorithm with <var>module
-    script</var>.</p>
+    <p><a href=https://infra.spec.whatwg.org/#map-set id=fetching-scripts:map-set-3 data-x-internal=map-set>Set</a> <var>moduleMap</var>[<var>url</var>] to <var>module
+    script</var>, and asynchronously complete this algorithm with <var>module script</var>.</p>
 
     <p class=note>It is intentional that the <a href=#module-map id=fetching-scripts:module-map>module map</a> is keyed by the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-4 data-x-internal=concept-request-url>request URL</a>, whereas the <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a> for the <a href=#module-script id=fetching-scripts:module-script-10>module script</a> is
     set to the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=fetching-scripts:concept-response-url-2 data-x-internal=concept-response-url>response URL</a>. The former is used to
@@ -812,9 +694,10 @@
   asynchronously complete with either null (on failure) or with <var>module script</var> (on
   success).</p>
 
-  <ol><li><p>Let <var>record</var> be <var>module script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-4>module record</a>.</li><li><p>If <var>record</var>.[[RequestedModules]] is empty, asynchronously complete this
-   algorithm with <var>module script</var>.</li><li><p>Let <var>urls</var> be a new empty list.</li><li>
-    <p>For each string <var>requested</var> of <var>record</var>.[[RequestedModules]],</p>
+  <ol><li><p>Let <var>record</var> be <var>module script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-4>module record</a>.</li><li><p>If <var>record</var>.[[RequestedModules]] <a href=https://infra.spec.whatwg.org/#list-is-empty id=fetching-scripts:list-is-empty-2 data-x-internal=list-is-empty>is empty</a>,
+   asynchronously complete this algorithm with <var>module script</var>.</li><li><p>Let <var>urls</var> be a new empty <a id=fetching-scripts:list-3 href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a>.</li><li>
+    <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate-2 data-x-internal=list-iterate>For each</a> string <var>requested</var> of
+    <var>record</var>.[[RequestedModules]],</p>
 
     <ol><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier-2>resolving
      a module specifier</a> given <var>module script</var> and <var>requested</var>.</li><li>
@@ -822,21 +705,22 @@
 
       <ol><li><p>Let <var>error</var> be a new <code id=fetching-scripts:typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception.</li><li><p><a href=#report-the-exception id=fetching-scripts:report-the-exception>Report the exception</a> <var>error</var> for <var>module
        script</var>.</li><li><p>Abort this algorithm, and asynchronously complete it with null.</li></ol>
-     </li><li><p>Otherwise, if <var>url</var> is not in <var>ancestor list</var>, add <var>url</var> to
-     <var>urls</var>.</li></ol>
+     </li><li><p>Otherwise, if <var>ancestor list</var> does not <a href=https://infra.spec.whatwg.org/#list-contains id=fetching-scripts:list-contains-3 data-x-internal=list-contains>contain</a> <var>url</var>, <a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append-2 data-x-internal=list-append>append</a>
+     <var>url</var> to <var>urls</var>.</li></ol>
    </li><li>
-    <p>For each <var>url</var> in <var>urls</var>, perform the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-5>internal module script tree
-    fetching procedure</a> given <var>url</var>, <var>module script</var>'s <a href=#concept-module-script-credentials-mode id=fetching-scripts:concept-module-script-credentials-mode>credentials mode</a>, <var>module
-    script</var>'s <a href=#concept-module-script-nonce id=fetching-scripts:concept-module-script-nonce>cryptographic nonce</a>,
-    <var>module script</var>'s <a href=#concept-module-script-parser id=fetching-scripts:concept-module-script-parser>parser state</a>,
-    <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>, <var>module
-    script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-3>settings object</a>, <var>ancestor list</var>, <var>module
+    <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate-3 data-x-internal=list-iterate>For each</a> <var>url</var> in <var>urls</var>, perform the
+    <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-5>internal module script graph fetching procedure</a> given <var>url</var>, <var>module
+    script</var>'s <a href=#concept-module-script-credentials-mode id=fetching-scripts:concept-module-script-credentials-mode>credentials mode</a>,
+    <var>module script</var>'s <a href=#concept-module-script-nonce id=fetching-scripts:concept-module-script-nonce>cryptographic
+    nonce</a>, <var>module script</var>'s <a href=#concept-module-script-parser id=fetching-scripts:concept-module-script-parser>parser
+    state</a>, <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>,
+    <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-3>settings object</a>, <var>ancestor list</var>, <var>module
     script</var>'s <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url-2>base URL</a>, and with the
     <var>top-level module fetch</var> flag unset. If the caller of this algorithm specified custom
     <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-14>perform the fetch</a> steps, pass those along
-    while performing the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-6>internal module script tree fetching procedure</a>.</p>
+    while performing the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-6>internal module script graph fetching procedure</a>.</p>
 
-    <p>Wait for all of the <a href=#internal-module-script-tree-fetching-procedure id=fetching-scripts:internal-module-script-tree-fetching-procedure-7>internal module script tree fetching procedure</a> invocations
+    <p>Wait for all of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-7>internal module script graph fetching procedure</a> invocations
     to asynchronously complete. If any of them asynchronously complete with null, then
     asynchronously complete this algorithm with null. Otherwise, asynchronously complete this
     algorithm with <var>module script</var>.</p>
@@ -867,7 +751,7 @@
    <a href=#environment-settings-object id=creating-scripts:environment-settings-object-7>environment settings object</a>'s <a href=#responsible-browsing-context id=creating-scripts:responsible-browsing-context-2>responsible browsing context</a>, then let
    <var>script source</var> be the empty string. Otherwise, let <var>script source</var> be the
    provided script source.</li><li><p>Let <var>result</var> be <a href=https://tc39.github.io/ecma262/#sec-parsemodule id=creating-scripts:js-parsemodule data-x-internal=js-parsemodule>ParseModule</a>(<var>script source</var>, <var>realm</var>,
-   <var>script</var>).</li><li><p>If <var>result</var> is a <a id=creating-scripts:list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a> of errors, <a href=#report-the-exception id=creating-scripts:report-the-exception>report the exception</a>
+   <var>script</var>).</li><li><p>If <var>result</var> is a <a id=creating-scripts:list href=https://infra.spec.whatwg.org/#list data-x-internal=list>List</a> of errors, <a href=#report-the-exception id=creating-scripts:report-the-exception>report the exception</a>
    given by the first element of <var>result</var> for <var>script</var>, return null, and abort
    these steps.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-module-record id=creating-scripts:concept-module-script-module-record>module
    record</a> to <var>result</var>.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-base-url id=creating-scripts:concept-module-script-base-url>base URL</a> to
@@ -883,7 +767,7 @@
 
   <ol><li><p>Let <var>settings</var> be the <a href=#settings-object id=calling-scripts:settings-object>settings object</a> of <var>s</var>.</li><li><p><a href=#check-if-we-can-run-script id=calling-scripts:check-if-we-can-run-script>Check if we can run script</a> with <var>settings</var>. If this returns "do not
    run", then return undefined and abort these steps.</li><li><p>Let <var>realm</var> be <var>settings</var>'s <a href="#environment-settings-object's-realm" id="calling-scripts:environment-settings-object's-realm">Realm</a>.</li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script>Prepare to run script</a> with <var>settings</var>.</li><li><p>Let <var>result</var> be <a href=https://tc39.github.io/ecma262/#sec-parse-script id=calling-scripts:js-parsescript data-x-internal=js-parsescript>ParseScript</a>(<var>s</var>'s <a href=#concept-classic-script-source-text id=calling-scripts:concept-classic-script-source-text>source text</a>, <var>realm</var>,
-   <var>s</var>).</li><li><p>If <var>result</var> is a <a id=calling-scripts:list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a> of errors, set <var>result</var> to the first
+   <var>s</var>).</li><li><p>If <var>result</var> is a <a id=calling-scripts:list href=https://infra.spec.whatwg.org/#list data-x-internal=list>List</a> of errors, set <var>result</var> to the first
    element of <var>result</var> and go to the step labeled <i>error</i>.</li><li><p>Let <var>evaluationStatus</var> be <a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation id=calling-scripts:js-scriptevaluation data-x-internal=js-scriptevaluation>ScriptEvaluation</a>(<var>result</var>).</li><li><p>If <var>evaluationStatus</var> is an abrupt completion, set <var>result</var> to
    <var>evaluationStatus</var>.[[Value]] and go to the next step (labeled <i>error</i>). If
    <var>evaluationStatus</var> is a normal completion, or if <a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation id=calling-scripts:js-scriptevaluation-2 data-x-internal=js-scriptevaluation>ScriptEvaluation</a> does not complete because the user agent
@@ -1467,10 +1351,9 @@ document.querySelector("button").addEventListener("click", bound);
   scripts</a> versus <a href=#module-script id=integration-with-the-javascript-module-system:module-script>module scripts</a>, since both of them use
   the <code id=integration-with-the-javascript-module-system:the-script-element-2><a href=scripting.html#the-script-element>script</a></code> element.</p>
 
-  <p>A <dfn id=module-map>module map</dfn> is a map of <a id=integration-with-the-javascript-module-system:absolute-url href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>s to values that are either a
-  <a href=#module-script id=integration-with-the-javascript-module-system:module-script-2>module script</a>, null (used to represent failed fetches), or a placeholder value "<code>fetching</code>". <a href=#module-map id=integration-with-the-javascript-module-system:module-map>Module maps</a> are used to ensure that
-  imported JavaScript modules are only fetched, parsed, and evaluated once per <code id=integration-with-the-javascript-module-system:document><a href=dom.html#document>Document</a></code>
-  or <a href=workers.html#workers>worker</a>.</p>
+  <p>A <dfn id=module-map>module map</dfn> is a <a href=https://infra.spec.whatwg.org/#ordered-map id=integration-with-the-javascript-module-system:ordered-map data-x-internal=ordered-map>map</a> of <a href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute id=integration-with-the-javascript-module-system:absolute-url data-x-internal=absolute-url>absolute URLs</a> to values that are either a <a href=#module-script id=integration-with-the-javascript-module-system:module-script-2>module script</a>, null (used to
+  represent failed fetches), or a placeholder value "<code>fetching</code>". <a href=#module-map id=integration-with-the-javascript-module-system:module-map>Module maps</a> are used to ensure that imported JavaScript modules are
+  only fetched, parsed, and evaluated once per <code id=integration-with-the-javascript-module-system:document><a href=dom.html#document>Document</a></code> or <a href=workers.html#workers>worker</a>.</p>
 
   <p>To <dfn id=resolve-a-module-specifier>resolve a module specifier</dfn> given a <a href=#module-script id=integration-with-the-javascript-module-system:module-script-3>module script</a> <var>script</var>
   and a string <var>specifier</var>, perform the following steps. It will return either an
@@ -1488,17 +1371,34 @@ document.querySelector("button").addEventListener("click", bound);
    <var>script</var>'s <a href=#concept-module-script-base-url id=integration-with-the-javascript-module-system:concept-module-script-base-url>base URL</a> as the base
    URL.</li></ol>
 
+  <div class=example>
+   <p>The following are valid module specifiers according to the above algorithm:</p>
+
+   <ul class=brief><li><code>https://example.com/apples.js</code></li><li><code>http:example.com\pears.mjs</code> (becomes <code>http://example.com/pears.mjs</code> as step 1 parses with no base URL)</li><li><code>//example.com/bananas</code></li><li><code>./strawberries.js.cgi</code></li><li><code>../lychees</code></li><li><code>/limes.jsx</code></li><li><code>data:text/javascript,export default 'grapes';</code></li><li><code>blob:https://whatwg.org/d0360e2f-caee-469f-9a2f-87d5b0456f6f</code></li></ul>
+
+   <p>The following are valid module specifiers according to the above algorithm, but will
+   invariably cause failures when they are <a href=#fetch-a-single-module-script id=integration-with-the-javascript-module-system:fetch-a-single-module-script>fetched</a>:</p>
+
+   <ul class=brief><li><code>javascript:export default 'artichokes';</code></li><li><code>data:text/plain,export default 'kale';</code></li><li><code>about:legumes</code></li><li><code>wss://example.com/celery</code></li></ul>
+
+   <p>The following are not valid module specifiers according to the above algorithm:</p>
+
+   <ul class=brief><li><code>https://f:b/c</code></li><li><code>pumpkins.js</code></li></ul>
+  </div>
+
   <h6 id=hostresolveimportedmodule(referencingmodule,-specifier)>8.1.3.8.1 <dfn>HostResolveImportedModule</dfn>(<var>referencingModule</var>, <var>specifier</var>)<a href=#hostresolveimportedmodule(referencingmodule,-specifier) class=self-link></a></h6>
 
   <p>JavaScript contains an implementation-defined <a href=https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule id=hostresolveimportedmodule(referencingmodule,-specifier):js-hostresolveimportedmodule data-x-internal=js-hostresolveimportedmodule>HostResolveImportedModule</a> abstract operation. User
   agents must use the following implementation: <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
 
   <ol><li><p>Let <var>referencing module script</var> be
-   <var>referencingModule</var>.[[HostDefined]].</li><li><p>Let <var>module map</var> be <var>referencing module script</var>'s <a href=#settings-object id=hostresolveimportedmodule(referencingmodule,-specifier):settings-object>settings
+   <var>referencingModule</var>.[[HostDefined]].</li><li><p>Let <var>moduleMap</var> be <var>referencing module script</var>'s <a href=#settings-object id=hostresolveimportedmodule(referencingmodule,-specifier):settings-object>settings
    object</a>'s <a href=#concept-settings-object-module-map id=hostresolveimportedmodule(referencingmodule,-specifier):concept-settings-object-module-map>module map</a>.</li><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=hostresolveimportedmodule(referencingmodule,-specifier):resolve-a-module-specifier>resolving a
    module specifier</a> given <var>referencing module script</var> and <var>specifier</var>. If
-   the result is failure, throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these steps.</li><li><p>Let <var>resolved module script</var> be the value of the entry in <var>module map</var>
-   whose key is <var>url</var>. If no such entry exists, or if the value is null or "<code>fetching</code>", throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror-2><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these
+   the result is failure, then throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these
+   steps.</li><li><p>Let <var>resolved module script</var> be <var>moduleMap</var>[<var>url</var>]. If no such
+   entry <a href=https://infra.spec.whatwg.org/#map-exists id=hostresolveimportedmodule(referencingmodule,-specifier):map-exists data-x-internal=map-exists>exists</a>, or if <var>resolved module script</var> is null or
+   "<code>fetching</code>", then throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror-2><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these
    steps.</li><li><p>If <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-state id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-state>instantiation state</a> is "<code>errored</code>", then throw <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-error id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-error>instantiation error</a>.</li><li><p>Assert: <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-state id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-state-2>instantiation state</a> is "<code>instantiated</code>" (and thus its <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record>module record</a> is not null).</li><li><p>Return <var>resolved module script</var>'s <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record-2>module record</a>.</li></ol>
 
   
@@ -2657,7 +2557,7 @@ document.body.appendChild(frame)</pre>
   object's <span>relevant setting object</span>'s <a href=#concept-settings-object-origin id=windoworworkerglobalscope-mixin:concept-settings-object-origin>origin</a>, <a href=browsers.html#unicode-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:unicode-serialisation-of-an-origin>serialized</a>.</p>
 
 
-  <h3 id=atob>8.3 Base64のユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob>8.3 Base64のユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>
@@ -2970,7 +2870,7 @@ document.body.appendChild(frame)</pre>
 
    </li><li><p>Let <var>type</var> be the value of the first argument.</li><li>
 
-    <p>If the second argument is an <a id=opening-the-input-stream:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the value
+    <p>If the second argument is an <a id=opening-the-input-stream:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the value
     "replace", then let <var>replace</var> be true.</p>
 
     <p>Otherwise, if the <a id=opening-the-input-stream:browsing-context href=browsers.html#browsing-context>browsing context</a>'s <a id=opening-the-input-stream:session-history href=browsers.html#session-history>session history</a> contains only
@@ -3017,7 +2917,7 @@ document.body.appendChild(frame)</pre>
 
     
 
-    <p>If <var>type</var> is an <a id=opening-the-input-stream:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the string
+    <p>If <var>type</var> is an <a id=opening-the-input-stream:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string
     "<code>replace</code>", then, for historical reasons, set it to the string "<code>text/html</code>".</p>
 
     <p>Otherwise:</p>
@@ -3029,7 +2929,7 @@ document.body.appendChild(frame)</pre>
 
    </li><li>
 
-    <p>If <var>type</var> is <em>not</em> now an <a id=opening-the-input-stream:ascii-case-insensitive-3 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match
+    <p>If <var>type</var> is <em>not</em> now an <a id=opening-the-input-stream:ascii-case-insensitive-3 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match
     for the string "<code id=opening-the-input-stream:text/html-2><a href=iana.html#text/html>text/html</a></code>", then act as if the tokenizer had emitted a start tag
     token with the tag name "pre" followed by a single U+000A LINE FEED (LF) character, then switch the
     <a id=opening-the-input-stream:html-parser-2 href=syntax.html#html-parser>HTML parser</a>'s tokenizer to the <a id=opening-the-input-stream:plaintext-state href=syntax.html#plaintext-state>PLAINTEXT state</a>.</p>
@@ -3780,7 +3680,7 @@ interface <dfn id=navigatorlanguage>NavigatorLanguage</dfn> {
 
 
 
-  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods<a href=#custom-handlers class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
+  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods<a href=#custom-handlers class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
 
   <pre class=idl>[NoInterfaceObject]
 interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
@@ -3793,7 +3693,7 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
   void <a href=#dom-navigator-unregistercontenthandler id=custom-handlers:dom-navigator-unregistercontenthandler>unregisterContentHandler</a>(DOMString mimeType, USVString url);
 };</pre>
 
-  <p><dfn id=dom-navigator-registerprotocolhandler><code>registerProtocolHandler()</code></dfn>メソッドは、ウェブサイトが特定のスキームに対する可能なハンドラーとして自身の登録を可能にする。For example, an online telephone messaging service could register itself as a handler of the <code id=custom-handlers:sms-protocol><a data-x-internal=sms-protocol href=https://tools.ietf.org/html/rfc5724#section-2>sms:</a></code> scheme, so that if the user clicks on such a link, they are given the opportunity to use that Web site. Analogously, the <dfn id=dom-navigator-registercontenthandler><code>registerContentHandler()</code></dfn> method allows Web sites to register themselves as possible handlers for content in a particular <a id=custom-handlers:mime-type href=infrastructure.html#mime-type>MIME type</a>. For example, the same online telephone messaging service could register itself as a handler for <code id=custom-handlers:text/vcard><a href=indices.html#text/vcard>text/vcard</a></code> files, so that if the user has no native application capable of handling vCards, their Web browser can instead suggest they use that site to view contact information stored on vCards that they open. <a href=references.html#refsSMS>[SMS]</a> <a href=references.html#refsRFC6350>[RFC6350]</a></p>
+  <p><dfn id=dom-navigator-registerprotocolhandler><code>registerProtocolHandler()</code></dfn>メソッドは、ウェブサイトが特定のスキームに対する可能なハンドラーとして自身の登録を可能にする。For example, an online telephone messaging service could register itself as a handler of the <code id=custom-handlers:sms-protocol><a data-x-internal=sms-protocol href=https://tools.ietf.org/html/rfc5724#section-2>sms:</a></code> scheme, so that if the user clicks on such a link, they are given the opportunity to use that Web site. Analogously, the <dfn id=dom-navigator-registercontenthandler><code>registerContentHandler()</code></dfn> method allows Web sites to register themselves as possible handlers for content in a particular <a id=custom-handlers:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a>. For example, the same online telephone messaging service could register itself as a handler for <code id=custom-handlers:text/vcard><a href=indices.html#text/vcard>text/vcard</a></code> files, so that if the user has no native application capable of handling vCards, their Web browser can instead suggest they use that site to view contact information stored on vCards that they open. <a href=references.html#refsSMS>[SMS]</a> <a href=references.html#refsRFC6350>[RFC6350]</a></p>
 
   <dl class=domintro><dt><var>window</var> . <code id=custom-handlers:dom-navigator><a href=#dom-navigator>navigator</a></code> . <code id=custom-handlers:dom-navigator-registerprotocolhandler-3><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler</a></code>(<var>scheme</var>, <var>url</var>, <var>title</var>)<dt><var>window</var> . <code id=custom-handlers:dom-navigator-2><a href=#dom-navigator>navigator</a></code> . <code id=custom-handlers:dom-navigator-registercontenthandler-3><a href=#dom-navigator-registercontenthandler>registerContentHandler</a></code>(<var>mimeType</var>, <var>url</var>, <var>title</var>)<dd>
 
@@ -3830,7 +3730,7 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
   <dl><dt><var>scheme</var> (<code id=custom-handlers:dom-navigator-registerprotocolhandler-4><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> only)<dd>
 
     <p>A scheme, such as "<code>mailto</code>" or "<code>web+auth</code>". The
-    scheme must be compared in an <a id=custom-handlers:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> manner by user agents for the
+    scheme must be compared in an <a id=custom-handlers:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> manner by user agents for the
     purposes of comparing with the scheme part of URLs that they consider against the list of
     registered handlers.</p>
 
@@ -3860,8 +3760,8 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
 
    <dt><var>mimeType</var> (<code id=custom-handlers:dom-navigator-registercontenthandler-4><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> only)<dd>
 
-    <p>A <a id=custom-handlers:mime-type-2 href=infrastructure.html#mime-type>MIME type</a>, such as <code>model/vnd.flatland.3dml</code> or <code>application/vnd.google-earth.kml+xml</code>. The <a id=custom-handlers:mime-type-3 href=infrastructure.html#mime-type>MIME type</a> must be
-    compared in an <a id=custom-handlers:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> manner by user agents for the purposes of
+    <p>A <a id=custom-handlers:mime-type-2 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a>, such as <code>model/vnd.flatland.3dml</code> or <code>application/vnd.google-earth.kml+xml</code>. The <a id=custom-handlers:mime-type-3 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> must be
+    compared in an <a id=custom-handlers:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> manner by user agents for the purposes of
     comparing with MIME types of documents that they consider against the list of registered
     handlers.</p>
 
@@ -3870,15 +3770,15 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
     values passed to this method include characters such as commas or whitespace, or include MIME
     parameters, then the handler being registered will never be used.</p>
 
-    <p class=note>The type is compared to the <a id=custom-handlers:mime-type-4 href=infrastructure.html#mime-type>MIME type</a> used by the user agent
+    <p class=note>The type is compared to the <a id=custom-handlers:mime-type-4 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> used by the user agent
     <em>after</em> the sniffing algorithms have been applied.</p>
 
     <p>If the <code id=custom-handlers:dom-navigator-registercontenthandler-5><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code>
-    method is invoked with a <a id=custom-handlers:mime-type-5 href=infrastructure.html#mime-type>MIME type</a> that is in the <a href=#type-blocklist id=custom-handlers:type-blocklist>type blocklist</a> or
+    method is invoked with a <a id=custom-handlers:mime-type-5 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> that is in the <a href=#type-blocklist id=custom-handlers:type-blocklist>type blocklist</a> or
     that the user agent has deemed a privileged type, the user agent must throw a
     <a id=custom-handlers:securityerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=custom-handlers:domexception-4><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</p>
 
-    <p>The following <a href=infrastructure.html#mime-type id=custom-handlers:mime-type-6>MIME types</a> are in the <dfn id=type-blocklist>type
+    <p>The following <a href=https://mimesniff.spec.whatwg.org/#mime-type id=custom-handlers:mime-type-6 data-x-internal=mime-type>MIME types</a> are in the <dfn id=type-blocklist>type
     blocklist</dfn>:</p>
 
     <ul class=brief><li><code id=custom-handlers:application/x-www-form-urlencoded><a data-x-internal=application/x-www-form-urlencoded href=https://triple-underscore.github.io/URL-ja.html#concept-urlencoded>application/x-www-form-urlencoded</a></code></li><li><code id=custom-handlers:application/xhtml+xml><a href=iana.html#application/xhtml+xml>application/xhtml+xml</a></code></li><li><code id=custom-handlers:application/xml><a href=indices.html#application/xml>application/xml</a></code></li><li><code id=custom-handlers:image/gif><a href=indices.html#image/gif>image/gif</a></code></li><li><code id=custom-handlers:image/jpeg><a href=indices.html#image/jpeg>image/jpeg</a></code></li><li><code id=custom-handlers:image/png><a href=indices.html#image/png>image/png</a></code></li><li><code id=custom-handlers:image/svg+xml><a href=indices.html#image/svg+xml>image/svg+xml</a></code></li><li><code id=custom-handlers:multipart/x-mixed-replace><a href=iana.html#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code></li><li><code id=custom-handlers:text/cache-manifest><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code></li><li><code id=custom-handlers:text/css><a href=indices.html#text/css>text/css</a></code></li><li><code id=custom-handlers:text/html><a href=iana.html#text/html>text/html</a></code></li><li><code id=custom-handlers:text/ping><a href=iana.html#text/ping>text/ping</a></code></li><li><code id=custom-handlers:text/plain><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code></li><li><code id=custom-handlers:text/vtt><a href=indices.html#text/vtt>text/vtt</a></code></li><li><code id=custom-handlers:text/xml><a href=indices.html#text/xml>text/xml</a></code></li><li>All types that the user agent supports displaying natively in a <a id=custom-handlers:browsing-context href=browsers.html#browsing-context>browsing context</a> during <a href=browsers.html#navigate id=custom-handlers:navigate>navigation</a>, except for <code id=custom-handlers:application/rss+xml><a href=indices.html#application/rss+xml>application/rss+xml</a></code> and <code id=custom-handlers:application/atom+xml><a href=indices.html#application/atom+xml>application/atom+xml</a></code></li></ul>
@@ -3939,7 +3839,7 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
      <pre>&lt;a href="chickenkïwi.soup"&gt;Download our Chicken Kïwi soup!&lt;/a&gt;</pre>
 
      <p>...then, assuming this <code>chickenkïwi.soup</code> file was served with the
-     <a id=custom-handlers:mime-type-7 href=infrastructure.html#mime-type>MIME type</a> <code>application/x-soup</code>, the UA might navigate to the
+     <a id=custom-handlers:mime-type-7 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> <code>application/x-soup</code>, the UA might navigate to the
      following URL:</p>
 
      <pre>https://example.com/soup?url=https://www.example.net/chickenk%C3%AFwi.soup</pre>
@@ -4008,7 +3908,7 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
   </p>
 
   <p>The first argument must be compared to the schemes for which custom protocol handlers are
-  registered in an <a id=custom-handlers:ascii-case-insensitive-3 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> manner to find the relevant handlers.</p>
+  registered in an <a id=custom-handlers:ascii-case-insensitive-3 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> manner to find the relevant handlers.</p>
 
   <p>The second argument must be preprocessed as described below, and if that is successful, must
   then be matched against the <a href=#proto-url id=custom-handlers:proto-url>proto-URLs</a> of the relevant handlers to
@@ -4019,14 +3919,14 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
   <p>The <dfn id=dom-navigator-iscontenthandlerregistered><code>isContentHandlerRegistered()</code></dfn>
   method must return the <a href=#handler-state-string id=custom-handlers:handler-state-string-2>handler state string</a> that most closely describes the current
   state of the handler described by the two arguments to the method, where the first argument gives
-  the <a id=custom-handlers:mime-type-8 href=infrastructure.html#mime-type>MIME type</a> and the second gives the string used to build the <a id=custom-handlers:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of
+  the <a id=custom-handlers:mime-type-8 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> and the second gives the string used to build the <a id=custom-handlers:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of
   the page that will handle the requests.
   
   <a id=custom-handlers:fingerprinting-vector-2 title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=https://html.spec.whatwg.org/images/fingerprint.png width=46 height=64></a>
   </p>
 
-  <p>The first argument must be compared to the <a href=infrastructure.html#mime-type id=custom-handlers:mime-type-9>MIME types</a> for which
-  custom content handlers are registered in an <a id=custom-handlers:ascii-case-insensitive-4 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> manner to find
+  <p>The first argument must be compared to the <a href=https://mimesniff.spec.whatwg.org/#mime-type id=custom-handlers:mime-type-9 data-x-internal=mime-type>MIME types</a> for which
+  custom content handlers are registered in an <a id=custom-handlers:ascii-case-insensitive-4 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> manner to find
   the relevant handlers.</p>
 
   <p>The second argument must be preprocessed as described below, and if that is successful, must
@@ -4119,7 +4019,7 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
   the page that will handle the requests.</p>
 
   <p>The first argument must be compared to the schemes for which custom protocol handlers are
-  registered in an <a id=custom-handlers:ascii-case-insensitive-5 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> manner to find the relevant handlers.</p>
+  registered in an <a id=custom-handlers:ascii-case-insensitive-5 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> manner to find the relevant handlers.</p>
 
   <p>The second argument must be preprocessed as described below, and if that is successful, must
   then be matched against the <a href=#proto-url id=custom-handlers:proto-url-3>proto-URLs</a> of the relevant handlers to
@@ -4129,11 +4029,11 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
 
   <p>The <dfn id=dom-navigator-unregistercontenthandler><code>unregisterContentHandler()</code></dfn>
   method must unregister the handler described by the two arguments to the method, where the first
-  argument gives the <a id=custom-handlers:mime-type-10 href=infrastructure.html#mime-type>MIME type</a> and the second gives the string used to build the
+  argument gives the <a id=custom-handlers:mime-type-10 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> and the second gives the string used to build the
   <a id=custom-handlers:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the page that will handle the requests.</p>
 
-  <p>The first argument must be compared to the <a href=infrastructure.html#mime-type id=custom-handlers:mime-type-11>MIME types</a> for which
-  custom content handlers are registered in an <a id=custom-handlers:ascii-case-insensitive-6 href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> manner to find
+  <p>The first argument must be compared to the <a href=https://mimesniff.spec.whatwg.org/#mime-type id=custom-handlers:mime-type-11 data-x-internal=mime-type>MIME types</a> for which
+  custom content handlers are registered in an <a id=custom-handlers:ascii-case-insensitive-6 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> manner to find
   the relevant handlers.</p>
 
   <p>The second argument must be preprocessed as described below, and if that is successful, must
@@ -4256,7 +4156,7 @@ interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
   <p>If the user clicks the Cancel button, then nothing further happens. If the user clicks the
   "Trust" button, then the handler is remembered.</p>
 
-  <p>When the user then attempts to fetch a URL that uses the "application/x-meowmeow" <a id=sample-handler-impl:mime-type href=infrastructure.html#mime-type>MIME
+  <p>When the user then attempts to fetch a URL that uses the "application/x-meowmeow" <a id=sample-handler-impl:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME
   type</a>, then it might display a dialog as follows:</p>
 
   <p><img src=https://html.spec.whatwg.org/multipage/images/sample-content-handler.png width=577 alt="The dialog box could have the title 'Unknown File Type' and could say 'You have attempted to access:' followed by a URL, followed by a prompt such as 'How would you like FerretBrowser to handle this resource?' with three radio buttons, one saying 'Contact the FerretBrowser plugin registry to see if there is an official way to handle this resource.', one saying 'Pass this URL to a local application' with an application selector, and one saying 'Pass this URL to the &quot;Kittens-at-work displayer&quot; application at &quot;kittens.example.org&quot;', with a checkbox labeled 'Always do this for resources using the &quot;application/x-meowmeow&quot; type in future.', and with two buttons, 'Ok' and 'Cancel'." height=428></p>
@@ -4413,13 +4313,13 @@ interface <dfn id=mimetype>MimeType</dfn> {
   it is updated by the <code id=plugins-2:dom-pluginarray-refresh-3><a href=#dom-pluginarray-refresh>refresh()</a></code> method.</p>
 
   <p>Each <a id=plugins-2:plugin-3 href=infrastructure.html#plugin>plugin</a> represented by a <code id=plugins-2:pluginarray-6><a href=#pluginarray>PluginArray</a></code> can support a number of
-  <a href=infrastructure.html#mime-type id=plugins-2:mime-type>MIME types</a>. For each such <a id=plugins-2:plugin-4 href=infrastructure.html#plugin>plugin</a>, the user agent must
-  pick one or more of these <a href=infrastructure.html#mime-type id=plugins-2:mime-type-2>MIME types</a> to be those that are
+  <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type data-x-internal=mime-type>MIME types</a>. For each such <a id=plugins-2:plugin-4 href=infrastructure.html#plugin>plugin</a>, the user agent must
+  pick one or more of these <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-2 data-x-internal=mime-type>MIME types</a> to be those that are
   <dfn id=explicitly-supported>explicitly supported</dfn>.</p>
 
-  <p class=note>The <a href=#explicitly-supported id=plugins-2:explicitly-supported>explicitly supported</a> <a href=infrastructure.html#mime-type id=plugins-2:mime-type-3>MIME types</a> of
+  <p class=note>The <a href=#explicitly-supported id=plugins-2:explicitly-supported>explicitly supported</a> <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-3 data-x-internal=mime-type>MIME types</a> of
   a <a id=plugins-2:plugin-5 href=infrastructure.html#plugin>plugin</a> are those that are exposed through the <code id=plugins-2:dom-plugin-10><a href=#dom-plugin>Plugin</a></code> and <code id=plugins-2:mimetypearray-3><a href=#mimetypearray>MimeTypeArray</a></code> interfaces. As with <a href=infrastructure.html#plugin id=plugins-2:plugin-6>plugins</a> themselves, any variation between users regarding what is exposed
-  allows sites to fingerprint users. User agents are therefore encouraged to expose the same <a href=infrastructure.html#mime-type id=plugins-2:mime-type-4>MIME types</a> for all users of a <a id=plugins-2:plugin-7 href=infrastructure.html#plugin>plugin</a>, regardless of the
+  allows sites to fingerprint users. User agents are therefore encouraged to expose the same <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-4 data-x-internal=mime-type>MIME types</a> for all users of a <a id=plugins-2:plugin-7 href=infrastructure.html#plugin>plugin</a>, regardless of the
   actual types supported... at least, within the constraints imposed by compatibility with legacy
   content.</p>
 
@@ -4477,7 +4377,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
 
   <hr>
 
-  <p>A <code id=plugins-2:mimetypearray-6><a href=#mimetypearray>MimeTypeArray</a></code> object represents the <a href=infrastructure.html#mime-type id=plugins-2:mime-type-5>MIME types</a>
+  <p>A <code id=plugins-2:mimetypearray-6><a href=#mimetypearray>MimeTypeArray</a></code> object represents the <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-5 data-x-internal=mime-type>MIME types</a>
   <a href=#explicitly-supported id=plugins-2:explicitly-supported-2>explicitly supported</a> by <a href=infrastructure.html#plugin id=plugins-2:plugin-12>plugins</a> supported by the user
   agent, each of which is represented by a <code id=plugins-2:mimetype-17><a href=#mimetype>MimeType</a></code> object.</p>
 
@@ -4486,7 +4386,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
   when it is updated by the <code id=plugins-2:pluginarray-18><a href=#pluginarray>PluginArray</a></code> object's <code id=plugins-2:dom-pluginarray-refresh-5><a href=#dom-pluginarray-refresh>refresh()</a></code> method.</p>
 
   <p>The <a id=plugins-2:supported-property-indices-3 href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-supported-property-indices data-x-internal=supported-property-indices>supported property indices</a> of a <code id=plugins-2:mimetypearray-8><a href=#mimetypearray>MimeTypeArray</a></code> object are the
-  numbers from zero to the number of <a href=infrastructure.html#mime-type id=plugins-2:mime-type-6>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-3>explicitly
+  numbers from zero to the number of <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-6 data-x-internal=mime-type>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-3>explicitly
   supported</a> by non-<a href=#hidden-plugin id=plugins-2:hidden-plugin-6>hidden</a> <a href=infrastructure.html#plugin id=plugins-2:plugin-13>plugins</a> represented by the corresponding <code id=plugins-2:pluginarray-19><a href=#pluginarray>PluginArray</a></code> object, if
   any.
   
@@ -4494,7 +4394,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
   </p>
 
   <p>The <dfn id=dom-mimetypearray-length><code>length</code></dfn> attribute must return the
-  number of <a href=infrastructure.html#mime-type id=plugins-2:mime-type-7>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-4>explicitly supported</a> by non-<a href=#hidden-plugin id=plugins-2:hidden-plugin-7>hidden</a> <a href=infrastructure.html#plugin id=plugins-2:plugin-14>plugins</a> represented by the
+  number of <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-7 data-x-internal=mime-type>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-4>explicitly supported</a> by non-<a href=#hidden-plugin id=plugins-2:hidden-plugin-7>hidden</a> <a href=infrastructure.html#plugin id=plugins-2:plugin-14>plugins</a> represented by the
   corresponding <code id=plugins-2:pluginarray-20><a href=#pluginarray>PluginArray</a></code> object, if any.
   
   <a id=plugins-2:fingerprinting-vector-6 title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=https://html.spec.whatwg.org/images/fingerprint.png width=46 height=64></a>
@@ -4505,7 +4405,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
   <a id=plugins-2:supported-property-indices-4 href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-supported-property-indices data-x-internal=supported-property-indices>supported property indices</a>, and otherwise must return the result of running the
   following steps, using the method's argument as <var>index</var>:</p>
 
-  <ol><li><p>Let <var>list</var> be the <code id=plugins-2:mimetype-18><a href=#mimetype>MimeType</a></code> objects representing the <a href=infrastructure.html#mime-type id=plugins-2:mime-type-8>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-5>explicitly supported</a> by non-<a href=#hidden-plugin id=plugins-2:hidden-plugin-8>hidden</a> <a href=infrastructure.html#plugin id=plugins-2:plugin-15>plugins</a> represented by the corresponding
+  <ol><li><p>Let <var>list</var> be the <code id=plugins-2:mimetype-18><a href=#mimetype>MimeType</a></code> objects representing the <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-8 data-x-internal=mime-type>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-5>explicitly supported</a> by non-<a href=#hidden-plugin id=plugins-2:hidden-plugin-8>hidden</a> <a href=infrastructure.html#plugin id=plugins-2:plugin-15>plugins</a> represented by the corresponding
    <code id=plugins-2:pluginarray-21><a href=#pluginarray>PluginArray</a></code> object, if any.</li><li><p>Sort <var>list</var> alphabetically by the <code id=plugins-2:dom-mimetype-type-4><a href=#dom-mimetype-type>type</a></code> of each <code id=plugins-2:mimetype-19><a href=#mimetype>MimeType</a></code>.</li><li><p>Return the <var>index</var>th entry in <var>list</var>.</li></ol>
 
   <p class=note>It is important <a href=introduction.html#fingerprinting-vector id=plugins-2:fingerprinting-vector-7 class=no-backref>for
@@ -4528,7 +4428,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
 
   <p>A <code id=plugins-2:dom-plugin-19><a href=#dom-plugin>Plugin</a></code> object represents a <a id=plugins-2:plugin-16 href=infrastructure.html#plugin>plugin</a>. It has
   several attributes to provide details about the plugin, and can be enumerated to obtain the list
-  of <a href=infrastructure.html#mime-type id=plugins-2:mime-type-9>MIME types</a> that it <a href=#explicitly-supported id=plugins-2:explicitly-supported-6>explicitly
+  of <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-9 data-x-internal=mime-type>MIME types</a> that it <a href=#explicitly-supported id=plugins-2:explicitly-supported-6>explicitly
   supports</a>.</p>
 
   <p>The <code id=plugins-2:dom-plugin-20><a href=#dom-plugin>Plugin</a></code> objects created by a user agent must not be
@@ -4538,7 +4438,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
   method.</p>
 
   <p>The <dfn id=reported-mime-types>reported MIME types</dfn> for a <code id=plugins-2:dom-plugin-21><a href=#dom-plugin>Plugin</a></code> object are the
-  <a href=infrastructure.html#mime-type id=plugins-2:mime-type-10>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-7>explicitly supported</a> by the corresponding
+  <a href=https://mimesniff.spec.whatwg.org/#mime-type id=plugins-2:mime-type-10 data-x-internal=mime-type>MIME types</a> <a href=#explicitly-supported id=plugins-2:explicitly-supported-7>explicitly supported</a> by the corresponding
   <a id=plugins-2:plugin-17 href=infrastructure.html#plugin>plugin</a> when this object was last created or updated by <code id=plugins-2:dom-pluginarray-refresh-7><a href=#dom-pluginarray-refresh>PluginArray.refresh()</a></code>, whichever happened most
   recently.</p>
 
@@ -4595,7 +4495,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
 
   <hr>
 
-  <p>A <code id=plugins-2:mimetype-26><a href=#mimetype>MimeType</a></code> object represents a <a id=plugins-2:mime-type-11 href=infrastructure.html#mime-type>MIME type</a> that is, or was,
+  <p>A <code id=plugins-2:mimetype-26><a href=#mimetype>MimeType</a></code> object represents a <a id=plugins-2:mime-type-11 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> that is, or was,
   <a href=#explicitly-supported id=plugins-2:explicitly-supported-8>explicitly supported</a> by a <a id=plugins-2:plugin-22 href=infrastructure.html#plugin>plugin</a>.</p>
 
   <p>The <code id=plugins-2:mimetype-27><a href=#mimetype>MimeType</a></code> objects created by a user agent must not be <a id=plugins-2:live-4 href=infrastructure.html#live>live</a>. The
@@ -4604,7 +4504,7 @@ interface <dfn id=mimetype>MimeType</dfn> {
   method.</p>
 
   <p>The <dfn id=dom-mimetype-type><code>type</code></dfn> attribute must return the
-  <a id=plugins-2:valid-mime-type-with-no-parameters href=infrastructure.html#valid-mime-type-with-no-parameters>valid MIME type with no parameters</a> describing the <a id=plugins-2:mime-type-12 href=infrastructure.html#mime-type>MIME type</a>.</p>
+  <a id=plugins-2:valid-mime-type-with-no-parameters href=https://mimesniff.spec.whatwg.org/#valid-mime-type-with-no-parameters data-x-internal=valid-mime-type-with-no-parameters>valid MIME type with no parameters</a> describing the <a id=plugins-2:mime-type-12 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a>.</p>
 
   <p>The <dfn id=dom-mimetype-description><code>description</code></dfn> and <dfn id=dom-mimetype-suffixes><code>suffixes</code></dfn> attributes must return
   user-agent-defined (or, in all likelihood, <a id=plugins-2:plugin-23 href=infrastructure.html#plugin>plugin</a>-defined) strings. In each case, the
@@ -4624,14 +4524,14 @@ interface <dfn id=mimetype>MimeType</dfn> {
 
   <p>The <dfn id=dom-mimetype-enabledplugin><code>enabledPlugin</code></dfn> attribute must
   return the <code id=plugins-2:dom-plugin-26><a href=#dom-plugin>Plugin</a></code> object that represents the <a id=plugins-2:plugin-26 href=infrastructure.html#plugin>plugin</a>
-  that <a href=#explicitly-supported id=plugins-2:explicitly-supported-9>explicitly supported</a> the <a id=plugins-2:mime-type-13 href=infrastructure.html#mime-type>MIME type</a> that this <code id=plugins-2:mimetype-28><a href=#mimetype>MimeType</a></code>
+  that <a href=#explicitly-supported id=plugins-2:explicitly-supported-9>explicitly supported</a> the <a id=plugins-2:mime-type-13 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> that this <code id=plugins-2:mimetype-28><a href=#mimetype>MimeType</a></code>
   object represents when this object was last created or updated by <code id=plugins-2:dom-pluginarray-refresh-11><a href=#dom-pluginarray-refresh>PluginArray.refresh()</a></code>, whichever happened most
   recently.</p>
 
   <hr>
 
   <p>The <dfn id=dom-navigator-javaenabled><code>navigator.javaEnabled()</code></dfn> method
-  must return true if the user agent supports a <a id=plugins-2:plugin-27 href=infrastructure.html#plugin>plugin</a> that supports the <a id=plugins-2:mime-type-14 href=infrastructure.html#mime-type>MIME
+  must return true if the user agent supports a <a id=plugins-2:plugin-27 href=infrastructure.html#plugin>plugin</a> that supports the <a id=plugins-2:mime-type-14 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME
   type</a> "<code>application/x-java-vm</code>"; otherwise it must return false.
   
   <a id=plugins-2:fingerprinting-vector-15 title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=https://html.spec.whatwg.org/images/fingerprint.png width=46 height=64></a>
@@ -5063,7 +4963,7 @@ loadMySprites().then(runDemo);</pre>
 
 
 
-  <h3 id=animation-frames>8.9 Animation Frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
+  <h3 id=animation-frames>8.9 Animation Frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
 
   <p>Each <code id=animation-frames:document><a href=dom.html#document>Document</a></code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
   initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback identifier</dfn>, which is a number which
@@ -5098,4 +4998,4 @@ loadMySprites().then(runDemo);</pre>
 
 
   <nav><a href=browsers.html>← 7 ウェブページの読み込み</a> — <a href=index.html>目次</a> — <a href=comms.html>9 コミュニケーション →</a></nav>
-</body></html>
+</html>

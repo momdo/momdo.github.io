@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -482,7 +357,7 @@ interface <dfn id=htmltableelement>HTMLTableElement</dfn> : <a id=the-table-elem
 
   <p>In all of the following attribute and method definitions, when an element is to be
   <dfn id=table-created>table-created</dfn>, that means to <a id=the-table-element:create-an-element href=https://triple-underscore.github.io/DOM4-ja.html#concept-create-element data-x-internal=create-an-element>create an element</a> given the
-  <code id=the-table-element:the-table-element-4><a href=#the-table-element>table</a></code> element's <a id=the-table-element:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, the given local name, and the <a id=the-table-element:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML
+  <code id=the-table-element:the-table-element-4><a href=#the-table-element>table</a></code> element's <a id=the-table-element:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, the given local name, and the <a id=the-table-element:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
   namespace</a>.</p>
 
   <p>取得時に、<dfn id=dom-table-caption><code>caption</code></dfn> IDL属性は、もしあれば<code id=the-table-element:the-table-element-5><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-caption-element-7><a href=#the-caption-element>caption</a></code>要素の子を返さなければならず、そうでなければnullを返さなければならない。設定時に、もしあれば、<code id=the-table-element:the-table-element-6><a href=#the-table-element>table</a></code>要素の最初の<code id=the-table-element:the-caption-element-8><a href=#the-caption-element>caption</a></code>要素の子は除去されなければならず、nullでない場合、新しい値は<code id=the-table-element:the-table-element-7><a href=#the-table-element>table</a></code>要素の最初のノードとして挿入されなければならない。</p>
@@ -977,7 +852,7 @@ interface <dfn id=htmltablesectionelement>HTMLTableSectionElement</dfn> : <a id=
    <code id=the-tbody-element:dom-tbody-rows-3><a href=#dom-tbody-rows>rows</a></code> collection, throw an
    <a id=the-tbody-element:indexsizeerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code id=the-tbody-element:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Let <var>table row</var> be the result of <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-create-element id=the-tbody-element:create-an-element data-x-internal=create-an-element>creating an
    element</a> given this element's <a id=the-tbody-element:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, <code id=the-tbody-element:the-tr-element-9><a href=#the-tr-element>tr</a></code>, and the
-   <a id=the-tbody-element:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>.</li><li><p>If <var>index</var> is −1 or equal to the number of items in the <code id=the-tbody-element:dom-tbody-rows-4><a href=#dom-tbody-rows>rows</a></code> collection, then <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-append id=the-tbody-element:concept-node-append data-x-internal=concept-node-append>append</a> <var>table row</var> to this element.</li><li><p>Otherwise, <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-insert id=the-tbody-element:concept-node-insert data-x-internal=concept-node-insert>insert</a> <var>table row</var> as a
+   <a id=the-tbody-element:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>.</li><li><p>If <var>index</var> is −1 or equal to the number of items in the <code id=the-tbody-element:dom-tbody-rows-4><a href=#dom-tbody-rows>rows</a></code> collection, then <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-append id=the-tbody-element:concept-node-append data-x-internal=concept-node-append>append</a> <var>table row</var> to this element.</li><li><p>Otherwise, <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-insert id=the-tbody-element:concept-node-insert data-x-internal=concept-node-insert>insert</a> <var>table row</var> as a
    child of this element, immediately before the <var>index</var>th <code id=the-tbody-element:the-tr-element-10><a href=#the-tr-element>tr</a></code> element in the
    <code id=the-tbody-element:dom-tbody-rows-5><a href=#dom-tbody-rows>rows</a></code> collection.</li><li><p>Return <var>table row</var>.</li></ol>
 
@@ -1142,7 +1017,7 @@ interface <dfn id=htmltablerowelement>HTMLTableRowElement</dfn> : <a id=the-tr-e
    the <code id=the-tr-element:dom-tr-cells-3><a href=#dom-tr-cells>cells</a></code> collection, then throw an
    <a id=the-tr-element:indexsizeerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code id=the-tr-element:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Let <var>table cell</var> be the result of <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-create-element id=the-tr-element:create-an-element data-x-internal=create-an-element>creating an
    element</a> given this <code id=the-tr-element:the-tr-element-10><a href=#the-tr-element>tr</a></code> element's <a id=the-tr-element:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, <code id=the-tr-element:the-td-element-7><a href=#the-td-element>td</a></code>,
-   and the <a id=the-tr-element:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>.</li><li><p>If <var>index</var> is equal to −1 or equal to the number of items in <code id=the-tr-element:dom-tr-cells-4><a href=#dom-tr-cells>cells</a></code> collection, then <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-append id=the-tr-element:concept-node-append data-x-internal=concept-node-append>append</a> <var>table cell</var> to this <code id=the-tr-element:the-tr-element-11><a href=#the-tr-element>tr</a></code>
+   and the <a id=the-tr-element:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>.</li><li><p>If <var>index</var> is equal to −1 or equal to the number of items in <code id=the-tr-element:dom-tr-cells-4><a href=#dom-tr-cells>cells</a></code> collection, then <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-append id=the-tr-element:concept-node-append data-x-internal=concept-node-append>append</a> <var>table cell</var> to this <code id=the-tr-element:the-tr-element-11><a href=#the-tr-element>tr</a></code>
    element.</li><li><p>Otherwise, <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-insert id=the-tr-element:concept-node-insert data-x-internal=concept-node-insert>insert</a> <var>table cell</var> as a
    child of this <code id=the-tr-element:the-tr-element-12><a href=#the-tr-element>tr</a></code> element, immediately before the <var>index</var>th <code id=the-tr-element:the-td-element-8><a href=#the-td-element>td</a></code>
    or <code id=the-tr-element:the-th-element-5><a href=#the-th-element>th</a></code> element in the <code id=the-tr-element:dom-tr-cells-5><a href=#dom-tr-cells>cells</a></code> collection.</li><li><p>Return <var>table cell</var>.</li></ol>
@@ -2043,4 +1918,4 @@ interface <dfn id=htmltablecellelement>HTMLTableCellElement</dfn> : <a id=the-td
 
 
   <nav><a href=embedded-content.html>← 4.8 埋め込みコンテンツ</a> — <a href=index.html>目次</a> — <a href=forms.html>4.10 フォーム →</a></nav>
-</body></html>
+</html>

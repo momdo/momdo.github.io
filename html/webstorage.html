@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -316,9 +191,9 @@
 
   
 
-  <nav><a href=workers.html>← 10 Web workers</a> — <a href=index.html>Table of Contents</a> — <a href=syntax.html>12 The HTML syntax →</a></nav><ol class=toc><li id=toc-webstorage><a href=webstorage.html#webstorage>11 Web storage</a><ol><li><a href=webstorage.html#introduction-14>11.1 導入</a></li><li><a href=webstorage.html#storage>11.2 The API</a><ol><li><a href=webstorage.html#the-storage-interface>11.2.1 The <code>Storage</code> interface</a></li><li><a href=webstorage.html#the-sessionstorage-attribute>11.2.2 The <code>sessionStorage</code> attribute</a></li><li><a href=webstorage.html#the-localstorage-attribute>11.2.3 The <code>localStorage</code> attribute</a></li><li><a href=webstorage.html#the-storage-event>11.2.4 The <code>storage</code> event</a><ol><li><a href=webstorage.html#the-storageevent-interface>11.2.4.1 The <code>StorageEvent</code> interface</a></li></ol></li></ol></li><li><a href=webstorage.html#disk-space-2>11.3 Disk space</a></li><li><a href=webstorage.html#privacy>11.4 Privacy</a><ol><li><a href=webstorage.html#user-tracking>11.4.1 User tracking</a></li><li><a href=webstorage.html#sensitivity-of-data>11.4.2 Sensitivity of data</a></li></ol></li><li><a href=webstorage.html#security-storage>11.5 セキュリティー</a><ol><li><a href=webstorage.html#dns-spoofing-attacks>11.5.1 DNS spoofing attacks</a></li><li><a href=webstorage.html#cross-directory-attacks>11.5.2 Cross-directory attacks</a></li><li><a href=webstorage.html#implementation-risks>11.5.3 Implementation risks</a></li></ol></li></ol></li></ol><h2 id=webstorage>11 Web storage<a href=#webstorage class=self-link></a></h2>
+  <nav><a href=workers.html>← 10 Web workers</a> — <a href=index.html>Table of Contents</a> — <a href=syntax.html>12 The HTML syntax →</a></nav><ol class=toc><li id=toc-webstorage><a href=webstorage.html#webstorage>11 Web storage</a><ol><li><a href=webstorage.html#introduction-15>11.1 導入</a></li><li><a href=webstorage.html#storage>11.2 The API</a><ol><li><a href=webstorage.html#the-storage-interface>11.2.1 The <code>Storage</code> interface</a></li><li><a href=webstorage.html#the-sessionstorage-attribute>11.2.2 The <code>sessionStorage</code> attribute</a></li><li><a href=webstorage.html#the-localstorage-attribute>11.2.3 The <code>localStorage</code> attribute</a></li><li><a href=webstorage.html#the-storage-event>11.2.4 The <code>storage</code> event</a><ol><li><a href=webstorage.html#the-storageevent-interface>11.2.4.1 The <code>StorageEvent</code> interface</a></li></ol></li></ol></li><li><a href=webstorage.html#disk-space-2>11.3 Disk space</a></li><li><a href=webstorage.html#privacy>11.4 Privacy</a><ol><li><a href=webstorage.html#user-tracking>11.4.1 User tracking</a></li><li><a href=webstorage.html#sensitivity-of-data>11.4.2 Sensitivity of data</a></li></ol></li><li><a href=webstorage.html#security-storage>11.5 セキュリティー</a><ol><li><a href=webstorage.html#dns-spoofing-attacks>11.5.1 DNS spoofing attacks</a></li><li><a href=webstorage.html#cross-directory-attacks>11.5.2 Cross-directory attacks</a></li><li><a href=webstorage.html#implementation-risks>11.5.3 Implementation risks</a></li></ol></li></ol></li></ol><h2 id=webstorage>11 Web storage<a href=#webstorage class=self-link></a></h2>
 
-  <h3 id=introduction-14>11.1 導入<a href=#introduction-14 class=self-link></a></h3>
+  <h3 id=introduction-15>11.1 導入<a href=#introduction-15 class=self-link></a></h3>
 
   <p><i>この節は非規範的である。</i></p>
 
@@ -334,7 +209,7 @@
   currently being purchased would "leak" from one window to the other, potentially causing the user
   to buy two tickets for the same flight without really noticing.</p>
 
-  <p>To address this, this specification introduces the <code id=introduction-14:dom-sessionstorage><a href=#dom-sessionstorage>sessionStorage</a></code> IDL attribute. Sites can add data to the session
+  <p>To address this, this specification introduces the <code id=introduction-15:dom-sessionstorage><a href=#dom-sessionstorage>sessionStorage</a></code> IDL attribute. Sites can add data to the session
   storage, and it will be accessible to any page from the same site opened in that window.</p> 
 
   <div class=example>
@@ -367,7 +242,7 @@
   <p>Again, cookies do not handle this case well, because they are transmitted with every
   request.</p>
 
-  <p>The <code id=introduction-14:dom-localstorage><a href=#dom-localstorage>localStorage</a></code> IDL attribute is used to access a page's
+  <p>The <code id=introduction-15:dom-localstorage><a href=#dom-localstorage>localStorage</a></code> IDL attribute is used to access a page's
   local storage area.</p>
 
   <div class=example>
@@ -394,7 +269,7 @@
 
 
 
-  <h3 id=storage>11.2 The API<a href=#storage class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.5+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.5+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=namevalue-storage">caniuse.com</a></div>
+  <h3 id=storage>11.2 The API<a href=#storage class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.5+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.5+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=namevalue-storage">caniuse.com</a></div>
 
   <h4 id=the-storage-interface>11.2.1 The <code id=the-storage-interface:storage-2><a href=#storage-2>Storage</a></code> interface<a href=#the-storage-interface class=self-link></a></h4>
 
@@ -823,4 +698,4 @@ dictionary <dfn id=storageeventinit>StorageEventInit</dfn> : <a id=the-storageev
 
 
   <nav><a href=workers.html>← 10 Web workers</a> — <a href=index.html>Table of Contents</a> — <a href=syntax.html>12 The HTML syntax →</a></nav>
-</body></html>
+</html>

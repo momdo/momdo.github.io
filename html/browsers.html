@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -320,7 +195,7 @@
   <code>WindowProxy</code>, and <code>Location</code> objects</a><ol><li><a href=browsers.html#integration-with-idl>7.2.1 Integration with IDL</a></li><li><a href=browsers.html#shared-internal-slot:-crossoriginpropertydescriptormap>7.2.2 Shared internal slot: [[CrossOriginPropertyDescriptorMap]]</a></li><li><a href=browsers.html#shared-abstract-operations>7.2.3 Shared abstract operations</a><ol><li><a href=browsers.html#crossoriginproperties-(-o-)>7.2.3.1 CrossOriginProperties ( <var>O</var> )</a></li><li><a href=browsers.html#isplatformobjectsameorigin-(-o-)>7.2.3.2 IsPlatformObjectSameOrigin ( <var>O</var> )</a></li><li><a href=browsers.html#crossorigingetownpropertyhelper-(-o,-p-)>7.2.3.3 CrossOriginGetOwnPropertyHelper ( <var>O</var>, <var>P</var> )</a></li><li><a href=browsers.html#crossoriginget-(-o,-p,-receiver-)>7.2.3.4 CrossOriginGet ( <var>O</var>, <var>P</var>, <var>Receiver</var> )</a></li><li><a href=browsers.html#crossoriginset-(-o,-p,-v,-receiver-)>7.2.3.5 CrossOriginSet ( <var>O</var>, <var>P</var>, <var>V</var>,
   <var>Receiver</var> )</a></li><li><a href=browsers.html#crossoriginownpropertykeys-(-o-)>7.2.3.6 CrossOriginOwnPropertyKeys ( <var>O</var> )</a></li></ol></li></ol></li><li><a href=browsers.html#the-window-object>7.3 <code>Window</code>オブジェクト</a><ol><li><a href=browsers.html#apis-for-creating-and-navigating-browsing-contexts-by-name>7.3.1 名前でブラウジングコンテキストを作成および操作するためのAPI</a></li><li><a href=browsers.html#accessing-other-browsing-contexts>7.3.2 他のブラウジングコンテキストへのアクセス</a></li><li><a href=browsers.html#named-access-on-the-window-object>7.3.3 <code>Window</code>オブジェクトの名前付きアクセス</a></li><li><a href=browsers.html#garbage-collection-and-browsing-contexts>7.3.4 Garbage collection and browsing contexts</a></li><li><a href=browsers.html#closing-browsing-contexts>7.3.5 ブラウジングコンテキストを閉じる</a></li><li><a href=browsers.html#browser-interface-elements>7.3.6 ブラウザーインターフェイス要素</a></li></ol></li><li><a href=browsers.html#the-windowproxy-exotic-object>7.4 The <code>WindowProxy</code> exotic object</a><ol><li><a href=browsers.html#windowproxy-getprototypeof>7.4.1 [[GetPrototypeOf]] ( )</a></li><li><a href=browsers.html#windowproxy-setprototypeof>7.4.2 [[SetPrototypeOf]] ( <var>V</var> )</a></li><li><a href=browsers.html#windowproxy-isextensible>7.4.3 [[IsExtensible]] ( )</a></li><li><a href=browsers.html#windowproxy-preventextensions>7.4.4 [[PreventExtensions]] ( )</a></li><li><a href=browsers.html#windowproxy-getownproperty>7.4.5 [[GetOwnProperty]] ( <var>P</var> )</a></li><li><a href=browsers.html#windowproxy-defineownproperty>7.4.6 [[DefineOwnProperty]] ( <var>P</var>, <var>Desc</var>
   )</a></li><li><a href=browsers.html#windowproxy-get>7.4.7 [[Get]] ( <var>P</var>, <var>Receiver</var> )</a></li><li><a href=browsers.html#windowproxy-set>7.4.8 [[Set]] ( <var>P</var>, <var>V</var>, <var>Receiver</var> )</a></li><li><a href=browsers.html#windowproxy-delete>7.4.9 [[Delete]] ( <var>P</var> )</a></li><li><a href=browsers.html#windowproxy-ownpropertykeys>7.4.10 [[OwnPropertyKeys]] ( )</a></li></ol></li><li><a href=browsers.html#origin>7.5 生成元</a><ol><li><a href=browsers.html#relaxing-the-same-origin-restriction>7.5.1 同一生成元制限を緩和する</a></li></ol></li><li><a href=browsers.html#sandboxing>7.6 サンドボックス</a></li><li><a href=browsers.html#history>7.7 セッション履歴およびナビゲーション</a><ol><li><a href=browsers.html#the-session-history-of-browsing-contexts>7.7.1 ブラウジングコンテキストのセッション履歴</a></li><li><a href=browsers.html#the-history-interface>7.7.2 <code>History</code>インターフェイス</a></li><li><a href=browsers.html#history-notes>7.7.3 Implementation notes for session history</a></li><li><a href=browsers.html#the-location-interface>7.7.4 <code>Location</code>インターフェイス</a><ol><li><a href=browsers.html#location-getprototypeof>7.7.4.1 [[GetPrototypeOf]] ( )</a></li><li><a href=browsers.html#location-setprototypeof>7.7.4.2 [[SetPrototypeOf]] ( <var>V</var> )</a></li><li><a href=browsers.html#location-isextensible>7.7.4.3 [[IsExtensible]] ( )</a></li><li><a href=browsers.html#location-preventextensions>7.7.4.4 [[PreventExtensions]] ( )</a></li><li><a href=browsers.html#location-getownproperty>7.7.4.5 [[GetOwnProperty]] ( <var>P</var> )</a></li><li><a href=browsers.html#location-defineownproperty>7.7.4.6 [[DefineOwnProperty]] ( <var>P</var>, <var>Desc</var> )</a></li><li><a href=browsers.html#location-get>7.7.4.7 [[Get]] ( <var>P</var>, <var>Receiver</var> )</a></li><li><a href=browsers.html#location-set>7.7.4.8 [[Set]] ( <var>P</var>, <var>V</var>, <var>Receiver</var> )</a></li><li><a href=browsers.html#location-delete>7.7.4.9 [[Delete]] ( <var>P</var> )</a></li><li><a href=browsers.html#location-ownpropertykeys>7.7.4.10 [[OwnPropertyKeys]] ( )</a></li></ol></li></ol></li><li><a href=browsers.html#browsing-the-web>7.8 ウェブを閲覧する</a><ol><li><a href=browsers.html#navigating-across-documents>7.8.1 Navigating across documents</a></li><li><a href=browsers.html#read-html>7.8.2 Page load processing model for HTML files</a></li><li><a href=browsers.html#read-xml>7.8.3 Page load processing model for XML files</a></li><li><a href=browsers.html#read-text>7.8.4 Page load processing model for text files</a></li><li><a href=browsers.html#read-multipart-x-mixed-replace>7.8.5 Page load processing model for <code>multipart/x-mixed-replace</code> resources</a></li><li><a href=browsers.html#read-media>7.8.6 Page load processing model for media</a></li><li><a href=browsers.html#read-plugin>7.8.7 Page load processing model for content that uses plugins</a></li><li><a href=browsers.html#read-ua-inline>7.8.8 Page load processing model for inline
-  content that doesn't have a DOM</a></li><li><a href=browsers.html#scroll-to-fragid>7.8.9 Navigating to a fragment</a></li><li><a href=browsers.html#history-traversal>7.8.10 履歴走査</a><ol><li><a href=browsers.html#persisted-user-state-restoration>7.8.10.1 Persisted user state restoration</a></li><li><a href=browsers.html#the-popstateevent-interface>7.8.10.2 <code>PopStateEvent</code>インターフェイス</a></li><li><a href=browsers.html#the-hashchangeevent-interface>7.8.10.3 <code>HashChangeEvent</code>インターフェイス</a></li><li><a href=browsers.html#the-pagetransitionevent-interface>7.8.10.4 <code>PageTransitionEvent</code>インターフェイス</a></li></ol></li><li><a href=browsers.html#unloading-documents>7.8.11 文書の解放</a><ol><li><a href=browsers.html#the-beforeunloadevent-interface>7.8.11.1 <code>BeforeUnloadEvent</code>インターフェイス</a></li></ol></li><li><a href=browsers.html#aborting-a-document-load>7.8.12 Aborting a document load</a></li></ol></li><li><a href=browsers.html#offline>7.9 オフラインウェブアプリケーション</a><ol><li><a href=browsers.html#introduction-9>7.9.1 導入</a><ol><li><a href=browsers.html#supporting-offline-caching-for-legacy-applications>7.9.1.1 レガシーアプリケーションへのオフラインキャッシュのサポート</a></li><li><a href=browsers.html#appcacheevents>7.9.1.2 イベントの概要</a></li></ol></li><li><a href=browsers.html#appcache>7.9.2 Application caches</a></li><li><a href=browsers.html#manifests>7.9.3 キャッシュマニフェスト構文</a><ol><li><a href=browsers.html#some-sample-manifests>7.9.3.1 サンプルマニフェスト</a></li><li><a href=browsers.html#writing-cache-manifests>7.9.3.2 キャッシュマニフェストの記述</a></li><li><a href=browsers.html#parsing-cache-manifests>7.9.3.3 Parsing cache manifests</a></li></ol></li><li><a href=browsers.html#downloading-or-updating-an-application-cache>7.9.4 Downloading or updating an application cache</a></li><li><a href=browsers.html#the-application-cache-selection-algorithm>7.9.5 The application cache selection algorithm</a></li><li><a href=browsers.html#changesToNetworkingModel>7.9.6 Changes to the networking model</a></li><li><a href=browsers.html#expiring-application-caches>7.9.7 Expiring application caches</a></li><li><a href=browsers.html#disk-space>7.9.8 Disk space</a></li><li><a href=browsers.html#security-concerns-with-offline-applications-caches>7.9.9 Security concerns with offline applications caches</a></li><li><a href=browsers.html#application-cache-api>7.9.10 アプリケーションキャッシュAPI</a></li><li><a href=browsers.html#navigator.online>7.9.11 ブラウザーの状態</a></li></ol></li></ol></li></ol><h2 id=browsers>7 ウェブページの読み込み<a href=#browsers class=self-link></a></h2>
+  content that doesn't have a DOM</a></li><li><a href=browsers.html#scroll-to-fragid>7.8.9 Navigating to a fragment</a></li><li><a href=browsers.html#history-traversal>7.8.10 履歴走査</a><ol><li><a href=browsers.html#persisted-user-state-restoration>7.8.10.1 Persisted user state restoration</a></li><li><a href=browsers.html#the-popstateevent-interface>7.8.10.2 <code>PopStateEvent</code>インターフェイス</a></li><li><a href=browsers.html#the-hashchangeevent-interface>7.8.10.3 <code>HashChangeEvent</code>インターフェイス</a></li><li><a href=browsers.html#the-pagetransitionevent-interface>7.8.10.4 <code>PageTransitionEvent</code>インターフェイス</a></li></ol></li><li><a href=browsers.html#unloading-documents>7.8.11 文書の解放</a><ol><li><a href=browsers.html#the-beforeunloadevent-interface>7.8.11.1 <code>BeforeUnloadEvent</code>インターフェイス</a></li></ol></li><li><a href=browsers.html#aborting-a-document-load>7.8.12 Aborting a document load</a></li></ol></li><li><a href=browsers.html#offline>7.9 オフラインウェブアプリケーション</a><ol><li><a href=browsers.html#introduction-10>7.9.1 導入</a><ol><li><a href=browsers.html#supporting-offline-caching-for-legacy-applications>7.9.1.1 レガシーアプリケーションへのオフラインキャッシュのサポート</a></li><li><a href=browsers.html#appcacheevents>7.9.1.2 イベントの概要</a></li></ol></li><li><a href=browsers.html#appcache>7.9.2 Application caches</a></li><li><a href=browsers.html#manifests>7.9.3 キャッシュマニフェスト構文</a><ol><li><a href=browsers.html#some-sample-manifests>7.9.3.1 サンプルマニフェスト</a></li><li><a href=browsers.html#writing-cache-manifests>7.9.3.2 キャッシュマニフェストの記述</a></li><li><a href=browsers.html#parsing-cache-manifests>7.9.3.3 Parsing cache manifests</a></li></ol></li><li><a href=browsers.html#downloading-or-updating-an-application-cache>7.9.4 Downloading or updating an application cache</a></li><li><a href=browsers.html#the-application-cache-selection-algorithm>7.9.5 The application cache selection algorithm</a></li><li><a href=browsers.html#changesToNetworkingModel>7.9.6 Changes to the networking model</a></li><li><a href=browsers.html#expiring-application-caches>7.9.7 Expiring application caches</a></li><li><a href=browsers.html#disk-space>7.9.8 Disk space</a></li><li><a href=browsers.html#security-concerns-with-offline-applications-caches>7.9.9 Security concerns with offline applications caches</a></li><li><a href=browsers.html#application-cache-api>7.9.10 アプリケーションキャッシュAPI</a></li><li><a href=browsers.html#navigator.online>7.9.11 ブラウザーの状態</a></li></ol></li></ol></li></ol><h2 id=browsers>7 ウェブページの読み込み<a href=#browsers class=self-link></a></h2>
 
   
 
@@ -366,8 +241,8 @@
      <var>window</var>.</li><li><p>For the global <b>this</b> value, use <var>browsingContext</var>'s
      <code id=windows:windowproxy-2><a href=#windowproxy>WindowProxy</a></code> object.</li><li><p>Let <var>realm execution context</var> be the created <a id=windows:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
      context</a>.</li></ul>
-   </li><li><p><a href=#set-up-a-browsing-context-environment-settings-object id=windows:set-up-a-browsing-context-environment-settings-object>Set up a browsing context environment settings object</a> with
-   <var>realm execution context</var>.</li><li><p>Let <var>document</var> be a new <code id=windows:document-13><a href=dom.html#document>Document</a></code>, marked as an <a href=https://triple-underscore.github.io/DOM4-ja.html#html-document id=windows:html-documents data-x-internal=html-documents>HTML document</a> in <a id=windows:quirks-mode href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-quirks data-x-internal=quirks-mode>quirks mode</a>, whose <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-content-type id=windows:concept-document-content-type data-x-internal=concept-document-content-type>content type</a> is "<code>text/html</code>",
+   </li><li><p><a href=#set-up-a-browsing-context-environment-settings-object id=windows:set-up-a-browsing-context-environment-settings-object>Set up a browsing context environment settings object</a> with <var>realm
+   execution context</var>, and let <var>settingsObject</var> be the result.</li><li><p>Let <var>document</var> be a new <code id=windows:document-13><a href=dom.html#document>Document</a></code>, marked as an <a href=https://triple-underscore.github.io/DOM4-ja.html#html-document id=windows:html-documents data-x-internal=html-documents>HTML document</a> in <a id=windows:quirks-mode href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-quirks data-x-internal=quirks-mode>quirks mode</a>, whose <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-content-type id=windows:concept-document-content-type data-x-internal=concept-document-content-type>content type</a> is "<code>text/html</code>",
    and which is both <a id=windows:ready-for-post-load-tasks href=syntax.html#ready-for-post-load-tasks>ready for post-load tasks</a> and <a id=windows:completely-loaded href=syntax.html#completely-loaded>completely loaded</a>
    immediately.</li><li><p>Ensure that <var>document</var> has a single child <code id=windows:the-html-element><a href=semantics.html#the-html-element>html</a></code> node, which itself
    has two empty child nodes: a <code id=windows:the-head-element><a href=semantics.html#the-head-element>head</a></code> element, and a <code id=windows:the-body-element><a href=semantics.html#the-body-element>body</a></code> element.</li><li><p>Set <var>window</var>'s <a href=#concept-document-window id=windows:concept-document-window>associated
@@ -384,7 +259,7 @@
    </li><li><p>If <var>browsingContext</var> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-6>creator browsing context</a>, then set
    <var>document</var>'s <a href="dom.html#the-document's-referrer" id="windows:the-document's-referrer">referrer</a> to the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-serializer id=windows:concept-url-serializer data-x-internal=concept-url-serializer>serialization</a> of <a href=#creator-url id=windows:creator-url>creator URL</a>.</li><li><p>If <var>browsingContext</var> has a <a href=#creator-browsing-context id=windows:creator-browsing-context-7>creator browsing context</a>, then set
    <var>document</var>'s <a href=dom.html#concept-document-referrer-policy id=windows:concept-document-referrer-policy-2>referrer policy</a> to
-   the <a href=#creator-referrer-policy id=windows:creator-referrer-policy>creator referrer policy</a>.</li><li><p><a href=#implement-the-sandboxing id=windows:implement-the-sandboxing>Implement the sandboxing</a> for <var>document</var>.</li><li><p>Add <var>document</var> to <var>browsingContext</var>'s <a href=#session-history id=windows:session-history-3>session
+   the <a href=#creator-referrer-policy id=windows:creator-referrer-policy>creator referrer policy</a>.</li><li><p><a href=#implement-the-sandboxing id=windows:implement-the-sandboxing>Implement the sandboxing</a> for <var>document</var>.</li><li><p>Set <var>settingsObject</var>'s <a href=webappapis.html#concept-environment-execution-ready-flag id=windows:concept-environment-execution-ready-flag>execution ready flag</a>.</li><li><p>Add <var>document</var> to <var>browsingContext</var>'s <a href=#session-history id=windows:session-history-3>session
    history</a>.</li><li><p>Return <var>browsingContext</var>.</li></ol>
 
   
@@ -543,6 +418,18 @@ console.assert(iframeWindow.frameElement === null);
 
   <p>存在し、利用可能であり、かつ現在の<a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-3>ブラウジングコンテキスト</a>が、<i id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener><a href=#disowned-its-opener>そのオープナーを解消する</a></i>のでない場合、取得時に、<code id=navigating-auxiliary-browsing-contexts-in-the-dom:window><a href=#window>Window</a></code>オブジェクトの<dfn id=dom-opener><code>opener</code></dfn> IDL属性は、現在の<a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-2>ブラウジングコンテキスト</a>が（その<a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context>オープナーブラウジングコンテキスト</a>）を作成された<a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context>ブラウジングコンテキスト</a>の<code id=navigating-auxiliary-browsing-contexts-in-the-dom:windowproxy><a href=#windowproxy>WindowProxy</a></code>オブジェクトを返さなければならない。そうでなければ、nullを返さなければならない。設定時に、新しい値がnullの場合、現在の<a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-4>ブラウジングコンテキスト</a>は<dfn id=disowned-its-opener data-export="">オープナーを解消し</dfn>なければならない。新しい値が何か他のものである場合、ユーザーエージェントは<code id=navigating-auxiliary-browsing-contexts-in-the-dom:window-2><a href=#window>Window</a></code>オブジェクトの[[DefineOwnProperty]]初期メソッドを呼ばなければならず、 プロパティキーとしてプロパティ名"<code>opener</code>"を通過し、かつプロパティ記述子としてプロパティ記述子 { [[Value]]: <var>value</var>, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: true }とする。ここで<var>value</var>は新しい値である。</p>
 
+ <div class=note>
+  <p>If a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-5>browsing context</a> has <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-2>disowned its
+  opener</a>, the value of its <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener><a href=#dom-opener>window.opener</a></code> is <code>null</code>. That prevents scripts in the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-6>browsing context</a> from changing
+  any properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-2>opener browsing context</a>'s <code id=navigating-auxiliary-browsing-contexts-in-the-dom:window-3><a href=#window>Window</a></code> (i.e., the window
+  from which the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-7>browsing context</a> was created).</p>
+
+  <p>Otherwise, if a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-8>browsing context</a> has <em>not</em> <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-3>disowned its
+  opener</a>, then scripts in that <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-9>browsing context</a> can use <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener-2><a href=#dom-opener>window.opener</a></code> to change properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-3>opener browsing
+  context</a>'s <code id=navigating-auxiliary-browsing-contexts-in-the-dom:window-4><a href=#window>Window</a></code>. For example, a script running in the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-10>browsing
+  context</a> can change the value of <code>window.opener.location</code>, causing the
+  <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-4>opener browsing context</a> to navigate to a completely different document.</p>
+ </div>
 
 
 
@@ -635,7 +522,7 @@ console.assert(iframeWindow.frameElement === null);
 
   <p><dfn id=valid-browsing-context-name>妥当なブラウジングコンテキスト名</dfn>は、U+005F LOW LINE文字で始まらない少なくとも1文字をもつ任意の文字列である。（アンダースコアで始まる名前は、特別なキーワードのために予約されている。）</p>
 
-  <p><dfn id=valid-browsing-context-name-or-keyword>妥当なブラウジングコンテキスト名またはキーワード</dfn>は、<a href=#valid-browsing-context-name id=browsing-context-names:valid-browsing-context-name>妥当なブラウジングコンテキスト名</a>または<a id=browsing-context-names:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で<code>_blank</code>、<code>_self</code>、<code>_parent</code>、または<code>_top</code>の1つにマッチするいずれかとなる任意の文字列である。</p>
+  <p><dfn id=valid-browsing-context-name-or-keyword>妥当なブラウジングコンテキスト名またはキーワード</dfn>は、<a href=#valid-browsing-context-name id=browsing-context-names:valid-browsing-context-name>妥当なブラウジングコンテキスト名</a>または<a id=browsing-context-names:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で<code>_blank</code>、<code>_self</code>、<code>_parent</code>、または<code>_top</code>の1つにマッチするいずれかとなる任意の文字列である。</p>
 
   <p>これらの値は、以下の（非規範的な）テーブルで要約されるように、ページがサンドボックス化されるかどうかに基づいて異なる意味を持つ。この表において、"current"はリンクまたはスクリプト内にある<a href=#browsing-context id=browsing-context-names:browsing-context>ブラウジングコンテキスト</a>を意味し、"parent"はリンクまたはスクリプト内にあるいずれかの<a href=#parent-browsing-context id=browsing-context-names:parent-browsing-context>親ブラウジングコンテキスト</a>を意味し、"top"はリンクまたはスクリプトがあるいずれかの<a href=#top-level-browsing-context id=browsing-context-names:top-level-browsing-context>トップレベルブラウジングコンテキスト</a>を意味し、"new"はさまざまなユーザー設定とユーザーエージェントのポリシーに次第で、新しい<a href=#top-level-browsing-context id=browsing-context-names:top-level-browsing-context-2>トップレベルブラウジングコンテキスト</a>または<a href=#auxiliary-browsing-context id=browsing-context-names:auxiliary-browsing-context>補助ブラウジングコンテキスト</a>が作成されることを意味し、"none"は何も起こらないことを意味し、"maybe new"は"<code id=browsing-context-names:attr-iframe-sandbox-allow-popups><a href=#attr-iframe-sandbox-allow-popups>allow-popups</a></code>"キーワードはまた<code id=browsing-context-names:attr-iframe-sandbox><a href=embedded-content.html#attr-iframe-sandbox>sandbox</a></code>属性で指定される場合（またはユーザーがサンドボックスを覆う場合）、"new"と同じであり、そうでなければ"none"と同じである。</p>
 
@@ -1185,7 +1072,7 @@ console.assert(iframeWindow.frameElement === null);
 
   <h5 id=crossoriginownpropertykeys-(-o-)>7.2.3.6 <dfn>CrossOriginOwnPropertyKeys</dfn> ( <var>O</var> )<a href=#crossoriginownpropertykeys-(-o-) class=self-link></a></h5>
 
-  <ol><li><p>Let <var>keys</var> be a new empty <a id=crossoriginownpropertykeys-(-o-):list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li>
+  <ol><li><p>Let <var>keys</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=crossoriginownpropertykeys-(-o-):js-list data-x-internal=js-list>List</a>.</li><li>
     <p>Repeat for each <var>e</var> that is an element of
     <a href=#crossoriginproperties-(-o-) id=crossoriginownpropertykeys-(-o-):crossoriginproperties-(-o-)>CrossOriginProperties</a>(<var>O</var>):</p>
 
@@ -1853,7 +1740,7 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
   <ol><li><p>Let <var>W</var> be the value of the
    [[<a href=#concept-windowproxy-window id=windowproxy-ownpropertykeys:concept-windowproxy-window>Window</a>]] internal slot of
-   <b>this</b>.</li><li><p>Let <var>keys</var> be a new empty <a id=windowproxy-ownpropertykeys:list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li><p>Let <var>maxProperties</var> be the <a href=#number-of-document-tree-child-browsing-contexts id=windowproxy-ownpropertykeys:number-of-document-tree-child-browsing-contexts>number of document-tree child browsing
+   <b>this</b>.</li><li><p>Let <var>keys</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=windowproxy-ownpropertykeys:js-list data-x-internal=js-list>List</a>.</li><li><p>Let <var>maxProperties</var> be the <a href=#number-of-document-tree-child-browsing-contexts id=windowproxy-ownpropertykeys:number-of-document-tree-child-browsing-contexts>number of document-tree child browsing
    contexts</a> of <var>W</var>.</li><li><p><var>index</var>を0にする。</li><li>
     <p>Repeat while <var>index</var> &lt; <var>maxProperties</var>,
 
@@ -2558,7 +2445,7 @@ interface <dfn id=history-3>History</dfn> {
   <hr id=history-1> 
 
   <p>The <dfn id=dom-history-pushstate><code>pushState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method adds a state object entry to
-  the history.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc partial"><span><span>UC Browser for Android</span> (limited) </span><span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.2-4.3+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.5+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=history">caniuse.com</a></div>
+  the history.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc partial"><span><span>UC Browser for Android</span> (limited) </span><span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.2-4.3+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.5+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=history">caniuse.com</a></div>
 
   <p>The <dfn id=dom-history-replacestate><code>replaceState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method updates the state object,
   title, and optionally the <a id=the-history-interface:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the <a href=#current-entry id=the-history-interface:current-entry-3>current entry</a> in the history.</p>
@@ -3364,10 +3251,17 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
       "<code>javascript:</code> URL" steps</dfn>, associated with the <a href=#active-document id=navigating-across-documents:active-document-5>active document</a>
       of <var>browsingContext</var>:</p>
 
-      <ol id=concept-js-deref><li><p>If the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-5>source browsing context</a>'s <a href=#active-document id=navigating-across-documents:active-document-6>active document</a>'s
-       <a href=#concept-origin id=navigating-across-documents:concept-origin>origin</a> is not the <a href=#same-origin id=navigating-across-documents:same-origin>same origin</a> as <var>browsingContext</var>'s
-       <a href=#active-document id=navigating-across-documents:active-document-7>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-2>origin</a>, then let <var>result</var> be undefined,
-       and jump to the step labeled <i>process result</i> below.</li><li><p>Let <var>urlString</var> be the result of running the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-serializer id=navigating-across-documents:concept-url-serializer data-x-internal=concept-url-serializer>URL serializer</a> on <var>resource</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-5 data-x-internal=concept-request-url>url</a>.</li><li><p>Remove the leading "<code>javascript:</code>" string from
+      <ol id=concept-js-deref><li>
+        <p>Let <var>result</var> be undefined, and jump to the step labeled <i>process result</i>
+        below if either of the following are true:</p>
+
+        <ul><li><p>The <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-5>source browsing context</a>'s <a href=#active-document id=navigating-across-documents:active-document-6>active document</a>'s
+         <a href=#concept-origin id=navigating-across-documents:concept-origin>origin</a> is not the <a href=#same-origin id=navigating-across-documents:same-origin>same origin</a> as <var>browsingContext</var>'s
+         <a href=#active-document id=navigating-across-documents:active-document-7>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-2>origin</a>.</li><li><p>The <a id=navigating-across-documents:should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy href=https://triple-underscore.github.io/CSP3-ja.html#should-block-navigation-request data-x-internal=should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy>Should navigation request of type from source in target be blocked by
+         Content Security Policy?</a> algorithm returns "<code>Blocked</code>" when
+         executed upon <var>resource</var>, "<code>other</code>", the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-6>source
+         browsing context</a>, and <var>browsingContext</var>. <a href=references.html#refsCSP>[CSP]</a></li></ul>
+       </li><li><p>Let <var>urlString</var> be the result of running the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-serializer id=navigating-across-documents:concept-url-serializer data-x-internal=concept-url-serializer>URL serializer</a> on <var>resource</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-5 data-x-internal=concept-request-url>url</a>.</li><li><p>Remove the leading "<code>javascript:</code>" string from
        <var>urlString</var>.</li><li><p>Let <var>script source</var> be the result of applying the <a id=navigating-across-documents:percent-decode href=https://triple-underscore.github.io/URL-ja.html#percent-decode data-x-internal=percent-decode>percent decode</a>
        algorithm to <var>urlString</var>.</li><li><p>Replace <var>script source</var> with the result of applying the <a id=navigating-across-documents:utf-8-decode href=https://triple-underscore.github.io/Encoding-ja.html#utf-8-decode data-x-internal=utf-8-decode>UTF-8
        decode</a> algorithm to <var>script source</var>.</li><li><p>Let <var>address</var> be the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-2" data-x-internal="the-document's-address">URL</a> of the
@@ -3393,7 +3287,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
         <p>When it comes time to <a href="#set-the-document's-address" id="navigating-across-documents:set-the-document's-address">set the document's address</a>, use <var>address</var> as
         the <a href=#override-url id=navigating-across-documents:override-url>override URL</a>.</p>
        </li><li><p>Run <a href=#process-a-navigate-response id=navigating-across-documents:process-a-navigate-response-2>process a navigate response</a> with <var>resource</var>,
-       <var>response</var>, <var>navigationType</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-6>source browsing context</a>, and
+       <var>response</var>, <var>navigationType</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-7>source browsing context</a>, and
        <var>browsingContext</var>, and then abort these steps.</li></ol>
 
       <p>The <a id=navigating-across-documents:task-source href=webappapis.html#task-source>task source</a> for this <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task>task</a> is the
@@ -3434,7 +3328,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
       standard. <a href=references.html#refsFETCH>[FETCH]</a></p>
 
      <dt>If <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-4 data-x-internal=concept-request>request</a> whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-6 data-x-internal=concept-request-url>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a>
-     is a <a id=navigating-across-documents:fetch-scheme href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a><dd><p>Run <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch>process a navigate fetch</a> given <var>resource</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-7>source
+     is a <a id=navigating-across-documents:fetch-scheme href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a><dd><p>Run <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch>process a navigate fetch</a> given <var>resource</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-8>source
      browsing context</a>, and <var>browsing context</var>, and <var>type</var>.<dt>Otherwise, <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-5 data-x-internal=concept-request>request</a> whose
      <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-7 data-x-internal=concept-request-url>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-3 data-x-internal=concept-url-scheme>scheme</a>
      is neither "<code id=navigating-across-documents:javascript-protocol-3><a href=#javascript-protocol>javascript</a></code>" nor a <a id=navigating-across-documents:fetch-scheme-2 href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch
@@ -3472,7 +3366,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     registration. <a href=references.html#refsSW>[SW]</a></p>
    </li><li><p>Set <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-reserved-client id=navigating-across-documents:concept-request-reserved-client data-x-internal=concept-request-reserved-client>reserved
    client</a> to <var>reservedEnvironment</var>.</li><li>
-    <p>If the <a id=navigating-across-documents:should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy href=https://triple-underscore.github.io/CSP3-ja.html#should-block-navigation-request data-x-internal=should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy>Should navigation request of type from source in target be blocked by Content
+    <p>If the <a id=navigating-across-documents:should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy-2 href=https://triple-underscore.github.io/CSP3-ja.html#should-block-navigation-request data-x-internal=should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy>Should navigation request of type from source in target be blocked by Content
     Security Policy?</a> algorithm returns "<code>Blocked</code>" when executed upon
     <var>request</var>, <var>navigationType</var>, <var>sourceBrowsingContext</var>, and
     <var>browsingContext</var>, then set <var>response</var> to a network error.
@@ -3549,7 +3443,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     the original page load failed, that the page used was a fallback response, and what the URL of
     the fallback response actually is.</p>
    </li><li><p>Run <a href=#process-a-navigate-response id=navigating-across-documents:process-a-navigate-response-3>process a navigate response</a> given <var>request</var>,
-   <var>response</var>, <var>navigationType</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-8>source browsing context</a>,
+   <var>response</var>, <var>navigationType</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-9>source browsing context</a>,
    <var>browsingContext</var>, and <var>reservedEnvironment</var>.</li></ol>
 
   <p>To <dfn id=process-a-navigate-response data-export="">process a navigate response</dfn>, given a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-8 data-x-internal=concept-request>request</a> <var>request</var>, a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=navigating-across-documents:concept-response-4 data-x-internal=concept-response>response</a> <var>response</var>, a string <var>type</var>, two
@@ -3577,8 +3471,8 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     skip this step. Otherwise, if the <var>type</var> is one of the following types, jump to the
     appropriate entry in the following list, and process <var>response</var> as described there:</p>
 
-    <dl class=switch><dt>an <a id=navigating-across-documents:html-mime-type href=infrastructure.html#html-mime-type>HTML MIME type</a><dd>Follow the steps given in the <a href=#read-html id=navigating-across-documents:read-html>HTML document</a> section,
-     and then, once they have completed, abort this <a href=#navigate id=navigating-across-documents:navigate-6>navigate</a> algorithm.<dt>an <a id=navigating-across-documents:xml-mime-type href=infrastructure.html#xml-mime-type>XML MIME type</a> that is not an <a href=#explicitly-supported-xml-type id=navigating-across-documents:explicitly-supported-xml-type>explicitly supported XML
+    <dl class=switch><dt>an <a id=navigating-across-documents:html-mime-type href=https://mimesniff.spec.whatwg.org/#html-mime-type data-x-internal=html-mime-type>HTML MIME type</a><dd>Follow the steps given in the <a href=#read-html id=navigating-across-documents:read-html>HTML document</a> section,
+     and then, once they have completed, abort this <a href=#navigate id=navigating-across-documents:navigate-6>navigate</a> algorithm.<dt>an <a id=navigating-across-documents:xml-mime-type href=https://mimesniff.spec.whatwg.org/#xml-mime-type data-x-internal=xml-mime-type>XML MIME type</a> that is not an <a href=#explicitly-supported-xml-type id=navigating-across-documents:explicitly-supported-xml-type>explicitly supported XML
      type</a><dd>Follow the steps given in the <a href=#read-xml id=navigating-across-documents:read-xml>XML document</a> section. If
      that section determines that the content is <em>not</em> to be displayed as a generic XML
      document, then proceed to the next step in this overall set of steps. Otherwise, once the steps
@@ -3598,8 +3492,8 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     be said to explicitly support the <code id=navigating-across-documents:application/atom+xml><a href=indices.html#application/atom+xml>application/atom+xml</a></code> MIME type), or one for which
     the user agent has a dedicated handler (e.g. one registered using <code id=navigating-across-documents:dom-navigator-registercontenthandler><a href=webappapis.html#dom-navigator-registercontenthandler>registerContentHandler()</a></code>).</p>
 
-    <p>The term <dfn id=json-mime-type>JSON MIME type</dfn> is used to refer to the <a href=infrastructure.html#mime-type id=navigating-across-documents:mime-type>MIME
-    types</a> <code id=navigating-across-documents:application/json><a href=indices.html#application/json>application/json</a></code>, <code id=navigating-across-documents:text/json><a href=indices.html#text/json>text/json</a></code>, and any <a id=navigating-across-documents:mime-type-2 href=infrastructure.html#mime-type>MIME
+    <p>The term <dfn id=json-mime-type>JSON MIME type</dfn> is used to refer to the <a href=https://mimesniff.spec.whatwg.org/#mime-type id=navigating-across-documents:mime-type data-x-internal=mime-type>MIME
+    types</a> <code id=navigating-across-documents:application/json><a href=indices.html#application/json>application/json</a></code>, <code id=navigating-across-documents:text/json><a href=indices.html#text/json>text/json</a></code>, and any <a id=navigating-across-documents:mime-type-2 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME
     type</a> whose subtype ends with the five characters "<code>+json</code>".
 
     
@@ -3660,7 +3554,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
       <p class=note>Per the WHATWG Fetch standard a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-10 data-x-internal=concept-request>request</a>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer id=navigating-across-documents:concept-request-referrer-3 data-x-internal=concept-request-referrer>referrer</a> will be either a <a id=navigating-across-documents:url-record-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL record</a> or
       "<code>no-referrer</code>" at this point.</p>
-     </li><li><p><a href=#implement-the-sandboxing id=navigating-across-documents:implement-the-sandboxing>Implement the sandboxing</a> for the <code id=navigating-across-documents:document-15><a href=dom.html#document>Document</a></code>.</li><li>
+     </li><li><p><a href=#implement-the-sandboxing id=navigating-across-documents:implement-the-sandboxing>Implement the sandboxing</a> for the <code id=navigating-across-documents:document-15><a href=dom.html#document>Document</a></code>.</li><li><p>Set <var>settingsObject</var>'s <a href=webappapis.html#concept-environment-execution-ready-flag id=navigating-across-documents:concept-environment-execution-ready-flag>execution ready flag</a>.</li><li>
       <p>If <var>settingsObject</var>'s <a href=webappapis.html#concept-environment-active-service-worker id=navigating-across-documents:concept-environment-active-service-worker-2>active service worker</a> is not null,
       then:</p>
 
@@ -3706,7 +3600,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
   <p>When a resource is handled by <dfn id=hand-off-to-external-software>passing its URL or
   data to an external software package</dfn> separate from the user agent (e.g. handing a <code id=navigating-across-documents:mailto-protocol-2><a data-x-internal=mailto-protocol href=https://tools.ietf.org/html/rfc6068#section-2>mailto:</a></code> URL to a mail client, or a Word document to a word
   processor), user agents should attempt to mitigate the risk that this is an attempt to exploit the
-  target software, e.g. by prompting the user to confirm that the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-9>source browsing
+  target software, e.g. by prompting the user to confirm that the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-10>source browsing
   context</a>'s <a href=#active-document id=navigating-across-documents:active-document-13>active document</a>'s <a href=#concept-origin id=navigating-across-documents:concept-origin-5>origin</a> is to be allowed to invoke the
   specified software. In particular, if the <a href=#navigate id=navigating-across-documents:navigate-13>navigate</a> algorithm, when it was invoked,
   was not <a id=navigating-across-documents:triggered-by-user-activation href=interaction.html#triggered-by-user-activation>triggered by user activation</a>, the user agent should not invoke the external
@@ -4085,14 +3979,14 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
    </li></ol>
 
   <p><dfn id=the-indicated-part-of-the-document>The indicated part of the document</dfn> is the one that the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-2 data-x-internal=concept-url-fragment>fragment</a>, if any, identifies. The semantics of the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-3 data-x-internal=concept-url-fragment>fragment</a> in terms of mapping it to a node is defined by the
-  specification that defines the <a id=scroll-to-fragid:mime-type href=infrastructure.html#mime-type>MIME type</a> used by the <code id=scroll-to-fragid:document-8><a href=dom.html#document>Document</a></code> (for
-  example, the processing of <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-4 data-x-internal=concept-url-fragment>fragments</a> for <a href=infrastructure.html#xml-mime-type id=scroll-to-fragid:xml-mime-type>XML MIME types</a> is the responsibility of RFC7303). <a href=references.html#refsRFC7303>[RFC7303]</a></p>
+  specification that defines the <a id=scroll-to-fragid:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> used by the <code id=scroll-to-fragid:document-8><a href=dom.html#document>Document</a></code> (for
+  example, the processing of <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=scroll-to-fragid:concept-url-fragment-4 data-x-internal=concept-url-fragment>fragments</a> for <a href=https://mimesniff.spec.whatwg.org/#xml-mime-type id=scroll-to-fragid:xml-mime-type data-x-internal=xml-mime-type>XML MIME types</a> is the responsibility of RFC7303). <a href=references.html#refsRFC7303>[RFC7303]</a></p>
 
   <p>There is also a <dfn id=target-element>target element</dfn> for each <code id=scroll-to-fragid:document-9><a href=dom.html#document>Document</a></code>, which is used in
   defining the <code id=scroll-to-fragid:selector-target><a href=scripting.html#selector-target>:target</a></code> pseudo-class and is updated by the
   above algorithm. It is initially null.</p>
 
-  <p>For HTML documents (and <a href=infrastructure.html#html-mime-type id=scroll-to-fragid:html-mime-type>HTML MIME types</a>), the following
+  <p>For HTML documents (and <a href=https://mimesniff.spec.whatwg.org/#html-mime-type id=scroll-to-fragid:html-mime-type data-x-internal=html-mime-type>HTML MIME types</a>), the following
   processing model must be followed to determine what <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-6>the indicated part of the
   document</a> is.</p>
 
@@ -4106,7 +4000,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
    stop the algorithm here.</li><li><p><i>No decoded fragid</i>: If there is an <code id=scroll-to-fragid:the-a-element><a href=semantics.html#the-a-element>a</a></code> element <a href=https://triple-underscore.github.io/DOM4-ja.html#in-a-document id=scroll-to-fragid:in-a-document-tree-2 data-x-internal=in-a-document-tree>in the document tree</a> that has a <code id=scroll-to-fragid:attr-a-name><a href=obsolete.html#attr-a-name>name</a></code>
    attribute whose value is exactly equal to <var>fragid</var> (<em>not</em> <var>decoded
    fragid</var>), then the first such element in <a id=scroll-to-fragid:tree-order-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a> is <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-9>the indicated part
-   of the document</a>; stop the algorithm here.</li><li><p>If <var>fragid</var> is an <a id=scroll-to-fragid:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the
+   of the document</a>; stop the algorithm here.</li><li><p>If <var>fragid</var> is an <a id=scroll-to-fragid:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the
    string <code>top</code>, then <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-10>the indicated part of the document</a> is the top
    of the document; stop the algorithm here.</li><li><p>Otherwise, there is no <a href=#the-indicated-part-of-the-document id=scroll-to-fragid:the-indicated-part-of-the-document-11>indicated part of
    the document</a>.</li></ol>
@@ -4292,7 +4186,7 @@ dictionary <dfn id=popstateeventinit>PopStateEventInit</dfn> : <a id=the-popstat
   
 
 
-  <h5 id=the-hashchangeevent-interface>7.8.10.3 The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=hashchange">caniuse.com</a></div>
+  <h5 id=the-hashchangeevent-interface>7.8.10.3 The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=hashchange">caniuse.com</a></div>
 
   <pre class=idl>[Constructor(DOMString type, optional <a href=#hashchangeeventinit id=the-hashchangeevent-interface:hashchangeeventinit>HashChangeEventInit</a> eventInitDict)]
 interface <dfn id=hashchangeevent>HashChangeEvent</dfn> : <a id=the-hashchangeevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
@@ -4558,7 +4452,7 @@ dictionary <dfn id=pagetransitioneventinit>PageTransitionEventInit</dfn> : <a id
 
 
 
-  <h3 id=offline>7.9 オフラインウェブアプリケーション<a href=#offline class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.5+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=offline-apps">caniuse.com</a></div> 
+  <h3 id=offline>7.9 オフラインウェブアプリケーション<a href=#offline class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.5+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=offline-apps">caniuse.com</a></div> 
 
   <p class=critical>This feature is in the process of being removed from the Web platform. (This
   is a long process that takes many years.) Using any of the offline Web application features at
@@ -4566,7 +4460,7 @@ dictionary <dfn id=pagetransitioneventinit>PageTransitionEventInit</dfn> : <a id
 
   
 
-  <h4 id=introduction-9>7.9.1 導入<a href=#introduction-9 class=self-link></a></h4>
+  <h4 id=introduction-10>7.9.1 導入<a href=#introduction-10 class=self-link></a></h4>
 
   <p><i>この節は非規範的である。</i></p>
 
@@ -4605,7 +4499,7 @@ clock.css
 clock.js
 </pre>
 
-  <p>HTMLファイルへの小さな変化とともに、（<code id=introduction-9:text/cache-manifest><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code>で提供される）マニフェストがアプリケーションにリンクされている：</p>
+  <p>HTMLファイルへの小さな変化とともに、（<code id=introduction-10:text/cache-manifest><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code>で提供される）マニフェストがアプリケーションにリンクされている：</p>
 
   <pre>&lt;!-- clock2.html --&gt;
 &lt;!DOCTYPE HTML&gt;
@@ -4624,7 +4518,7 @@ clock.js
 
   <p class=note>著者はまた、マニフェストのメインページを含めることを推奨するが、実際にマニフェストを参照されるページは、明示的に言及されない場合でも、自動的にキャッシュされる。</p>
 
-  <p class=note>"no-store"ディレクティブ例外とともに、TLSで供給される（<code id=introduction-9:https-protocol><a data-x-internal=https-protocol href=https://triple-underscore.github.io/RFC7230-ja.html#section-2.7.2>https:</a></code>を使用して暗号化される）キャッシュページでのHTTPキャッシュヘッダーと制限は、マニフェストによって上書きされる。したがって、ページは、ユーザーエージェントがそれを更新する前にアプリケーションキャッシュから期限切れにならず、TLS経由で提供されるアプリケーションはオフラインで動作させることができる。</p>
+  <p class=note>"no-store"ディレクティブ例外とともに、TLSで供給される（<code id=introduction-10:https-protocol><a data-x-internal=https-protocol href=https://triple-underscore.github.io/RFC7230-ja.html#section-2.7.2>https:</a></code>を使用して暗号化される）キャッシュページでのHTTPキャッシュヘッダーと制限は、マニフェストによって上書きされる。したがって、ページは、ユーザーエージェントがそれを更新する前にアプリケーションキャッシュから期限切れにならず、TLS経由で提供されるアプリケーションはオフラインで動作させることができる。</p>
 
   <p><a href=https://html.spec.whatwg.org/demos/offline/clock/clock2.html>この例をオンラインで見る</a>。</p>
 
@@ -4988,7 +4882,7 @@ NETWORK:
 
   <h5 id=writing-cache-manifests>7.9.3.2 キャッシュマニフェストの記述<a href=#writing-cache-manifests class=self-link></a></h5>
 
-  <p>マニフェストは、<code id=writing-cache-manifests:text/cache-manifest><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code><a id=writing-cache-manifests:mime-type href=infrastructure.html#mime-type>MIMEタイプ</a>を使用して配信しなければならない。<code id=writing-cache-manifests:text/cache-manifest-2><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code><a id=writing-cache-manifests:mime-type-2 href=infrastructure.html#mime-type>MIMEタイプ</a>を使用して配信されるすべてのリソースは、この節で説明するように、アプリケーションキャッシュマニフェストの構文に従わなければならない。</p>
+  <p>マニフェストは、<code id=writing-cache-manifests:text/cache-manifest><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code><a id=writing-cache-manifests:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>を使用して配信しなければならない。<code id=writing-cache-manifests:text/cache-manifest-2><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code><a id=writing-cache-manifests:mime-type-2 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>を使用して配信されるすべてのリソースは、この節で説明するように、アプリケーションキャッシュマニフェストの構文に従わなければならない。</p>
 
   <p>アプリケーションキャッシュマニフェストは、テキストがUTF-8を使用してエンコードされるテキストファイルである。アプリケーションキャッシュマニフェストでのデータは行ベースである。Newlines must be represented by U+000A LINE FEED (LF) characters, U+000D CARRIAGE RETURN (CR) characters, or U+000D CARRIAGE RETURN (CR) U+000A LINE FEED (LF) pairs. <a href=references.html#refsENCODING>[ENCODING]</a></p>
 
@@ -5407,7 +5301,7 @@ NETWORK:
     <a href=#concept-appcache-onlinesafelist-wildcard id=downloading-or-updating-an-application-cache:concept-appcache-onlinesafelist-wildcard>online safelist wildcard flag</a>
     and the <a href=#concept-appcache-mode id=downloading-or-updating-an-application-cache:concept-appcache-mode>cache mode flag</a>.</p>
 
-    <p class=note>The <a id=downloading-or-updating-an-application-cache:mime-type href=infrastructure.html#mime-type>MIME type</a> of the resource is ignored — it is assumed to
+    <p class=note>The <a id=downloading-or-updating-an-application-cache:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> of the resource is ignored — it is assumed to
     be <code id=downloading-or-updating-an-application-cache:text/cache-manifest><a href=iana.html#text/cache-manifest>text/cache-manifest</a></code>. In the future, if new manifest formats are supported, the
     different types will probably be distinguished on the basis of the file signatures (for the
     current format, that is the "<code>CACHE&nbsp;MANIFEST</code>" string at the top of the
@@ -6163,7 +6057,7 @@ interface <dfn id=applicationcache>ApplicationCache</dfn> : <a id=application-ca
   
 
 
-  <h4 id=navigator.online>7.9.11 <span id=browser-state>Browser state</span><a href=#navigator.online class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>14+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc partial"><span><span>UC Browser for Android</span> (limited) </span><span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.2-4.3+</span></span><span class="firefox yes"><span>Firefox</span> <span>41+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=online-status">caniuse.com</a></div>
+  <h4 id=navigator.online>7.9.11 <span id=browser-state>Browser state</span><a href=#navigator.online class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>14+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc partial"><span><span>UC Browser for Android</span> (limited) </span><span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.2-4.3+</span></span><span class="firefox yes"><span>Firefox</span> <span>41+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=online-status">caniuse.com</a></div>
 
   <pre class=idl>[NoInterfaceObject, Exposed=(Window,Worker)]
 interface <dfn id=navigatoronline>NavigatorOnLine</dfn> {
@@ -6228,4 +6122,4 @@ interface <dfn id=navigatoronline>NavigatorOnLine</dfn> {
 
 
   <nav><a href=interaction.html>← 6 ユーザーとの対話処理</a> — <a href=index.html>目次</a> — <a href=webappapis.html>8 ウェブアプリケーションAPI →</a></nav>
-</body></html>
+</html>

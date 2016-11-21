@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -316,13 +191,13 @@
 
   
 
-  <nav><a href=scripting.html>← 4.12 スクリプティング</a> — <a href=index.html>目次</a> — <a href=interaction.html>6 ユーザーとの対話処理 →</a></nav><ol class=toc><li id=toc-microdata><a href=microdata.html#microdata>5 Microdata</a><ol><li><a href=microdata.html#introduction-6>5.1 導入</a><ol><li><a href=microdata.html#overview>5.1.1 概要</a></li><li><a href=microdata.html#the-basic-syntax>5.1.2 基本構文</a></li><li><a href=microdata.html#typed-items>5.1.3 型付きアイテム</a></li><li><a href=microdata.html#global-identifiers-for-items>5.1.4 アイテムのためのグローバル識別子</a></li><li><a href=microdata.html#selecting-names-when-defining-vocabularies>5.1.5 語彙を定義する際に名前を選択する</a></li></ol></li><li><a href=microdata.html#encoding-microdata>5.2 microdataをエンコーディングする</a><ol><li><a href=microdata.html#the-microdata-model>5.2.1 microdataモデル</a></li><li><a href=microdata.html#items>5.2.2 アイテム</a></li><li><a href=microdata.html#names:-the-itemprop-attribute>5.2.3 名前：<code>itemprop</code>属性</a></li><li><a href=microdata.html#values>5.2.4 値</a></li><li><a href=microdata.html#associating-names-with-items>5.2.5 Associating names with items</a></li><li><a href=microdata.html#microdata-and-other-namespaces>5.2.6 Microdataと他の名前空間</a></li></ol></li><li><a href=microdata.html#mdvocabs>5.3 サンプルmicrodata語彙</a><ol><li><a href=microdata.html#vcard>5.3.1 vCard</a><ol><li><a href=microdata.html#conversion-to-vcard>5.3.1.1 Conversion to vCard</a></li><li><a href=microdata.html#examples-2>5.3.1.2 例</a></li></ol></li><li><a href=microdata.html#vevent>5.3.2 vEvent</a><ol><li><a href=microdata.html#conversion-to-icalendar>5.3.2.1 Conversion to iCalendar</a></li><li><a href=microdata.html#examples-3>5.3.2.2 例</a></li></ol></li><li><a href=microdata.html#licensing-works>5.3.3 ライセンス作品</a><ol><li><a href=microdata.html#examples-4>5.3.3.1 例</a></li></ol></li></ol></li><li><a href=microdata.html#converting-html-to-other-formats>5.4 Converting HTML to other formats</a><ol><li><a href=microdata.html#json>5.4.1 JSON</a></li></ol></li></ol></li></ol><h2 id=microdata>5 <dfn>Microdata</dfn><a href=#microdata class=self-link></a></h2>
+  <nav><a href=scripting.html>← 4.12 スクリプティング</a> — <a href=index.html>目次</a> — <a href=interaction.html>6 ユーザーとの対話処理 →</a></nav><ol class=toc><li id=toc-microdata><a href=microdata.html#microdata>5 Microdata</a><ol><li><a href=microdata.html#introduction-7>5.1 導入</a><ol><li><a href=microdata.html#overview>5.1.1 概要</a></li><li><a href=microdata.html#the-basic-syntax>5.1.2 基本構文</a></li><li><a href=microdata.html#typed-items>5.1.3 型付きアイテム</a></li><li><a href=microdata.html#global-identifiers-for-items>5.1.4 アイテムのためのグローバル識別子</a></li><li><a href=microdata.html#selecting-names-when-defining-vocabularies>5.1.5 語彙を定義する際に名前を選択する</a></li></ol></li><li><a href=microdata.html#encoding-microdata>5.2 microdataをエンコーディングする</a><ol><li><a href=microdata.html#the-microdata-model>5.2.1 microdataモデル</a></li><li><a href=microdata.html#items>5.2.2 アイテム</a></li><li><a href=microdata.html#names:-the-itemprop-attribute>5.2.3 名前：<code>itemprop</code>属性</a></li><li><a href=microdata.html#values>5.2.4 値</a></li><li><a href=microdata.html#associating-names-with-items>5.2.5 Associating names with items</a></li><li><a href=microdata.html#microdata-and-other-namespaces>5.2.6 Microdataと他の名前空間</a></li></ol></li><li><a href=microdata.html#mdvocabs>5.3 サンプルmicrodata語彙</a><ol><li><a href=microdata.html#vcard>5.3.1 vCard</a><ol><li><a href=microdata.html#conversion-to-vcard>5.3.1.1 Conversion to vCard</a></li><li><a href=microdata.html#examples-2>5.3.1.2 例</a></li></ol></li><li><a href=microdata.html#vevent>5.3.2 vEvent</a><ol><li><a href=microdata.html#conversion-to-icalendar>5.3.2.1 Conversion to iCalendar</a></li><li><a href=microdata.html#examples-3>5.3.2.2 例</a></li></ol></li><li><a href=microdata.html#licensing-works>5.3.3 ライセンス作品</a><ol><li><a href=microdata.html#examples-4>5.3.3.1 例</a></li></ol></li></ol></li><li><a href=microdata.html#converting-html-to-other-formats>5.4 Converting HTML to other formats</a><ol><li><a href=microdata.html#json>5.4.1 JSON</a></li></ol></li></ol></li></ol><h2 id=microdata>5 <dfn>Microdata</dfn><a href=#microdata class=self-link></a></h2>
 
 
 
 
 
-  <h3 id=introduction-6>5.1 導入<a href=#introduction-6 class=self-link></a></h3>
+  <h3 id=introduction-7>5.1 導入<a href=#introduction-7 class=self-link></a></h3>
 
   <h4 id=overview>5.1.1 概要<a href=#overview class=self-link></a></h4>
 
@@ -1651,7 +1526,7 @@
 
    
 
-   </li><li><p>Append <var>type</var>, <a id=conversion-to-vcard:converted-to-ascii-uppercase href=infrastructure.html#converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.</li><li>
+   </li><li><p>Append <var>type</var>, <a id=conversion-to-vcard:converted-to-ascii-uppercase href=https://infra.spec.whatwg.org/#ascii-uppercase data-x-internal=converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.</li><li>
 
     <p>If there are any parameters, then for each parameter, in the order that they were added, run
     these substeps:</p>
@@ -2100,7 +1975,7 @@ END:VCARD</pre>
   consisting of a type <var>type</var>, a value <var>value</var>, and optionally
   an annotation, to a string <var>output</var>, it must run the following steps:</p>
 
-  <ol><li><p>Let <var>line</var> be an empty string.</li><li><p>Append <var>type</var>, <a id=conversion-to-icalendar:converted-to-ascii-uppercase href=infrastructure.html#converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.</li><li>
+  <ol><li><p>Let <var>line</var> be an empty string.</li><li><p>Append <var>type</var>, <a id=conversion-to-icalendar:converted-to-ascii-uppercase href=https://infra.spec.whatwg.org/#ascii-uppercase data-x-internal=converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.</li><li>
 
     <p>If there is an annotation:</p>
 
@@ -2389,4 +2264,4 @@ END:VCARD</pre>
 
 
   <nav><a href=scripting.html>← 4.12 スクリプティング</a> — <a href=index.html>目次</a> — <a href=interaction.html>6 ユーザーとの対話処理 →</a></nav>
-</body></html>
+</html>

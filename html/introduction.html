@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -478,9 +353,9 @@
 
   <p>この抽象的な言語を使用するリソースを送信するために使用できる種々の具体的な構文が存在し、この仕様で定義されるものが2つ存在する。</p>
 
-  <p>1つ目のそのような具体的な構文は、HTML構文である。これは、ほとんどの著者のための推奨される形式であり、ほとんどのレガシーウェブブラウザーと互換性がある。文書が<code id=html-vs-xhtml:text/html><a href=iana.html#text/html>text/html</a></code> <a id=html-vs-xhtml:mime-type href=infrastructure.html#mime-type>MIMEタイプ</a>で送信される場合、ウェブブラウザーによってHTML文書として処理される。この仕様は"HTML"として知られる最新のHTML構文を定義する。</p>
+  <p>1つ目のそのような具体的な構文は、HTML構文である。これは、ほとんどの著者のための推奨される形式であり、ほとんどのレガシーウェブブラウザーと互換性がある。文書が<code id=html-vs-xhtml:text/html><a href=iana.html#text/html>text/html</a></code> <a id=html-vs-xhtml:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>で送信される場合、ウェブブラウザーによってHTML文書として処理される。この仕様は"HTML"として知られる最新のHTML構文を定義する。</p>
 
-  <p>2つ目の具体的な構文は、XML応用となるXHTML構文である。文書が<code id=html-vs-xhtml:application/xhtml+xml><a href=iana.html#application/xhtml+xml>application/xhtml+xml</a></code>のような<a id=html-vs-xhtml:xml-mime-type href=infrastructure.html#xml-mime-type>XML MIMEタイプ</a>で送信される場合、ウェブブラウザーによりXML文書として処理され、XMLプロセッサーにより解析される。著者は、XMLとHTMLの処理が異なることに注意する。とりわけ、些細な構文エラーが、XMLとしてラベル付けされた文書を完全にレンダリングするのを中止させることに注意する。一方、HTML構文では無視される。この仕様は"XHTML"として知られる最新のXHTML構文を定義する。</p>
+  <p>2つ目の具体的な構文は、XML応用となるXHTML構文である。文書が<code id=html-vs-xhtml:application/xhtml+xml><a href=iana.html#application/xhtml+xml>application/xhtml+xml</a></code>のような<a id=html-vs-xhtml:xml-mime-type href=https://mimesniff.spec.whatwg.org/#xml-mime-type data-x-internal=xml-mime-type>XML MIMEタイプ</a>で送信される場合、ウェブブラウザーによりXML文書として処理され、XMLプロセッサーにより解析される。著者は、XMLとHTMLの処理が異なることに注意する。とりわけ、些細な構文エラーが、XMLとしてラベル付けされた文書を完全にレンダリングするのを中止させることに注意する。一方、HTML構文では無視される。この仕様は"XHTML"として知られる最新のXHTML構文を定義する。</p>
 
   <p>DOM、HTML構文、およびXHTML構文は、すべて同じコンテンツを表すことはできない。たとえば、名前空間はHTML構文を使用して表現できないが、DOMとXHTML構文でサポートされる。同様に、<code id=html-vs-xhtml:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code>の機能を使用する文書は、HTML構文を使って表すことができるが、DOMまたはXHTML構文で表すことができない。文字列"<code>--&gt;</code>"が含まれるコメントは、HTMLとXHTML構文では表せず、DOMでのみ表すことができる。</p>
 
@@ -553,8 +428,6 @@
   <p>要素、属性、またはAPIの定義例は<dfn id=x-that><code>このように</code></dfn>マークアップされる。その要素、属性、またはAPIへの参照は、<code id=typographic-conventions:x-that-2><a href=#x-that>このように</a></code>マークアップされる。</p>
 
   <p>その他のコード断片は、<code>このように</code>マークアップされる。</p>
-
-  <p>範囲0x00から0x7Fまでのバイトをもつバイトシーケンスは、`<code>このように</code>`マークされる。</p> 
 
   <p>変数は、<var>このように</var>マークアップされる。</p>
 
@@ -1107,4 +980,4 @@ a.setAttribute('href', 'https://example.com/'); // change the content attribute 
 
 
   <nav><a href=index.html>目次</a> — <a href=infrastructure.html>2 共通インフラ →</a></nav>
-</body></html>
+</html>

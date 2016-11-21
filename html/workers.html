@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -316,9 +191,9 @@
 
   
 
-  <nav><a href=comms.html>← 9 Communication</a> — <a href=index.html>Table of Contents</a> — <a href=webstorage.html>11 Web storage →</a></nav><ol class=toc><li id=toc-workers><a href=workers.html#workers>10 Web workers</a><ol><li><a href=workers.html#introduction-13>10.1 導入</a><ol><li><a href=workers.html#scope-2>10.1.1 範囲</a></li><li><a href=workers.html#examples-6>10.1.2 例</a><ol><li><a href=workers.html#a-background-number-crunching-worker>10.1.2.1 A background number-crunching worker</a></li><li><a href=workers.html#worker-used-for-background-i/o>10.1.2.2 Worker used for background I/O</a></li><li><a href=workers.html#module-worker-example>10.1.2.3 Using a JavaScript module as a worker</a></li><li><a href=workers.html#shared-workers-introduction>10.1.2.4 Shared workers introduction</a></li><li><a href=workers.html#shared-state-using-a-shared-worker>10.1.2.5 Shared state using a shared worker</a></li><li><a href=workers.html#delegation>10.1.2.6 Delegation</a></li></ol></li><li><a href=workers.html#tutorials>10.1.3 Tutorials</a><ol><li><a href=workers.html#creating-a-dedicated-worker>10.1.3.1 Creating a dedicated worker</a></li><li><a href=workers.html#communicating-with-a-dedicated-worker>10.1.3.2 Communicating with a dedicated worker</a></li><li><a href=workers.html#shared-workers>10.1.3.3 Shared workers</a></li></ol></li></ol></li><li><a href=workers.html#infrastructure-2>10.2 Infrastructure</a><ol><li><a href=workers.html#the-global-scope>10.2.1 The global scope</a><ol><li><a href=workers.html#the-workerglobalscope-common-interface>10.2.1.1 The <code>WorkerGlobalScope</code> common interface</a></li><li><a href=workers.html#dedicated-workers-and-the-dedicatedworkerglobalscope-interface>10.2.1.2 Dedicated workers and the <code>DedicatedWorkerGlobalScope</code> interface</a></li><li><a href=workers.html#shared-workers-and-the-sharedworkerglobalscope-interface>10.2.1.3 Shared workers and the <code>SharedWorkerGlobalScope</code> interface</a></li></ol></li><li><a href=workers.html#worker-event-loop>10.2.2 The event loop</a></li><li><a href="workers.html#the-worker's-lifetime">10.2.3 The worker's lifetime</a></li><li><a href=workers.html#worker-processing-model>10.2.4 Processing model</a></li><li><a href=workers.html#runtime-script-errors-2>10.2.5 Runtime script errors</a></li><li><a href=workers.html#creating-workers>10.2.6 Creating workers</a><ol><li><a href=workers.html#the-abstractworker-abstract-interface>10.2.6.1 The <code>AbstractWorker</code> abstract interface</a></li><li><a href=workers.html#script-settings-for-workers>10.2.6.2 Script settings for workers</a></li><li><a href=workers.html#dedicated-workers-and-the-worker-interface>10.2.6.3 Dedicated workers and the <code>Worker</code> interface</a></li><li><a href=workers.html#shared-workers-and-the-sharedworker-interface>10.2.6.4 Shared workers and the <code>SharedWorker</code> interface</a></li></ol></li><li><a href=workers.html#navigator.hardwareconcurrency>10.2.7 Concurrent hardware capabilities</a></li></ol></li><li><a href=workers.html#apis-available-to-workers>10.3 APIs available to workers</a><ol><li><a href=workers.html#importing-scripts-and-libraries>10.3.1 Importing scripts and libraries</a></li><li><a href=workers.html#the-workernavigator-object>10.3.2 The <code>WorkerNavigator</code> object</a></li><li><a href=workers.html#worker-locations>10.3.3 Worker locations</a></li></ol></li></ol></li></ol><h2 id=workers data-dfn-type=dfn data-lt="web worker" data-export="">10 Web workers<a href=#workers class=self-link></a></h2>
+  <nav><a href=comms.html>← 9 Communication</a> — <a href=index.html>Table of Contents</a> — <a href=webstorage.html>11 Web storage →</a></nav><ol class=toc><li id=toc-workers><a href=workers.html#workers>10 Web workers</a><ol><li><a href=workers.html#introduction-14>10.1 導入</a><ol><li><a href=workers.html#scope-2>10.1.1 範囲</a></li><li><a href=workers.html#examples-6>10.1.2 例</a><ol><li><a href=workers.html#a-background-number-crunching-worker>10.1.2.1 A background number-crunching worker</a></li><li><a href=workers.html#worker-used-for-background-i/o>10.1.2.2 Worker used for background I/O</a></li><li><a href=workers.html#module-worker-example>10.1.2.3 Using a JavaScript module as a worker</a></li><li><a href=workers.html#shared-workers-introduction>10.1.2.4 Shared workers introduction</a></li><li><a href=workers.html#shared-state-using-a-shared-worker>10.1.2.5 Shared state using a shared worker</a></li><li><a href=workers.html#delegation>10.1.2.6 Delegation</a></li></ol></li><li><a href=workers.html#tutorials>10.1.3 Tutorials</a><ol><li><a href=workers.html#creating-a-dedicated-worker>10.1.3.1 Creating a dedicated worker</a></li><li><a href=workers.html#communicating-with-a-dedicated-worker>10.1.3.2 Communicating with a dedicated worker</a></li><li><a href=workers.html#shared-workers>10.1.3.3 Shared workers</a></li></ol></li></ol></li><li><a href=workers.html#infrastructure-2>10.2 Infrastructure</a><ol><li><a href=workers.html#the-global-scope>10.2.1 The global scope</a><ol><li><a href=workers.html#the-workerglobalscope-common-interface>10.2.1.1 The <code>WorkerGlobalScope</code> common interface</a></li><li><a href=workers.html#dedicated-workers-and-the-dedicatedworkerglobalscope-interface>10.2.1.2 Dedicated workers and the <code>DedicatedWorkerGlobalScope</code> interface</a></li><li><a href=workers.html#shared-workers-and-the-sharedworkerglobalscope-interface>10.2.1.3 Shared workers and the <code>SharedWorkerGlobalScope</code> interface</a></li></ol></li><li><a href=workers.html#worker-event-loop>10.2.2 The event loop</a></li><li><a href="workers.html#the-worker's-lifetime">10.2.3 The worker's lifetime</a></li><li><a href=workers.html#worker-processing-model>10.2.4 Processing model</a></li><li><a href=workers.html#runtime-script-errors-2>10.2.5 Runtime script errors</a></li><li><a href=workers.html#creating-workers>10.2.6 Creating workers</a><ol><li><a href=workers.html#the-abstractworker-abstract-interface>10.2.6.1 The <code>AbstractWorker</code> abstract interface</a></li><li><a href=workers.html#script-settings-for-workers>10.2.6.2 Script settings for workers</a></li><li><a href=workers.html#dedicated-workers-and-the-worker-interface>10.2.6.3 Dedicated workers and the <code>Worker</code> interface</a></li><li><a href=workers.html#shared-workers-and-the-sharedworker-interface>10.2.6.4 Shared workers and the <code>SharedWorker</code> interface</a></li></ol></li><li><a href=workers.html#navigator.hardwareconcurrency>10.2.7 Concurrent hardware capabilities</a></li></ol></li><li><a href=workers.html#apis-available-to-workers>10.3 APIs available to workers</a><ol><li><a href=workers.html#importing-scripts-and-libraries>10.3.1 Importing scripts and libraries</a></li><li><a href=workers.html#the-workernavigator-object>10.3.2 The <code>WorkerNavigator</code> object</a></li><li><a href=workers.html#worker-locations>10.3.3 Worker locations</a></li></ol></li></ol></li></ol><h2 id=workers data-dfn-type=dfn data-lt="web worker" data-export="">10 Web workers<a href=#workers class=self-link></a></h2>
 
-  <h3 id=introduction-13>10.1 導入<a href=#introduction-13 class=self-link></a></h3>
+  <h3 id=introduction-14>10.1 導入<a href=#introduction-14 class=self-link></a></h3>
 
   <h4 id=scope-2>10.1.1 範囲<a href=#scope-2 class=self-link></a></h4>
 
@@ -627,7 +502,7 @@ export function brighten({ data: d }) {
   <p><a href=/demos/workers/modules/page.html>この例をオンラインで見る</a>。</p>
 
 
-  <h5 id=shared-workers-introduction>10.1.2.4 Shared workers introduction<a href=#shared-workers-introduction class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>29+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=sharedworkers">caniuse.com</a></div>
+  <h5 id=shared-workers-introduction>10.1.2.4 Shared workers introduction<a href=#shared-workers-introduction class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>29+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=sharedworkers">caniuse.com</a></div>
 
   <p><i>この節は非規範的である。</i></p>
 
@@ -1564,7 +1439,7 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
     <p>Obtain <var>script</var> by switching on the value of <var>options</var>'s <code>type</code> member:</p>
 
     <dl class=switch><dt>"<code>classic</code>"<dd><a id=worker-processing-model:fetch-a-classic-worker-script href=webappapis.html#fetch-a-classic-worker-script>Fetch a classic worker script</a> given <var>url</var>, <var>outside
-     settings</var>, and <var>destination</var>.<dt>"<code>module</code>"<dd><a id=worker-processing-model:fetch-a-module-worker-script-tree href=webappapis.html#fetch-a-module-worker-script-tree>Fetch a module worker script tree</a> given <var>url</var>, <var>outside
+     settings</var>, and <var>destination</var>.<dt>"<code>module</code>"<dd><a id=worker-processing-model:fetch-a-module-worker-script-tree href=webappapis.html#fetch-a-module-worker-script-tree>Fetch a module worker script graph</a> given <var>url</var>, <var>outside
      settings</var>, <var>destination</var>, the value of the <code>credentials</code>
      member of <var>options</var>, and <var>inside settings</var>.</dl>
 
@@ -1610,7 +1485,7 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
     execution of script in that worker until such time as either the <a href=#dom-workerglobalscope-closing id=worker-processing-model:dom-workerglobalscope-closing-3>closing</a> flag switches to true or the worker stops
     being a <a href=#suspendable-worker id=worker-processing-model:suspendable-worker-2>suspendable worker</a>.</p>
 
-   </li><li>
+   </li><li><p>Set <var>inside settings</var>'s <a href=webappapis.html#concept-environment-execution-ready-flag id=worker-processing-model:concept-environment-execution-ready-flag>execution ready flag</a>.</li><li>
     <p>If <var>script</var> is a <a id=worker-processing-model:classic-script href=webappapis.html#classic-script>classic script</a>, then <a href=webappapis.html#run-a-classic-script id=worker-processing-model:run-a-classic-script>run the classic script</a> <var>script</var>. Otherwise, it is a <a id=worker-processing-model:module-script href=webappapis.html#module-script>module
     script</a>; <a href=webappapis.html#run-a-module-script id=worker-processing-model:run-a-module-script>run the module script</a>
     <var>script</var>.</p>
@@ -1628,9 +1503,8 @@ interface <dfn id=sharedworkerglobalscope>SharedWorkerGlobalScope</dfn> : <a hre
    attribute initialized to a new <a id=worker-processing-model:frozen-array href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> containing <var>inside port</var>, and
    the <code id=worker-processing-model:dom-messageevent-source><a href=comms.html#dom-messageevent-source>source</a></code> attribute initialized to <var>inside
    port</var>.</li><li><p>Enable the <a href=https://w3c.github.io/ServiceWorker/#dfn-client-message-queue id=worker-processing-model:dfn-client-message-queue data-x-internal=dfn-client-message-queue>client message queue</a> of the
-   <a href=https://w3c.github.io/ServiceWorker/#service-worker-container-interface id=worker-processing-model:service-worker-container-interface data-x-internal=service-worker-container-interface>ServiceWorkerContainer</a> object whose
-   associated <a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker-container-interface-client id=worker-processing-model:dfn-service-worker-container-interface-client data-x-internal=dfn-service-worker-container-interface-client>service worker
-   client</a> is <var>worker global scope</var>'s <a id=worker-processing-model:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a>.</li><li>
+   <code id=worker-processing-model:serviceworkercontainer><a data-x-internal=serviceworkercontainer href=https://w3c.github.io/ServiceWorker/#serviceworkercontainer>ServiceWorkerContainer</a></code> object whose associated <a href=https://w3c.github.io/ServiceWorker/#serviceworkercontainer-service-worker-client id=worker-processing-model:serviceworkercontainer-service-worker-client data-x-internal=serviceworkercontainer-service-worker-client>service worker client</a> is
+   <var>worker global scope</var>'s <a id=worker-processing-model:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a>.</li><li>
 
     <p><strong>Event loop</strong>: Run the <a id=worker-processing-model:responsible-event-loop href=webappapis.html#responsible-event-loop>responsible
     event loop</a> specified by <var>inside settings</var> until it is destroyed.</p>
@@ -2168,4 +2042,4 @@ interface <dfn id=workerlocation>WorkerLocation</dfn> {
 
 
   <nav><a href=comms.html>← 9 Communication</a> — <a href=index.html>Table of Contents</a> — <a href=webstorage.html>11 Web storage →</a></nav>
-</body></html>
+</html>

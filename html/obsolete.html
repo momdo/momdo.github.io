@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -324,14 +199,12 @@
 
   <p>著者は、<code id=obsolete-but-conforming-features:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>要素に<code id=obsolete-but-conforming-features:attr-img-border><a href=#attr-img-border>border</a></code>属性を指定すべきでない。属性が存在する場合、その値は文字列"<code>0</code>"でなければならない。CSSが代わりに使用されるべきである。</p>
 
-  <p>著者は、<code id=obsolete-but-conforming-features:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素に<code id=obsolete-but-conforming-features:attr-script-language><a href=#attr-script-language>language</a></code>属性を指定すべきでない。属性が存在する場合、その値は、文字列"<code>JavaScript</code>"に<a id=obsolete-but-conforming-features:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならず、<code id=obsolete-but-conforming-features:attr-script-type><a href=scripting.html#attr-script-type>type</a></code>属性が省略されなければならない、またはその値が文字列"<code>text/javascript</code>"の<a id=obsolete-but-conforming-features:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>のいずれかで一致しなければならない。この属性は完全に省略される（値"<code>JavaScript</code>"で、効果はない）か、または<code id=obsolete-but-conforming-features:attr-script-type-2><a href=scripting.html#attr-script-type>type</a></code>属性を使用して置換すべきである。</p>
+  <p>著者は、<code id=obsolete-but-conforming-features:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素に<code id=obsolete-but-conforming-features:attr-script-language><a href=#attr-script-language>language</a></code>属性を指定すべきでない。属性が存在する場合、その値は、文字列"<code>JavaScript</code>"に<a id=obsolete-but-conforming-features:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならず、<code id=obsolete-but-conforming-features:attr-script-type><a href=scripting.html#attr-script-type>type</a></code>属性が省略されなければならない、またはその値が文字列"<code>text/javascript</code>"の<a id=obsolete-but-conforming-features:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>のいずれかで一致しなければならない。この属性は完全に省略される（値"<code>JavaScript</code>"で、効果はない）か、または<code id=obsolete-but-conforming-features:attr-script-type-2><a href=scripting.html#attr-script-type>type</a></code>属性を使用して置換すべきである。</p>
 
   <p>著者は、<code id=obsolete-but-conforming-features:the-a-element><a href=semantics.html#the-a-element>a</a></code>要素に<code id=obsolete-but-conforming-features:attr-a-name><a href=#attr-a-name>name</a></code>属性を指定すべきでない。属性が存在する場合、その値は空文字列であってはならず、もしあれば、要素自身の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=obsolete-but-conforming-features:concept-id-2 data-x-internal=concept-id>ID</a>以外で要素の<a id=obsolete-but-conforming-features:tree href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree data-x-internal=tree>ツリー</a>で<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=obsolete-but-conforming-features:concept-id data-x-internal=concept-id>ID</a>のいずれかの値に等しくないものでも、任意の値に等しくなければ要素の<a id=obsolete-but-conforming-features:tree-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree data-x-internal=tree>ツリー</a>で<code id=obsolete-but-conforming-features:the-a-element-2><a href=semantics.html#the-a-element>a</a></code>要素の他の<code id=obsolete-but-conforming-features:attr-a-name-2><a href=#attr-a-name>name</a></code>属性と等しくないものでもでなければならない。この属性が存在し、要素が<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=obsolete-but-conforming-features:concept-id-3 data-x-internal=concept-id>ID</a>を持つ場合、属性値は要素の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=obsolete-but-conforming-features:concept-id-4 data-x-internal=concept-id>ID</a>と同じでなければならない。言語の以前のバージョンにおいて、この属性は<a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=obsolete-but-conforming-features:url data-x-internal=url>URL</a>内の<a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=obsolete-but-conforming-features:concept-url-fragment data-x-internal=concept-url-fragment>フラグメント</a>に対する可能なターゲットを指定するための手段として意図されていた。<code id=obsolete-but-conforming-features:the-id-attribute><a href=dom.html#the-id-attribute>id</a></code>属性が代わりに使用されるべきである。</p>
 
   
   <p>著者は、この仕様の他の場所に相いれない要件にもかかわらず、<code id=obsolete-but-conforming-features:attr-input-type><a href=forms.html#attr-input-type>type</a></code>属性が<a href="forms.html#number-state-(type=number)" id="obsolete-but-conforming-features:number-state-(type=number)">Number</a>状態にある<code id=obsolete-but-conforming-features:the-input-element><a href=forms.html#the-input-element>input</a></code>要素上の<code id=obsolete-but-conforming-features:attr-input-maxlength><a href=forms.html#attr-input-maxlength>maxlength</a></code>および<code id=obsolete-but-conforming-features:attr-input-size><a href=forms.html#attr-input-size>size</a></code>属性を指定すべきでないが、してもよい。One valid reason for using these attributes regardless is to help legacy user agents that do not support <code id=obsolete-but-conforming-features:the-input-element-2><a href=forms.html#the-input-element>input</a></code> elements with <code>type="number"</code> to still render the text control with a useful width.</p>
-
-  <p class=note><a id=obsolete-but-conforming-features:syntax href=syntax.html#syntax>HTML構文</a>において、<a id=obsolete-but-conforming-features:obsolete-permitted-doctype href=syntax.html#obsolete-permitted-doctype>旧式の許可されたDOCTYPE</a>である<a href=syntax.html#syntax-doctype id=obsolete-but-conforming-features:syntax-doctype>DOCTYPE</a>の指定は、警告されるだろう。</p>
 
 
   
@@ -348,10 +221,10 @@
   <p>The following features must be categorized as described
   above:</p>
 
-  <ul><li><p>The presence of an <a id=warnings-for-obsolete-but-conforming-features:obsolete-permitted-doctype href=syntax.html#obsolete-permitted-doctype>obsolete permitted DOCTYPE</a> in an <a href=https://triple-underscore.github.io/DOM4-ja.html#html-document id=warnings-for-obsolete-but-conforming-features:html-documents data-x-internal=html-documents>HTML document</a>.</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-img-border><a href=#attr-img-border>border</a></code> attribute on an
+  <ul><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-img-border><a href=#attr-img-border>border</a></code> attribute on an
    <code id=warnings-for-obsolete-but-conforming-features:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element if its value is the string "<code>0</code>".</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-script-language><a href=#attr-script-language>language</a></code> attribute on a
-   <code id=warnings-for-obsolete-but-conforming-features:the-script-element><a href=scripting.html#the-script-element>script</a></code> element if its value is an <a id=warnings-for-obsolete-but-conforming-features:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII case-insensitive</a> match for the
-   string "<code>JavaScript</code>" and if there is no <code id=warnings-for-obsolete-but-conforming-features:attr-script-type><a href=scripting.html#attr-script-type>type</a></code> attribute or there is and its value is an <a id=warnings-for-obsolete-but-conforming-features:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII
+   <code id=warnings-for-obsolete-but-conforming-features:the-script-element><a href=scripting.html#the-script-element>script</a></code> element if its value is an <a id=warnings-for-obsolete-but-conforming-features:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the
+   string "<code>JavaScript</code>" and if there is no <code id=warnings-for-obsolete-but-conforming-features:attr-script-type><a href=scripting.html#attr-script-type>type</a></code> attribute or there is and its value is an <a id=warnings-for-obsolete-but-conforming-features:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
    case-insensitive</a> match for the string "<code>text/javascript</code>".</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-a-name><a href=#attr-a-name>name</a></code> attribute on an <code id=warnings-for-obsolete-but-conforming-features:the-a-element><a href=semantics.html#the-a-element>a</a></code>
    element, if its value is not the empty string.</li><li><p>The presence of a <code id=warnings-for-obsolete-but-conforming-features:attr-input-maxlength><a href=forms.html#attr-input-maxlength>maxlength</a></code> attribute on an
    <code id=warnings-for-obsolete-but-conforming-features:the-input-element><a href=forms.html#the-input-element>input</a></code> element whose <code id=warnings-for-obsolete-but-conforming-features:attr-input-type><a href=forms.html#attr-input-type>type</a></code> attribute is in the
@@ -373,7 +246,7 @@
 
   <p>次のリストの要素は完全に廃止されており、著者は使用してはならない：</p>
 
-  <dl><dt><code id=non-conforming-features:the-applet-element><a href=#the-applet-element>applet</a></code><dd><p>代わりに<code id=non-conforming-features:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code>または<code id=non-conforming-features:the-object-element><a href=embedded-content.html#the-object-element>object</a></code>を使用する。<dt><dfn id=acronym><code>acronym</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-abbr-element><a href=semantics.html#the-abbr-element>abbr</a></code>を使用する。<dt><dfn id=bgsound><code>bgsound</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-audio-element><a href=embedded-content.html#the-audio-element>audio</a></code>を使用する。<dt><dfn id=dir><code>dir</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-ul-element><a href=semantics.html#the-ul-element>ul</a></code>を使用する。<dt><code id=non-conforming-features:frame><a href=#frame>frame</a></code><dt><code id=non-conforming-features:frameset><a href=#frameset>frameset</a></code><dt><dfn id=noframes><code>noframes</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>およびCSSを使用する、または様々な不変部分が合併された完全なページを生成するために含まれるサーバー側を使用するかのいずれか。<dt><dfn id=isindex><code>isindex</code></dfn><dd><p>Use an explicit <code id=non-conforming-features:the-form-element><a href=forms.html#the-form-element>form</a></code> and <a href="forms.html#text-(type=text)-state-and-search-state-(type=search)" id="non-conforming-features:text-(type=text)-state-and-search-state-(type=search)">text control</a> combination instead.<dt><dfn id=listing><code>listing</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-pre-element><a href=semantics.html#the-pre-element>pre</a></code>または<code id=non-conforming-features:the-code-element><a href=semantics.html#the-code-element>code</a></code>を使用する。<dt><dfn id=nextid><code>nextid</code></dfn><dd><p>GUIDを代わりに使用する。<dt><dfn id=noembed><code>noembed</code></dfn><dd><p>フォールバックが必要な際に<code id=non-conforming-features:the-embed-element-2><a href=embedded-content.html#the-embed-element>embed</a></code>の代わりに<code id=non-conforming-features:the-object-element-2><a href=embedded-content.html#the-object-element>object</a></code>を使用する。<dt><dfn id=plaintext><code>plaintext</code></dfn><dd><p>代わりに"<code id=non-conforming-features:text/plain><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code>" <a id=non-conforming-features:mime-type href=infrastructure.html#mime-type>MIMEタイプ</a>を使用する。<dt><dfn id=rb><code>rb</code></dfn><dt><dfn id=rtc><code>rtc</code></dfn><dd><p><code id=non-conforming-features:the-ruby-element><a href=semantics.html#the-ruby-element>ruby</a></code>要素内部で直接ルビベースを提供するまたはネストされた<code id=non-conforming-features:the-ruby-element-2><a href=semantics.html#the-ruby-element>ruby</a></code>要素を使用することで十分である。<dt><dfn id=strike><code>strike</code></dfn><dd><p>要素が編集をマークする場合は代わりに<code id=non-conforming-features:the-del-element><a href=semantics.html#the-del-element>del</a></code>を使用し、そうでなければ代わりに<code id=non-conforming-features:the-s-element><a href=semantics.html#the-s-element>s</a></code>を使用する。<dt><dfn id=xmp><code>xmp</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-pre-element-2><a href=semantics.html#the-pre-element>pre</a></code>および<code id=non-conforming-features:the-code-element-2><a href=semantics.html#the-code-element>code</a></code>を使用し、"<code>&lt;</code>"および"<code>&amp;</code>"文字をそれぞれ"<code>&amp;lt;</code>"および"<code>&amp;amp;</code>"としてエスケープする。<dt><dfn id=basefont><code>basefont</code></dfn><dt><dfn id=big><code>big</code></dfn><dt><dfn id=blink><code>blink</code></dfn><dt><dfn id=center><code>center</code></dfn><dt><dfn id=font><code>font</code></dfn><dt><code id=non-conforming-features:the-marquee-element><a href=#the-marquee-element>marquee</a></code><dt><dfn id=multicol><code>multicol</code></dfn><dt><dfn id=nobr><code>nobr</code></dfn><dt><dfn id=spacer><code>spacer</code></dfn><dt><dfn id=tt><code>tt</code></dfn><dd>
+  <dl><dt><code id=non-conforming-features:the-applet-element><a href=#the-applet-element>applet</a></code><dd><p>代わりに<code id=non-conforming-features:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code>または<code id=non-conforming-features:the-object-element><a href=embedded-content.html#the-object-element>object</a></code>を使用する。<dt><dfn id=acronym><code>acronym</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-abbr-element><a href=semantics.html#the-abbr-element>abbr</a></code>を使用する。<dt><dfn id=bgsound><code>bgsound</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-audio-element><a href=embedded-content.html#the-audio-element>audio</a></code>を使用する。<dt><dfn id=dir><code>dir</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-ul-element><a href=semantics.html#the-ul-element>ul</a></code>を使用する。<dt><code id=non-conforming-features:frame><a href=#frame>frame</a></code><dt><code id=non-conforming-features:frameset><a href=#frameset>frameset</a></code><dt><dfn id=noframes><code>noframes</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>およびCSSを使用する、または様々な不変部分が合併された完全なページを生成するために含まれるサーバー側を使用するかのいずれか。<dt><dfn id=isindex><code>isindex</code></dfn><dd><p>Use an explicit <code id=non-conforming-features:the-form-element><a href=forms.html#the-form-element>form</a></code> and <a href="forms.html#text-(type=text)-state-and-search-state-(type=search)" id="non-conforming-features:text-(type=text)-state-and-search-state-(type=search)">text control</a> combination instead.<dt><dfn id=listing><code>listing</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-pre-element><a href=semantics.html#the-pre-element>pre</a></code>または<code id=non-conforming-features:the-code-element><a href=semantics.html#the-code-element>code</a></code>を使用する。<dt><dfn id=nextid><code>nextid</code></dfn><dd><p>GUIDを代わりに使用する。<dt><dfn id=noembed><code>noembed</code></dfn><dd><p>フォールバックが必要な際に<code id=non-conforming-features:the-embed-element-2><a href=embedded-content.html#the-embed-element>embed</a></code>の代わりに<code id=non-conforming-features:the-object-element-2><a href=embedded-content.html#the-object-element>object</a></code>を使用する。<dt><dfn id=plaintext><code>plaintext</code></dfn><dd><p>代わりに"<code id=non-conforming-features:text/plain><a data-x-internal=text/plain href=https://tools.ietf.org/html/rfc2046#section-4.1.3>text/plain</a></code>" <a id=non-conforming-features:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>を使用する。<dt><dfn id=rb><code>rb</code></dfn><dt><dfn id=rtc><code>rtc</code></dfn><dd><p><code id=non-conforming-features:the-ruby-element><a href=semantics.html#the-ruby-element>ruby</a></code>要素内部で直接ルビベースを提供するまたはネストされた<code id=non-conforming-features:the-ruby-element-2><a href=semantics.html#the-ruby-element>ruby</a></code>要素を使用することで十分である。<dt><dfn id=strike><code>strike</code></dfn><dd><p>要素が編集をマークする場合は代わりに<code id=non-conforming-features:the-del-element><a href=semantics.html#the-del-element>del</a></code>を使用し、そうでなければ代わりに<code id=non-conforming-features:the-s-element><a href=semantics.html#the-s-element>s</a></code>を使用する。<dt><dfn id=xmp><code>xmp</code></dfn><dd><p>代わりに<code id=non-conforming-features:the-pre-element-2><a href=semantics.html#the-pre-element>pre</a></code>および<code id=non-conforming-features:the-code-element-2><a href=semantics.html#the-code-element>code</a></code>を使用し、"<code>&lt;</code>"および"<code>&amp;</code>"文字をそれぞれ"<code>&amp;lt;</code>"および"<code>&amp;amp;</code>"としてエスケープする。<dt><dfn id=basefont><code>basefont</code></dfn><dt><dfn id=big><code>big</code></dfn><dt><dfn id=blink><code>blink</code></dfn><dt><dfn id=center><code>center</code></dfn><dt><dfn id=font><code>font</code></dfn><dt><code id=non-conforming-features:the-marquee-element><a href=#the-marquee-element>marquee</a></code><dt><dfn id=multicol><code>multicol</code></dfn><dt><dfn id=nobr><code>nobr</code></dfn><dt><dfn id=spacer><code>spacer</code></dfn><dt><dfn id=tt><code>tt</code></dfn><dd>
 
     <p>適切な要素またはCSSを代わりに使用する。</p>
 
@@ -442,18 +315,19 @@
   <p>The <code id=the-applet-element:the-applet-element-7><a href=#the-applet-element>applet</a></code> element must implement the <code id=the-applet-element:htmlappletelement-2><a href=#htmlappletelement>HTMLAppletElement</a></code>
   interface.</p>
 
-  <pre class=idl>interface <dfn id=htmlappletelement>HTMLAppletElement</dfn> : <a id=the-applet-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
-  [<a id=the-applet-element:cereactions href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-applet-align id=the-applet-element:dom-applet-align>align</a>;
-  [<a id=the-applet-element:cereactions-2 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-applet-alt id=the-applet-element:dom-applet-alt>alt</a>;
-  [<a id=the-applet-element:cereactions-3 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-applet-archive id=the-applet-element:dom-applet-archive>archive</a>;
-  [<a id=the-applet-element:cereactions-4 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-applet-code id=the-applet-element:dom-applet-code>code</a>;
-  [<a id=the-applet-element:cereactions-5 href=scripting.html#cereactions>CEReactions</a>] attribute USVString <a href=#dom-applet-codebase id=the-applet-element:dom-applet-codebase>codeBase</a>;
-  [<a id=the-applet-element:cereactions-6 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-applet-height id=the-applet-element:dom-applet-height>height</a>;
-  [<a id=the-applet-element:cereactions-7 href=scripting.html#cereactions>CEReactions</a>] attribute unsigned long <a href=#dom-applet-hspace id=the-applet-element:dom-applet-hspace>hspace</a>;
-  [<a id=the-applet-element:cereactions-8 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-applet-name id=the-applet-element:dom-applet-name>name</a>;
-  [<a id=the-applet-element:cereactions-9 href=scripting.html#cereactions>CEReactions</a>] attribute USVString _<a href=#dom-applet-object id=the-applet-element:dom-applet-object>object</a>; // the underscore is not part of the identifier 
-  [<a id=the-applet-element:cereactions-10 href=scripting.html#cereactions>CEReactions</a>] attribute unsigned long <a href=#dom-applet-vspace id=the-applet-element:dom-applet-vspace>vspace</a>;
-  [<a id=the-applet-element:cereactions-11 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-applet-width id=the-applet-element:dom-applet-width>width</a>;
+  <pre class=idl>// Note: <a href=scripting.html#customized-built-in-element-restrictions>intentionally</a> not [<a id=the-applet-element:htmlconstructor href=dom.html#htmlconstructor>HTMLConstructor</a>]
+interface <dfn id=htmlappletelement>HTMLAppletElement</dfn> : <a id=the-applet-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  attribute DOMString <a href=#dom-applet-align id=the-applet-element:dom-applet-align>align</a>;
+  attribute DOMString <a href=#dom-applet-alt id=the-applet-element:dom-applet-alt>alt</a>;
+  attribute DOMString <a href=#dom-applet-archive id=the-applet-element:dom-applet-archive>archive</a>;
+  attribute DOMString <a href=#dom-applet-code id=the-applet-element:dom-applet-code>code</a>;
+  attribute USVString <a href=#dom-applet-codebase id=the-applet-element:dom-applet-codebase>codeBase</a>;
+  attribute DOMString <a href=#dom-applet-height id=the-applet-element:dom-applet-height>height</a>;
+  attribute unsigned long <a href=#dom-applet-hspace id=the-applet-element:dom-applet-hspace>hspace</a>;
+  attribute DOMString <a href=#dom-applet-name id=the-applet-element:dom-applet-name>name</a>;
+  attribute USVString _<a href=#dom-applet-object id=the-applet-element:dom-applet-object>object</a>; // the underscore is not part of the identifier 
+  attribute unsigned long <a href=#dom-applet-vspace id=the-applet-element:dom-applet-vspace>vspace</a>;
+  attribute DOMString <a href=#dom-applet-width id=the-applet-element:dom-applet-width>width</a>;
 };</pre>
 
   <p>The <dfn id=dom-applet-align><code>align</code></dfn>, <dfn id=dom-applet-alt><code>alt</code></dfn>, <dfn id=dom-applet-archive><code>archive</code></dfn>, <dfn id=dom-applet-code><code>code</code></dfn>, <dfn id=dom-applet-height><code>height</code></dfn>, <dfn id=dom-applet-hspace><code>hspace</code></dfn>, <dfn id=dom-applet-name><code>name</code></dfn>, <dfn id=dom-applet-object><code>object</code></dfn>, <dfn id=dom-applet-vspace><code>vspace</code></dfn>, and <dfn id=dom-applet-width><code>width</code></dfn> IDL attributes must <a id=the-applet-element:reflect href=infrastructure.html#reflect>reflect</a> the
@@ -477,7 +351,8 @@
   <p>The <code id=the-marquee-element:the-marquee-element-2><a href=#the-marquee-element>marquee</a></code> element must implement the <code id=the-marquee-element:htmlmarqueeelement><a href=#htmlmarqueeelement>HTMLMarqueeElement</a></code>
   interface.</p>
 
-  <pre class=idl>interface <dfn id=htmlmarqueeelement>HTMLMarqueeElement</dfn> : <a id=the-marquee-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  <pre class=idl>[<a id=the-marquee-element:htmlconstructor href=dom.html#htmlconstructor>HTMLConstructor</a>]
+interface <dfn id=htmlmarqueeelement>HTMLMarqueeElement</dfn> : <a id=the-marquee-element:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
   [<a id=the-marquee-element:cereactions href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-marquee-behavior id=the-marquee-element:dom-marquee-behavior>behavior</a>;
   [<a id=the-marquee-element:cereactions-2 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-marquee-bgcolor id=the-marquee-element:dom-marquee-bgcolor>bgColor</a>;
   [<a id=the-marquee-element:cereactions-3 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-marquee-direction id=the-marquee-element:dom-marquee-direction>direction</a>;
@@ -645,7 +520,8 @@
   <p>The <code id=frames:frameset><a href=#frameset>frameset</a></code> element must implement the <code id=frames:htmlframesetelement><a href=#htmlframesetelement>HTMLFrameSetElement</a></code>
   interface.</p>
 
-  <pre class=idl>interface <dfn id=htmlframesetelement>HTMLFrameSetElement</dfn> : <a id=frames:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
+  <pre class=idl>[<a id=frames:htmlconstructor href=dom.html#htmlconstructor>HTMLConstructor</a>]
+interface <dfn id=htmlframesetelement>HTMLFrameSetElement</dfn> : <a id=frames:htmlelement href=dom.html#htmlelement>HTMLElement</a> {
   [<a id=frames:cereactions href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-frameset-cols id=frames:dom-frameset-cols>cols</a>;
   [<a id=frames:cereactions-2 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-frameset-rows id=frames:dom-frameset-rows>rows</a>;
 };
@@ -746,7 +622,8 @@
 
   <p>The <code id=frames:frame-15><a href=#frame>frame</a></code> element must implement the <code id=frames:htmlframeelement><a href=#htmlframeelement>HTMLFrameElement</a></code> interface.</p>
 
-  <pre class=idl>interface <dfn id=htmlframeelement>HTMLFrameElement</dfn> : <a id=frames:htmlelement-2 href=dom.html#htmlelement>HTMLElement</a> {
+  <pre class=idl>[<a id=frames:htmlconstructor-2 href=dom.html#htmlconstructor>HTMLConstructor</a>]
+interface <dfn id=htmlframeelement>HTMLFrameElement</dfn> : <a id=frames:htmlelement-2 href=dom.html#htmlelement>HTMLElement</a> {
   [<a id=frames:cereactions-3 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-frame-name id=frames:dom-frame-name>name</a>;
   [<a id=frames:cereactions-4 href=scripting.html#cereactions>CEReactions</a>] attribute DOMString <a href=#dom-frame-scrolling id=frames:dom-frame-scrolling>scrolling</a>;
   [<a id=frames:cereactions-5 href=scripting.html#cereactions>CEReactions</a>] attribute USVString <a href=#dom-frame-src id=frames:dom-frame-src>src</a>;
@@ -1480,4 +1357,4 @@ interface <dfn id=external>External</dfn> {
 
 
   <nav><a href=rendering.html>← 14 Rendering</a> — <a href=index.html>目次</a> — <a href=iana.html>16 IANAの考慮 →</a></nav>
-</body></html>
+</html>

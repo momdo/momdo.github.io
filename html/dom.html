@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -549,7 +424,7 @@ partial interface <dfn data-lt="" id=document>Document</dfn> {
 
   
 
-  <p>取得時に、<dfn id=dom-document-head><code>head</code></dfn>属性は、文書の<a href=#the-head-element-2 id=dom-tree-accessors:the-head-element-2-2><code>head</code>要素</a>（<code id=dom-tree-accessors:the-head-element-3><a href=semantics.html#the-head-element>head</a></code>要素またはnull）を返さなければならない。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>5.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=documenthead">caniuse.com</a></div>
+  <p>取得時に、<dfn id=dom-document-head><code>head</code></dfn>属性は、文書の<a href=#the-head-element-2 id=dom-tree-accessors:the-head-element-2-2><code>head</code>要素</a>（<code id=dom-tree-accessors:the-head-element-3><a href=semantics.html#the-head-element>head</a></code>要素またはnull）を返さなければならない。<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>5.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=documenthead">caniuse.com</a></div>
 
   
 
@@ -585,14 +460,14 @@ partial interface <dfn data-lt="" id=document>Document</dfn> {
       <p>Otherwise:</p>
 
       <ol><li><p>Let <var>element</var> be the result of <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-create-element id=dom-tree-accessors:create-an-element data-x-internal=create-an-element>creating an
-       element</a> given the <a id=dom-tree-accessors:document-element-6 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a>'s <a id=dom-tree-accessors:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, <code id=dom-tree-accessors:svg-title-4><a data-x-internal=svg-title href=https://triple-underscore.github.io/SVG11/struct.html#TitleElement>title</a></code>, and the <a id=dom-tree-accessors:svg-namespace href=infrastructure.html#svg-namespace>SVG namespace</a>.</p>
+       element</a> given the <a id=dom-tree-accessors:document-element-6 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a>'s <a id=dom-tree-accessors:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, <code id=dom-tree-accessors:svg-title-4><a data-x-internal=svg-title href=https://triple-underscore.github.io/SVG11/struct.html#TitleElement>title</a></code>, and the <a id=dom-tree-accessors:svg-namespace href=https://infra.spec.whatwg.org/#svg-namespace data-x-internal=svg-namespace>SVG namespace</a>.</p>
 
        </li><li><p>Insert <var>element</var> as the first child of the <a id=dom-tree-accessors:document-element-7 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document
        element</a>.</li></ol>
      </li><li><p>Act as if the <code id=dom-tree-accessors:textcontent><a data-x-internal=textcontent href=https://triple-underscore.github.io/DOM4-ja.html#dom-node-textcontent>textContent</a></code> IDL attribute of <var>element</var> was
      set to the new value being assigned.</li></ol>
 
-   <dt>If the <a id=dom-tree-accessors:document-element-8 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a> is in the <a id=dom-tree-accessors:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a><dd>
+   <dt>If the <a id=dom-tree-accessors:document-element-8 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a> is in the <a id=dom-tree-accessors:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a><dd>
 
     <ol><li><p>If <a href=#the-title-element-2 id=dom-tree-accessors:the-title-element-2-4>the <code>title</code> element</a> is null and <a href=#the-head-element-2 id=dom-tree-accessors:the-head-element-2-3>the <code>head</code>
      element</a> is null, then abort these steps.</li><li><p>If <a href=#the-title-element-2 id=dom-tree-accessors:the-title-element-2-5>the <code>title</code> element</a> is non-null, let <var>element</var> be
@@ -601,7 +476,7 @@ partial interface <dfn data-lt="" id=document>Document</dfn> {
 
       <ol><li><p>Let <var>element</var> be the result of <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-create-element id=dom-tree-accessors:create-an-element-2 data-x-internal=create-an-element>creating an
        element</a> given the <a id=dom-tree-accessors:document-element-9 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a>'s <a id=dom-tree-accessors:node-document-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>,
-       <code id=dom-tree-accessors:the-title-element-3><a href=semantics.html#the-title-element>title</a></code>, and the <a id=dom-tree-accessors:html-namespace-2-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>.</p>
+       <code id=dom-tree-accessors:the-title-element-3><a href=semantics.html#the-title-element>title</a></code>, and the <a id=dom-tree-accessors:html-namespace-2-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>.</p>
 
        </li><li><p><a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-append id=dom-tree-accessors:concept-node-append data-x-internal=concept-node-append>Append</a> <var>element</var> to <a href=#the-head-element-2 id=dom-tree-accessors:the-head-element-2-4>the
        <code>head</code> element</a>.</li></ol>
@@ -725,7 +600,7 @@ partial interface <dfn data-lt="" id=document>Document</dfn> {
   <p>The <dfn id=dom-document-currentscript><code>currentScript</code></dfn> attribute, on
   getting, must return the value to which it was most recently set. When the <code id=dom-tree-accessors:document-14><a href=#document>Document</a></code>
   is created, the <code id=dom-tree-accessors:dom-document-currentscript-2><a href=#dom-document-currentscript>currentScript</a></code> must be
-  initialized to null.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>29+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>8+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>8+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>16+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=document-currentscript">caniuse.com</a></div>
+  initialized to null.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>29+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>8+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>8+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>16+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=document-currentscript">caniuse.com</a></div>
 
   
 
@@ -982,6 +857,7 @@ interface <dfn id=htmlelement>HTMLElement</dfn> : <a id=elements-in-the-dom:elem
 <a href=#htmlelement id=elements-in-the-dom:htmlelement-3>HTMLElement</a> implements <a id=elements-in-the-dom:documentandelementeventhandlers href=webappapis.html#documentandelementeventhandlers>DocumentAndElementEventHandlers</a>;
 <a href=#htmlelement id=elements-in-the-dom:htmlelement-4>HTMLElement</a> implements <a id=elements-in-the-dom:elementcontenteditable href=interaction.html#elementcontenteditable>ElementContentEditable</a>;
 
+// Note: <a href=scripting.html#customized-built-in-element-restrictions>intentionally</a> not [<a href=#htmlconstructor id=elements-in-the-dom:htmlconstructor-2>HTMLConstructor</a>]
 interface <dfn id=htmlunknownelement>HTMLUnknownElement</dfn> : <a href=#htmlelement id=elements-in-the-dom:htmlelement-5>HTMLElement</a> { };</pre>
 
   <p><code id=elements-in-the-dom:htmlelement-6><a href=#htmlelement>HTMLElement</a></code>インターフェイスは、多数の異なる機能に関係するメソッドおよび属性を保持する。したがって、このインターフェイスのメンバーはこの仕様の異なるセクションでさまざまに説明される。</p>
@@ -991,7 +867,7 @@ interface <dfn id=htmlunknownelement>HTMLUnknownElement</dfn> : <a href=#htmlele
   <hr>
 
   <p>The <a id=elements-in-the-dom:element-interface href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-interface data-x-internal=element-interface>element interface</a> for an element with name <var>name</var> in the
-  <a id=elements-in-the-dom:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a> is determined as follows:</p>
+  <a id=elements-in-the-dom:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a> is determined as follows:</p>
 
   <ol><li><p>If <var>name</var> is <code id=elements-in-the-dom:bgsound><a href=obsolete.html#bgsound>bgsound</a></code>, <code id=elements-in-the-dom:blink><a href=obsolete.html#blink>blink</a></code>, <code id=elements-in-the-dom:isindex><a href=obsolete.html#isindex>isindex</a></code>,
    <code id=elements-in-the-dom:multicol><a href=obsolete.html#multicol>multicol</a></code>, <code id=elements-in-the-dom:nextid><a href=obsolete.html#nextid>nextid</a></code>, or <code id=elements-in-the-dom:spacer><a href=obsolete.html#spacer>spacer</a></code>, then return
@@ -1123,7 +999,7 @@ document.createElement("bad-1");  // (2)</pre>
 
     <ol><li><p>Let <var>element</var> be a new element that implements the interface to which the
      <a id=html-element-constructors:active-function-object-8 href=https://tc39.github.io/ecma262/#active-function-object data-x-internal=active-function-object>active function object</a> corresponds, with no attributes, namespace set to the
-     <a id=html-element-constructors:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a>, local name set to <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name-4>local name</a>, and <a id=html-element-constructors:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
+     <a id=html-element-constructors:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, local name set to <var>definition</var>'s <a href=scripting.html#concept-custom-element-definition-local-name id=html-element-constructors:concept-custom-element-definition-local-name-4>local name</a>, and <a id=html-element-constructors:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node
      document</a> set to the <a id=html-element-constructors:current-global-object-2 href=webappapis.html#current-global-object>current global object</a>'s <a href=browsers.html#concept-document-window id=html-element-constructors:concept-document-window>associated <code>Document</code></a>.</li><li><p>Perform <var>element</var>.[[SetPrototypeOf]](<var>prototype</var>). 例外を再度投げる。</li><li><p>Set <var>element</var>'s <a id=html-element-constructors:custom-element-state href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>custom</code>".</li><li><p>Set <var>element</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-custom-element-definition id=html-element-constructors:concept-element-custom-element-definition data-x-internal=concept-element-custom-element-definition>custom
      element definition</a> to <var>definition</var>.</li><li><p>Return <var>element</var>.</li></ol>
 
@@ -1377,7 +1253,7 @@ console.assert(image.height === 200);</pre>
   
   <ul class="brief category-list"><li><code id=embedded-content-2:the-audio-element><a href=embedded-content.html#the-audio-element>audio</a></code></li><li><code id=embedded-content-2:the-canvas-element><a href=scripting.html#the-canvas-element>canvas</a></code></li><li><code id=embedded-content-2:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code></li><li><code id=embedded-content-2:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code></li><li><code id=embedded-content-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code></li><li><a id=embedded-content-2:mathml-math href=https://www.w3.org/Math/draft-spec/chapter2.html#interf.toplevel data-x-internal=mathml-math>MathML <code>math</code></a></li><li><code id=embedded-content-2:the-object-element><a href=embedded-content.html#the-object-element>object</a></code></li><li><code id=embedded-content-2:the-picture-element><a href=embedded-content.html#the-picture-element>picture</a></code></li><li><a id=embedded-content-2:svg-svg href=https://triple-underscore.github.io/SVG11/struct.html#SVGElement data-x-internal=svg-svg>SVG <code>svg</code></a></li><li><code id=embedded-content-2:the-video-element><a href=embedded-content.html#the-video-element>video</a></code></li></ul>
 
-  <p><a id=embedded-content-2:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML名前空間</a>以外の名前空間に基づく、メタデータでなくコンテンツを伝える要素は、この仕様で定義されるコンテンツモデルの目的のための<a href=#embedded-content-category id=embedded-content-2:embedded-content-category>エンベディッドコンテンツ</a>である。（たとえば、MathML、またはSVG。）</p>
+  <p><a id=embedded-content-2:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML名前空間</a>以外の名前空間に基づく、メタデータでなくコンテンツを伝える要素は、この仕様で定義されるコンテンツモデルの目的のための<a href=#embedded-content-category id=embedded-content-2:embedded-content-category>エンベディッドコンテンツ</a>である。（たとえば、MathML、またはSVG。）</p>
 
   <p>一部のエンベディッドコンテンツ要素は、<dfn id=fallback-content>フォールバックコンテンツ</dfn>を持つこともできる。これは外部リソースが使用できない場合（たとえば、サポートされていないフォーマットであるため）に使用されるコンテンツである。もしあれば、要素の定義はどのようなフォールバックであるかを記載する。</p>
   
@@ -1659,7 +1535,7 @@ console.assert(image.height === 200);</pre>
 
   <hr>
 
-  <p><a id=global-attributes:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>で、<a id=global-attributes:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML名前空間</a>での要素は指定する<code>xmlns</code>属性を持つかもしれない。もし存在するなら値は正確に"<code>http://www.w3.org/1999/xhtml</code>"のみを持つ。これは<a id=global-attributes:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML文書</a>に当てはまらない。</p>
+  <p><a id=global-attributes:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>で、<a id=global-attributes:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML名前空間</a>での要素は指定する<code>xmlns</code>属性を持つかもしれない。もし存在するなら値は正確に"<code>http://www.w3.org/1999/xhtml</code>"のみを持つ。これは<a id=global-attributes:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML文書</a>に当てはまらない。</p>
 
   <p class=note>HTMLにおいて、<code>xmlns</code>属性は一切影響しない。これは基本的に魔除けである。これはXHTMLからの移行を少し簡単にするためだけに許可される。<a id=global-attributes:html-parser href=syntax.html#html-parser>HTMLパーサ</a>によって解析される場合、XMLの名前空間宣言属性のように"<code>http://www.w3.org/2000/xmlns/</code>"名前空間ではなく、属性は名前空間なしに終わる。</p>
 
@@ -1667,7 +1543,7 @@ console.assert(image.height === 200);</pre>
 
   <hr>
 
-  <p>XML仕様はまた、<a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=global-attributes:xml-documents-2 data-x-internal=xml-documents>XML文書</a>における任意の要素上の<a id=global-attributes:xml-namespace href=infrastructure.html#xml-namespace>XML名前空間</a>で<code id=global-attributes:attr-xml-space><a href=infrastructure.html#attr-xml-space>xml:space</a></code>属性の使用を許可する。HTMLにおいてデフォルトの振る舞いは空白文字を維持するため、この属性は<a id=global-attributes:html-elements-9 href=infrastructure.html#html-elements>HTML要素</a>で影響しない。<a href=references.html#refsXML>[XML]</a></p>
+  <p>XML仕様はまた、<a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=global-attributes:xml-documents-2 data-x-internal=xml-documents>XML文書</a>における任意の要素上の<a id=global-attributes:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a>で<code id=global-attributes:attr-xml-space><a href=infrastructure.html#attr-xml-space>xml:space</a></code>属性の使用を許可する。HTMLにおいてデフォルトの振る舞いは空白文字を維持するため、この属性は<a id=global-attributes:html-elements-9 href=infrastructure.html#html-elements>HTML要素</a>で影響しない。<a href=references.html#refsXML>[XML]</a></p>
 
   <p class=note><code id=global-attributes:text/html><a href=iana.html#text/html>text/html</a></code>構文で<a id=global-attributes:html-elements-10 href=infrastructure.html#html-elements>HTML要素</a>上の<code id=global-attributes:attr-xml-space-2><a href=infrastructure.html#attr-xml-space>xml:space</a></code>属性をシリアル化する方法は存在しない。</p>
 
@@ -1717,15 +1593,15 @@ Transport Protocol"&gt;HTTP&lt;/abbr&gt; today.&lt;/p&gt;</pre>
 
   <p><dfn id=attr-lang><code>lang</code></dfn>属性（名前空間なし）は、要素のコンテンツに対する基本言語およびテキストを含むあらゆる要素の属性に対して指定する。その値は妥当なBCP 47言語タグまたは空文字列でなければならない。属性に空文字列を設定することは第一言語が不明であることを指す。<a href=references.html#refsBCP47>[BCP47]</a></p>
 
-  <p><a id=the-lang-and-xml:lang-attributes:xml-namespace href=infrastructure.html#xml-namespace>XML名前空間</a>での<dfn id=attr-xml-lang><code>lang</code></dfn>属性はXMLで定義されている。<a href=references.html#refsXML>[XML]</a></p>
+  <p><a id=the-lang-and-xml:lang-attributes:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a>での<dfn id=attr-xml-lang><code>lang</code></dfn>属性はXMLで定義されている。<a href=references.html#refsXML>[XML]</a></p>
 
   <p>これらの属性が要素から省略される場合、この要素の言語がもしあれば、その親要素の言語と同じである。</p>
 
   <p>名前空間のない<code id=the-lang-and-xml:lang-attributes:attr-lang-2><a href=#attr-lang>lang</a></code>属性は任意の<a href=infrastructure.html#html-elements id=the-lang-and-xml:lang-attributes:html-elements>HTML要素</a>で使用されてもよい。</p>
 
-  <p><a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-2><span>XML名前空間</span>での<code>lang</code>属性</a>は、<a id=the-lang-and-xml:lang-attributes:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML文書</a>での<a id=the-lang-and-xml:lang-attributes:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>上で使用されてもよい。同様に、関連仕様が許可する（特に、MathMLおよびSVGがそれらの要素で指定される<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-3><span>XML名前空間</span>で<code>lang</code>属性</a>を許可する）場合、他の名前空間で使用されてもよい。名前空間なしの<code id=the-lang-and-xml:lang-attributes:attr-lang-3><a href=#attr-lang>lang</a></code>属性と<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-4><span>XML名前空間</span>での<code>lang</code>属性</a>の両方が同じ要素に指定される場合、<a id=the-lang-and-xml:lang-attributes:ascii-case-insensitive href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で比較したときに、これらは正確に同じ値を持たなければならない。</p>
+  <p><a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-2><span>XML名前空間</span>での<code>lang</code>属性</a>は、<a id=the-lang-and-xml:lang-attributes:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML文書</a>での<a id=the-lang-and-xml:lang-attributes:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>上で使用されてもよい。同様に、関連仕様が許可する（特に、MathMLおよびSVGがそれらの要素で指定される<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-3><span>XML名前空間</span>で<code>lang</code>属性</a>を許可する）場合、他の名前空間で使用されてもよい。名前空間なしの<code id=the-lang-and-xml:lang-attributes:attr-lang-3><a href=#attr-lang>lang</a></code>属性と<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-4><span>XML名前空間</span>での<code>lang</code>属性</a>の両方が同じ要素に指定される場合、<a id=the-lang-and-xml:lang-attributes:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で比較したときに、これらは正確に同じ値を持たなければならない。</p>
 
-  <p>著者は、<a id=the-lang-and-xml:lang-attributes:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>における<a id=the-lang-and-xml:lang-attributes:html-elements-3 href=infrastructure.html#html-elements>HTML要素</a>で<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-5><span>XML名前空間</span>内で<code>lang</code>属性</a>を使用してはならない。XHTMLとの移行を容易にするために、著者は、接頭辞なしで名前空間のない属性、および<a id=the-lang-and-xml:lang-attributes:html-documents-2 href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>内の<a id=the-lang-and-xml:lang-attributes:html-elements-4 href=infrastructure.html#html-elements>HTML要素</a>にリテラルでローカル名"<code>xml:lang</code>"を指定してもよいが、名前空間のない<code id=the-lang-and-xml:lang-attributes:attr-lang-4><a href=#attr-lang>lang</a></code>属性も指定されている場合、そのような属性のみが指定されなければならず、<a id=the-lang-and-xml:lang-attributes:ascii-case-insensitive-2 href=infrastructure.html#ascii-case-insensitive>ASCII大文字・小文字不区別</a>で比較するとき、両方の属性は同じ値を持たなければならない。</p>
+  <p>著者は、<a id=the-lang-and-xml:lang-attributes:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>における<a id=the-lang-and-xml:lang-attributes:html-elements-3 href=infrastructure.html#html-elements>HTML要素</a>で<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-5><span>XML名前空間</span>内で<code>lang</code>属性</a>を使用してはならない。XHTMLとの移行を容易にするために、著者は、接頭辞なしで名前空間のない属性、および<a id=the-lang-and-xml:lang-attributes:html-documents-2 href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>内の<a id=the-lang-and-xml:lang-attributes:html-elements-4 href=infrastructure.html#html-elements>HTML要素</a>にリテラルでローカル名"<code>xml:lang</code>"を指定してもよいが、名前空間のない<code id=the-lang-and-xml:lang-attributes:attr-lang-4><a href=#attr-lang>lang</a></code>属性も指定されている場合、そのような属性のみが指定されなければならず、<a id=the-lang-and-xml:lang-attributes:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で比較するとき、両方の属性は同じ値を持たなければならない。</p>
 
   <p class=note>接頭辞なしで名前空間のない属性およびリテラルにローカル"<code>xml:lang</code>"は、言語処理に影響を与えない。</p>
 
@@ -1984,7 +1860,7 @@ background: transparent"&gt;blue&lt;/span&gt;.&lt;/p&gt;</pre>
 
 
 
-  <h5 id=embedding-custom-non-visible-data-with-the-data-*-attributes>3.2.6.6 <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:attr-data-*><a href=#attr-data-*>data-*</a></code>属性をもつ<dfn>カスタム非視覚データの埋め込み</dfn><a href=#embedding-custom-non-visible-data-with-the-data-*-attributes class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>7+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>6+</span></span><span class="ie yes"><span>IE</span> <span>11+</span></span><span class="op_mini partial"><span><span>Opera Mini</span> (limited) </span><span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>3+</span></span><span class="safari yes"><span>Safari</span> <span>5.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.1+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=dataset">caniuse.com</a></div>
+  <h5 id=embedding-custom-non-visible-data-with-the-data-*-attributes>3.2.6.6 <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:attr-data-*><a href=#attr-data-*>data-*</a></code>属性をもつ<dfn>カスタム非視覚データの埋め込み</dfn><a href=#embedding-custom-non-visible-data-with-the-data-*-attributes class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>7+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>6+</span></span><span class="op_mini partial"><span><span>Opera Mini</span> (limited) </span><span>all+</span></span><span class="ie yes"><span>IE</span> <span>11+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>3+</span></span><span class="safari yes"><span>Safari</span> <span>5.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.1+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=dataset">caniuse.com</a></div>
 
   <p><dfn id=custom-data-attribute>カスタムデータ属性</dfn>は、文字列"<dfn id=attr-data-*><code>data-</code></dfn>"で始まる名前空間のない名前をもつ属性であり、ハイフンの後に少なくとも1文字を持ち、<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:xml-compatible href=infrastructure.html#xml-compatible>XML互換</a>であり、<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:uppercase-ascii-letters href=infrastructure.html#uppercase-ascii-letters>ASCII大文字</a>を含まない。</p>
 
@@ -2073,7 +1949,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
    any <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:uppercase-ascii-letters-2 href=infrastructure.html#uppercase-ascii-letters>uppercase ASCII letters</a>, in the order that those attributes are listed in the
    element's <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:attribute-list href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-attribute data-x-internal=attribute-list>attribute list</a>, add a name-value pair to <var>list</var> whose name is the
    attribute's name with the first five characters removed and whose value is the attribute's
-   value.</li><li><p><var>list</var>内のそれぞれの名前に対して、<a href=infrastructure.html#lowercase-ascii-letters id=embedding-custom-non-visible-data-with-the-data-*-attributes:lowercase-ascii-letters>小文字のASCII文字</a>が続く名前における各U+002D HYPHEN-MINUS文字（-）に対して、U+002D HYPHEN-MINUS文字（-）を除去し、かつ<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:converted-to-ascii-uppercase href=infrastructure.html#converted-to-ascii-uppercase>ASCII大文字に変換された</a>同じ文字に続く文字を置換する。</li><li><p><var>list</var>を返す。</li></ol>
+   value.</li><li><p><var>list</var>内のそれぞれの名前に対して、<a href=infrastructure.html#lowercase-ascii-letters id=embedding-custom-non-visible-data-with-the-data-*-attributes:lowercase-ascii-letters>小文字のASCII文字</a>が続く名前における各U+002D HYPHEN-MINUS文字（-）に対して、U+002D HYPHEN-MINUS文字（-）を除去し、かつ<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:converted-to-ascii-uppercase href=https://infra.spec.whatwg.org/#ascii-uppercase data-x-internal=converted-to-ascii-uppercase>ASCII大文字に変換された</a>同じ文字に続く文字を置換する。</li><li><p><var>list</var>を返す。</li></ol>
 
   <p>The <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:supported-property-names href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-supported-property-names data-x-internal=supported-property-names>supported property names</a> on a <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:domstringmap-6><a href=#domstringmap>DOMStringMap</a></code> object at any instant
   are the names of each pair returned from <a href=#concept-domstringmap-pairs id=embedding-custom-non-visible-data-with-the-data-*-attributes:concept-domstringmap-pairs>getting the
@@ -2090,7 +1966,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
 
   <ol><li><p>If <var>name</var> contains a U+002D HYPHEN-MINUS character (-) followed by a
    <a href=infrastructure.html#lowercase-ascii-letters id=embedding-custom-non-visible-data-with-the-data-*-attributes:lowercase-ascii-letters-2>lowercase ASCII letter</a>, then throw a
-   <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p><var>name</var>における各<a href=infrastructure.html#uppercase-ascii-letters id=embedding-custom-non-visible-data-with-the-data-*-attributes:uppercase-ascii-letters-3>大文字のASCII文字</a>に対して　文字の前にU+002D HYPHEN-MINUS文字（-）を挿入し、かつ<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:converted-to-ascii-lowercase href=infrastructure.html#converted-to-ascii-lowercase>ASCII小文字に変換される</a>同じ文字を置換する。</li><li><p><var>name</var>の先頭に文字列<code>data-</code>を挿入する。</li><li><p>If <var>name</var> does not match the XML <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:xml-name><a data-x-internal=xml-name href=http://w4ard.eplusx.net/translation/W3C/REC-xml-20081126/#NT-Name>Name</a></code> production,
+   <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p><var>name</var>における各<a href=infrastructure.html#uppercase-ascii-letters id=embedding-custom-non-visible-data-with-the-data-*-attributes:uppercase-ascii-letters-3>大文字のASCII文字</a>に対して　文字の前にU+002D HYPHEN-MINUS文字（-）を挿入し、かつ<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:converted-to-ascii-lowercase href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>ASCII小文字に変換される</a>同じ文字を置換する。</li><li><p><var>name</var>の先頭に文字列<code>data-</code>を挿入する。</li><li><p>If <var>name</var> does not match the XML <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:xml-name><a data-x-internal=xml-name href=http://w4ard.eplusx.net/translation/W3C/REC-xml-20081126/#NT-Name>Name</a></code> production,
    throw an <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:invalidcharactererror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidcharactererror data-x-internal=invalidcharactererror>"<code>InvalidCharacterError</code>"</a> <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort
    these steps.</li><li><p><a href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-attributes-set-value id=embedding-custom-non-visible-data-with-the-data-*-attributes:concept-element-attributes-set-value data-x-internal=concept-element-attributes-set-value>Set an attribute value</a> for the
    <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:domstringmap-9><a href=#domstringmap>DOMStringMap</a></code>'s <a href=#concept-domstringmap-element id=embedding-custom-non-visible-data-with-the-data-*-attributes:concept-domstringmap-element-2>associated element</a>
@@ -2099,7 +1975,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   <p id=dom-domstringmap-removeitem>To <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:delete-an-existing-named-property href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-delete-an-existing-named-property data-x-internal=delete-an-existing-named-property>delete an existing named property</a>
   <var>name</var> for a <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:domstringmap-10><a href=#domstringmap>DOMStringMap</a></code>, run the following steps:</p>
 
-  <ol><li><p><var>name</var>における各<a href=infrastructure.html#uppercase-ascii-letters id=embedding-custom-non-visible-data-with-the-data-*-attributes:uppercase-ascii-letters-4>大文字のASCII文字</a>に対して　文字の前にU+002D HYPHEN-MINUS文字（-）を挿入し、かつ<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:converted-to-ascii-lowercase-2 href=infrastructure.html#converted-to-ascii-lowercase>ASCII小文字に変換される</a>同じ文字を置換する。</li><li><p><var>name</var>の先頭に文字列<code>data-</code>を挿入する。</li><li><p><a href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-attributes-remove id=embedding-custom-non-visible-data-with-the-data-*-attributes:concept-element-attributes-remove data-x-internal=concept-element-attributes-remove>Remove an attribute by name</a> given
+  <ol><li><p><var>name</var>における各<a href=infrastructure.html#uppercase-ascii-letters id=embedding-custom-non-visible-data-with-the-data-*-attributes:uppercase-ascii-letters-4>大文字のASCII文字</a>に対して　文字の前にU+002D HYPHEN-MINUS文字（-）を挿入し、かつ<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:converted-to-ascii-lowercase-2 href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>ASCII小文字に変換される</a>同じ文字を置換する。</li><li><p><var>name</var>の先頭に文字列<code>data-</code>を挿入する。</li><li><p><a href=https://triple-underscore.github.io/DOM4-ja.html#concept-element-attributes-remove id=embedding-custom-non-visible-data-with-the-data-*-attributes:concept-element-attributes-remove data-x-internal=concept-element-attributes-remove>Remove an attribute by name</a> given
    <var>name</var> and the <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:domstringmap-11><a href=#domstringmap>DOMStringMap</a></code>'s <a href=#concept-domstringmap-element id=embedding-custom-non-visible-data-with-the-data-*-attributes:concept-domstringmap-element-3>associated element</a>.</li></ol>
 
   <p class=note>This algorithm will only get invoked by the Web IDL specification for names that
@@ -2153,7 +2029,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
   </div>
 
 
-  <h4 id=the-innertext-idl-attribute>3.2.7 <code id=the-innertext-idl-attribute:dom-innertext><a href=#dom-innertext>innerText</a></code> IDL属性<a href=#the-innertext-idl-attribute class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>45+</span></span><span class="ie yes"><span>IE</span> <span>6+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>3.2+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9.5-9.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=innertext">caniuse.com</a></div>
+  <h4 id=the-innertext-idl-attribute>3.2.7 <code id=the-innertext-idl-attribute:dom-innertext><a href=#dom-innertext>innerText</a></code> IDL属性<a href=#the-innertext-idl-attribute class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>45+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie yes"><span>IE</span> <span>6+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>3.2+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9.5-9.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=innertext">caniuse.com</a></div>
 
   <dl class=domintro><dt><var>element</var> . <code id=the-innertext-idl-attribute:dom-innertext-2><a href=#dom-innertext>innerText</a></code> [ = <var>value</var> ]<dd>
 
@@ -2192,7 +2068,15 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
       its text.</p>
      </li><li>
       <p>If <var>node</var> has no associated CSS box, then let the result of these substeps be
-      <var>items</var> and abort these substeps.</p>
+      <var>items</var> and abort these substeps. For the purpose of this step, the following
+      elements must act as described if the <a id=the-innertext-idl-attribute:computed-value-2 href=https://drafts.csswg.org/css-cascade/#computed-value data-x-internal=computed-value>computed value</a> of the
+      <a id="the-innertext-idl-attribute:'display'" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> property is not 'none':</p>
+
+      <ul class=brief><li><code id=the-innertext-idl-attribute:the-select-element><a href=forms.html#the-select-element>select</a></code> elements have an associated non-replaced inline CSS box whose child
+       boxes include only those of <code id=the-innertext-idl-attribute:the-optgroup-element><a href=forms.html#the-optgroup-element>optgroup</a></code> and <code id=the-innertext-idl-attribute:the-option-element><a href=forms.html#the-option-element>option</a></code> element child
+       nodes;</li><li><code id=the-innertext-idl-attribute:the-optgroup-element-2><a href=forms.html#the-optgroup-element>optgroup</a></code> elements have an associated non-replaced block-level CSS box whose
+       child boxes include only those of <code id=the-innertext-idl-attribute:the-option-element-2><a href=forms.html#the-option-element>option</a></code> element child nodes; and</li><li><code id=the-innertext-idl-attribute:the-option-element-3><a href=forms.html#the-option-element>option</a></code> element have an associated non-replaced block-level CSS box whose
+       child boxes are as normal for non-replaced block-level CSS boxes.</li></ul>
 
       <p class=note><var>items</var> can be non-empty due to 'display:contents'.</p>
      </li><li><p>If <var>node</var> is a <code id=the-innertext-idl-attribute:text-2><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code> node, then for each CSS text box produced by
@@ -2202,16 +2086,16 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
      <a id="the-innertext-idl-attribute:'white-space'-2" href=https://triple-underscore.github.io/css-text-ja.html#white-space-property data-x-internal="'white-space'">'white-space'</a> processing rules are slightly modified: collapsible spaces at the
      end of lines are always collapsed, but they are only removed if the line is the last line of
      the block, or it ends with a <code id=the-innertext-idl-attribute:the-br-element-2><a href=semantics.html#the-br-element>br</a></code> element. Soft hyphens should be preserved. <a href=references.html#refsCSSTEXT>[CSSTEXT]</a></li><li><p>If <var>node</var> is a <code id=the-innertext-idl-attribute:the-br-element-3><a href=semantics.html#the-br-element>br</a></code> element, then append a string containing a
-     single U+000A LINE FEED (LF) character to <var>items</var>.</li><li><p>If <var>node</var>'s <a id=the-innertext-idl-attribute:computed-value-2 href=https://drafts.csswg.org/css-cascade/#computed-value data-x-internal=computed-value>computed value</a> of <a id="the-innertext-idl-attribute:'display'" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> is
+     single U+000A LINE FEED (LF) character to <var>items</var>.</li><li><p>If <var>node</var>'s <a id=the-innertext-idl-attribute:computed-value-3 href=https://drafts.csswg.org/css-cascade/#computed-value data-x-internal=computed-value>computed value</a> of <a id="the-innertext-idl-attribute:'display'-2" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> is
      <a id="the-innertext-idl-attribute:'table-cell'" href=https://drafts.csswg.org/css-tables/#table-cell data-x-internal="'table-cell'">'table-cell'</a>, and <var>node</var>'s CSS box is not the last
      <a id="the-innertext-idl-attribute:'table-cell'-2" href=https://drafts.csswg.org/css-tables/#table-cell data-x-internal="'table-cell'">'table-cell'</a> box of its enclosing <a id="the-innertext-idl-attribute:'table-row'" href=https://drafts.csswg.org/css-tables/#table-row data-x-internal="'table-row'">'table-row'</a> box, then append a
      string containing a single U+0009 CHARACTER TABULATION (tab) character to
-     <var>items</var>.</li><li><p>If <var>node</var>'s <a id=the-innertext-idl-attribute:computed-value-3 href=https://drafts.csswg.org/css-cascade/#computed-value data-x-internal=computed-value>computed value</a> of <a id="the-innertext-idl-attribute:'display'-2" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> is
+     <var>items</var>.</li><li><p>If <var>node</var>'s <a id=the-innertext-idl-attribute:computed-value-4 href=https://drafts.csswg.org/css-cascade/#computed-value data-x-internal=computed-value>computed value</a> of <a id="the-innertext-idl-attribute:'display'-3" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> is
      <a id="the-innertext-idl-attribute:'table-row'-2" href=https://drafts.csswg.org/css-tables/#table-row data-x-internal="'table-row'">'table-row'</a>, and <var>node</var>'s CSS box is not the last
      <a id="the-innertext-idl-attribute:'table-row'-3" href=https://drafts.csswg.org/css-tables/#table-row data-x-internal="'table-row'">'table-row'</a> box of the nearest ancestor <a id="the-innertext-idl-attribute:'table'" href=https://drafts.csswg.org/css-tables/#table data-x-internal="'table'">'table'</a> box, then append a
      string containing a single U+000A LINE FEED (LF) character to <var>items</var>.</li><li><p>If <var>node</var> is a <code id=the-innertext-idl-attribute:the-p-element><a href=semantics.html#the-p-element>p</a></code> element, then add 2 (a <i>required line break
      count</i>) at the beginning and end of <var>items</var>.</li><li>
-      <p>If <var>node</var>'s <a id=the-innertext-idl-attribute:used-value href=https://drafts.csswg.org/css-cascade/#used-value data-x-internal=used-value>used value</a> of <a id="the-innertext-idl-attribute:'display'-3" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> is
+      <p>If <var>node</var>'s <a id=the-innertext-idl-attribute:used-value href=https://drafts.csswg.org/css-cascade/#used-value data-x-internal=used-value>used value</a> of <a id="the-innertext-idl-attribute:'display'-4" href=https://momdo.github.io/css2/visuren.html#display-prop data-x-internal="'display'">'display'</a> is
       <a id=the-innertext-idl-attribute:block-level href=https://drafts.csswg.org/css-display/#block-level data-x-internal=block-level>block-level</a> or <a id="the-innertext-idl-attribute:'table-caption'" href=https://drafts.csswg.org/css-tables/#table-caption data-x-internal="'table-caption'">'table-caption'</a>, then add 1 (a <i>required line break
       count</i>) at the beginning and end of <var>items</var>. <a href=references.html#refsCSSDISPLAY>[CSSDISPLAY]</a></p>
 
@@ -2223,7 +2107,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
    <i>required line break count</i> items.</li><li><p>Return the concatenation of the string items.</li></ol>
 
   <p class=note>Note that descendant nodes of most replaced elements (e.g., <code id=the-innertext-idl-attribute:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code>,
-  <code id=the-innertext-idl-attribute:the-select-element><a href=forms.html#the-select-element>select</a></code>, and <code id=the-innertext-idl-attribute:the-video-element><a href=embedded-content.html#the-video-element>video</a></code> — but not <code id=the-innertext-idl-attribute:the-button-element><a href=forms.html#the-button-element>button</a></code>) are not rendered
+  <code id=the-innertext-idl-attribute:the-input-element><a href=forms.html#the-input-element>input</a></code>, and <code id=the-innertext-idl-attribute:the-video-element><a href=embedded-content.html#the-video-element>video</a></code> — but not <code id=the-innertext-idl-attribute:the-button-element><a href=forms.html#the-button-element>button</a></code>) are not rendered
   by CSS, strictly speaking, and therefore have no CSS boxes for the purposes of this algorithm.</p>
 
   <p class=big-issue>This algorithm is amenable to being generalized to work on <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-range id=the-innertext-idl-attribute:concept-range data-x-internal=concept-range>ranges</a>. Then we can use it as the basis for <code id=the-innertext-idl-attribute:selection><a data-x-internal=selection href=https://w3c.github.io/selection-api/#selection-interface>Selection</a></code>'s
@@ -2248,7 +2132,7 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
       <ol><li><p>If the character at <var>position</var> is a U+000D CARRIAGE RETURN (CR) character and
        the next character is a U+000A LINE FEED (LF) character, then advance <var>position</var> to
        the next character in <var>input</var>.</li><li><p>Advance <var>position</var> to the next character in <var>input</var>.</li><li><p><a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-append id=the-innertext-idl-attribute:concept-node-append-2 data-x-internal=concept-node-append>Append</a> the result of <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-create-element id=the-innertext-idl-attribute:create-an-element data-x-internal=create-an-element>creating an element</a> given <var>document</var>,
-       <code id=the-innertext-idl-attribute:the-br-element-4><a href=semantics.html#the-br-element>br</a></code>, and the <a id=the-innertext-idl-attribute:html-namespace-2 href=infrastructure.html#html-namespace-2>HTML namespace</a> to <var>fragment</var>.</li></ol>
+       <code id=the-innertext-idl-attribute:the-br-element-4><a href=semantics.html#the-br-element>br</a></code>, and the <a id=the-innertext-idl-attribute:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a> to <var>fragment</var>.</li></ol>
      </li></ol>
    </li><li><p><a href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-replace id=the-innertext-idl-attribute:concept-node-replace-all data-x-internal=concept-node-replace-all>Replace all</a> with <var>fragment</var> within
    this element.</li></ol>
@@ -2306,4 +2190,4 @@ interface <dfn id=domstringmap>DOMStringMap</dfn> {
 
 
   <nav><a href=infrastructure.html>← 2 共通インフラ</a> — <a href=index.html>目次</a> — <a href=semantics.html>4  HTMLの要素 →</a></nav>
-</body></html>
+</html>

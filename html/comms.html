@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -316,7 +191,7 @@
 
   
 
-  <nav><a href=webappapis.html>← 8 Web application APIs</a> — <a href=index.html>Table of Contents</a> — <a href=workers.html>10 Web workers →</a></nav><ol class=toc><li id=toc-comms><a href=comms.html#comms>9 Communication</a><ol><li><a href=comms.html#the-messageevent-interfaces>9.1 The <code>MessageEvent</code> interfaces</a></li><li><a href=comms.html#server-sent-events>9.2 Server-sent events</a><ol><li><a href=comms.html#server-sent-events-intro>9.2.1 導入</a></li><li><a href=comms.html#the-eventsource-interface>9.2.2 The <code>EventSource</code> interface</a></li><li><a href=comms.html#sse-processing-model>9.2.3 Processing model</a></li><li><a href=comms.html#parsing-an-event-stream>9.2.4 Parsing an event stream</a></li><li><a href=comms.html#event-stream-interpretation>9.2.5 Interpreting an event stream</a></li><li><a href=comms.html#authoring-notes>9.2.6 Authoring notes</a></li><li><a href=comms.html#eventsource-push>9.2.7 Connectionless push and other features</a></li><li><a href=comms.html#garbage-collection-2>9.2.8 Garbage collection</a></li><li><a href=comms.html#implementation-advice>9.2.9 Implementation advice</a></li></ol></li><li><a href=comms.html#network>9.3 Web sockets</a><ol><li><a href=comms.html#network-intro>9.3.1 導入</a></li><li><a href=comms.html#the-websocket-interface>9.3.2 The <code>WebSocket</code> interface</a></li><li><a href=comms.html#feedback-from-the-protocol>9.3.3 Feedback from the protocol</a></li><li><a href=comms.html#ping-and-pong-frames>9.3.4 Ping and Pong frames</a></li><li><a href=comms.html#the-closeevent-interfaces>9.3.5 The <code>CloseEvent</code> interfaces</a></li><li><a href=comms.html#garbage-collection-3>9.3.6 Garbage collection</a></li></ol></li><li><a href=comms.html#web-messaging>9.4 Cross-document messaging</a><ol><li><a href=comms.html#introduction-11>9.4.1 導入</a></li><li><a href=comms.html#security-postmsg>9.4.2 セキュリティー</a><ol><li><a href=comms.html#authors>9.4.2.1 </a></li><li><a href=comms.html#user-agents>9.4.2.2 ユーザーエージェント</a></li></ol></li><li><a href=comms.html#posting-messages>9.4.3 Posting messages</a></li></ol></li><li><a href=comms.html#channel-messaging>9.5 Channel messaging</a><ol><li><a href=comms.html#introduction-12>9.5.1 導入</a><ol><li><a href=comms.html#examples-5>9.5.1.1 例</a></li><li><a href=comms.html#ports-as-the-basis-of-an-object-capability-model-on-the-web>9.5.1.2 Ports as the basis of an object-capability model on the Web</a></li><li><a href=comms.html#ports-as-the-basis-of-abstracting-out-service-implementations>9.5.1.3 Ports as the basis of abstracting out service implementations</a></li></ol></li><li><a href=comms.html#message-channels>9.5.2 Message channels</a></li><li><a href=comms.html#message-ports>9.5.3 Message ports</a></li><li><a href=comms.html#broadcasting-to-many-ports>9.5.4 Broadcasting to many ports</a></li><li><a href=comms.html#ports-and-garbage-collection>9.5.5 Ports and garbage collection</a></li></ol></li><li><a href=comms.html#broadcasting-to-other-browsing-contexts>9.6 Broadcasting to other browsing contexts</a></li></ol></li></ol><h2 id=comms>9 Communication<a href=#comms class=self-link></a></h2>
+  <nav><a href=webappapis.html>← 8 Web application APIs</a> — <a href=index.html>Table of Contents</a> — <a href=workers.html>10 Web workers →</a></nav><ol class=toc><li id=toc-comms><a href=comms.html#comms>9 Communication</a><ol><li><a href=comms.html#the-messageevent-interfaces>9.1 The <code>MessageEvent</code> interfaces</a></li><li><a href=comms.html#server-sent-events>9.2 Server-sent events</a><ol><li><a href=comms.html#server-sent-events-intro>9.2.1 導入</a></li><li><a href=comms.html#the-eventsource-interface>9.2.2 The <code>EventSource</code> interface</a></li><li><a href=comms.html#sse-processing-model>9.2.3 Processing model</a></li><li><a href=comms.html#parsing-an-event-stream>9.2.4 Parsing an event stream</a></li><li><a href=comms.html#event-stream-interpretation>9.2.5 Interpreting an event stream</a></li><li><a href=comms.html#authoring-notes>9.2.6 Authoring notes</a></li><li><a href=comms.html#eventsource-push>9.2.7 Connectionless push and other features</a></li><li><a href=comms.html#garbage-collection-2>9.2.8 Garbage collection</a></li><li><a href=comms.html#implementation-advice>9.2.9 Implementation advice</a></li></ol></li><li><a href=comms.html#network>9.3 Web sockets</a><ol><li><a href=comms.html#network-intro>9.3.1 導入</a></li><li><a href=comms.html#the-websocket-interface>9.3.2 The <code>WebSocket</code> interface</a></li><li><a href=comms.html#feedback-from-the-protocol>9.3.3 Feedback from the protocol</a></li><li><a href=comms.html#ping-and-pong-frames>9.3.4 Ping and Pong frames</a></li><li><a href=comms.html#the-closeevent-interfaces>9.3.5 The <code>CloseEvent</code> interfaces</a></li><li><a href=comms.html#garbage-collection-3>9.3.6 Garbage collection</a></li></ol></li><li><a href=comms.html#web-messaging>9.4 Cross-document messaging</a><ol><li><a href=comms.html#introduction-12>9.4.1 導入</a></li><li><a href=comms.html#security-postmsg>9.4.2 セキュリティー</a><ol><li><a href=comms.html#authors>9.4.2.1 </a></li><li><a href=comms.html#user-agents>9.4.2.2 ユーザーエージェント</a></li></ol></li><li><a href=comms.html#posting-messages>9.4.3 Posting messages</a></li></ol></li><li><a href=comms.html#channel-messaging>9.5 Channel messaging</a><ol><li><a href=comms.html#introduction-13>9.5.1 導入</a><ol><li><a href=comms.html#examples-5>9.5.1.1 例</a></li><li><a href=comms.html#ports-as-the-basis-of-an-object-capability-model-on-the-web>9.5.1.2 Ports as the basis of an object-capability model on the Web</a></li><li><a href=comms.html#ports-as-the-basis-of-abstracting-out-service-implementations>9.5.1.3 Ports as the basis of abstracting out service implementations</a></li></ol></li><li><a href=comms.html#message-channels>9.5.2 Message channels</a></li><li><a href=comms.html#message-ports>9.5.3 Message ports</a></li><li><a href=comms.html#broadcasting-to-many-ports>9.5.4 Broadcasting to many ports</a></li><li><a href=comms.html#ports-and-garbage-collection>9.5.5 Ports and garbage collection</a></li></ol></li><li><a href=comms.html#broadcasting-to-other-browsing-contexts>9.6 Broadcasting to other browsing contexts</a></li></ol></li></ol><h2 id=comms>9 Communication<a href=#comms class=self-link></a></h2>
 
   <h3 id=the-messageevent-interfaces>9.1 The <code id=the-messageevent-interfaces:messageevent><a href=#messageevent>MessageEvent</a></code> interfaces<a href=#the-messageevent-interfaces class=self-link></a></h3>
 
@@ -330,19 +205,21 @@ interface <dfn id=messageevent>MessageEvent</dfn> : <a id=the-messageevent-inter
   readonly attribute any <a href=#dom-messageevent-data id=the-messageevent-interfaces:dom-messageevent-data>data</a>;
   readonly attribute USVString <a href=#dom-messageevent-origin id=the-messageevent-interfaces:dom-messageevent-origin>origin</a>;
   readonly attribute DOMString <a href=#dom-messageevent-lasteventid id=the-messageevent-interfaces:dom-messageevent-lasteventid>lastEventId</a>;
-  readonly attribute (<a id=the-messageevent-interfaces:windowproxy href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport>MessagePort</a>)? <a href=#dom-messageevent-source id=the-messageevent-interfaces:dom-messageevent-source>source</a>;
-  readonly attribute FrozenArray&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-2>MessagePort</a>&gt; <a href=#dom-messageevent-ports id=the-messageevent-interfaces:dom-messageevent-ports>ports</a>;
+  readonly attribute <a href=#messageeventsource id=the-messageevent-interfaces:messageeventsource>MessageEventSource</a>? <a href=#dom-messageevent-source id=the-messageevent-interfaces:dom-messageevent-source>source</a>;
+  readonly attribute FrozenArray&lt;<a href=#messageport id=the-messageevent-interfaces:messageport>MessagePort</a>&gt; <a href=#dom-messageevent-ports id=the-messageevent-interfaces:dom-messageevent-ports>ports</a>;
 
-  void <a href=#dom-messageevent-initmessageevent id=the-messageevent-interfaces:dom-messageevent-initmessageevent>initMessageEvent</a>(DOMString type, boolean bubbles, boolean cancelable, any data, USVString origin, DOMString lastEventId, (<a id=the-messageevent-interfaces:windowproxy-2 href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport-3>MessagePort</a>)? source, sequence&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-4>MessagePort</a>&gt; ports);
+  void <a href=#dom-messageevent-initmessageevent id=the-messageevent-interfaces:dom-messageevent-initmessageevent>initMessageEvent</a>(DOMString type, boolean bubbles, boolean cancelable, any data, USVString origin, DOMString lastEventId, <a href=#messageeventsource id=the-messageevent-interfaces:messageeventsource-2>MessageEventSource</a>? source, sequence&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-2>MessagePort</a>&gt; ports);
 };
 
 dictionary <dfn id=messageeventinit>MessageEventInit</dfn> : <a id=the-messageevent-interfaces:eventinit href=https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
   any data = null;
   USVString origin = "";
   DOMString lastEventId = "";
-  (<a id=the-messageevent-interfaces:windowproxy-3 href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport-5>MessagePort</a>)? source = null;
-  sequence&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-6>MessagePort</a>&gt; ports = [];
-};</pre>
+  <a href=#messageeventsource id=the-messageevent-interfaces:messageeventsource-3>MessageEventSource</a>? source = null;
+  sequence&lt;<a href=#messageport id=the-messageevent-interfaces:messageport-3>MessagePort</a>&gt; ports = [];
+};
+
+typedef (<a id=the-messageevent-interfaces:windowproxy href=browsers.html#windowproxy>WindowProxy</a> or <a href=#messageport id=the-messageevent-interfaces:messageport-4>MessagePort</a> or <a id=the-messageevent-interfaces:serviceworker href=https://w3c.github.io/ServiceWorker/#serviceworker data-x-internal=serviceworker>ServiceWorker</a>) <dfn id=messageeventsource>MessageEventSource</dfn>;</pre>
 
   <dl class=domintro><dt><var>event</var> . <code id=the-messageevent-interfaces:dom-messageevent-data-2><a href=#dom-messageevent-data>data</a></code><dd>
 
@@ -360,13 +237,13 @@ dictionary <dfn id=messageeventinit>MessageEventInit</dfn> : <a id=the-messageev
 
    <dt><var>event</var> . <code id=the-messageevent-interfaces:dom-messageevent-source-2><a href=#dom-messageevent-source>source</a></code><dd>
 
-    <p>Returns the <code id=the-messageevent-interfaces:windowproxy-4><a href=browsers.html#windowproxy>WindowProxy</a></code> of the source window, for <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-3>cross-document
-    messaging</a>, and the <code id=the-messageevent-interfaces:messageport-7><a href=#messageport>MessagePort</a></code> being attached, in the <code id=the-messageevent-interfaces:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code> event fired at
+    <p>Returns the <code id=the-messageevent-interfaces:windowproxy-2><a href=browsers.html#windowproxy>WindowProxy</a></code> of the source window, for <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-3>cross-document
+    messaging</a>, and the <code id=the-messageevent-interfaces:messageport-5><a href=#messageport>MessagePort</a></code> being attached, in the <code id=the-messageevent-interfaces:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code> event fired at
     <code id=the-messageevent-interfaces:sharedworkerglobalscope><a href=workers.html#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> objects.</p>
 
    <dt><var>event</var> . <code id=the-messageevent-interfaces:dom-messageevent-ports-2><a href=#dom-messageevent-ports>ports</a></code><dd>
 
-    <p>Returns the <code id=the-messageevent-interfaces:messageport-8><a href=#messageport>MessagePort</a></code> array sent with the message, for <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-4>cross-document
+    <p>Returns the <code id=the-messageevent-interfaces:messageport-6><a href=#messageport>MessagePort</a></code> array sent with the message, for <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-4>cross-document
     messaging</a> and <a href=#channel-messaging id=the-messageevent-interfaces:channel-messaging-2>channel messaging</a>.</p>
 
    </dl>
@@ -388,13 +265,13 @@ dictionary <dfn id=messageeventinit>MessageEventInit</dfn> : <a id=the-messageev
 
   <p>The <dfn id=dom-messageevent-source><code>source</code></dfn> attribute must return the
   value it was initialized to. It represents, in <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-6>cross-document messaging</a>, the
-  <code id=the-messageevent-interfaces:windowproxy-5><a href=browsers.html#windowproxy>WindowProxy</a></code> of the <a id=the-messageevent-interfaces:browsing-context href=browsers.html#browsing-context>browsing context</a> of the <code id=the-messageevent-interfaces:window><a href=browsers.html#window>Window</a></code> object
+  <code id=the-messageevent-interfaces:windowproxy-3><a href=browsers.html#windowproxy>WindowProxy</a></code> of the <a id=the-messageevent-interfaces:browsing-context href=browsers.html#browsing-context>browsing context</a> of the <code id=the-messageevent-interfaces:window><a href=browsers.html#window>Window</a></code> object
   from which the message came; and in the <code id=the-messageevent-interfaces:event-workerglobalscope-connect-2><a href=indices.html#event-workerglobalscope-connect>connect</a></code> events used by <a href=workers.html#sharedworkerglobalscope id=the-messageevent-interfaces:sharedworkerglobalscope-2>shared workers</a>, the newly connecting
-  <code id=the-messageevent-interfaces:messageport-9><a href=#messageport>MessagePort</a></code>.</p>
+  <code id=the-messageevent-interfaces:messageport-7><a href=#messageport>MessagePort</a></code>.</p>
 
   <p>The <dfn id=dom-messageevent-ports><code>ports</code></dfn> attribute must return the
   value it was initialized to. It represents, in <a href=#web-messaging id=the-messageevent-interfaces:web-messaging-7>cross-document messaging</a> and
-  <a href=#channel-messaging id=the-messageevent-interfaces:channel-messaging-3>channel messaging</a>, the <code id=the-messageevent-interfaces:messageport-10><a href=#messageport>MessagePort</a></code> array being sent.</p>
+  <a href=#channel-messaging id=the-messageevent-interfaces:channel-messaging-3>channel messaging</a>, the <code id=the-messageevent-interfaces:messageport-8><a href=#messageport>MessagePort</a></code> array being sent.</p>
 
   
   <p>The <dfn id=dom-messageevent-initmessageevent><code>initMessageEvent()</code></dfn>
@@ -404,10 +281,10 @@ dictionary <dfn id=messageeventinit>MessageEventInit</dfn> : <a id=the-messageev
 
   <p class=note>Various APIs (e.g., <code id=the-messageevent-interfaces:websocket><a href=#websocket>WebSocket</a></code>, <code id=the-messageevent-interfaces:eventsource><a href=#eventsource>EventSource</a></code>) use the
   <code id=the-messageevent-interfaces:messageevent-3><a href=#messageevent>MessageEvent</a></code> interface for their <code id=the-messageevent-interfaces:event-message-2><a href=indices.html#event-message>message</a></code> event
-  without using the <code id=the-messageevent-interfaces:messageport-11><a href=#messageport>MessagePort</a></code> API.</p>
+  without using the <code id=the-messageevent-interfaces:messageport-9><a href=#messageport>MessagePort</a></code> API.</p>
 
 
-  <h3 id=server-sent-events>9.2 <dfn>Server-sent events</dfn><a href=#server-sent-events class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>6+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>6+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=eventsource">caniuse.com</a></div>
+  <h3 id=server-sent-events>9.2 <dfn>Server-sent events</dfn><a href=#server-sent-events class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>6+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0-4.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>6+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=eventsource">caniuse.com</a></div>
 
   <h4 id=server-sent-events-intro>9.2.1 導入<a href=#server-sent-events-intro class=self-link></a></h4>
 
@@ -580,15 +457,15 @@ dictionary <dfn id=eventsourceinit>EventSourceInit</dfn> {
   task source</a> to handle the data must act as follows.</p>
 
   <p>HTTP 200 OK responses with a `<a id=sse-processing-model:content-type href=infrastructure.html#content-type>Content-Type</a>` header specifying the type
-  `<code id=sse-processing-model:text/event-stream><a href=iana.html#text/event-stream>text/event-stream</a></code>`, ignoring any <a id=sse-processing-model:mime-type href=infrastructure.html#mime-type>MIME type</a> parameters, must be
+  `<code id=sse-processing-model:text/event-stream><a href=iana.html#text/event-stream>text/event-stream</a></code>`, ignoring any <a id=sse-processing-model:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> parameters, must be
   processed line by line <a href=#event-stream-interpretation>as described below</a>.</p>
 
-  <p>When a successful response with a supported <a id=sse-processing-model:mime-type-2 href=infrastructure.html#mime-type>MIME type</a> is received, such that the
+  <p>When a successful response with a supported <a id=sse-processing-model:mime-type-2 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> is received, such that the
   user agent begins parsing the contents of the stream, the user agent must <a href=#announce-the-connection id=sse-processing-model:announce-the-connection>announce the
   connection</a>.</p>
 
   <p>The <a href=webappapis.html#concept-task id=sse-processing-model:concept-task-2>task</a> that the <a id=sse-processing-model:networking-task-source-2 href=webappapis.html#networking-task-source>networking task source</a> places
-  on the <a id=sse-processing-model:task-queue href=webappapis.html#task-queue>task queue</a> once fetching for such a resource (with the correct <a id=sse-processing-model:mime-type-3 href=infrastructure.html#mime-type>MIME
+  on the <a id=sse-processing-model:task-queue href=webappapis.html#task-queue>task queue</a> once fetching for such a resource (with the correct <a id=sse-processing-model:mime-type-3 href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME
   type</a>) has completed must cause the user agent to <a href=#reestablish-the-connection id=sse-processing-model:reestablish-the-connection>reestablish the connection</a>
   <a id=sse-processing-model:in-parallel href=infrastructure.html#in-parallel>in parallel</a>. This applies whether the connection is closed gracefully or unexpectedly
   (but does not apply when fetching is canceled by the user agent, e.g., in response to <code id=sse-processing-model:dom-window-stop><a href=browsers.html#dom-window-stop>window.stop()</a></code>, since in those cases the final <a href=webappapis.html#concept-task id=sse-processing-model:concept-task-3>task</a> is actually discarded). It doesn't apply for the error
@@ -660,7 +537,7 @@ dictionary <dfn id=eventsourceinit>EventSourceInit</dfn> {
 
   <h4 id=parsing-an-event-stream>9.2.4 Parsing an event stream<a href=#parsing-an-event-stream class=self-link></a></h4>
 
-  <p>This event stream format's <a id=parsing-an-event-stream:mime-type href=infrastructure.html#mime-type>MIME type</a> is <code id=parsing-an-event-stream:text/event-stream><a href=iana.html#text/event-stream>text/event-stream</a></code>.</p>
+  <p>This event stream format's <a id=parsing-an-event-stream:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> is <code id=parsing-an-event-stream:text/event-stream><a href=iana.html#text/event-stream>text/event-stream</a></code>.</p>
 
   <p>The event stream format is as described by the <code>stream</code> production of the
   following ABNF, the character set for which is Unicode. <a href=references.html#refsABNF>[ABNF]</a></p>
@@ -967,7 +844,7 @@ data:&nbsp;test
   information can be made available in the events themselves.</p>
 
 
-  <h3 id=network>9.3 <dfn>Web sockets</dfn><a href=#network class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>16+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>6.0-6.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>11+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>7+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>12.1+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=websockets">caniuse.com</a></div>
+  <h3 id=network>9.3 <dfn>Web sockets</dfn><a href=#network class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>16+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>6.0-6.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>11+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>7+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>12.1+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=websockets">caniuse.com</a></div>
 
   <h4 id=network-intro>9.3.1 導入<a href=#network-intro class=self-link></a></h4>
 
@@ -1514,7 +1391,7 @@ dictionary <dfn id=closeeventinit>CloseEventInit</dfn> : <a id=the-closeevent-in
    </dl>
 
 
-  <h3 id=web-messaging>9.4 <dfn id=crossDocumentMessages>Cross-document messaging</dfn><a href=#web-messaging class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="ie partial"><span><span>IE</span> (limited) </span><span>8+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9.5-9.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=x-doc-messaging">caniuse.com</a></div>
+  <h3 id=web-messaging>9.4 <dfn id=crossDocumentMessages>Cross-document messaging</dfn><a href=#web-messaging class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie partial"><span><span>IE</span> (limited) </span><span>8+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9.5-9.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=x-doc-messaging">caniuse.com</a></div>
 
   <p>Web browsers, for security and privacy reasons, prevent documents in different domains from
   affecting each other; that is, cross-site scripting is disallowed.</p>
@@ -1535,16 +1412,16 @@ dictionary <dfn id=closeeventinit>CloseEventInit</dfn> : <a id=the-closeevent-in
   
 
 
-  <h4 id=introduction-11>9.4.1 導入<a href=#introduction-11 class=self-link></a></h4>
+  <h4 id=introduction-12>9.4.1 導入<a href=#introduction-12 class=self-link></a></h4>
 
   <p><i>この節は非規範的である。</i></p>
 
   <div class=example>
 
-   <p>For example, if document A contains an <code id=introduction-11:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> element that contains document B,
-   and script in document A calls <code id=introduction-11:dom-window-postmessage><a href=#dom-window-postmessage>postMessage()</a></code> on the
-   <code id=introduction-11:window><a href=browsers.html#window>Window</a></code> object of document B, then a message event will be fired on that object,
-   marked as originating from the <code id=introduction-11:window-2><a href=browsers.html#window>Window</a></code> of document A. The script in document A might
+   <p>For example, if document A contains an <code id=introduction-12:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> element that contains document B,
+   and script in document A calls <code id=introduction-12:dom-window-postmessage><a href=#dom-window-postmessage>postMessage()</a></code> on the
+   <code id=introduction-12:window><a href=browsers.html#window>Window</a></code> object of document B, then a message event will be fired on that object,
+   marked as originating from the <code id=introduction-12:window-2><a href=browsers.html#window>Window</a></code> of document A. The script in document A might
    look like:</p>
 
    <pre>var o = document.getElementsByTagName('iframe')[0];
@@ -1700,18 +1577,18 @@ function receiver(e) {
 
 
 
-  <h3 id=channel-messaging>9.5 <dfn>Channel messaging</dfn><a href=#channel-messaging class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>41+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=channel-messaging">caniuse.com</a></div>
+  <h3 id=channel-messaging>9.5 <dfn>Channel messaging</dfn><a href=#channel-messaging class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0-5.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>41+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=channel-messaging">caniuse.com</a></div>
 
-  <h4 id=introduction-12>9.5.1 導入<a href=#introduction-12 class=self-link></a></h4>
+  <h4 id=introduction-13>9.5.1 導入<a href=#introduction-13 class=self-link></a></h4>
 
   <p><i>この節は非規範的である。</i></p>
 
-  <p>To enable independent pieces of code (e.g. running in different <a href=browsers.html#browsing-context id=introduction-12:browsing-context>browsing contexts</a>) to communicate directly, authors can use <a href=#channel-messaging id=introduction-12:channel-messaging>channel
+  <p>To enable independent pieces of code (e.g. running in different <a href=browsers.html#browsing-context id=introduction-13:browsing-context>browsing contexts</a>) to communicate directly, authors can use <a href=#channel-messaging id=introduction-13:channel-messaging>channel
   messaging</a>.</p>
 
   <p>Communication channels in this mechanism are implemented as two-ways pipes, with a port at each
   end. Messages sent in one port are delivered at the other port, and vice-versa. Messages are
-  delivered as DOM events, without interrupting or blocking running <a href=webappapis.html#concept-task id=introduction-12:concept-task>tasks</a>.</p>
+  delivered as DOM events, without interrupting or blocking running <a href=webappapis.html#concept-task id=introduction-13:concept-task>tasks</a>.</p>
 
   <p>To create a connection (two "entangled" ports), the <code>MessageChannel()</code>
   constructor is called:</p>
@@ -1719,16 +1596,16 @@ function receiver(e) {
   <pre>var channel = new MessageChannel();</pre>
 
   <p>One of the ports is kept as the local port, and the other port is sent to the remote code, e.g.
-  using <code id=introduction-12:dom-window-postmessage><a href=#dom-window-postmessage>postMessage()</a></code>:</p>
+  using <code id=introduction-13:dom-window-postmessage><a href=#dom-window-postmessage>postMessage()</a></code>:</p>
 
   <pre>otherWindow.postMessage('hello', 'https://example.com', [channel.port2]);</pre>
 
-  <p>To send messages, the <code id=introduction-12:dom-messageport-postmessage><a href=#dom-messageport-postmessage>postMessage()</a></code> method on
+  <p>To send messages, the <code id=introduction-13:dom-messageport-postmessage><a href=#dom-messageport-postmessage>postMessage()</a></code> method on
   the port is used:</p>
 
   <pre>channel.port1.postMessage('hello');</pre>
 
-  <p>To receive messages, one listens to <code id=introduction-12:event-message><a href=indices.html#event-message>message</a></code> events:</p>
+  <p>To receive messages, one listens to <code id=introduction-13:event-message><a href=indices.html#event-message>message</a></code> events:</p>
 
   <pre>channel.port1.onmessage = handleMessage;
 function handleMessage(event) {
@@ -1737,7 +1614,7 @@ function handleMessage(event) {
 }</pre>
 
   <p>Data sent on a port can be structured data; for example here an array of strings is passed on a
-  <code id=introduction-12:messageport><a href=#messageport>MessagePort</a></code>:</p>
+  <code id=introduction-13:messageport><a href=#messageport>MessagePort</a></code>:</p>
 
   <pre>port1.postMessage(['hello', 'world']);</pre>
 
@@ -2168,7 +2045,7 @@ interface <dfn id=messageport>MessagePort</dfn> : <a id=message-ports:eventtarge
 
 
 
-  <h3 id=broadcasting-to-other-browsing-contexts>9.6 <dfn>Broadcasting to other browsing contexts</dfn><a href=#broadcasting-to-other-browsing-contexts class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>54+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>38+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>41+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=broadcastchannel">caniuse.com</a></div>
+  <h3 id=broadcasting-to-other-browsing-contexts>9.6 <dfn>Broadcasting to other browsing contexts</dfn><a href=#broadcasting-to-other-browsing-contexts class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>54+</span></span><span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>38+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>41+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=broadcastchannel">caniuse.com</a></div>
 
   <p>Pages on a single <a id=broadcasting-to-other-browsing-contexts:concept-origin href=browsers.html#concept-origin>origin</a> opened by the same user in the same user agent but in
   different unrelated <a href=browsers.html#browsing-context id=broadcasting-to-other-browsing-contexts:browsing-context>browsing contexts</a> sometimes need to
@@ -2334,4 +2211,4 @@ function showLogout() {
 
 
   <nav><a href=webappapis.html>← 8 Web application APIs</a> — <a href=index.html>Table of Contents</a> — <a href=workers.html>10 Web workers →</a></nav>
-</body></html>
+</html>

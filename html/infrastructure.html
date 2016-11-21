@@ -2,123 +2,7 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/momdo/momdo.github.io/issues/new defer="" src=https://resources.whatwg.org/file-issue.js></script>
-<script>
-   function F( /* varargs... */) {
-     var fragment = document.createDocumentFragment();
-     for (var index = 0; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         fragment.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         fragment.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         fragment.appendChild(arguments[index]);
-       }
-     }
-     return fragment;
-   }
-   function E(name, /* optional */ attributes /*, varargs... */) {
-     var element = document.createElement(name);
-     var index = 1;
-     if ((arguments.length > 1) && (typeof attributes != 'string') &&
-         (!(attributes instanceof Node)) && (!(attributes instanceof Array))) {
-       for (var attName in attributes) {
-         if (typeof attributes[attName] == 'boolean') {
-           if (attributes[attName])
-             element.setAttribute(attName, '');
-         } else if (typeof attributes[attName] == 'function') {
-           element[attName] = attributes[attName];
-         } else {
-           element.setAttribute(attName, attributes[attName]);
-         }
-       }
-       index = 2;
-     }
-     for (; index < arguments.length; index += 1) {
-       if (arguments[index] instanceof Array) {
-         element.appendChild(F.apply(this, arguments[index]));
-       } else if (typeof arguments[index] == 'string') {
-         element.appendChild(document.createTextNode(arguments[index]));
-       } else {
-         element.appendChild(arguments[index]);
-       }
-     }
-     return element;
-   }
-   var currentAlert;
-   var currentAlertTimeout;
-   function showAlert(s, href) {
-     if (!currentAlert) {
-       currentAlert = document.createElement('div');
-       currentAlert.id = 'alert';
-       var x = document.createElement('button');
-       x.textContent = '\u2573';
-       x.onclick = closeAlert2;
-       currentAlert.appendChild(x);
-       currentAlert.appendChild(document.createElement('span'));
-       currentAlert.onmousemove = function () {
-         clearTimeout(currentAlertTimeout);
-         currentAlert.className = '';
-         currentAlertTimeout = setTimeout(closeAlert, 10000);
-       }
-       document.body.appendChild(currentAlert);
-     } else {
-       clearTimeout(currentAlertTimeout);
-       currentAlert.className = '';
-     }
-     currentAlert.lastChild.textContent = '';
-     currentAlert.lastChild.appendChild(F(s));
-     if (href) {
-       var link = document.createElement('a');
-       link.href = href;
-       link.textContent = href;
-       currentAlert.lastChild.appendChild(F(' ', link));
-     }
-     currentAlertTimeout = setTimeout(closeAlert, 10000);
-   }
-   function closeAlert() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.className = 'closed';
-       currentAlertTimeout = setTimeout(closeAlert2, 3000);
-     }
-   }
-   function closeAlert2() {
-     clearTimeout(currentAlertTimeout);
-     if (currentAlert) {
-       currentAlert.parentNode.removeChild(currentAlert);
-       currentAlert = null;
-     }
-   }
-   window.addEventListener('keydown', function (event) {
-     if (event.keyCode == 27) {
-       if (currentAlert)
-         closeAlert2();
-     } else {
-       closeAlert();
-     }
-   }, false);
-   window.addEventListener('scroll', function (event) {
-     closeAlert();
-   }, false);
-
-   var startedInit = 0;
-   function init() {
-     startedInit = 1;
-   }
-   if (document.documentElement.className == "")
-     setTimeout(function () {
-       if (!startedInit)
-         showAlert("Too slow? Try reading the multipage copy of the spec instead:", "https://whatwg.org/html");
-     }, 6000);
-
-   window.addEventListener('keypress', function (event) {
-     if ((event.which == 114) && (event.metaKey)) {
-       if (!confirm('Are you sure you want to reload this page?'))
-         event.preventDefault();
-     }
-   }, false);
-  </script>
+<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -128,14 +12,6 @@
    [hidden] { display: none; }
 
    .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
-
-   #alert { position: fixed; top: 20%; left: 20%; right: 20%; font-size: 2em; padding: 0.5em; z-index: 40; background: gray; background: rgba(32,32,32,0.9); color: white; border-radius: 0.5em; transition: opacity 1s linear; }
-   #alert.closed { opacity: 0; }
-   #alert button { position: absolute; top: -1em; right: 2em; border-radius: 0.5em 0.5em 0 0; border: none; line-height: 0.9; color: white; background: rgb(64,64,64); font-size: 0.6em; font-weight: 900; cursor: pointer; padding: 0.25em; }
-   #alert :link, #alert :visited { color: white; text-decoration: underline; }
-   #alert :link:hover, #alert :visited:hover { background: transparent; }
-
-   @media print { #configUI, #alert { display: none; } }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -296,10 +172,9 @@
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
   </style>
-<body onload=init()>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
    
    
   </header>
@@ -316,9 +191,11 @@
 
   
 
-  <nav><a href=introduction.html>← 1 導入</a> — <a href=index.html>目次</a> — <a href=dom.html>3 セマンティックス、構造、HTML文書のAPI群 →</a></nav><ol class=toc><li id=toc-infrastructure><a href=infrastructure.html#infrastructure>2 共通インフラ</a><ol><li><a href=infrastructure.html#terminology>2.1 用語</a><ol><li><a href=infrastructure.html#resources>2.1.1 リソース</a></li><li><a href=infrastructure.html#xml>2.1.2 XML</a></li><li><a href=infrastructure.html#dom-trees>2.1.3 DOMツリー</a></li><li><a href=infrastructure.html#scripting-2>2.1.4 スクリプティング</a></li><li><a href=infrastructure.html#plugins>2.1.5 プラグイン</a></li><li><a href=infrastructure.html#encoding-terminology>2.1.6 文字エンコーディング</a></li></ol></li><li><a href=infrastructure.html#conformance-requirements>2.2 適合性要件</a><ol><li><a href=infrastructure.html#conformance-classes>2.2.1 適合クラス</a></li><li><a href=infrastructure.html#dependencies>2.2.2 依存関係</a></li><li><a href=infrastructure.html#extensibility-2>2.2.3 拡張性</a></li><li><a href=infrastructure.html#interactions-with-xpath-and-xslt>2.2.4 Interactions with XPath and XSLT</a></li></ol></li><li><a href=infrastructure.html#case-sensitivity-and-string-comparison>2.3 大文字・小文字区別と文字列の比較</a></li><li><a href=infrastructure.html#common-microsyntaxes>2.4 共通マイクロ構文</a><ol><li><a href=infrastructure.html#common-parser-idioms>2.4.1 共通パーサー語句</a></li><li><a href=infrastructure.html#boolean-attributes>2.4.2 真偽属性</a></li><li><a href=infrastructure.html#keywords-and-enumerated-attributes>2.4.3 キーワードおよび列挙属性</a></li><li><a href=infrastructure.html#numbers>2.4.4 数字</a><ol><li><a href=infrastructure.html#signed-integers>2.4.4.1 符号付き整数</a></li><li><a href=infrastructure.html#non-negative-integers>2.4.4.2 非負整数</a></li><li><a href=infrastructure.html#floating-point-numbers>2.4.4.3 浮動小数点数</a></li><li><a href=infrastructure.html#percentages-and-dimensions>2.4.4.4 Percentages and lengths</a></li><li><a href=infrastructure.html#non-zero-percentages-and-lengths>2.4.4.5 Non-zero percentages and lengths</a></li><li><a href=infrastructure.html#lists-of-floating-point-numbers>2.4.4.6 浮動小数点数のリスト</a></li><li><a href=infrastructure.html#lists-of-dimensions>2.4.4.7 Lists of dimensions</a></li></ol></li><li><a href=infrastructure.html#dates-and-times>2.4.5 日付および時刻</a><ol><li><a href=infrastructure.html#months>2.4.5.1 月</a></li><li><a href=infrastructure.html#dates>2.4.5.2 日付</a></li><li><a href=infrastructure.html#yearless-dates>2.4.5.3 年なし日付</a></li><li><a href=infrastructure.html#times>2.4.5.4 時刻</a></li><li><a href=infrastructure.html#local-dates-and-times>2.4.5.5 ローカル日付および時刻</a></li><li><a href=infrastructure.html#time-zones>2.4.5.6 タイムゾーン</a></li><li><a href=infrastructure.html#global-dates-and-times>2.4.5.7 グローバル日付および時刻</a></li><li><a href=infrastructure.html#weeks>2.4.5.8 週</a></li><li><a href=infrastructure.html#durations>2.4.5.9 継続時間</a></li><li><a href=infrastructure.html#vaguer-moments-in-time>2.4.5.10 時刻における曖昧な瞬間</a></li></ol></li><li><a href=infrastructure.html#colours>2.4.6 色</a></li><li><a href=infrastructure.html#space-separated-tokens>2.4.7 空白区切りトークン</a></li><li><a href=infrastructure.html#comma-separated-tokens>2.4.8 コンマ区切りトークン</a></li><li><a href=infrastructure.html#syntax-references>2.4.9 リファレンス</a></li><li><a href=infrastructure.html#mq>2.4.10 メディアクエリー</a></li></ol></li><li><a href=infrastructure.html#urls>2.5 URL</a><ol><li><a href=infrastructure.html#terminology-2>2.5.1 用語</a></li><li><a href=infrastructure.html#resolving-urls>2.5.2 Parsing URLs</a></li><li><a href=infrastructure.html#dynamic-changes-to-base-urls>2.5.3 Dynamic changes to base URLs</a></li></ol></li><li><a href=infrastructure.html#fetching-resources>2.6 リソースを取得する</a><ol><li><a href=infrastructure.html#terminology-3>2.6.1 用語</a></li><li><a href=infrastructure.html#content-type-sniffing>2.6.2 Determining the type of a resource</a></li><li><a href=infrastructure.html#extracting-character-encodings-from-meta-elements>2.6.3 Extracting character encodings from <code>meta</code> elements</a></li><li><a href=infrastructure.html#cors-settings-attributes>2.6.4 CORS設定属性</a></li><li><a href=infrastructure.html#referrer-policy-attributes>2.6.5 リファラーポリシー属性</a></li></ol></li><li><a href=infrastructure.html#common-dom-interfaces>2.7 共通DOMインターフェイス</a><ol><li><a href=infrastructure.html#reflecting-content-attributes-in-idl-attributes>2.7.1 IDL属性におけるコンテンツ属性の反映</a></li><li><a href=infrastructure.html#collections>2.7.2 コレクション</a><ol><li><a href=infrastructure.html#the-htmlallcollection-interface>2.7.2.1 <code>HTMLAllCollection</code>インターフェイス</a></li><li><a href=infrastructure.html#the-htmlformcontrolscollection-interface>2.7.2.2 <code>HTMLFormControlsCollection</code>インターフェイス</a></li><li><a href=infrastructure.html#the-htmloptionscollection-interface>2.7.2.3 <code>HTMLOptionsCollection</code>インターフェイス</a></li></ol></li><li><a href=infrastructure.html#garbage-collection>2.7.3 Garbage collection</a></li></ol></li><li><a href=infrastructure.html#namespaces>2.8 名前空間</a></li><li><a href=infrastructure.html#safe-passing-of-structured-data>2.9 Safe passing of structured data</a><ol><li><a href=infrastructure.html#cloneable-objects>2.9.1 Cloneable objects</a></li><li><a href=infrastructure.html#transferable-objects>2.9.2 Transferable objects</a></li><li><a href=infrastructure.html#structuredclonewithtransfer>2.9.3 StructuredCloneWithTransfer ( <var>input</var>,
-  <var>transferList</var>, <var>targetRealm</var> )</a></li><li><a href=infrastructure.html#structuredclone>2.9.4 StructuredClone ( <var>input</var>, <var>targetRealm</var>
-  [ , <var>memory</var> ] )</a></li><li><a href=infrastructure.html#istransferable>2.9.5 IsTransferable ( <var>O</var> )</a></li><li><a href=infrastructure.html#transfer-abstract-op>2.9.6 Transfer ( <var>input</var>, <var>targetRealm</var> )</a></li><li><a href=infrastructure.html#performing-structured-clones-from-other-specifications>2.9.7 Performing structured clones from other specifications</a></li><li><a href=infrastructure.html#monkey-patch-for-blob-and-filelist-objects>2.9.8 Monkey patch for <code>Blob</code> and <code>FileList</code> objects</a></li></ol></li></ol></li></ol><h2 id=infrastructure>2 共通インフラ<a href=#infrastructure class=self-link></a></h2>
+  <nav><a href=introduction.html>← 1 導入</a> — <a href=index.html>目次</a> — <a href=dom.html>3 セマンティックス、構造、HTML文書のAPI群 →</a></nav><ol class=toc><li id=toc-infrastructure><a href=infrastructure.html#infrastructure>2 共通インフラ</a><ol><li><a href=infrastructure.html#terminology>2.1 用語</a><ol><li><a href=infrastructure.html#resources>2.1.1 リソース</a></li><li><a href=infrastructure.html#xml>2.1.2 XML</a></li><li><a href=infrastructure.html#dom-trees>2.1.3 DOMツリー</a></li><li><a href=infrastructure.html#scripting-2>2.1.4 スクリプティング</a></li><li><a href=infrastructure.html#plugins>2.1.5 プラグイン</a></li><li><a href=infrastructure.html#encoding-terminology>2.1.6 文字エンコーディング</a></li><li><a href=infrastructure.html#conformance-classes>2.1.7 適合クラス</a></li><li><a href=infrastructure.html#dependencies>2.1.8 依存関係</a></li><li><a href=infrastructure.html#extensibility-2>2.1.9 拡張性</a></li><li><a href=infrastructure.html#interactions-with-xpath-and-xslt>2.1.10 Interactions with XPath and XSLT</a></li></ol></li><li><a href=infrastructure.html#case-sensitivity-and-string-comparison>2.2 大文字・小文字区別と文字列の比較</a></li><li><a href=infrastructure.html#common-microsyntaxes>2.3 共通マイクロ構文</a><ol><li><a href=infrastructure.html#common-parser-idioms>2.3.1 共通パーサー語句</a></li><li><a href=infrastructure.html#boolean-attributes>2.3.2 真偽属性</a></li><li><a href=infrastructure.html#keywords-and-enumerated-attributes>2.3.3 キーワードおよび列挙属性</a></li><li><a href=infrastructure.html#numbers>2.3.4 数字</a><ol><li><a href=infrastructure.html#signed-integers>2.3.4.1 符号付き整数</a></li><li><a href=infrastructure.html#non-negative-integers>2.3.4.2 非負整数</a></li><li><a href=infrastructure.html#floating-point-numbers>2.3.4.3 浮動小数点数</a></li><li><a href=infrastructure.html#percentages-and-dimensions>2.3.4.4 Percentages and lengths</a></li><li><a href=infrastructure.html#non-zero-percentages-and-lengths>2.3.4.5 Non-zero percentages and lengths</a></li><li><a href=infrastructure.html#lists-of-floating-point-numbers>2.3.4.6 浮動小数点数のリスト</a></li><li><a href=infrastructure.html#lists-of-dimensions>2.3.4.7 Lists of dimensions</a></li></ol></li><li><a href=infrastructure.html#dates-and-times>2.3.5 日付および時刻</a><ol><li><a href=infrastructure.html#months>2.3.5.1 月</a></li><li><a href=infrastructure.html#dates>2.3.5.2 日付</a></li><li><a href=infrastructure.html#yearless-dates>2.3.5.3 年なし日付</a></li><li><a href=infrastructure.html#times>2.3.5.4 時刻</a></li><li><a href=infrastructure.html#local-dates-and-times>2.3.5.5 ローカル日付および時刻</a></li><li><a href=infrastructure.html#time-zones>2.3.5.6 タイムゾーン</a></li><li><a href=infrastructure.html#global-dates-and-times>2.3.5.7 グローバル日付および時刻</a></li><li><a href=infrastructure.html#weeks>2.3.5.8 週</a></li><li><a href=infrastructure.html#durations>2.3.5.9 継続時間</a></li><li><a href=infrastructure.html#vaguer-moments-in-time>2.3.5.10 時刻における曖昧な瞬間</a></li></ol></li><li><a href=infrastructure.html#colours>2.3.6 色</a></li><li><a href=infrastructure.html#space-separated-tokens>2.3.7 空白区切りトークン</a></li><li><a href=infrastructure.html#comma-separated-tokens>2.3.8 コンマ区切りトークン</a></li><li><a href=infrastructure.html#syntax-references>2.3.9 参考文献</a></li><li><a href=infrastructure.html#mq>2.3.10 メディアクエリー</a></li></ol></li><li><a href=infrastructure.html#urls>2.4 URL</a><ol><li><a href=infrastructure.html#terminology-2>2.4.1 用語</a></li><li><a href=infrastructure.html#resolving-urls>2.4.2 Parsing URLs</a></li><li><a href=infrastructure.html#dynamic-changes-to-base-urls>2.4.3 Dynamic changes to base URLs</a></li></ol></li><li><a href=infrastructure.html#fetching-resources>2.5 リソースを取得する</a><ol><li><a href=infrastructure.html#terminology-3>2.5.1 用語</a></li><li><a href=infrastructure.html#content-type-sniffing>2.5.2 Determining the type of a resource</a></li><li><a href=infrastructure.html#extracting-character-encodings-from-meta-elements>2.5.3 Extracting character encodings from <code>meta</code> elements</a></li><li><a href=infrastructure.html#cors-settings-attributes>2.5.4 CORS設定属性</a></li><li><a href=infrastructure.html#referrer-policy-attributes>2.5.5 リファラーポリシー属性</a></li></ol></li><li><a href=infrastructure.html#common-dom-interfaces>2.6 共通DOMインターフェイス</a><ol><li><a href=infrastructure.html#reflecting-content-attributes-in-idl-attributes>2.6.1 IDL属性におけるコンテンツ属性の反映</a></li><li><a href=infrastructure.html#collections>2.6.2 コレクション</a><ol><li><a href=infrastructure.html#the-htmlallcollection-interface>2.6.2.1 <code>HTMLAllCollection</code>インターフェイス</a></li><li><a href=infrastructure.html#the-htmlformcontrolscollection-interface>2.6.2.2 <code>HTMLFormControlsCollection</code>インターフェイス</a></li><li><a href=infrastructure.html#the-htmloptionscollection-interface>2.6.2.3 <code>HTMLOptionsCollection</code>インターフェイス</a></li></ol></li><li><a href=infrastructure.html#garbage-collection>2.6.3 Garbage collection</a></li></ol></li><li><a href=infrastructure.html#safe-passing-of-structured-data>2.7 Safe passing of structured data</a><ol><li><a href=infrastructure.html#cloneable-objects>2.7.1 Cloneable objects</a></li><li><a href=infrastructure.html#transferable-objects>2.7.2 Transferable objects</a></li><li><a href=infrastructure.html#structuredclonewithtransfer>2.7.3 StructuredCloneWithTransfer ( <var>input</var>,
+  <var>transferList</var>, <var>targetRealm</var> )</a></li><li><a href=infrastructure.html#structuredclone>2.7.4 StructuredClone ( <var>input</var>, <var>targetRealm</var>
+  [ , <var>memory</var> ] )</a></li><li><a href=infrastructure.html#istransferable>2.7.5 IsTransferable ( <var>O</var> )</a></li><li><a href=infrastructure.html#transfer-abstract-op>2.7.6 Transfer ( <var>input</var>, <var>targetRealm</var> )</a></li><li><a href=infrastructure.html#performing-structured-clones-from-other-specifications>2.7.7 Performing structured clones from other specifications</a></li><li><a href=infrastructure.html#monkey-patch-for-blob-and-filelist-objects>2.7.8 Monkey patch for <code>Blob</code> and <code>FileList</code> objects</a></li></ol></li></ol></li></ol><h2 id=infrastructure>2 共通インフラ<a href=#infrastructure class=self-link></a></h2>
+
+  <p>This specification depends on the WHATWG Infra standard. <a href=references.html#refsINFRA>[INFRA]</a></p>
 
   <h3 id=terminology>2.1 用語<a href=#terminology class=self-link></a></h3>
 
@@ -330,11 +207,11 @@
 
   <p>DOM構造の文脈において、用語<a href=https://triple-underscore.github.io/DOM4-ja.html#html-document id=terminology:html-documents data-x-internal=html-documents>HTML文書</a>および<a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=terminology:xml-documents data-x-internal=xml-documents>XML文書</a>は、DOM仕様で定義されるとおりに使用され、<code id=terminology:document-2><a href=dom.html#document>Document</a></code>オブジェクトが自分自身を見つけることができる2つの異なるモードを表す。<a href=references.html#refsDOM>[DOM]</a>（このような用途は常に定義にハイパーリンクされる。）</p>
 
-  <p>バイトストリームの文脈において、用語HTML文書は、<code id=terminology:text/html><a href=iana.html#text/html>text/html</a></code>として分類されたリソースを指し、用語XML文書は、<a href=#xml-mime-type id=terminology:xml-mime-type>XML MIMEタイプ</a>で分類されるリソースを指す。</p>
+  <p>バイトストリームの文脈において、用語HTML文書は、<code id=terminology:text/html><a href=iana.html#text/html>text/html</a></code>として分類されたリソースを指し、用語XML文書は、<a id=terminology:xml-mime-type href=https://mimesniff.spec.whatwg.org/#xml-mime-type data-x-internal=xml-mime-type>XML MIMEタイプ</a>で分類されるリソースを指す。</p>
 
-  <p>The term <dfn id=xhtml-document>XHTML document</dfn> is used to refer to both <code id=terminology:document-3><a href=dom.html#document>Document</a></code>s in the <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=terminology:xml-documents-2 data-x-internal=xml-documents>XML document</a> mode that contain element nodes in the <a href=#html-namespace-2 id=terminology:html-namespace-2>HTML
-  namespace</a>, and byte streams labeled with an <a href=#xml-mime-type id=terminology:xml-mime-type-2>XML MIME type</a> that contain
-  elements from the <a href=#html-namespace-2 id=terminology:html-namespace-2-2>HTML namespace</a>, depending on context.</p>
+  <p>The term <dfn id=xhtml-document>XHTML document</dfn> is used to refer to both <code id=terminology:document-3><a href=dom.html#document>Document</a></code>s in the <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=terminology:xml-documents-2 data-x-internal=xml-documents>XML document</a> mode that contain element nodes in the <a id=terminology:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
+  namespace</a>, and byte streams labeled with an <a id=terminology:xml-mime-type-2 href=https://mimesniff.spec.whatwg.org/#xml-mime-type data-x-internal=xml-mime-type>XML MIME type</a> that contain
+  elements from the <a id=terminology:html-namespace-2-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, depending on context.</p>
 
   <hr>
 
@@ -354,8 +231,6 @@
 
   
 
-  <p>両立的な「または」または排他的な「または」の両方があり得る場合（たとえば、幅または高さのいずれかがで0ある場合）、（「両方ではない」）排他的なものとして呼び出されない限り、単語「または」("or")は、両立的な「または」を意味する（「または両方」を意味する）。</p>
-
   
   <p>用語"透明な黒"は、赤、緑、青、およびアルファチャンネルをすべて0に設定した色を指す。</p>
 
@@ -370,28 +245,18 @@
 
   <p>特にHTTP仕様において、一部の仕様が<i>representation</i>と表されるものは、この仕様で<dfn>リソース</dfn>として表される。<a href=references.html#refsHTTP>[HTTP]</a></p>
 
-  <p>用語<dfn id=mime-type>MIMEタイプ</dfn>は、プロトコルの文献で時折<i>インターネットメディアタイプ</i>と呼ばれるものを指すのに使用される。この仕様において、用語<i>メディアタイプ</i>は、CSS仕様により用いられるように、プレゼンテーションのために意図されるメディアの種類を指示するために使用される。<a href=references.html#refsRFC2046>[RFC2046]</a> <a href=references.html#refsMQ>[MQ]</a></p>
-
-  <p>メディアタイプが<a href=https://tools.ietf.org/html/rfc7231#section-3.1.1.1>RFC 7231の3.1.1.1節"Media Types"</a>で定義される<code>media-type</code>規則に一致する場合、文字列は<dfn id=valid-mime-type data-export="">妥当なMIMEタイプ</dfn>となる。具体的には、<a href=#valid-mime-type id=resources:valid-mime-type>妥当なMIMEタイプ</a>はMIMEタイプのパラメーターを含んでもよい。<a href=references.html#refsHTTP>[HTTP]</a></p>
-
-  <p>U+003B SEMICOLON文字（;）を含まないが、<a href=https://tools.ietf.org/html/rfc7231#section-3.1.1.1>RFC 7231の3.1.1.1節"Media Types"</a>で定義される<code>media-type</code>規則に一致した場合、文字列は<dfn id=valid-mime-type-with-no-parameters>パラメーターなしの妥当なMIMEタイプ</dfn>となる。言い換えれば、MIMEタイプのパラメーターがない、タイプおよびサブタイプのみから構成される場合である。<a href=references.html#refsHTTP>[HTTP]</a></p>
-
-  <p>用語<dfn id=html-mime-type>HTML MIMEタイプ</dfn>は、<a href=#mime-type id=resources:mime-type>MIMEタイプ</a>が<code id=resources:text/html><a href=iana.html#text/html>text/html</a></code>を表すために使用される。</p>
-
   <p>リソースの<dfn id=critical-subresources>クリティカルサブリソース</dfn>は、リソースが正しく処理されるために使用できる状態にしておく必要があるものである。どのリソースがクリティカルかどうかとみなされるかは、リソースのフォーマットを定義する仕様によって定義されない。</p>
 
 
   <h4 id=xml>2.1.2 XML<a href=#xml class=self-link></a></h4>
 
-  <p id=html-namespace>HTMLからXHTMLへの移行を容易にするため、この仕様に準拠するユーザーエージェントは、少なくともDOMとCSSのために、<code id=xml:html-namespace-2><a href=#html-namespace-2>http://www.w3.org/1999/xhtml</a></code>名前空間にHTMLで要素を配置する。この仕様で使用される用語"<dfn id=html-elements>HTML要素</dfn>"は、その名前空間内の任意の要素を指す。したがって、HTMLとXHTMLの要素の両方を指す。</p>
+  <p id=html-namespace>HTMLからXHTMLへの移行を容易にするため、この仕様に準拠するユーザーエージェントは、少なくともDOMとCSSのために、<code id=xml:html-namespace-2><a data-x-internal=html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace>http://www.w3.org/1999/xhtml</a></code>名前空間にHTMLで要素を配置する。この仕様で使用される用語"<dfn id=html-elements>HTML要素</dfn>"は、その名前空間内の任意の要素を指す。したがって、HTMLとXHTMLの要素の両方を指す。</p>
 
-  <p>他に記載される場合を除き、この仕様で定義または記載されるすべての要素は<a href=#html-namespace-2 id=xml:html-namespace-2-2>HTML名前空間</a>（"<code>http://www.w3.org/1999/xhtml</code>"）であり、この仕様で定義または記載されるすべての属性は名前空間を持たない。</p>
+  <p>他に記載される場合を除き、この仕様で定義または記載されるすべての要素は<a id=xml:html-namespace-2-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML名前空間</a>（"<code>http://www.w3.org/1999/xhtml</code>"）であり、この仕様で定義または記載されるすべての属性は名前空間を持たない。</p>
 
-  <p>用語<dfn id=element-type>要素タイプ</dfn>は、与えられたローカル名と名前空間を持つ要素の集合を参照するために使用される。たとえば、<code id=xml:the-button-element><a href=forms.html#the-button-element>button</a></code>要素は要素型<code id=xml:the-button-element-2><a href=forms.html#the-button-element>button</a></code>をもつ要素であり、ローカル名"<code>button</code><a href=#html-namespace-2 id=xml:html-namespace-2-3></a>"および（上で定義されるように暗黙のうちに）HTML名前空間を持つことを意味する。</p>
+  <p>用語<dfn id=element-type>要素タイプ</dfn>は、与えられたローカル名と名前空間を持つ要素の集合を参照するために使用される。たとえば、<code id=xml:the-button-element><a href=forms.html#the-button-element>button</a></code>要素は要素型<code id=xml:the-button-element-2><a href=forms.html#the-button-element>button</a></code>をもつ要素であり、ローカル名"<code>button</code><a id=xml:html-namespace-2-3 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2></a>"および（上で定義されるように暗黙のうちに）HTML名前空間を持つことを意味する。</p>
 
   <p>属性名がXMLで定義された<code id=xml:xml-name><a data-x-internal=xml-name href=http://w4ard.eplusx.net/translation/W3C/REC-xml-20081126/#NT-Name>Name</a></code>生成物と一致しかつ、U+003A COLON文字（:）を含まない場合、属性名は<dfn id=xml-compatible>XML互換</dfn>であると言われる。<a href=references.html#refsXML>[XML]</a></p>
-
-  <p>用語<dfn id=xml-mime-type>XML MIMEタイプ</dfn>は、<a href=#mime-type id=xml:mime-type>MIMEタイプ</a><code id=xml:text/xml><a href=indices.html#text/xml>text/xml</a></code>、<code id=xml:application/xml><a href=indices.html#application/xml>application/xml</a></code>、subtypeが4文字"<code>+xml</code>"で終わる任意の<a href=#mime-type id=xml:mime-type-2>MIMEタイプ</a>を参照するために使用される。<a href=references.html#refsRFC7303>[RFC7303]</a></p>
 
 
   <h4 id=dom-trees>2.1.3 DOMツリー<a href=#dom-trees class=self-link></a></h4>
@@ -489,50 +354,7 @@
 
   
 
-  <h3 id=conformance-requirements>2.2 適合性要件<a href=#conformance-requirements class=self-link></a></h3>
-
-  <p>この仕様において、すべての図、例、注は非規範的であり、非規範的と明示された節も同様である。この仕様におけるその他すべては規範的である。</p>
-
-  <p>この文書の規範部分においてキーワード"MUST"、"MUST NOT"、"REQUIRED"、"SHOULD"、"SHOULD NOT"、"MAY"、"OPTIONAL"は、RFC 2119で示されたとおりに解釈される。この文書の規範部分でのキーワード"OPTIONALLY"は、"MAY"または"OPTIONAL"としての意味と同一に解釈される。読みやすさのために、これらの単語はこの仕様において大文字のみで出現しない。<a href=references.html#refsRFC2119>[RFC2119]</a></p>
-
-  <p>Requirements phrased in the imperative as part of algorithms (such as "strip any leading space
-  characters" or "return false and abort these steps") are to be interpreted with the meaning of the
-  key word ("must", "should", "may", etc) used in introducing the algorithm.</p>
-
-  <div class=example>
-
-   <p>For example, were the spec to say:</p>
-
-   <pre>To eat an orange, the user must:
-1. Peel the orange.
-2. Separate each slice of the orange.
-3. Eat the orange slices.</pre>
-
-   <p>...it would be equivalent to the following:</p>
-
-   <pre>To eat an orange:
-1. The user must peel the orange.
-2. The user must separate each slice of the orange.
-3. The user must eat the orange slices.</pre>
-
-   <p>Here the key word is "must".</p>
-
-   <p>The former (imperative) style is generally preferred in this specification for stylistic
-   reasons.</p>
-
-  </div>
-
-  <p>Conformance requirements phrased as algorithms or specific steps may be implemented in any
-  manner, so long as the end result is equivalent. (In particular, the algorithms defined in this
-  specification are intended to be easy to follow, and not intended to be performant.)</p>
-
-  
-
-
-
-  
-
-  <h4 id=conformance-classes>2.2.1 適合クラス<a href=#conformance-classes class=self-link></a></h4>
+  <h4 id=conformance-classes>2.1.7 適合クラス<a href=#conformance-classes class=self-link></a></h4>
 
   <p>This specification describes the conformance criteria for user agents
   (relevant to implementors) and documents (relevant to authors and
@@ -559,7 +381,7 @@
   <dl><dt id=interactive>Web browsers and other interactive user agents<dd>
 
     <p>Web browsers that support <a id=conformance-classes:the-xhtml-syntax href=xhtml.html#the-xhtml-syntax>the XHTML syntax</a> must process elements and attributes
-    from the <a href=#html-namespace-2 id=conformance-classes:html-namespace-2>HTML namespace</a> found in XML documents as described in this specification,
+    from the <a id=conformance-classes:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a> found in XML documents as described in this specification,
     so that users can interact with them, unless the semantics of those elements have been
     overridden by other specifications.</p>
 
@@ -570,7 +392,7 @@
     opaque element that forms part of the transform.</p>
 
     <p>Web browsers that support <a id=conformance-classes:syntax href=syntax.html#syntax>the HTML syntax</a> must process documents labeled with an
-    <a href=#html-mime-type id=conformance-classes:html-mime-type>HTML MIME type</a> as described in this specification, so that users can interact with
+    <a id=conformance-classes:html-mime-type href=https://mimesniff.spec.whatwg.org/#html-mime-type data-x-internal=html-mime-type>HTML MIME type</a> as described in this specification, so that users can interact with
     them.</p>
 
     <p>User agents that support scripting must also be conforming implementations of the IDL
@@ -740,13 +562,27 @@
   
 
 
-  <h4 id=dependencies>2.2.2 依存関係<a href=#dependencies class=self-link></a></h4>
+  <h4 id=dependencies>2.1.8 依存関係<a href=#dependencies class=self-link></a></h4>
 
   <div data-noexport="">
 
   <p>この仕様は、複数の基礎をなす仕様に依存する。</p>
 
-  <dl><dt>Unicodeおよびエンコーディング<dd>
+  <dl><dt>Infra<dd>
+    <p>The following terms are defined in the WHATWG Infra standard: <a href=references.html#refsINFRA>[INFRA]</a></p>
+
+    <ul class=brief><li><dfn id=ascii-case-insensitive><a href=https://infra.spec.whatwg.org/#ascii-case-insensitive>ASCII case-insensitive</a></dfn></li><li><dfn id=converted-to-ascii-uppercase><a href=https://infra.spec.whatwg.org/#ascii-uppercase>ASCII uppercase</a></dfn></li><li><dfn id=converted-to-ascii-lowercase><a href=https://infra.spec.whatwg.org/#ascii-lowercase>ASCII lowercase</a></dfn></li><li>The <dfn id=ordered-map><a href=https://infra.spec.whatwg.org/#ordered-map>ordered map</a></dfn> data structure and the associated definitions for
+             <dfn id=map-exists><a href=https://infra.spec.whatwg.org/#map-exists>exists</a></dfn>,
+             <dfn id=map-get><a href=https://infra.spec.whatwg.org/#map-get>getting the value of an entry</a></dfn>, and
+             <dfn id=map-set><a href=https://infra.spec.whatwg.org/#map-set>setting the value of an entry</a></dfn></li><li>The <dfn id=list><a href=https://infra.spec.whatwg.org/#list>list</a></dfn> data structure and the associated definitions for
+             <dfn id=list-is-empty><a href=https://infra.spec.whatwg.org/#list-is-empty>is empty</a></dfn>,
+             <dfn id=list-contains><a href=https://infra.spec.whatwg.org/#list-contains>contains</a></dfn>,
+             <dfn id=list-append><a href=https://infra.spec.whatwg.org/#list-append>append</a></dfn>, and
+             <dfn id=list-iterate><a href=https://infra.spec.whatwg.org/#list-iterate>iterate</a></dfn></li><li>The <dfn id=stack><a href=https://infra.spec.whatwg.org/#stack>stack</a></dfn> data structure and the associated definitions for
+             <dfn id=stack-push><a href=https://infra.spec.whatwg.org/#stack-push>push</a></dfn> and
+             <dfn id=stack-pop><a href=https://infra.spec.whatwg.org/#stack-pop>pop</a></dfn></li><li>The <dfn id=set><a href=https://infra.spec.whatwg.org/#ordered-set>ordered set</a></dfn> data structure</li><li><dfn id=html-namespace-2><a href=https://infra.spec.whatwg.org/#html-namespace>HTML namespace</a></dfn></li><li><dfn id=mathml-namespace><a href=https://infra.spec.whatwg.org/#mathml-namespace>MathML namespace</a></dfn></li><li><dfn id=svg-namespace><a href=https://infra.spec.whatwg.org/#svg-namespace>SVG namespace</a></dfn></li><li><dfn id=xlink-namespace><a href=https://infra.spec.whatwg.org/#xlink-namespace>XLink名前空間</a></dfn></li><li><dfn id=xml-namespace><a href=https://infra.spec.whatwg.org/#xml-namespace>XML名前空間</a></dfn></li><li><dfn id=xmlns-namespace><a href=https://infra.spec.whatwg.org/#xmlns-namespace>XMLNS名前空間</a></dfn></li></ul>
+
+   <dt>Unicodeおよびエンコーディング<dd>
 
     <p>Unicode文字セットは、テキストデータを表すために使用され、WHATWG Encoding標準は、<a href=https://triple-underscore.github.io/Encoding-ja.html#encoding id=dependencies:encoding data-x-internal=encoding>文字エンコーディング</a>を中心とする要件を定義する。<a href=references.html#refsUNICODE>[UNICODE]</a></p>
 
@@ -760,7 +596,16 @@
 
     <p>その構文が名前空間をもつXMLシリアライゼーションを使用するため、<a id=dependencies:the-xhtml-syntax href=xhtml.html#the-xhtml-syntax>XHTML構文</a>をサポートする実装は、いくつかのXMLのバージョンと同様に、対応する名前空間の仕様をサポートしなければならない。<a href=references.html#refsXML>[XML]</a> <a href=references.html#refsXMLNS>[XMLNS]</a></p>
 
-    <p><a href=#xml-namespace id=dependencies:xml-namespace>XML名前空間</a>でタグ名<dfn id=attr-xml-space><code>xml:space</code></dfn>をもつ属性は、XML仕様で定義される。<a href=references.html#refsXML>[XML]</a></p>
+    <p>Data mining tools and other user agents that perform operations on content without running
+    scripts, evaluating CSS or XPath expressions, or otherwise exposing the resulting DOM to
+    arbitrary content, may "support namespaces" by just asserting that their DOM node analogues are
+    in certain namespaces, without actually exposing the namespace strings.</p>
+
+    <p class=note><a id=dependencies:syntax href=syntax.html#syntax>HTML構文</a>において、名前空間接頭辞および名前空間宣言は、XMLと同一の効果を持たない。たとえば、HTML要素名においてコロンは特別な意味を持たない。</p>
+
+    <hr>
+
+    <p><a id=dependencies:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a>でタグ名<dfn id=attr-xml-space><code>xml:space</code></dfn>をもつ属性は、XML仕様で定義される。<a href=references.html#refsXML>[XML]</a></p>
 
     <p><dfn id=xml-name><a href=http://w4ard.eplusx.net/translation/W3C/REC-xml-20081126/#NT-Name><code>Name</code></a></dfn>生成物は、XML仕様で定義される。<a href=references.html#refsXML>[XML]</a></p>
 
@@ -799,6 +644,10 @@
 
     <ul class=brief><li>`<dfn id=http-link><a href=https://tools.ietf.org/html/rfc5988#section-5><code>Link</code></a></dfn>`ヘッダー</li></ul>
 
+    <p>The following terms are defined in the WHATWG MIME Sniffing standard: <a href=references.html#refsMIMESNIFF>[MIMESNIFF]</a></p>
+
+    <ul class=brief><li><dfn id=mime-type><a href=https://mimesniff.spec.whatwg.org/#mime-type>MIME type</a></dfn></li><li><dfn id=valid-mime-type><a href=https://mimesniff.spec.whatwg.org/#valid-mime-type>valid MIME type</a></dfn></li><li><dfn id=valid-mime-type-with-no-parameters><a href=https://mimesniff.spec.whatwg.org/#valid-mime-type-with-no-parameters>valid MIME type with no parameters</a></dfn></li><li><dfn id=xml-mime-type><a href=https://mimesniff.spec.whatwg.org/#xml-mime-type>XML MIME type</a></dfn></li><li><dfn id=html-mime-type><a href=https://mimesniff.spec.whatwg.org/#html-mime-type>HTML MIME type</a></dfn></li></ul>
+
    <dt>Fetch<dd>
 
     <p>次の用語はWHATWG Fetch標準<a href=references.html#refsFETCH>[FETCH]</a>で定義される：</p>
@@ -808,7 +657,7 @@
       <ul class=brief><li><dfn id=concept-response-type><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response>type</a></dfn></li><li><dfn id=concept-response-url><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url>url</a></dfn></li><li><dfn id=concept-response-url-list><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url-list>urlリスト</a></dfn></li><li><dfn id=concept-response-status><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status>status</a></dfn></li><li><dfn id=concept-response-header-list><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-header-list>ヘッダーリスト</a></dfn></li><li><dfn id=concept-response-body><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-body>ボディー</a></dfn></li><li><dfn id=concept-internal-response><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-internal-response>内部レスポンス</a></dfn></li><li><dfn id=concept-response-csp-list><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-csp-list>CSPリスト</a></dfn></li><li><dfn id=concept-response-https-state><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-https-state>HTTPS状態</a></dfn></li><li><dfn id=concept-response-location-url><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url>ロケーションURL</a></dfn></li></ul>
      </li><li>
       <dfn id=concept-request><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request>リクエスト</a></dfn>および関連するもの：
-      <ul class=brief><li><dfn id=concept-request-url><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url>url</a></dfn></li><li><dfn id=concept-request-method><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-method>メソッド</a></dfn></li><li><dfn id=concept-request-header-list><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-header-list>ヘッダーリスト</a></dfn></li><li><dfn id=concept-request-body><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-body>ボディー</a></dfn></li><li><dfn id=concept-request-client><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client>クライアント</a></dfn></li><li><dfn id=concept-request-reserved-client><a href=https://fetch.spec.whatwg.org/#concept-request-reserved-client>reserved client</a></dfn></li><li><dfn id=concept-request-target-client-id><a href=https://fetch.spec.whatwg.org/#concept-request-target-client-id>target client id</a></dfn></li><li><dfn id=concept-request-initiator><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-initiator>イニシエーター</a></dfn></li><li><dfn id=concept-request-type><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request>型</a></dfn></li><li><dfn id=concept-request-destination><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination>宛先</a></dfn></li><li><dfn id=concept-request-priority><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-priority>優先度</a></dfn></li><li><dfn data-dfn-for=request id=concept-request-origin><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-origin>生成元</a></dfn></li><li><dfn id=omit-origin-header-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#omit-origin-header-flag>omit-<code>Origin</code>-headerフラグ</a></dfn></li><li><dfn id=concept-request-referrer><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer>referrer</a></dfn></li><li><dfn id=synchronous-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#synchronous-flag>synchronousフラグ</a></dfn></li><li><dfn id=concept-request-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode>モード</a></dfn></li><li><dfn id=concept-request-credentials-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode>資格情報モード</a></dfn></li><li><dfn id=use-url-credentials-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag>use-URL-credentialsフラグ</a></dfn></li><li><dfn id=unsafe-request-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#unsafe-request-flag>unsafe-requestフラグ</a></dfn></li><li><dfn id=concept-request-cache-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-cache-mode>キャッシュモード</a></dfn></li><li><dfn id=concept-request-redirect-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-redirect-mode>リダイレクトモード</a></dfn></li><li><dfn id=concept-request-referrer-policy><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer-policy>リファラーポリシー</a></dfn></li><li><dfn id=concept-request-nonce-metadata><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata>暗号ナンスメタデータ</a></dfn></li><li><dfn id=concept-request-parser-metadata><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata>パーサーメタデータ</a></dfn></li></ul>
+      <ul class=brief><li><dfn id=concept-request-url><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url>url</a></dfn></li><li><dfn id=concept-request-method><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-method>メソッド</a></dfn></li><li><dfn id=concept-request-header-list><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-header-list>ヘッダーリスト</a></dfn></li><li><dfn id=concept-request-body><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-body>ボディー</a></dfn></li><li><dfn id=concept-request-client><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client>クライアント</a></dfn></li><li><dfn id=concept-request-reserved-client><a href=https://fetch.spec.whatwg.org/#concept-request-reserved-client>reserved client</a></dfn></li><li><dfn id=concept-request-target-client-id><a href=https://fetch.spec.whatwg.org/#concept-request-target-client-id>target client id</a></dfn></li><li><dfn id=concept-request-initiator><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-initiator>イニシエーター</a></dfn></li><li><dfn id=concept-request-type><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request>型</a></dfn></li><li><dfn id=concept-request-destination><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination>宛先</a></dfn></li><li><dfn id=concept-request-priority><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-priority>優先度</a></dfn></li><li><dfn data-dfn-for=request id=concept-request-origin><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-origin>生成元</a></dfn></li><li><dfn id=omit-origin-header-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#omit-origin-header-flag>omit-<code>Origin</code>-headerフラグ</a></dfn></li><li><dfn id=concept-request-referrer><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer>referrer</a></dfn></li><li><dfn id=synchronous-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#synchronous-flag>synchronousフラグ</a></dfn></li><li><dfn id=concept-request-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode>モード</a></dfn></li><li><dfn id=concept-request-credentials-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode>資格情報モード</a></dfn></li><li><dfn id=use-url-credentials-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag>use-URL-credentialsフラグ</a></dfn></li><li><dfn id=unsafe-request-flag><a href=https://triple-underscore.github.io/Fetch-ja.html#unsafe-request-flag>unsafe-requestフラグ</a></dfn></li><li><dfn id=concept-request-cache-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-cache-mode>キャッシュモード</a></dfn></li><li><dfn id=concept-request-redirect-mode><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-redirect-mode>リダイレクトモード</a></dfn></li><li><dfn id=concept-request-referrer-policy><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer-policy>リファラーポリシー</a></dfn></li><li><dfn id=concept-request-nonce-metadata><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-nonce-metadata>暗号ナンスメタデータ</a></dfn></li><li><dfn id=concept-request-integrity-metadata><a href=https://fetch.spec.whatwg.org/#concept-request-integrity-metadata>integrity metadata</a></dfn></li><li><dfn id=concept-request-parser-metadata><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata>パーサーメタデータ</a></dfn></li></ul>
      </li></ul>
 
     <p>次の用語は、<cite>Referrer Policy</cite>仕様<a href=references.html#refsREFERRERPOLICY>[REFERRERPOLICY]</a>で定義される：</p>
@@ -847,11 +696,11 @@
     <p>Users agents that support JavaScript must also implement the <cite>ECMAScript
     Internationalization API Specification</cite>. <a href=references.html#refsJSINTL>[JSINTL]</a></p>
 
-    <p class=note>用語JavaScriptはより広く知られているため、用語"JavaScript"は、公式用語ECMAScriptよりもむしろ、ECMA-262を参照するために使用される。同様に、RFC 4329によれば<a href=introduction.html#willful-violation id=dependencies:willful-violation>公式に廃止されたタイプであるにもかかわらず</a>、最も一般的に使用されるタイプであるため、この仕様でJavaScriptを参照するために使用される<a href=#mime-type id=dependencies:mime-type>MIMEタイプ</a>は、<code>text/javascript</code>である。<a href=references.html#refsRFC4329>[RFC4329]</a></p>
+    <p class=note>用語JavaScriptはより広く知られているため、用語"JavaScript"は、公式用語ECMAScriptよりもむしろ、ECMA-262を参照するために使用される。同様に、RFC 4329によれば<a href=introduction.html#willful-violation id=dependencies:willful-violation>公式に廃止されたタイプであるにもかかわらず</a>、最も一般的に使用されるタイプであるため、この仕様でJavaScriptを参照するために使用される<a id=dependencies:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIMEタイプ</a>は、<code>text/javascript</code>である。<a href=references.html#refsRFC4329>[RFC4329]</a></p>
 
     <p>次の用語はJavaScript仕様で定義され、この仕様で使用される：</p>
 
-    <ul class=brief><li><dfn id=active-function-object><a href=https://tc39.github.io/ecma262/#active-function-object>active function object</a></dfn></li><li><dfn id=automatic-semicolon-insertion><a href=https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion>自動セミコロン挿入</a></dfn></li><li><dfn id=current-realm-record><a href=https://tc39.github.io/ecma262/#current-realm>current Realm Record</a></dfn></li><li><dfn id=early-error><a href=https://tc39.github.io/ecma262/#early-error-rule>early error</a></dfn></li><li><dfn id=directive-prologue><a href=https://tc39.github.io/ecma262/#directive-prologue>ディレクティブプロローグ</a></dfn></li><li><dfn id=invariants-of-the-essential-internal-methods><a href=https://tc39.github.io/ecma262/#sec-invariants-of-the-essential-internal-methods>invariants of the essential internal methods</a></dfn></li><li><dfn id=javascript-execution-context><a href=https://tc39.github.io/ecma262/#sec-execution-contexts>JavaScript実行コンテキスト</a></dfn></li><li><dfn id=javascript-execution-context-stack><a href=https://tc39.github.io/ecma262/#execution-context-stack>JavaScript実行コンテキストスタック</a></dfn></li><li><dfn id=javascript-realm><a href=https://tc39.github.io/ecma262/#sec-code-realms>JavaScript realm</a></dfn></li><li><dfn id=running-javascript-execution-context><a href=https://tc39.github.io/ecma262/#running-execution-context>稼働JavaScript実行コンテキスト</a></dfn></li><li><dfn id=use-strict-directive><a href=https://tc39.github.io/ecma262/#use-strict-directive>Strictディレクティブを使用する</a></dfn></li><li><dfn id=@@hasinstance>@@hasInstance</dfn>、<dfn id=@@isconcatspreadable>@@isConcatSpreadable</dfn>、<dfn id=@@toprimitive>@@toPrimitive</dfn>、<dfn id=@@tostringtag>@@toStringTag</dfn>を含む<dfn id=well-known-symbols><a href=https://tc39.github.io/ecma262/#sec-well-known-symbols>周知のシンボル</a></dfn></li><li><dfn id=%arraybuffer%><a href=https://tc39.github.io/ecma262/#sec-arraybuffer-constructor>%ArrayBuffer%</a></dfn>、<dfn id=%arrayprototype%><a href=https://tc39.github.io/ecma262/#sec-properties-of-the-array-prototype-object>%ArrayPrototype%</a></dfn>、<dfn id=%objproto_tostring%><a href=https://tc39.github.io/ecma262/#sec-object.prototype.tostring>%ObjProto_toString%</a></dfn>、<dfn id=%objproto_valueof%><a href=https://tc39.github.io/ecma262/#sec-object.prototype.valueof>%ObjProto_valueOf%</a></dfn>を含む<dfn id=well-known-intrinsic-objects><a href=https://tc39.github.io/ecma262/#sec-well-known-intrinsic-objects>周知の固有オブジェクト</a></dfn></li><li><dfn id=js-prod-functionbody><a href=https://tc39.github.io/ecma262/#prod-FunctionBody><i>FunctionBody</i></a></dfn>生成物</li><li><dfn id=js-prod-module><a href=https://tc39.github.io/ecma262/#prod-Module><i>Module</i></a></dfn>生成物</li><li><dfn id=js-prod-pattern><a href=https://tc39.github.io/ecma262/#prod-Pattern><i>Pattern</i></a></dfn>生成物</li><li><dfn id=js-prod-script><a href=https://tc39.github.io/ecma262/#prod-Script><i>Script</i></a></dfn>生成物</li><li><dfn id=js-type><a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values>Type</a></dfn>記法</li><li><dfn id=list><a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type>List</a></dfn>および<dfn id=record><a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type>Record</a></dfn>仕様型</li><li><dfn id=propertydescriptor><a href=https://tc39.github.io/ecma262/#sec-property-descriptor-specification-type>Property Descriptor</a></dfn>仕様型</li><li><dfn id=source-text-module-record><a href=https://tc39.github.io/ecma262/#sec-source-text-module-records>Source Text Module Record</a></dfn>仕様型およびその<dfn id=js-moduleevaluation><a href=https://tc39.github.io/ecma262/#sec-moduleevaluation>ModuleEvaluation</a></dfn>および<dfn id=js-moduledeclarationinstantiation><a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a></dfn>メソッド</li><li><dfn id=arraycreate><a href=https://tc39.github.io/ecma262/#sec-arraycreate>ArrayCreate</a></dfn>抽象演算</li><li><dfn id=call><a href=https://tc39.github.io/ecma262/#sec-call>Call</a></dfn>抽象演算</li><li><dfn id=clonearraybuffer><a href=https://tc39.github.io/ecma262/#sec-clonearraybuffer>CloneArrayBuffer</a></dfn>抽象演算</li><li><dfn id=construct><a href=https://tc39.github.io/ecma262/#sec-construct>Construct</a></dfn>抽象演算</li><li><dfn id=createdataproperty><a href=https://tc39.github.io/ecma262/#sec-createdataproperty>CreateDataProperty</a></dfn>抽象演算</li><li><dfn id=detacharraybuffer><a href=https://tc39.github.io/ecma262/#sec-detacharraybuffer>DetachArrayBuffer</a></dfn>抽象演算</li><li><dfn id=js-enqueuejob><a href=https://tc39.github.io/ecma262/#sec-enqueuejob>EnqueueJob</a></dfn>抽象演算</li><li><dfn id=js-functioncreate><a href=https://tc39.github.io/ecma262/#sec-functioncreate>FunctionCreate</a></dfn>抽象演算</li><li><dfn id=js-get><a href=https://tc39.github.io/ecma262/#sec-get-o-p>Get</a></dfn>抽象演算</li><li><dfn id=getfunctionrealm><a href=https://tc39.github.io/ecma262/#sec-getfunctionrealm>GetFunctionRealm</a></dfn>抽象演算</li><li><dfn id=hasownproperty><a href=https://tc39.github.io/ecma262/#sec-hasownproperty>HasOwnProperty</a></dfn>抽象演算</li><li><dfn id=js-hostensurecancompilestrings><a href=https://tc39.github.io/ecma262/#sec-hostensurecancompilestrings>HostEnsureCanCompileStrings</a></dfn>抽象演算</li><li><dfn id=js-hostpromiserejectiontracker><a href=https://tc39.github.io/ecma262/#sec-host-promise-rejection-tracker>HostPromiseRejectionTracker</a></dfn>抽象演算</li><li><dfn id=js-hostresolveimportedmodule><a href=https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule>HostResolveImportedModule</a></dfn>抽象演算</li><li><dfn id=js-initializehostdefinedrealm><a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm>InitializeHostDefinedRealm</a></dfn>抽象演算</li><li><dfn id=isaccessordescriptor><a href=https://tc39.github.io/ecma262/#sec-isaccessordescriptor>IsAccessorDescriptor</a></dfn>抽象演算</li><li><dfn id=iscallable><a href=https://tc39.github.io/ecma262/#sec-iscallable>IsCallable</a></dfn>抽象演算</li><li><dfn id=isconstructor><a href=https://tc39.github.io/ecma262/#sec-isconstructor>IsConstructor</a></dfn>抽象演算</li><li><dfn id=isdatadescriptor><a href=https://tc39.github.io/ecma262/#sec-isdatadescriptor>IsDataDescriptor</a></dfn>抽象演算</li><li><dfn id=isdetachedbuffer><a href=https://tc39.github.io/ecma262/#sec-isdetachedbuffer>IsDetachedBuffer</a></dfn>抽象演算</li><li><dfn id=js-newobjectenvironment><a href=https://tc39.github.io/ecma262/#sec-newobjectenvironment>NewObjectEnvironment</a></dfn>抽象演算</li><li><dfn id=ordinarygetprototypeof><a href=https://tc39.github.io/ecma262/#sec-ordinarygetprototypeof>OrdinaryGetPrototypeOf</a></dfn>抽象演算</li><li><dfn id=ordinarysetprototypeof><a href=https://tc39.github.io/ecma262/#sec-ordinarysetprototypeof>OrdinarySetPrototypeOf</a></dfn>抽象演算</li><li><dfn id=ordinaryisextensible><a href=https://tc39.github.io/ecma262/#sec-ordinaryisextensible>OrdinaryIsExtensible</a></dfn>抽象演算</li><li><dfn id=ordinarypreventextensions><a href=https://tc39.github.io/ecma262/#sec-ordinarypreventextensions>OrdinaryPreventExtensions</a></dfn>抽象演算</li><li><dfn id=ordinarygetownproperty><a href=https://tc39.github.io/ecma262/#sec-ordinarygetownproperty>OrdinaryGetOwnProperty</a></dfn>抽象演算</li><li><dfn id=ordinarydefineownproperty><a href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty>OrdinaryDefineOwnProperty</a></dfn>抽象演算</li><li><dfn id=ordinaryget><a href=https://tc39.github.io/ecma262/#sec-ordinaryget>OrdinaryGet</a></dfn>抽象演算</li><li><dfn id=ordinaryset><a href=https://tc39.github.io/ecma262/#sec-ordinaryset>OrdinarySet</a></dfn>抽象演算</li><li><dfn id=ordinarydelete><a href=https://tc39.github.io/ecma262/#sec-ordinarydelete>OrdinaryDelete</a></dfn>抽象演算</li><li><dfn id=ordinaryownpropertykeys><a href=https://tc39.github.io/ecma262/#sec-ordinaryownpropertykeys>OrdinaryOwnPropertyKeys</a></dfn>抽象演算</li><li><dfn id=js-parsemodule><a href=https://tc39.github.io/ecma262/#sec-parsemodule>ParseModule</a></dfn>抽象演算</li><li><dfn id=js-parsescript><a href=https://tc39.github.io/ecma262/#sec-parse-script>ParseScript</a></dfn>抽象演算</li><li><dfn id=runjobs><a href=https://tc39.github.io/ecma262/#sec-runjobs>RunJobs</a></dfn>抽象演算</li><li><dfn id=samevalue><a href=https://tc39.github.io/ecma262/#sec-samevalue>SameValue</a></dfn>抽象演算</li><li><dfn id=js-scriptevaluation><a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation>ScriptEvaluation</a></dfn>抽象演算</li><li><dfn id=js-toboolean><a href=https://tc39.github.io/ecma262/#sec-toboolean>ToBoolean</a></dfn>抽象演算</li><li><dfn id=tostring><a href=https://tc39.github.io/ecma262/#sec-tostring>ToString</a></dfn>抽象演算</li><li><dfn id=touint32><a href=https://tc39.github.io/ecma262/#sec-touint32>Get</a></dfn>抽象演算</li><li><dfn id=typedarraycreate><a href=https://tc39.github.io/ecma262/#typedarray-create>TypedArrayCreate</a></dfn>抽象演算</li><li><dfn id=js-abstract-equality><a href=https://tc39.github.io/ecma262/#sec-abstract-equality-comparison>Abstract Equality Comparison</a></dfn>アルゴリズム</li><li><dfn id=js-strict-equality><a href=https://tc39.github.io/ecma262/#sec-strict-equality-comparison>Strict Equality Comparison</a></dfn>アルゴリズム</li><li><dfn id=date><a href=https://tc39.github.io/ecma262/#sec-date-objects><code>Date</code></a></dfn>クラス</li><li><dfn id=typeerror><a href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror><code>TypeError</code></a></dfn>クラス</li><li><dfn id=js-rangeerror><a href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-rangeerror><code>RangeError</code></a></dfn> クラス</li><li><dfn id=js-typeof><a href=https://tc39.github.io/ecma262/#sec-typeof-operator><code>typeof</code></a></dfn>演算子</li><li><dfn id=the-typedarray-constructors><a href=https://tc39.github.io/ecma262/#table-49><var>TypedArray</var> コンストラクター</a></dfn>テーブル</li></ul>
+    <ul class=brief><li><dfn id=active-function-object><a href=https://tc39.github.io/ecma262/#active-function-object>active function object</a></dfn></li><li><dfn id=automatic-semicolon-insertion><a href=https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion>自動セミコロン挿入</a></dfn></li><li><dfn id=current-realm-record><a href=https://tc39.github.io/ecma262/#current-realm>current Realm Record</a></dfn></li><li><dfn id=early-error><a href=https://tc39.github.io/ecma262/#early-error-rule>early error</a></dfn></li><li><dfn id=directive-prologue><a href=https://tc39.github.io/ecma262/#directive-prologue>ディレクティブプロローグ</a></dfn></li><li><dfn id=invariants-of-the-essential-internal-methods><a href=https://tc39.github.io/ecma262/#sec-invariants-of-the-essential-internal-methods>invariants of the essential internal methods</a></dfn></li><li><dfn id=javascript-execution-context><a href=https://tc39.github.io/ecma262/#sec-execution-contexts>JavaScript実行コンテキスト</a></dfn></li><li><dfn id=javascript-execution-context-stack><a href=https://tc39.github.io/ecma262/#execution-context-stack>JavaScript実行コンテキストスタック</a></dfn></li><li><dfn id=javascript-realm><a href=https://tc39.github.io/ecma262/#sec-code-realms>JavaScript realm</a></dfn></li><li><dfn id=running-javascript-execution-context><a href=https://tc39.github.io/ecma262/#running-execution-context>稼働JavaScript実行コンテキスト</a></dfn></li><li><dfn id=use-strict-directive><a href=https://tc39.github.io/ecma262/#use-strict-directive>Strictディレクティブを使用する</a></dfn></li><li><dfn id=@@hasinstance>@@hasInstance</dfn>、<dfn id=@@isconcatspreadable>@@isConcatSpreadable</dfn>、<dfn id=@@toprimitive>@@toPrimitive</dfn>、<dfn id=@@tostringtag>@@toStringTag</dfn>を含む<dfn id=well-known-symbols><a href=https://tc39.github.io/ecma262/#sec-well-known-symbols>周知のシンボル</a></dfn></li><li><dfn id=%arraybuffer%><a href=https://tc39.github.io/ecma262/#sec-arraybuffer-constructor>%ArrayBuffer%</a></dfn>、<dfn id=%arrayprototype%><a href=https://tc39.github.io/ecma262/#sec-properties-of-the-array-prototype-object>%ArrayPrototype%</a></dfn>、<dfn id=%objproto_tostring%><a href=https://tc39.github.io/ecma262/#sec-object.prototype.tostring>%ObjProto_toString%</a></dfn>、<dfn id=%objproto_valueof%><a href=https://tc39.github.io/ecma262/#sec-object.prototype.valueof>%ObjProto_valueOf%</a></dfn>を含む<dfn id=well-known-intrinsic-objects><a href=https://tc39.github.io/ecma262/#sec-well-known-intrinsic-objects>周知の固有オブジェクト</a></dfn></li><li><dfn id=js-prod-functionbody><a href=https://tc39.github.io/ecma262/#prod-FunctionBody><i>FunctionBody</i></a></dfn>生成物</li><li><dfn id=js-prod-module><a href=https://tc39.github.io/ecma262/#prod-Module><i>Module</i></a></dfn>生成物</li><li><dfn id=js-prod-pattern><a href=https://tc39.github.io/ecma262/#prod-Pattern><i>Pattern</i></a></dfn>生成物</li><li><dfn id=js-prod-script><a href=https://tc39.github.io/ecma262/#prod-Script><i>Script</i></a></dfn>生成物</li><li><dfn id=js-type><a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values>Type</a></dfn>記法</li><li><dfn id=js-list><a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type>List</a></dfn>および<dfn id=record><a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type>Record</a></dfn>仕様型</li><li><dfn id=propertydescriptor><a href=https://tc39.github.io/ecma262/#sec-property-descriptor-specification-type>Property Descriptor</a></dfn>仕様型</li><li><dfn id=source-text-module-record><a href=https://tc39.github.io/ecma262/#sec-source-text-module-records>Source Text Module Record</a></dfn>仕様型およびその<dfn id=js-moduleevaluation><a href=https://tc39.github.io/ecma262/#sec-moduleevaluation>ModuleEvaluation</a></dfn>および<dfn id=js-moduledeclarationinstantiation><a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a></dfn>メソッド</li><li><dfn id=arraycreate><a href=https://tc39.github.io/ecma262/#sec-arraycreate>ArrayCreate</a></dfn>抽象演算</li><li><dfn id=call><a href=https://tc39.github.io/ecma262/#sec-call>Call</a></dfn>抽象演算</li><li><dfn id=clonearraybuffer><a href=https://tc39.github.io/ecma262/#sec-clonearraybuffer>CloneArrayBuffer</a></dfn>抽象演算</li><li><dfn id=construct><a href=https://tc39.github.io/ecma262/#sec-construct>Construct</a></dfn>抽象演算</li><li><dfn id=createdataproperty><a href=https://tc39.github.io/ecma262/#sec-createdataproperty>CreateDataProperty</a></dfn>抽象演算</li><li><dfn id=detacharraybuffer><a href=https://tc39.github.io/ecma262/#sec-detacharraybuffer>DetachArrayBuffer</a></dfn>抽象演算</li><li><dfn id=js-enqueuejob><a href=https://tc39.github.io/ecma262/#sec-enqueuejob>EnqueueJob</a></dfn>抽象演算</li><li>The <dfn id=enumerableownproperties><a href=https://tc39.github.io/ecma262/#sec-enumerableownproperties>EnumerableOwnProperties</a></dfn> abstract operation</li><li><dfn id=js-functioncreate><a href=https://tc39.github.io/ecma262/#sec-functioncreate>FunctionCreate</a></dfn>抽象演算</li><li><dfn id=js-get><a href=https://tc39.github.io/ecma262/#sec-get-o-p>Get</a></dfn>抽象演算</li><li><dfn id=getfunctionrealm><a href=https://tc39.github.io/ecma262/#sec-getfunctionrealm>GetFunctionRealm</a></dfn>抽象演算</li><li><dfn id=hasownproperty><a href=https://tc39.github.io/ecma262/#sec-hasownproperty>HasOwnProperty</a></dfn>抽象演算</li><li><dfn id=js-hostensurecancompilestrings><a href=https://tc39.github.io/ecma262/#sec-hostensurecancompilestrings>HostEnsureCanCompileStrings</a></dfn>抽象演算</li><li><dfn id=js-hostpromiserejectiontracker><a href=https://tc39.github.io/ecma262/#sec-host-promise-rejection-tracker>HostPromiseRejectionTracker</a></dfn>抽象演算</li><li><dfn id=js-hostresolveimportedmodule><a href=https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule>HostResolveImportedModule</a></dfn>抽象演算</li><li><dfn id=js-initializehostdefinedrealm><a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm>InitializeHostDefinedRealm</a></dfn>抽象演算</li><li><dfn id=isaccessordescriptor><a href=https://tc39.github.io/ecma262/#sec-isaccessordescriptor>IsAccessorDescriptor</a></dfn>抽象演算</li><li><dfn id=iscallable><a href=https://tc39.github.io/ecma262/#sec-iscallable>IsCallable</a></dfn>抽象演算</li><li><dfn id=isconstructor><a href=https://tc39.github.io/ecma262/#sec-isconstructor>IsConstructor</a></dfn>抽象演算</li><li><dfn id=isdatadescriptor><a href=https://tc39.github.io/ecma262/#sec-isdatadescriptor>IsDataDescriptor</a></dfn>抽象演算</li><li><dfn id=isdetachedbuffer><a href=https://tc39.github.io/ecma262/#sec-isdetachedbuffer>IsDetachedBuffer</a></dfn>抽象演算</li><li><dfn id=js-newobjectenvironment><a href=https://tc39.github.io/ecma262/#sec-newobjectenvironment>NewObjectEnvironment</a></dfn>抽象演算</li><li><dfn id=ordinarygetprototypeof><a href=https://tc39.github.io/ecma262/#sec-ordinarygetprototypeof>OrdinaryGetPrototypeOf</a></dfn>抽象演算</li><li><dfn id=ordinarysetprototypeof><a href=https://tc39.github.io/ecma262/#sec-ordinarysetprototypeof>OrdinarySetPrototypeOf</a></dfn>抽象演算</li><li><dfn id=ordinaryisextensible><a href=https://tc39.github.io/ecma262/#sec-ordinaryisextensible>OrdinaryIsExtensible</a></dfn>抽象演算</li><li><dfn id=ordinarypreventextensions><a href=https://tc39.github.io/ecma262/#sec-ordinarypreventextensions>OrdinaryPreventExtensions</a></dfn>抽象演算</li><li><dfn id=ordinarygetownproperty><a href=https://tc39.github.io/ecma262/#sec-ordinarygetownproperty>OrdinaryGetOwnProperty</a></dfn>抽象演算</li><li><dfn id=ordinarydefineownproperty><a href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty>OrdinaryDefineOwnProperty</a></dfn>抽象演算</li><li><dfn id=ordinaryget><a href=https://tc39.github.io/ecma262/#sec-ordinaryget>OrdinaryGet</a></dfn>抽象演算</li><li><dfn id=ordinaryset><a href=https://tc39.github.io/ecma262/#sec-ordinaryset>OrdinarySet</a></dfn>抽象演算</li><li><dfn id=ordinarydelete><a href=https://tc39.github.io/ecma262/#sec-ordinarydelete>OrdinaryDelete</a></dfn>抽象演算</li><li><dfn id=ordinaryownpropertykeys><a href=https://tc39.github.io/ecma262/#sec-ordinaryownpropertykeys>OrdinaryOwnPropertyKeys</a></dfn>抽象演算</li><li><dfn id=js-parsemodule><a href=https://tc39.github.io/ecma262/#sec-parsemodule>ParseModule</a></dfn>抽象演算</li><li><dfn id=js-parsescript><a href=https://tc39.github.io/ecma262/#sec-parse-script>ParseScript</a></dfn>抽象演算</li><li><dfn id=runjobs><a href=https://tc39.github.io/ecma262/#sec-runjobs>RunJobs</a></dfn>抽象演算</li><li><dfn id=samevalue><a href=https://tc39.github.io/ecma262/#sec-samevalue>SameValue</a></dfn>抽象演算</li><li><dfn id=js-scriptevaluation><a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation>ScriptEvaluation</a></dfn>抽象演算</li><li><dfn id=js-toboolean><a href=https://tc39.github.io/ecma262/#sec-toboolean>ToBoolean</a></dfn>抽象演算</li><li><dfn id=tostring><a href=https://tc39.github.io/ecma262/#sec-tostring>ToString</a></dfn>抽象演算</li><li><dfn id=touint32><a href=https://tc39.github.io/ecma262/#sec-touint32>Get</a></dfn>抽象演算</li><li><dfn id=typedarraycreate><a href=https://tc39.github.io/ecma262/#typedarray-create>TypedArrayCreate</a></dfn>抽象演算</li><li><dfn id=js-abstract-equality><a href=https://tc39.github.io/ecma262/#sec-abstract-equality-comparison>Abstract Equality Comparison</a></dfn>アルゴリズム</li><li><dfn id=js-strict-equality><a href=https://tc39.github.io/ecma262/#sec-strict-equality-comparison>Strict Equality Comparison</a></dfn>アルゴリズム</li><li><dfn id=date><a href=https://tc39.github.io/ecma262/#sec-date-objects><code>Date</code></a></dfn>クラス</li><li><dfn id=typeerror><a href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror><code>TypeError</code></a></dfn>クラス</li><li><dfn id=js-rangeerror><a href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-rangeerror><code>RangeError</code></a></dfn> クラス</li><li><dfn id=js-typeof><a href=https://tc39.github.io/ecma262/#sec-typeof-operator><code>typeof</code></a></dfn>演算子</li><li><dfn id=the-typedarray-constructors><a href=https://tc39.github.io/ecma262/#table-49><var>TypedArray</var> コンストラクター</a></dfn>テーブル</li></ul>
 
    <dt>DOM<dd>
 
@@ -1108,7 +957,7 @@
 
     <p>次の用語は<cite>Service Workers</cite> <a href=references.html#refsSW>[SW]</a>で定義される：</p>
 
-    <ul class=brief><li><dfn id=dfn-active-worker><a href=https://w3c.github.io/ServiceWorker/#dfn-active-worker>active worker</a></dfn></li><li><dfn id=dfn-client-message-queue><a href=https://w3c.github.io/ServiceWorker/#dfn-client-message-queue>クライアントメッセージキュー</a></dfn></li><li><dfn id=dfn-control><a href=https://w3c.github.io/ServiceWorker/#dfn-control>control</a></dfn></li><li><dfn id=on-fetch-request-algorithm><a href=https://w3c.github.io/ServiceWorker/#on-fetch-request-algorithm>handle fetch</a></dfn></li><li><dfn id=scope-match-algorithm><a href=https://w3c.github.io/ServiceWorker/#scope-match-algorithm>service worker登録とマッチする</a></dfn></li><li><dfn id=dfn-service-worker><a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker>service worker</a></dfn></li><li><dfn id=dfn-service-worker-container-interface-client><a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker-container-interface-client>service workerクライアント</a></dfn></li><li><dfn id=service-worker-container-interface><a href=https://w3c.github.io/ServiceWorker/#service-worker-container-interface><code>ServiceWorkerContainer</code></a></dfn>インターフェイス</li></ul>
+    <ul class=brief><li><dfn id=dfn-active-worker><a href=https://w3c.github.io/ServiceWorker/#dfn-active-worker>active worker</a></dfn></li><li><dfn id=dfn-client-message-queue><a href=https://w3c.github.io/ServiceWorker/#dfn-client-message-queue>クライアントメッセージキュー</a></dfn></li><li><dfn id=dfn-control><a href=https://w3c.github.io/ServiceWorker/#dfn-control>control</a></dfn></li><li><dfn id=on-fetch-request-algorithm><a href=https://w3c.github.io/ServiceWorker/#on-fetch-request-algorithm>handle fetch</a></dfn></li><li><dfn id=scope-match-algorithm><a href=https://w3c.github.io/ServiceWorker/#scope-match-algorithm>service worker登録とマッチする</a></dfn></li><li><dfn id=dfn-service-worker><a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker>service worker</a></dfn></li><li><dfn id=serviceworkercontainer-service-worker-client><a href=https://w3c.github.io/ServiceWorker/#serviceworkercontainer-service-worker-client>service workerクライアント</a></dfn></li><li><dfn id=serviceworker><a href=https://w3c.github.io/ServiceWorker/#serviceworker><code>ServiceWorker</code></a></dfn> interface</li><li><dfn id=serviceworkercontainer><a href=https://w3c.github.io/ServiceWorker/#serviceworkercontainer><code>ServiceWorkerContainer</code></a></dfn>インターフェイス</li></ul>
 
    <dt>Secure Contexts<dd>
 
@@ -1157,7 +1006,7 @@
 
 
 
-  <h4 id=extensibility-2>2.2.3 拡張性<a href=#extensibility-2 class=self-link></a></h4>
+  <h4 id=extensibility-2>2.1.9 拡張性<a href=#extensibility-2 class=self-link></a></h4>
 
   <p>ユーザーエージェントがこの仕様を拡張するベンダー固有のプロパティを強く推奨しない。そうすることは、特定のユーザーエージェントのユーザーだけが当該のコンテンツにアクセスすることができ、相互運用性を減少させユーザーベースを分断するので、文書はそのような拡張を使用してはならない。</p>
 
@@ -1207,7 +1056,7 @@
 
   
 
-  <h4 id=interactions-with-xpath-and-xslt>2.2.4 Interactions with XPath and XSLT<a href=#interactions-with-xpath-and-xslt class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18460" title="Need to violate XSLT spec to correctly produce &lt;br&gt;">18460</a></div>
+  <h4 id=interactions-with-xpath-and-xslt>2.1.10 Interactions with XPath and XSLT<a href=#interactions-with-xpath-and-xslt class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18460" title="Need to violate XSLT spec to correctly produce &lt;br&gt;">18460</a></div>
 
   <p id=xpath-1.0-processors>Implementations of XPath 1.0 that operate on <a id=interactions-with-xpath-and-xslt:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML
   documents</a> parsed or created in the manners described in this specification (e.g. as part of
@@ -1269,8 +1118,8 @@
 
   <p>If the transformation program outputs an element in no namespace, the processor must, prior to
   constructing the corresponding DOM element node, change the namespace of the element to the
-  <a href=#html-namespace-2 id=interactions-with-xpath-and-xslt:html-namespace-2>HTML namespace</a>, <a href=#converted-to-ascii-lowercase id=interactions-with-xpath-and-xslt:converted-to-ascii-lowercase>ASCII-lowercase</a> the
-  element's local name, and <a href=#converted-to-ascii-lowercase id=interactions-with-xpath-and-xslt:converted-to-ascii-lowercase-2>ASCII-lowercase</a> the
+  <a id=interactions-with-xpath-and-xslt:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, <a href=https://infra.spec.whatwg.org/#ascii-lowercase id=interactions-with-xpath-and-xslt:converted-to-ascii-lowercase data-x-internal=converted-to-ascii-lowercase>ASCII-lowercase</a> the
+  element's local name, and <a href=https://infra.spec.whatwg.org/#ascii-lowercase id=interactions-with-xpath-and-xslt:converted-to-ascii-lowercase-2 data-x-internal=converted-to-ascii-lowercase>ASCII-lowercase</a> the
   names of any non-namespaced attributes on the element.</p>
 
   <p class=note>This requirement is a <a id=interactions-with-xpath-and-xslt:willful-violation-2 href=introduction.html#willful-violation>willful violation</a> of the XSLT 1.0
@@ -1302,29 +1151,17 @@
 
 
 
-  <h3 id=case-sensitivity-and-string-comparison>2.3 大文字・小文字区別と文字列の比較<a href=#case-sensitivity-and-string-comparison class=self-link></a></h3>
+  <h3 id=case-sensitivity-and-string-comparison>2.2 大文字・小文字区別と文字列の比較<a href=#case-sensitivity-and-string-comparison class=self-link></a></h3>
 
   <p><dfn id=case-sensitive data-export="">大文字・小文字区別</dfn>において2つの文字列を比較することは、正確にコードポイントを比較することを意味する。</p>
 
-  <p><dfn id=ascii-case-insensitive data-export="">ASCII大文字・小文字区別</dfn>において2つの文字列を比較する方法は、コードポイントごとに正確に比較することを意味し、U+0041からU+005Aまでの範囲（すなわちLATIN CAPITAL LETTER AからLATIN CAPITAL LETTER Zまで）を除いて、U+0061からU+007Aまでの範囲（すなわちLATIN SMALL LETTER AからLATIN SMALL LETTER Zまで）において一致する文字も一致するとみなされる。</p>
-
   <p>明記される場合を除き、文字列の比較は<a href=#case-sensitive id=case-sensitivity-and-string-comparison:case-sensitive>大文字・小文字区別</a>の方法で実行されなければならない。</p>
-
-
-  
-
-  <p><dfn id=converted-to-ascii-uppercase>文字列をASCII大文字に変換すること</dfn>は、U+0061からU+007Aまでの範囲（すなわちLATIN SMALL LETTER AからLATIN SMALL LETTER Zまで）のすべての文字をU+0041からU+005Aまでの範囲（すなわちLATIN CAPITAL LETTER AからLATIN CAPITAL LETTER Zまで）の対応する文字に置換することを意味する。</p>
-
-  <p><dfn id=converted-to-ascii-lowercase>文字列をASCII小文字に変換すること</dfn>は、U+0041からU+005Aまでの範囲（すなわちLATIN CAPITAL LETTER AからLATIN CAPITAL LETTER Zまで）のすべての文字をU+0061からU+007Aまでの範囲（すなわちLATIN SMALL LETTER AからLATIN SMALL LETTER Zまで）の対応する文字に置換することを意味する。</p>
-
-  
-
 
   <p><var>pattern</var>が<var>s</var>未満でかつ<var>pattern</var>の長さに<var>s</var>を切り捨てが、互いにマッチとしての2つの文字列のままにする場合、文字列の<var>pattern</var>は、文字列<var>s</var>と<dfn id=prefix-match>接頭辞一致</dfn>である。</p>
 
 
 
-  <h3 id=common-microsyntaxes>2.4 共通マイクロ構文<a href=#common-microsyntaxes class=self-link></a></h3>
+  <h3 id=common-microsyntaxes>2.3 共通マイクロ構文<a href=#common-microsyntaxes class=self-link></a></h3>
 
   <p>日付や数字など、HTMLには特定のデータ型を受け入れるさまざまな箇所がある。この節では、これら形式の内容の適合基準が何か、そしてどのように解析するかを説明する。</p>
 
@@ -1337,7 +1174,7 @@
 
   
 
-  <h4 id=common-parser-idioms>2.4.1 共通パーサー語句<a href=#common-parser-idioms class=self-link></a></h4>
+  <h4 id=common-parser-idioms>2.3.1 共通パーサー語句<a href=#common-parser-idioms class=self-link></a></h4>
 
   
 
@@ -1415,11 +1252,11 @@
 
 
 
-  <h4 id=boolean-attributes>2.4.2 真偽属性<a href=#boolean-attributes class=self-link></a></h4>
+  <h4 id=boolean-attributes>2.3.2 真偽属性<a href=#boolean-attributes class=self-link></a></h4>
 
   <p>いくつかの属性は<dfn id=boolean-attribute>真偽属性</dfn>である。要素での真偽属性の存在は真の値を表し、属性の不在は偽の値を表す。</p>
 
-  <p>属性が存在する場合、その値は先頭または末尾の空白なしで、空の文字列または属性の正規名に<a href=#ascii-case-insensitive id=boolean-attributes:ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチする値でなければならない。</p>
+  <p>属性が存在する場合、その値は先頭または末尾の空白なしで、空の文字列または属性の正規名に<a id=boolean-attributes:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>でマッチする値でなければならない。</p>
 
   <p class=note>値"true"および"false"は真偽属性で許可されない。偽の値を表すため、属性は完全に省略される必要がある。</p>
 
@@ -1441,22 +1278,22 @@
 
 
 
-  <h4 id=keywords-and-enumerated-attributes>2.4.3 キーワードおよび列挙属性<a href=#keywords-and-enumerated-attributes class=self-link></a></h4>
+  <h4 id=keywords-and-enumerated-attributes>2.3.3 キーワードおよび列挙属性<a href=#keywords-and-enumerated-attributes class=self-link></a></h4>
 
   <p>一部の属性は、有限集合のキーワードのいずれかを取るように定義されている。このような属性は<dfn id=enumerated-attribute>列挙属性</dfn>と呼ばれる。キーワードは、特定の<em>状態</em>にそれぞれ対応付けて定義される（キーワードの一部が互いに同義語となる場合、複数のキーワードは同じ状態に対応づけられる。加えて、一部のキーワードは不適合であると言うことができる。これは、歴史的な理由のためだけの仕様である）。さらに、2つのデフォルト状態を挙げることができる。1つ目は<dfn id=invalid-value-default><i>不正値のデフォルト</i></dfn>であり、2つ目は<dfn id=missing-value-default><i>欠損値のデフォルト</i></dfn>である。</p>
 
-  <p>列挙属性が指定される場合、属性値は、先行または後続の空白なしで、不適合でないとされる与えられたキーワードのいずれかと<a href=#ascii-case-insensitive id=keywords-and-enumerated-attributes:ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならない。</p>
+  <p>列挙属性が指定される場合、属性値は、先行または後続の空白なしで、不適合でないとされる与えられたキーワードのいずれかと<a id=keywords-and-enumerated-attributes:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならない。</p>
 
-  <p>属性が指定される際に、その値が与えられたキーワードのいずれかと<a href=#ascii-case-insensitive id=keywords-and-enumerated-attributes:ascii-case-insensitive-2>ASCII大文字・小文字不区別</a>で一致する場合、属性のキーワードの状態は、属性が表す状態である。属性値が与えられたキーワードのいずれにも一致しないが、属性が<i id=keywords-and-enumerated-attributes:invalid-value-default><a href=#invalid-value-default>不正値のデフォルト</a></i>を持つ場合、その属性はその状態を表す。そうでなければ、属性値がキーワードのいずれにも一致しないが<i id=keywords-and-enumerated-attributes:missing-value-default><a href=#missing-value-default>欠損値のデフォルト</a></i>状態定義が存在する場合、<em>それ</em>は属性によって表される状態である。そうでなければ、デフォルトは存在せず、何も表さない状態を意味する妥当でない値である。</p>
+  <p>属性が指定される際に、その値が与えられたキーワードのいずれかと<a id=keywords-and-enumerated-attributes:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致する場合、属性のキーワードの状態は、属性が表す状態である。属性値が与えられたキーワードのいずれにも一致しないが、属性が<i id=keywords-and-enumerated-attributes:invalid-value-default><a href=#invalid-value-default>不正値のデフォルト</a></i>を持つ場合、その属性はその状態を表す。そうでなければ、属性値がキーワードのいずれにも一致しないが<i id=keywords-and-enumerated-attributes:missing-value-default><a href=#missing-value-default>欠損値のデフォルト</a></i>状態定義が存在する場合、<em>それ</em>は属性によって表される状態である。そうでなければ、デフォルトは存在せず、何も表さない状態を意味する妥当でない値である。</p>
 
   <p>属性が指定<em>されない</em>際に、<i id=keywords-and-enumerated-attributes:missing-value-default-2><a href=#missing-value-default>欠損値のデフォルト</a></i>定義状態がある場合、それは（欠損）属性によって表される状態である。そうでなければ、属性の不在は何も状態を表さないことを意味する。</p>
 
   <p class=note>空文字列は妥当なキーワードとなりうる。</p>
 
 
-  <h4 id=numbers>2.4.4 数字<a href=#numbers class=self-link></a></h4>
+  <h4 id=numbers>2.3.4 数字<a href=#numbers class=self-link></a></h4>
 
-  <h5 id=signed-integers>2.4.4.1 符号付き整数<a href=#signed-integers class=self-link></a></h5>
+  <h5 id=signed-integers>2.3.4.1 符号付き整数<a href=#signed-integers class=self-link></a></h5>
 
   <p>文字列が1つ以上の<a href=#ascii-digits id=signed-integers:ascii-digits>ASCII 数字</a>、任意で接頭辞U+002D HYPHEN-MINUS文字（-）を持つ場合、文字列は<dfn id=valid-integer>妥当な整数</dfn>である。</p>
 
@@ -1490,7 +1327,7 @@
   
 
 
-  <h5 id=non-negative-integers>2.4.4.2 非負整数<a href=#non-negative-integers class=self-link></a></h5>
+  <h5 id=non-negative-integers>2.3.4.2 非負整数<a href=#non-negative-integers class=self-link></a></h5>
 
   <p>1つ以上の<a href=#ascii-digits id=non-negative-integers:ascii-digits>ASCII数字</a>からなる場合、文字列は<dfn id=valid-non-negative-integer>妥当な非負整数</dfn>である。</p>
 
@@ -1510,7 +1347,7 @@
   
 
 
-  <h5 id=floating-point-numbers>2.4.4.3 浮動小数点数<a href=#floating-point-numbers class=self-link></a></h5>
+  <h5 id=floating-point-numbers>2.3.4.3 浮動小数点数<a href=#floating-point-numbers class=self-link></a></h5>
 
   <p>次の場合、文字列は<dfn id=valid-floating-point-number>妥当な浮動小数点数</dfn>である：</p>
 
@@ -1624,7 +1461,7 @@
 
 
 
-  <h5 id=percentages-and-dimensions>2.4.4.4 Percentages and lengths<a href=#percentages-and-dimensions class=self-link></a></h5>
+  <h5 id=percentages-and-dimensions>2.3.4.4 Percentages and lengths<a href=#percentages-and-dimensions class=self-link></a></h5>
 
   <p>The <dfn id=rules-for-parsing-dimension-values>rules for parsing dimension values</dfn> are as given in the following algorithm. When
   invoked, the steps must be followed in the order given, aborting at the first step that returns a
@@ -1650,7 +1487,7 @@
    length.</li><li><p>If the character indicated by <var>position</var> is a U+0025 PERCENT SIGN character (%),
    return <var>value</var> as a percentage.</li><li><p>Return <var>value</var> as a length.</li></ol>
 
-  <h5 id=non-zero-percentages-and-lengths>2.4.4.5 Non-zero percentages and lengths<a href=#non-zero-percentages-and-lengths class=self-link></a></h5>
+  <h5 id=non-zero-percentages-and-lengths>2.3.4.5 Non-zero percentages and lengths<a href=#non-zero-percentages-and-lengths class=self-link></a></h5>
 
   <p>The <dfn id=rules-for-parsing-non-zero-dimension-values>rules for parsing non-zero dimension values</dfn> are as given in the following
   algorithm. When invoked, the steps must be followed in the order given, aborting at the first step
@@ -1663,7 +1500,7 @@
   
 
 
-  <h5 id=lists-of-floating-point-numbers>2.4.4.6 浮動小数点数のリスト<a href=#lists-of-floating-point-numbers class=self-link></a></h5>
+  <h5 id=lists-of-floating-point-numbers>2.3.4.6 浮動小数点数のリスト<a href=#lists-of-floating-point-numbers class=self-link></a></h5>
 
   <p><dfn id=valid-list-of-floating-point-numbers>妥当な浮動小数点数リスト</dfn>は、U+002C COMMA文字によって区切られる多数の<a href=#valid-floating-point-number id=lists-of-floating-point-numbers:valid-floating-point-number>妥当な浮動小数点数</a>であり、他の文字を持たない（たとえば<a href=#space-character id=lists-of-floating-point-numbers:space-character>空白文字</a>のない）。さらに、与えられる浮動小数点数の数、または許可される値の範囲には制限があるかもしれない。</p>
 
@@ -1688,7 +1525,7 @@
 
   
 
-  <h5 id=lists-of-dimensions>2.4.4.7 Lists of dimensions<a href=#lists-of-dimensions class=self-link></a></h5>
+  <h5 id=lists-of-dimensions>2.3.4.7 Lists of dimensions<a href=#lists-of-dimensions class=self-link></a></h5>
 
   
 
@@ -1733,7 +1570,7 @@
   
 
 
-  <h4 id=dates-and-times>2.4.5 日付および時刻<a href=#dates-and-times class=self-link></a></h4>
+  <h4 id=dates-and-times>2.3.5 日付および時刻<a href=#dates-and-times class=self-link></a></h4>
 
   <p>下記のアルゴリズムにおいて、<dfn id=number-of-days-in-month-month-of-year-year>年<var>year</var>の月<var>month</var>の日数</dfn>は：<var>month</var>が1、3、5、7、8、10、12ならば<em>31</em>である。<var>month</var>が4、6、9、11ならば<em>30</em>である。<var>month</var>が2かつ<var>year</var>が400で割り切れる数、または<var>year</var>が4で割り切れるが100で割り切れないならば<em>29</em>であり、そうでなければ<em>28</em>である。これは、グレゴリオ暦の閏年を考慮に入れている。<a href=references.html#refsGREGORIAN>[GREGORIAN]</a></p>
 
@@ -1754,7 +1591,7 @@
   <p class=note>この仕様においてワイヤ形式としてのグレゴリオ暦の使用は、決定に関わる人々の文化的なバイアスに起因する恣意的な選択肢である。（著者に対する）フォームの<a href=forms.html#input-author-notes>日付、時刻、数値の形式</a>、<a href=forms.html#input-impl-notes>フォームコントロールのローカライゼーションに関する実装ノート</a>および<code id=dates-and-times:the-time-element><a href=semantics.html#the-time-element>time</a></code>の節も参照のこと。</p>
 
 
-  <h5 id=months>2.4.5.1 月<a href=#months class=self-link></a></h5>
+  <h5 id=months>2.3.5.1 月<a href=#months class=self-link></a></h5>
 
   <p><dfn id=concept-month>月</dfn>は、タイムゾーン情報および年と月を超えた日付を持たない、特定の<a href=#proleptic-gregorian-date id=months:proleptic-gregorian-date>先発グレゴリオ暦</a>から成る。<a href=references.html#refsGREGORIAN>[GREGORIAN]</a></p>
 
@@ -1790,7 +1627,7 @@
   
 
 
-  <h5 id=dates>2.4.5.2 日付<a href=#dates class=self-link></a></h5>
+  <h5 id=dates>2.3.5.2 日付<a href=#dates class=self-link></a></h5>
 
   <p><dfn id=concept-date>日付</dfn>は、年月日からなりタイムゾーン情報を持たない、特定の<a href=#proleptic-gregorian-date id=dates:proleptic-gregorian-date>先発グレゴリオ暦</a>からなる。<a href=references.html#refsGREGORIAN>[GREGORIAN]</a></p>
 
@@ -1823,7 +1660,7 @@
   
 
 
-  <h5 id=yearless-dates>2.4.5.3 年なし日付<a href=#yearless-dates class=self-link></a></h5>
+  <h5 id=yearless-dates>2.3.5.3 年なし日付<a href=#yearless-dates class=self-link></a></h5>
 
   <p><dfn id=concept-yearless-date>年なし日付</dfn>はグレコリオ月とその月の日からなるが、年を伴わない。<a href=references.html#refsGREGORIAN>[GREGORIAN]</a></p>
 
@@ -1862,7 +1699,7 @@
   
 
 
-  <h5 id=times>2.4.5.4 時刻<a href=#times class=self-link></a></h5>
+  <h5 id=times>2.3.5.4 時刻<a href=#times class=self-link></a></h5>
 
   <p><dfn id=concept-time>時刻</dfn>は、時、分、秒、秒以下からなりタイムゾーン情報を持たない、特定の時刻からなる。</p>
 
@@ -1922,7 +1759,7 @@
   
 
 
-  <h5 id=local-dates-and-times>2.4.5.5 ローカル日付および時刻<a href=#local-dates-and-times class=self-link></a></h5>
+  <h5 id=local-dates-and-times>2.3.5.5 ローカル日付および時刻<a href=#local-dates-and-times class=self-link></a></h5>
 
   <p><dfn id=concept-datetime-local>ローカル日付および時刻</dfn>は、年、月、日、時、分、秒、秒以下からなる特定の<a href=#proleptic-gregorian-date id=local-dates-and-times:proleptic-gregorian-date>先発グレコリオ暦</a>からなるが、タイムゾーン情報を持たない。<a href=references.html#refsGREGORIAN>[GREGORIAN]</a></p>
 
@@ -1953,7 +1790,7 @@
   
 
 
-  <h5 id=time-zones>2.4.5.6 タイムゾーン<a href=#time-zones class=self-link></a></h5>
+  <h5 id=time-zones>2.3.5.6 タイムゾーン<a href=#time-zones class=self-link></a></h5>
 
   <p><dfn id=concept-timezone>タイムゾーンオフセット</dfn>は符号付きの時と分の数字からなる。</p>
 
@@ -2032,7 +1869,7 @@
   
 
 
-  <h5 id=global-dates-and-times>2.4.5.7 グローバル日付および時刻<a href=#global-dates-and-times class=self-link></a></h5>
+  <h5 id=global-dates-and-times>2.3.5.7 グローバル日付および時刻<a href=#global-dates-and-times class=self-link></a></h5>
 
   <p><dfn id=concept-datetime>グローバル日付および時刻</dfn>は、符号付き時分からなるタイムゾーンオフセットとともに年、月、日、時、分、秒、秒以下からなる特定<a href=#proleptic-gregorian-date id=global-dates-and-times:proleptic-gregorian-date>先発グレコリオ暦</a>で構成する。<a href=references.html#refsGREGORIAN>[GREGORIAN]</a></p>
 
@@ -2082,7 +1919,7 @@
   
 
 
-  <h5 id=weeks>2.4.5.8 週<a href=#weeks class=self-link></a></h5>
+  <h5 id=weeks>2.3.5.8 週<a href=#weeks class=self-link></a></h5>
 
   <p><dfn id=concept-week>週</dfn>は、週番号年と週番号からなる。週番号は、月曜日から始まる7日間を示す。以下の定義に従って、このカレンダーシステムにおける週番号年は52または53の7日間を持つ。グレゴリオ暦の日付で1969年12月29日（1969-12-29）月曜日で始まる7日間は、1970週番号年で週番号1として定義される。連続した週は連番が付けられる。週番号年で1週目の前の週は、前の週番号年の最終週である。逆もまた同様である。<a href=references.html#refsGREGORIAN>[GREGORIAN]</a></p>
 
@@ -2119,7 +1956,7 @@
   
 
 
-  <h5 id=durations>2.4.5.9 継続時間<a href=#durations class=self-link></a></h5>
+  <h5 id=durations>2.3.5.9 継続時間<a href=#durations class=self-link></a></h5>
 
   
 
@@ -2294,7 +2131,7 @@
   
 
 
-  <h5 id=vaguer-moments-in-time>2.4.5.10 時刻における曖昧な瞬間<a href=#vaguer-moments-in-time class=self-link></a></h5>
+  <h5 id=vaguer-moments-in-time>2.3.5.10 時刻における曖昧な瞬間<a href=#vaguer-moments-in-time class=self-link></a></h5>
 
   <p>以下のいずれかである場合、文字列は<dfn id=valid-date-string-with-optional-time>任意の時刻を持つ妥当な日付文字列</dfn>である：</p>
 
@@ -2353,7 +2190,7 @@
   
 
 
-  <h4 id=colours>2.4.6 色<a href=#colours class=self-link></a></h4>
+  <h4 id=colours>2.3.6 色<a href=#colours class=self-link></a></h4>
 
   <p><dfn id=simple-colour>単純色</dfn>は、sRGB色空間の中で各色のコンポーネント赤、緑、青を表す、0から255までの範囲の8ビット数字3つからなる。<a href=references.html#refsSRGB>[SRGB]</a></p>
 
@@ -2406,10 +2243,10 @@
   in the order given, aborting at the first step that returns a value. This algorithm will return
   either a <a href=#simple-colour id=colours:simple-colour-4>simple color</a> or an error.</p>
 
-  <ol><li><p>Let <var>input</var> be the string being parsed.</li><li><p>If <var>input</var> is the empty string, then return an error.</li><li><p><a href=#strip-leading-and-trailing-whitespace id=colours:strip-leading-and-trailing-whitespace>Strip leading and trailing whitespace</a> from <var>input</var>.</li><li><p>If <var>input</var> is an <a href=#ascii-case-insensitive id=colours:ascii-case-insensitive>ASCII case-insensitive</a> match for the
+  <ol><li><p>Let <var>input</var> be the string being parsed.</li><li><p>If <var>input</var> is the empty string, then return an error.</li><li><p><a href=#strip-leading-and-trailing-whitespace id=colours:strip-leading-and-trailing-whitespace>Strip leading and trailing whitespace</a> from <var>input</var>.</li><li><p>If <var>input</var> is an <a id=colours:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the
    string "<code>transparent</code>", then return an error.</li><li>
 
-    <p>If <var>input</var> is an <a href=#ascii-case-insensitive id=colours:ascii-case-insensitive-2>ASCII case-insensitive</a> match for one of the
+    <p>If <var>input</var> is an <a id=colours:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for one of the
     <a href=https://triple-underscore.github.io/css-color-ja.html#named-color id=colours:named-color data-x-internal=named-color>named colors</a>, then return the <a href=#simple-colour id=colours:simple-colour-5>simple
     color</a> corresponding to that keyword. <a href=references.html#refsCSSCOLOR>[CSSCOLOR]</a></p>
 
@@ -2458,7 +2295,7 @@
 
 
 
-  <h4 id=space-separated-tokens>2.4.7 空白区切りトークン<a href=#space-separated-tokens class=self-link></a></h4>
+  <h4 id=space-separated-tokens>2.3.7 空白区切りトークン<a href=#space-separated-tokens class=self-link></a></h4>
 
   <p><dfn id=set-of-space-separated-tokens>空白区切りトークンの組</dfn>は、1つ以上の<a href=#space-character id=space-separated-tokens:space-character>空白文字</a>によって区切られた0個以上の単語（トークンとして知られる）を含む文字列である。ここで、単語は1つ以上の文字を含み、<a href=#space-character id=space-separated-tokens:space-character-2>空白文字</a>を含まない。</p>
 
@@ -2487,7 +2324,7 @@
   
 
 
-  <h4 id=comma-separated-tokens>2.4.8 コンマ区切りトークン<a href=#comma-separated-tokens class=self-link></a></h4>
+  <h4 id=comma-separated-tokens>2.3.8 コンマ区切りトークン<a href=#comma-separated-tokens class=self-link></a></h4>
 
   <p><dfn id=set-of-comma-separated-tokens>コンマ区切りトークンの組</dfn>は、それぞれ単一のU+002C COMMA文字（,）で区切られる0個以上のトークンを含む文字列である。ここでトークンは0個以上の任意の文字列からなり、先頭も末尾も<a href=#space-character id=comma-separated-tokens:space-character>空白文字</a>でなく、U+002C COMMA文字（,）を含まず、任意で<a href=#space-character id=comma-separated-tokens:space-character-2>空白文字</a>に囲まれるものである。</p>
 
@@ -2510,7 +2347,7 @@
 
 
 
-  <h4 id=syntax-references>2.4.9 リファレンス<a href=#syntax-references class=self-link></a></h4>
+  <h4 id=syntax-references>2.3.9 参考文献<a href=#syntax-references class=self-link></a></h4>
 
   <p>タイプ<var>type</var>要素の<dfn id=valid-hash-name-reference>妥当なハッシュ名参照</dfn>は、 U+0023 NUMBER SIGN文字（#）の後に同じ<a id=syntax-references:tree href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree data-x-internal=tree>ツリー</a>でタイプ<var>type</var>をもつ要素の<code>name</code>属性の値に正確に一致する文字列から構成される文字列である。</p>
 
@@ -2534,7 +2371,7 @@
   
 
 
-  <h4 id=mq>2.4.10 メディアクエリー<a href=#mq class=self-link></a></h4>
+  <h4 id=mq>2.3.10 メディアクエリー<a href=#mq class=self-link></a></h4>
 
   <p>メディアクエリー仕様の<code>&lt;media-query-list&gt;</code>生成物に一致する場合、文字列は<dfn id=valid-media-query-list>妥当なメディアクエリーリスト</dfn>である。<a href=references.html#refsMQ>[MQ]</a></p>
 
@@ -2543,9 +2380,9 @@
 
 
 
-  <h3 id=urls>2.5 URL<a href=#urls class=self-link></a></h3>
+  <h3 id=urls>2.4 URL<a href=#urls class=self-link></a></h3>
 
-  <h4 id=terminology-2>2.5.1 用語<a href=#terminology-2 class=self-link></a></h4>
+  <h4 id=terminology-2>2.4.1 用語<a href=#terminology-2 class=self-link></a></h4>
 
   <p>WHATWG URL標準でオーサリング適合性要件に準拠する場合、<a id=terminology-2:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>は<dfn id=valid-url>妥当なURL</dfn>である。<a href=references.html#refsURL>[URL]</a></p>
 
@@ -2580,7 +2417,7 @@
 
   
 
-  <h4 id=resolving-urls>2.5.2 Parsing URLs<a href=#resolving-urls class=self-link></a></h4>
+  <h4 id=resolving-urls>2.4.2 Parsing URLs<a href=#resolving-urls class=self-link></a></h4>
 
   <p>Parsing a URL is the process of taking a <span>URL string</span> and obtaining the <a id=resolving-urls:url-record href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL
   record</a> that it implies. While this process is defined in the WHATWG URL standard, the HTML
@@ -2608,7 +2445,7 @@
 
   
 
-  <h4 id=dynamic-changes-to-base-urls>2.5.3 Dynamic changes to base URLs<a href=#dynamic-changes-to-base-urls class=self-link></a></h4>
+  <h4 id=dynamic-changes-to-base-urls>2.4.3 Dynamic changes to base URLs<a href=#dynamic-changes-to-base-urls class=self-link></a></h4>
 
   <p>When a document's <a href=#document-base-url id=dynamic-changes-to-base-urls:document-base-url>document base URL</a> changes, all elements in that document are
   <a href=#affected-by-a-base-url-change id=dynamic-changes-to-base-urls:affected-by-a-base-url-change>affected by a base URL change</a>.</p>
@@ -2652,9 +2489,9 @@
 
   
 
-  <h3 id=fetching-resources>2.6 リソースを取得する<a href=#fetching-resources class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=11235" title="Mechanism to disable sending of cookies with requests for style sheets, background images, fonts, WebSockets, server-sent events, &lt;video src&gt;, &lt;source&gt;, &lt;track&gt;, &lt;iframe&gt;, &lt;img&gt;, etc">11235</a></div>
+  <h3 id=fetching-resources>2.5 リソースを取得する<a href=#fetching-resources class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=11235" title="Mechanism to disable sending of cookies with requests for style sheets, background images, fonts, WebSockets, server-sent events, &lt;video src&gt;, &lt;source&gt;, &lt;track&gt;, &lt;iframe&gt;, &lt;img&gt;, etc">11235</a></div>
 
-  <h4 id=terminology-3>2.6.1 用語<a href=#terminology-3 class=self-link></a></h4>
+  <h4 id=terminology-3>2.5.1 用語<a href=#terminology-3 class=self-link></a></h4>
 
   <p>A <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=terminology-3:concept-response data-x-internal=concept-response>response</a> whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=terminology-3:concept-response-type data-x-internal=concept-response-type>type</a> is "<code>basic</code>", "<code>cors</code>", or "<code>default</code>" is <dfn id=cors-same-origin>CORS-same-origin</dfn>. <a href=references.html#refsFETCH>[FETCH]</a></p>
 
@@ -2676,7 +2513,7 @@
    <var>credentialsMode</var>, and whose <a id=terminology-3:use-url-credentials-flag href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a> is set.</li></ol>
 
 
-  <h4 id=content-type-sniffing>2.6.2 Determining the type of a resource<a href=#content-type-sniffing class=self-link></a></h4>
+  <h4 id=content-type-sniffing>2.5.2 Determining the type of a resource<a href=#content-type-sniffing class=self-link></a></h4>
 
   <p>The <dfn id=content-type>Content-Type metadata</dfn> of a resource must be obtained and
   interpreted in a manner consistent with the requirements of the WHATWG MIME Sniffing standard.
@@ -2690,7 +2527,7 @@
   sniffing images specifically</a></dfn>, the <dfn id=content-type-sniffing:-text-or-binary><a href=https://mimesniff.spec.whatwg.org/#rules-for-text-or-binary>rules for distinguishing
   if a resource is text or binary</a></dfn>, and the <dfn id=content-type-sniffing:-video><a href=https://mimesniff.spec.whatwg.org/#rules-for-sniffing-audio-and-video-specifically>rules
   for sniffing audio and video specifically</a></dfn> are also defined in the WHATWG MIME Sniffing
-  standard. These rules return a <a href=#mime-type id=content-type-sniffing:mime-type>MIME type</a> as their result. <a href=references.html#refsMIMESNIFF>[MIMESNIFF]</a></p>
+  standard. These rules return a <a id=content-type-sniffing:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> as their result. <a href=references.html#refsMIMESNIFF>[MIMESNIFF]</a></p>
 
   <p class=warning>It is imperative that the rules in the WHATWG MIME Sniffing standard be
   followed exactly. When a user agent uses different heuristics for content type detection than the
@@ -2698,14 +2535,14 @@
   standard. <a href=references.html#refsMIMESNIFF>[MIMESNIFF]</a></p>
 
 
-  <h4 id=extracting-character-encodings-from-meta-elements>2.6.3 Extracting character encodings from <code id=extracting-character-encodings-from-meta-elements:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code> elements<a href=#extracting-character-encodings-from-meta-elements class=self-link></a></h4>
+  <h4 id=extracting-character-encodings-from-meta-elements>2.5.3 Extracting character encodings from <code id=extracting-character-encodings-from-meta-elements:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code> elements<a href=#extracting-character-encodings-from-meta-elements class=self-link></a></h4>
 
   <p>The <dfn id=algorithm-for-extracting-a-character-encoding-from-a-meta-element>algorithm for extracting a character encoding from a <code>meta</code> element</dfn>,
   given a string <var>s</var>, is as follows. It either returns a character encoding or
   nothing.</p>
 
   <ol><li><p>Let <var>position</var> be a pointer into <var>s</var>, initially
-   pointing at the start of the string.</li><li><p><i>Loop</i>: Find the first seven characters in <var>s</var> after <var>position</var> that are an <a href=#ascii-case-insensitive id=extracting-character-encodings-from-meta-elements:ascii-case-insensitive>ASCII case-insensitive</a> match for the word "<code>charset</code>". If no such match is found, return nothing and abort these
+   pointing at the start of the string.</li><li><p><i>Loop</i>: Find the first seven characters in <var>s</var> after <var>position</var> that are an <a id=extracting-character-encodings-from-meta-elements:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the word "<code>charset</code>". If no such match is found, return nothing and abort these
    steps.</li><li><p>Skip any <a href=#space-character id=extracting-character-encodings-from-meta-elements:space-character>space characters</a> that immediately follow the
    word "<code>charset</code>" (there might not be any).</li><li><p>If the next character is not a U+003D EQUALS SIGN (=), then move <var>position</var> to point just before that next character, and jump back to the step
    labeled <i>loop</i>.</li><li><p>Skip any <a href=#space-character id=extracting-character-encodings-from-meta-elements:space-character-2>space characters</a> that immediately follow the
@@ -2729,7 +2566,7 @@
   
 
 
-  <h4 id=cors-settings-attributes>2.6.4 CORS設定属性<a href=#cors-settings-attributes class=self-link></a></h4>
+  <h4 id=cors-settings-attributes>2.5.4 CORS設定属性<a href=#cors-settings-attributes class=self-link></a></h4>
 
   <p><dfn id=cors-settings-attribute>CORS設定属性</dfn>は、<a href=#enumerated-attribute id=cors-settings-attributes:enumerated-attribute>列挙属性</a>である。次の表は、キーワードと属性の状態を示す。1列目のキーワードは、キーワードと同じ行で2列目のセル内の状態に対応づける。</p>
 
@@ -2747,7 +2584,7 @@
   <p>空文字列も妥当なキーワードであり、<a href=#attr-crossorigin-anonymous id=cors-settings-attributes:attr-crossorigin-anonymous>匿名</a>状態に対応づける。属性の<i id=cors-settings-attributes:invalid-value-default><a href=#invalid-value-default>不正な値のデフォルト</a></i>は、<a href=#attr-crossorigin-anonymous id=cors-settings-attributes:attr-crossorigin-anonymous-2>匿名</a>状態である。<a href=#reflect id=cors-settings-attributes:reflect>反射</a>のために、<a href=#attr-crossorigin-anonymous id=cors-settings-attributes:attr-crossorigin-anonymous-3>匿名</a>状態の正規ケースは<code id=cors-settings-attributes:attr-crossorigin-anonymous-keyword><a href=#attr-crossorigin-anonymous-keyword>anonymous</a></code>キーワードである。属性が省略された場合に用いられる、<i id=cors-settings-attributes:missing-value-default><a href=#missing-value-default>欠損値のデフォルト</a></i>は、<dfn id=attr-crossorigin-none>No CORS</dfn>状態である。</p>
 
 
-  <h4 id=referrer-policy-attributes>2.6.5 リファラーポリシー属性<a href=#referrer-policy-attributes class=self-link></a></h4>
+  <h4 id=referrer-policy-attributes>2.5.5 リファラーポリシー属性<a href=#referrer-policy-attributes class=self-link></a></h4>
 
   <p><dfn id=referrer-policy-attribute data-export="">リファラポリシー属性</dfn>は、<a href=#enumerated-attribute id=referrer-policy-attributes:enumerated-attribute>列挙属性</a>である。空文字列を含む各<a id=referrer-policy-attributes:referrer-policy href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>リファラーポリシー</a>は、同じ名前の状態にマッピングする、この属性のためのキーワードである。</p>
 
@@ -2762,9 +2599,9 @@
   </div>
 
 
-  <h3 id=common-dom-interfaces>2.7 共通DOMインターフェイス<a href=#common-dom-interfaces class=self-link></a></h3>
+  <h3 id=common-dom-interfaces>2.6 共通DOMインターフェイス<a href=#common-dom-interfaces class=self-link></a></h3>
 
-  <h4 id=reflecting-content-attributes-in-idl-attributes>2.7.1 IDL属性におけるコンテンツ属性の反映<a href=#reflecting-content-attributes-in-idl-attributes class=self-link></a></h4>
+  <h4 id=reflecting-content-attributes-in-idl-attributes>2.6.1 IDL属性におけるコンテンツ属性の反映<a href=#reflecting-content-attributes-in-idl-attributes class=self-link></a></h4>
 
   <p>一部のIDL属性は、特定のコンテンツ属性の<dfn id=reflect>反映</dfn>を定義する。これは、IDL属性がコンテンツ属性の現在値を返し、IDL属性が与えられた値にコンテンツ属性の値を変更することを意味する。</p>
 
@@ -2920,12 +2757,12 @@
 
 
 
-  <h4 id=collections>2.7.2 コレクション<a href=#collections class=self-link></a></h4>
+  <h4 id=collections>2.6.2 コレクション<a href=#collections class=self-link></a></h4>
 
   <p><code id=collections:htmlformcontrolscollection><a href=#htmlformcontrolscollection>HTMLFormControlsCollection</a></code>および<code id=collections:htmloptionscollection><a href=#htmloptionscollection>HTMLOptionsCollection</a></code>インターフェイスは、<code id=collections:htmlcollection><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code>インターフェイスから派生する<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-collection id=collections:concept-collection data-x-internal=concept-collection>コレクション</a>である。<code id=collections:htmlallcollection><a href=#htmlallcollection>HTMLAllCollection</a></code>インターフェイスは<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-collection id=collections:concept-collection-2 data-x-internal=concept-collection>コレクション</a>であるが、派生ではない。</p>
 
 
-  <h5 id=the-htmlallcollection-interface>2.7.2.1 <code id=the-htmlallcollection-interface:htmlallcollection><a href=#htmlallcollection>HTMLAllCollection</a></code>インターフェイス<a href=#the-htmlallcollection-interface class=self-link></a></h5>
+  <h5 id=the-htmlallcollection-interface>2.6.2.1 <code id=the-htmlallcollection-interface:htmlallcollection><a href=#htmlallcollection>HTMLAllCollection</a></code>インターフェイス<a href=#the-htmlallcollection-interface class=self-link></a></h5>
 
   <p><code id=the-htmlallcollection-interface:htmlallcollection-2><a href=#htmlallcollection>HTMLAllCollection</a></code>インターフェイスは、レガシー<code id=the-htmlallcollection-interface:dom-document-all><a href=obsolete.html#dom-document-all>document.all</a></code>属性に対して使用される。このインターフェイスは、<code id=the-htmlallcollection-interface:htmlcollection><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code>と類似の動作をする。主な違いは、このインターフェイスが完全に最後には何かを返すことになるためにそのメソッドの驚くほどさまざまな異なる（不正）利用を可能にし、プロパティアクセスの代替としての機能として呼び出すことができることということである。</p>
 
@@ -3026,7 +2863,7 @@ interface <dfn id=htmlallcollection>HTMLAllCollection</dfn> {
   
 
 
-  <h5 id=the-htmlformcontrolscollection-interface>2.7.2.2 <code id=the-htmlformcontrolscollection-interface:htmlformcontrolscollection><a href=#htmlformcontrolscollection>HTMLFormControlsCollection</a></code>インターフェイス<a href=#the-htmlformcontrolscollection-interface class=self-link></a></h5>
+  <h5 id=the-htmlformcontrolscollection-interface>2.6.2.2 <code id=the-htmlformcontrolscollection-interface:htmlformcontrolscollection><a href=#htmlformcontrolscollection>HTMLFormControlsCollection</a></code>インターフェイス<a href=#the-htmlformcontrolscollection-interface class=self-link></a></h5>
 
   <p><code id=the-htmlformcontrolscollection-interface:htmlformcontrolscollection-2><a href=#htmlformcontrolscollection>HTMLFormControlsCollection</a></code>インターフェイスは、<code id=the-htmlformcontrolscollection-interface:the-form-element><a href=forms.html#the-form-element>form</a></code>要素で<a href=forms.html#category-listed id=the-htmlformcontrolscollection-interface:category-listed>記載要素</a>の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-collection id=the-htmlformcontrolscollection-interface:concept-collection data-x-internal=concept-collection>コレクション</a>に使用される。</p>
 
@@ -3104,7 +2941,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
   
 
 
-  <h5 id=the-htmloptionscollection-interface>2.7.2.3 <code id=the-htmloptionscollection-interface:htmloptionscollection><a href=#htmloptionscollection>HTMLOptionsCollection</a></code>インターフェイス<a href=#the-htmloptionscollection-interface class=self-link></a></h5>
+  <h5 id=the-htmloptionscollection-interface>2.6.2.3 <code id=the-htmloptionscollection-interface:htmloptionscollection><a href=#htmloptionscollection>HTMLOptionsCollection</a></code>インターフェイス<a href=#the-htmloptionscollection-interface class=self-link></a></h5>
 
   <p><code id=the-htmloptionscollection-interface:htmloptionscollection-2><a href=#htmloptionscollection>HTMLOptionsCollection</a></code>インターフェイスは、<code id=the-htmloptionscollection-interface:the-option-element><a href=forms.html#the-option-element>option</a></code>要素の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-collection id=the-htmloptionscollection-interface:concept-collection data-x-internal=concept-collection>コレクション</a>に使用される。常に<code id=the-htmloptionscollection-interface:the-select-element><a href=forms.html#the-select-element>select</a></code>要素がルートであり、要素の子孫をコントロールする属性およびメソッドを持つ。</p>
 
@@ -3218,7 +3055,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
 
   
 
-  <h4 id=garbage-collection>2.7.3 Garbage collection<a href=#garbage-collection class=self-link></a></h4>
+  <h4 id=garbage-collection>2.6.3 Garbage collection<a href=#garbage-collection class=self-link></a></h4>
 
   <p>There is an <dfn id=implied-strong-reference>implied strong reference</dfn> from any IDL attribute that returns a
   pre-existing object to that object.</p>
@@ -3235,38 +3072,14 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
   
 
 
-
-  <h3 id=namespaces>2.8 名前空間<a href=#namespaces class=self-link></a></h3>
-
-  <p><dfn id=html-namespace-2>HTML名前空間</dfn>は<code>http://www.w3.org/1999/xhtml</code>である。</p>
-
-  <p><dfn id=mathml-namespace>MathML名前空間</dfn>は<code>http://www.w3.org/1998/Math/MathML</code>である。</p>
-
-  <p><dfn id=svg-namespace>SVG名前空間</dfn>は<code>http://www.w3.org/2000/svg</code>である。</p>
-
-  <p><dfn id=xlink-namespace>XLink名前空間</dfn>は<code>http://www.w3.org/1999/xlink</code>である。</p>
-
-  <p><dfn id=xml-namespace>XML名前空間</dfn>は<code>http://www.w3.org/XML/1998/namespace</code>である。</p>
-
-  <p><dfn id=xmlns-namespace>XMLNS名前空間</dfn>は<code>http://www.w3.org/2000/xmlns/</code>である。</p>
-
-  <hr>
-
-  <p>データマイニングツールおよび、スクリプトを実行、CSSやXPathを評価、または別の方法で任意のコンテンツにDOMの結果を公開することなく、コンテンツに対する操作を実行するユーザーエージェントは、それらのDOMノードの類似体が実際に上記の文字列を公開することなく、特定の名前空間であることを相応の主張することによって"名前空間をサポート"してもよい。</p>
-
-  <hr>
-
-  <p class=note><a id=namespaces:syntax href=syntax.html#syntax>HTML構文</a>において、名前空間接頭辞および名前空間宣言は、XMLと同一の効果を持たない。たとえば、HTML要素名においてコロンは特別な意味を持たない。</p>
-
-
   
 
-  <h3 id=safe-passing-of-structured-data>2.9 Safe passing of structured data<a href=#safe-passing-of-structured-data class=self-link></a></h3>
+  <h3 id=safe-passing-of-structured-data>2.7 Safe passing of structured data<a href=#safe-passing-of-structured-data class=self-link></a></h3>
 
   <p>This section uses the terminology and typographic conventions from the JavaScript
   specification. <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
 
-  <h4 id=cloneable-objects>2.9.1 <dfn>Cloneable objects</dfn><a href=#cloneable-objects class=self-link></a></h4>
+  <h4 id=cloneable-objects>2.7.1 <dfn>Cloneable objects</dfn><a href=#cloneable-objects class=self-link></a></h4>
 
   <p><a href=#cloneable-objects id=cloneable-objects:cloneable-objects>Cloneable objects</a> support being cloned across <a href=webappapis.html#event-loop id=cloneable-objects:event-loop>event
   loops</a>. That is, they support being cloned across document and worker boundaries, including
@@ -3290,7 +3103,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
   <p>Objects defined in the JavaScript specification are handled by the <a href=#structuredclone id=cloneable-objects:structuredclone>StructuredClone</a>
   abstract operation directly.</p>
 
-  <h4 id=transferable-objects data-lt="transferable object" data-export="">2.9.2 <dfn>Transferable objects</dfn><a href=#transferable-objects class=self-link></a></h4>
+  <h4 id=transferable-objects data-lt="transferable object" data-export="">2.7.2 <dfn>Transferable objects</dfn><a href=#transferable-objects class=self-link></a></h4>
 
   <p><a href=#transferable-objects id=transferable-objects:transferable-objects>Transferable objects</a> support being transferred across <a href=webappapis.html#event-loop id=transferable-objects:event-loop>event loops</a>. Transferring is effectively recreating the object while sharing a
   reference to the underlying data and then detaching the object being transferred. This is useful
@@ -3322,7 +3135,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
   <a href=#structuredclonewithtransfer id=transferable-objects:structuredclonewithtransfer>StructuredCloneWithTransfer</a> abstract operation directly. (Technically, by
   <a href=#istransferable id=transferable-objects:istransferable>IsTransferable</a> and <a href=#transfer-abstract-op id=transferable-objects:transfer-abstract-op>Transfer</a>.)</p>
 
-  <h4 id=structuredclonewithtransfer data-dfn-type=abstract-op data-lt=StructuredCloneWithTransfer data-export="">2.9.3 <dfn>StructuredCloneWithTransfer</dfn> ( <var>input</var>,
+  <h4 id=structuredclonewithtransfer data-dfn-type=abstract-op data-lt=StructuredCloneWithTransfer data-export="">2.7.3 <dfn>StructuredCloneWithTransfer</dfn> ( <var>input</var>,
   <var>transferList</var>, <var>targetRealm</var> )<a href=#structuredclonewithtransfer class=self-link></a></h4>
 
   <ol><li>
@@ -3341,7 +3154,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
      <var>placeholder</var>.</li></ol>
    </li><li><p>Let <var>clone</var> be the result of ?
    <a href=#structuredclone id=structuredclonewithtransfer:structuredclone-2>StructuredClone</a>(<var>input</var>, <var>targetRealm</var>,
-   <var>memory</var>).</li><li><p>Let <var>outputTransferList</var> be a new empty <a id=structuredclonewithtransfer:list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li>
+   <var>memory</var>).</li><li><p>Let <var>outputTransferList</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structuredclonewithtransfer:js-list data-x-internal=js-list>List</a>.</li><li>
     <p>For each object <var>transferable</var> in <var>transferList</var>:
 
     
@@ -3369,7 +3182,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
   method on the <code id=structuredclonewithtransfer:messageport><a href=comms.html#messageport>MessagePort</a></code> object.</p>
 
   <span id=structured-clone></span>
-  <h4 id=structuredclone data-dfn-type=abstract-op data-lt=StructuredClone data-export="">2.9.4 <dfn>StructuredClone</dfn> ( <var>input</var>, <var>targetRealm</var>
+  <h4 id=structuredclone data-dfn-type=abstract-op data-lt=StructuredClone data-export="">2.7.4 <dfn>StructuredClone</dfn> ( <var>input</var>, <var>targetRealm</var>
   [ , <var>memory</var> ] )<a href=#structuredclone class=self-link></a></h4>
 
   <ol><li><p>If <var>memory</var> was not supplied, let <var>memory</var> be an empty map.</li><li><p>If <var>memory</var> contains an entry with key <var>input</var>, then return that entry's
@@ -3425,12 +3238,12 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
     <p>Otherwise, if <var>input</var> has [[MapData]] internal slot, then:</p>
 
     <ol><li><p>Let <var>output</var> be a new Map object in <var>targetRealm</var> whose [[MapData]]
-     internal slot value is a new empty <a id=structuredclone:list href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
+     internal slot value is a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structuredclone:js-list data-x-internal=js-list>List</a>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
    </li><li>
     <p>Otherwise, if <var>input</var> has [[SetData]] internal slot, then:</p>
 
     <ol><li><p>Let <var>output</var> be a new Set object in <var>targetRealm</var> whose [[SetData]]
-     internal slot value is a new empty <a id=structuredclone:list-2 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
+     internal slot value is a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structuredclone:js-list-2 data-x-internal=js-list>List</a>.</li><li><p>Set <var>deepClone</var> to true.</li></ol>
    </li><li>
     <p>Otherwise, if <var>input</var> is an Array exotic object, then:</p>
     
@@ -3467,7 +3280,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
       
 
       <ol><li><p>Let <var>inputList</var> the value of <var>input</var>'s [[MapData]] internal
-       slot.</li><li><p>Let <var>copiedList</var> be a new empty <a id=structuredclone:list-3 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.
+       slot.</li><li><p>Let <var>copiedList</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structuredclone:js-list-3 data-x-internal=js-list>List</a>.
 
        
 
@@ -3508,7 +3321,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
 
       
 
-      <ol><li><p>Let <var>enumerableKeys</var> be a new empty <a id=structuredclone:list-4 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=list>List</a>.</li><li>
+      <ol><li><p>Let <var>enumerableKeys</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structuredclone:js-list-4 data-x-internal=js-list>List</a>.</li><li>
         <p>For each <var>key</var> in ! <var>input</var>.[[OwnPropertyKeys]]():</p>
 
         <ol><li>
@@ -3531,6 +3344,12 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
            <var>outputValue</var>).</li></ol>
          </li></ol>
        </li></ol>
+
+      <p class=note>The key collection performed above is very similar to the JavaScript
+      specification's <a id=structuredclone:enumerableownproperties href=https://tc39.github.io/ecma262/#sec-enumerableownproperties data-x-internal=enumerableownproperties>EnumerableOwnProperties</a> operation, but crucially it uses the
+      deterministic ordering provided by the [[OwnPropertyKeys]] internal method, instead of
+      reordering the keys in an unspecified manner as <a id=structuredclone:enumerableownproperties-2 href=https://tc39.github.io/ecma262/#sec-enumerableownproperties data-x-internal=enumerableownproperties>EnumerableOwnProperties</a> does.
+      <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
      </li></ol>
    </li><li><p>Return <var>output</var>.</li></ol>
 
@@ -3540,7 +3359,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
   to the code that invokes <a href=#structuredclonewithtransfer id=structuredclone:structuredclonewithtransfer>StructuredCloneWithTransfer</a> or
   <a href=#structuredclone id=structuredclone:structuredclone-6>StructuredClone</a>.</p>
 
-  <h4 id=istransferable data-dfn-type=abstract-op data-lt=IsTransferable data-export="">2.9.5 <dfn>IsTransferable</dfn> ( <var>O</var> )<a href=#istransferable class=self-link></a></h4>
+  <h4 id=istransferable data-dfn-type=abstract-op data-lt=IsTransferable data-export="">2.7.5 <dfn>IsTransferable</dfn> ( <var>O</var> )<a href=#istransferable class=self-link></a></h4>
 
   <ol><li><p>Assert: <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=istransferable:js-type data-x-internal=js-type>Type</a>(<var>O</var>) is Object.</li><li>
     <p>If <var>O</var> has an [[ArrayBufferData]] internal slot, then:</p>
@@ -3553,7 +3372,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
      false.</li><li><p>Return true.</li></ol>
    </li><li><p>Return false.</li></ol>
 
-  <h4 id=transfer-abstract-op data-dfn-type=abstract-op data-lt=Transfer data-export="">2.9.6 <dfn>Transfer</dfn> ( <var>input</var>, <var>targetRealm</var> )<a href=#transfer-abstract-op class=self-link></a></h4>
+  <h4 id=transfer-abstract-op data-dfn-type=abstract-op data-lt=Transfer data-export="">2.7.6 <dfn>Transfer</dfn> ( <var>input</var>, <var>targetRealm</var> )<a href=#transfer-abstract-op class=self-link></a></h4>
 
   <ol><li>
     <p>If <var>input</var> has an [[ArrayBufferData]] internal slot, then:</p>
@@ -3564,7 +3383,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
      [[ArrayBufferData]] internal slot value of <var>input</var>.</li><li><p>Perform ! <a id=transfer-abstract-op:detacharraybuffer href=https://tc39.github.io/ecma262/#sec-detacharraybuffer data-x-internal=detacharraybuffer>DetachArrayBuffer</a>(<var>input</var>).</li><li><p>Return <var>output</var>.</li></ol>
    </li><li><p>Return ? <var>input</var>.[[<a href=#transfer id=transfer-abstract-op:transfer>Transfer</a>]](<var>targetRealm</var>).</li></ol>
 
-  <h4 id=performing-structured-clones-from-other-specifications>2.9.7 Performing structured clones from other specifications<a href=#performing-structured-clones-from-other-specifications class=self-link></a></h4>
+  <h4 id=performing-structured-clones-from-other-specifications>2.7.7 Performing structured clones from other specifications<a href=#performing-structured-clones-from-other-specifications class=self-link></a></h4>
 
   <p>Other specifications may use the <a href=#structuredclone id=performing-structured-clones-from-other-specifications:structuredclone>StructuredClone</a>,
   <a href=#structuredclonewithtransfer id=performing-structured-clones-from-other-specifications:structuredclonewithtransfer>StructuredCloneWithTransfer</a>, <a href=#istransferable id=performing-structured-clones-from-other-specifications:istransferable>IsTransferable</a>, and <a href=#transfer-abstract-op id=performing-structured-clones-from-other-specifications:transfer-abstract-op>Transfer</a> abstract operations.</p>
@@ -3598,7 +3417,7 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
   we know of no such APIs on the platform; usually it is simpler to perform the clone ahead of time,
   as a synchronous consequence of author code, like <code id=performing-structured-clones-from-other-specifications:dom-window-postmessage-2><a href=comms.html#dom-window-postmessage>postMessage</a></code>.</p>
 
-  <h4 id=monkey-patch-for-blob-and-filelist-objects>2.9.8 Monkey patch for <code id=monkey-patch-for-blob-and-filelist-objects:blob><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> and <code id=monkey-patch-for-blob-and-filelist-objects:filelist><a data-x-internal=filelist href=https://triple-underscore.github.io/File_API-ja.html#filelist-section>FileList</a></code> objects<a href=#monkey-patch-for-blob-and-filelist-objects class=self-link></a></h4>
+  <h4 id=monkey-patch-for-blob-and-filelist-objects>2.7.8 Monkey patch for <code id=monkey-patch-for-blob-and-filelist-objects:blob><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> and <code id=monkey-patch-for-blob-and-filelist-objects:filelist><a data-x-internal=filelist href=https://triple-underscore.github.io/File_API-ja.html#filelist-section>FileList</a></code> objects<a href=#monkey-patch-for-blob-and-filelist-objects class=self-link></a></h4>
 
   <p class=XXX>This monkey patch will be removed in due course. See <a href=https://github.com/w3c/FileAPI/issues/32>w3c/FileAPI issue 32</a>.</p>
 
@@ -3626,4 +3445,4 @@ interface <dfn id=radionodelist>RadioNodeList</dfn> : <a id=the-htmlformcontrols
 
 
   <nav><a href=introduction.html>← 1 導入</a> — <a href=index.html>目次</a> — <a href=dom.html>3 セマンティックス、構造、HTML文書のAPI群 →</a></nav>
-</body></html>
+</html>
