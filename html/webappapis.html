@@ -2,7 +2,6 @@
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
 <title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css>
 <script defer="" src=https://resources.whatwg.org/dfn.js></script>
-<script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -18,12 +17,14 @@
      .fingerprint { max-width: 35px; }
    }
 
-   .status { font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; top: auto; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
-   .status.wrapped { width: 1em; height: 1em; }
+   .status { min-height: 0.6em; font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status:hover { z-index: 9; }
+   .status:focus-within { z-index: 9; }
    .status.wrapped > :not(input) { display: none; }
-   .status > input { position: absolute; right: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > input { position: absolute; left: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
    .status > p { font-size: 0.6em; margin: 0; padding: 0; }
    .status > p + p { padding-top: 0.5em; }
+   .status > p > strong { margin-left: 1.5em; }
    .status > .support { display: block; }
    .status > .support > span { padding: 0.2em 0; display: block; display: table; }
    .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
@@ -51,18 +52,15 @@
    .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
    .status > .support > .samsung::before { background-image: url(https://resources.whatwg.org/browser-logos/samsung.png); }
    .status > .caniuse { text-align: right; font-style: italic; }
+   .status > .caniuse + p { margin-top: 0.5em; border-top: 1px solid silver; }
 
    @media (max-width: 767px) {
-     .status.wrapped { width: 9em; height: auto; }
-     .status:not(.wrapped) { width: 1em; height: 1em; }
-     .status.wrapped > :not(input) { display: block; }
-     .status:not(.wrapped) > :not(input) { display: none; }
+     .status { right: -9em; }
    }
 
    .applies .yes, .yesno .yes { background: yellow; }
    .yesno .yes, .yesno .no { text-align: center; }
-  </style>
-<style>
+
    .applies thead th > * { display: block; }
    .applies thead code { display: block; }
    .applies td { text-align: center; }
@@ -148,8 +146,7 @@
    #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
 
    .glyph.control { color: red; }
-  </style>
-<style>
+
    #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
    @font-face {
      font-family: 'Essays1743';
@@ -171,10 +168,21 @@
      font-weight: bold;
      src: url('/fonts/Essays1743-BoldItalic.ttf');
    }
+
+   @media (max-width: 767px) {
+     #abstractimg { width: 100%; }
+   }
+   #abstractimg, #abstractimg text { font: inherit; }
+   #abstractimg rect { fill: #424242; }
+   #abstractimg text { fill: #ffffff; font-size: 18px }
+   #abstractimg .top { word-spacing: 50px; text-anchor: middle; }
+   #abstractimg .left, #abstractimg .bottom { word-spacing: 12px; }
+   #abstractimg .right { font-size: 25px; }
   </style>
+  <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>20 November 2016</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 December 2016</span></h2></hgroup>
    
    
   </header>
@@ -472,13 +480,12 @@
     script</a> algorithm as well.</p>
    </li><li>Asynchronously complete this algorithm with <var>script</var>.</li></ol>
 
-  <p>To <dfn id=fetch-a-classic-worker-script data-export="">fetch a classic worker script</dfn> given a <var>url</var>, a
-  <var>settings object</var>, and a <var>destination</var>, run these steps. The algorithm will
-  asynchronously complete with either null (on failure) or a new <a href=#classic-script id=fetching-scripts:classic-script-4>classic script</a> (on
-  success).</p>
+  <p>To <dfn id=fetch-a-classic-worker-script data-export="">fetch a classic worker script</dfn> given a <var>url</var>, a <var>fetch
+  client settings object</var>, a <var>destination</var>, and a <var>script settings object</var>,
+  run these steps. The algorithm will asynchronously complete with either null (on failure) or a new
+  <a href=#classic-script id=fetching-scripts:classic-script-4>classic script</a> (on success).</p>
 
-  <ol><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-5 data-x-internal=concept-request>request</a> whose
-   <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client-2 data-x-internal=concept-request-client>client</a> is <var>settings object</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-2 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode data-x-internal=concept-request-mode>mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata-2 data-x-internal=concept-request-parser-metadata>parser
+  <ol><li><p>Let <var>request</var> be a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-5 data-x-internal=concept-request>request</a> whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url data-x-internal=concept-request-url>url</a> is <var>url</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-client id=fetching-scripts:concept-request-client-2 data-x-internal=concept-request-client>client</a> is <var>fetch client settings object</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=fetching-scripts:concept-request-type-2 data-x-internal=concept-request-type>type</a> is "<code>script</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=fetching-scripts:concept-request-destination data-x-internal=concept-request-destination>destination</a> is <var>destination</var>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=fetching-scripts:concept-request-mode data-x-internal=concept-request-mode>mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=fetching-scripts:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> is "<code>same-origin</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-parser-metadata id=fetching-scripts:concept-request-parser-metadata-2 data-x-internal=concept-request-parser-metadata>parser
    metadata</a> is "<code>not parser-inserted</code>", and whose
    <a id=fetching-scripts:use-url-credentials-flag href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a> is set.</li><li>
     <p>If the caller specified custom steps to <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-5>perform
@@ -493,7 +500,7 @@
    </li><li><p>Let <var>response</var> be <var>response</var>'s <a id=fetching-scripts:unsafe-response-2 href=infrastructure.html#unsafe-response>unsafe response</a>.</li><li><p>If <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=fetching-scripts:concept-response-type-2 data-x-internal=concept-response-type>type</a> is "<code>error</code>", or <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=fetching-scripts:concept-response-status-2 data-x-internal=concept-response-status>status</a> is not an <a id=fetching-scripts:ok-status-2 href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a>, asynchronously
    complete this algorithm with null, and abort these steps.</li><li><p>Let <var>source text</var> be the result of <a href=https://triple-underscore.github.io/Encoding-ja.html#utf-8-decode id=fetching-scripts:utf-8-decode data-x-internal=utf-8-decode>UTF-8
    decoding</a> <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-body id=fetching-scripts:concept-response-body-2 data-x-internal=concept-response-body>body</a>.</li><li><p>Let <var>script</var> be the result of <a href=#creating-a-classic-script id=fetching-scripts:creating-a-classic-script-3>creating a classic script</a> using
-   <var>source text</var> and <var>settings object</var>.</li><li>Asynchronously complete this algorithm with <var>script</var>.</li></ol>
+   <var>source text</var> and <var>script settings object</var>.</li><li>Asynchronously complete this algorithm with <var>script</var>.</li></ol>
 
   <p>To <dfn id=fetch-a-classic-worker-imported-script data-export="">fetch a classic worker-imported script</dfn> given a <var>url</var> and
   a <var>settings object</var>, run these steps. The algorithm will synchronously complete with a
@@ -1116,8 +1123,8 @@
    settings object</a> of <code>window</code>.</p>
 
    <p>(In this example, the <a href=#environment-settings-object id=incumbent:environment-settings-object-4>environment settings object</a> of <code>frames[0]</code> is not involved at all. It is the <a href=#current-settings-object id=incumbent:current-settings-object>current settings
-   object</a>, but the <code id=incumbent:dom-worker><a href=workers.html#dom-worker>Worker()</a></code> constructor cares only about the
-   incumbent, not current.)</p>
+   object</a>, but the <code id=incumbent:dom-messagechannel-2><a href=comms.html#dom-messagechannel>MessageChannel()</a></code> constructor
+   cares only about the incumbent, not current.)</p>
   </div>
 
   <div class=example>
@@ -1423,8 +1430,8 @@ document.querySelector("button").addEventListener("click", bound);
    that would be an <code id=runtime-script-errors:idl-error><a data-x-internal=idl-error href=https://triple-underscore.github.io/WebIDL-ja.html#idl-Error>Error</a></code> object. If there is no corresponding
    value, then the null value must be used instead.</li><li>
 
-    <p>Let <var>location</var> be an <a id=runtime-script-errors:absolute-url href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a> that corresponds to the
-    resource from which <var>script</var> was obtained.</p>
+    <p>Let <var>urlString</var> be the result of applying the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-serializer id=runtime-script-errors:concept-url-serializer data-x-internal=concept-url-serializer>URL serializer</a> to the <a id=runtime-script-errors:url-record href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL record</a> that
+    corresponds to the resource from which <var>script</var> was obtained.</p>
 
     <p class=note>The resource containing the script will typically be the file from which the
     <code id=runtime-script-errors:document><a href=dom.html#document>Document</a></code> was parsed, e.g. for inline <code id=runtime-script-errors:the-script-element><a href=scripting.html#the-script-element>script</a></code> elements or <a href=#event-handler-content-attributes id=runtime-script-errors:event-handler-content-attributes>event
@@ -1443,13 +1450,13 @@ document.querySelector("button").addEventListener("click", bound);
     mutating the document as it is parsed, or <a href=#event-handler-content-attributes id=runtime-script-errors:event-handler-content-attributes-2>event handler content attributes</a> spanning
     multiple lines.</p>
 
-   </li><li><p>If <var>script</var> has <a href=#muted-errors id=runtime-script-errors:muted-errors>muted errors</a>, then set <var>message</var> to "<code>Script error.</code>", <var>location</var> to the empty string, <var>line</var> and
+   </li><li><p>If <var>script</var> has <a href=#muted-errors id=runtime-script-errors:muted-errors>muted errors</a>, then set <var>message</var> to "<code>Script error.</code>", <var>urlString</var> to the empty string, <var>line</var> and
    <var>col</var> to 0, and <var>errorValue</var> to null.</li><li><p>Let <var>notHandled</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=runtime-script-errors:concept-event-fire data-x-internal=concept-event-fire>firing an
    event</a> named <code id=runtime-script-errors:event-error><a href=indices.html#event-error>error</a></code> at <var>target</var>, using
    <code id=runtime-script-errors:errorevent><a href=#errorevent>ErrorEvent</a></code>, with the <code id=runtime-script-errors:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute
    initialized to true, the <code id=runtime-script-errors:dom-errorevent-message><a href=#dom-errorevent-message>message</a></code> attribute
    initialized to <var>message</var>, the <code id=runtime-script-errors:dom-errorevent-filename><a href=#dom-errorevent-filename>filename</a></code>
-   attribute initialized to <var>location</var>, the <code id=runtime-script-errors:dom-errorevent-lineno><a href=#dom-errorevent-lineno>lineno</a></code> attribute initialized to <var>line</var>, the <code id=runtime-script-errors:dom-errorevent-colno><a href=#dom-errorevent-colno>colno</a></code> attribute initialized to <var>col</var>, and the <code id=runtime-script-errors:dom-errorevent-error><a href=#dom-errorevent-error>error</a></code> attribute initialized to
+   attribute initialized to <var>urlString</var>, the <code id=runtime-script-errors:dom-errorevent-lineno><a href=#dom-errorevent-lineno>lineno</a></code> attribute initialized to <var>line</var>, the <code id=runtime-script-errors:dom-errorevent-colno><a href=#dom-errorevent-colno>colno</a></code> attribute initialized to <var>col</var>, and the <code id=runtime-script-errors:dom-errorevent-error><a href=#dom-errorevent-error>error</a></code> attribute initialized to
    <var>errorValue</var>.</li><li><p>Let <var>target</var> no longer be <a href=#in-error-reporting-mode id=runtime-script-errors:in-error-reporting-mode-2>in error reporting mode</a>.</li><li>
     <p>If <var>notHandled</var> is false, then the error is <i id=runtime-script-errors:concept-error-handled><a href=#concept-error-handled>handled</a></i>. Otherwise, the error is <i id=runtime-script-errors:concept-error-nothandled-2><a href=#concept-error-nothandled>not handled</a></i>.</p>
 
@@ -1491,7 +1498,7 @@ dictionary <dfn id=erroreventinit>ErrorEventInit</dfn> : <a id=the-errorevent-in
 
   <p><dfn id=dom-errorevent-message><code>message</code></dfn>属性は、属性が初期化された値を返さなければならない。これはエラーメッセージを表す。</p>
 
-  <p><dfn id=dom-errorevent-filename><code>filename</code></dfn>属性は、属性が初期化された値を返さなければならない。これは、エラーがもともと発生したスクリプトの<a id=the-errorevent-interface:absolute-url href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>絶対URL</a>を表す。</p>
+  <p><dfn id=dom-errorevent-filename><code>filename</code></dfn>属性は、属性が初期化された値を返さなければならない。It represents the <a id=the-errorevent-interface:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the script in which the error originally occurred.</p>
 
   <p><dfn id=dom-errorevent-lineno><code>lineno</code></dfn>属性は、属性が初期化された値を返さなければならない。これは、スクリプトでエラーが発生した行番号を表す。</p>
 
@@ -1710,8 +1717,8 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
       <a href=#event-loop id=event-loop-processing-model:event-loop-9>event loop</a> in question, sorted arbitrarily except that the following conditions
       must be met:</p>
 
-      <ul><li><p>Any <code id=event-loop-processing-model:document-3><a href=dom.html#document>Document</a></code> <var>B</var> that is <span>nested through</span> a
-       <code id=event-loop-processing-model:document-4><a href=dom.html#document>Document</a></code> <var>A</var> must be listed after <var>A</var> in the list.</li><li><p>If there are two documents <var>A</var> and <var>B</var> whose <a href=browsers.html#concept-document-bc id=event-loop-processing-model:concept-document-bc>browsing contexts</a> are both <a href=browsers.html#nested-browsing-context id=event-loop-processing-model:nested-browsing-context>nested browsing contexts</a> and their <a href=browsers.html#browsing-context-container id=event-loop-processing-model:browsing-context-container>browsing context containers</a> are both elements in the same
+      <ul><li><p>Any <code id=event-loop-processing-model:document-3><a href=dom.html#document>Document</a></code> <var>B</var> that is <a href=browsers.html#browsing-context-nested-through id=event-loop-processing-model:browsing-context-nested-through>nested through</a> a <code id=event-loop-processing-model:document-4><a href=dom.html#document>Document</a></code> <var>A</var> must be listed after
+       <var>A</var> in the list.</li><li><p>If there are two documents <var>A</var> and <var>B</var> whose <a href=browsers.html#concept-document-bc id=event-loop-processing-model:concept-document-bc>browsing contexts</a> are both <a href=browsers.html#nested-browsing-context id=event-loop-processing-model:nested-browsing-context>nested browsing contexts</a> and their <a href=browsers.html#browsing-context-container id=event-loop-processing-model:browsing-context-container>browsing context containers</a> are both elements in the same
        <code id=event-loop-processing-model:document-5><a href=dom.html#document>Document</a></code> <var>C</var>, then the order of <var>A</var> and <var>B</var> in the
        list must match the relative <a id=event-loop-processing-model:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a> of their respective <a href=browsers.html#browsing-context-container id=event-loop-processing-model:browsing-context-container-2>browsing context containers</a> in
        <var>C</var>.</li></ul>
@@ -2247,6 +2254,7 @@ typedef <a href=#onbeforeunloadeventhandlernonnull id=event-handler-attributes:o
 
   <table><thead><tr><th><a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-2>イベントハンドラー</a> </th><th><a href=#event-handler-event-type id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handler-event-type-2>イベントハンドラーイベント型</a>
    <tbody></th></tr><tr><td><dfn id=handler-onabort><code>onabort</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-abort><a href=indices.html#event-abort>abort</a></code>
+    </td></tr><tr><td><dfn id=handler-onauxclick><code>onauxclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-auxclick><a data-x-internal=event-auxclick href=https://wicg.github.io/auxclick/#the-auxclick-event>auxclick</a></code>
     </td></tr><tr><td><dfn id=handler-oncancel><code>oncancel</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-cancel><a href=indices.html#event-cancel>cancel</a></code>
     </td></tr><tr><td><dfn id=handler-oncanplay><code>oncanplay</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-canplay><a href=embedded-content.html#event-media-canplay>canplay</a></code>
     </td></tr><tr><td><dfn id=handler-oncanplaythrough><code>oncanplaythrough</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-canplaythrough><a href=embedded-content.html#event-media-canplaythrough>canplaythrough</a></code>
@@ -2385,92 +2393,93 @@ typedef <a href=#onbeforeunloadeventhandlernonnull id=event-handler-attributes:o
   <pre class=idl>[NoInterfaceObject]
 interface <dfn id=globaleventhandlers>GlobalEventHandlers</dfn> {
   attribute <a href=#eventhandler id=idl-definitions:eventhandler>EventHandler</a> <a href=#handler-onabort id=idl-definitions:handler-onabort>onabort</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-2>EventHandler</a> <a href=#handler-onblur id=idl-definitions:handler-onblur>onblur</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-3>EventHandler</a> <a href=#handler-oncancel id=idl-definitions:handler-oncancel>oncancel</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-4>EventHandler</a> <a href=#handler-oncanplay id=idl-definitions:handler-oncanplay>oncanplay</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-5>EventHandler</a> <a href=#handler-oncanplaythrough id=idl-definitions:handler-oncanplaythrough>oncanplaythrough</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-6>EventHandler</a> <a href=#handler-onchange id=idl-definitions:handler-onchange>onchange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-7>EventHandler</a> <a href=#handler-onclick id=idl-definitions:handler-onclick>onclick</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-8>EventHandler</a> <a href=#handler-onclose id=idl-definitions:handler-onclose>onclose</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-9>EventHandler</a> <a href=#handler-oncontextmenu id=idl-definitions:handler-oncontextmenu>oncontextmenu</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-10>EventHandler</a> <a href=#handler-oncuechange id=idl-definitions:handler-oncuechange>oncuechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-11>EventHandler</a> <a href=#handler-ondblclick id=idl-definitions:handler-ondblclick>ondblclick</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-12>EventHandler</a> <a href=#handler-ondrag id=idl-definitions:handler-ondrag>ondrag</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-13>EventHandler</a> <a href=#handler-ondragend id=idl-definitions:handler-ondragend>ondragend</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-14>EventHandler</a> <a href=#handler-ondragenter id=idl-definitions:handler-ondragenter>ondragenter</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-15>EventHandler</a> <a href=#handler-ondragexit id=idl-definitions:handler-ondragexit>ondragexit</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-16>EventHandler</a> <a href=#handler-ondragleave id=idl-definitions:handler-ondragleave>ondragleave</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-17>EventHandler</a> <a href=#handler-ondragover id=idl-definitions:handler-ondragover>ondragover</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-18>EventHandler</a> <a href=#handler-ondragstart id=idl-definitions:handler-ondragstart>ondragstart</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-19>EventHandler</a> <a href=#handler-ondrop id=idl-definitions:handler-ondrop>ondrop</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-20>EventHandler</a> <a href=#handler-ondurationchange id=idl-definitions:handler-ondurationchange>ondurationchange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-21>EventHandler</a> <a href=#handler-onemptied id=idl-definitions:handler-onemptied>onemptied</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-22>EventHandler</a> <a href=#handler-onended id=idl-definitions:handler-onended>onended</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-2>EventHandler</a> <a href=#handler-onauxclick id=idl-definitions:handler-onauxclick>onauxclick</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-3>EventHandler</a> <a href=#handler-onblur id=idl-definitions:handler-onblur>onblur</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-4>EventHandler</a> <a href=#handler-oncancel id=idl-definitions:handler-oncancel>oncancel</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-5>EventHandler</a> <a href=#handler-oncanplay id=idl-definitions:handler-oncanplay>oncanplay</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-6>EventHandler</a> <a href=#handler-oncanplaythrough id=idl-definitions:handler-oncanplaythrough>oncanplaythrough</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-7>EventHandler</a> <a href=#handler-onchange id=idl-definitions:handler-onchange>onchange</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-8>EventHandler</a> <a href=#handler-onclick id=idl-definitions:handler-onclick>onclick</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-9>EventHandler</a> <a href=#handler-onclose id=idl-definitions:handler-onclose>onclose</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-10>EventHandler</a> <a href=#handler-oncontextmenu id=idl-definitions:handler-oncontextmenu>oncontextmenu</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-11>EventHandler</a> <a href=#handler-oncuechange id=idl-definitions:handler-oncuechange>oncuechange</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-12>EventHandler</a> <a href=#handler-ondblclick id=idl-definitions:handler-ondblclick>ondblclick</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-13>EventHandler</a> <a href=#handler-ondrag id=idl-definitions:handler-ondrag>ondrag</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-14>EventHandler</a> <a href=#handler-ondragend id=idl-definitions:handler-ondragend>ondragend</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-15>EventHandler</a> <a href=#handler-ondragenter id=idl-definitions:handler-ondragenter>ondragenter</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-16>EventHandler</a> <a href=#handler-ondragexit id=idl-definitions:handler-ondragexit>ondragexit</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-17>EventHandler</a> <a href=#handler-ondragleave id=idl-definitions:handler-ondragleave>ondragleave</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-18>EventHandler</a> <a href=#handler-ondragover id=idl-definitions:handler-ondragover>ondragover</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-19>EventHandler</a> <a href=#handler-ondragstart id=idl-definitions:handler-ondragstart>ondragstart</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-20>EventHandler</a> <a href=#handler-ondrop id=idl-definitions:handler-ondrop>ondrop</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-21>EventHandler</a> <a href=#handler-ondurationchange id=idl-definitions:handler-ondurationchange>ondurationchange</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-22>EventHandler</a> <a href=#handler-onemptied id=idl-definitions:handler-onemptied>onemptied</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-23>EventHandler</a> <a href=#handler-onended id=idl-definitions:handler-onended>onended</a>;
   attribute <a href=#onerroreventhandler id=idl-definitions:onerroreventhandler>OnErrorEventHandler</a> <a href=#handler-onerror id=idl-definitions:handler-onerror>onerror</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-23>EventHandler</a> <a href=#handler-onfocus id=idl-definitions:handler-onfocus>onfocus</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-24>EventHandler</a> <a href=#handler-oninput id=idl-definitions:handler-oninput>oninput</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-25>EventHandler</a> <a href=#handler-oninvalid id=idl-definitions:handler-oninvalid>oninvalid</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-26>EventHandler</a> <a href=#handler-onkeydown id=idl-definitions:handler-onkeydown>onkeydown</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-27>EventHandler</a> <a href=#handler-onkeypress id=idl-definitions:handler-onkeypress>onkeypress</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-28>EventHandler</a> <a href=#handler-onkeyup id=idl-definitions:handler-onkeyup>onkeyup</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-29>EventHandler</a> <a href=#handler-onload id=idl-definitions:handler-onload>onload</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-30>EventHandler</a> <a href=#handler-onloadeddata id=idl-definitions:handler-onloadeddata>onloadeddata</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-31>EventHandler</a> <a href=#handler-onloadedmetadata id=idl-definitions:handler-onloadedmetadata>onloadedmetadata</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-32>EventHandler</a> <a href=#handler-onloadend id=idl-definitions:handler-onloadend>onloadend</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-33>EventHandler</a> <a href=#handler-onloadstart id=idl-definitions:handler-onloadstart>onloadstart</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-34>EventHandler</a> <a href=#handler-onmousedown id=idl-definitions:handler-onmousedown>onmousedown</a>;
-  [LenientThis] attribute <a href=#eventhandler id=idl-definitions:eventhandler-35>EventHandler</a> <a href=#handler-onmouseenter id=idl-definitions:handler-onmouseenter>onmouseenter</a>;
-  [LenientThis] attribute <a href=#eventhandler id=idl-definitions:eventhandler-36>EventHandler</a> <a href=#handler-onmouseleave id=idl-definitions:handler-onmouseleave>onmouseleave</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-37>EventHandler</a> <a href=#handler-onmousemove id=idl-definitions:handler-onmousemove>onmousemove</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-38>EventHandler</a> <a href=#handler-onmouseout id=idl-definitions:handler-onmouseout>onmouseout</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-39>EventHandler</a> <a href=#handler-onmouseover id=idl-definitions:handler-onmouseover>onmouseover</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-40>EventHandler</a> <a href=#handler-onmouseup id=idl-definitions:handler-onmouseup>onmouseup</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-41>EventHandler</a> <a href=#handler-onwheel id=idl-definitions:handler-onwheel>onwheel</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-42>EventHandler</a> <a href=#handler-onpause id=idl-definitions:handler-onpause>onpause</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-43>EventHandler</a> <a href=#handler-onplay id=idl-definitions:handler-onplay>onplay</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-44>EventHandler</a> <a href=#handler-onplaying id=idl-definitions:handler-onplaying>onplaying</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-45>EventHandler</a> <a href=#handler-onprogress id=idl-definitions:handler-onprogress>onprogress</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-46>EventHandler</a> <a href=#handler-onratechange id=idl-definitions:handler-onratechange>onratechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-47>EventHandler</a> <a href=#handler-onreset id=idl-definitions:handler-onreset>onreset</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-48>EventHandler</a> <a href=#handler-onresize id=idl-definitions:handler-onresize>onresize</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-49>EventHandler</a> <a href=#handler-onscroll id=idl-definitions:handler-onscroll>onscroll</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-50>EventHandler</a> <a href=#handler-onseeked id=idl-definitions:handler-onseeked>onseeked</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-51>EventHandler</a> <a href=#handler-onseeking id=idl-definitions:handler-onseeking>onseeking</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-52>EventHandler</a> <a href=#handler-onselect id=idl-definitions:handler-onselect>onselect</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-53>EventHandler</a> <a href=#handler-onshow id=idl-definitions:handler-onshow>onshow</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-54>EventHandler</a> <a href=#handler-onstalled id=idl-definitions:handler-onstalled>onstalled</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-55>EventHandler</a> <a href=#handler-onsubmit id=idl-definitions:handler-onsubmit>onsubmit</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-56>EventHandler</a> <a href=#handler-onsuspend id=idl-definitions:handler-onsuspend>onsuspend</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-57>EventHandler</a> <a href=#handler-ontimeupdate id=idl-definitions:handler-ontimeupdate>ontimeupdate</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-58>EventHandler</a> <a href=#handler-ontoggle id=idl-definitions:handler-ontoggle>ontoggle</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-59>EventHandler</a> <a href=#handler-onvolumechange id=idl-definitions:handler-onvolumechange>onvolumechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-60>EventHandler</a> <a href=#handler-onwaiting id=idl-definitions:handler-onwaiting>onwaiting</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-24>EventHandler</a> <a href=#handler-onfocus id=idl-definitions:handler-onfocus>onfocus</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-25>EventHandler</a> <a href=#handler-oninput id=idl-definitions:handler-oninput>oninput</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-26>EventHandler</a> <a href=#handler-oninvalid id=idl-definitions:handler-oninvalid>oninvalid</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-27>EventHandler</a> <a href=#handler-onkeydown id=idl-definitions:handler-onkeydown>onkeydown</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-28>EventHandler</a> <a href=#handler-onkeypress id=idl-definitions:handler-onkeypress>onkeypress</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-29>EventHandler</a> <a href=#handler-onkeyup id=idl-definitions:handler-onkeyup>onkeyup</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-30>EventHandler</a> <a href=#handler-onload id=idl-definitions:handler-onload>onload</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-31>EventHandler</a> <a href=#handler-onloadeddata id=idl-definitions:handler-onloadeddata>onloadeddata</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-32>EventHandler</a> <a href=#handler-onloadedmetadata id=idl-definitions:handler-onloadedmetadata>onloadedmetadata</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-33>EventHandler</a> <a href=#handler-onloadend id=idl-definitions:handler-onloadend>onloadend</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-34>EventHandler</a> <a href=#handler-onloadstart id=idl-definitions:handler-onloadstart>onloadstart</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-35>EventHandler</a> <a href=#handler-onmousedown id=idl-definitions:handler-onmousedown>onmousedown</a>;
+  [LenientThis] attribute <a href=#eventhandler id=idl-definitions:eventhandler-36>EventHandler</a> <a href=#handler-onmouseenter id=idl-definitions:handler-onmouseenter>onmouseenter</a>;
+  [LenientThis] attribute <a href=#eventhandler id=idl-definitions:eventhandler-37>EventHandler</a> <a href=#handler-onmouseleave id=idl-definitions:handler-onmouseleave>onmouseleave</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-38>EventHandler</a> <a href=#handler-onmousemove id=idl-definitions:handler-onmousemove>onmousemove</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-39>EventHandler</a> <a href=#handler-onmouseout id=idl-definitions:handler-onmouseout>onmouseout</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-40>EventHandler</a> <a href=#handler-onmouseover id=idl-definitions:handler-onmouseover>onmouseover</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-41>EventHandler</a> <a href=#handler-onmouseup id=idl-definitions:handler-onmouseup>onmouseup</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-42>EventHandler</a> <a href=#handler-onwheel id=idl-definitions:handler-onwheel>onwheel</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-43>EventHandler</a> <a href=#handler-onpause id=idl-definitions:handler-onpause>onpause</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-44>EventHandler</a> <a href=#handler-onplay id=idl-definitions:handler-onplay>onplay</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-45>EventHandler</a> <a href=#handler-onplaying id=idl-definitions:handler-onplaying>onplaying</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-46>EventHandler</a> <a href=#handler-onprogress id=idl-definitions:handler-onprogress>onprogress</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-47>EventHandler</a> <a href=#handler-onratechange id=idl-definitions:handler-onratechange>onratechange</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-48>EventHandler</a> <a href=#handler-onreset id=idl-definitions:handler-onreset>onreset</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-49>EventHandler</a> <a href=#handler-onresize id=idl-definitions:handler-onresize>onresize</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-50>EventHandler</a> <a href=#handler-onscroll id=idl-definitions:handler-onscroll>onscroll</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-51>EventHandler</a> <a href=#handler-onseeked id=idl-definitions:handler-onseeked>onseeked</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-52>EventHandler</a> <a href=#handler-onseeking id=idl-definitions:handler-onseeking>onseeking</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-53>EventHandler</a> <a href=#handler-onselect id=idl-definitions:handler-onselect>onselect</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-54>EventHandler</a> <a href=#handler-onshow id=idl-definitions:handler-onshow>onshow</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-55>EventHandler</a> <a href=#handler-onstalled id=idl-definitions:handler-onstalled>onstalled</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-56>EventHandler</a> <a href=#handler-onsubmit id=idl-definitions:handler-onsubmit>onsubmit</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-57>EventHandler</a> <a href=#handler-onsuspend id=idl-definitions:handler-onsuspend>onsuspend</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-58>EventHandler</a> <a href=#handler-ontimeupdate id=idl-definitions:handler-ontimeupdate>ontimeupdate</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-59>EventHandler</a> <a href=#handler-ontoggle id=idl-definitions:handler-ontoggle>ontoggle</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-60>EventHandler</a> <a href=#handler-onvolumechange id=idl-definitions:handler-onvolumechange>onvolumechange</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-61>EventHandler</a> <a href=#handler-onwaiting id=idl-definitions:handler-onwaiting>onwaiting</a>;
 };
 
 [NoInterfaceObject]
 interface <dfn id=windoweventhandlers>WindowEventHandlers</dfn> {
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-61>EventHandler</a> <a href=#handler-window-onafterprint id=idl-definitions:handler-window-onafterprint>onafterprint</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-62>EventHandler</a> <a href=#handler-window-onbeforeprint id=idl-definitions:handler-window-onbeforeprint>onbeforeprint</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-62>EventHandler</a> <a href=#handler-window-onafterprint id=idl-definitions:handler-window-onafterprint>onafterprint</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-63>EventHandler</a> <a href=#handler-window-onbeforeprint id=idl-definitions:handler-window-onbeforeprint>onbeforeprint</a>;
   attribute <a href=#onbeforeunloadeventhandler id=idl-definitions:onbeforeunloadeventhandler>OnBeforeUnloadEventHandler</a> <a href=#handler-window-onbeforeunload id=idl-definitions:handler-window-onbeforeunload>onbeforeunload</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-63>EventHandler</a> <a href=#handler-window-onhashchange id=idl-definitions:handler-window-onhashchange>onhashchange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-64>EventHandler</a> <a href=#handler-window-onlanguagechange id=idl-definitions:handler-window-onlanguagechange>onlanguagechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-65>EventHandler</a> <a href=#handler-window-onmessage id=idl-definitions:handler-window-onmessage>onmessage</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-66>EventHandler</a> <a href=#handler-window-onoffline id=idl-definitions:handler-window-onoffline>onoffline</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-67>EventHandler</a> <a href=#handler-window-ononline id=idl-definitions:handler-window-ononline>ononline</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-68>EventHandler</a> <a href=#handler-window-onpagehide id=idl-definitions:handler-window-onpagehide>onpagehide</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-69>EventHandler</a> <a href=#handler-window-onpageshow id=idl-definitions:handler-window-onpageshow>onpageshow</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-70>EventHandler</a> <a href=#handler-window-onpopstate id=idl-definitions:handler-window-onpopstate>onpopstate</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-71>EventHandler</a> <a href=#handler-window-onrejectionhandled id=idl-definitions:handler-window-onrejectionhandled>onrejectionhandled</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-72>EventHandler</a> <a href=#handler-window-onstorage id=idl-definitions:handler-window-onstorage>onstorage</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-73>EventHandler</a> <a href=#handler-window-onunhandledrejection id=idl-definitions:handler-window-onunhandledrejection>onunhandledrejection</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-74>EventHandler</a> <a href=#handler-window-onunload id=idl-definitions:handler-window-onunload>onunload</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-64>EventHandler</a> <a href=#handler-window-onhashchange id=idl-definitions:handler-window-onhashchange>onhashchange</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-65>EventHandler</a> <a href=#handler-window-onlanguagechange id=idl-definitions:handler-window-onlanguagechange>onlanguagechange</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-66>EventHandler</a> <a href=#handler-window-onmessage id=idl-definitions:handler-window-onmessage>onmessage</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-67>EventHandler</a> <a href=#handler-window-onoffline id=idl-definitions:handler-window-onoffline>onoffline</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-68>EventHandler</a> <a href=#handler-window-ononline id=idl-definitions:handler-window-ononline>ononline</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-69>EventHandler</a> <a href=#handler-window-onpagehide id=idl-definitions:handler-window-onpagehide>onpagehide</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-70>EventHandler</a> <a href=#handler-window-onpageshow id=idl-definitions:handler-window-onpageshow>onpageshow</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-71>EventHandler</a> <a href=#handler-window-onpopstate id=idl-definitions:handler-window-onpopstate>onpopstate</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-72>EventHandler</a> <a href=#handler-window-onrejectionhandled id=idl-definitions:handler-window-onrejectionhandled>onrejectionhandled</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-73>EventHandler</a> <a href=#handler-window-onstorage id=idl-definitions:handler-window-onstorage>onstorage</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-74>EventHandler</a> <a href=#handler-window-onunhandledrejection id=idl-definitions:handler-window-onunhandledrejection>onunhandledrejection</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-75>EventHandler</a> <a href=#handler-window-onunload id=idl-definitions:handler-window-onunload>onunload</a>;
 };
 
 [NoInterfaceObject]
 interface <dfn id=documentandelementeventhandlers>DocumentAndElementEventHandlers</dfn> {
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-75>EventHandler</a> <a href=#handler-oncopy id=idl-definitions:handler-oncopy>oncopy</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-76>EventHandler</a> <a href=#handler-oncut id=idl-definitions:handler-oncut>oncut</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-77>EventHandler</a> <a href=#handler-onpaste id=idl-definitions:handler-onpaste>onpaste</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-76>EventHandler</a> <a href=#handler-oncopy id=idl-definitions:handler-oncopy>oncopy</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-77>EventHandler</a> <a href=#handler-oncut id=idl-definitions:handler-oncut>oncut</a>;
+  attribute <a href=#eventhandler id=idl-definitions:eventhandler-78>EventHandler</a> <a href=#handler-onpaste id=idl-definitions:handler-onpaste>onpaste</a>;
 };</pre>
 
   
@@ -2554,10 +2563,10 @@ document.body.appendChild(frame)</pre>
   </div>
 
   <p>The <dfn id=dom-origin><code>origin</code></dfn> attribute's getter must return this
-  object's <span>relevant setting object</span>'s <a href=#concept-settings-object-origin id=windoworworkerglobalscope-mixin:concept-settings-object-origin>origin</a>, <a href=browsers.html#unicode-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:unicode-serialisation-of-an-origin>serialized</a>.</p>
+  object's <a href=#relevant-settings-object id=windoworworkerglobalscope-mixin:relevant-settings-object>relevant settings object</a>'s <a href=#concept-settings-object-origin id=windoworworkerglobalscope-mixin:concept-settings-object-origin>origin</a>, <a href=browsers.html#unicode-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:unicode-serialisation-of-an-origin>serialized</a>.</p>
 
 
-  <h3 id=atob>8.3 Base64のユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob>8.3 Base64のユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>54+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>
@@ -4963,7 +4972,7 @@ loadMySprites().then(runDemo);</pre>
 
 
 
-  <h3 id=animation-frames>8.9 Animation Frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>53+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
+  <h3 id=animation-frames>8.9 Animation Frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_chr yes"><span>Chrome for Android</span> <span>54+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0-7.1+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
 
   <p>Each <code id=animation-frames:document><a href=dom.html#document>Document</a></code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
   initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback identifier</dfn>, which is a number which
