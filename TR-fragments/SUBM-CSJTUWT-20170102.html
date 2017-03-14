@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html xml:lang="ja" xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+    <head>
+        <meta charset="UTF-8"/>
+
+        <title>Current Status of Japanese Typography Using Web Technologies（日本語訳）</title>
+        <link rel="stylesheet" type="text/css" href="https://www.w3.org/StyleSheets/TR/2016/W3C-Member-SUBM">
+    </head>
+    <body>
+<aside class="notice" style="border-radius: 20px; border: solid lightpink 3px;padding:0 1em;margin-bottom:2em;padding:1em;">
+<p>
+
+
+
+この文書は「<a href="https://www.w3.org/Submission/2017/SUBM-CSJTUWT-20170102/">Current Status of Japanese Typography Using Web Technologies</a>（W3C Member Submission <time>2017-01-02</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳による誤りが含まれます。</p>
+<p>
+
+
+
+訳者への連絡先、他の仕様の翻訳等については、<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照ください。
+
+
+
+</p>
+</aside>
+        <div class="head">
+<p>
+                <a class="logo" href="https://www.w3.org/"><img alt="W3C" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" height="48" width="72"></a> 
+                <a href="http://www.w3.org/Submission/"><img src="http://www.w3.org/Icons/member_subm" alt="W3C Member Submission" height="48" width="211"></a></p>
+            <h1 id="title">Current Status of Japanese Typography Using Web Technologies（日本語訳）</h1>
+            <h2 id="W3C-doctype">W3C Member Submission 02 January 2017</h2>
+            <dl>
+                <dt>This version:</dt>
+                <dd><a href="https://www.w3.org/Submission/2017/SUBM-CSJTUWT-20170102/">https://www.w3.org/Submission/2017/SUBM-CSJTUWT-20170102/</a></dd>
+                <dt>Latest version:</dt>
+                <dd><a href="https://www.w3.org/Submission/CSJTUWT/">https://www.w3.org/Submission/CSJTUWT/</a></dd>
+            </dl>
+            <dl>
+                <dt>Authors:</dt>
+<dd>Tatsuo Kobayashi 小林龍生 (Scholex)</dd>
+
+<dd>Shinyu Murakami 村上真雄 (Vivliostyle)</dd>
+
+<dd>Makoto Murata 村田真 (Vivliostyle/JEPA/International Univ of Japan)</dd>
+
+<dd>Shin Niina 新名新 (Digital Publishing Initiatives Japan Co., Ltd.)</dd>
+
+<dd>Florian Rivoal (Vivliostyle)</dd>
+
+		<dd>Junichi Yoshii 吉井順一 (Kodansha)</dd>
+            </dl>
+            <p class="copyright">Copyright © 2016-2017 <span class="notetoeditor"></span>.
+                This document is available under the <a href="http://www.w3.org/Consortium/Legal/copyright-documents">W3C
+                    Document License</a>. See the <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">W3C
+                    Intellectual Rights Notice and Legal Disclaimers</a> for additional
+                information.</p>
+            <hr />
+        </div><!-- ################ end of head #################### -->
+        
+
+
+        <h2 id="abstract">概要</h2>
+        <p><span class="notetoeditor" >
+この文書では、CSSおよびHTMLが日本でページに分けられた文書のレイアウトとして十分かどうかを考察します。具体的に、私たちはW3C JLREQおよびEBPAJ（日本電子書籍出版社協会）からのEPUB3 Petition of Japanese typesetting（EPUB 3.0 日本語組版要望表）という2つの文書の要件を検討します。どの要件がどのCSS仕様で取り扱われ、そして主要なブラウザーでサポートされているかを示します。私たちは、現在のところCSSが日本語のページに分けられた文書にはかなりよく、さらにいくつかのモジュール（特にPaged Media）が完全に開発されかつ実装される場合にさらによくなると結論づけます。  
+            </span></p>
+
+        <h2 id="status">この文書の位置付け</h2>
+
+        <p><em>この節は、公開時点におけるこの文書のステータスについて説明します。他の文書がこの文書に取って代わるかもしれません。W3Cが現在公開している出版物は、<a href="https://www.w3.org/TR/">W3C technical reports index</a> at https://www.w3.org/TR/で見つけることができます。</em></p>
+
+        <p>By publishing this document, W3C acknowledges that the <a href="http://www.w3.org/Submission/2017/01/">Submitting
+                Members</a> have made a formal Submission request to W3C for discussion.
+            Publication of this document by W3C indicates no endorsement of its
+            content by W3C, nor that W3C has, is, or will be allocating any
+            resources to the issues addressed by it. This document is not the
+            product of a chartered W3C group, but is published as potential input to
+            the <a href="https://www.w3.org/Consortium/Process">W3C Process</a>. A <a href="http://www.w3.org/Submission/2017/01/Comment/">W3C Team Comment</a> has been published in conjunction with this Member Submission. Publication of acknowledged Member Submissions at the W3C site is one of
+            the benefits of <a href="https://www.w3.org/Consortium/Prospectus/Joining">W3C
+                Membership</a>. Please consult the requirements associated with Member
+            Submissions of <a href="https://www.w3.org/Consortium/Patent-Policy-20030520.html#sec-submissions">section
+            3.3 of the W3C Patent Policy</a>. Please consult the complete <a href="https://www.w3.org/Submission">list of acknowledged W3C Member Submissions</a>.</p>
+
+        <nav id="toc">
+        <h2 class="introductory" id="table-of-contents"><span>目次</span></h2>
+        <ol class="toc">
+            <li><a href="#intro">概論</a></li>
+            <li><a href="#sec-jlreq">JLREQにおける要件の分析</a></li>
+            <li><a href="#sec-epub3petition">EPUB3 Petition of Japanese typesetting（EPUB 3.0 日本語組版要望表）の要件の分析</a></li>
+            <li><a href="#sec-request">さらなる開発のリクエスト</a></li>
+            <li><a href="#appendix-css-secrets">付録：CSS Secrets</a></li>
+        </ol>
+        </nav>
+
+        <hr />
+
+        <div class="body">
+
+            <div class="div1">
+                <h2 id="intro">1. 概論</h2>
+<p>ウェブページまたは電子書籍として発行されコンテンツは、たびたび印刷された文書として同様に発行されます。執筆時点では、印刷された文書は通常、デスクトップパブリッシングソフトウェアによって作成されます。その一方で、ウェブページは、HTML文書にCSSスタイルシートが添付されます。電子書籍は一般に、HTML文書、CSSスタイルシートなどのパッケージであるEPUB出版物です。</p>
+
+
+
+<p>したがって、著者は、(1) CSSスタイルシートを伴うHTML文書と、(2)デスクトップパブリッシングソフトウェアの文書、の2つの表現で同じ情報を作成して維持せざるを得ません。2つの異なる表現の作成と保守は、著しいコストと出版の遅延につながります。</p>
+
+
+<p>私たちは、印刷された文書にHTMLとCSSを使用することがコストを大幅に削減し、タイムリーな出版を促進すると考えます。しかし、どの機能が欠落しているのかは明らかではないものの、HTMLとCSSが日本語の印刷された文書には不十分であると一般的に考えられています。</p>
+
+<p>この文書は、既に利用可能なものと、日本語の印刷された文書を出版するためにCSSおよびブラウザーエンジンにはまだ欠けているものを明確にしようと試みます。具体的に、私たちはW3C JLREQおよびEBPAJ（日本電子書籍出版社協会）からのEPUB3 Petition of Japanese typesetting（EPUB 3.0 日本語組版要望表）という2つの文書の要件を検討します。どの要件がどのCSS仕様で取り扱われ、そして主要なブラウザーでサポートされているかを示します。</p>
+
+<p>この調査の範囲にはいくつかの注意点があります：</p>
+<dl>
+  <dt>雑誌または技術マニュアル</dt>
+  <dd>この調査は一般的な書籍に焦点を当てています。雑誌や技術マニュアルなどその他の種類の印刷物には適用されません。これは、そのような印刷された文書に対する要件文書がないためです。しかし、この調査で扱う多くの機能は、そのような印刷された文書に適用されます。</dd>
+  <dt>画面上で表示される文書</dt>
+  <dd>“印刷された文書”という用語を使用していますが、この調査は紙に印刷された文書に限定され<em>ません</em>。これは、画面上で表示されるページ付けされた文書に適用されます。実際、私たちが調査する2つの要件文書のうちの1つは、EPUB3出版物に専念されたものです。私たちは、画面上のページ付けされた文書は、レイアウトが異なるページや画面サイズで自動的に適応されるときに重要な役割を果たすと考えます。
+  </dd>
+  </dl>
+
+		<p>いくつかのW3C文書やwikiページはこの調査に関連しており、この文書の参考文献にリストされています。その中で、W3C I18N WGのInternational text layout and typography indexが最も関連性があります。しかし、この調査は日本語の文書に焦点を当てており、2つの要件文書に直接基づいています。</p>
+
+<p>私たちの調査はまだ初歩的なものであることを認識しています。今後、この文書の改訂版を提出する予定です。あらゆる人からのフィードバックは大歓迎です。 </p>
+
+</div>
+                <div class="div1">
+                    <h2 id="sec-jlreq">2. JLREQにおける要件の分析</h2>
+<p>Requirements for Japanese Text Layout（日本語組版処理の要件、略してJLREQ）は、ウェブおよびデジタル出版物における日本語のテキストレイアウトとタイポグラフィのサポート要件を説明する最も重要な文書です。</p>
+
+
+
+<p>JLREQは非常に体系的であり、日本語タイポグラフィにおける機能を豊富にカバーしています。JLREQの主な対象は一般的な書籍ですが、JLREQにリストされている機能は、雑誌や技術マニュアルなどにも使用できます。JLREQは機能の優先順位を提供しません。</p>
+
+
+
+<p><a href="#JLREQAnalysis">別の付随文書</a>は、JLREQにおいてどの機能がどのCSS仕様で扱われているかを示します。項が特定の機能を記述しない場合を除いて、JLREQの各項は単一の機能とみなされます。私たちは、いくつかの項が複数の機能を実際に記述していることを認識しています。この文書の将来のバージョンでは、より細かい機能の分類を導入する予定です。</p>
+
+
+
+<p><em>CSSステータス</em>列の意味は次のとおりです：</p>
+
+<ul>
+  <li><em>0</em>：REC、CR、WDのいずれもこの機能を扱っていません。</li>
+  <li><em>1</em>：未熟なWDがこの機能を扱っています。</li>
+  <li><em>2</em>：適度に成熟したWDがこの機能を扱っています。</li>
+  <li><em>3</em>：RECまたはCRがこの機能を扱っています。</li>
+</ul>
+
+<p>記載された機能の半分以上は、適度に成熟したCSS仕様（すなわち、2または3）によって扱われます。しかし、一部のテキストレイアウト機能はまだ成熟していないCSS Ruby、CSS Text 3、CSS Text 4、CSS Line Gridを必要とします。同様に、一部のページネーション機能は、いずれも成熟していないCSS Paged Media、CSS Page Floats、CSS Multi-column level 2、およびCSS Generated Content for Paged Mediaを必要とします。</p>
+
+<p>別の付随ドキュメントは、主要なブラウザーによってどの機能が実装されているかを示します。<em>ブラウザーステータス</em>列の意味は次のとおりです：</p>
+
+<ul>
+  <li><em>0</em>：この機能をサポートするブラウザーはありません。</li>
+  <li><em>1</em>：一部のブラウザーは、この機能の実験的サポートを提供しています。</li>
+  <li><em>2</em>：ブラウザーはこの機能をサポートしていますが、そのサポートは一部のメジャーブラウザーで実験的である、または不足しています。</li>
+  <li><em>3</em>：ほとんどの主要なブラウザーがこの機能をサポートしています。</li></ul>
+</ul>
+
+<p>一部の機能が成熟したCSS仕様で扱われない場合、ブラウザーは成熟していません（予想どおり）。しかし、成熟した仕様ですでに扱われる機能についても、ブラウザーの実装はまだ成熟していないことがあります。私たちは、ブラウザーがすぐに最新のCSS仕様に追いつき、近い将来に成熟すると考えます。</p>
+
+<div class="note"><div class="note-title" role="heading"><span>注</span></div><p>一部の機能は、ページ付けされたメディアに特化したものです。これらの機能はブラウザーの範囲外にあるかもしれませんが、私たちの分析はそれら機能を除外しません。EPUBリーダーやPDFフォーマッタなどのページネーションをサポートする実装は、そのような機能をサポートする必要があります。</p></div></div>
+
+
+        <div class="div1">
+            <h2 id="sec-epub3petition">3. EPUB3 Petition of Japanese typesetting（EPUB 3.0 日本語組版要望表）の要件の分析</h2>
+<p>EPUB3 Petition of Japanese typesetting（EPUB 3.0 日本語組版要望表）は、日本電子書籍出版社協会（EBPAJ）によって作成されました。EBPAJのEPUBビューワー検証チームは、2012年にEPUB3とリーディングシステムを検討し、その時点で日本語タイポグラフィーの一部の機能が満足できるものではないことを発見しました。次に、EBPAJは、日本の出版社にアンケート調査を行い、これらの機能の優先順位を付けました。</p>
+
+
+<p>この要望は、JLREQとは異なり、日本の電子書籍出版社にとって重要と思われる機能に焦点を当てています。さらに、ページレイアウト機能とテキストレイアウト機能にも焦点を当てています。</p>
+
+
+
+	    <p><a href="#EPUB3PetitionAnalysis">別の付随文書</a>は、EPUB3要望においてどの機能がどのCSS仕様で扱われているか、さらにはその機能が主要なブラウザーで実装されているのかを示します。CSSステータス列の意味とブラウザーステータス列の意味は、JLREQ分析と同様です。さらに、付随文書には出版社のニーズが示されています。<em>出版社のニーズ</em>列の意味は次のとおりです：</p>
+		<ul>
+			<li><em>0</em>: Won't have（ないだろう）</li>
+			<li><em>1</em>: Could have（可能性はある）</li>
+			<li><em>2</em>: Should have（あったほうがよい）</li>
+			<li><em>3</em>: Must have（必須である）</li>
+		</ul>
+
+	
+	    </p>
+
+
+
+<p>記載された機能の多くは、適度に成熟したCSS仕様（すなわち、2または3）によって扱われます。しかし、一部のテキストレイアウト機能はまだ成熟していないCSS Ruby、CSS Text 3、CSS Text 4、CSS Line Gridを必要とします。同様に、一部のページレイアウト機能は、いずれも成熟していないCSS Paged Media、CSS Page Floats、CSS Multi-column level 2、およびCSS Generated Content for Paged Mediaを必要とします。</p>
+
+	    <p>CSS Writing Modes、CSS Fragmentation、CSS Multi-column 1のブラウザー実装はまだ成熟してないものの、これらのCSSの仕様はかなり成熟しています。</p>
+		
+        </div>
+
+	            <div class="div1">
+        <h2 id="sec-request">4. さらなる開発のリクエスト</h2>
+
+<p>2章と3章の分析に基づいて、一部のCSSモジュールはさらなる開発が必要であると考えています。以下に示すいくつかのWDは技術的に成熟していますが、少なくともCRになる必要があります。</p>
+
+<p><b>太字</b>でマークされたモジュールは、スコープが十分に定義されており、安定した機能集合であると信じられているモジュールであり、まだ完成していないものの、いくらかは成熟しています。さらなる関与が優先順位を引き上げ、テストスイートと対応する実装を相対的に速く完全なものにするのに役立つことを願っています。他のモジュールは、大まかに初期段階にあります。
+
+<h3>4.1 テキストレイアウト関連CSSモジュール</h3>
+
+<ul>
+<li><span><b>CSS Ruby</b> </span>
+    <a  href="https://drafts.csswg.org/css-ruby-1/">https://drafts.csswg.org/css-ruby-1/</a></li>
+
+<li><span>CSS Text</span>
+
+<ul><li><span><b>CSS Text Level 3</b> </span>
+
+      <a  href="https://drafts.csswg.org/css-text-3/">https://drafts.csswg.org/css-text-3/</a>    </li>
+
+    <li><span>CSS Text Level 4 </span>
+      <a  href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a>
+  </li></ul></li>
+
+<li><span>CSS Line Grid </span><a href="https://drafts.csswg.org/css-line-grid/">https://drafts.csswg.org/css-line-grid/</a> (see also <span>CSS Rhythmic Sizing</span> <a href="https://drafts.csswg.org/css-rhythm/">https://drafts.csswg.org/css-rhythm/</a>)</li></ul>
+
+<h3>4.2 ページレイアウト関連CSSモジュール</h3>
+
+<ul>
+<li><span><b>CSS Paged Media</b> </span>
+    <a href="https://drafts.csswg.org/css-page/">https://drafts.csswg.org/css-page/</a></li>
+
+<li><span><b>CSS Fragmentation Module Level 3</b></span>
+    <a href="https://drafts.csswg.org/css-break/">https://drafts.csswg.org/css-break/</a></li>
+
+<li><span>CSS Page Floats </span><a href="https://drafts.csswg.org/css-page-floats/">https://drafts.csswg.org/css-page-floats/</a></li>
+
+<li><span>CSS Multi-column (Level 2) </span><a href="https://drafts.csswg.org/css-multicol-2/">https://drafts.csswg.org/css-multicol-2/</a></li>
+
+<li><span>CSS Generated Content (for Paged Media)</span>
+
+  <ul >
+    <li><span>CSS Generated Content </span><a href="https://drafts.csswg.org/css-content/">https://drafts.csswg.org/css-content/</a></li>
+
+<li class="c0 c12 c3"><span>CSS Generated Content for Paged Media Level 3 </span><a  href="https://drafts.csswg.org/css-gcpm-3/">https://drafts.csswg.org/css-gcpm-3/</a></li>
+
+<li ><span>CSS Generated Content for Paged Media Level 4 </span><a href="https://drafts.csswg.org/css-gcpm-4/">https://drafts.csswg.org/css-gcpm-4/</a>
+(see also
+<span>CSS Regions </span><a  href="https://drafts.csswg.org/css-regions/">https://drafts.csswg.org/css-regions/</a> and
+<span>CSS Pagination Templates </span><a  href="https://drafts.csswg.org/css-page-template-1/">https://drafts.csswg.org/css-page-template-1/</a>.)</li>
+</ul>
+</li></ul>
+
+<h3>4.3 EPUB Adaptive Layout</h3>
+
+<p><span>EPUB Adaptive Layout</span> <a href="http://www.idpf.org/epub/pgt/">http://www.idpf.org/epub/pgt/</a> はIDPFが発行する参考文書です。CSSの興味深い拡張について説明しています。</p>
+
+<p>EPUB Adaptive Layoutは、一般的なCSS実装の動作とは異なる処理モデルを前提としているため、そのまま発展することはありません。しかし、EPUB Adaptive Layoutが提供する機能は、多くの興味深いユースケースに対処することを可能にします。さまざまな提案が重複しており、これら提案のトピックのまたは関連する代替案の進捗状況は、残りのギャップを埋めるのに非常に役立ちます。</p>
+
+<ul>
+<li><span>CSS Generated Content for Paged Media Module Level 4 (Editor's Draft)</span> <a href="https://drafts.csswg.org/css-gcpm-4/"> https://drafts.csswg.org/css-gcpm-4/</a></li>
+
+<li><span>CSS Pagination Templates (Editor's Draft)</span><a href="https://drafts.csswg.org/css-page-template-1/"> https://drafts.csswg.org/css-page-template-1/</a></li>
+
+<li><span>CSS Regions</span>
+<a  href="https://drafts.csswg.org/css-regions/">https://drafts.csswg.org/css-regions/</a></li>
+
+<li><span>CSS Page Floats</span>
+<a  href="https://drafts.csswg.org/css-page-floats/">https://drafts.csswg.org/css-page-floats/</a></li>
+
+<li><span>CSS Exclusion</span>
+<a  href="https://drafts.csswg.org/css-exclusions/">https://drafts.csswg.org/css-exclusions/</a></li>
+
+<li><span>CSS Shapes</span>
+<a href="https://drafts.csswg.org/css-shapes-1/">https://drafts.csswg.org/css-shapes-1/</a> and
+<a  href="https://drafts.csswg.org/css-shapes-2/">https://drafts.csswg.org/css-shapes-2/</a></li>
+
+<li><span>Fragmentation &amp; Pagination on Overflow</span>
+<a  href="https://drafts.csswg.org/css-overflow-4/%23fragmentation">https://drafts.csswg.org/css-overflow-4/#fragmentation</a></li></ul>
+
+<h3>4.4 Houdini  </h3>
+
+<p>高品質のタイポグラフィーや書籍の出版に必要と思われる機能や、この文書で強調している機能の一部は、Houdini（フーディーニ）プロジェクト（<a  href="https://github.com/w3c/css-houdini-drafts/wiki">https://github.com/w3c/css-houdini-drafts/wiki</a>）によって開発されるAPIを通じてエンドユーザーが実装することが可能になるかもしれません。この文書では、そのような機能をCSSのコア部分として提供する必要があるかどうか、または可能であればHoudiniによる実装が十分であると証明できるかどうかについて、強い立場を取っていません。私たちは、HoudiniタスクフォースがAPIを開発している間に、これらの要件を考慮に入れることを願っています。</p>
+		    </div>
+	                <div class="div1">
+<h2 id="appendix-css-secrets">付録：CSS Secrets</h2>
+
+<p>Lea Verou著のCSS Secretsの日本語版（邦題『CSSシークレット』）が2016年に書籍として発行されました。オリジナル版と同様、この本はHTMLとCSSで作成されています。元のHTML構造とCSSスタイルシートを基にしていましたが、日本語タイポグラフィーに対するCSSスタイルシートを拡張しました。</p>
+
+<p>ツール、およびマークアップにおけるプレゼンテーションの回避策を導入するための広範な前処理でサポートされる、まだ標準化トラックでない早い段階の非標準または未熟な提案であるCSS機能を使用しなければ、この本の大部分は実現できませんでした。</p>
+
+<p>この本は、5000行以上のCSS、1000行のRuby（プログラミング言語）、4000行のXSLTの組み合わせを使用した組版であるため、どのように動作したかについての詳細な説明は困難です。しかし、ここでは、ブラウザーによって実装された標準的なCSSが欠落していた領域の概要を提供します。関連する場合、これらの問題の一部に明示的または一般的なメカニズムを通して対処しようとするさまざまな仕様へのリンクも提供します。これらの仕様は成熟度と実装の程度が異なり、一部は重複が存在し、問題を解決するには不十分なものもあることに注意してください。それにもかかわらず、私たちはこのリストを通して興味のある領域を強調したいと思います。</p>
+
+<ul>
+
+  <li><span>ページテンプレートと領域</span>
+
+    <ul><li><span>EPUB Adaptive Layout</span> <a href="http://www.idpf.org/epub/pgt/">http://www.idpf.org/epub/pgt/</a></li>
+
+<li><span>CSS Regions</span> <a href="https://drafts.csswg.org/css-regions/">https://drafts.csswg.org/css-regions/</a></li>
+
+<li><span>CSS Pagination Templates (Editor's Draft)</span> <a href="https://drafts.csswg.org/css-page-template-1/">https://drafts.csswg.org/css-page-template-1/</a></li>
+
+<li><span>CSS Paged Media </span> <a href="https://drafts.csswg.org/css-page/">https://drafts.csswg.org/css-page/</a></li>
+</ul>
+</li>
+<li>ページフロート
+
+<ul><li><span>EPUB Adaptive Layout</span>  <a href="http://www.idpf.org/epub/pgt/">http://www.idpf.org/epub/pgt/</a></li>
+
+<li><span>CSS Page Floats </span> <a href="https://drafts.csswg.org/css-page-floats/">https://drafts.csswg.org/css-page-floats/</a></li>
+
+</ul>
+</li>
+
+<li>リーダー
+  <ul><li><span>CSS Generated Content </span> <a href="https://drafts.csswg.org/css-content/">https://drafts.csswg.org/css-content/</a></li>
+
+  </ul>
+</li>
+
+<li>除外と形状
+  <ul>
+    <li><span>EPUB Adaptive Layout</span> <a href="http://www.idpf.org/epub/pgt/">http://www.idpf.org/epub/pgt/</a></li>
+
+<li><span>CSS Shapes Module Level 2</span> <a href="https://drafts.csswg.org/css-shapes-2/">https://drafts.csswg.org/css-shapes-2/</a></li>
+
+<li><span>CSS Exclusion</span> <a  href="https://drafts.csswg.org/css-exclusions/">https://drafts.csswg.org/css-exclusions/</a></li>
+
+  </ul>
+</li>
+<li>ページヘッダーとフッターの記述
+
+  <ul><li><span>EPUB Adaptive Layout</span> <a  href="http://www.idpf.org/epub/pgt/">http://www.idpf.org/epub/pgt/</a></li>
+
+<li><span>CSS Generated Content for Paged Media Level 3 </span><a  href="https://drafts.csswg.org/css-gcpm-3/">https://drafts.csswg.org/css-gcpm-3/</a></li>
+
+  </ul>
+</li>
+<li>脚注
+  <ul><li><span>EPUB Adaptive Layout</span> <a href="http://www.idpf.org/epub/pgt/">http://www.idpf.org/epub/pgt/</a></li>
+
+<li><span>CSS Fragmentation Module Level 3</span> <a  href="https://drafts.csswg.org/css-break/">https://drafts.csswg.org/css-break/</a></li>
+
+  </ul>
+
+</li><li>改行の細かな制御
+
+  <ul><li><span>CSS Text Level 4 </span><a  href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a></li>
+  </ul>
+</li>
+
+<li>CJKテキストおよび連続するラテンテキストとCJKテキストとの間におけるスペースの細かな制御
+
+  <ul><li><span>CSS Text Level 4 </span><a  href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a></li>
+
+  </ul>
+</li>
+
+<li>相互参照
+
+  <ul ><li><span>CSS Generated Content </span><a  href="https://drafts.csswg.org/css-content/">https://drafts.csswg.org/css-content/</a></li>
+
+  </ul>
+</li>
+<li>目次とテーブルのコンテンツ生成</li>
+<li>行グリッドおよび文字グリッド
+  <ul>
+    <li><span>CSS Line Grid</span> <a href="http://dev.w3.org/csswg/css-line-grid/">http://dev.w3.org/csswg/css-line-grid/</a></li>
+
+<li><span>CSS Step Sizing</span> <a href="https://drafts.csswg.org/css-step-sizing/">https://drafts.csswg.org/css-step-sizing/</a></li>
+
+<li><span>Personal proposal by Florian Rivoal</span> <a href="https://lists.w3.org/Archives/Public/www-style/2016Jan/0297.html">https://lists.w3.org/Archives/Public/www-style/2016Jan/0297.html</a></li>
+
+  </ul>
+
+</li><li><span>CMYKカラー</span>
+
+  <ul><li><span>CSS Color Module Level 4</span> <a href="https://drafts.csswg.org/css-color-4/">https://drafts.csswg.org/css-color-4/</a></li>
+
+  </ul>
+
+</li><li><span>トンボと裁ち落とし</span>
+
+  <ul ><li><span>CSS Paged Media Module Level 3</span> <a  href="https://drafts.csswg.org/css-page/">https://drafts.csswg.org/css-page/</a></li>
+
+  </ul>
+</li></ul>
+</div>
+
+
+			<div class="references">
+    <h2 id="sec-bibliography">参考文献</h2>
+
+    <p>JLREQ, W3C Working Group Note 3 April 2012,<a  href="https://www.w3.org/TR/2012/NOTE-jlreq-20120403/">https://www.w3.org/TR/2012/NOTE-jlreq-20120403/</a></p>
+
+    <p><a name="JLREQAnalysis">Companion Document: Analysis of Requirements in JLREQ</a>, <a href="https://www.w3.org/Submission/2017/SUBM-CSJTUWT-20170102/jlreq-analysis.html">./jlreq-analysis.html</a></p>
+    
+    <p><a name="EPUB3PetitionAnalysis">Companion Document: Analysis of Requirements in EPUB3 Petition of Japanese Typesetting</a>, <a href="https://www.w3.org/Submission/2017/SUBM-CSJTUWT-20170102/epub-req-analysis.html">./epub-req-analysis.html</a></p>
+
+
+<p>EPUB3 Petition of Japanese Typesetting, EBPAJ, 2015 <a href="http://ebpaj.jp/counsel/youbou">http://ebpaj.jp/counsel/youbou</a></p>
+
+<p>CSS Secrets by Lea Verou. O'Reilly Media, 2015.  ISBN: 1449372635. (Japanese Translation, 2016)</p>
+
+<p>Sample of CSS Secrets (in Japanese), 2016, <a href="http://vivliostyle.com/ja/samples/%23css-secrets">http://vivliostyle.com/ja/samples/#css-secrets</a></p>
+
+<p>Can you typeset a book with CSS? by Bert Bos,
+<a href="https://www.w3.org/Talks/2013/0604-CSS-Tokyo/">https://www.w3.org/Talks/2013/0604-CSS-Tokyo/</a></p>
+
+<p>List-W3C-specs-important-to-dpub, 
+<a href="https://www.w3.org/wiki/List-W3C-specs-important-to-dpub">https://www.w3.org/wiki/List-W3C-specs-important-to-dpub</a></p>
+
+
+<p>DPUB Pagination Requirements, 
+<a  href="https://www.w3.org/dpub/IG/wiki/Pagination_Requirements">https://www.w3.org/dpub/IG/wiki/Pagination_Requirements</a></p>
+
+<p>PWP Use Cases and Requirement - Pagination, 
+<a  href="https://www.w3.org/TR/pwp-ucr/%23pagination">https://www.w3.org/TR/pwp-ucr/#pagination</a></p>
+
+
+<p>Requirements for Latin Text Layout and Pagination, 
+<a href="https://www.w3.org/TR/dpub-latinreq/">https://www.w3.org/TR/dpub-latinreq/</a></p>
+
+
+<p ><span>International text layout and typography index</span>,
+  <span>W3C Editor's Draft 01 December 2016, </span> <a class="c7" href="http://w3c.github.io/typography/">http://w3c.github.io/typography/</a></p>
+
+   </div>
+   </div>
+
+   <script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
+</body>
+</html>
