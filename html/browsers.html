@@ -182,7 +182,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>27 February 2017</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 April 2017</span></h2></hgroup>
    
    
   </header>
@@ -1213,7 +1213,7 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
   <dl class=domintro><dt><var>window</var> = <var>window</var> . <code id=apis-for-creating-and-navigating-browsing-contexts-by-name:dom-open><a href=#dom-open>open</a></code>( [ <var>url</var> [, <var>target</var> [, <var>features</var> ] ] ] )<dd>
 
-    <p><var>url</var>（デフォルトで<code id=apis-for-creating-and-navigating-browsing-contexts-by-name:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code>）を表示するためのウィンドウを開き、それを返す。<var>target</var>引数は、新しいウィンドウの名前を与える。すでにその名前をもつウィンドウが存在する場合、それが再利用される。<var id=apis-for-creating-and-navigating-browsing-contexts-by-name:dom-open-features><a data-x-internal=dom-open-features href=https://triple-underscore.github.io/cssom-view-ja.html#the-features-argument-to-the-open()-method>features</a></var>引数は、新しいウィンドウのレンダリングに影響を与えるために使用することができる。</p>
+    <p><var>url</var>（デフォルトで<code id=apis-for-creating-and-navigating-browsing-contexts-by-name:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code>）を表示するためのウィンドウを開き、それを返す。<var>target</var>引数は、新しいウィンドウの名前を与える。すでにその名前をもつウィンドウが存在する場合、それが再利用される。The <var>features</var> argument can be used to influence the rendering of the new window.</p>
 
    <dt><var>window</var> . <code id=apis-for-creating-and-navigating-browsing-contexts-by-name:dom-name><a href=#dom-name>name</a></code> [ = <var>value</var> ]<dd>
 
@@ -1269,8 +1269,9 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
    </li><li><p>If <var>target browsing context</var> was just created, either as part of <a href=#the-rules-for-choosing-a-browsing-context-given-a-browsing-context-name id=apis-for-creating-and-navigating-browsing-contexts-by-name:the-rules-for-choosing-a-browsing-context-given-a-browsing-context-name-2>the rules
    for choosing a browsing context given a browsing context name</a> or due to the user
    indicating a preference for navigating a new <a href=#top-level-browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:top-level-browsing-context-2>top-level browsing context</a>, then let
-   <var>new</var> be true. Otherwise, let it be false.</li><li><p>Interpret <var>features</var> <a href=https://triple-underscore.github.io/cssom-view-ja.html#the-features-argument-to-the-open()-method id=apis-for-creating-and-navigating-browsing-contexts-by-name:dom-open-features-2 data-x-internal=dom-open-features>as defined in the CSSOM
-   View specification</a>. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li>
+   <var>new</var> be true. Otherwise, let it be false.</li><li><p>Let <var>tokenizedFeatures</var> be the result of <a href=#concept-window-open-features-tokenize id=apis-for-creating-and-navigating-browsing-contexts-by-name:concept-window-open-features-tokenize>tokenizing</a> <var>features</var>.</li><li><p>If <var>target browsing context</var> is a new <a href=#auxiliary-browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:auxiliary-browsing-context-2>auxiliary browsing context</a>,
+   then <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:set-up-browsing-context-features href=https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features data-x-internal=set-up-browsing-context-features>set up browsing context features</a> for <var>target browsing context</var> given
+   <var>tokenizedFeatures</var>. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li>
 
     <p>If <var>url</var> is the empty string, run the appropriate steps from the following list:</p>
 
@@ -1295,12 +1296,77 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
    </li><li>
     <p><i>End</i>:</p>
 
-    <ol><li><p>If the result of <a href=https://infra.spec.whatwg.org/#split-on-commas id=apis-for-creating-and-navigating-browsing-contexts-by-name:split-a-string-on-commas data-x-internal=split-a-string-on-commas>splitting <var>features</var>
-     on commas</a> contains the token "<code>noopener</code>", then <a href=#disowned-its-opener id=apis-for-creating-and-navigating-browsing-contexts-by-name:disowned-its-opener>disown <var>target browsing context</var>'s opener</a> and
-     return null.</li><li><p>Otherwise, return the <code id=apis-for-creating-and-navigating-browsing-contexts-by-name:windowproxy><a href=#windowproxy>WindowProxy</a></code> object of <var>target browsing
+    <ol><li><p>If <var>tokenizedFeatures</var> <a href=https://infra.spec.whatwg.org/#map-exists id=apis-for-creating-and-navigating-browsing-contexts-by-name:map-exists data-x-internal=map-exists>contains</a> an entry with
+     the key "<code>noopener</code>", then <a href=#disowned-its-opener id=apis-for-creating-and-navigating-browsing-contexts-by-name:disowned-its-opener>disown
+     <var>target browsing context</var>'s opener</a> and return null.</li><li><p>Otherwise, return the <code id=apis-for-creating-and-navigating-browsing-contexts-by-name:windowproxy><a href=#windowproxy>WindowProxy</a></code> object of <var>target browsing
      context</var>.</li></ol>
 
    </li></ol>
+
+  <p>To <dfn id=concept-window-open-features-tokenize>tokenize the <var>features</var>
+  argument</dfn>:</p>
+
+  <ol><li><p>Let <var>tokenizedFeatures</var> be a new <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:ordered-map href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>ordered map</a>.</li><li><p>Let <var>position</var> point at the first code point of <var>features</var>.</li><li>
+    <p><a id=apis-for-creating-and-navigating-browsing-contexts-by-name:while href=https://infra.spec.whatwg.org/#iteration-while data-x-internal=while>While</a> <var>position</var> is not past the end of <var>features</var>:</p>
+
+    <ol><li><p>Let <var>name</var> be the empty string.</li><li><p>Let <var>value</var> be the empty string.</li><li><p><a id=apis-for-creating-and-navigating-browsing-contexts-by-name:collect-a-sequence-of-code-points href=https://infra.spec.whatwg.org/#collect-a-sequence-of-code-points data-x-internal=collect-a-sequence-of-code-points>Collect a sequence of code points</a> that are <a href=#feature-separator id=apis-for-creating-and-navigating-browsing-contexts-by-name:feature-separator>feature separators</a> from <var>features</var> given <var>position</var>. This
+     skips past leading separators before the name.</li><li><p><a id=apis-for-creating-and-navigating-browsing-contexts-by-name:collect-a-sequence-of-code-points-2 href=https://infra.spec.whatwg.org/#collect-a-sequence-of-code-points data-x-internal=collect-a-sequence-of-code-points>Collect a sequence of code points</a> that are not <a href=#feature-separator id=apis-for-creating-and-navigating-browsing-contexts-by-name:feature-separator-2>feature separators</a> from <var>features</var> given <var>position</var>. Set
+     <var>name</var> to the collected characters, <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:converted-to-ascii-lowercase href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>.</li><li><p>Set <var>name</var> to the result of <a href=#normalizing-the-feature-name id=apis-for-creating-and-navigating-browsing-contexts-by-name:normalizing-the-feature-name>normalizing the feature name</a>
+     <var>name</var>.</li><li>
+      <p><a id=apis-for-creating-and-navigating-browsing-contexts-by-name:while-2 href=https://infra.spec.whatwg.org/#iteration-while data-x-internal=while>While</a> <var>position</var> is not past the end of <var>features</var> and the
+      code point at <var>position</var> in <var>features</var> is not U+003D (=):</p>
+
+      <ol><li><p>If the code point at <var>position</var> in <var>features</var> is U+002C (,), or if
+       it is not a <a href=#feature-separator id=apis-for-creating-and-navigating-browsing-contexts-by-name:feature-separator-3>feature separator</a>, then <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:break href=https://infra.spec.whatwg.org/#iteration-break data-x-internal=break>break</a>.</li><li><p>Advance <var>position</var> by 1.</li></ol>
+
+      <p class=note>This skips to the first U+003D (=) but does not skip past a U+002C (,) or a
+      non-separator.</p>
+     </li><li>
+      <p>If the code point at <var>position</var> in <var>features</var> is a <a href=#feature-separator id=apis-for-creating-and-navigating-browsing-contexts-by-name:feature-separator-4>feature
+      separator</a>:</p>
+
+      <ol><li>
+        <p>While <var>position</var> is not past the end of <var>features</var> and the code point
+        at <var>position</var> in <var>features</var> is a <a href=#feature-separator id=apis-for-creating-and-navigating-browsing-contexts-by-name:feature-separator-5>feature separator</a>:</p>
+
+        <ol><li><p>If the code point at <var>position</var> in <var>features</var> is U+002C (,), then
+         <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:break-2 href=https://infra.spec.whatwg.org/#iteration-break data-x-internal=break>break</a>.</li><li><p>Advance <var>position</var> by 1.</li></ol>
+
+        <p class=note>This skips to the first non-separator but does not skip past a U+002C
+        (,).</p>
+       </li><li><p><a id=apis-for-creating-and-navigating-browsing-contexts-by-name:collect-a-sequence-of-code-points-3 href=https://infra.spec.whatwg.org/#collect-a-sequence-of-code-points data-x-internal=collect-a-sequence-of-code-points>Collect a sequence of code points</a> that are not <a href=#feature-separator id=apis-for-creating-and-navigating-browsing-contexts-by-name:feature-separator-6>feature separators</a> code points from <var>features</var> given
+       <var>position</var>. Set <var>value</var> to the collected code points, <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:converted-to-ascii-lowercase-2 href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to
+       ASCII lowercase</a>.</li></ol>
+     </li><li><p>If <var>name</var> is not the empty string, then set
+     <var>tokenizedFeatures</var>[<var>name</var>] to <var>value</var>.</li></ol>
+   </li><li><p>Return <var>tokenizedFeatures</var>.</li></ol>
+
+  <p>A code point is a <dfn id=feature-separator>feature separator</dfn> if it is <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:space-characters href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII whitespace</a>, U+003D
+  (=), or U+002C (,).</p>
+
+  <p>For legacy reasons, there are some aliases of some feature names. To <dfn id=normalizing-the-feature-name>normalize a feature name</dfn> <var>name</var>, switch on <var>name</var>:</p>
+
+  <dl class=switch><dt>"<code>screenx</code>"
+   
+   <dd>Return "<code>left</code>".
+   
+   <dt>"<code>screeny</code>"
+   
+   <dd>Return "<code>top</code>".
+   
+   <dt>"<code>innerwidth</code>"
+   
+   <dd>Return "<code>width</code>".
+   
+   <dt>"<code>innerheight</code>"
+   
+   <dd>Return "<code>height</code>".
+   
+   <dt>Anything else
+   
+   <dd>Return <var>name</var>.
+  
+  </dl>
 
   <hr>
 
@@ -1324,7 +1390,7 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
    <a id=apis-for-creating-and-navigating-browsing-contexts-by-name:incumbent-settings-object-2 href=webappapis.html#incumbent-settings-object>incumbent settings object</a> is <a href=#allowed-to-navigate id=apis-for-creating-and-navigating-browsing-contexts-by-name:allowed-to-navigate>allowed to navigate</a> the <a href=#browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:browsing-context-10>browsing
    context</a> <var>A</var>.</li></ul>
 
-  <p>A <a href=#browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:browsing-context-11>browsing context</a> is <dfn id=script-closable>script-closable</dfn> if it is an <a href=#auxiliary-browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:auxiliary-browsing-context-2>auxiliary
+  <p>A <a href=#browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:browsing-context-11>browsing context</a> is <dfn id=script-closable>script-closable</dfn> if it is an <a href=#auxiliary-browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:auxiliary-browsing-context-3>auxiliary
   browsing context</a> that was created by a script (as opposed to by an action of the user), or
   if it is a <a href=#top-level-browsing-context id=apis-for-creating-and-navigating-browsing-contexts-by-name:top-level-browsing-context-3>top-level browsing context</a> whose <a href=#session-history id=apis-for-creating-and-navigating-browsing-contexts-by-name:session-history>session history</a> contains
   only one <code id=apis-for-creating-and-navigating-browsing-contexts-by-name:document><a href=dom.html#document>Document</a></code>.</p>
@@ -1644,7 +1710,7 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
   <h4 id=windowproxy-setprototypeof>7.4.2 [[SetPrototypeOf]] ( <var>V</var> )<a href=#windowproxy-setprototypeof class=self-link></a></h4>
 
-  <ol><li><p>Return false.</li></ol>
+  <ol><li><p>Return ! <a id=windowproxy-setprototypeof:setimmutableprototype href=https://tc39.github.io/ecma262/#sec-set-immutable-prototype data-x-internal=setimmutableprototype>SetImmutablePrototype</a>(<b>this</b>, <var>V</var>).</li></ol>
 
   <h4 id=windowproxy-isextensible>7.4.3 [[IsExtensible]] ( )<a href=#windowproxy-isextensible class=self-link></a></h4>
 
@@ -1826,7 +1892,7 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
     <dl class=switch><dt id=sandboxOrigin>If the <code id=origin:document-3><a href=dom.html#document>Document</a></code>'s <a href=#active-sandboxing-flag-set id=origin:active-sandboxing-flag-set>active sandboxing flag set</a>
      has its <a href=#sandboxed-origin-browsing-context-flag id=origin:sandboxed-origin-browsing-context-flag>sandboxed origin browsing context flag</a> set<dt>If the <code id=origin:document-4><a href=dom.html#document>Document</a></code> was generated from a <a href=http://www.akanko.net/marimo/data/rfc/rfc2397-jp.txt#section-2 id=origin:data-protocol data-x-internal=data-protocol><code>data:</code> URL</a><dd><p>A unique <a href=#concept-origin-opaque id=origin:concept-origin-opaque-2>opaque origin</a> assigned when the
-     <code id=origin:document-5><a href=dom.html#document>Document</a></code> is created.<dt>If the <code id=origin:document-6><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address" data-x-internal="the-document's-address">URL</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=origin:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a> is a <a id=origin:network-scheme href=https://triple-underscore.github.io/URL-ja.html#network-scheme data-x-internal=network-scheme>network scheme</a><dd>
+     <code id=origin:document-5><a href=dom.html#document>Document</a></code> is created.<dt>If the <code id=origin:document-6><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address" data-x-internal="the-document's-address">URL</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=origin:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a> is a <a id=origin:network-scheme href=https://fetch.spec.whatwg.org/#network-scheme data-x-internal=network-scheme>network scheme</a><dd>
       <p>A copy of the <code id=origin:document-7><a href=dom.html#document>Document</a></code>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="origin:the-document's-address-2" data-x-internal="the-document's-address">URL</a>'s
       <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=origin:concept-url-origin data-x-internal=concept-url-origin>origin</a> assigned when the <code id=origin:document-8><a href=dom.html#document>Document</a></code> is
       created.</p>
@@ -2240,13 +2306,14 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
   <h4 id=the-session-history-of-browsing-contexts>7.7.1 ブラウジングコンテキストのセッション履歴<a href=#the-session-history-of-browsing-contexts class=self-link></a></h4>
 
-  <p><a href=#browsing-context id=the-session-history-of-browsing-contexts:browsing-context>ブラウジングコンテキスト</a>内の<code id=the-session-history-of-browsing-contexts:document><a href=dom.html#document>Document</a></code>の配列は、その<dfn id=session-history>セッション履歴</dfn>である。<a href=#nested-browsing-context id=the-session-history-of-browsing-contexts:nested-browsing-context>ネストされたブラウジングコンテキスト</a>を含む各<a href=#browsing-context id=the-session-history-of-browsing-contexts:browsing-context-2>ブラウジングコンテキスト</a>は、個別のセッション履歴を持つ。<a href=#browsing-context id=the-session-history-of-browsing-contexts:browsing-context-3>ブラウジングコンテキスト</a>のセッション履歴は、<a href=#session-history-entry id=the-session-history-of-browsing-contexts:session-history-entry>セッション履歴のエントリ</a>のフラットなリストから成る。Each <dfn id=session-history-entry>session history entry</dfn> consists, at a minimum, of a <a id=the-session-history-of-browsing-contexts:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, and each entry may in addition have a <a href=#state-object id=the-session-history-of-browsing-contexts:state-object>state object</a>, a title, a <code id=the-session-history-of-browsing-contexts:document-2><a href=dom.html#document>Document</a></code> object, form data, a <a href=#scroll-restoration-mode id=the-session-history-of-browsing-contexts:scroll-restoration-mode>scroll restoration mode</a>, a scroll position, a <a href=#browsing-context-name id=the-session-history-of-browsing-contexts:browsing-context-name>browsing context name</a>, and other information associated with it.</p>
+  <p><a href=#browsing-context id=the-session-history-of-browsing-contexts:browsing-context>ブラウジングコンテキスト</a>内の<code id=the-session-history-of-browsing-contexts:document><a href=dom.html#document>Document</a></code>の配列は、その<dfn id=session-history>セッション履歴</dfn>である。<a href=#nested-browsing-context id=the-session-history-of-browsing-contexts:nested-browsing-context>ネストされたブラウジングコンテキスト</a>を含む各<a href=#browsing-context id=the-session-history-of-browsing-contexts:browsing-context-2>ブラウジングコンテキスト</a>は、個別のセッション履歴を持つ。<a href=#browsing-context id=the-session-history-of-browsing-contexts:browsing-context-3>ブラウジングコンテキスト</a>のセッション履歴は、<a href=#session-history-entry id=the-session-history-of-browsing-contexts:session-history-entry>セッション履歴のエントリ</a>のフラットなリストから成る。Each <dfn id=session-history-entry>session history entry</dfn> consists, at a minimum, of a <a id=the-session-history-of-browsing-contexts:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, and each entry may in addition have <a href=#serialized-state id=the-session-history-of-browsing-contexts:serialized-state>serialized state</a>, a title, a <code id=the-session-history-of-browsing-contexts:document-2><a href=dom.html#document>Document</a></code> object, form data, a <a href=#scroll-restoration-mode id=the-session-history-of-browsing-contexts:scroll-restoration-mode>scroll restoration mode</a>, a scroll position, a <a href=#browsing-context-name id=the-session-history-of-browsing-contexts:browsing-context-name>browsing context name</a>, and other information associated with it.</p>
 
   <p class=note>最初に作成される際、各エントリは<code id=the-session-history-of-browsing-contexts:document-3><a href=dom.html#document>Document</a></code>を持つ。しかし、<code id=the-session-history-of-browsing-contexts:document-4><a href=dom.html#document>Document</a></code>が<a href=#fully-active id=the-session-history-of-browsing-contexts:fully-active>活性化</a>でない場合、リソースを解放するために<a href=#discard-a-document id=the-session-history-of-browsing-contexts:discard-a-document>廃棄する</a>ことができる。The <a id=the-session-history-of-browsing-contexts:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> and other data in a <a href=#session-history-entry id=the-session-history-of-browsing-contexts:session-history-entry-2>session history entry</a> is then used to bring a new <code id=the-session-history-of-browsing-contexts:document-5><a href=dom.html#document>Document</a></code> into being to take the place of the original, in case the user agent finds itself having to reactivate that <code id=the-session-history-of-browsing-contexts:document-6><a href=dom.html#document>Document</a></code>.</p>
 
   <p class=note><a href=#session-history-entry id=the-session-history-of-browsing-contexts:session-history-entry-3>セッション履歴エントリ</a>に関連付けられたタイトルは、<code id=the-session-history-of-browsing-contexts:document-7><a href=dom.html#document>Document</a></code>の現在の<code id=the-session-history-of-browsing-contexts:the-title-element><a href=semantics.html#the-title-element>title</a></code>と関係をもつ必要はない。<a href=#session-history-entry id=the-session-history-of-browsing-contexts:session-history-entry-4>セッション履歴エントリ</a>のタイトルは、ユーザーが文書の履歴をナビゲートできるように、その時点で文書の状態を説明しようとするものである。</p>
 
-  <p><a href=#state-object id=the-session-history-of-browsing-contexts:state-object-2>セッション履歴</a>関連付けられるURLが、ユーザー（またはスクリプト）がページからページへ移動するように状態に追加される。</p>
+  <p>URLs without associated <a href=#serialized-state id=the-session-history-of-browsing-contexts:serialized-state-2>serialized state</a> are added to the session history as the
+  user (or script) navigates from page to page.</p>
 
   <hr>
 
@@ -2263,13 +2330,24 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
   <hr>
 
-  <p><dfn id=state-object>状態オブジェクト</dfn>は、ユーザーインターフェイスの状態を表すオブジェクトである。</p>
+  <p id=state-object><dfn id=serialized-state>Serialized state</dfn> is a serialization (via
+  <a id=the-session-history-of-browsing-contexts:structuredserialize href=infrastructure.html#structuredserialize>StructuredSerialize</a>) of an object representing a user interface state. We sometimes
+  informally refer to "state objects", which are the objects representing user interface state
+  supplied by the author, or alternately the objects created by deserializing (via
+  <a id=the-session-history-of-browsing-contexts:structureddeserialize href=infrastructure.html#structureddeserialize>StructuredDeserialize</a>) serialized state.</p>
 
-  <p>ページは、セッション履歴に<a href=#state-object id=the-session-history-of-browsing-contexts:state-object-3>状態オブジェクト</a>を<a href=#dom-history-pushstate id=the-session-history-of-browsing-contexts:dom-history-pushstate>追加</a>できる。このように著者に一つでもページのアプリケーションでは"ナビゲーション"メタファーを使用できるように、これらは、ユーザー（またはスクリプト）が履歴に戻る際にその後<a href=indices.html#event-popstate id=the-session-history-of-browsing-contexts:event-popstate>スクリプトに返される</a>。</p>
+  <p>Pages can <a href=#dom-history-pushstate id=the-session-history-of-browsing-contexts:dom-history-pushstate>add</a> <a href=#serialized-state id=the-session-history-of-browsing-contexts:serialized-state-3>serialized state</a> to the
+  session history. These are then <a href=infrastructure.html#structureddeserialize id=the-session-history-of-browsing-contexts:structureddeserialize-2>deserialized</a> and <a href=indices.html#event-popstate id=the-session-history-of-browsing-contexts:event-popstate>returned to the script</a> when the user (or script) goes back in the
+  history, thus enabling authors to use the "navigation" metaphor even in one-page applications.</p>
 
   <div class=note>
 
-   <p><a href=#state-object id=the-session-history-of-browsing-contexts:state-object-4>状態オブジェクト</a>は、2つの主な目的に使用されることを意図される：1つ目は、（それがユーザーによって扱う<a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=the-session-history-of-browsing-contexts:url-4 data-x-internal=url>URL</a>を渡されるものに対して解析する必要が依然としてあるので、マイナー最適化のみであるが）単純なケース場合において、著者が解析を行う必要がないように、<a id=the-session-history-of-browsing-contexts:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>内の状態の事前解析された説明を格納し、2つ目は、新しい<code id=the-session-history-of-browsing-contexts:document-10><a href=dom.html#document>Document</a></code>が開かれた場合、現在の<code id=the-session-history-of-browsing-contexts:document-9><a href=dom.html#document>Document</a></code>インスタンスのみに適用され、再構築しなければならないため、著者はそれがURLに格納しない状態を保存できるようにする。</p>
+   <p><a href=#serialized-state id=the-session-history-of-browsing-contexts:serialized-state-4>Serialized state</a> is intended to be used for two main purposes: first, storing a
+   preparsed description of the state in the <a id=the-session-history-of-browsing-contexts:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> so that in the simple case an author
+   doesn't have to do the parsing (though one would still need the parsing for handling <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=the-session-history-of-browsing-contexts:url-4 data-x-internal=url>URLs</a> passed around by users, so it's only a minor optimization). Second, so
+   that the author can store state that one wouldn't store in the URL because it only applies to the
+   current <code id=the-session-history-of-browsing-contexts:document-9><a href=dom.html#document>Document</a></code> instance and it would have to be reconstructed if a new
+   <code id=the-session-history-of-browsing-contexts:document-10><a href=dom.html#document>Document</a></code> were opened.</p>
 
    <p>後者の例は、ユーザーが戻った場合同じ場所にアニメーションさせることができるように、ポップアップ<code id=the-session-history-of-browsing-contexts:the-div-element><a href=semantics.html#the-div-element>div</a></code>がアニメーション化するために作られた正確な座標を追跡するようなものになるだろう。またその代わりに、前後に行く際に、情報が再度フェッチする必要がないよう、<a id=the-session-history-of-browsing-contexts:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>内の情報に基づいてサーバーからフェッチされるデータのキャッシュにポインターを保持するために使用できる。</p>
 
@@ -2279,7 +2357,8 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
 
   <p>任意の時点で、セッション履歴のエントリの一つは、<dfn id=current-entry>現在のエントリ</dfn>である。これは、<a href=#browsing-context id=the-session-history-of-browsing-contexts:browsing-context-5>ブラウジングコンテキスト</a>の<a href=#active-document id=the-session-history-of-browsing-contexts:active-document>アクティブドキュメント</a>を表すエントリである。<a href=#current-entry id=the-session-history-of-browsing-contexts:current-entry>現在のエントリ</a>であるそれぞれのエントリは、この仕様で定義されるアルゴリズムによって変更される。たとえば<a href=#traverse-the-history id=the-session-history-of-browsing-contexts:traverse-the-history>セッション履歴走査</a>中など。</p>
 
-  <p class=note>The <a href=#current-entry id=the-session-history-of-browsing-contexts:current-entry-2>current entry</a> is usually an entry for the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-session-history-of-browsing-contexts:the-document's-address" data-x-internal="the-document's-address">URL</a> of the <code id=the-session-history-of-browsing-contexts:document-11><a href=dom.html#document>Document</a></code>. しかし、それはまた、その文書によって履歴に追加された<a href=#state-object id=the-session-history-of-browsing-contexts:state-object-5>状態オブジェクト</a>のエントリのいずれかを指定できる。</p>
+  <p class=note>The <a href=#current-entry id=the-session-history-of-browsing-contexts:current-entry-2>current entry</a> is usually an entry for the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-session-history-of-browsing-contexts:the-document's-address" data-x-internal="the-document's-address">URL</a> of the <code id=the-session-history-of-browsing-contexts:document-11><a href=dom.html#document>Document</a></code>. However, it can also be one
+  of the entries for <a href=#serialized-state id=the-session-history-of-browsing-contexts:serialized-state-5>serialized state</a> added to the history by that document.</p>
 
   <p><dfn id=an-entry-with-persisted-user-state>永続ユーザー状態を持つエントリ</dfn>はまた、ユーザーエージェント定義の状態を持つ。この仕様は、何が状態の種類を格納できるのかを指定しない。</p>
 
@@ -2297,7 +2376,8 @@ callback <dfn id=framerequestcallback>FrameRequestCallback</dfn> = void (<a id=t
   <p>If unspecified, the <a href=#scroll-restoration-mode id=the-session-history-of-browsing-contexts:scroll-restoration-mode-2>scroll restoration mode</a> of a new entry must be set to
   "<code id=the-session-history-of-browsing-contexts:dom-scrollrestoration-auto><a href=#dom-scrollrestoration-auto>auto</a></code>".</p>
 
-  <p><a href=#state-object id=the-session-history-of-browsing-contexts:state-object-6>状態オブジェクト</a>から成るエントリは、追加された際にアクティブであったページのエントリと同じ<code id=the-session-history-of-browsing-contexts:document-12><a href=dom.html#document>Document</a></code>を共有する。</p>
+  <p>Entries that contain <a href=#serialized-state id=the-session-history-of-browsing-contexts:serialized-state-6>serialized state</a> share the same <code id=the-session-history-of-browsing-contexts:document-12><a href=dom.html#document>Document</a></code> as the
+  entry for the page that was active when they were added.</p>
 
   <p>Contiguous entries that differ just by their <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=the-session-history-of-browsing-contexts:url-6 data-x-internal=url>URLs</a>' <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=the-session-history-of-browsing-contexts:concept-url-fragment data-x-internal=concept-url-fragment>fragments</a> also share the same <code id=the-session-history-of-browsing-contexts:document-13><a href=dom.html#document>Document</a></code>.</p>
 
@@ -2351,7 +2431,7 @@ interface <dfn id=history-3>History</dfn> {
 
    <dt><var>window</var> . <code id=the-history-interface:dom-history-3><a href=#dom-history>history</a></code> . <code id=the-history-interface:dom-history-state-2><a href=#dom-history-state>state</a></code><dd>
 
-    <p>現在の<a href=#state-object id=the-history-interface:state-object>状態オブジェクト</a>を返す。</p>
+    <p>Returns the current <a href=#serialized-state id=the-history-interface:serialized-state>serialized state</a>, deserialized into an object.</p>
 
    <dt><var>window</var> . <code id=the-history-interface:dom-history-4><a href=#dom-history>history</a></code> . <code id=the-history-interface:dom-history-go-2><a href=#dom-history-go>go</a></code>( [ <var>delta</var> ] )<dd>
 
@@ -2510,7 +2590,7 @@ interface <dfn id=history-3>History</dfn> {
   <hr id=history-1> 
 
   <p>The <dfn id=dom-history-pushstate><code>pushState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method adds a state object entry to
-  the history.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> history<span class="and_chr yes"><span>Chrome for Android</span> <span>56+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0+</span></span><span class="and_uc partial"><span>UC Browser for Android (limited)</span> <span>11+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>4.2+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.5+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=history">caniuse.com</a></div>
+  the history.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> history<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="and_uc partial"><span>UC Browser for Android (limited)</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>4.2+</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.5+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=history">caniuse.com</a></div>
 
   <p>The <dfn id=dom-history-replacestate><code>replaceState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method updates the state object,
   title, and optionally the <a id=the-history-interface:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the <a href=#current-entry id=the-history-interface:current-entry-3>current entry</a> in the history.</p>
@@ -2521,7 +2601,7 @@ interface <dfn id=history-3>History</dfn> {
    <code id=the-history-interface:history-3-10><a href=#history-3>History</a></code> object is associated with.</li><li><p>If <var>document</var> is not <a href=#fully-active id=the-history-interface:fully-active-8>fully active</a>, throw a
    <a id=the-history-interface:securityerror-7 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-7><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Optionally, abort these steps. (For example, the user agent might disallow calls to these
    methods that are invoked on a timer, or from event listeners that are not triggered in response
-   to a clear user action, or that are invoked in rapid succession.)</li><li><p>Let <var>targetRealm</var> be this <code id=the-history-interface:history-3-11><a href=#history-3>History</a></code> object's <a href=webappapis.html#concept-relevant-realm id=the-history-interface:concept-relevant-realm>relevant Realm</a>.</li><li><p>Let <var>cloned data</var> be <a id=the-history-interface:structuredclone href=infrastructure.html#structuredclone>StructuredClone</a>(<var>data</var>, <var>targetRealm</var>). 例外を再度投げる。</li><li>
+   to a clear user action, or that are invoked in rapid succession.)</li><li><p>Let <var>targetRealm</var> be this <code id=the-history-interface:history-3-11><a href=#history-3>History</a></code> object's <a href=webappapis.html#concept-relevant-realm id=the-history-interface:concept-relevant-realm>relevant Realm</a>.</li><li><p>Let <var>serializedData</var> be <a id=the-history-interface:structuredserialize href=infrastructure.html#structuredserialize>StructuredSerialize</a>(<var>data</var>). 例外を再度投げる。</li><li>
 
     <p>If the third argument is not null, run these substeps:</p>
 
@@ -2556,16 +2636,18 @@ interface <dfn id=history-3>History</dfn> {
      task source</a> that are associated with any <code id=the-history-interface:document-13><a href=dom.html#document>Document</a></code> objects in the
      <a href=#top-level-browsing-context id=the-history-interface:top-level-browsing-context-10>top-level browsing context</a>'s <a href=#document-family id=the-history-interface:document-family>document family</a>.</li><li><p>If appropriate, update the <a href=#current-entry id=the-history-interface:current-entry-7>current entry</a> to reflect any state that the user
      agent wishes to persist. The entry is then said to be <a href=#an-entry-with-persisted-user-state id=the-history-interface:an-entry-with-persisted-user-state>an entry with persisted user
-     state</a>.</li><li><p>Add a <a href=#state-object id=the-history-interface:state-object-2>state object</a> entry to the session history, after the <a href=#current-entry id=the-history-interface:current-entry-8>current
-     entry</a>, with <var>cloned data</var> as the <a href=#state-object id=the-history-interface:state-object-3>state object</a>, the given
-     <var>title</var> as the title, <var>new URL</var> as the <a id=the-history-interface:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>
-     of the entry, and the <a href=#scroll-restoration-mode id=the-history-interface:scroll-restoration-mode-5>scroll restoration mode</a> of the current entry in the
-     <a href=#session-history id=the-history-interface:session-history-10>session history</a> as the scroll restoration mode.</li><li><p>Update the <a href=#current-entry id=the-history-interface:current-entry-9>current entry</a> to be this newly added entry.</li></ol>
+     state</a>.</li><li><p>Add a <a href=#session-history-entry id=the-history-interface:session-history-entry>session history entry</a> entry to the session history, after the
+     <a href=#current-entry id=the-history-interface:current-entry-8>current entry</a>, with <var>serializedData</var> as the <a href=#serialized-state id=the-history-interface:serialized-state-2>serialized
+     state</a>, the given <var>title</var> as the title, <var>new URL</var> as the
+     <a id=the-history-interface:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the entry, and the <a href=#scroll-restoration-mode id=the-history-interface:scroll-restoration-mode-5>scroll restoration mode</a> of the current
+     entry in the <a href=#session-history id=the-history-interface:session-history-10>session history</a> as the scroll restoration mode.</li><li><p>Update the <a href=#current-entry id=the-history-interface:current-entry-9>current entry</a> to be this newly added entry.</li></ol>
 
     <p>Otherwise, if the method invoked was the <code id=the-history-interface:dom-history-replacestate-3><a href=#dom-history-replacestate>replaceState()</a></code> method:</p>
 
-    <ol><li><p>Update the <a href=#current-entry id=the-history-interface:current-entry-10>current entry</a> in the session history so that <var>cloned data</var> is the entry's new state object, the given <var>title</var>
-     is the new title, and <var>new URL</var> is the entry's new <a id=the-history-interface:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>.</li></ol>
+    <ol><li><p>Update the <a href=#current-entry id=the-history-interface:current-entry-10>current entry</a> in the session history so that
+     <var>serializedData</var> is the entry's new <a href=#serialized-state id=the-history-interface:serialized-state-3>serialized state</a>, the given
+     <var>title</var> is the new title, and <var>new URL</var> is the entry's new
+     <a id=the-history-interface:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>.</li></ol>
 
    </li><li><p>If the <a href=#current-entry id=the-history-interface:current-entry-11>current entry</a> in the session history represents a non-GET request
    (e.g. it was the result of a POST submission) then update it to instead represent a GET
@@ -2578,12 +2660,9 @@ interface <dfn id=history-3>History</dfn> {
     <a href=#browsing-context id=the-history-interface:browsing-context-7>browsing context</a> nor a <a href=#traverse-the-history id=the-history-interface:traverse-the-history-3>history traversal</a>,
     it does not cause a <code id=the-history-interface:event-hashchange><a href=indices.html#event-hashchange>hashchange</a></code> event to be fired.</p>
 
-   </li><li>
-
-    <p>Set <code id=the-history-interface:dom-history-state-3><a href=#dom-history-state>history.state</a></code> to
-    <a id=the-history-interface:structuredclone-2 href=infrastructure.html#structuredclone>StructuredClone</a>(<var>cloned data</var>, <var>targetRealm</var>).</p> 
-
-   </li><li><p>Set the <a href=#current-entry id=the-history-interface:current-entry-12>current entry</a>'s <code id=the-history-interface:document-14><a href=dom.html#document>Document</a></code> object's <a href=#latest-entry id=the-history-interface:latest-entry>latest
+   </li><li><p>Let <var>state</var> be <a id=the-history-interface:structureddeserialize href=infrastructure.html#structureddeserialize>StructuredDeserialize</a>(<var>serializedData</var>,
+   <var>targetRealm</var>). If this throws an exception, ignore the exception and set
+   <var>state</var> to null.</li><li><p>Set <code id=the-history-interface:dom-history-state-3><a href=#dom-history-state>history.state</a></code> to <var>state</var>.</li><li><p>Set the <a href=#current-entry id=the-history-interface:current-entry-12>current entry</a>'s <code id=the-history-interface:document-14><a href=dom.html#document>Document</a></code> object's <a href=#latest-entry id=the-history-interface:latest-entry>latest
    entry</a> to the <a href=#current-entry id=the-history-interface:current-entry-13>current entry</a>.</li></ol>
 
   <p class=note>The <var>title</var> is purely advisory. User agents might use the title
@@ -2652,7 +2731,7 @@ interface <dfn id=history-3>History</dfn> {
 
   <div class=example>
 
-   <p>アプリケーションは、その時点で文書の<code id=the-history-interface:the-title-element><a href=semantics.html#the-title-element>title</a></code>要素の値として<a href=#session-history-entry id=the-history-interface:session-history-entry>セッション履歴エントリ</a>の同じタイトルを使用しないかもしれない。たとえば、これは<code id=the-history-interface:the-title-element-2><a href=semantics.html#the-title-element>title</a></code>要素内のブロックを示す単純なページである。明らかに、後方に以前の状態に移動する際にユーザーは時間内に戻らず、したがって、セッション履歴のタイトルに時間を置くことは不適切だろう。</p>
+   <p>アプリケーションは、その時点で文書の<code id=the-history-interface:the-title-element><a href=semantics.html#the-title-element>title</a></code>要素の値として<a href=#session-history-entry id=the-history-interface:session-history-entry-2>セッション履歴エントリ</a>の同じタイトルを使用しないかもしれない。たとえば、これは<code id=the-history-interface:the-title-element-2><a href=semantics.html#the-title-element>title</a></code>要素内のブロックを示す単純なページである。明らかに、後方に以前の状態に移動する際にユーザーは時間内に戻らず、したがって、セッション履歴のタイトルに時間を置くことは不適切だろう。</p>
 
    <pre>&lt;!DOCTYPE HTML&gt;
 &lt;HTML LANG=EN&gt;
@@ -2947,7 +3026,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
     providing a value of "<code>https</code>".</p>
    </li><li><p>If <var>possibleFailure</var> is failure, then throw a
    <a id=the-location-interface:syntaxerror href=https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code id=the-location-interface:domexception-5><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If <var>copyURL</var>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=the-location-interface:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a> is not an
-   <a id=the-location-interface:http(s)-scheme href=https://triple-underscore.github.io/URL-ja.html#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, then terminate these steps.</li><li><p><a href=#location-object-setter-navigate id=the-location-interface:location-object-setter-navigate-2><code>Location</code>-object-setter navigate</a> to <var>copyURL</var>.</li></ol>
+   <a id=the-location-interface:http(s)-scheme href=https://fetch.spec.whatwg.org/#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, then terminate these steps.</li><li><p><a href=#location-object-setter-navigate id=the-location-interface:location-object-setter-navigate-2><code>Location</code>-object-setter navigate</a> to <var>copyURL</var>.</li></ol>
 
   <p>The <dfn id=dom-location-host><code>host</code></dfn> attribute's getter must run these
   steps:</p>
@@ -3151,6 +3230,10 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
    object</a>'s <a href=webappapis.html#concept-settings-object-origin id=the-location-interface:concept-settings-object-origin-19>origin</a>, then throw a
    <a id=the-location-interface:securityerror-19 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-location-interface:domexception-22><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Otherwise, return this <code id=the-location-interface:location-70><a href=#location>Location</a></code> object's <a href=#concept-location-ancestor-origins-list id=the-location-interface:concept-location-ancestor-origins-list-2>ancestor origins list</a>.</li></ol>
 
+  <p class=warning>The details of how the <code id=the-location-interface:dom-location-ancestororigins-3><a href=#dom-location-ancestororigins>ancestorOrigins</a></code> attribute works are still
+  controversial and might change. See <a href=https://github.com/whatwg/html/issues/1918>issue
+  #1918</a> for more information.</p>
+
   <hr>
 
   <p id=location-internal-methods>As explained earlier, the <code id=the-location-interface:location-71><a href=#location>Location</a></code> exotic object
@@ -3167,7 +3250,7 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
 
   <h5 id=location-setprototypeof>7.7.4.2 [[SetPrototypeOf]] ( <var>V</var> )<a href=#location-setprototypeof class=self-link></a></h5>
 
-  <ol><li><p>Return false.</li></ol>
+  <ol><li><p>Return ! <a id=location-setprototypeof:setimmutableprototype href=https://tc39.github.io/ecma262/#sec-set-immutable-prototype data-x-internal=setimmutableprototype>SetImmutablePrototype</a>(<b>this</b>, <var>V</var>).</li></ol>
 
   <h5 id=location-isextensible>7.7.4.3 [[IsExtensible]] ( )<a href=#location-isextensible class=self-link></a></h5>
 
@@ -3397,10 +3480,10 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
       standard. <a href=references.html#refsFETCH>[FETCH]</a></p>
 
      <dt>If <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-4 data-x-internal=concept-request>request</a> whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-6 data-x-internal=concept-request-url>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a>
-     is a <a id=navigating-across-documents:fetch-scheme href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a><dd><p>Run <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch>process a navigate fetch</a> given <var>resource</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-8>source
+     is a <a id=navigating-across-documents:fetch-scheme href=https://fetch.spec.whatwg.org/#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a><dd><p>Run <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch>process a navigate fetch</a> given <var>resource</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-8>source
      browsing context</a>, and <var>browsing context</var>, and <var>type</var>.<dt>Otherwise, <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-5 data-x-internal=concept-request>request</a> whose
      <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-7 data-x-internal=concept-request-url>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-3 data-x-internal=concept-url-scheme>scheme</a>
-     is neither "<code id=navigating-across-documents:javascript-protocol-3><a href=#javascript-protocol>javascript</a></code>" nor a <a id=navigating-across-documents:fetch-scheme-2 href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch
+     is neither "<code id=navigating-across-documents:javascript-protocol-3><a href=#javascript-protocol>javascript</a></code>" nor a <a id=navigating-across-documents:fetch-scheme-2 href=https://fetch.spec.whatwg.org/#fetch-scheme data-x-internal=fetch-scheme>fetch
      scheme</a><dd><p>Run <a href=#process-a-navigate-url-scheme id=navigating-across-documents:process-a-navigate-url-scheme>process a navigate URL scheme</a> given <var>resource</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-8 data-x-internal=concept-request-url>url</a> and <var>browsingContext</var>.</dl>
    </li></ol>
 
@@ -3441,14 +3524,14 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
      result.</li></ol>
    </li><li id=navigate-redirect-step>
     <p>If <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url data-x-internal=concept-response-location-url>location URL</a>
-    and it is either failure or a <a id=navigating-across-documents:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is an <a id=navigating-across-documents:http(s)-scheme href=https://triple-underscore.github.io/URL-ja.html#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, then set
+    and it is either failure or a <a id=navigating-across-documents:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is an <a id=navigating-across-documents:http(s)-scheme href=https://fetch.spec.whatwg.org/#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, then set
     <var>response</var> to the result of performing <a id=navigating-across-documents:http-redirect-fetch href=https://triple-underscore.github.io/Fetch-ja.html#concept-http-redirect-fetch data-x-internal=http-redirect-fetch>HTTP-redirect fetch</a> using
     <var>request</var> and <var>response</var> and then run this step again.</p>
 
     <p class=note>Navigation handles redirects manually as navigation is the only place in the web
     platform that cares for redirects to <code id=navigating-across-documents:mailto-protocol><a data-x-internal=mailto-protocol href=https://tools.ietf.org/html/rfc6068#section-2>mailto:</a></code> URLs and
     such.</p>
-   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-2 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-5 data-x-internal=concept-url-scheme>scheme</a> is "<code>blob</code>", "<code>file</code>", "<code>filesystem</code>", or "<code>javascript</code>", then set <var>response</var> to a network error.</li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-3 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-6 data-x-internal=concept-url-scheme>scheme</a> is a <a id=navigating-across-documents:fetch-scheme-3 href=https://triple-underscore.github.io/URL-ja.html#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a>, then run
+   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-2 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-5 data-x-internal=concept-url-scheme>scheme</a> is "<code>blob</code>", "<code>file</code>", "<code>filesystem</code>", or "<code>javascript</code>", then set <var>response</var> to a network error.</li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-3 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-6 data-x-internal=concept-url-scheme>scheme</a> is a <a id=navigating-across-documents:fetch-scheme-3 href=https://fetch.spec.whatwg.org/#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a>, then run
    <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch-2>process a navigate fetch</a> with a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-7 data-x-internal=concept-request>request</a>
    whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-9 data-x-internal=concept-request-url>url</a> is <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-4 data-x-internal=concept-response-location-url>location URL</a>, <var>sourceBrowsingContext</var>,
    <var>browsingContext</var>, and <var>type</var>.
@@ -4180,9 +4263,10 @@ State: &lt;OUTPUT NAME=I&gt;1&lt;/OUTPUT&gt; &lt;INPUT VALUE="Increment" TYPE=BU
    <var>entry</var>'s <a id=history-traversal:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>. Otherwise, let <var>hash changed</var> be false.</li><li><p>If the traversal was initiated with <dfn id=replacement-enabled data-export="">replacement enabled</dfn>, remove
    the entry immediately before the <var>specified entry</var> in the session history.</li><li><p>If <var>entry</var> is not <a href=#an-entry-with-persisted-user-state id=history-traversal:an-entry-with-persisted-user-state-2>an entry with persisted user state</a>, but its
    <a id=history-traversal:url-6 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=history-traversal:concept-url-fragment-2 data-x-internal=concept-url-fragment>fragment</a> is non-null, then
-   <a href=#scroll-to-the-fragment-identifier id=history-traversal:scroll-to-the-fragment-identifier>scroll to the fragment</a>.</li><li><p>Set the <a href=#current-entry id=history-traversal:current-entry-8>current entry</a> to <var>entry</var>.</li><li><p>Let <var>targetRealm</var> be the <a id=history-traversal:current-realm-record href=https://tc39.github.io/ecma262/#current-realm data-x-internal=current-realm-record>current Realm Record</a>.</li><li><p>If <var>entry</var> has a <a href=#state-object id=history-traversal:state-object>state object</a>, then let <var>state</var> be
-   <a id=history-traversal:structuredclone href=infrastructure.html#structuredclone>StructuredClone</a>(<var>entry</var>'s <a href=#state-object id=history-traversal:state-object-2>state object</a>,
-   <var>targetRealm</var>). Otherwise, let <var>state</var> be null.</li><li><p>Set <code id=history-traversal:dom-history-state><a href=#dom-history-state>history.state</a></code> to <var>state</var>.</li><li><p>Let <var>state changed</var> be true if <var>entry</var>'s <code id=history-traversal:document-18><a href=dom.html#document>Document</a></code> object
+   <a href=#scroll-to-the-fragment-identifier id=history-traversal:scroll-to-the-fragment-identifier>scroll to the fragment</a>.</li><li><p>Set the <a href=#current-entry id=history-traversal:current-entry-8>current entry</a> to <var>entry</var>.</li><li><p>Let <var>targetRealm</var> be the <a id=history-traversal:current-realm-record href=https://tc39.github.io/ecma262/#current-realm data-x-internal=current-realm-record>current Realm Record</a>.</li><li><p>If <var>entry</var> has <a href=#serialized-state id=history-traversal:serialized-state>serialized state</a>, then let <var>state</var> be
+   <a id=history-traversal:structureddeserialize href=infrastructure.html#structureddeserialize>StructuredDeserialize</a>(<var>entry</var>'s <a href=#serialized-state id=history-traversal:serialized-state-2>serialized state</a>,
+   <var>targetRealm</var>). If this throws an exception, ignore the exception and let
+   <var>state</var>be null.</li><li><p>Otherwise, let <var>state</var> be null.</li><li><p>Set <code id=history-traversal:dom-history-state><a href=#dom-history-state>history.state</a></code> to <var>state</var>.</li><li><p>Let <var>state changed</var> be true if <var>entry</var>'s <code id=history-traversal:document-18><a href=dom.html#document>Document</a></code> object
    has a <a href=#latest-entry id=history-traversal:latest-entry>latest entry</a>, and that entry is not <var>entry</var>; otherwise let it be
    false.</p>
 
@@ -4261,7 +4345,7 @@ dictionary <dfn id=popstateeventinit>PopStateEventInit</dfn> : <a id=the-popstat
   
 
 
-  <h5 id=the-hashchangeevent-interface>7.8.10.3 The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hashchange<span class="and_chr yes"><span>Chrome for Android</span> <span>56+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=hashchange">caniuse.com</a></div>
+  <h5 id=the-hashchangeevent-interface>7.8.10.3 The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hashchange<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=hashchange">caniuse.com</a></div>
 
   <pre class=idl>[Constructor(DOMString type, optional <a href=#hashchangeeventinit id=the-hashchangeevent-interface:hashchangeeventinit>HashChangeEventInit</a> eventInitDict)]
 interface <dfn id=hashchangeevent>HashChangeEvent</dfn> : <a id=the-hashchangeevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
@@ -4531,7 +4615,7 @@ dictionary <dfn id=pagetransitioneventinit>PageTransitionEventInit</dfn> : <a id
 
 
 
-  <h3 id=offline>7.9 オフラインウェブアプリケーション<a href=#offline class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> offline-apps<span class="and_chr yes"><span>Chrome for Android</span> <span>56+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.5+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=offline-apps">caniuse.com</a></div> 
+  <h3 id=offline>7.9 オフラインウェブアプリケーション<a href=#offline class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> offline-apps<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.5+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=offline-apps">caniuse.com</a></div> 
 
   <p class=critical>This feature is in the process of being removed from the Web platform. (This
   is a long process that takes many years.) Using any of the offline Web application features at
@@ -6134,7 +6218,7 @@ NETWORK:
   
 
 
-  <h4 id=navigator.online>7.9.11 <span id=browser-state>Browser state</span><a href=#navigator.online class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> online-status<span class="and_chr yes"><span>Chrome for Android</span> <span>56+</span></span><span class="chrome yes"><span>Chrome</span> <span>14+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.2+</span></span><span class="and_uc partial"><span>UC Browser for Android (limited)</span> <span>11+</span></span><span class="firefox yes"><span>Firefox</span> <span>41+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=online-status">caniuse.com</a></div>
+  <h4 id=navigator.online>7.9.11 <span id=browser-state>Browser state</span><a href=#navigator.online class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> online-status<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>14+</span></span><span class="and_uc partial"><span>UC Browser for Android (limited)</span> <span>11+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>41+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>2.3+</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=online-status">caniuse.com</a></div>
 
   <pre class=idl>[NoInterfaceObject, Exposed=(Window,Worker)]
 interface <dfn id=navigatoronline>NavigatorOnLine</dfn> {
