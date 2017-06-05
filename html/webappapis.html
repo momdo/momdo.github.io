@@ -112,6 +112,8 @@
 
    .details-example img { vertical-align: top; }
 
+   .parse-error-table td > p:first-child { margin-top: 0; }
+
    #base64-table {
      white-space: nowrap;
      font-size: 0.6em;
@@ -182,7 +184,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>3 May 2017</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>4 June 2017</span></h2></hgroup>
    
    
   </header>
@@ -291,14 +293,15 @@
     script was obtained, for external module scripts, or the <a id=definitions-2:document-base-url href=infrastructure.html#document-base-url>document base URL</a> of the
     containing document, for inline module scripts.</p>
 
-   <dt>An <dfn id=concept-module-script-instantiation-state>instantiation state</dfn><dd>
+   <dt>A <dfn id=concept-module-script-state>state</dfn><dd>
 
     <p>One of "<code>uninstantiated</code>", "<code>errored</code>", or "<code>instantiated</code>", used to prevent reinvocation of <a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=definitions-2:js-moduledeclarationinstantiation data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a> on modules that
-    failed to instantiate previously.</p>
+    failed to instantiate previously, and to ensure errors during parsing, instantiation, or
+    evaluation are remembered and propagated correctly.</p>
 
-   <dt>An <dfn id=concept-module-script-instantiation-error>instantiation error</dfn><dd>
+   <dt>An <dfn id=concept-module-script-error>error</dfn><dd>
 
-    <p>A JavaScript value, which has meaning only if the <a href=#concept-module-script-instantiation-state id=definitions-2:concept-module-script-instantiation-state>instantiation state</a> is "<code>errored</code>".</p>
+    <p>A JavaScript value, which has meaning only if the <a href=#concept-module-script-state id=definitions-2:concept-module-script-state>state</a> is "<code>errored</code>".</p>
 
    <dt>A <dfn id=concept-module-script-credentials-mode>credentials mode</dfn><dd>
 
@@ -317,6 +320,21 @@
 
    </dl>
 
+  <p>To <dfn id=error-a-module-script>error a module script</dfn> <var>script</var> with a given value <var>error</var>,
+  perform the following steps:</p>
+
+  <ol><li><p>Assert: <var>script</var>'s <a href=#concept-module-script-state id=definitions-2:concept-module-script-state-2>state</a> is not
+   "<code>errored</code>".</li><li>
+    <p>If <var>script</var>'s <a href=#concept-module-script-module-record id=definitions-2:concept-module-script-module-record>module
+    record</a> is set, then:</p>
+
+    <ol><li><p>Set <var>script</var> <a href=#concept-module-script-module-record id=definitions-2:concept-module-script-module-record-2>module
+     record</a>'s [[HostDefined]] field to undefined.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-module-record id=definitions-2:concept-module-script-module-record-3>module
+     record</a> to null.</li></ol>
+   </li><li><p>Set <var>script</var>'s <a href=#concept-module-script-state id=definitions-2:concept-module-script-state-3>state</a> to
+   "<code>errored</code>".</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-error id=definitions-2:concept-module-script-error>error</a> to
+   <var>error</var>.</li></ol>
+
   <hr>
 
   <p>An <dfn id=environment data-export="">environment</dfn> is an object that identifies the settings of a
@@ -324,7 +342,7 @@
   fields:</p>
 
   <dl><dt>An <dfn data-dfn-for=environment id=concept-environment-id data-export="">id</dfn><dd><p>An opaque string that uniquely identifies the <a href=#environment id=definitions-2:environment-2>environment</a>.<dt>A <dfn data-dfn-for=environment id=concept-environment-creation-url data-export="">creation URL</dfn><dd>
-    <p>An <a id=definitions-2:absolute-url href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a> that represents the location of the resource with which the
+    <p>A <a id=definitions-2:url-record href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL record</a> that represents the location of the resource with which the
     <a href=#environment id=definitions-2:environment-3>environment</a> is associated.</p>
 
     <p class=note>In the case of an <a href=#environment-settings-object id=definitions-2:environment-settings-object-2>environment settings object</a>, this URL might be
@@ -588,89 +606,22 @@
 
    </li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-3>fetching a single module script</a> asynchronously completes with
    <var>result</var>:</li><li><p>If <var>result</var> is null, asynchronously complete this algorithm with null and abort
-   these steps.</li><li>
-    <p>Otherwise, <var>result</var> is a <a href=#module-script id=fetching-scripts:module-script-5>module script</a>. <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script>Fetch the descendants</a> of <var>result</var> given
-    <var>destination</var> and an ancestor list obtained by appending <var>url</var> to <var>ancestor
-    list</var>. Wait for <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-2>fetching the
-    descendants of a module script</a> to asynchronously complete with <var>descendants
-    result</var> before proceeding to the next step.</p>
-
-    <p class=note>If the asynchronous completion result is null, meaning that fetching one of the
-    descendants failed, we still proceed through the next set of steps. A failure will shortly occur
-    during instantiation, which we then react to appropriately. The error signal is eventually
-    propagated to the caller of this algorithm in the last step.</p>
-   </li><li><p>Let <var>instantiationStatus</var> be null.</li><li><p>If <var>result</var>'s <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state>instantiation
-   state</a> is "<code>errored</code>", then set <var>instantiationStatus</var> to
-   Completion { [[Type]]: throw, [[Value]]: <var>result</var>'s <a href=#concept-module-script-instantiation-error id=fetching-scripts:concept-module-script-instantiation-error>instantiation error</a>, [[Target]]:
-   empty }.</li><li>
-    <p>Otherwise:</p>
-
-    <ol><li><p>Let <var>record</var> be <var>result</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record>module record</a>.</li><li>
-      <p>Set <var>instantiationStatus</var> to <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-moduledeclarationinstantiation data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a>().</p>
-
-      <p class=note>This step will recursively call <a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-moduledeclarationinstantiation-2 data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a> all of the
-      module's uninstantiated dependencies.</p>
-     </li></ol>
-   </li><li>
-    <p>For each <var>script</var> in <var>result</var>'s <a href=#uninstantiated-inclusive-descendant-module-scripts id=fetching-scripts:uninstantiated-inclusive-descendant-module-scripts>uninstantiated inclusive descendant module
-    scripts</a>, perform the following steps:</p>
-
-    <ol><li>
-      <p>If <var>instantiationStatus</var> is an abrupt completion, then:</p>
-
-      <ol><li><p>Set <var>script</var> <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-2>module
-       record</a>'s [[HostDefined]] field to undefined.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-3>module
-       record</a> to null.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state-2>instantiation state</a> to "<code>errored</code>".</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-instantiation-error id=fetching-scripts:concept-module-script-instantiation-error-2>instantiation error</a> to
-       <var>instantiationStatus</var>.[[Value]].</li></ol>
-     </li><li><p>Otherwise, set <var>script</var>'s <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state-3>instantiation state</a> to "<code>instantiated</code>".</li></ol>
-   </li><li>
-    <p>Asynchronously complete this algorithm with <var>descendants result</var>.</p>
-
-    <p class=note>It is intentional that we complete with <var>descendants result</var> here, and
-    not <var>result</var>, as this allows us to propagate error signals to the caller.</p>
-   </li></ol>
-
-  <p>In the above algorithm, a <a href=#module-script id=fetching-scripts:module-script-6>module script</a> <var>script</var>'s <dfn id=uninstantiated-inclusive-descendant-module-scripts>uninstantiated
-  inclusive descendant module scripts</dfn> is a <a id=fetching-scripts:set href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> of <a href=#module-script id=fetching-scripts:module-script-7>module scripts</a> determined as follows:</p>
-
-  <ol><li><p>Let <var>moduleMap</var> be <var>script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>'s
-   <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map>module map</a>.</li><li><p>Let <var>stack</var> be the <a id=fetching-scripts:stack href=https://infra.spec.whatwg.org/#stack data-x-internal=stack>stack</a> « <var>script</var> ».</li><li><p>Let <var>inclusive descendants</var> be an empty <a id=fetching-scripts:set-2 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a>.</li><li>
-    <p>While <var>stack</var> <a href=https://infra.spec.whatwg.org/#list-is-empty id=fetching-scripts:list-is-empty data-x-internal=list-is-empty>is not empty</a>:</p>
-
-    <ol><li><p>Let <var>current</var> the result of <a href=https://infra.spec.whatwg.org/#stack-pop id=fetching-scripts:stack-pop data-x-internal=stack-pop>popping</a> from
-     <var>stack</var>.</li><li><p>Assert: <var>current</var> is a <a href=#module-script id=fetching-scripts:module-script-8>module script</a> (i.e., it is not "<code>fetching</code>" or null).</li><li>
-      <p>If <var>inclusive descendants</var> and <var>stack</var> both do not <a href=https://infra.spec.whatwg.org/#list-contain id=fetching-scripts:list-contains data-x-internal=list-contains>contain</a> <var>current</var>, then:</p>
-
-      <ol><li><p><a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append data-x-internal=list-append>Append</a> <var>current</var> to
-       <var>inclusive descendants</var>.</li><li><p>Let <var>child specifiers</var> be the value of <var>current</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-4>module record</a>'s [[RequestedModules]]
-       internal slot.</li><li><p>Let <var>child URLs</var> be the <a id=fetching-scripts:list href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> obtained by calling
-       <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier>resolve a module specifier</a> once for each item of <var>child specifiers</var>,
-       given <var>current</var> and that item. Omit any failures.</li><li><p>Let <var>child modules</var> be the <a id=fetching-scripts:list-2 href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> obtained by <a href=https://infra.spec.whatwg.org/#map-get id=fetching-scripts:map-get data-x-internal=map-get>getting each value</a> in <var>moduleMap</var> whose key is given by an
-       item of <var>child URLs</var>.</li><li>
-        <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate data-x-internal=list-iterate>For each</a> <var>s</var> of <var>child modules</var>:</p>
-
-        <ol><li><p>If <var>inclusive descendants</var> already <a href=https://infra.spec.whatwg.org/#list-contain id=fetching-scripts:list-contains-2 data-x-internal=list-contains>contains</a> <var>s</var>, <a id=fetching-scripts:continue href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.</li><li><p>If <var>s</var> is null, <a id=fetching-scripts:continue-2 href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.</li><li><p>Assert: <var>s</var> is a <a href=#module-script id=fetching-scripts:module-script-9>module script</a> (i.e., it is not
-         "<code>fetching</code>", since by this point all child modules must have been
-         fetched).</li><li><p><a href=https://infra.spec.whatwg.org/#stack-push id=fetching-scripts:stack-push data-x-internal=stack-push>Push</a> <var>s</var> onto <var>stack</var>.</li></ol>
-      </li></ol>
-     </li></ol>
-   </li><li><p>Return a <a id=fetching-scripts:set-3 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> containing all items of <var>inclusive descendants</var> whose
-   <a href=#concept-module-script-instantiation-state id=fetching-scripts:concept-module-script-instantiation-state-4>instantiation state</a> is "<code>uninstantiated</code>".</li></ol>
-
-  <p class=note>The above algorithm gives a depth-first search of the module dependency graph. The
-  main interesting part is in how the "edges" of this graph are determined. The actual search
-  implementation is not important; any other technique for exploring the graph will suffice, given
-  that the output is a <a id=fetching-scripts:set-4 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> only used for membership testing and whose order is thus not
-  important.</p>
+   these steps.</li><li><p>If <var>result</var>'s <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state>state</a> is "<code>instantiated</code>" or "<code>errored</code>", asynchronously complete this
+   algorithm with <var>result</var>, and abort these steps.</li><li><p>Assert: <var>result</var>'s <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state-2>state</a> is
+   "<code>uninstantiated</code>".</li><li><p><a href=#fetch-the-descendants-of-and-instantiate-a-module-script id=fetching-scripts:fetch-the-descendants-of-and-instantiate-a-module-script>Fetch the
+   descendants of and instantiate</a> <var>result</var> given <var>destination</var> and an
+   ancestor list obtained by appending <var>url</var> to <var>ancestor list</var>.</li><li><p>When the <a href=#fetch-the-descendants-of-and-instantiate-a-module-script id=fetching-scripts:fetch-the-descendants-of-and-instantiate-a-module-script-2>fetch the descendants of and instantiate a module script</a> algorithm
+   asynchronously completes with <var>final result</var>, asynchronously complete this algorithm
+   with <var>final result</var>.</li></ol>
 
   <p>To <dfn id=fetch-a-single-module-script>fetch a single module script</dfn>, given a <var>url</var>, a <var>fetch client
   settings object</var>, a <var>destination</var>, a <var>cryptographic nonce</var>, a <var>parser
   state</var>, a <var>credentials mode</var>, a <var>module map settings object</var>, a
   <var>referrer</var>, and a <var>top-level module fetch</var> flag, run these steps. The algorithm
-  will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-10>module script</a> (on
+  will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-5>module script</a> (on
   success).</p>
 
-  <ol><li><p>Let <var>moduleMap</var> be <var>module map settings object</var>'s <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map-2>module map</a>.</li><li><p>If <var>moduleMap</var>[<var>url</var>] is "<code>fetching</code>", wait
+  <ol><li><p>Let <var>moduleMap</var> be <var>module map settings object</var>'s <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map>module map</a>.</li><li><p>If <var>moduleMap</var>[<var>url</var>] is "<code>fetching</code>", wait
    <a id=fetching-scripts:in-parallel href=infrastructure.html#in-parallel>in parallel</a> until that entry's value changes, then <a href=#queue-a-task id=fetching-scripts:queue-a-task>queue a task</a> on
    the <a href=#networking-task-source id=fetching-scripts:networking-task-source>networking task source</a> to proceed with running the following steps.</li><li><p>If <var>moduleMap</var>[<var>url</var>] <a href=https://infra.spec.whatwg.org/#map-exists id=fetching-scripts:map-exists data-x-internal=map-exists>exists</a>,
    asynchronously complete this algorithm with <var>moduleMap</var>[<var>url</var>], and abort these
@@ -713,47 +664,115 @@
     <p><a href=https://infra.spec.whatwg.org/#map-set id=fetching-scripts:map-set-3 data-x-internal=map-set>Set</a> <var>moduleMap</var>[<var>url</var>] to <var>module
     script</var>, and asynchronously complete this algorithm with <var>module script</var>.</p>
 
-    <p class=note>It is intentional that the <a href=#module-map id=fetching-scripts:module-map>module map</a> is keyed by the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-4 data-x-internal=concept-request-url>request URL</a>, whereas the <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a> for the <a href=#module-script id=fetching-scripts:module-script-11>module script</a> is
+    <p class=note>It is intentional that the <a href=#module-map id=fetching-scripts:module-map>module map</a> is keyed by the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=fetching-scripts:concept-request-url-4 data-x-internal=concept-request-url>request URL</a>, whereas the <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url>base URL</a> for the <a href=#module-script id=fetching-scripts:module-script-6>module script</a> is
     set to the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-url id=fetching-scripts:concept-response-url-2 data-x-internal=concept-response-url>response URL</a>. The former is used to
     deduplicate fetches, while the latter is used for URL resolution.</p>
    </li></ol>
 
-  <p>To <dfn id=fetch-the-descendants-of-a-module-script>fetch the descendants of a module script</dfn> <var>module script</var>, given a
-  <var>destination</var> and an <var>ancestor list</var>, run these steps. The algorithm will
-  asynchronously complete with either null (on failure) or with <var>module script</var> (on
-  success).</p>
+  <p>To <dfn id=fetch-the-descendants-of-and-instantiate-a-module-script>fetch the descendants of and instantiate a module script</dfn> <var>module
+  script</var>, given a <var>destination</var> and an optional <var>ancestor list</var>, run these
+  steps. The algorithm will asynchronously complete with either null (on failure) or with
+  <var>module script</var> (on success).</p>
 
-  <ol><li><p>Let <var>record</var> be <var>module script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-5>module record</a>.</li><li><p>If <var>record</var>.[[RequestedModules]] <a href=https://infra.spec.whatwg.org/#list-is-empty id=fetching-scripts:list-is-empty-2 data-x-internal=list-is-empty>is empty</a>,
-   asynchronously complete this algorithm with <var>module script</var>.</li><li><p>Let <var>urls</var> be a new empty <a id=fetching-scripts:list-3 href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a>.</li><li>
-    <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate-2 data-x-internal=list-iterate>For each</a> string <var>requested</var> of
+  <ol><li><p>If <var>ancestor list</var> was not given, let it be the empty <a id=fetching-scripts:list href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a>.</li><li><p>If <var>module script</var>'s <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state-3>state</a> is
+   "<code>instantiated</code>" or "<code>errored</code>", asynchronously
+   complete this algorithm with <var>module script</var>, and abort these steps.</li><li><p>Assert: <var>module script</var>'s <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state-4>state</a>
+   is "<code>uninstantiated</code>".</li><li><p>Let <var>record</var> be <var>module script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record>module record</a>.</li><li><p>If <var>record</var>.[[RequestedModules]] <a href=https://infra.spec.whatwg.org/#list-is-empty id=fetching-scripts:list-is-empty data-x-internal=list-is-empty>is empty</a>,
+   asynchronously complete this algorithm with <var>module script</var>.</li><li><p>Let <var>urls</var> be a new empty <a id=fetching-scripts:list-2 href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a>.</li><li>
+    <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate data-x-internal=list-iterate>For each</a> string <var>requested</var> of
     <var>record</var>.[[RequestedModules]],</p>
 
-    <ol><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier-2>resolving
+    <ol><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier>resolving
      a module specifier</a> given <var>module script</var> and <var>requested</var>.</li><li>
-      <p>If the result is error:</p>
+      <p>If <var>url</var> is failure:</p>
 
-      <ol><li><p>Let <var>error</var> be a new <code id=fetching-scripts:typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception.</li><li><p><a href=#report-the-exception id=fetching-scripts:report-the-exception>Report the exception</a> <var>error</var> for <var>module
-       script</var>.</li><li><p>Abort this algorithm, and asynchronously complete it with null.</li></ol>
-     </li><li><p>Otherwise, if <var>ancestor list</var> does not <a href=https://infra.spec.whatwg.org/#list-contain id=fetching-scripts:list-contains-3 data-x-internal=list-contains>contain</a> <var>url</var>, <a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append-2 data-x-internal=list-append>append</a>
+      <ol><li><p>Let <var>error</var> be a new <code id=fetching-scripts:typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception.</li><li><p><a href=#error-a-module-script id=fetching-scripts:error-a-module-script>Error</a> <var>module script</var> with
+       <var>error</var>.</li><li><p>Abort this algorithm, and asynchronously complete it with <var>module
+       script</var>.</li></ol>
+     </li><li><p>Otherwise, if <var>ancestor list</var> does not <a href=https://infra.spec.whatwg.org/#list-contain id=fetching-scripts:list-contains data-x-internal=list-contains>contain</a> <var>url</var>, <a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append data-x-internal=list-append>append</a>
      <var>url</var> to <var>urls</var>.</li></ol>
-   </li><li>
-    <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate-3 data-x-internal=list-iterate>For each</a> <var>url</var> in <var>urls</var>, perform the
+   </li><li><p>Let <var>descendants result</var> be null.</li><li>
+    <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate-2 data-x-internal=list-iterate>For each</a> <var>url</var> in <var>urls</var>, perform the
     <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-5>internal module script graph fetching procedure</a> given <var>url</var>, <var>module
     script</var>'s <a href=#concept-module-script-credentials-mode id=fetching-scripts:concept-module-script-credentials-mode>credentials mode</a>,
     <var>module script</var>'s <a href=#concept-module-script-nonce id=fetching-scripts:concept-module-script-nonce>cryptographic
     nonce</a>, <var>module script</var>'s <a href=#concept-module-script-parser id=fetching-scripts:concept-module-script-parser>parser
-    state</a>, <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>,
-    <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-3>settings object</a>, <var>ancestor list</var>, <var>module
+    state</a>, <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>,
+    <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>, <var>ancestor list</var>, <var>module
     script</var>'s <a href=#concept-module-script-base-url id=fetching-scripts:concept-module-script-base-url-2>base URL</a>, and with the
     <var>top-level module fetch</var> flag unset. If the caller of this algorithm specified custom
     <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-14>perform the fetch</a> steps, pass those along
     while performing the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-6>internal module script graph fetching procedure</a>.</p>
 
-    <p>Wait for all of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-7>internal module script graph fetching procedure</a> invocations
-    to asynchronously complete. If any of them asynchronously complete with null, then
-    asynchronously complete this algorithm with null. Otherwise, asynchronously complete this
-    algorithm with <var>module script</var>.</p>
+    <p>These invocations of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-7>internal module script graph fetching procedure</a> should
+    be performed in parallel to each other.</p>
+
+    <p>If any invocation of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-8>internal module script graph fetching procedure</a>
+    asynchronously completes with null, then optionally abort all other invocations, set
+    <var>descendants result</var> to null, and proceed to the next step. (The un-fetched descendant
+    will cause errors during instantiation.)</p>
+
+    <p>If any invocation of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-9>internal module script graph fetching procedure</a>
+    asynchronously completes with a <a href=#module-script id=fetching-scripts:module-script-7>module script</a> whose <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state-5>state</a> is "<code>errored</code>", then
+    optionally abort all other invocations, set <var>descendants result</var> to <var>module
+    script</var>, and proceed to the next step. (The errored descendant will cause errors during
+    instantiation.)</p>
+
+    <p>Otherwise, wait for all of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-10>internal module script graph fetching procedure</a>
+    invocations to asynchronously complete, with <a href=#module-script id=fetching-scripts:module-script-8>module scripts</a>
+    whose <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state-6>states</a> are not "<code>errored</code>". Then, set <var>descendants result</var> to <var>module script</var>,
+    and proceed to the next step.</p>
+   </li><li>
+    <p>Let <var>instantiationStatus</var> be <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-moduledeclarationinstantiation data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a>().</p>
+
+    <p class=note>This step will recursively call <a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-moduledeclarationinstantiation-2 data-x-internal=js-moduledeclarationinstantiation>ModuleDeclarationInstantiation</a> all of the
+    module's uninstantiated dependencies.</p>
+   </li><li>
+    <p>For each <var>script</var> in <var>module script</var>'s <a href=#uninstantiated-inclusive-descendant-module-scripts id=fetching-scripts:uninstantiated-inclusive-descendant-module-scripts>uninstantiated inclusive
+    descendant module scripts</a>, perform the following steps:</p>
+
+    <ol><li><p>If <var>instantiationStatus</var> is an abrupt completion, then <a href=#error-a-module-script id=fetching-scripts:error-a-module-script-2>error</a> <var>script</var> with
+     <var>instantiationStatus</var>.[[Value]].</li><li><p>Otherwise, set <var>script</var>'s <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state-7>state</a> to "<code>instantiated</code>".</li></ol>
+   </li><li>
+    <p>Asynchronously complete this algorithm with <var>descendants result</var>.</p>
+
+    <p class=note>It is intentional that we complete with <var>descendants result</var> here, and
+    not <var>module script</var>, as this allows us to notify the caller of fetching errors.</p>
    </li></ol>
+
+  <p>In the above algorithm, a <a href=#module-script id=fetching-scripts:module-script-9>module script</a> <var>script</var>'s <dfn id=uninstantiated-inclusive-descendant-module-scripts>uninstantiated
+  inclusive descendant module scripts</dfn> is a <a id=fetching-scripts:set href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> of <a href=#module-script id=fetching-scripts:module-script-10>module scripts</a> determined as follows:</p>
+
+  <ol><li><p>If <var>script</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-2>module
+   record</a> is null, return the empty set.</li><li><p>Let <var>moduleMap</var> be <var>script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-3>settings object</a>'s
+   <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map-2>module map</a>.</li><li><p>Let <var>stack</var> be the <a id=fetching-scripts:stack href=https://infra.spec.whatwg.org/#stack data-x-internal=stack>stack</a> « <var>script</var> ».</li><li><p>Let <var>inclusive descendants</var> be an empty <a id=fetching-scripts:set-2 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a>.</li><li>
+    <p>While <var>stack</var> <a href=https://infra.spec.whatwg.org/#list-is-empty id=fetching-scripts:list-is-empty-2 data-x-internal=list-is-empty>is not empty</a>:</p>
+
+    <ol><li><p>Let <var>current</var> the result of <a href=https://infra.spec.whatwg.org/#stack-pop id=fetching-scripts:stack-pop data-x-internal=stack-pop>popping</a> from
+     <var>stack</var>.</li><li><p>Assert: <var>current</var> is a <a href=#module-script id=fetching-scripts:module-script-11>module script</a> (i.e., it is not "<code>fetching</code>" or null).</li><li>
+      <p>If <var>inclusive descendants</var> and <var>stack</var> both do not <a href=https://infra.spec.whatwg.org/#list-contain id=fetching-scripts:list-contains-2 data-x-internal=list-contains>contain</a> <var>current</var>, then:</p>
+
+      <ol><li><p><a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append-2 data-x-internal=list-append>Append</a> <var>current</var> to
+       <var>inclusive descendants</var>.</li><li><p>Let <var>child specifiers</var> be the value of <var>current</var>'s <a href=#concept-module-script-module-record id=fetching-scripts:concept-module-script-module-record-3>module record</a>'s [[RequestedModules]]
+       internal slot.</li><li><p>Let <var>child URLs</var> be the <a id=fetching-scripts:list-3 href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> obtained by calling
+       <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier-2>resolve a module specifier</a> once for each item of <var>child specifiers</var>,
+       given <var>current</var> and that item. Omit any failures.</li><li><p>Let <var>child modules</var> be the <a id=fetching-scripts:list-4 href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> obtained by <a href=https://infra.spec.whatwg.org/#map-get id=fetching-scripts:map-get data-x-internal=map-get>getting each value</a> in <var>moduleMap</var> whose key is given by an
+       item of <var>child URLs</var>.</li><li>
+        <p><a href=https://infra.spec.whatwg.org/#list-iterate id=fetching-scripts:list-iterate-3 data-x-internal=list-iterate>For each</a> <var>s</var> of <var>child modules</var>:</p>
+
+        <ol><li><p>If <var>inclusive descendants</var> already <a href=https://infra.spec.whatwg.org/#list-contain id=fetching-scripts:list-contains-3 data-x-internal=list-contains>contains</a> <var>s</var>, <a id=fetching-scripts:continue href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.</li><li><p>If <var>s</var> is null, <a id=fetching-scripts:continue-2 href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.</li><li><p>Assert: <var>s</var> is a <a href=#module-script id=fetching-scripts:module-script-12>module script</a> (i.e., it is not
+         "<code>fetching</code>", since by this point all child modules must have been
+         fetched).</li><li><p><a href=https://infra.spec.whatwg.org/#stack-push id=fetching-scripts:stack-push data-x-internal=stack-push>Push</a> <var>s</var> onto <var>stack</var>.</li></ol>
+      </li></ol>
+     </li></ol>
+   </li><li><p>Return a <a id=fetching-scripts:set-3 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> containing all items of <var>inclusive descendants</var> whose
+   <a href=#concept-module-script-state id=fetching-scripts:concept-module-script-state-8>state</a> is "<code>uninstantiated</code>".</li></ol>
+
+  <p class=note>The above algorithm gives a depth-first search of the module dependency graph. The
+  main interesting part is in how the "edges" of this graph are determined. The actual search
+  implementation is not important; any other technique for exploring the graph will suffice, given
+  that the output is a <a id=fetching-scripts:set-4 href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> only used for membership testing and whose order is thus not
+  important.</p>
 
   <h5 id=creating-scripts>8.1.3.3 Creating scripts<a href=#creating-scripts class=self-link></a></h5>
 
@@ -785,9 +804,12 @@
 
     <p class=note>Passing <var>script</var> as the last parameter here ensures
     <var>result</var>.[[HostDefined]] will be <var>script</var>.</p>
-   </li><li><p>If <var>result</var> is a <a id=creating-scripts:list href=https://infra.spec.whatwg.org/#list data-x-internal=list>List</a> of errors, <a href=#report-the-exception id=creating-scripts:report-the-exception>report the exception</a>
-   given by the first element of <var>result</var> for <var>script</var>, return null, and abort
-   these steps.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-module-record id=creating-scripts:concept-module-script-module-record>module
+   </li><li>
+    <p>If <var>result</var> is a <a id=creating-scripts:list href=https://infra.spec.whatwg.org/#list data-x-internal=list>List</a> of errors, then:</p>
+
+    <ol><li><p><a href=#error-a-module-script id=creating-scripts:error-a-module-script>Error</a> <var>script</var> with
+     <var>errors</var>[0].</li><li><p>Return <var>script</var>.</li></ol>
+   </li><li><p>Set <var>script</var>'s <a href=#concept-module-script-state id=creating-scripts:concept-module-script-state>state</a> to "<code>uninstantiated</code>".</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-module-record id=creating-scripts:concept-module-script-module-record>module
    record</a> to <var>result</var>.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-base-url id=creating-scripts:concept-module-script-base-url>base URL</a> to
    the script base URL provided.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-nonce id=creating-scripts:concept-module-script-nonce>cryptographic
    nonce</a> to the cryptographic nonce provided.</li><li><p>Set <var>script</var>'s <a href=#concept-module-script-parser id=creating-scripts:concept-module-script-parser>parser state</a>
@@ -830,20 +852,27 @@
   <var>s</var>:</p>
 
   <ol><li><p>Let <var>settings</var> be the <a href=#settings-object id=calling-scripts:settings-object-2>settings object</a> of <var>s</var>.</li><li><p><a href=#check-if-we-can-run-script id=calling-scripts:check-if-we-can-run-script-2>Check if we can run script</a> with <var>settings</var>. If this returns "do
-   not run" then abort these steps.</li><li><p>If <var>s</var>'s <a href=#concept-module-script-instantiation-state id=calling-scripts:concept-module-script-instantiation-state>instantiation
-   state</a> is "<code>errored</code>", then <a href=#report-the-exception id=calling-scripts:report-the-exception-2>report the
-   exception</a> given by <var>s</var>'s <a href=#concept-module-script-instantiation-error id=calling-scripts:concept-module-script-instantiation-error>instantiation error</a> for <var>s</var>
-   and abort these steps.</li><li><p>Assert: <var>s</var>'s <a href=#concept-module-script-instantiation-state id=calling-scripts:concept-module-script-instantiation-state-2>instantiation state</a> is "<code>instantiated</code>" (and thus its <a href=#concept-module-script-module-record id=calling-scripts:concept-module-script-module-record>module record</a> is not null).</li><li><p>Let <var>record</var> be <var>s</var>'s <a href=#concept-module-script-module-record id=calling-scripts:concept-module-script-module-record-2>module record</a>.</p>
+   not run" then abort these steps.</li><li><p>If <var>s</var>'s <a href=#concept-module-script-state id=calling-scripts:concept-module-script-state>state</a> is "<code>errored</code>", then <a href=#report-the-exception id=calling-scripts:report-the-exception-2>report the exception</a> given by <var>s</var>'s <a href=#concept-module-script-error id=calling-scripts:concept-module-script-error>error</a> for <var>s</var> and abort these
+   steps.</li><li><p>Assert: <var>s</var>'s <a href=#concept-module-script-state id=calling-scripts:concept-module-script-state-2>state</a> is "<code>instantiated</code>" (and thus its <a href=#concept-module-script-module-record id=calling-scripts:concept-module-script-module-record>module record</a> is not null).</li><li><p>Let <var>record</var> be <var>s</var>'s <a href=#concept-module-script-module-record id=calling-scripts:concept-module-script-module-record-2>module record</a>.</p>
 
    </li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script-2>Prepare to run script</a> given <var>settings</var>.</li><li>
     <p>Let <var>evaluationStatus</var> be <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduleevaluation id=calling-scripts:js-moduleevaluation data-x-internal=js-moduleevaluation>ModuleEvaluation</a>().</p>
 
     <p class=note>This step will recursively evaluate all of the module's dependencies.</p>
-   </li><li><p>If <var>evaluationStatus</var> is an abrupt completion, then <a href=#report-the-exception id=calling-scripts:report-the-exception-3>report the
-   exception</a> given by <var>evaluationStatus</var>.[[Value]] for <var>s</var>. (Do not perform
-   this step if <a href=https://tc39.github.io/ecma262/#sec-moduleevaluation id=calling-scripts:js-moduleevaluation-2 data-x-internal=js-moduleevaluation>ModuleEvaluation</a> fails to complete as a
-   result of the user agent <a href=#abort-a-running-script id=calling-scripts:abort-a-running-script-3>aborting the running
-   script</a>.)</li><li><p><a href=#clean-up-after-running-script id=calling-scripts:clean-up-after-running-script-2>Clean up after running script</a> with <var>settings</var>.</li></ol>
+
+    <p>If <a href=https://tc39.github.io/ecma262/#sec-moduleevaluation id=calling-scripts:js-moduleevaluation-2 data-x-internal=js-moduleevaluation>ModuleEvaluation</a> fails to complete as a result
+    of the user agent <a href=#abort-a-running-script id=calling-scripts:abort-a-running-script-3>aborting the running script</a>, then
+    set <var>evaluationStatus</var> to Completion { [[Type]]: throw, [[Value]]: a new
+    <a id=calling-scripts:quotaexceedederror href=https://triple-underscore.github.io/WebIDL-ja.html#quotaexceedederror data-x-internal=quotaexceedederror>"<code>QuotaExceededError</code>"</a> <code id=calling-scripts:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>, [[Target]]: empty }.
+   
+   </li><li>
+    <p>If <var>evaluationStatus</var> is an abrupt completion, then:</p>
+
+    <ol><li><p><a href=#error-a-module-script id=calling-scripts:error-a-module-script>Error</a> <var>script</var> with
+     <var>evaluationStatus</var>.[[Value]].</li><li><p><a href=#report-the-exception id=calling-scripts:report-the-exception-3>Report the exception</a> given by <var>evaluationStatus</var>.[[Value]] for
+     <var>s</var>.</p>
+    </li></ol>
+   </li><li><p><a href=#clean-up-after-running-script id=calling-scripts:clean-up-after-running-script-2>Clean up after running script</a> with <var>settings</var>.</li></ol>
 
   <p>The steps to <dfn id=check-if-we-can-run-script>check if we can run script</dfn> with an <a href=#environment-settings-object id=calling-scripts:environment-settings-object>environment settings
   object</a> <var>settings</var> are as follows. They return either "run" or "do not run".</p>
@@ -1374,7 +1403,7 @@ document.querySelector("button").addEventListener("click", bound);
   scripts</a> versus <a href=#module-script id=integration-with-the-javascript-module-system:module-script>module scripts</a>, since both of them use
   the <code id=integration-with-the-javascript-module-system:the-script-element-2><a href=scripting.html#the-script-element>script</a></code> element.</p>
 
-  <p>A <dfn id=module-map>module map</dfn> is a <a href=https://infra.spec.whatwg.org/#ordered-map id=integration-with-the-javascript-module-system:ordered-map data-x-internal=ordered-map>map</a> of <a href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute id=integration-with-the-javascript-module-system:absolute-url data-x-internal=absolute-url>absolute URLs</a> to values that are either a <a href=#module-script id=integration-with-the-javascript-module-system:module-script-2>module script</a>, null (used to
+  <p>A <dfn id=module-map>module map</dfn> is a <a href=https://infra.spec.whatwg.org/#ordered-map id=integration-with-the-javascript-module-system:ordered-map data-x-internal=ordered-map>map</a> of <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=integration-with-the-javascript-module-system:url-record data-x-internal=url-record>URL records</a> to values that are either a <a href=#module-script id=integration-with-the-javascript-module-system:module-script-2>module script</a>, null (used to
   represent failed fetches), or a placeholder value "<code>fetching</code>". <a href=#module-map id=integration-with-the-javascript-module-system:module-map>Module maps</a> are used to ensure that imported JavaScript modules are
   only fetched, parsed, and evaluated once per <code id=integration-with-the-javascript-module-system:document><a href=dom.html#document>Document</a></code> or <a href=workers.html#workers>worker</a>.</p>
 
@@ -1392,7 +1421,7 @@ import "https://example.com/module.js?debug=true";</pre>
    module evaluations will be performed.</p>
 
    <p>In contrast, the following code would only create a single entry in the <a href=#module-map id=integration-with-the-javascript-module-system:module-map-5>module
-   map</a>, since after applying the <a id=integration-with-the-javascript-module-system:url-parser href=https://triple-underscore.github.io/URL-ja.html#concept-url-parser data-x-internal=url-parser>URL parser</a> to these inputs, the resulting <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=integration-with-the-javascript-module-system:url-record data-x-internal=url-record>URL records</a> are equal:</p>
+   map</a>, since after applying the <a id=integration-with-the-javascript-module-system:url-parser href=https://triple-underscore.github.io/URL-ja.html#concept-url-parser data-x-internal=url-parser>URL parser</a> to these inputs, the resulting <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=integration-with-the-javascript-module-system:url-record-2 data-x-internal=url-record>URL records</a> are equal:</p>
 
    <pre>import "https://example.com/module2.js";
 import "https:example.com/module2.js";
@@ -1405,8 +1434,8 @@ import "https://example.com/foo/../module2.js";</pre>
   </div>
 
   <p>To <dfn id=resolve-a-module-specifier>resolve a module specifier</dfn> given a <a href=#module-script id=integration-with-the-javascript-module-system:module-script-3>module script</a> <var>script</var>
-  and a string <var>specifier</var>, perform the following steps. It will return either an
-  <a id=integration-with-the-javascript-module-system:absolute-url-2 href=https://triple-underscore.github.io/URL-ja.html#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a> or failure.</p>
+  and a string <var>specifier</var>, perform the following steps. It will return either a <a id=integration-with-the-javascript-module-system:url-record-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL
+  record</a> or failure.</p>
 
   <ol><li><p>Apply the <a id=integration-with-the-javascript-module-system:url-parser-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url-parser data-x-internal=url-parser>URL parser</a> to <var>specifier</var>. If the result is not failure,
    return the result.</li><li>
@@ -1443,12 +1472,30 @@ import "https://example.com/foo/../module2.js";</pre>
   <ol><li><p>Let <var>referencing module script</var> be
    <var>referencingModule</var>.[[HostDefined]].</li><li><p>Let <var>moduleMap</var> be <var>referencing module script</var>'s <a href=#settings-object id=hostresolveimportedmodule(referencingmodule,-specifier):settings-object>settings
    object</a>'s <a href=#concept-settings-object-module-map id=hostresolveimportedmodule(referencingmodule,-specifier):concept-settings-object-module-map>module map</a>.</li><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=hostresolveimportedmodule(referencingmodule,-specifier):resolve-a-module-specifier>resolving a
-   module specifier</a> given <var>referencing module script</var> and <var>specifier</var>. If
-   the result is failure, then throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these
-   steps.</li><li><p>Let <var>resolved module script</var> be <var>moduleMap</var>[<var>url</var>]. If no such
-   entry <a href=https://infra.spec.whatwg.org/#map-exists id=hostresolveimportedmodule(referencingmodule,-specifier):map-exists data-x-internal=map-exists>exists</a>, or if <var>resolved module script</var> is null or
-   "<code>fetching</code>", then throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror-2><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception and abort these
-   steps.</li><li><p>If <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-state id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-state>instantiation state</a> is "<code>errored</code>", then throw <var>resolved module script</var>'s <a href=#concept-module-script-instantiation-error id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-instantiation-error>instantiation error</a>.</li><li><p>Assert: <var>resolved module script</var>'s <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record>module record</a> is not null.</li><li><p>Return <var>resolved module script</var>'s <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record-2>module record</a>.</li></ol>
+   module specifier</a> given <var>referencing module script</var> and
+   <var>specifier</var>.</li><li><p>Assert: <var>url</var> is never failure, because <a href=#resolve-a-module-specifier id=hostresolveimportedmodule(referencingmodule,-specifier):resolve-a-module-specifier-2>resolving a module specifier</a> must have been previously successful with these
+   same two arguments during the appropriate invocation of <a href=#fetch-the-descendants-of-and-instantiate-a-module-script id=hostresolveimportedmodule(referencingmodule,-specifier):fetch-the-descendants-of-and-instantiate-a-module-script>fetch the descendants of and
+   instantiate a module script</a>.</li><li><p>Let <var>resolved module script</var> be <var>moduleMap</var>[<var>url</var>]. (This entry
+   must <a href=https://infra.spec.whatwg.org/#map-exists id=hostresolveimportedmodule(referencingmodule,-specifier):map-exists data-x-internal=map-exists>exist</a> for us to have gotten to this point.)</li><li>
+    <p>If <var>resolved module script</var> is null, then throw a <code id=hostresolveimportedmodule(referencingmodule,-specifier):typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code>
+    exception and abort these steps.</p>
+
+    <div class=example>
+     <p>This occurs when we have previously tried to <a href=#fetch-a-single-module-script id=hostresolveimportedmodule(referencingmodule,-specifier):fetch-a-single-module-script>fetch</a> <var>url</var>, and failed, but are now rediscovering that fact in a new
+     module script graph. For example, given a file <code>module.js</code> whose contents
+     are</p>
+
+     <pre>import "./404.js";</pre>
+
+     <p>then we could get here as part of <a href=#fetch-a-module-script-tree id=hostresolveimportedmodule(referencingmodule,-specifier):fetch-a-module-script-tree>fetching the
+     graph</a> for the second <code id=hostresolveimportedmodule(referencingmodule,-specifier):the-script-element><a href=scripting.html#the-script-element>script</a></code> element in the following HTML:</p>
+
+     <pre>&lt;script type="module" src="404.js"&gt;&lt;/script&gt;
+&lt;script type="module" src="module.js"&gt;&lt;/script&gt;</pre>
+    </div>
+   </li><li><p>Assert: <var>resolved module script</var> is a <a href=#module-script id=hostresolveimportedmodule(referencingmodule,-specifier):module-script>module script</a> (i.e., is not
+   "<code>fetching</code>").</li><li><p>If <var>resolved module script</var>'s <a href=#concept-module-script-state id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-state>state</a> is "<code>errored</code>", then throw
+   <var>resolved module script</var>'s <a href=#concept-module-script-error id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-error>error</a>.</li><li><p>Assert: <var>resolved module script</var>'s <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record>module record</a> is not null.</li><li><p>Return <var>resolved module script</var>'s <a href=#concept-module-script-module-record id=hostresolveimportedmodule(referencingmodule,-specifier):concept-module-script-module-record-2>module record</a>.</li></ol>
 
   <h5 id=integration-with-the-javascript-agent-formalism>8.1.3.9 Integration with the JavaScript agent formalism<a href=#integration-with-the-javascript-agent-formalism class=self-link></a></h5>
 
@@ -1810,18 +1857,14 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   <p>An <a href=#event-loop id=event-loop-processing-model:event-loop>event loop</a> must continually run through the following steps for as long as it
   exists:</p>
 
-  <ol><li id=step1>
-
-    <p>Select the oldest <a href=#concept-task id=event-loop-processing-model:concept-task>task</a> on one of the <a href=#event-loop id=event-loop-processing-model:event-loop-2>event
-    loop</a>'s <a href=#task-queue id=event-loop-processing-model:task-queue>task queues</a>, if any, ignoring, in the case of a
-    <a id=event-loop-processing-model:browsing-context href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-3>event loop</a>, tasks whose associated
-    <code id=event-loop-processing-model:document><a href=dom.html#document>Document</a></code>s are not <a id=event-loop-processing-model:fully-active href=browsers.html#fully-active>fully active</a>. The user agent may pick any <a href=#task-queue id=event-loop-processing-model:task-queue-2>task
-    queue</a>. If there is no task to select, then jump to the <i>microtasks</i> step below.</p>
-
-   </li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-4>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task>currently running task</a> to the <a href=#concept-task id=event-loop-processing-model:concept-task-2>task</a> selected in the previous step.</li><li><p><i>Run</i>: Run the selected <a href=#concept-task id=event-loop-processing-model:concept-task-3>task</a>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-5>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-2>currently running task</a> back to
-   null.</li><li><p>Remove the task that was run in the <i>run</i> step above from its <a href=#task-queue id=event-loop-processing-model:task-queue-3>task
-   queue</a>.</li><li><p><i>Microtasks</i>: <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint>Perform a microtask checkpoint</a>.</li><li>
-
+  <ol><li id=step1><p>Let <var>oldestTask</var> be the oldest <a href=#concept-task id=event-loop-processing-model:concept-task>task</a>
+   on one of the <a href=#event-loop id=event-loop-processing-model:event-loop-2>event loop</a>'s <a href=#task-queue id=event-loop-processing-model:task-queue>task queues</a>, if any,
+   ignoring, in the case of a <a id=event-loop-processing-model:browsing-context href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-3>event loop</a>, tasks whose
+   associated <code id=event-loop-processing-model:document><a href=dom.html#document>Document</a></code>s are not <a id=event-loop-processing-model:fully-active href=browsers.html#fully-active>fully active</a>. The user agent may pick any
+   <a href=#task-queue id=event-loop-processing-model:task-queue-2>task queue</a>. If there is no task to select, then jump to the <i>microtasks</i> step
+   below.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-4>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task>currently running task</a> to
+   <var>oldestTask</var>.</li><li><p>Run <var>oldestTask</var>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-5>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-2>currently running task</a> back to
+   null.</li><li><p>Remove <var>oldestTask</var> from its <a href=#task-queue id=event-loop-processing-model:task-queue-3>task queue</a>.</li><li><p><i>Microtasks</i>: <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint>Perform a microtask checkpoint</a>.</li><li>
     <p><i>Update the rendering</i>: If this <a href=#event-loop id=event-loop-processing-model:event-loop-6>event loop</a> is a <a id=event-loop-processing-model:browsing-context-2 href=browsers.html#browsing-context>browsing
     context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-7>event loop</a> (as opposed to a <a href=workers.html#workers>worker</a>
     <a href=#event-loop id=event-loop-processing-model:event-loop-8>event loop</a>), then run the following substeps.</p>
@@ -1830,7 +1873,6 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
      object's <code id=event-loop-processing-model:dom-performance-now><a data-x-internal=dom-performance-now href=https://w3c.github.io/hr-time/#dom-performance-now>now()</a></code> method. <a href=references.html#refsHRT>[HRT]</a></p>
 
      </li><li>
-
       <p>Let <var>docs</var> be the list of <code id=event-loop-processing-model:document-2><a href=dom.html#document>Document</a></code> objects associated with the
       <a href=#event-loop id=event-loop-processing-model:event-loop-9>event loop</a> in question, sorted arbitrarily except that the following conditions
       must be met:</p>
@@ -1843,9 +1885,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
       <p>In the steps below that iterate over <var>docs</var>, each <code id=event-loop-processing-model:document-6><a href=dom.html#document>Document</a></code> must be
       processed in the order it is found in the list.</p>
-
      </li><li>
-
       <p>If there are <a href=browsers.html#top-level-browsing-context id=event-loop-processing-model:top-level-browsing-context>top-level browsing contexts</a>
       <var>B</var> that the user agent believes would not benefit from having their rendering
       updated at this time, then remove from <var>docs</var> all <code id=event-loop-processing-model:document-7><a href=dom.html#document>Document</a></code> objects whose
@@ -1864,15 +1904,13 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
        might decide to drop that page to a much slower 4Hz, or even less.</p>
 
        <p>Another example of why a browser might skip updating the rendering is to ensure certain
-       <a href=#concept-task id=event-loop-processing-model:concept-task-4>tasks</a> are executed immediately after each other, with only
+       <a href=#concept-task id=event-loop-processing-model:concept-task-2>tasks</a> are executed immediately after each other, with only
        <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint-2>microtask checkpoints</a> interleaved (and
        without, e.g., <a href=#run-the-animation-frame-callbacks id=event-loop-processing-model:run-the-animation-frame-callbacks>animation frame
        callbacks</a> interleaved). For example, a user agent might wish to coalesce timer
        callbacks together, with no intermediate rendering updates.</p>
       </div>
-
      </li><li>
-
       <p>If there are a <a href=browsers.html#nested-browsing-context id=event-loop-processing-model:nested-browsing-context-2>nested browsing contexts</a>
       <var>B</var> that the user agent believes would not benefit from having their rendering
       updated at this time, then remove from <var>docs</var> all <code id=event-loop-processing-model:document-9><a href=dom.html#document>Document</a></code> objects whose
@@ -1885,29 +1923,27 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
       third-party content, especially if it is not currently visible to the user or if resources are
       constrained. In such cases, the browser could decide to update the rendering for such content
       infrequently or never.</p>
-
      </li><li><p>For each <a id=event-loop-processing-model:fully-active-2 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-10><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=event-loop-processing-model:run-the-resize-steps href=https://triple-underscore.github.io/cssom-view-ja.html#run-the-resize-steps data-x-internal=run-the-resize-steps>run the resize
      steps</a> for that <code id=event-loop-processing-model:document-11><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-3 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-12><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=event-loop-processing-model:run-the-scroll-steps href=https://triple-underscore.github.io/cssom-view-ja.html#run-the-scroll-steps data-x-internal=run-the-scroll-steps>run the scroll
      steps</a> for that <code id=event-loop-processing-model:document-13><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-4 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-14><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=event-loop-processing-model:evaluate-media-queries-and-report-changes href=https://triple-underscore.github.io/cssom-view-ja.html#evaluate-media-queries-and-report-changes data-x-internal=evaluate-media-queries-and-report-changes>evaluate media queries
      and report changes</a> for that <code id=event-loop-processing-model:document-15><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-5 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-16><a href=dom.html#document>Document</a></code> in <var>docs</var>, <dfn id=run-css-animations-and-send-events>run CSS animations and send
      events</dfn> for that <code id=event-loop-processing-model:document-17><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsCSSANIMATIONS>[CSSANIMATIONS]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-6 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-18><a href=dom.html#document>Document</a></code> in <var>docs</var>, <dfn id=run-the-fullscreen-rendering-steps>run the fullscreen rendering
-     steps</dfn> for that <code id=event-loop-processing-model:document-19><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsFULLSCREEN>[FULLSCREEN]</a><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=28001" title="Formalize rendering tasks">28001</a></div></li><li><p>For each <a id=event-loop-processing-model:fully-active-7 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-20><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a href=#run-the-animation-frame-callbacks id=event-loop-processing-model:run-the-animation-frame-callbacks-2>run the animation frame
+     steps</dfn> for that <code id=event-loop-processing-model:document-19><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the timestamp. <a href=references.html#refsFULLSCREEN>[FULLSCREEN]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-7 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-20><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a href=#run-the-animation-frame-callbacks id=event-loop-processing-model:run-the-animation-frame-callbacks-2>run the animation frame
      callbacks</a> for that <code id=event-loop-processing-model:document-21><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the
      timestamp.</li><li><p>For each <a id=event-loop-processing-model:fully-active-8 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-22><a href=dom.html#document>Document</a></code> in <var>docs</var>, <a id=event-loop-processing-model:run-the-update-intersection-observations-steps href=https://wicg.github.io/IntersectionObserver/#run-the-update-intersection-observations-steps data-x-internal=run-the-update-intersection-observations-steps>run the update
      intersection observations steps</a> for that <code id=event-loop-processing-model:document-23><a href=dom.html#document>Document</a></code>, passing in <var>now</var> as the
      timestamp. <a href=references.html#refsINTERSECTIONOBSERVER>[INTERSECTIONOBSERVER]</a></li><li><p>For each <a id=event-loop-processing-model:fully-active-9 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-24><a href=dom.html#document>Document</a></code> in <var>docs</var>, update the
      rendering or user interface of that <code id=event-loop-processing-model:document-25><a href=dom.html#document>Document</a></code> and its <a href=browsers.html#concept-document-bc id=event-loop-processing-model:concept-document-bc-4>browsing context</a> to reflect the current state.</li></ol>
-
    </li><li><p>If this is a <a href=workers.html#workers>worker</a> <a href=#event-loop id=event-loop-processing-model:event-loop-10>event loop</a> (i.e. one running for a
-   <code id=event-loop-processing-model:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code>), but there are no <a href=#concept-task id=event-loop-processing-model:concept-task-5>tasks</a> in the
+   <code id=event-loop-processing-model:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code>), but there are no <a href=#concept-task id=event-loop-processing-model:concept-task-3>tasks</a> in the
    <a href=#event-loop id=event-loop-processing-model:event-loop-11>event loop</a>'s <a href=#task-queue id=event-loop-processing-model:task-queue-4>task queues</a> and the
    <code id=event-loop-processing-model:workerglobalscope-2><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> object's <a href=workers.html#dom-workerglobalscope-closing id=event-loop-processing-model:dom-workerglobalscope-closing>closing</a> flag is true, then destroy the <a href=#event-loop id=event-loop-processing-model:event-loop-12>event
    loop</a>, aborting these steps, resuming the <a id=event-loop-processing-model:run-a-worker href=workers.html#run-a-worker>run a worker</a> steps described in the
-   <a href=workers.html#workers>Web workers</a> section below.</li><li><p>Return to the <a href=#step1>first step</a> of the <a href=#event-loop id=event-loop-processing-model:event-loop-13>event loop</a>.</li></ol>
+   <a href=workers.html#workers>Web workers</a> section below.</li></ol>
 
   <hr>
 
-  <p>Each <a href=#event-loop id=event-loop-processing-model:event-loop-14>event loop</a> has a <dfn id=microtask-queue>microtask queue</dfn>. A <dfn id=microtask data-export="">microtask</dfn> is a <a href=#concept-task id=event-loop-processing-model:concept-task-6>task</a> that is originally to
+  <p>Each <a href=#event-loop id=event-loop-processing-model:event-loop-13>event loop</a> has a <dfn id=microtask-queue>microtask queue</dfn>. A <dfn id=microtask data-export="">microtask</dfn> is a <a href=#concept-task id=event-loop-processing-model:concept-task-4>task</a> that is originally to
   be queued on the <a href=#microtask-queue id=event-loop-processing-model:microtask-queue>microtask queue</a> rather than a <a href=#task-queue id=event-loop-processing-model:task-queue-5>task queue</a>. There are two
   kinds of <a href=#microtask id=event-loop-processing-model:microtask>microtasks</a>: <dfn id=solitary-callback-microtask data-lt="solitary callback microtask" data-export="">solitary callback
   microtasks</dfn>, and <dfn id=compound-microtask data-lt="compound microtask" data-export="">compound microtasks</dfn>.</p>
@@ -1918,7 +1954,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   loop</a>.</p>
 
   <p>When an algorithm requires a <a href=#microtask id=event-loop-processing-model:microtask-2>microtask</a> to be <dfn id=queue-a-microtask data-lt="queue a microtask" data-export="">queued</dfn>, it must be appended to the
-  relevant <a href=#event-loop id=event-loop-processing-model:event-loop-15>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-2>microtask queue</a>; the <a href=#task-source id=event-loop-processing-model:task-source>task source</a> of
+  relevant <a href=#event-loop id=event-loop-processing-model:event-loop-14>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-2>microtask queue</a>; the <a href=#task-source id=event-loop-processing-model:task-source>task source</a> of
   such a <a href=#microtask id=event-loop-processing-model:microtask-3>microtask</a> is the <dfn id=microtask-task-source>microtask task source</dfn>.</p>
 
   <p class=note>It is possible for a <a href=#microtask id=event-loop-processing-model:microtask-4>microtask</a> to be moved to a regular <a href=#task-queue id=event-loop-processing-model:task-queue-6>task
@@ -1932,32 +1968,32 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   following steps:</p>
 
   <ol><li><p>Set the <a href=#performing-a-microtask-checkpoint id=event-loop-processing-model:performing-a-microtask-checkpoint-2>performing a microtask checkpoint</a> flag to true.</li><li>
-    <p>While the <a href=#event-loop id=event-loop-processing-model:event-loop-16>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-3>microtask queue</a> is not empty:</p>
+    <p>While the <a href=#event-loop id=event-loop-processing-model:event-loop-15>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-3>microtask queue</a> is not empty:</p>
 
-    <ol><li><p>Let <var>oldestMicrotask</var> be the oldest <a href=#microtask id=event-loop-processing-model:microtask-6>microtask</a> on the <a href=#event-loop id=event-loop-processing-model:event-loop-17>event
-     loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-4>microtask queue</a>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-18>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-3>currently running task</a> to
+    <ol><li><p>Let <var>oldestMicrotask</var> be the oldest <a href=#microtask id=event-loop-processing-model:microtask-6>microtask</a> on the <a href=#event-loop id=event-loop-processing-model:event-loop-16>event
+     loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-4>microtask queue</a>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-17>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-3>currently running task</a> to
      <var>oldestMicrotask</var>.</li><li>
-      <p><i>Run</i>: Run <var>oldestMicrotask</var>.</p>
+      <p>Run <var>oldestMicrotask</var>.</p>
 
       <p class=note>This might involve invoking scripted callbacks, which eventually calls the
       <a href=#clean-up-after-running-script id=event-loop-processing-model:clean-up-after-running-script>clean up after running script</a> steps, which call this <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint-3>perform a microtask
       checkpoint</a> algorithm again, which is why we use the <a href=#performing-a-microtask-checkpoint id=event-loop-processing-model:performing-a-microtask-checkpoint-3>performing a microtask
       checkpoint</a> flag to avoid reentrancy.</p>
-     </li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-19>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-4>currently running task</a> back to
+     </li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-18>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-4>currently running task</a> back to
      null.</li><li><p>Remove <var>oldestMicrotask</var> from the <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-5>microtask queue</a>.</li></ol>
    </li><li><p>For each <a href=#environment-settings-object id=event-loop-processing-model:environment-settings-object>environment settings object</a> whose <a href=#responsible-event-loop id=event-loop-processing-model:responsible-event-loop>responsible event
-   loop</a> is this <a href=#event-loop id=event-loop-processing-model:event-loop-20>event loop</a>, <a href=#notify-about-rejected-promises id=event-loop-processing-model:notify-about-rejected-promises>notify about rejected promises</a> on that
+   loop</a> is this <a href=#event-loop id=event-loop-processing-model:event-loop-19>event loop</a>, <a href=#notify-about-rejected-promises id=event-loop-processing-model:notify-about-rejected-promises>notify about rejected promises</a> on that
    <a href=#environment-settings-object id=event-loop-processing-model:environment-settings-object-2>environment settings object</a>.</li><li><p><a id=event-loop-processing-model:cleanup-indexed-database-transactions href=https://w3c.github.io/IndexedDB/#cleanup-indexed-database-transactions data-x-internal=cleanup-indexed-database-transactions>Cleanup Indexed Database transactions</a>.</li><li><p>Set the <a href=#performing-a-microtask-checkpoint id=event-loop-processing-model:performing-a-microtask-checkpoint-4>performing a microtask checkpoint</a> flag to false.</li></ol>
 
   <p>If, while a <a href=#compound-microtask id=event-loop-processing-model:compound-microtask-2>compound microtask</a> is running, the user agent is required to
   <dfn id=execute-a-compound-microtask-subtask data-export="">execute a compound microtask subtask</dfn> to run a series of steps, the user
   agent must run the following steps:</p>
 
-  <ol><li><p>Let <var>parent</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-21>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-5>currently running
-   task</a> (the currently running <a href=#compound-microtask id=event-loop-processing-model:compound-microtask-3>compound microtask</a>).</li><li><p>Let <var>subtask</var> be a new <a href=#concept-task id=event-loop-processing-model:concept-task-7>task</a> that
+  <ol><li><p>Let <var>parent</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-20>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-5>currently running
+   task</a> (the currently running <a href=#compound-microtask id=event-loop-processing-model:compound-microtask-3>compound microtask</a>).</li><li><p>Let <var>subtask</var> be a new <a href=#concept-task id=event-loop-processing-model:concept-task-5>task</a> that
    consists of running the given series of steps. The <a href=#task-source id=event-loop-processing-model:task-source-4>task source</a> of such a
    <a href=#microtask id=event-loop-processing-model:microtask-7>microtask</a> is the <a href=#microtask-task-source id=event-loop-processing-model:microtask-task-source-2>microtask task source</a>. This is a <dfn id=compound-microtask-subtask>compound
-   microtask subtask</dfn>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-22>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-6>currently running task</a> to <var>subtask</var>.</li><li><p>Run <var>subtask</var>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-23>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-7>currently running task</a> back to <var>parent</var>.</li></ol>
+   microtask subtask</dfn>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-21>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-6>currently running task</a> to <var>subtask</var>.</li><li><p>Run <var>subtask</var>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-22>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-7>currently running task</a> back to <var>parent</var>.</li></ol>
 
   <hr>
 
@@ -1978,12 +2014,12 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
   <ol><li>
 
-    <p>Let <var>task</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-24>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-8>currently running
+    <p>Let <var>task</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-23>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-8>currently running
     task</a>.</p>
 
     <p class=note>This might be a <a href=#microtask id=event-loop-processing-model:microtask-8>microtask</a>, in which case it is a <a href=#solitary-callback-microtask id=event-loop-processing-model:solitary-callback-microtask-2>solitary
     callback microtask</a>. It could also be a <a href=#compound-microtask-subtask id=event-loop-processing-model:compound-microtask-subtask>compound microtask subtask</a>, or a
-    regular <a href=#concept-task id=event-loop-processing-model:concept-task-8>task</a> that is not a <a href=#microtask id=event-loop-processing-model:microtask-9>microtask</a>. It will
+    regular <a href=#concept-task id=event-loop-processing-model:concept-task-6>task</a> that is not a <a href=#microtask id=event-loop-processing-model:microtask-9>microtask</a>. It will
     <em>not</em> be a <a href=#compound-microtask id=event-loop-processing-model:compound-microtask-4>compound microtask</a>.</p> 
 
    </li><li><p>Let <var>task source</var> be <var>task</var>'s <a href=#task-source id=event-loop-processing-model:task-source-5>task
@@ -1993,7 +2029,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
     <p>Stop <var>task</var>, allowing whatever algorithm that invoked it to resume, but
     continue these steps <a id=event-loop-processing-model:in-parallel-3 href=infrastructure.html#in-parallel>in parallel</a>.</p>
 
-    <p class=note>This causes one of the following algorithms to continue: the <a href=#event-loop id=event-loop-processing-model:event-loop-25>event
+    <p class=note>This causes one of the following algorithms to continue: the <a href=#event-loop id=event-loop-processing-model:event-loop-24>event
     loop</a>'s main set of steps, the <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint-5>perform a microtask checkpoint</a> algorithm, or
     the <a href=#execute-a-compound-microtask-subtask id=event-loop-processing-model:execute-a-compound-microtask-subtask-2>execute a compound microtask subtask</a> algorithm.</p>
 
@@ -2005,18 +2041,18 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   <hr>
 
   <p>Some of the algorithms in this specification, for historical reasons, require the user agent to
-  <dfn id=pause>pause</dfn> while running a <a href=#concept-task id=event-loop-processing-model:concept-task-9>task</a> until a condition <var>goal</var> is met. This means running the following steps:</p>
+  <dfn id=pause>pause</dfn> while running a <a href=#concept-task id=event-loop-processing-model:concept-task-7>task</a> until a condition <var>goal</var> is met. This means running the following steps:</p>
 
   <ol><li><p>If necessary, update the rendering or user interface of any <code id=event-loop-processing-model:document-26><a href=dom.html#document>Document</a></code> or
    <a id=event-loop-processing-model:browsing-context-3 href=browsers.html#browsing-context>browsing context</a> to reflect the current state.</li><li><p>Wait until the condition <var>goal</var> is met. While a user agent has a paused
-   <a href=#concept-task id=event-loop-processing-model:concept-task-10>task</a>, the corresponding <a href=#event-loop id=event-loop-processing-model:event-loop-26>event loop</a> must not run
-   further <a href=#concept-task id=event-loop-processing-model:concept-task-11>tasks</a>, and any script in the currently running <a href=#concept-task id=event-loop-processing-model:concept-task-12>task</a> must block. User agents should remain responsive to user input
-   while paused, however, albeit in a reduced capacity since the <a href=#event-loop id=event-loop-processing-model:event-loop-27>event loop</a> will not be
+   <a href=#concept-task id=event-loop-processing-model:concept-task-8>task</a>, the corresponding <a href=#event-loop id=event-loop-processing-model:event-loop-25>event loop</a> must not run
+   further <a href=#concept-task id=event-loop-processing-model:concept-task-9>tasks</a>, and any script in the currently running <a href=#concept-task id=event-loop-processing-model:concept-task-10>task</a> must block. User agents should remain responsive to user input
+   while paused, however, albeit in a reduced capacity since the <a href=#event-loop id=event-loop-processing-model:event-loop-26>event loop</a> will not be
    doing anything.</li></ol>
 
   <div class=warning>
    <p><a href=#pause id=event-loop-processing-model:pause>Pausing</a> is highly detrimental to the user experience, especially
-   in scenarios where a single <a href=#event-loop id=event-loop-processing-model:event-loop-28>event loop</a> is shared among multiple documents. User
+   in scenarios where a single <a href=#event-loop id=event-loop-processing-model:event-loop-27>event loop</a> is shared among multiple documents. User
    agents are encouraged to experiment with alternatives to <a href=#pause id=event-loop-processing-model:pause-2>pausing</a>,
    such as <a href=#spin-the-event-loop id=event-loop-processing-model:spin-the-event-loop-3>spinning the event loop</a> or even simply
    proceeding without any kind of suspended execution at all, insofar as it is possible to do so
@@ -2024,8 +2060,8 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
    a less-drastic alternative is discovered to be web-compatible.</p>
 
    <p>In the interim, implementers should be aware that the variety of alternatives that user agents
-   might experiment with can change subtle aspects of <a href=#event-loop id=event-loop-processing-model:event-loop-29>event loop</a> behavior, including
-   <a href=#concept-task id=event-loop-processing-model:concept-task-13>task</a> and <a href=#microtask id=event-loop-processing-model:microtask-10>microtask</a> timing. Implementations should
+   might experiment with can change subtle aspects of <a href=#event-loop id=event-loop-processing-model:event-loop-28>event loop</a> behavior, including
+   <a href=#concept-task id=event-loop-processing-model:concept-task-11>task</a> and <a href=#microtask id=event-loop-processing-model:microtask-10>microtask</a> timing. Implementations should
    continue experimenting even if doing so causes them to violate the exact semantics implied by the
    <a href=#pause id=event-loop-processing-model:pause-3>pause</a> operation.</p>
   </div>
@@ -2701,10 +2737,10 @@ document.body.appendChild(frame)</pre>
   </div>
 
   <p>The <dfn id=dom-origin><code>origin</code></dfn> attribute's getter must return this
-  object's <a href=#relevant-settings-object id=windoworworkerglobalscope-mixin:relevant-settings-object>relevant settings object</a>'s <a href=#concept-settings-object-origin id=windoworworkerglobalscope-mixin:concept-settings-object-origin>origin</a>, <a href=browsers.html#unicode-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:unicode-serialisation-of-an-origin>serialized</a>.</p>
+  object's <a href=#relevant-settings-object id=windoworworkerglobalscope-mixin:relevant-settings-object>relevant settings object</a>'s <a href=#concept-settings-object-origin id=windoworworkerglobalscope-mixin:concept-settings-object-origin>origin</a>, <a href=browsers.html#ascii-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:ascii-serialisation-of-an-origin>serialized</a>.</p>
 
 
-  <h3 id=atob>8.3 Base64のユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob>8.3 Base64のユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.4+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>
@@ -2982,83 +3018,82 @@ document.body.appendChild(frame)</pre>
   method (directly or indirectly) while the document is <a href=browsers.html#unload-a-document id=opening-the-input-stream:unload-a-document>being
   unloaded</a>. Initially, the counter must be set to zero.</p> 
 
-  <p>When called with two arguments (or fewer), the <code id=opening-the-input-stream:dom-document-open-4><a href=#dom-document-open>document.open()</a></code>
-  method must act as follows:</p>
+  <p>The <dfn id=document-open-steps>document open steps</dfn>, given a <var>document</var>, <var>type</var>, and
+  <var>replaceInput</var>, are as follows:</p>
 
-  <ol><li><p>If the <code id=opening-the-input-stream:document-8><a href=dom.html#document>Document</a></code> object is an <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=opening-the-input-stream:xml-documents-2 data-x-internal=xml-documents>XML
-   document</a>, then throw an <a id=opening-the-input-stream:invalidstateerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
-   <code id=opening-the-input-stream:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>If the <code id=opening-the-input-stream:document-9><a href=dom.html#document>Document</a></code> object's <a href=#throw-on-dynamic-markup-insertion-counter id=opening-the-input-stream:throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion
-   counter</a> is greater than zero, then throw an <a id=opening-the-input-stream:invalidstateerror-4 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
-   <code id=opening-the-input-stream:domexception-4><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>If the <code id=opening-the-input-stream:document-10><a href=dom.html#document>Document</a></code> object is not an <a id=opening-the-input-stream:active-document href=browsers.html#active-document>active document</a>, then abort
-   these steps.</li><li><p>If the <a id=opening-the-input-stream:concept-origin href=browsers.html#concept-origin>origin</a> of the <code id=opening-the-input-stream:document-11><a href=dom.html#document>Document</a></code> is not <a id=opening-the-input-stream:same-origin href=browsers.html#same-origin>same origin</a>
-   with the <a id=opening-the-input-stream:concept-origin-2 href=browsers.html#concept-origin>origin</a> of the <a href=#responsible-document id=opening-the-input-stream:responsible-document>responsible document</a> specified by the
-   <a href=#entry-settings-object id=opening-the-input-stream:entry-settings-object>entry settings object</a>, throw a <a id=opening-the-input-stream:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
-   <code id=opening-the-input-stream:domexception-5><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li>
+  <ol><li><p>If <var>document</var> is an <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=opening-the-input-stream:xml-documents-2 data-x-internal=xml-documents>XML document</a>, then throw
+   an <a id=opening-the-input-stream:invalidstateerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=opening-the-input-stream:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> exception.</li><li><p>If <var>document</var>'s <a href=#throw-on-dynamic-markup-insertion-counter id=opening-the-input-stream:throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion counter</a> is greater
+   than 0, then throw an <a id=opening-the-input-stream:invalidstateerror-4 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+   <code id=opening-the-input-stream:domexception-4><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If <var>document</var> is not an <a id=opening-the-input-stream:active-document href=browsers.html#active-document>active document</a>, then return
+   <var>document</var>.</li><li><p>If <var>document</var>'s <a id=opening-the-input-stream:concept-origin href=browsers.html#concept-origin>origin</a> is not <a id=opening-the-input-stream:same-origin href=browsers.html#same-origin>same origin</a> to the
+   <a id=opening-the-input-stream:concept-origin-2 href=browsers.html#concept-origin>origin</a> of the <a href=#responsible-document id=opening-the-input-stream:responsible-document>responsible document</a> specified by the <a href=#entry-settings-object id=opening-the-input-stream:entry-settings-object>entry
+   settings object</a>, then throw a <a id=opening-the-input-stream:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
+   <code id=opening-the-input-stream:domexception-5><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li>
+    <p>If <var>document</var> has an <a id=opening-the-input-stream:active-parser href=dom.html#active-parser>active parser</a> whose <a id=opening-the-input-stream:script-nesting-level href=syntax.html#script-nesting-level>script nesting
+    level</a> is greater than 0, then return <var>document</var>.</p>
 
-    <p>If the <code id=opening-the-input-stream:document-12><a href=dom.html#document>Document</a></code> has an <a id=opening-the-input-stream:active-parser href=dom.html#active-parser>active parser</a> whose <a id=opening-the-input-stream:script-nesting-level href=syntax.html#script-nesting-level>script nesting
-    level</a> is greater than zero, then the method does nothing. Abort these steps and return
-    the <code id=opening-the-input-stream:document-13><a href=dom.html#document>Document</a></code> object on which the method was invoked.</p>
-
-    <p class=note>This basically causes <code id=opening-the-input-stream:dom-document-open-5><a href=#dom-document-open>document.open()</a></code> to
+    <p class=note>This basically causes <code id=opening-the-input-stream:dom-document-open-4><a href=#dom-document-open>document.open()</a></code> to
     be ignored when it's called in an inline script found during parsing, while still letting it
     have an effect when called from a non-parser task such as a timer callback or event handler.</p>
+   </li><li>
+    <p>Similarly, if <var>document</var>'s <a href=#ignore-opens-during-unload-counter id=opening-the-input-stream:ignore-opens-during-unload-counter>ignore-opens-during-unload counter</a> is
+    greater than 0, then return <var>document</var>.</p>
+
+    <p class=note>This basically causes <code id=opening-the-input-stream:dom-document-open-5><a href=#dom-document-open>document.open()</a></code> to
+    be ignored when it's called from a <code id=opening-the-input-stream:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code>, <code id=opening-the-input-stream:event-pagehide><a href=indices.html#event-pagehide>pagehide</a></code>, or <code id=opening-the-input-stream:event-unload><a href=indices.html#event-unload>unload</a></code> event
+    handler while the <code id=opening-the-input-stream:document-8><a href=dom.html#document>Document</a></code> is being unloaded.</p>
+   </li><li><p>Let <var>replace</var> be false.
+
+   
 
    </li><li>
+    <p>If <var>replaceInput</var> is an <a id=opening-the-input-stream:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for "<code>replace</code>", then set <var>replace</var> to true.</p>
 
-    <p>Similarly, if the <code id=opening-the-input-stream:document-14><a href=dom.html#document>Document</a></code>'s <a href=#ignore-opens-during-unload-counter id=opening-the-input-stream:ignore-opens-during-unload-counter>ignore-opens-during-unload counter</a> is
-    greater than zero, then the method does nothing. Abort these steps and return the
-    <code id=opening-the-input-stream:document-15><a href=dom.html#document>Document</a></code> object on which the method was invoked.</p>
+    <p>Otherwise, if <var>document</var>'s <a id=opening-the-input-stream:browsing-context href=browsers.html#browsing-context>browsing context</a>'s <a id=opening-the-input-stream:session-history href=browsers.html#session-history>session
+    history</a> contains only one <code id=opening-the-input-stream:document-9><a href=dom.html#document>Document</a></code> object, and that was the
+    <code id=opening-the-input-stream:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=opening-the-input-stream:document-10><a href=dom.html#document>Document</a></code> created when <var>document</var>'s <a id=opening-the-input-stream:browsing-context-2 href=browsers.html#browsing-context>browsing
+    context</a> was <a href=browsers.html#creating-a-new-browsing-context id=opening-the-input-stream:creating-a-new-browsing-context>created</a>, and that
+    <code id=opening-the-input-stream:document-11><a href=dom.html#document>Document</a></code> object has never had the <a id=opening-the-input-stream:unload-a-document-2 href=browsers.html#unload-a-document>unload a document</a> algorithm invoked
+    on it (e.g., by a previous call to <code id=opening-the-input-stream:dom-document-open-6><a href=#dom-document-open>document.open()</a></code>),
+    then set <var>replace</var> to true.</p>
+   </li><li><p>Set <var>document</var>'s <i id=opening-the-input-stream:concept-document-salvageable><a href=browsers.html#concept-document-salvageable>salvageable</a></i> state
+   to false.</li><li><p><a id=opening-the-input-stream:prompt-to-unload-a-document href=browsers.html#prompt-to-unload-a-document>Prompt to unload</a> <var>document</var>. If the user <a id=opening-the-input-stream:refused-to-allow-the-document-to-be-unloaded href=browsers.html#refused-to-allow-the-document-to-be-unloaded>refused to allow the
+   document to be unloaded</a>, then return <var>document</var>.</li><li><p><a href=browsers.html#unload-a-document id=opening-the-input-stream:unload-a-document-3>Unload</a> <var>document</var>, with the
+   <var>recycle</var> parameter set to true.</li><li><p><a href=browsers.html#abort-a-document id=opening-the-input-stream:abort-a-document>Abort</a> <var>document</var>.</li><li><p>Unregister all event listeners registered on <var>document</var> and its descendants.</p>
 
-    <p class=note>This basically causes <code id=opening-the-input-stream:dom-document-open-6><a href=#dom-document-open>document.open()</a></code> to
-    be ignored when it's called from a <code id=opening-the-input-stream:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code> <code id=opening-the-input-stream:event-pagehide><a href=indices.html#event-pagehide>pagehide</a></code>, or <code id=opening-the-input-stream:event-unload><a href=indices.html#event-unload>unload</a></code> event
-    handler while the <code id=opening-the-input-stream:document-16><a href=dom.html#document>Document</a></code> is being unloaded.</p>
-
-   </li><li><p>Let <var>type</var> be the value of the first argument.</li><li>
-
-    <p>If the second argument is an <a id=opening-the-input-stream:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the value
-    "replace", then let <var>replace</var> be true.</p>
-
-    <p>Otherwise, if the <a id=opening-the-input-stream:browsing-context href=browsers.html#browsing-context>browsing context</a>'s <a id=opening-the-input-stream:session-history href=browsers.html#session-history>session history</a> contains only
-    one <code id=opening-the-input-stream:document-17><a href=dom.html#document>Document</a></code>, and that was the <code id=opening-the-input-stream:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=opening-the-input-stream:document-18><a href=dom.html#document>Document</a></code>
-    created when the <a id=opening-the-input-stream:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> was <a href=browsers.html#creating-a-new-browsing-context id=opening-the-input-stream:creating-a-new-browsing-context>created</a>, and that <code id=opening-the-input-stream:document-19><a href=dom.html#document>Document</a></code> has never had the <a id=opening-the-input-stream:unload-a-document-2 href=browsers.html#unload-a-document>unload a
-    document</a> algorithm invoked on it (e.g. by a previous call to <code id=opening-the-input-stream:dom-document-open-7><a href=#dom-document-open>document.open()</a></code>), then let <var>replace</var> be true.</p>
-
-    <p>Otherwise, let <var>replace</var> be false.</p>
-
-   </li><li><p>Set the <code id=opening-the-input-stream:document-20><a href=dom.html#document>Document</a></code>'s <i id=opening-the-input-stream:concept-document-salvageable><a href=browsers.html#concept-document-salvageable>salvageable</a></i> state to false.</li><li><p><a href=browsers.html#prompt-to-unload-a-document id=opening-the-input-stream:prompt-to-unload-a-document>Prompt to unload</a> the
-   <code id=opening-the-input-stream:document-21><a href=dom.html#document>Document</a></code> object. If the user <a id=opening-the-input-stream:refused-to-allow-the-document-to-be-unloaded href=browsers.html#refused-to-allow-the-document-to-be-unloaded>refused to allow the document to be
-   unloaded</a>, then abort these steps and return the <code id=opening-the-input-stream:document-22><a href=dom.html#document>Document</a></code> object on which the
-   method was invoked.</li><li><p><a href=browsers.html#unload-a-document id=opening-the-input-stream:unload-a-document-3>Unload</a> the <code id=opening-the-input-stream:document-23><a href=dom.html#document>Document</a></code> object, with the
-   <var>recycle</var> parameter set to true.</li><li><p><a href=browsers.html#abort-a-document id=opening-the-input-stream:abort-a-document>Abort</a> the <code id=opening-the-input-stream:document-24><a href=dom.html#document>Document</a></code>.</li><li><p>Unregister all event listeners registered on the <code id=opening-the-input-stream:document-25><a href=dom.html#document>Document</a></code> node and its
-   descendants.</p>
-
-   </li><li><p>Remove any <a href=#concept-task id=opening-the-input-stream:concept-task>tasks</a> associated with the
-   <code id=opening-the-input-stream:document-26><a href=dom.html#document>Document</a></code> in any <a href=#task-source id=opening-the-input-stream:task-source>task source</a>.</li><li><p>Remove all child nodes of the document, without firing any mutation events.</li><li>
+   </li><li><p>Remove any <a href=#concept-task id=opening-the-input-stream:concept-task>tasks</a> associated with <var>document</var> in
+   any <a href=#task-source id=opening-the-input-stream:task-source>task source</a>.</li><li><p>Remove all child nodes of <var>document</var>, without firing any mutation
+   events.</li><li>
     <p>Call the JavaScript <a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm id=opening-the-input-stream:js-initializehostdefinedrealm data-x-internal=js-initializehostdefinedrealm>InitializeHostDefinedRealm()</a> abstract operation
     with the following customizations:</p>
 
     <ul><li><p>For the global object, create a new <code id=opening-the-input-stream:window><a href=browsers.html#window>Window</a></code> object
-     <var>window</var>.</li><li><p>For the global <b>this</b> value, use the current <a id=opening-the-input-stream:browsing-context-3 href=browsers.html#browsing-context>browsing context</a>'s
-     associated <code id=opening-the-input-stream:windowproxy><a href=browsers.html#windowproxy>WindowProxy</a></code>.</li><li><p>Let <var>realm execution context</var> be the created <a id=opening-the-input-stream:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
+     <var>window</var>.</li><li><p>For the global <b>this</b> value, use <var>document</var>'s <a id=opening-the-input-stream:browsing-context-3 href=browsers.html#browsing-context>browsing
+     context</a>'s associated <code id=opening-the-input-stream:windowproxy><a href=browsers.html#windowproxy>WindowProxy</a></code>.</li><li><p>Let <var>realm execution context</var> be the created <a id=opening-the-input-stream:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution
      context</a>.</li></ul>
-   </li><li><p>Set <var>window</var>'s <a href=browsers.html#concept-document-window id=opening-the-input-stream:concept-document-window>associated
-   <code>Document</code></a> to the <code id=opening-the-input-stream:document-27><a href=dom.html#document>Document</a></code>.</li><li><p><a id=opening-the-input-stream:set-up-a-browsing-context-environment-settings-object href=browsers.html#set-up-a-browsing-context-environment-settings-object>Set up a browsing context environment settings object</a> with <var>realm
-   execution context</var>.</li><li><p>Replace the <code id=opening-the-input-stream:document-28><a href=dom.html#document>Document</a></code>'s singleton objects with new instances of those objects,
+
+    <p class=XXX>This is not universally implemented and can perhaps be
+    removed; see <a href=https://github.com/whatwg/html/issues/1698>issue #1698</a>.</p>
+   </li><li><p><a id=opening-the-input-stream:set-up-a-window-environment-settings-object href=browsers.html#set-up-a-window-environment-settings-object>Set up a window environment settings object</a> with <var>realm execution
+   context</var>.</li><li><p><a id=opening-the-input-stream:set-the-active-document href=browsers.html#set-the-active-document>Set the active document</a> of <var>document</var>'s <a id=opening-the-input-stream:browsing-context-4 href=browsers.html#browsing-context>browsing
+   context</a> to <var>document</var> with <var>window</var>.</li><li><p>Replace <var>document</var>'s singleton objects with new instances of those objects,
    created in <var>window</var>'s <a href=#concept-global-object-realm id=opening-the-input-stream:concept-global-object-realm>Realm</a>. (This
    includes in particular the <code id=opening-the-input-stream:history-3><a href=browsers.html#history-3>History</a></code>, <code id=opening-the-input-stream:applicationcache><a href=browsers.html#applicationcache>ApplicationCache</a></code>, and
    <code id=opening-the-input-stream:navigator><a href=#navigator>Navigator</a></code>, objects, the various <code id=opening-the-input-stream:barprop><a href=browsers.html#barprop>BarProp</a></code> objects, the two
    <code id=opening-the-input-stream:storage-2><a href=webstorage.html#storage-2>Storage</a></code> objects, the various <code id=opening-the-input-stream:htmlcollection><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code> objects, and objects
    defined by other specifications, like <code id=opening-the-input-stream:selection><a data-x-internal=selection href=https://w3c.github.io/selection-api/#selection-interface>Selection</a></code>. It also includes all the Web IDL
-   prototypes in the JavaScript binding, including the <code id=opening-the-input-stream:document-29><a href=dom.html#document>Document</a></code> object's
-   prototype.)</li><li><p>Change the <a id="opening-the-input-stream:document's-character-encoding" href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding data-x-internal="document's-character-encoding">document's character encoding</a> to UTF-8.</li><li><p>If the <code id=opening-the-input-stream:document-30><a href=dom.html#document>Document</a></code> is <a id=opening-the-input-stream:ready-for-post-load-tasks href=syntax.html#ready-for-post-load-tasks>ready for post-load tasks</a>, then set the
-   <code id=opening-the-input-stream:document-31><a href=dom.html#document>Document</a></code> object's <a id=opening-the-input-stream:reload-override-flag href=dom.html#reload-override-flag>reload override flag</a> and set the
-   <code id=opening-the-input-stream:document-32><a href=dom.html#document>Document</a></code>'s <a id=opening-the-input-stream:reload-override-buffer href=dom.html#reload-override-buffer>reload override buffer</a> to the empty string.</li><li><p>Set the <code id=opening-the-input-stream:document-33><a href=dom.html#document>Document</a></code>'s <i id=opening-the-input-stream:concept-document-salvageable-2><a href=browsers.html#concept-document-salvageable>salvageable</a></i> state back to true.</li><li><p>Change the document's <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="opening-the-input-stream:the-document's-address" data-x-internal="the-document's-address">URL</a> to the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="opening-the-input-stream:the-document's-address-2" data-x-internal="the-document's-address">URL</a> of the <a href=#responsible-document id=opening-the-input-stream:responsible-document-2>responsible document</a> specified by
-   the <a href=#entry-settings-object id=opening-the-input-stream:entry-settings-object-2>entry settings object</a>.</li><li><p>If the <code id=opening-the-input-stream:document-34><a href=dom.html#document>Document</a></code>'s <a id=opening-the-input-stream:iframe-load-in-progress href=embedded-content.html#iframe-load-in-progress>iframe load in progress</a> flag is set, set the
-   <code id=opening-the-input-stream:document-35><a href=dom.html#document>Document</a></code>'s <a id=opening-the-input-stream:mute-iframe-load href=embedded-content.html#mute-iframe-load>mute iframe load</a> flag.</li><li><p>Create a new <a id=opening-the-input-stream:html-parser href=syntax.html#html-parser>HTML parser</a> and associate it with the document. This is a
-   <dfn id=script-created-parser>script-created parser</dfn> (meaning that it can be closed by the <code id=opening-the-input-stream:dom-document-open-8><a href=#dom-document-open>document.open()</a></code> and <code id=opening-the-input-stream:dom-document-close><a href=#dom-document-close>document.close()</a></code> methods, and that the tokenizer will wait for
+   prototypes in the JavaScript binding, including <var>document</var>'s prototype.)</li><li><p>Change <var>document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding id="opening-the-input-stream:document's-character-encoding" data-x-internal="document's-character-encoding">character
+   encoding</a> to <a id=opening-the-input-stream:utf-8 href=https://triple-underscore.github.io/Encoding-ja.html#utf-8 data-x-internal=utf-8>UTF-8</a>.</li><li><p>If <var>document</var> is <a id=opening-the-input-stream:ready-for-post-load-tasks href=syntax.html#ready-for-post-load-tasks>ready for post-load tasks</a>, then set
+   <var>document</var>'s <a id=opening-the-input-stream:reload-override-flag href=dom.html#reload-override-flag>reload override flag</a> and set <var>document</var>'s
+   <a id=opening-the-input-stream:reload-override-buffer href=dom.html#reload-override-buffer>reload override buffer</a> to the empty string.</li><li><p>Set <var>document</var>'s <i id=opening-the-input-stream:concept-document-salvageable-2><a href=browsers.html#concept-document-salvageable>salvageable</a></i> state
+   back to true.</li><li><p>Change <var>document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="opening-the-input-stream:the-document's-address" data-x-internal="the-document's-address">URL</a> to the
+   <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="opening-the-input-stream:the-document's-address-2" data-x-internal="the-document's-address">URL</a> of the <a href=#responsible-document id=opening-the-input-stream:responsible-document-2>responsible document</a> specified
+   by the <a href=#entry-settings-object id=opening-the-input-stream:entry-settings-object-2>entry settings object</a>.</li><li><p>If <var>document</var>'s <a id=opening-the-input-stream:iframe-load-in-progress href=embedded-content.html#iframe-load-in-progress>iframe load in progress</a> flag is set, then set
+   <var>document</var>'s <a id=opening-the-input-stream:mute-iframe-load href=embedded-content.html#mute-iframe-load>mute iframe load</a> flag.</li><li><p>Create a new <a id=opening-the-input-stream:html-parser href=syntax.html#html-parser>HTML parser</a> and associate it with <var>document</var>. This is a
+   <dfn id=script-created-parser>script-created parser</dfn> (meaning that it can be closed by the <code id=opening-the-input-stream:dom-document-open-7><a href=#dom-document-open>document.open()</a></code> and <code id=opening-the-input-stream:dom-document-close><a href=#dom-document-close>document.close()</a></code> methods, and that the tokenizer will wait for
    an explicit call to <code id=opening-the-input-stream:dom-document-close-2><a href=#dom-document-close>document.close()</a></code> before emitting an
    end-of-file token). The encoding <a href=syntax.html#concept-encoding-confidence id=opening-the-input-stream:concept-encoding-confidence>confidence</a> is
-   <i>irrelevant</i>.</li><li><p>Set the <a id=opening-the-input-stream:current-document-readiness href=dom.html#current-document-readiness>current document readiness</a> of the document to "<code>loading</code>".</li><li>
+   <i>irrelevant</i>.</li><li><p>Set the <a id=opening-the-input-stream:current-document-readiness href=dom.html#current-document-readiness>current document readiness</a> of <var>document</var> to "<code>loading</code>".</li><li>
 
     
 
@@ -3081,38 +3116,42 @@ document.body.appendChild(frame)</pre>
 
     
 
-   </li><li>
-
-    <p>Remove all the entries in the <a id=opening-the-input-stream:browsing-context-4 href=browsers.html#browsing-context>browsing context</a>'s <a id=opening-the-input-stream:session-history-2 href=browsers.html#session-history>session history</a>
+   </li><li><p>Remove any <a href=#concept-task id=opening-the-input-stream:concept-task-2>tasks</a> queued by the <a href=#history-traversal-task-source id=opening-the-input-stream:history-traversal-task-source>history traversal
+   task source</a> that are associated with any <code id=opening-the-input-stream:document-12><a href=dom.html#document>Document</a></code> objects in the
+   <a id=opening-the-input-stream:top-level-browsing-context href=browsers.html#top-level-browsing-context>top-level browsing context</a>'s <a id=opening-the-input-stream:document-family href=browsers.html#document-family>document family</a>.</li><li>
+    <p>Remove all the entries in the <a id=opening-the-input-stream:browsing-context-5 href=browsers.html#browsing-context>browsing context</a>'s <a id=opening-the-input-stream:session-history-2 href=browsers.html#session-history>session history</a>
     after the <a id=opening-the-input-stream:current-entry href=browsers.html#current-entry>current entry</a>. If the <a id=opening-the-input-stream:current-entry-2 href=browsers.html#current-entry>current entry</a> is the last entry in the
     session history, then no entries are removed.</p>
 
     <p class=note>This <a href=browsers.html#history-notes>doesn't necessarily have to affect</a> the user
     agent's user interface.</p>
-
-   </li><li><p>Remove any <a href=#concept-task id=opening-the-input-stream:concept-task-2>tasks</a> queued by the <a href=#history-traversal-task-source id=opening-the-input-stream:history-traversal-task-source>history traversal
-   task source</a> that are associated with any <code id=opening-the-input-stream:document-36><a href=dom.html#document>Document</a></code> objects in the
-   <a id=opening-the-input-stream:top-level-browsing-context href=browsers.html#top-level-browsing-context>top-level browsing context</a>'s <a id=opening-the-input-stream:document-family href=browsers.html#document-family>document family</a>.</li><li>Remove any earlier entries that share the same <code id=opening-the-input-stream:document-37><a href=dom.html#document>Document</a></code>.</li><li><p>If <var>replace</var> is false, then add a new entry, just before the last entry,
+   </li><li><p>Remove any earlier entries whose <code id=opening-the-input-stream:document-13><a href=dom.html#document>Document</a></code> object is
+   <var>document</var>.</li><li><p>If <var>replace</var> is false, then add a new entry, just before the last entry,
    and associate with the new entry the text that was parsed by the previous parser associated with
-   the <code id=opening-the-input-stream:document-38><a href=dom.html#document>Document</a></code> object, as well as the state of the document at the start of these
-   steps. This allows the user to step backwards in the session history to see the page before it
-   was blown away by the <code id=opening-the-input-stream:dom-document-open-9><a href=#dom-document-open>document.open()</a></code> call. This new entry
-   does not have a <code id=opening-the-input-stream:document-39><a href=dom.html#document>Document</a></code> object, so a new one will be created if the session history
-   is traversed to that entry.</li><li><p>Set the <code id=opening-the-input-stream:document-40><a href=dom.html#document>Document</a></code>'s <a id=opening-the-input-stream:fired-unload href=browsers.html#fired-unload>fired unload</a> flag to false. (It could have
-   been set to true during the <a href=browsers.html#unload-a-document id=opening-the-input-stream:unload-a-document-4>unload</a> step above.)</li><li><p>Finally, set the <a id=opening-the-input-stream:insertion-point href=syntax.html#insertion-point>insertion point</a> to point at just before the end of the
-   <a id=opening-the-input-stream:input-stream href=syntax.html#input-stream>input stream</a> (which at this point will be empty).</li><li><p>Return the <code id=opening-the-input-stream:document-41><a href=dom.html#document>Document</a></code> on which the method was invoked.</li></ol>
+   <var>document</var>, as well as the state of <var>document</var> at the start of these steps.
+   This allows the user to step backwards in the session history to see the page before it was blown
+   away by the <code id=opening-the-input-stream:dom-document-open-8><a href=#dom-document-open>document.open()</a></code> call. This new entry does not
+   have a <code id=opening-the-input-stream:document-14><a href=dom.html#document>Document</a></code> object, so a new one will be created if the session history is
+   traversed to that entry.</li><li><p>Set <var>document</var>'s <a id=opening-the-input-stream:fired-unload href=browsers.html#fired-unload>fired unload</a> flag to false. (It could have been set
+   to true during the <a href=browsers.html#unload-a-document id=opening-the-input-stream:unload-a-document-4>unload</a> step above.)</li><li><p>Finally, set the <a id=opening-the-input-stream:insertion-point href=syntax.html#insertion-point>insertion point</a> to point at just before the end of the
+   <a id=opening-the-input-stream:input-stream href=syntax.html#input-stream>input stream</a> (which at this point will be empty).</li><li><p>Return <var>document</var>.</li></ol>
+
+  <p>When invoked with two arguments or fewer, the <code id=opening-the-input-stream:dom-document-open-9><a href=#dom-document-open>document.open(<var>type</var>, <var>replace</var>)</a></code> method must
+  return the result of running the <a href=#document-open-steps id=opening-the-input-stream:document-open-steps>document open steps</a> with this <code id=opening-the-input-stream:document-15><a href=dom.html#document>Document</a></code>
+  object, <var>type</var>, and <var>replace</var>.
+
+  
 
   <p class=note>The <code id=opening-the-input-stream:dom-document-open-10><a href=#dom-document-open>document.open()</a></code> method does not affect
-  whether a <code id=opening-the-input-stream:document-42><a href=dom.html#document>Document</a></code> is <a id=opening-the-input-stream:ready-for-post-load-tasks-2 href=syntax.html#ready-for-post-load-tasks>ready for post-load tasks</a> or <a id=opening-the-input-stream:completely-loaded href=syntax.html#completely-loaded>completely
+  whether a <code id=opening-the-input-stream:document-16><a href=dom.html#document>Document</a></code> is <a id=opening-the-input-stream:ready-for-post-load-tasks-2 href=syntax.html#ready-for-post-load-tasks>ready for post-load tasks</a> or <a id=opening-the-input-stream:completely-loaded href=syntax.html#completely-loaded>completely
   loaded</a>.</p>
 
-  <p>When called with three arguments, the <code id=opening-the-input-stream:dom-document-open-11><a href=#dom-document-open>open()</a></code> method on
-  the <code id=opening-the-input-stream:document-43><a href=dom.html#document>Document</a></code> object must call the <code id=opening-the-input-stream:dom-open-2><a href=browsers.html#dom-open>open()</a></code> method on the
-  <code id=opening-the-input-stream:window-2><a href=browsers.html#window>Window</a></code> object of the <code id=opening-the-input-stream:document-44><a href=dom.html#document>Document</a></code> object, with the same arguments as the
-  original call to the <code id=opening-the-input-stream:dom-document-open-12><a href=#dom-document-open>open()</a></code> method, and return whatever
-  that method returned. If the <code id=opening-the-input-stream:document-45><a href=dom.html#document>Document</a></code> object has no <code id=opening-the-input-stream:window-3><a href=browsers.html#window>Window</a></code> object, then
-  the method must throw an <a id=opening-the-input-stream:invalidaccesserror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidaccesserror data-x-internal=invalidaccesserror>"<code>InvalidAccessError</code>"</a>
-  <code id=opening-the-input-stream:domexception-6><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</p>
+  <p>When invoked with three arguments, the <code id=opening-the-input-stream:dom-document-open-11><a href=#dom-document-open>open(<var>url</var>,
+  <var>name</var>, <var>features</var>)</a></code> method must run these steps:</p>
+
+  <ol><li><p>If this <code id=opening-the-input-stream:document-17><a href=dom.html#document>Document</a></code> object is not an <a id=opening-the-input-stream:active-document-2 href=browsers.html#active-document>active document</a>, then throw an
+   <a id=opening-the-input-stream:invalidstateerror-5 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=opening-the-input-stream:domexception-6><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> exception.</li><li><p>Return the result of running the <a id=opening-the-input-stream:window-open-steps href=browsers.html#window-open-steps>window open steps</a> with <var>url</var>,
+   <var>name</var>, and <var>features</var>.</li></ol>
 
   
 
@@ -3175,51 +3214,27 @@ document.body.appendChild(frame)</pre>
   away the document by implicitly calling <code id=document.write():dom-document-open-2><a href=#dom-document-open>document.open()</a></code>.
   Initially, the counter must be set to zero.</p>
 
-  <p>The <dfn id=dom-document-write><code>document.write(...)</code></dfn> method must act as
-  follows:</p>
+  <p>The <dfn id=document-write-steps>document write steps</dfn>, given a <code id=document.write():document-3><a href=dom.html#document>Document</a></code> object <var>document</var>
+  and a string <var>input</var>, are as follows:</p>
 
-  <ol><li>
-
-    <p>If the method was invoked on an <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=document.write():xml-documents-2 data-x-internal=xml-documents>XML document</a>, throw an
-    <a id=document.write():invalidstateerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.write():domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these
-    steps.</p>
+  <ol><li><p>If <var>document</var> is an <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=document.write():xml-documents-2 data-x-internal=xml-documents>XML document</a>, then throw
+   an <a id=document.write():invalidstateerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.write():domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If <var>document</var>'s <a href=#throw-on-dynamic-markup-insertion-counter id=document.write():throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion counter</a> is greater
+   than 0, then throw an <a id=document.write():invalidstateerror-4 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+   <code id=document.write():domexception-4><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If <var>document</var> is not an <a id=document.write():active-document href=browsers.html#active-document>active document</a>, then return.</li><li>
+    <p>If the <a id=document.write():insertion-point href=syntax.html#insertion-point>insertion point</a> is undefined, then:
 
     
 
-   </li><li><p>If the <code id=document.write():document-3><a href=dom.html#document>Document</a></code> object's <a href=#throw-on-dynamic-markup-insertion-counter id=document.write():throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion
-   counter</a> is greater than zero, then throw an <a id=document.write():invalidstateerror-4 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
-   <code id=document.write():domexception-4><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> and abort these steps.</li><li><p>If the <code id=document.write():document-4><a href=dom.html#document>Document</a></code> object is not an <a id=document.write():active-document href=browsers.html#active-document>active document</a>, then abort
-   these steps.</li><li>
-
-    <p>If the <a id=document.write():insertion-point href=syntax.html#insertion-point>insertion point</a> is undefined and either the <code id=document.write():document-5><a href=dom.html#document>Document</a></code>'s
-    <a href=#ignore-opens-during-unload-counter id=document.write():ignore-opens-during-unload-counter>ignore-opens-during-unload counter</a> is greater than zero or the
-    <code id=document.write():document-6><a href=dom.html#document>Document</a></code>'s <a href=#ignore-destructive-writes-counter id=document.write():ignore-destructive-writes-counter>ignore-destructive-writes counter</a> is greater than zero,
-    abort these steps.</p>
-
-   </li><li>
-
-    <p>If the <a id=document.write():insertion-point-2 href=syntax.html#insertion-point>insertion point</a> is undefined, call the <code id=document.write():dom-document-open-3><a href=#dom-document-open>open()</a></code> method on the <code id=document.write():document-7><a href=dom.html#document>document</a></code>
-    object (with no arguments). If the user <a id=document.write():refused-to-allow-the-document-to-be-unloaded href=browsers.html#refused-to-allow-the-document-to-be-unloaded>refused to allow the document to be
-    unloaded</a>, then abort these steps. Otherwise, the <a id=document.write():insertion-point-3 href=syntax.html#insertion-point>insertion point</a> will point
-    at just before the end of the (empty) <a id=document.write():input-stream href=syntax.html#input-stream>input stream</a>.</p>
-
-   </li><li>
-
-    <p>Insert the string consisting of the concatenation of all the arguments to the method into the
-    <a id=document.write():input-stream-2 href=syntax.html#input-stream>input stream</a> just before the <a id=document.write():insertion-point-4 href=syntax.html#insertion-point>insertion point</a>.</p>
-
-   </li><li>
-
-    <p>If the <code id=document.write():document-8><a href=dom.html#document>Document</a></code> object's <a id=document.write():reload-override-flag href=dom.html#reload-override-flag>reload override flag</a> is set, then append
-    the string consisting of the concatenation of all the arguments to the method to the
-    <code id=document.write():document-9><a href=dom.html#document>Document</a></code>'s <a id=document.write():reload-override-buffer href=dom.html#reload-override-buffer>reload override buffer</a>.</p>
-
-   </li><li>
-
+    <ol><li><p>If <var>document</var>'s <a href=#ignore-opens-during-unload-counter id=document.write():ignore-opens-during-unload-counter>ignore-opens-during-unload counter</a> is greater than
+     0 or <var>document</var>'s <a href=#ignore-destructive-writes-counter id=document.write():ignore-destructive-writes-counter>ignore-destructive-writes counter</a> is greater than 0,
+     then return.</li><li><p>Run the <a href=#document-open-steps id=document.write():document-open-steps>document open steps</a> with <var>document</var>, "<code>text/html</code>", and the empty string. ユーザーが<a id=document.write():refused-to-allow-the-document-to-be-unloaded href=browsers.html#refused-to-allow-the-document-to-be-unloaded>文書をアンロードできるようにすることを拒否した</a>場合、これらの手順を中止する。Otherwise, the <a id=document.write():insertion-point-2 href=syntax.html#insertion-point>insertion point</a> will point at just before the end of the (empty) <a id=document.write():input-stream href=syntax.html#input-stream>input stream</a>.</li></ol>
+   </li><li><p>Insert <var>input</var> into the <a id=document.write():input-stream-2 href=syntax.html#input-stream>input stream</a> just before the <a id=document.write():insertion-point-3 href=syntax.html#insertion-point>insertion
+   point</a>.</li><li><p>If <var>document</var>'s <a id=document.write():reload-override-flag href=dom.html#reload-override-flag>reload override flag</a> is set, then append
+   <var>input</var> to <var>document</var>'s <a id=document.write():reload-override-buffer href=dom.html#reload-override-buffer>reload override buffer</a>.</li><li>
     <p>If there is no <a id=document.write():pending-parsing-blocking-script href=scripting.html#pending-parsing-blocking-script>pending parsing-blocking script</a>, have the <a id=document.write():html-parser-2 href=syntax.html#html-parser>HTML
-    parser</a> process the characters that were inserted, one at a time, processing resulting
-    tokens as they are emitted, and stopping when the tokenizer reaches the insertion point or when
-    the processing of the tokenizer is aborted by the tree construction stage (this can happen if a
+    parser</a> process <var>input</var>, one code point at a time, processing resulting tokens as
+    they are emitted, and stopping when the tokenizer reaches the insertion point or when the
+    processing of the tokenizer is aborted by the tree construction stage (this can happen if a
     <code id=document.write():the-script-element-2><a href=scripting.html#the-script-element>script</a></code> end tag token is emitted by the tokenizer).
 
     
@@ -3230,12 +3245,12 @@ document.body.appendChild(frame)</pre>
     parser</a>. If the <a id=document.write():parser-pause-flag href=syntax.html#parser-pause-flag>parser pause flag</a> is set, the tokenizer will abort immediately
     and no HTML will be parsed, per the tokenizer's <a href=syntax.html#check-parser-pause-flag>parser pause
     flag check</a>.</p>
-
-   </li><li>
-
-    <p>Finally, return from the method.</p>
-
    </li></ol>
+
+  <p>The <dfn id=dom-document-write><code>document.write(...)</code></dfn> method, when
+  invoked, must run the <a href=#document-write-steps id=document.write():document-write-steps>document write steps</a> with this <code id=document.write():document-4><a href=dom.html#document>Document</a></code> object and
+  a string that is the concatanation of all arguments passed.</p>
+
 
   
 
@@ -3257,9 +3272,8 @@ document.body.appendChild(frame)</pre>
   
 
   <p>The <dfn id=dom-document-writeln><code>document.writeln(...)</code></dfn> method, when
-  invoked, must act as if the <code id=document.writeln():dom-document-write><a href=#dom-document-write>document.write()</a></code> method had
-  been invoked with the same argument(s), plus an extra argument consisting of a string containing a
-  single line feed character (U+000A).</p>
+  invoked, must run the <a href=#document-write-steps id=document.writeln():document-write-steps>document write steps</a> with this <code id=document.writeln():document-2><a href=dom.html#document>Document</a></code> object and
+  a string that is the concatanation of all arguments passed and U+000A LINE FEED.</p>
 
   
 
@@ -3805,7 +3819,7 @@ interface <dfn id=navigatorlanguage>NavigatorLanguage</dfn> {
 
 
 
-  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods<a href=#custom-handlers class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> registerprotocolhandler<span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
+  <h5 id=custom-handlers>8.7.1.3 Custom scheme and content handlers: the <code id=custom-handlers:dom-navigator-registerprotocolhandler><a href=#dom-navigator-registerprotocolhandler>registerProtocolHandler()</a></code> and <code id=custom-handlers:dom-navigator-registercontenthandler><a href=#dom-navigator-registercontenthandler>registerContentHandler()</a></code> methods<a href=#custom-handlers class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> registerprotocolhandler<span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="chrome yes"><span>Chrome</span> <span>13+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox yes"><span>Firefox</span> <span>3+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>11.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=registerprotocolhandler">caniuse.com</a></div>
 
   <pre class=idl>[NoInterfaceObject]
 interface <dfn id=navigatorcontentutils>NavigatorContentUtils</dfn> {
@@ -5070,14 +5084,14 @@ function loadMySprites() {
   var resolver;
   var promise = new Promise(function (arg) { resolver = arg });
   image.onload = function () {
-    resolver(Promise.all(
+    resolver(Promise.all([
       createImageBitmap(image,  0,  0, 40, 40).then(function (image) { sprites.woman = image }),
       createImageBitmap(image, 40,  0, 40, 40).then(function (image) { sprites.man   = image }),
       createImageBitmap(image, 80,  0, 40, 40).then(function (image) { sprites.tree  = image }),
       createImageBitmap(image,  0, 40, 40, 40).then(function (image) { sprites.hut   = image }),
       createImageBitmap(image, 40, 40, 40, 40).then(function (image) { sprites.apple = image }),
-      createImageBitmap(image, 80, 40, 40, 40).then(function (image) { sprites.snake = image }),
-    ));
+      createImageBitmap(image, 80, 40, 40, 40).then(function (image) { sprites.snake = image })
+    ]));
   };
   return promise;
 }
@@ -5095,7 +5109,7 @@ loadMySprites().then(runDemo);</pre>
 
 
 
-  <h3 id=animation-frames>8.9 Animation Frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> requestanimationframe<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
+  <h3 id=animation-frames>8.9 Animation Frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> requestanimationframe<span class="and_chr yes"><span>Chrome for Android</span> <span>57+</span></span><span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.4+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
 
   <p>Each <code id=animation-frames:document><a href=dom.html#document>Document</a></code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
   initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback identifier</dfn>, which is a number which
