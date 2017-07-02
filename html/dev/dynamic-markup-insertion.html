@@ -1,0 +1,132 @@
+<!DOCTYPE html><html class=split lang=ja>
+<script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
+<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold"><link rel=stylesheet href=styles.css>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script>
+<body>
+  
+  
+  <header id=head class="head with-buttons">
+   <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
+   
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>30 June 2017</span></h2></hgroup>
+   
+  </header>
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=webappapis.html>← 8 Web application APIs</a> — <a href=index.html>Table of Contents</a> — <a href=timers-and-user-prompts.html>8.5 Timers →</a></nav><ol class=toc><li><ol><li><a href=dynamic-markup-insertion.html#dynamic-markup-insertion><span class=secno>8.4</span> Dynamic markup insertion</a><ol><li><a href=dynamic-markup-insertion.html#opening-the-input-stream><span class=secno>8.4.1</span> Opening the input stream</a></li><li><a href=dynamic-markup-insertion.html#closing-the-input-stream><span class=secno>8.4.2</span> Closing the input stream</a></li><li><a href=dynamic-markup-insertion.html#document.write()><span class=secno>8.4.3</span> <code>document.write()</code></a></li><li><a href=dynamic-markup-insertion.html#document.writeln()><span class=secno>8.4.4</span> <code>document.writeln()</code></a></li></ol></li></ol></li></ol><h3 id=dynamic-markup-insertion><span class=secno>8.4</span> <dfn>Dynamic markup insertion</dfn><a href=#dynamic-markup-insertion class=self-link></a></h3>
+
+  <p class=note>APIs for dynamically inserting markup into the document interact with the parser,
+  and thus their behavior varies depending on whether they are used with <a id=dynamic-markup-insertion:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML
+  documents</a> (and the <span>HTML parser</span>) or <a id=dynamic-markup-insertion:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML documents</a> (and the
+  <span>XML parser</span>).</p>
+
+  
+
+
+
+  <h4 id=opening-the-input-stream><span class=secno>8.4.1</span> Opening the input stream<a href=#opening-the-input-stream class=self-link></a></h4>
+
+  <p><dfn id=dom-document-open><code>open()</code></dfn>メソッドは、異なる引数の数をもつ異形を提供する。</p>
+
+  <dl class=domintro><dt><var>document</var> = <var>document</var> . <code id=opening-the-input-stream:dom-document-open><a href=#dom-document-open>open</a></code>( [ <var>type</var> [, <var>replace</var> ] ] )<dd>
+
+    <p>Causes the <code>Document</code> to be replaced in-place, as if it was a new
+    <code>Document</code> object, but reusing the previous object, which is then returned.</p>
+
+    <p>If the <var>type</var> argument is omitted or has the value
+    "<code id=opening-the-input-stream:text/html><a href=iana.html#text/html>text/html</a></code>", then the resulting <code>Document</code> has an HTML parser associated
+    with it, which can be given data to parse using <code id=opening-the-input-stream:dom-document-write><a href=#dom-document-write>document.write()</a></code>. Otherwise, all content passed to <code id=opening-the-input-stream:dom-document-write-2><a href=#dom-document-write>document.write()</a></code> will be parsed as plain text.</p>
+
+    <p>If the <var>replace</var> argument is present and has the value "<code>replace</code>", the existing entries in the session history for the
+    <code>Document</code> object are removed.</p>
+
+    <p>The method has no effect if the <code>Document</code> is still being parsed.</p>
+
+    <p>Throws an <a id=opening-the-input-stream:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=opening-the-input-stream:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
+    <code>Document</code> is an <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=opening-the-input-stream:xml-documents data-x-internal=xml-documents>XML document</a>.</p>
+
+    <p>Throws an <a id=opening-the-input-stream:invalidstateerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=opening-the-input-stream:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
+    parser is currently executing a <a id=opening-the-input-stream:custom-element-constructor href=custom-elements.html#custom-element-constructor>custom element constructor</a>.</p>
+
+   <dt><var>window</var> = <var>document</var> . <code id=opening-the-input-stream:dom-document-open-2><a href=#dom-document-open>open</a></code>( <var>url</var>, <var>name</var>, <var>features</var> )<dd>
+
+    <p><code id=opening-the-input-stream:dom-open><a href=window-object.html#dom-open>window.open()</a></code>メソッドのように動作する。</p>
+
+   </dl>
+
+  
+
+
+
+  <h4 id=closing-the-input-stream><span class=secno>8.4.2</span> Closing the input stream<a href=#closing-the-input-stream class=self-link></a></h4>
+
+  <dl class=domintro><dt><var>document</var> . <code>close</code>()<dd>
+
+    <p><code id=closing-the-input-stream:dom-document-open><a href=#dom-document-open>document.open()</a></code>メソッドによって開かれた入力ストリームを閉じる。</p>
+
+    <p>Throws an <a id=closing-the-input-stream:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=closing-the-input-stream:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
+    <code>Document</code> is an <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=closing-the-input-stream:xml-documents data-x-internal=xml-documents>XML document</a>.</p>
+
+    <p>Throws an <a id=closing-the-input-stream:invalidstateerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=closing-the-input-stream:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
+    parser is currently executing a <a id=closing-the-input-stream:custom-element-constructor href=custom-elements.html#custom-element-constructor>custom element constructor</a>.</p>
+
+   </dl>
+
+  
+
+
+
+  <h4 id=document.write()><span class=secno>8.4.3</span> <code id=document.write():dom-document-write><a href=#dom-document-write>document.write()</a></code><a href=#document.write() class=self-link></a></h4>
+
+  <dl class=domintro><dt><var>document</var> . <code id=dom-document-write>write</code>(<var>text</var>...)<dd>
+
+    <p>In general, adds the given string(s) to the <code>Document</code>'s input stream.</p>
+
+    <p class=warning>このメソッドは非常に特異な振る舞いを持つ。In some cases, this method can affect the state of the <span>HTML parser</span> while the parser is running, resulting in a DOM that does not correspond to the source of the document (e.g. if the string written is the string "<code>&lt;plaintext&gt;</code>" or "<code>&lt;!--</code>"). 他の例では、あたかも<code id=document.write():dom-document-open><a href=#dom-document-open>document.open()</a></code>が呼び出されていたかのように、呼び出しが最初に現在のページをクリアできる。さらに多くの例では、メソッドは単に無視されるか、または例外を投げる。さらに悪いことに、このメソッドの正確な動作は、いくつかのケースにおいて、デバッグに非常に困難な障害を招く可能性がある、ネットワークレイテンシに依存するかもしれない。<strong>これらすべての理由から、このメソッドの使用を強く推奨しない。</strong></p>
+
+    <p>Throws an <a id=document.write():invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.write():domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> when
+    invoked on <a id=document.write():xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML documents</a>.</p>
+
+    <p>Throws an <a id=document.write():invalidstateerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.write():domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
+    parser is currently executing a <a id=document.write():custom-element-constructor href=custom-elements.html#custom-element-constructor>custom element constructor</a>.</p>
+
+   </dl>
+
+  
+
+
+  <h4 id=document.writeln()><span class=secno>8.4.4</span> <code id=document.writeln():dom-document-writeln><a href=#dom-document-writeln>document.writeln()</a></code><a href=#document.writeln() class=self-link></a></h4>
+
+  <dl class=domintro><dt><var>document</var> . <code id=dom-document-writeln>writeln</code>(<var>text</var>...)<dd>
+
+    <p>Adds the given string(s) to the <code>Document</code>'s input stream, followed by a newline
+    character. If necessary, calls the <code id=document.writeln():dom-document-open><a href=#dom-document-open>open()</a></code> method
+    implicitly first.</p>
+
+    <p>Throws an <a id=document.writeln():invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.writeln():domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> when
+    invoked on <a id=document.writeln():xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML documents</a>.</p>
+
+    <p>Throws an <a id=document.writeln():invalidstateerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.writeln():domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
+    parser is currently executing a <a id=document.writeln():custom-element-constructor href=custom-elements.html#custom-element-constructor>custom element constructor</a>.</p>
+
+   </dl>
+
+  
+
+
+
+  <nav><a href=webappapis.html>← 8 Web application APIs</a> — <a href=index.html>Table of Contents</a> — <a href=timers-and-user-prompts.html>8.5 Timers →</a></nav>
+</body></html>

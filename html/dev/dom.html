@@ -1,0 +1,1222 @@
+<!DOCTYPE html><html class=split lang=ja>
+<script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
+<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold"><link rel=stylesheet href=styles.css>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script>
+<body>
+  
+  
+  <header id=head class="head with-buttons">
+   <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
+   
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>30 June 2017</span></h2></hgroup>
+   
+  </header>
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=common-dom-interfaces.html>← 2.5 Common DOM interfaces</a> — <a href=index.html>Table of Contents</a> — <a href=semantics.html>4 The elements of HTML →</a></nav><ol class=toc><li><a href=dom.html#dom><span class=secno>3</span> Semantics, structure, and APIs of HTML documents</a><ol><li><a href=dom.html#documents><span class=secno>3.1</span> Documents</a><ol><li><a href=dom.html#the-document-object><span class=secno>3.1.1</span> The <code>Document</code> object</a></li><li><a href=dom.html#resource-metadata-management><span class=secno>3.1.2</span> Resource metadata management</a></li><li><a href=dom.html#dom-tree-accessors><span class=secno>3.1.3</span> DOM tree accessors</a></li></ol></li><li><a href=dom.html#elements><span class=secno>3.2</span> Elements</a><ol><li><a href=dom.html#semantics-2><span class=secno>3.2.1</span> Semantics</a></li><li><a href=dom.html#elements-in-the-dom><span class=secno>3.2.2</span> Elements in the DOM</a></li><li><a href=dom.html#element-definitions><span class=secno>3.2.3</span> Element definitions</a><ol><li><a href=dom.html#attributes><span class=secno>3.2.3.1</span> Attributes</a></li></ol></li><li><a href=dom.html#content-models><span class=secno>3.2.4</span> Content models</a><ol><li><a href=dom.html#the-nothing-content-model><span class=secno>3.2.4.1</span> The "nothing" content model</a></li><li><a href=dom.html#kinds-of-content><span class=secno>3.2.4.2</span> Kinds of content</a><ol><li><a href=dom.html#metadata-content><span class=secno>3.2.4.2.1</span> Metadata content</a></li><li><a href=dom.html#flow-content><span class=secno>3.2.4.2.2</span> Flow content</a></li><li><a href=dom.html#sectioning-content><span class=secno>3.2.4.2.3</span> Sectioning content</a></li><li><a href=dom.html#heading-content><span class=secno>3.2.4.2.4</span> Heading content</a></li><li><a href=dom.html#phrasing-content><span class=secno>3.2.4.2.5</span> Phrasing content</a></li><li><a href=dom.html#embedded-content-2><span class=secno>3.2.4.2.6</span> Embedded content</a></li><li><a href=dom.html#interactive-content><span class=secno>3.2.4.2.7</span> Interactive content</a></li><li><a href=dom.html#palpable-content><span class=secno>3.2.4.2.8</span> Palpable content</a></li><li><a href=dom.html#script-supporting-elements><span class=secno>3.2.4.2.9</span> Script-supporting elements</a></li></ol></li><li><a href=dom.html#transparent-content-models><span class=secno>3.2.4.3</span> Transparent content models</a></li><li><a href=dom.html#paragraphs><span class=secno>3.2.4.4</span> Paragraphs</a></li></ol></li><li><a href=dom.html#global-attributes><span class=secno>3.2.5</span> Global attributes</a><ol><li><a href=dom.html#the-title-attribute><span class=secno>3.2.5.1</span> The <code>title</code> attribute</a></li><li><a href=dom.html#the-lang-and-xml:lang-attributes><span class=secno>3.2.5.2</span> The <code>lang</code> and <code>xml:lang</code> attributes</a></li><li><a href=dom.html#the-translate-attribute><span class=secno>3.2.5.3</span> The <code>translate</code> attribute</a></li><li><a href=dom.html#the-dir-attribute><span class=secno>3.2.5.4</span> The <code>dir</code> attribute</a></li><li><a href=dom.html#the-style-attribute><span class=secno>3.2.5.5</span> The <code>style</code> attribute</a></li><li><a href=dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes><span class=secno>3.2.5.6</span> Embedding custom non-visible data with the <code>data-*</code> attributes</a></li></ol></li><li><a href=dom.html#the-innertext-idl-attribute><span class=secno>3.2.6</span> The <code>innerText</code> IDL attribute</a></li><li><a href=dom.html#requirements-relating-to-the-bidirectional-algorithm><span class=secno>3.2.7</span> Requirements relating to the bidirectional algorithm</a></li></ol></li></ol></li></ol><h2 id=dom><span class=secno>3</span> Semantics, structure, and APIs of HTML documents<a href=#dom class=self-link></a></h2>
+
+  <h3 id=documents><span class=secno>3.1</span> Documents<a href=#documents class=self-link></a></h3>
+
+  <p>Every XML and HTML document in an HTML UA is represented by a <code>Document</code> object. <a href=references.html#refsDOM>[DOM]</a></p>
+
+  <p>The <code>Document</code> object's <dfn data-x-for=Document id="the-document's-address"><a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url>URL</a></dfn> is defined in the WHATWG DOM standard. It is initially set when
+  the <code>Document</code> object is created, but can change during the lifetime of the
+  <code>Document</code> object; for example, it changes when the user <span>navigates</span> to a <span>fragment</span> on the page
+  and when the <code id=documents:dom-history-pushstate><a href=history.html#dom-history-pushstate>pushState()</a></code> method is called with a new
+  <a id=documents:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>. <a href=references.html#refsDOM>[DOM]</a></p>
+  
+
+  <p class=warning>Interactive user agents typically expose the <code>Document</code> object's <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="documents:the-document's-address" data-x-internal="the-document's-address">URL</a> in their user interface. これは、サイトが別のものを偽装しようとしているかどうかをユーザーが見分けるための基本メカニズムである。</p>
+
+  <p>When a <code>Document</code> is created by a <span>script</span> using
+  the <code id=documents:dom-domimplementation-createdocument><a data-x-internal=dom-domimplementation-createdocument href=https://triple-underscore.github.io/DOM4-ja.htmlcreatedocument>createDocument()</a></code> or <code id=documents:dom-domimplementation-createhtmldocument><a data-x-internal=dom-domimplementation-createhtmldocument href=https://triple-underscore.github.io/DOM4-ja.html#dom-domimplementation-createhtmldocument>createHTMLDocument()</a></code> the
+  <code>Document</code> is both <span>ready for post-load tasks</span> and <span>completely
+  loaded</span> immediately.</p>
+
+  <p><dfn id="the-document's-referrer" data-export="">The document's referrer</dfn> is a string (representing a <a id=documents:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>) that can be set when the <code>Document</code> is created. 文書のリファラーが明示的に設定されない場合、値は空文字列である。</p>
+
+  <p>Each <code>Document</code> object has a <dfn id=reload-override-flag>reload override flag</dfn> that is originally
+  unset. The flag is set by the <code id=documents:dom-document-open><a href=dynamic-markup-insertion.html#dom-document-open>document.open()</a></code> and <code id=documents:dom-document-open-2><a href=dynamic-markup-insertion.html#dom-document-open>document.write()</a></code> methods in certain situations. When the flag is
+  set, the <code>Document</code> also has a <dfn id=reload-override-buffer>reload override buffer</dfn> which is a Unicode
+  string that is used as the source of the document when it is reloaded.</p>
+
+  <p>ユーザーエージェントが<dfn id=an-overridden-reload>上書きされたリロード</dfn>を実行することになっている場合、<span>ソースブラウジングコンテキスト</span>を与えられ、以下のように振る舞わなければならない：</p>
+
+  <ol><li><p><var>source</var>を<a id=documents:browsing-context href=browsers.html#browsing-context>ブラウジングコンテキスト</a>の<a id=documents:active-document href=browsers.html#active-document>アクティブ文書</a>がもつ<a href=#reload-override-buffer id=documents:reload-override-buffer>リロード上書きバッファ</a>の値にする。</li><li><p><var>address</var>を<a id=documents:browsing-context-2 href=browsers.html#browsing-context>ブラウジングコンテキスト</a>の<a id=documents:active-document-2 href=browsers.html#active-document>アクティブ文書</a>の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="documents:the-document's-address-2" data-x-internal="the-document's-address">URL</a>にする。</li><li><p><var>HTTPS state</var>を<a id=documents:browsing-context-3 href=browsers.html#browsing-context>ブラウジングコンテキスト</a>の<a id=documents:active-document-3 href=browsers.html#active-document>アクティブ文書</a>の<a href=#concept-document-https-state id=documents:concept-document-https-state>HTTPS state</a>にする。</li><li><p><var>referrer policy</var>を<a id=documents:browsing-context-4 href=browsers.html#browsing-context>ブラウジングコンテキスト</a>の<a id=documents:active-document-4 href=browsers.html#active-document>アクティブ文書</a>の<a href=#concept-document-referrer-policy id=documents:concept-document-referrer-policy>リファラーポリシー</a>にする。</li><li><p><var>CSP list</var>を<a id=documents:browsing-context-5 href=browsers.html#browsing-context>ブラウジングコンテキスト</a>の<a id=documents:active-document-5 href=browsers.html#active-document>アクティブ文書</a>の<a href=#concept-document-csp-list id=documents:concept-document-csp-list>CSP list</a>にする。</li><li>
+
+    <p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-body id=documents:concept-response-body data-x-internal=concept-response-body>ボディー</a>が<var>source</var>であり、<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-header-list id=documents:concept-response-header-list data-x-internal=concept-response-header-list>ヘッダーリスト</a>が`<code id=documents:http-referrer-policy><a data-x-internal=http-referrer-policy href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-header-dfn>Referrer-Policy</a></code>`/<var>referrer policy</var>であり、<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-csp-list id=documents:concept-response-csp-list data-x-internal=concept-response-csp-list>CSPリスト</a>が<var>CSP list</var>かつ、<var><span>exceptions enabled flag</span></var>が設定され<span>replacement enabled</span>をもつ、<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-https-state id=documents:concept-response-https-state data-x-internal=concept-response-https-state>HTTPS状態</a>が<var>HTTPS state</var>である新しい<a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=documents:concept-response data-x-internal=concept-response>レスポンス</a>に<a id=documents:browsing-context-6 href=browsers.html#browsing-context>ブラウジングコンテキスト</a>を<span>ナビゲート</span>する。<span>ソースブラウジングコンテキスト</span>は<a href=#an-overridden-reload id=documents:an-overridden-reload>上書きリロード</a>アルゴリズムに与えられるものである。When the <span>navigate</span> algorithm creates a <code>Document</code> object for this purpose, set that <code>Document</code>'s <a href=#reload-override-flag id=documents:reload-override-flag>reload override flag</a> and set its <a href=#reload-override-buffer id=documents:reload-override-buffer-2>reload override buffer</a> to <var>source</var>. 例外を再度投げる。</p>
+
+    <p><span>ナビゲーションアルゴリズム</span>で<span>文書のアドレスを設定する</span>時間が来ると、<span>上書きURL</span>として<var>address</var>を使用する。</p>
+
+   </li></ol>
+
+
+
+  <h4 id=the-document-object><span class=secno>3.1.1</span> The <code>Document</code> object<a href=#the-document-object class=self-link></a></h4>
+
+  <p>The WHATWG DOM standard defines a <code id=the-document-object:dom-document><a data-x-internal=dom-document href=https://triple-underscore.github.io/DOM4-ja.html#interface-document>Document</a></code> interface, which
+  this specification extends significantly.</p>
+
+  
+
+  <p>The <code>Document</code> has an <dfn data-dfn-for=Document id=concept-document-https-state data-export="">HTTPS state</dfn> (an <a id=the-document-object:https-state-value href=https://triple-underscore.github.io/Fetch-ja.html#concept-https-state-value data-x-internal=https-state-value>HTTPS state value</a>), initially "<code>none</code>", which represents the security properties of the network channel used to
+  deliver the <code>Document</code>'s data.</p>
+
+  <p>The <code>Document</code> has a <dfn data-dfn-for=Document id=concept-document-referrer-policy data-export="">referrer policy</dfn> (a <a id=the-document-object:referrer-policy href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>referrer policy</a>), initially the
+  empty string, which represents the default <a id=the-document-object:referrer-policy-2 href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>referrer policy</a> used by <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=the-document-object:concept-fetch data-x-internal=concept-fetch>fetches</a> initiated by the <code>Document</code>.</p>
+
+  <p>The <code>Document</code> has a <dfn data-dfn-for=Document id=concept-document-csp-list data-export="">CSP list</dfn>, which is a list of <a id=the-document-object:content-security-policy href=https://w3c.github.io/webappsec-csp/#content-security-policy-object data-x-internal=content-security-policy>Content Security Policy</a> objects active in this context. このリストは、他に指定されない限り空である。</p>
+
+  <p>The <code>Document</code> has a <dfn data-dfn-for=Document id=concept-document-module-map>module map</dfn>, which is a <span>module map</span>,
+  initially empty.</p>
+
+
+  <h4 id=resource-metadata-management><span class=secno>3.1.2</span> <dfn>Resource metadata management</dfn><a href=#resource-metadata-management class=self-link></a></h4>
+
+  <dl class=domintro><dt><var>document</var> . <code>referrer</code><dd>
+
+    <p>Returns the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="resource-metadata-management:the-document's-address" data-x-internal="the-document's-address">URL</a> of the <code>Document</code>
+    from which the user navigated to this one, unless it was blocked or there was no such document,
+    in which case it returns the empty string.</p>
+
+    <p><code id=resource-metadata-management:link-type-noreferrer><a href=links.html#link-type-noreferrer>noreferrer</a></code>リンク型はリファラーを遮断するために使用されうる。</p>
+
+   </dl>
+
+  
+
+  <hr>
+
+  <dl class=domintro><dt><var>document</var> . <code>cookie</code> [ = <var>value</var> ]<dd>
+
+    <p>Returns the HTTP cookies that apply to the <code>Document</code>. クッキーが存在しないかクッキーがこのリソースに適用されない場合、空文字を返す。</p>
+
+    <p>新しいクッキーをHTTPクッキーの要素に設定が可能である。</p>
+
+    <p>コンテンツが<a href=origin.html#sandboxed-origin-browsing-context-flag id=resource-metadata-management:sandboxed-origin-browsing-context-flag>サンドボックス化された固有生成元</a>（たとえば、<code id=resource-metadata-management:attr-iframe-sandbox><a href=iframe-embed-object.html#attr-iframe-sandbox>sandbox</a></code>属性を持つ<code id=resource-metadata-management:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>の中）である場合、 <a id=resource-metadata-management:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=resource-metadata-management:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>例外は取得および設定時に投げられる。</p>
+
+   </dl>
+
+  
+
+  <dl class=domintro><dt><var>document</var> . <code>lastModified</code><dd>
+    <p>ユーザーのローカルタイムゾーンで"<code>MM/DD/YYYY&nbsp;hh:mm:ss</code>"由来のサーバーによって報告されるような、文書の最終更新日時を返す。</p>
+    <p>最終更新日時が不明の場合、代わりに現在の時刻が返される。</p>
+   </dl>
+
+  
+
+  <dl class=domintro><dt><var>document</var> . <code>readyState</code><dd>
+    <p>Returns "<code>loading</code>" while the <code>Document</code> is loading, "<code>interactive</code>" once it is finished parsing but still loading sub-resources, and
+    "<code>complete</code>" once it has loaded.</p>
+    <p>The <code id=resource-metadata-management:event-readystatechange><a href=indices.html#event-readystatechange>readystatechange</a></code> event fires on the
+    <code>Document</code> object when this value changes.</p>
+   </dl>
+
+  
+
+
+
+  <h4 id=dom-tree-accessors><span class=secno>3.1.3</span> <dfn>DOM tree accessors</dfn><a href=#dom-tree-accessors class=self-link></a></h4>
+
+  <p>要素が<code id=dom-tree-accessors:the-html-element><a href=semantics.html#the-html-element>html</a></code>要素である場合、文書の<dfn id=the-html-element-2><code>html</code>要素</dfn>はその<a id=dom-tree-accessors:document-element href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>文書要素</a>である。そうでなければnullである。</p>
+
+  <hr>
+
+  <dl class=domintro><dt><var>document</var> . <code>head</code><dd>
+    <p><a href=#the-head-element-2 id=dom-tree-accessors:the-head-element-2><code>head</code>要素</a>を返す。</p>
+   </dl>
+
+  <p>存在するならば、文書の<dfn id=the-head-element-2><code>head</code>要素</dfn>は、<a href=#the-html-element-2 id=dom-tree-accessors:the-html-element-2><code>html</code>要素</a>の子である最初の<code id=dom-tree-accessors:the-head-element><a href=semantics.html#the-head-element>head</a></code>要素である。そうでなければnullである。</p>
+
+  
+
+  <hr>
+
+  <dl class=domintro><dt><var>document</var> . <code id=dom-document-title>title</code> [ = <var>value</var> ]<dd>
+
+    <p>HTMLに対して<a href=#the-title-element-2 id=dom-tree-accessors:the-title-element-2><code>title</code>要素</a>に与えられるおよびSVGに対して<a id=dom-tree-accessors:svg-title href=https://triple-underscore.github.io/SVG11/struct.html#TitleElement data-x-internal=svg-title>SVG <code>title</code></a>要素に与えられるものとして、文書のタイトルを返す。</p>
+
+    <p>文書のタイトルを更新する設定が可能である。更新する適切な要素が存在しない場合、新しい値は無視される。</p>
+
+   </dl>
+
+  <p>存在するならば、文書の<dfn id=the-title-element-2><code>title</code>要素</dfn>は文書での（<a id=dom-tree-accessors:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>ツリー順</a>で）最初の<code id=dom-tree-accessors:the-title-element><a href=semantics.html#the-title-element>title</a></code>要素である。そうでなければnullである。</p>
+
+  
+
+  <hr>
+
+  <dl class=domintro><dt><var>document</var> . <code id=dom-document-body>body</code> [ = <var>value</var> ]<dd>
+
+    <p><a href=#the-body-element-2 id=dom-tree-accessors:the-body-element-2>body要素</a>を返す。</p>
+
+    <p><a href=#the-body-element-2 id=dom-tree-accessors:the-body-element-2-2>body要素</a>を置換する設定が可能である。</p>
+
+    <p>新しい値が<code id=dom-tree-accessors:the-body-element><a href=sections.html#the-body-element>body</a></code>または<code>frameset</a>要素でない場合、これは<a id=dom-tree-accessors:hierarchyrequesterror href=https://triple-underscore.github.io/WebIDL-ja.html#hierarchyrequesterror data-x-internal=hierarchyrequesterror>"<code>HierarchyRequestError</code>"</a> <code id=dom-tree-accessors:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>例外を投げる。</p>
+
+   </dl>
+
+  <p><dfn id=the-body-element-2>The body element</dfn> of a document is the first of <a href=#the-html-element-2 id=dom-tree-accessors:the-html-element-2-2>the <code>html</code>
+  element</a>'s children that is either a <code id=dom-tree-accessors:the-body-element-3><a href=sections.html#the-body-element>body</a></code> element or a <code>frameset</code>
+  element, or null if there is no such element.</p>
+
+  
+
+  <hr>
+
+  <dl class=domintro><dt><var>document</var> . <code>images</code><dd>
+    <p>Returns an <code id=dom-tree-accessors:htmlcollection><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code> of the <code id=dom-tree-accessors:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> elements in the <code>Document</code>.</p>
+   <dt><var>document</var> . <code>embeds</code><dt><var>document</var> . <code>plugins</code><dd>
+    <p>Return an <code id=dom-tree-accessors:htmlcollection-2><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code> of the <code id=dom-tree-accessors:the-embed-element><a href=iframe-embed-object.html#the-embed-element>embed</a></code> elements in the <code>Document</code>.</p>
+   <dt><var>document</var> . <code id=dom-document-links>links</code><dd>
+    <p>Returns an <code id=dom-tree-accessors:htmlcollection-3><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code> of the <code id=dom-tree-accessors:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code> and <code id=dom-tree-accessors:the-area-element><a href=image-maps.html#the-area-element>area</a></code> elements
+    in the <code>Document</code> that have <code id=dom-tree-accessors:attr-hyperlink-href><a href=links.html#attr-hyperlink-href>href</a></code>
+    attributes.</p>
+   <dt><var>document</var> . <code id=dom-document-forms>forms</code><dd>
+    <p>Return an <code id=dom-tree-accessors:htmlcollection-4><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code> of the <code id=dom-tree-accessors:the-form-element><a href=forms.html#the-form-element>form</a></code> elements in the <code>Document</code>.</p>
+   <dt><var>document</var> . <code>scripts</code><dd>
+    <p>Return an <code id=dom-tree-accessors:htmlcollection-5><a data-x-internal=htmlcollection href=https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection>HTMLCollection</a></code> of the <code id=dom-tree-accessors:the-script-element><a href=scripting.html#the-script-element>script</a></code> elements in the <code>Document</code>.</p>
+   </dl>
+
+  
+
+  <dl class=domintro><dt><var>collection</var> = <var>document</var> . <code>getElementsByName</code>(<var>name</var>)<dd>
+
+    <p>Returns a <code id=dom-tree-accessors:nodelist><a data-x-internal=nodelist href=https://triple-underscore.github.io/DOM4-ja.html#interface-nodelist>NodeList</a></code> of elements in the <code>Document</code> that have a <code>name</code> attribute with the value <var>name</var>.</p>
+
+   </dl>
+
+  
+
+  <hr>
+
+  <dl class=domintro><dt><var>document</var> . <code>currentScript</code><dd>
+
+    <p>Returns the <code id=dom-tree-accessors:the-script-element-2><a href=scripting.html#the-script-element>script</a></code> element, or the <a id=dom-tree-accessors:svg-script href=https://triple-underscore.github.io/SVG11/script.html#ScriptElement data-x-internal=svg-script>SVG <code>script</code></a> element, that is currently executing, as long as the element represents a <span>classic script</span>. 再入可能なスクリプト実行の場合には、直近でまだ実行を完了していないものの中で実行を開始しそれを返す。</p>
+
+    <p>Returns null if the <code>Document</code> is not currently executing a <code id=dom-tree-accessors:the-script-element-3><a href=scripting.html#the-script-element>script</a></code>
+    or <a id=dom-tree-accessors:svg-script-2 href=https://triple-underscore.github.io/SVG11/script.html#ScriptElement data-x-internal=svg-script>SVG <code>script</code></a> element (e.g., because the running script is an event
+    handler, or a timeout), or if the currently executing <code id=dom-tree-accessors:the-script-element-4><a href=scripting.html#the-script-element>script</a></code> or <a id=dom-tree-accessors:svg-script-3 href=https://triple-underscore.github.io/SVG11/script.html#ScriptElement data-x-internal=svg-script>SVG
+    <code>script</code></a> element represents a <span>module script</span>.</p>
+
+   </dl>
+
+  
+
+  <p class=note>このAPIは、APIがグローバルに<code id=dom-tree-accessors:the-script-element-5><a href=scripting.html#the-script-element>script</a></code>または<a id=dom-tree-accessors:svg-script-4 href=https://triple-underscore.github.io/SVG11/script.html#ScriptElement data-x-internal=svg-script>SVG <code>script</code></a>要素を公開するので、実装者および標準コミュニティーの支持から離れている。As such, it is not available in newer contexts, such as when running <span>module scripts</span> or when running scripts in a <a id=dom-tree-accessors:shadow-tree href=https://triple-underscore.github.io/DOM4-ja.html#concept-shadow-tree data-x-internal=shadow-tree>shadow tree</a>. 我々はそのようなコンテキストで実行するスクリプトを識別するための新しい解決法を検討している。これはグローバルに利用可能にさせるものではない。issue <a href=https://github.com/whatwg/html/issues/1013>#1013</a>を参照。</p>
+
+  
+
+  <hr>
+
+  <p class=note>The <code>dir</code> attribute on the
+  <code>Document</code> interface is defined along with the <code id=dom-tree-accessors:the-dir-attribute><a href=#the-dir-attribute>dir</a></code>
+  content attribute.</p>
+
+
+
+  <h3 id=elements><span class=secno>3.2</span> Elements<a href=#elements class=self-link></a></h3>
+
+  <h4 id=semantics-2><span class=secno>3.2.1</span> Semantics<a href=#semantics-2 class=self-link></a></h4>
+
+  <p>HTMLにおける要素、属性、および属性値は、ある意味（セマンティックス）を持つよう（この仕様によって）定義される。たとえば、<code id=semantics-2:the-ol-element><a href=grouping-content.html#the-ol-element>ol</a></code>要素は順序つきリストを表し、<code id=semantics-2:attr-lang><a href=#attr-lang>lang</a></code>属性はコンテンツの言語を表す。</p>
+
+  <p>これら定義は、ウェブブラウザーや検索エンジンなどのHTMLプロセッサに、著者が考えてないかもしれないさまざまなコンテキストで文書およびアプリケーションの提示と使用を許可する。</p>
+
+  <div class=example>
+
+   <p>簡単な例として、デスクトップコンピューターのウェブブラウザーのみを考慮した著者によって書かれたウェブページを考えてみる：</p>
+
+   <pre>&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en"&gt;
+ &lt;head&gt;
+  &lt;title&gt;My Page&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+  &lt;h1&gt;Welcome to my page&lt;/h1&gt;
+  &lt;p&gt;I like cars and lorries and have a big Jeep!&lt;/p&gt;
+  &lt;h2&gt;Where I live&lt;/h2&gt;
+  &lt;p&gt;I live in a small hut on a mountain!&lt;/p&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+   <p>HTMLは見栄えよりもむしろ<em>意味</em>を伝えるため、ページを一切変更することなく、同じページが携帯電話上のスモールブラウザーによっても使用できる。Instead of headings being in large letters as on the desktop, for example, the browser on the mobile phone might use the same size text for the whole page, but with the headings in bold.</p>
+
+   <p>しかし、画面サイズにおける当然の違いよりもさらに言うと、画面上のページを表示する代わりに、同じページが、たとえばヘッドフォンを使用してユーザーにページを読みあげるなど、同等に音声合成ベースのブラウザーを使用する目の不自由なユーザーによって使用される可能性がある。見出し用の大きなテキストの代わりに、音声ブラウザーは異なる音量または遅い音声を使用するかもしれない。</p>
+
+   <p>それだけではない。ブラウザーはページのどの部分が見出しであるかを知っているので、"前の見出しにジャンプ"または"次の見出しにジャンプ"キーを使用して、ユーザーが迅速に文書操作するために使用できる文書のアウトラインをブラウザーは作成できる。このような機能は、ユーザーが他の方法で素早くページを操作することが非常に困難な場合に、特に音声ブラウザーでは一般的である。</p>
+
+   <p>まさにブラウザーを超えて、ソフトウェアはこの情報を利用できるのである。検索エンジンは、より効果的なインデックスページへ見出しを使用する、あるいはそれらの結果からページのサブセクションへのクイックリンクを提供する。ツールは目次（実際に、まさにこの仕様の目次が生成される方法）を作成するために見出しを使用できる。</p>
+
+   <p>この例は見出しに焦点を当てているが、HTMLにおけるセマンティックスのすべてに同じ原理が適用される。</p>
+
+  </div>
+
+  <p>著者は、ソフトウェアがページを正しく処理するのを妨げるような、適切な意図されるセマンティック目的以外の要素、属性、または属性値を使用してはならない。</p>
+
+  <div class=example>
+
+   <p>たとえば、企業サイトの見出しを表すことを意図した、次のスニペットは、2行目がサブセクションの見出しであることを意図しないないため、非準拠であるが、単に小見出しまたは副題（同じセクションの下位の見出し）にすぎない。</p>
+
+   <pre class=bad>&lt;body&gt;
+ &lt;h1&gt;ACME Corporation&lt;/h1&gt;
+ &lt;h2&gt;The leaders in arbitrary fast delivery since 1920&lt;/h2&gt;
+ ...</pre>
+
+   <p><code id=semantics-2:the-hgroup-element><a href=sections.html#the-hgroup-element>hgroup</a></code>要素は、この種の状況を対象とする：</p>
+
+   <pre>&lt;body&gt;
+ &lt;hgroup&gt;
+  &lt;h1&gt;ACME Corporation&lt;/h1&gt;
+  &lt;h2&gt;The leaders in arbitrary fast delivery since 1920&lt;/h2&gt;
+ &lt;/hgroup&gt;
+ ...</pre>
+
+  </div>
+
+  <div class=example>
+
+   <p>構文的に正しいにも関わらず、セル内に置かれるデータは明らかに表のデータではなく、<code id=semantics-2:the-cite-element><a href=text-level-semantics.html#the-cite-element>cite</a></code>要素を誤使用したため、次の例における文書は同様に非準拠である：</p>
+
+   <pre class=bad lang=en-GB>&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en-GB"&gt;
+ &lt;head&gt; &lt;title&gt; Demonstration &lt;/title&gt; &lt;/head&gt;
+ &lt;body&gt;
+  &lt;table&gt;
+   &lt;tr&gt; &lt;td&gt; My favourite animal is the cat. &lt;/td&gt; &lt;/tr&gt;
+   &lt;tr&gt;
+    &lt;td&gt;
+     —&lt;a href="https://example.org/~ernest/"&gt;&lt;cite&gt;Ernest&lt;/cite&gt;&lt;/a&gt;,
+     in an essay from 1992
+    &lt;/td&gt;
+   &lt;/tr&gt;
+  &lt;/table&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+   <p>これは、要素のセマンティックスを信頼するソフトウェアを停止させる。たとえば、目の不自由なユーザーに文書内の表の操作を許可された音声ブラウザーは、上記の引用を表として報告し、ユーザーを混乱させる。同様に、ページから作品タイトルを抽出するツールは、実際に人の名前であってタイトルでないにもかかわらず、作品のタイトルとして"Ernest"を抽出する。</p>
+
+   <p>この文書の修正版は次のようになる：</p>
+
+   <pre lang=en-GB>&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en-GB"&gt;
+ &lt;head&gt; &lt;title&gt; Demonstration &lt;/title&gt; &lt;/head&gt;
+ &lt;body&gt;
+  &lt;blockquote&gt;
+   &lt;p&gt; My favourite animal is the cat. &lt;/p&gt;
+  &lt;/blockquote&gt;
+  &lt;p&gt;
+   —&lt;a href="https://example.org/~ernest/"&gt;Ernest&lt;/a&gt;,
+   in an essay from 1992
+  &lt;/p&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+  </div>
+
+  <p>著者は、将来的に拡張される言語に対して拡張が著しく困難になるため、この仕様または<a id=semantics-2:other-applicable-specifications href=infrastructure.html#other-applicable-specifications>他の適用可能な仕様</a>で許可されない要素、属性、または属性値を使用してはならない。</p>
+
+  <div class=example>
+
+   <p>次の例では、この仕様で許可されていない不適合の属性値（"carpet"）および不適合の属性（"texture"）が存在する：</p>
+
+   <pre class=bad>&lt;label&gt;Carpet: &lt;input type="carpet" name="c" texture="deep pile"&gt;&lt;/label&gt;</pre>
+
+   <p>代替で正しいマークアップ方法はこうなる：</p>
+
+   <pre>&lt;label&gt;Carpet: &lt;input type="text" class="carpet" name="c" data-texture="deep pile"&gt;&lt;/label&gt;</pre>
+
+  </div>
+
+  <p id=no-browsing-context><a id=semantics-2:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>ノード文書</a>が<a id=semantics-2:browsing-context href=browsers.html#browsing-context>ブラウジングコンテキスト</a>を持たないDOMノードは、<a href=syntax.html#writing>HTML構文</a>の要件および<a href=#writing-xhtml-documents>XML構文</a>の要件以外のすべての文書適合性要件を免除される。</p>
+
+  <div class=example>
+
+   <p>In particular, the <code id=semantics-2:the-template-element><a href=scripting.html#the-template-element>template</a></code> element's <span>template contents</span>'s <a id=semantics-2:node-document-2 href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a> does not have a <a id=semantics-2:browsing-context-2 href=browsers.html#browsing-context>browsing context</a>. For example, the <a href=#concept-element-content-model id=semantics-2:concept-element-content-model>content model</a> requirements and attribute value microsyntax requirements do not apply to a <code id=semantics-2:the-template-element-2><a href=scripting.html#the-template-element>template</a></code> element's <span>template contents</span>. この例では、<code id=semantics-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>要素は、<code id=semantics-2:the-template-element-3><a href=scripting.html#the-template-element>template</a></code>要素の外で無効になるプレースホルダーとなる属性値を持つ。</p>
+
+   <pre>&lt;template&gt;
+ &lt;article&gt;
+  &lt;img <mark>src="{{src}}" alt="{{alt}}"</mark>&gt;
+  &lt;h1&gt;&lt;/h1&gt;
+ &lt;/article&gt;
+&lt;/template&gt;</pre>
+
+   <p>しかし、上記のマークアップで<code>&lt;/h1&gt;</code>終了タグを省略することは、<a href=syntax.html#writing>HTML構文</a>に違反するため、適合性チェッカーでエラーとしてフラグが立てられる。</p>
+
+  </div>
+
+  <p>ユーザーエージェントが文書を処理している間に、スクリプトやその他のメカニズムの使用を介して、属性値、テキスト、文書の全体構造は実際に動的に変更するかもしれない。ある瞬間において文書のセマンティックスは、その瞬間における文書の状態によって表されるものであり、したがって、文書のセマンティックスは、時間の経過とともに変化する。User agents update their presentation of the document as this occurs.</p>
+
+  <p class=example>HTMLは、プログレスバーを表す<code id=semantics-2:the-progress-element><a href=form-elements.html#the-progress-element>progress</a></code>要素を持つ。その"value"属性がスクリプトによって動的に更新される場合、ユーザーエージェントは進行状況の変更を表示するためにレンダリングを更新するだろう。</p>
+
+
+
+  <h4 id=elements-in-the-dom><span class=secno>3.2.2</span> Elements in the DOM<a href=#elements-in-the-dom class=self-link></a></h4>
+
+  <p>The nodes representing <a id=elements-in-the-dom:html-elements href=infrastructure.html#html-elements>HTML elements</a> in the DOM implement, and expose to scripts, the interfaces listed for them in the relevant sections of this specification. HTML要素の文書が別のコンテキスト内（たとえばXSLT変換の内側）である場合でも、これは<a id=elements-in-the-dom:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML文書</a>での<a id=elements-in-the-dom:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>を含む。</p>
+
+  <p>DOM内の要素は概念を<dfn id=represents>表す</dfn>。これは、要素がセマンティックとして知られる固有の<em>セマンティックス</em>を持つ。</p>
+
+  <p class=example>たとえば、<code id=elements-in-the-dom:the-ol-element><a href=grouping-content.html#the-ol-element>ol</a></code>要素は順序つきリストを表す。</p>
+
+  <p>The basic interface, from which all the <a id=elements-in-the-dom:html-elements-3 href=infrastructure.html#html-elements>HTML elements</a>' interfaces inherit,  is
+  the <code>HTMLElement</code> interface.</p>
+
+  
+
+  <p>The <code>HTMLElement</code> interface holds methods and attributes related to a number of
+  disparate features, and the members of this interface are therefore described in various different
+  sections of this specification.</p>
+
+  
+
+  
+
+
+
+  <h4 id=element-definitions><span class=secno>3.2.3</span> Element definitions<a href=#element-definitions class=self-link></a></h4>
+
+  <p>この仕様において各要素は以下の情報を含む定義を持つ：</p>
+
+  <dl><dt><dfn id=concept-element-categories> カテゴリー</dfn><dd><p>要素が属する<a href=#content-categories id=element-definitions:content-categories>カテゴリー</a>のリスト。これは、各要素に対する<a href=#content-models id=element-definitions:content-models>コンテンツモデル</a>を定義する際に使用される。<dt><dfn id=concept-element-contexts>この要素を使用できるコンテキスト</dfn><dd>
+
+    <p>要素を使用できる場所の<em>非規範的な</em>記述。この情報は、子として、この要素を許可する要素のコンテンツモデルとともに冗長であり、利便性のためだけに提供される。</p>
+
+    <p class=note>簡単のために、最も具体的な期待のみが記載される。たとえば、要素は<a href=#flow-content-2 id=element-definitions:flow-content-2-2>フローコンテンツ</a>または<a href=#phrasing-content-2 id=element-definitions:phrasing-content-2-2>フレージングコンテンツ</a>のいずれかが予期される場所ならどこでも、<a href=#flow-content-2 id=element-definitions:flow-content-2>フローコンテンツ</a>と<a href=#phrasing-content-2 id=element-definitions:phrasing-content-2>フレージングコンテンツ</a>の両方を使用できるが、<a href=#flow-content-2 id=element-definitions:flow-content-2-3>フローコンテンツ</a>は予期される場所ならどこでも、<a href=#phrasing-content-2 id=element-definitions:phrasing-content-2-3>フレージングコンテンツ</a>もまた予期されるので（すべての<a href=#phrasing-content-2 id=element-definitions:phrasing-content-2-4>フレージングコンテンツ</a>は<a href=#flow-content-2 id=element-definitions:flow-content-2-4>フローコンテンツ</a>であるので）、ただ"<a href=#phrasing-content-2 id=element-definitions:phrasing-content-2-5>フレージングコンテンツ</a>が予期される場所"とだけ記載されるだろう。</p>
+
+   <dt><dfn id=concept-element-content-model>コンテンツモデル</dfn><dd><p>コンテンツがその要素の子や子孫として含めなければならないものの、規範的な記述。<dt><dfn id=concept-element-tag-omission>text/htmlにおけるタグ省略</dfn><dd><p><code id=element-definitions:text/html><a href=iana.html#text/html>text/html</a></code>構文で、<a href=syntax.html#syntax-start-tag id=element-definitions:syntax-start-tag>開始</a>タグと<a href=syntax.html#syntax-end-tag id=element-definitions:syntax-end-tag>終了</a>タグを省略することができるかどうかの<em>非規範的な</em>記述。この情報は、<a href=syntax.html#syntax-tag-omission id=element-definitions:syntax-tag-omission>任意タグ</a>のセクションで与えられた規範的要件とともに冗長であり、利便性のみの要素の定義に記載される。<dt><dfn id=concept-element-attributes>コンテンツ属性</dfn><dd><p>（許可しない場合を除く）要素で指定されてもよい属性の規範的なリスト、およびこれら属性の非規範的な説明。（ダッシュの左側のコンテンツが規範的であり、ダッシュの右側のコンテンツがそうでない。）<dt><dfn id=concept-element-dom>DOMインターフェイス</dfn><dd><p>そのような要素が実装しなければならないDOMインターフェイスの規範的な定義。</dl>
+
+  <p>This is then followed by a description of what the element <a href=#represents id=element-definitions:represents>represents</a>, along with any additional normative conformance criteria that may apply to authors. 時に例も含まれる。</p>
+
+
+  <h5 id=attributes><span class=secno>3.2.3.1</span> Attributes<a href=#attributes class=self-link></a></h5>
+
+  <p id=attribute-text>属性値は、文字列である。特に指定される場合を除き、<a id=attributes:html-elements href=infrastructure.html#html-elements>HTML要素</a>の属性値は、空の文字列を含み、およびそのような属性値を指定することができるテキストに制限はない、任意の文字列値であってもよい。</p>
+
+
+
+  <h4 id=content-models><span class=secno>3.2.4</span> <dfn>Content models</dfn><a href=#content-models class=self-link></a></h4>
+
+  <p>この仕様で定義される各要素は、要素の期待される<a href=#concept-html-contents id=content-models:concept-html-contents>コンテンツ</a>の説明となる、コンテンツモデルを持つ。<a href=infrastructure.html#html-elements id=content-models:html-elements>HTML要素</a>は、要素のコンテンツモデルで説明される要求に一致するコンテンツを持たなければならない。要素の<dfn id=concept-html-contents>コンテンツ</dfn>は、DOMにおけるその子である。</p>
+
+  <p><a id=content-models:space-characters href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII空白文字</a>は常に要素の間に許可される。ユーザーエージェントは、DOMで<code id=content-models:text><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>としてソースマークアップにおける要素間のこれら文字を表す。空の<code id=content-models:text-2><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードおよびそれらの文字の単なる配列から成る<code id=content-models:text-3><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードは、<dfn id=inter-element-whitespace>要素間の空白文字</dfn>と見なされる。</p>
+
+  <p><a href=#inter-element-whitespace id=content-models:inter-element-whitespace>要素間の空白文字</a>、コメントノード、および処理命令ノードは、要素の内容が要素の内容モデルと一致させるかどうかを確立する際に無視されなければならず、文書および要素のセマンティックスを定義するアルゴリズムをたどる際に無視されなければならない。</p>
+
+  <p class=note>このように、<var>A</var>と<var>B</var>が同じ親ノードを持ち、それらの間に他の要素ノードまたは（<a href=#inter-element-whitespace id=content-models:inter-element-whitespace-2>要素間の空白</a>以外の）<code id=content-models:text-4><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードが存在しない場合、要素<var>A</var>に2番目の要素<var>B</var>が<i>先行または後行する</i>と言う。同様に、その要素が<a href=#inter-element-whitespace id=content-models:inter-element-whitespace-3>要素間の空白</a>、コメントノード、処理命令ノード以外の他のノードが含まない場合、ノードは、要素の<i>唯一の子</i>である。</p>
+
+  <p>著者は、各要素に定義された、あるいは明示的に他の仕様によって要求されたものとして明示的に許可される場所以外で<a id=content-models:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>を使用してはならない。XML複合文書では、それらの要素が関連するコンテキストを提供するものとして定義される場合、これらのコンテキストは、他の名前空間に由来する要素の内部にあるかもしれない。</p>
+
+  <div class=example>
+   <p>たとえば、Atom仕様は<code>content</code>要素を定義する。その<code>type</code>属性が値<code>xhtml</code>を持つ場合、Atom仕様はcontent要素がHTML <code id=content-models:the-div-element><a href=grouping-content.html#the-div-element>div</a></code>要素を持つことを要求する。したがって、これがこの仕様によって明白に規範的な規定でないにもかかわらず、<code id=content-models:the-div-element-2><a href=grouping-content.html#the-div-element>div</a></code>要素はそのコンテキストで許可される。<a href=references.html#refsATOM>[ATOM]</a></p>
+  </div>
+
+  <p>さらに、<a id=content-models:html-elements-3 href=infrastructure.html#html-elements>HTML要素</a>は省略されてもよい（すなわち、親ノードをもたない）。</p>
+
+  <div class=example>
+
+   <p>たとえば、<code id=content-models:the-td-element><a href=tables.html#the-td-element>td</a></code>要素を作成し、スクリプト内のグローバル変数に格納することは、<code id=content-models:the-td-element-2><a href=tables.html#the-td-element>td</a></code>要素が別の方法でのみ<code id=content-models:the-tr-element><a href=tables.html#the-tr-element>tr</a></code>要素の内部で使用されることになっているにもかかわらず、適合する。</p>
+
+   <pre>var data = {
+  name: "Banana",
+  cell: document.createElement('td'),
+};</pre>
+
+  </div>
+
+
+  <h5 id=the-nothing-content-model><span class=secno>3.2.4.1</span> The "nothing" content model<a href=#the-nothing-content-model class=self-link></a></h5>
+
+  <p>要素のコンテンツモデルが<dfn id=concept-content-nothing>nothing</dfn>である場合、要素は、（<a href=#inter-element-whitespace id=the-nothing-content-model:inter-element-whitespace>要素間の空白文字</a>以外）は、<code id=the-nothing-content-model:text><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードおよび要素ノードを一切含んではならない。</p>
+
+  <p class=note>便宜上、ほとんどのHTML要素のコンテンツモデルはまた"nothing"であり、<a id=the-nothing-content-model:void-elements href=syntax.html#void-elements>ボイドの要素</a>（<a href=syntax.html#syntax>HTML構文</a>には<a href=syntax.html#syntax-end-tag id=the-nothing-content-model:syntax-end-tag>終了タグ</a>がない要素）。しかし、これらは全く別の概念である。</p>
+
+
+  <h5 id=kinds-of-content><span class=secno>3.2.4.2</span> Kinds of content<a href=#kinds-of-content class=self-link></a></h5>
+
+  <p>HTMLにおいて各要素は、0個以上の、類似の特性を持つグループ要素である<dfn id=content-categories>カテゴリー</dfn>に分類される。次の大まかなカテゴリーがこの仕様で使用されている：</p>
+
+  <ul class=brief><li><a href=#metadata-content-2 id=kinds-of-content:metadata-content-2> メタデータコンテンツ</a></li><li><a href=#flow-content-2 id=kinds-of-content:flow-content-2> フローコンテンツ</a></li><li><a href=#sectioning-content-2 id=kinds-of-content:sectioning-content-2> セクショニングコンテンツ</a></li><li><a href=#heading-content-2 id=kinds-of-content:heading-content-2> ヘディングコンテンツ</a></li><li><a href=#phrasing-content-2 id=kinds-of-content:phrasing-content-2> フレージングコンテンツ</a></li><li><a href=#embedded-content-category id=kinds-of-content:embedded-content-category> エンベディッドコンテンツ</a></li><li><a href=#interactive-content-2 id=kinds-of-content:interactive-content-2> インタラクティブコンテンツ</a></li></ul>
+
+  <p class=note>一部の要素はまた、本仕様の他の部分で定義される他のカテゴリーに分類される。</p>
+
+  <p>これらのカテゴリーは、次のように関連する：</p>
+
+  <p><object width=1000 height=288 data=/images/content-venn.svg></object></p>
+
+  <p>セクショニングコンテンツ、ヘディングコンテンツ、フレージングコンテンツ、エンベディッドコンテンツ、およびインタラクティブコンテンツはすべてフローコンテンツ型である。メタデータは、時にフローコンテンツとなる。メタデータとインタラクティブコンテンツは時にフレージングコンテンツとなる。エンベディッドコンテンツはまた、フレージングコンテンツ型であり、時にインタラクティブコンテンツとなる。</p>
+
+  <p>その他のカテゴリーはまた、特定の目的のために使用される。たとえばフォームコントロールは、一般的な要件を定義するために多数のカテゴリーを用いて指定される。一部の要素は固有の要件があり、特定のカテゴリーに属さない。</p>
+
+
+  <h6 id=metadata-content><span class=secno>3.2.4.2.1</span> Metadata content<a href=#metadata-content class=self-link></a></h6>
+
+  <p><dfn id=metadata-content-2>メタデータコンテンツ</dfn>は、見栄えまたは後のコンテンツの振る舞いを設定する、または他の文書との関係を設定する、または他の"帯域外の"情報を運搬するコンテンツである。</p>
+
+  
+  <ul class="brief category-list"><li><code id=metadata-content:the-base-element><a href=semantics.html#the-base-element>base</a></code></li><li><code id=metadata-content:the-link-element><a href=semantics.html#the-link-element>link</a></code></li><li><code id=metadata-content:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code></li><li><code id=metadata-content:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code></li><li><code id=metadata-content:the-script-element><a href=scripting.html#the-script-element>script</a></code></li><li><code id=metadata-content:the-style-element><a href=semantics.html#the-style-element>style</a></code></li><li><code id=metadata-content:the-template-element><a href=scripting.html#the-template-element>template</a></code></li><li><code id=metadata-content:the-title-element><a href=semantics.html#the-title-element>title</a></code></li></ul>
+
+  <p>セマンティックスが主としてメタデータに関連する他の名前空間由来の要素（たとえば、RDF）もまた、<a href=#metadata-content-2 id=metadata-content:metadata-content-2>メタデータコンテンツ</a>である。</p>
+
+  <div class=example>
+
+   <p>したがって、XMLシリアライゼーションにおいて、このようにRDFを使用できる：</p>
+
+   <pre>&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:r="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xml:lang="en"&gt;
+ &lt;head&gt;
+  &lt;title&gt;Hedral's Home Page&lt;/title&gt;
+  &lt;r:RDF&gt;
+   &lt;Person xmlns="http://www.w3.org/2000/10/swap/pim/contact#"
+           r:about="https://hedral.example.com/#"&gt;
+    &lt;fullName&gt;Cat Hedral&lt;/fullName&gt;
+    &lt;mailbox r:resource="mailto:hedral@damowmow.com"/&gt;
+    &lt;personalTitle&gt;Sir&lt;/personalTitle&gt;
+   &lt;/Person&gt;
+  &lt;/r:RDF&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+  &lt;h1&gt;My home page&lt;/h1&gt;
+  &lt;p&gt;I like playing with string, I guess. Sister says squirrels are fun
+  too so sometimes I follow her to play with them.&lt;/p&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+   <p>しかし、これはHTMLシリアライゼーションでは不可能である。</p>
+
+  </div>
+
+
+  <h6 id=flow-content><span class=secno>3.2.4.2.2</span> Flow content<a href=#flow-content class=self-link></a></h6>
+
+  <p>文書およびアプリケーションのbodyで使用される多くの要素は、<dfn id=flow-content-2>フローコンテンツ</dfn>として分類される。</p>
+
+  
+  <ul class="brief category-list"><li><code id=flow-content:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code></li><li><code id=flow-content:the-abbr-element><a href=text-level-semantics.html#the-abbr-element>abbr</a></code></li><li><code id=flow-content:the-address-element><a href=sections.html#the-address-element>address</a></code></li><li><code id=flow-content:the-area-element><a href=image-maps.html#the-area-element>area</a></code>（<code id=flow-content:the-map-element><a href=image-maps.html#the-map-element>map</a></code>要素の子孫の場合）</li><li><code id=flow-content:the-article-element><a href=sections.html#the-article-element>article</a></code></li><li><code id=flow-content:the-aside-element><a href=sections.html#the-aside-element>aside</a></code></li><li><code id=flow-content:the-audio-element><a href=media.html#the-audio-element>audio</a></code></li><li><code id=flow-content:the-b-element><a href=text-level-semantics.html#the-b-element>b</a></code></li><li><code id=flow-content:the-bdi-element><a href=text-level-semantics.html#the-bdi-element>bdi</a></code></li><li><code id=flow-content:the-bdo-element><a href=text-level-semantics.html#the-bdo-element>bdo</a></code></li><li><code id=flow-content:the-blockquote-element><a href=grouping-content.html#the-blockquote-element>blockquote</a></code></li><li><code id=flow-content:the-br-element><a href=text-level-semantics.html#the-br-element>br</a></code></li><li><code id=flow-content:the-button-element><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=flow-content:the-canvas-element><a href=canvas.html#the-canvas-element>canvas</a></code></li><li><code id=flow-content:the-cite-element><a href=text-level-semantics.html#the-cite-element>cite</a></code></li><li><code id=flow-content:the-code-element><a href=text-level-semantics.html#the-code-element>code</a></code></li><li><code id=flow-content:the-data-element><a href=text-level-semantics.html#the-data-element>data</a></code></li><li><code id=flow-content:the-datalist-element><a href=form-elements.html#the-datalist-element>datalist</a></code></li><li><code id=flow-content:the-del-element><a href=edits.html#the-del-element>del</a></code></li><li><code id=flow-content:the-details-element><a href=interactive-elements.html#the-details-element>details</a></code></li><li><code id=flow-content:the-dfn-element><a href=text-level-semantics.html#the-dfn-element>dfn</a></code></li><li><code id=flow-content:the-dialog-element><a href=interactive-elements.html#the-dialog-element>dialog</a></code></li><li><code id=flow-content:the-div-element><a href=grouping-content.html#the-div-element>div</a></code></li><li><code id=flow-content:the-dl-element><a href=grouping-content.html#the-dl-element>dl</a></code></li><li><code id=flow-content:the-em-element><a href=text-level-semantics.html#the-em-element>em</a></code></li><li><code id=flow-content:the-embed-element><a href=iframe-embed-object.html#the-embed-element>embed</a></code></li><li><code id=flow-content:the-fieldset-element><a href=form-elements.html#the-fieldset-element>fieldset</a></code></li><li><code id=flow-content:the-figure-element><a href=grouping-content.html#the-figure-element>figure</a></code></li><li><code id=flow-content:the-footer-element><a href=sections.html#the-footer-element>footer</a></code></li><li><code id=flow-content:the-form-element><a href=forms.html#the-form-element>form</a></code></li><li><code id=flow-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code></li><li><code id=flow-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-2><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h2</a></code></li><li><code id=flow-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-3><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h3</a></code></li><li><code id=flow-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-4><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h4</a></code></li><li><code id=flow-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-5><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h5</a></code></li><li><code id=flow-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-6><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h6</a></code></li><li><code id=flow-content:the-header-element><a href=sections.html#the-header-element>header</a></code></li><li><code id=flow-content:the-hgroup-element><a href=sections.html#the-hgroup-element>hgroup</a></code></li><li><code id=flow-content:the-hr-element><a href=grouping-content.html#the-hr-element>hr</a></code></li><li><code id=flow-content:the-i-element><a href=text-level-semantics.html#the-i-element>i</a></code></li><li><code id=flow-content:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code></li><li><code id=flow-content:the-img-element><a href=embedded-content.html#the-img-element>img</a></code></li><li><code id=flow-content:the-input-element><a href=input.html#the-input-element>input</a></code></li><li><code id=flow-content:the-ins-element><a href=edits.html#the-ins-element>ins</a></code></li><li><code id=flow-content:the-kbd-element><a href=text-level-semantics.html#the-kbd-element>kbd</a></code></li><li><code id=flow-content:the-label-element><a href=forms.html#the-label-element>label</a></code></li><li><code id=flow-content:the-link-element><a href=semantics.html#the-link-element>link</a></code>（<a id=flow-content:allowed-in-the-body href=semantics.html#allowed-in-the-body>allowed in the body内で許可される</a>場合）</li><li><code id=flow-content:the-main-element><a href=grouping-content.html#the-main-element>main</a></code></li><li><code id=flow-content:the-map-element-2><a href=image-maps.html#the-map-element>map</a></code></li><li><code id=flow-content:the-mark-element><a href=text-level-semantics.html#the-mark-element>mark</a></code></li><li><a id=flow-content:mathml-math href=https://www.w3.org/Math/draft-spec/chapter2.html#interf.toplevel data-x-internal=mathml-math>MathML <code>math</code></a></li><li><code id=flow-content:the-menu-element><a href=grouping-content.html#the-menu-element>menu</a></code></li><li><code id=flow-content:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>（<code id=flow-content:names:-the-itemprop-attribute><a href=microdata.html#names:-the-itemprop-attribute>itemprop</a></code>属性が存在する場合）</li><li><code id=flow-content:the-meter-element><a href=form-elements.html#the-meter-element>meter</a></code></li><li><code id=flow-content:the-nav-element><a href=sections.html#the-nav-element>nav</a></code></li><li><code id=flow-content:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code></li><li><code id=flow-content:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code></li><li><code id=flow-content:the-ol-element><a href=grouping-content.html#the-ol-element>ol</a></code></li><li><code id=flow-content:the-output-element><a href=form-elements.html#the-output-element>output</a></code></li><li><code id=flow-content:the-p-element><a href=grouping-content.html#the-p-element>p</a></code></li><li><code id=flow-content:the-picture-element><a href=embedded-content.html#the-picture-element>picture</a></code></li><li><code id=flow-content:the-pre-element><a href=grouping-content.html#the-pre-element>pre</a></code></li><li><code id=flow-content:the-progress-element><a href=form-elements.html#the-progress-element>progress</a></code></li><li><code id=flow-content:the-q-element><a href=text-level-semantics.html#the-q-element>q</a></code></li><li><code id=flow-content:the-ruby-element><a href=text-level-semantics.html#the-ruby-element>ruby</a></code></li><li><code id=flow-content:the-s-element><a href=text-level-semantics.html#the-s-element>s</a></code></li><li><code id=flow-content:the-samp-element><a href=text-level-semantics.html#the-samp-element>samp</a></code></li><li><code id=flow-content:the-script-element><a href=scripting.html#the-script-element>script</a></code></li><li><code id=flow-content:the-section-element><a href=sections.html#the-section-element>section</a></code></li><li><code id=flow-content:the-select-element><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=flow-content:the-slot-element><a href=scripting.html#the-slot-element>slot</a></code></li><li><code id=flow-content:the-small-element><a href=text-level-semantics.html#the-small-element>small</a></code></li><li><code id=flow-content:the-span-element><a href=text-level-semantics.html#the-span-element>span</a></code></li><li><code id=flow-content:the-strong-element><a href=text-level-semantics.html#the-strong-element>strong</a></code></li><li><code id=flow-content:the-sub-and-sup-elements><a href=text-level-semantics.html#the-sub-and-sup-elements>sub</a></code></li><li><code id=flow-content:the-sub-and-sup-elements-2><a href=text-level-semantics.html#the-sub-and-sup-elements>sup</a></code></li><li><a id=flow-content:svg-svg href=https://triple-underscore.github.io/SVG11/struct.html#SVGElement data-x-internal=svg-svg>SVG <code>svg</code></a></li><li><code id=flow-content:the-table-element><a href=tables.html#the-table-element>table</a></code></li><li><code id=flow-content:the-template-element><a href=scripting.html#the-template-element>template</a></code></li><li><code id=flow-content:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code></li><li><code id=flow-content:the-time-element><a href=text-level-semantics.html#the-time-element>time</a></code></li><li><code id=flow-content:the-u-element><a href=text-level-semantics.html#the-u-element>u</a></code></li><li><code id=flow-content:the-ul-element><a href=grouping-content.html#the-ul-element>ul</a></code></li><li><code id=flow-content:the-var-element><a href=text-level-semantics.html#the-var-element>var</a></code></li><li><code id=flow-content:the-video-element><a href=media.html#the-video-element>video</a></code></li><li><code id=flow-content:the-wbr-element><a href=text-level-semantics.html#the-wbr-element>wbr</a></code></li><li><a href=custom-elements.html#autonomous-custom-element id=flow-content:autonomous-custom-element>autonomous custom elements</a></li><li><a href=#text-content id=flow-content:text-content>テキスト</a></li></ul>
+
+
+  <h6 id=sectioning-content><span class=secno>3.2.4.2.3</span> Sectioning content<a href=#sectioning-content class=self-link></a></h6>
+
+  <p><dfn id=sectioning-content-2>セクショニングコンテンツ</dfn>は、<a href=#heading-content-2 id=sectioning-content:heading-content-2>見出し</a>および<a href=sections.html#the-footer-element id=sectioning-content:the-footer-element>フッター</a>の範囲を定義するコンテンツである。</p>
+
+  
+  <ul class="brief category-list"><li><code id=sectioning-content:the-article-element><a href=sections.html#the-article-element>article</a></code></li><li><code id=sectioning-content:the-aside-element><a href=sections.html#the-aside-element>aside</a></code></li><li><code id=sectioning-content:the-nav-element><a href=sections.html#the-nav-element>nav</a></code></li><li><code id=sectioning-content:the-section-element><a href=sections.html#the-section-element>section</a></code></li></ul>
+
+  <p>各<a href=#sectioning-content-2 id=sectioning-content:sectioning-content-2>セクショニングコンテンツ</a>要素は潜在的に見出しと<a id=sectioning-content:outline href=sections.html#outline>アウトライン</a>を持つ。詳細は<a id=sectioning-content:headings-and-sections href=sections.html#headings-and-sections>見出しとセクション</a>の章を参照のこと。</p>
+
+  <p class=note>ある要素はまた<a href=sections.html#sectioning-root id=sectioning-content:sectioning-root>セクショニングルート</a>である。<a href=#sectioning-content-2 id=sectioning-content:sectioning-content-2-2>セクショニングコンテンツ</a>とは異なる存在だが、<a id=sectioning-content:outline-2 href=sections.html#outline>アウトライン</a>を持つ。</p>
+
+
+  <h6 id=heading-content><span class=secno>3.2.4.2.4</span> Heading content<a href=#heading-content class=self-link></a></h6>
+
+  <p><dfn id=heading-content-2>ヘディングコンテンツ</dfn>はセクションのヘッダーを定義する（明示的に<a href=#sectioning-content-2 id=heading-content:sectioning-content-2>セクショニングコンテンツ</a>要素を用いてマークアップされようとなかろうと、またはヘディングコンテンツ自体によって暗黙であろうとなかろうと）。</p>
+
+  
+  <ul class="brief category-list"><li><code id=heading-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code></li><li><code id=heading-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-2><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h2</a></code></li><li><code id=heading-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-3><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h3</a></code></li><li><code id=heading-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-4><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h4</a></code></li><li><code id=heading-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-5><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h5</a></code></li><li><code id=heading-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-6><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h6</a></code></li><li><code id=heading-content:the-hgroup-element><a href=sections.html#the-hgroup-element>hgroup</a></code></li></ul>
+
+
+  <h6 id=phrasing-content><span class=secno>3.2.4.2.5</span> Phrasing content<a href=#phrasing-content class=self-link></a></h6>
+
+  <p><dfn id=phrasing-content-2>フレージングコンテンツ</dfn>は、文書のテキストおよび段落内レベルでそのテキストをマークアップする要素である。<a href=#paragraph id=phrasing-content:paragraph>段落</a>から<a href=#phrasing-content-2 id=phrasing-content:phrasing-content-2>フレージングコンテンツ</a>が続く。</p>
+
+  
+  <ul class="brief category-list"><li><code id=phrasing-content:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code></li><li><code id=phrasing-content:the-abbr-element><a href=text-level-semantics.html#the-abbr-element>abbr</a></code></li><li><code id=phrasing-content:the-area-element><a href=image-maps.html#the-area-element>area</a></code>（<code id=phrasing-content:the-map-element><a href=image-maps.html#the-map-element>map</a></code>要素の子孫の場合）</li><li><code id=phrasing-content:the-audio-element><a href=media.html#the-audio-element>audio</a></code></li><li><code id=phrasing-content:the-b-element><a href=text-level-semantics.html#the-b-element>b</a></code></li><li><code id=phrasing-content:the-bdi-element><a href=text-level-semantics.html#the-bdi-element>bdi</a></code></li><li><code id=phrasing-content:the-bdo-element><a href=text-level-semantics.html#the-bdo-element>bdo</a></code></li><li><code id=phrasing-content:the-br-element><a href=text-level-semantics.html#the-br-element>br</a></code></li><li><code id=phrasing-content:the-button-element><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=phrasing-content:the-canvas-element><a href=canvas.html#the-canvas-element>canvas</a></code></li><li><code id=phrasing-content:the-cite-element><a href=text-level-semantics.html#the-cite-element>cite</a></code></li><li><code id=phrasing-content:the-code-element><a href=text-level-semantics.html#the-code-element>code</a></code></li><li><code id=phrasing-content:the-data-element><a href=text-level-semantics.html#the-data-element>data</a></code></li><li><code id=phrasing-content:the-datalist-element><a href=form-elements.html#the-datalist-element>datalist</a></code></li><li><code id=phrasing-content:the-del-element><a href=edits.html#the-del-element>del</a></code></li><li><code id=phrasing-content:the-dfn-element><a href=text-level-semantics.html#the-dfn-element>dfn</a></code></li><li><code id=phrasing-content:the-em-element><a href=text-level-semantics.html#the-em-element>em</a></code></li><li><code id=phrasing-content:the-embed-element><a href=iframe-embed-object.html#the-embed-element>embed</a></code></li><li><code id=phrasing-content:the-i-element><a href=text-level-semantics.html#the-i-element>i</a></code></li><li><code id=phrasing-content:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code></li><li><code id=phrasing-content:the-img-element><a href=embedded-content.html#the-img-element>img</a></code></li><li><code id=phrasing-content:the-input-element><a href=input.html#the-input-element>input</a></code></li><li><code id=phrasing-content:the-ins-element><a href=edits.html#the-ins-element>ins</a></code></li><li><code id=phrasing-content:the-kbd-element><a href=text-level-semantics.html#the-kbd-element>kbd</a></code></li><li><code id=phrasing-content:the-label-element><a href=forms.html#the-label-element>label</a></code></li><li><code id=phrasing-content:the-link-element><a href=semantics.html#the-link-element>link</a></code>（<a id=phrasing-content:allowed-in-the-body href=semantics.html#allowed-in-the-body>allowed in the body内で許可される</a>場合）</li><li><code id=phrasing-content:the-map-element-2><a href=image-maps.html#the-map-element>map</a></code></li><li><code id=phrasing-content:the-mark-element><a href=text-level-semantics.html#the-mark-element>mark</a></code></li><li><a id=phrasing-content:mathml-math href=https://www.w3.org/Math/draft-spec/chapter2.html#interf.toplevel data-x-internal=mathml-math>MathML <code>math</code></a></li><li><code id=phrasing-content:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>（<code id=phrasing-content:names:-the-itemprop-attribute><a href=microdata.html#names:-the-itemprop-attribute>itemprop</a></code>属性が存在する場合）</li><li><code id=phrasing-content:the-meter-element><a href=form-elements.html#the-meter-element>meter</a></code></li><li><code id=phrasing-content:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code></li><li><code id=phrasing-content:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code></li><li><code id=phrasing-content:the-output-element><a href=form-elements.html#the-output-element>output</a></code></li><li><code id=phrasing-content:the-picture-element><a href=embedded-content.html#the-picture-element>picture</a></code></li><li><code id=phrasing-content:the-progress-element><a href=form-elements.html#the-progress-element>progress</a></code></li><li><code id=phrasing-content:the-q-element><a href=text-level-semantics.html#the-q-element>q</a></code></li><li><code id=phrasing-content:the-ruby-element><a href=text-level-semantics.html#the-ruby-element>ruby</a></code></li><li><code id=phrasing-content:the-s-element><a href=text-level-semantics.html#the-s-element>s</a></code></li><li><code id=phrasing-content:the-samp-element><a href=text-level-semantics.html#the-samp-element>samp</a></code></li><li><code id=phrasing-content:the-script-element><a href=scripting.html#the-script-element>script</a></code></li><li><code id=phrasing-content:the-select-element><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=phrasing-content:the-slot-element><a href=scripting.html#the-slot-element>slot</a></code></li><li><code id=phrasing-content:the-small-element><a href=text-level-semantics.html#the-small-element>small</a></code></li><li><code id=phrasing-content:the-span-element><a href=text-level-semantics.html#the-span-element>span</a></code></li><li><code id=phrasing-content:the-strong-element><a href=text-level-semantics.html#the-strong-element>strong</a></code></li><li><code id=phrasing-content:the-sub-and-sup-elements><a href=text-level-semantics.html#the-sub-and-sup-elements>sub</a></code></li><li><code id=phrasing-content:the-sub-and-sup-elements-2><a href=text-level-semantics.html#the-sub-and-sup-elements>sup</a></code></li><li><a id=phrasing-content:svg-svg href=https://triple-underscore.github.io/SVG11/struct.html#SVGElement data-x-internal=svg-svg>SVG <code>svg</code></a></li><li><code id=phrasing-content:the-template-element><a href=scripting.html#the-template-element>template</a></code></li><li><code id=phrasing-content:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code></li><li><code id=phrasing-content:the-time-element><a href=text-level-semantics.html#the-time-element>time</a></code></li><li><code id=phrasing-content:the-u-element><a href=text-level-semantics.html#the-u-element>u</a></code></li><li><code id=phrasing-content:the-var-element><a href=text-level-semantics.html#the-var-element>var</a></code></li><li><code id=phrasing-content:the-video-element><a href=media.html#the-video-element>video</a></code></li><li><code id=phrasing-content:the-wbr-element><a href=text-level-semantics.html#the-wbr-element>wbr</a></code></li><li><a href=custom-elements.html#autonomous-custom-element id=phrasing-content:autonomous-custom-element>autonomous custom elements</a></li><li><a href=#text-content id=phrasing-content:text-content>テキスト</a></li></ul>
+
+  <p class=note>フレージングコンテンツとして分類されるほとんどの要素は、自身がフローコンテンツではなく、フレージングコンテンツとして分類される要素のみを含むことができる。</p>
+
+  <p>コンテンツモデルのコンテキストにおいて<dfn id=text-content>テキスト</dfn>は、何もないか、<code id=phrasing-content:text><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードのいずれかを意味する。<a href=#text-content id=phrasing-content:text-content-2>テキスト</a>は時に、そのままでコンテンツモデルとして使用されるが、<a href=#phrasing-content-2 id=phrasing-content:phrasing-content-2-2>フレージングコンテンツ</a>でもあり、<a href=#inter-element-whitespace id=phrasing-content:inter-element-whitespace>要素間の空白文字</a>でもあるかもしれない（<code id=phrasing-content:text-2><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードが空であるか、単に<a id=phrasing-content:space-characters href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII空白文字</a>を含む場合）。</p>
+
+  <p><code id=phrasing-content:text-3><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードおよび属性値は、<a href=https://infra.spec.whatwg.org/#noncharacter id=phrasing-content:noncharacter data-x-internal=noncharacter>noncharacters</a>および<a id=phrasing-content:space-characters-2 href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII空白文字</a>以外の<a href=https://infra.spec.whatwg.org/#control id=phrasing-content:control data-x-internal=control>制御文字</a>を除いて、<a href=https://infra.spec.whatwg.org/#scalar-value id=phrasing-content:scalar-value data-x-internal=scalar-value>スカラー値</a>から構成されなければならない。この仕様は、明確なコンテキストに応じた<code id=phrasing-content:text-4><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードおよび属性値の正確な値に追加の制限を含む。
+
+  
+
+  </p>
+
+
+
+  <h6 id=embedded-content-2><span class=secno>3.2.4.2.6</span> Embedded content<a href=#embedded-content-2 class=self-link></a></h6>
+
+  <p><dfn id=embedded-content-category>エンベディッドコンテンツ</dfn>は、他のリソースから文書に取り込むコンテンツであるか、文書へ挿入される他の語彙由来のコンテンツである。</p>
+
+  
+  <ul class="brief category-list"><li><code id=embedded-content-2:the-audio-element><a href=media.html#the-audio-element>audio</a></code></li><li><code id=embedded-content-2:the-canvas-element><a href=canvas.html#the-canvas-element>canvas</a></code></li><li><code id=embedded-content-2:the-embed-element><a href=iframe-embed-object.html#the-embed-element>embed</a></code></li><li><code id=embedded-content-2:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code></li><li><code id=embedded-content-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code></li><li><a id=embedded-content-2:mathml-math href=https://www.w3.org/Math/draft-spec/chapter2.html#interf.toplevel data-x-internal=mathml-math>MathML <code>math</code></a></li><li><code id=embedded-content-2:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code></li><li><code id=embedded-content-2:the-picture-element><a href=embedded-content.html#the-picture-element>picture</a></code></li><li><a id=embedded-content-2:svg-svg href=https://triple-underscore.github.io/SVG11/struct.html#SVGElement data-x-internal=svg-svg>SVG <code>svg</code></a></li><li><code id=embedded-content-2:the-video-element><a href=media.html#the-video-element>video</a></code></li></ul>
+
+  <p><a id=embedded-content-2:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML名前空間</a>以外の名前空間に基づく、メタデータでなくコンテンツを伝える要素は、この仕様で定義されるコンテンツモデルの目的のための<a href=#embedded-content-category id=embedded-content-2:embedded-content-category>エンベディッドコンテンツ</a>である。（たとえば、MathML、またはSVG。）</p>
+
+  <p>一部のエンベディッドコンテンツ要素は、<dfn id=fallback-content>フォールバックコンテンツ</dfn>を持つこともできる。これは外部リソースが使用できない場合（たとえば、サポートされていないフォーマットであるため）に使用されるコンテンツである。もしあれば、要素の定義はどのようなフォールバックであるかを記載する。</p>
+  
+
+
+  <h6 id=interactive-content><span class=secno>3.2.4.2.7</span> Interactive content<a href=#interactive-content class=self-link></a></h6>
+
+
+
+  <p><dfn id=interactive-content-2>インタラクティブコンテンツ</dfn>は、特にユーザーとの交流を意図するコンテンツである。</p>
+
+  
+  <ul class="brief category-list"><li><code id=interactive-content:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code>（<code id=interactive-content:attr-hyperlink-href><a href=links.html#attr-hyperlink-href>href</a></code>属性が存在する場合）</li><li><code id=interactive-content:the-audio-element><a href=media.html#the-audio-element>audio</a></code>（<code id=interactive-content:attr-media-controls><a href=media.html#attr-media-controls>controls</a></code>属性が存在する場合）</li><li><code id=interactive-content:the-button-element><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=interactive-content:the-details-element><a href=interactive-elements.html#the-details-element>details</a></code></li><li><code id=interactive-content:the-embed-element><a href=iframe-embed-object.html#the-embed-element>embed</a></code></li><li><code id=interactive-content:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code></li><li><code id=interactive-content:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>（<code id=interactive-content:attr-hyperlink-usemap><a href=image-maps.html#attr-hyperlink-usemap>usemap</a></code>属性が存在する場合）</li><li><code id=interactive-content:the-input-element><a href=input.html#the-input-element>input</a></code>（<code id=interactive-content:attr-input-type><a href=input.html#attr-input-type>type</a></code>属性が<a href="input.html#hidden-state-(type=hidden)" id="interactive-content:hidden-state-(type=hidden)">Hidden</a>状態で<em>ない</em>場合）</li><li><code id=interactive-content:the-label-element><a href=forms.html#the-label-element>label</a></code></li><li><code id=interactive-content:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code>（<code id=interactive-content:attr-hyperlink-usemap-2><a href=image-maps.html#attr-hyperlink-usemap>usemap</a></code>属性が存在する場合）</li><li><code id=interactive-content:the-select-element><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=interactive-content:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code></li><li><code id=interactive-content:the-video-element><a href=media.html#the-video-element>video</a></code>（<code id=interactive-content:attr-media-controls-2><a href=media.html#attr-media-controls>controls</a></code>属性が存在する場合）</li></ul>
+
+  <p><code id=interactive-content:attr-tabindex><a href=interaction.html#attr-tabindex>tabindex</a></code>属性はまた、任意の要素を<a href=#interactive-content-2 id=interactive-content:interactive-content-2>インタラクティブコンテンツ</a>にすることができる。</p>
+
+
+
+  <h6 id=palpable-content><span class=secno>3.2.4.2.8</span> Palpable content<a href=#palpable-content class=self-link></a></h6>
+
+  <p>一般的な規則として、コンテンツモデルが任意の<a href=#flow-content-2 id=palpable-content:flow-content-2>フローコンテンツ</a>または<a href=#phrasing-content-2 id=palpable-content:phrasing-content-2>フレージングコンテンツ</a>を許可する要素は、<dfn id=palpable-content-2>パルパブルコンテンツ</dfn>であり、かつ<code id=palpable-content:the-hidden-attribute><a href=interaction.html#the-hidden-attribute>hidden</a></code>属性が指定されないその<a href=#concept-html-contents id=palpable-content:concept-html-contents>コンテンツ</a>で少なくとも1つノードを持つべきである。</p>
+
+  <p class=note><a href=#palpable-content-2 id=palpable-content:palpable-content-2>パルパブルコンテンツ</a>は、聞く（<code id=palpable-content:the-audio-element><a href=media.html#the-audio-element>audio</a></code>要素）または見る（<code id=palpable-content:the-video-element><a href=media.html#the-video-element>video</a></code>または<code id=palpable-content:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>または<code id=palpable-content:the-canvas-element><a href=canvas.html#the-canvas-element>canvas</a></code>要素）または他の方法で相互作用する（たとえば、インタラクティブなフォームコントロール）ことのできる、一部の子孫の空でない<a href=#text-content id=palpable-content:text-content>テキスト</a>か他のユーザーのいずれかによって提供することで、要素を非空にさせる。</p>
+
+  <p>しかし、要素が合法的に空にできる多くのケースがあるように、たとえば、スクリプトによって後で埋められるプレースホルダーとして使用される場合、または要素がテンプレートの一部であり、かつほとんどのページで満たされるが、一部のページで関係しない場合、この要件は厳しい要件ではない。</p>
+
+  <p>適合性検査は、オーサリングの援助として、この要件を満たせない要素を見つけるためのメカニズムを制作者に提供するよう推奨される。</p>
+
+  <p>次の要素はパルパブルコンテンツである：</p>
+
+  
+  <ul class="brief category-list"><li><code id=palpable-content:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code></li><li><code id=palpable-content:the-abbr-element><a href=text-level-semantics.html#the-abbr-element>abbr</a></code></li><li><code id=palpable-content:the-address-element><a href=sections.html#the-address-element>address</a></code></li><li><code id=palpable-content:the-article-element><a href=sections.html#the-article-element>article</a></code></li><li><code id=palpable-content:the-aside-element><a href=sections.html#the-aside-element>aside</a></code></li><li><code id=palpable-content:the-audio-element-2><a href=media.html#the-audio-element>audio</a></code>（<code id=palpable-content:attr-media-controls><a href=media.html#attr-media-controls>controls</a></code>属性が存在する場合）</li><li><code id=palpable-content:the-b-element><a href=text-level-semantics.html#the-b-element>b</a></code></li><li><code id=palpable-content:the-bdi-element><a href=text-level-semantics.html#the-bdi-element>bdi</a></code></li><li><code id=palpable-content:the-bdo-element><a href=text-level-semantics.html#the-bdo-element>bdo</a></code></li><li><code id=palpable-content:the-blockquote-element><a href=grouping-content.html#the-blockquote-element>blockquote</a></code></li><li><code id=palpable-content:the-button-element><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=palpable-content:the-canvas-element-2><a href=canvas.html#the-canvas-element>canvas</a></code></li><li><code id=palpable-content:the-cite-element><a href=text-level-semantics.html#the-cite-element>cite</a></code></li><li><code id=palpable-content:the-code-element><a href=text-level-semantics.html#the-code-element>code</a></code></li><li><code id=palpable-content:the-data-element><a href=text-level-semantics.html#the-data-element>data</a></code></li><li><code id=palpable-content:the-details-element><a href=interactive-elements.html#the-details-element>details</a></code></li><li><code id=palpable-content:the-dfn-element><a href=text-level-semantics.html#the-dfn-element>dfn</a></code></li><li><code id=palpable-content:the-div-element><a href=grouping-content.html#the-div-element>div</a></code></li><li><code id=palpable-content:the-dl-element><a href=grouping-content.html#the-dl-element>dl</a></code>（要素の子が少なくとも1つの名前-値グループを含む場合）</li><li><code id=palpable-content:the-em-element><a href=text-level-semantics.html#the-em-element>em</a></code></li><li><code id=palpable-content:the-embed-element><a href=iframe-embed-object.html#the-embed-element>embed</a></code></li><li><code id=palpable-content:the-fieldset-element><a href=form-elements.html#the-fieldset-element>fieldset</a></code></li><li><code id=palpable-content:the-figure-element><a href=grouping-content.html#the-figure-element>figure</a></code></li><li><code id=palpable-content:the-footer-element><a href=sections.html#the-footer-element>footer</a></code></li><li><code id=palpable-content:the-form-element><a href=forms.html#the-form-element>form</a></code></li><li><code id=palpable-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code></li><li><code id=palpable-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-2><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h2</a></code></li><li><code id=palpable-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-3><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h3</a></code></li><li><code id=palpable-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-4><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h4</a></code></li><li><code id=palpable-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-5><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h5</a></code></li><li><code id=palpable-content:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-6><a href=sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h6</a></code></li><li><code id=palpable-content:the-header-element><a href=sections.html#the-header-element>header</a></code></li><li><code id=palpable-content:the-hgroup-element><a href=sections.html#the-hgroup-element>hgroup</a></code></li><li><code id=palpable-content:the-i-element><a href=text-level-semantics.html#the-i-element>i</a></code></li><li><code id=palpable-content:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code></li><li><code id=palpable-content:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code></li><li><code id=palpable-content:the-input-element><a href=input.html#the-input-element>input</a></code>（<code id=palpable-content:attr-input-type><a href=input.html#attr-input-type>type</a></code>属性が<a href="input.html#hidden-state-(type=hidden)" id="palpable-content:hidden-state-(type=hidden)">Hidden</a>状態で<em>ない</em>場合）</li><li><code id=palpable-content:the-ins-element><a href=edits.html#the-ins-element>ins</a></code></li><li><code id=palpable-content:the-kbd-element><a href=text-level-semantics.html#the-kbd-element>kbd</a></code></li><li><code id=palpable-content:the-label-element><a href=forms.html#the-label-element>label</a></code></li><li><code id=palpable-content:the-main-element><a href=grouping-content.html#the-main-element>main</a></code></li><li><code id=palpable-content:the-map-element><a href=image-maps.html#the-map-element>map</a></code></li><li><code id=palpable-content:the-mark-element><a href=text-level-semantics.html#the-mark-element>mark</a></code></li><li><a id=palpable-content:mathml-math href=https://www.w3.org/Math/draft-spec/chapter2.html#interf.toplevel data-x-internal=mathml-math>MathML <code>math</code></a></li><li><code id=palpable-content:the-menu-element><a href=grouping-content.html#the-menu-element>menu</a></code>（要素の子が少なくとも1つ<code id=palpable-content:the-li-element><a href=grouping-content.html#the-li-element>li</a></code>要素を含む場合）</li><li><code id=palpable-content:the-meter-element><a href=form-elements.html#the-meter-element>meter</a></code></li><li><code id=palpable-content:the-nav-element><a href=sections.html#the-nav-element>nav</a></code></li><li><code id=palpable-content:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code></li><li><code id=palpable-content:the-ol-element><a href=grouping-content.html#the-ol-element>ol</a></code>（要素の子が少なくとも1つ<code id=palpable-content:the-li-element-2><a href=grouping-content.html#the-li-element>li</a></code>要素を含む場合）</li><li><code id=palpable-content:the-output-element><a href=form-elements.html#the-output-element>output</a></code></li><li><code id=palpable-content:the-p-element><a href=grouping-content.html#the-p-element>p</a></code></li><li><code id=palpable-content:the-pre-element><a href=grouping-content.html#the-pre-element>pre</a></code></li><li><code id=palpable-content:the-progress-element><a href=form-elements.html#the-progress-element>progress</a></code></li><li><code id=palpable-content:the-q-element><a href=text-level-semantics.html#the-q-element>q</a></code></li><li><code id=palpable-content:the-ruby-element><a href=text-level-semantics.html#the-ruby-element>ruby</a></code></li><li><code id=palpable-content:the-s-element><a href=text-level-semantics.html#the-s-element>s</a></code></li><li><code id=palpable-content:the-samp-element><a href=text-level-semantics.html#the-samp-element>samp</a></code></li><li><code id=palpable-content:the-section-element><a href=sections.html#the-section-element>section</a></code></li><li><code id=palpable-content:the-select-element><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=palpable-content:the-small-element><a href=text-level-semantics.html#the-small-element>small</a></code></li><li><code id=palpable-content:the-span-element><a href=text-level-semantics.html#the-span-element>span</a></code></li><li><code id=palpable-content:the-strong-element><a href=text-level-semantics.html#the-strong-element>strong</a></code></li><li><code id=palpable-content:the-sub-and-sup-elements><a href=text-level-semantics.html#the-sub-and-sup-elements>sub</a></code></li><li><code id=palpable-content:the-sub-and-sup-elements-2><a href=text-level-semantics.html#the-sub-and-sup-elements>sup</a></code></li><li><a id=palpable-content:svg-svg href=https://triple-underscore.github.io/SVG11/struct.html#SVGElement data-x-internal=svg-svg>SVG <code>svg</code></a></li><li><code id=palpable-content:the-table-element><a href=tables.html#the-table-element>table</a></code></li><li><code id=palpable-content:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code></li><li><code id=palpable-content:the-time-element><a href=text-level-semantics.html#the-time-element>time</a></code></li><li><code id=palpable-content:the-u-element><a href=text-level-semantics.html#the-u-element>u</a></code></li><li><code id=palpable-content:the-ul-element><a href=grouping-content.html#the-ul-element>ul</a></code>（要素の子が少なくとも1つ<code id=palpable-content:the-li-element-3><a href=grouping-content.html#the-li-element>li</a></code>要素を含む場合）</li><li><code id=palpable-content:the-var-element><a href=text-level-semantics.html#the-var-element>var</a></code></li><li><code id=palpable-content:the-video-element-2><a href=media.html#the-video-element>video</a></code></li><li><a href=custom-elements.html#autonomous-custom-element id=palpable-content:autonomous-custom-element>autonomous custom elements</a></li><li><a href=#inter-element-whitespace id=palpable-content:inter-element-whitespace>要素内の空白文字</a>でない<a href=#text-content id=palpable-content:text-content-2>テキスト</a></li></ul>
+
+
+  <h6 id=script-supporting-elements><span class=secno>3.2.4.2.9</span> Script-supporting elements<a href=#script-supporting-elements class=self-link></a></h6>
+
+  <p><dfn id=script-supporting-elements-2>スクリプトサポート要素</dfn>は、自分自身で何も<a href=#represents id=script-supporting-elements:represents>表さ</a>ない（つまりこれらはレンダリングされない）が、たとえばユーザーに機能を提供するために、スクリプトをサポートするために使用される。</p>
+
+  <p>次の要素は、スクリプトサポート要素である：</p>
+
+  
+  <ul class="brief category-list"><li><code id=script-supporting-elements:the-script-element><a href=scripting.html#the-script-element>script</a></code></li><li><code id=script-supporting-elements:the-template-element><a href=scripting.html#the-template-element>template</a></code></li></ul>
+
+
+
+  <h5 id=transparent-content-models><span class=secno>3.2.4.3</span> Transparent content models<a href=#transparent-content-models class=self-link></a></h5>
+
+  <p>いくつかの要素は<dfn id=transparent>透過的</dfn>といわれる。コンテンツモデルの説明でそれらの要素は"透過的"とされる。<a href=#transparent id=transparent-content-models:transparent>透過的</a>な要素のコンテンツモデルは、その親要素のコンテンツモデルを受け継ぐ。"透過的"であるコンテンツモデルの役割で要求される要素は、透過的な要素がある、透過的な親要素のコンテンツモデルの役割で要求されるものと同じ要素である。</p>
+
+  <div class=example>
+
+   <p>たとえば、<code id=transparent-content-models:the-ins-element-2><a href=edits.html#the-ins-element>ins</a></code>要素を許可する<code id=transparent-content-models:the-ruby-element-2><a href=text-level-semantics.html#the-ruby-element>ruby</a></code>要素のコンテンツモデルの役割は、<a href=#phrasing-content-2 id=transparent-content-models:phrasing-content-2>フレージングコンテンツ</a>を許可する役割であり、かつ<code id=transparent-content-models:the-rt-element-2><a href=text-level-semantics.html#the-rt-element>rt</a></code>要素は<a href=#phrasing-content-2 id=transparent-content-models:phrasing-content-2-2>フレージングコンテンツ</a>ではないので、<code id=transparent-content-models:the-ruby-element><a href=text-level-semantics.html#the-ruby-element>ruby</a></code>要素の内側で<code id=transparent-content-models:the-ins-element><a href=edits.html#the-ins-element>ins</a></code>要素は<code id=transparent-content-models:the-rt-element><a href=text-level-semantics.html#the-rt-element>rt</a></code>要素を含むことはできない。</p>
+
+  </div>
+
+
+
+  <p class=note>一部のケースでは、透過的な要素が相互に入れ子になる場合、プロセスを繰り返し適用する必要がある。</p>
+
+  <div class=example>
+
+   <p>次のマークアップ断片を考えてみよう：</p>
+
+   <pre>&lt;p&gt;&lt;object&gt;&lt;param&gt;&lt;ins&gt;&lt;map&gt;&lt;a href="/"&gt;Apples&lt;/a&gt;&lt;/map&gt;&lt;/ins&gt;&lt;/object&gt;&lt;/p&gt;</pre>
+
+   <p><code id=transparent-content-models:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code>要素の内側で"Apples"が許可されるかどうかを確かめるために、コンテンツモデルを分析する。<code id=transparent-content-models:the-a-element-2><a href=text-level-semantics.html#the-a-element>a</a></code>要素のコンテンツモデルは透過的であり、<code id=transparent-content-models:the-map-element><a href=image-maps.html#the-map-element>map</a></code>要素も<code id=transparent-content-models:the-ins-element-3><a href=edits.html#the-ins-element>ins</a></code>要素も、<code id=transparent-content-models:the-ins-element-4><a href=edits.html#the-ins-element>ins</a></code>要素がみられる<code id=transparent-content-models:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code>要素も同様である。<code id=transparent-content-models:the-object-element-2><a href=iframe-embed-object.html#the-object-element>object</a></code>要素は<code id=transparent-content-models:the-p-element><a href=grouping-content.html#the-p-element>p</a></code>要素の中にあり、このコンテンツモデルは<a href=#phrasing-content-2 id=transparent-content-models:phrasing-content-2-3>フレージングコンテンツ</a>である。したがって、テキストはフレージングコンテンツなので、"Apples"は許可される。</p>
+
+  </div>
+
+  <p>透過的なコンテンツが親を持たない場合、"透過的"であるそのコンテンツモデルの役割は、代わりに任意の<a href=#flow-content-2 id=transparent-content-models:flow-content-2>フローコンテンツ</a>を受け入れるものとして扱われなければならない。</p>
+
+
+  <h5 id=paragraphs><span class=secno>3.2.4.4</span> Paragraphs<a href=#paragraphs class=self-link></a></h5>
+
+  <p class=note>この節で定義されるような用語<a href=#paragraph id=paragraphs:paragraph>段落</a>は、<code id=paragraphs:the-p-element><a href=grouping-content.html#the-p-element>p</a></code>要素の正確な定義以上の使われ方をする。ここで定義される<a href=#paragraph id=paragraphs:paragraph-2>段落</a>の概念は、どのように文書を解釈すべきかを説明するために使われる。<code id=paragraphs:the-p-element-2><a href=grouping-content.html#the-p-element>p</a></code>要素は、<a href=#paragraph id=paragraphs:paragraph-3>段落</a>をマークアップするいくつかのうちの1つにすぎない。</p>
+
+  
+  <p>典型的な<dfn id=paragraph>段落</dfn>は、活版印刷において見られるような、特定の主題を議論する1つ以上の文をもつテキストのブロックを形成する、<a href=#phrasing-content-2 id=paragraphs:phrasing-content-2>フレージングコンテンツ</a>の連続であるが、より一般の主題に関する分類に対しても用いられる。たとえば、住所もまた段落であり、フォームの一部、署名、詩のスタンザも同様である。</p>
+
+  <div class=example>
+
+   <p>次の例において、セクションに2つの段落がある。段落ではないフレージングコンテンツを含む見出しもある。コメントおよび<a href=#inter-element-whitespace id=paragraphs:inter-element-whitespace>段落内の空白文字</a>は段落を形成しないことに注意する。</p>
+
+   <pre>&lt;section&gt;
+  &lt;h1&gt;Example of paragraphs&lt;/h1&gt;
+  This is the &lt;em&gt;first&lt;/em&gt; paragraph in this example.
+  &lt;p&gt;This is the second.&lt;/p&gt;
+  &lt;!-- This is not a paragraph. --&gt;
+&lt;/section&gt;</pre>
+
+  </div>
+
+  <p><a href=#flow-content-2 id=paragraphs:flow-content-2>フローコンテンツ</a>内の段落は、中身を複雑にする<code id=paragraphs:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code>、<code id=paragraphs:the-ins-element><a href=edits.html#the-ins-element>ins</a></code>、<code id=paragraphs:the-del-element><a href=edits.html#the-del-element>del</a></code>、<code id=paragraphs:the-map-element><a href=image-maps.html#the-map-element>map</a></code>要素なしで、文書がどのように見えるかに関連して定義される。なぜなら、以下に最初の2つの例で示すように、混成のコンテンツモデルをもつこれらの要素は、段落の境界をまたぐことができるためである。</p>
+
+  <p class=note>一般に、段落の境界をまたぐ要素を持つことは避けた方がよい。このようなマークアップを維持することは困難なことがある。</p>
+
+  <div class=example>
+
+   <p>次の例は、前述の例からマークアップを選び、テキストが変更されたことを示すためにそのマークアップの一部の周囲に<code id=paragraphs:the-ins-element-2><a href=edits.html#the-ins-element>ins</a></code>と<code id=paragraphs:the-del-element-2><a href=edits.html#the-del-element>del</a></code>要素を置く（もっともこの場合、正直なところ変更にあまり意味はないが）。この例は、<code id=paragraphs:the-ins-element-3><a href=edits.html#the-ins-element>ins</a></code>と<code id=paragraphs:the-del-element-3><a href=edits.html#the-del-element>del</a></code>要素をよそに、前のものとちょうど同じ段落を持つことに注目する―<code id=paragraphs:the-ins-element-4><a href=edits.html#the-ins-element>ins</a></code>要素は見出しと最初の段落にまたがっており、<code id=paragraphs:the-del-element-4><a href=edits.html#the-del-element>del</a></code>要素は2つの段落間の境界をまたがっている。</p>
+
+   <pre>&lt;section&gt;
+  &lt;ins&gt;&lt;h1&gt;Example of paragraphs&lt;/h1&gt;
+  This is the &lt;em&gt;first&lt;/em&gt; paragraph in&lt;/ins&gt; this example&lt;del&gt;.
+  &lt;p&gt;This is the second.&lt;/p&gt;&lt;/del&gt;
+  &lt;!-- This is not a paragraph. --&gt;
+&lt;/section&gt;</pre>
+
+  </div>
+
+  
+
+  <p><a href=#paragraph id=paragraphs:paragraph-4>段落</a>はまた、<code id=paragraphs:the-p-element-3><a href=grouping-content.html#the-p-element>p</a></code>要素によって明示的に構成される。</p>
+
+  <p class=note>段落を互いに分離するためにフレージングコンテンツ以外のコンテンツが別の方法でないだろう場合、<code id=paragraphs:the-p-element-4><a href=grouping-content.html#the-p-element>p</a></code>要素は個々の段落をワードラップするために使用できる。</p>
+
+  <div class=example>
+
+   <p>次の例において、リンクは第1段落の半分、2つの段落を分離する見出しのすべて、および第2段落の半分にわたる。これは、段落と見出しをまたがっている。</p>
+
+   <pre>&lt;header&gt;
+ Welcome!
+ &lt;a href="about.html"&gt;
+  This is home of...
+  &lt;h1&gt;The Falcons!&lt;/h1&gt;
+  The Lockheed Martin multirole jet fighter aircraft!
+ &lt;/a&gt;
+ This page discusses the F-16 Fighting Falcon's innermost secrets.
+&lt;/header&gt;</pre>
+
+   <p>以下はマークアップのもう1つの方法である。今回は、段落を明示し、1つのリンク要素を3つに分割している：</p>
+
+   <pre>&lt;header&gt;
+ &lt;p&gt;Welcome! &lt;a href="about.html"&gt;This is home of...&lt;/a&gt;&lt;/p&gt;
+ &lt;h1&gt;&lt;a href="about.html"&gt;The Falcons!&lt;/a&gt;&lt;/h1&gt;
+ &lt;p&gt;&lt;a href="about.html"&gt;The Lockheed Martin multirole jet
+ fighter aircraft!&lt;/a&gt; This page discusses the F-16 Fighting
+ Falcon's innermost secrets.&lt;/p&gt;
+&lt;/header&gt;</pre>
+
+  </div>
+
+  <div class=example>
+
+   
+
+   <p>フォールバックコンテンツを定義する特定の要素を使用する場合、段落は重複してもよい。たとえば、以下のセクションで：</p>
+
+   <pre>&lt;section&gt;
+ &lt;h1&gt;My Cats&lt;/h1&gt;
+ You can play with my cat simulator.
+ &lt;object data="cats.sim"&gt;
+  To see the cat simulator, use one of the following links:
+  &lt;ul&gt;
+   &lt;li&gt;&lt;a href="cats.sim"&gt;Download simulator file&lt;/a&gt;
+   &lt;li&gt;&lt;a href="https://sims.example.com/watch?v=LYds5xY4INU"&gt;Use online simulator&lt;/a&gt;
+  &lt;/ul&gt;
+  Alternatively, upgrade to the Mellblom Browser.
+ &lt;/object&gt;
+ I'm quite proud of it.
+&lt;/section&gt;</pre>
+
+   <p>5つの段落が存在する：</p>
+
+   <ol class=brief><li>"You can play with my cat simulator. <i>object</i> I'm quite proud of it."とある段落。ここで<i>object</i>は<code id=paragraphs:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code>要素である。</li><li>"To see the cat simulator, use one of the following links:"とある段落。</li><li>"Download simulator file"とある段落。</li><li>"Use online simulator"とある段落。</li><li>"Alternatively, upgrade to the Mellblom Browser."とある段落。</li></ol>
+
+   <p>最初の段落は他の4つの段落と重複する。"cats.sim"リソースをサポートするユーザーエージェントは、最初の段落のみを表示するが、ユーザーエージェントは、あたかも2番目の段落と同じ段落であったかのように、1段落目の最初の文を表示するという紛らわしいフォールバックを表示し、かつあたかも1段落目の2番目にある文の冒頭であるかのように、最後の段落を表示するだろう。</p>
+
+   <p>この混乱を避けるために、明示的に<code id=paragraphs:the-p-element-5><a href=grouping-content.html#the-p-element>p</a></code>要素を使用することができる。たとえば：</p>
+
+   
+   <pre>&lt;section&gt;
+ &lt;h1&gt;My Cats&lt;/h1&gt;
+ &lt;p&gt;You can play with my cat simulator.&lt;/p&gt;
+ &lt;object data="cats.sim"&gt;
+  &lt;p&gt;To see the cat simulator, use one of the following links:&lt;/p&gt;
+  &lt;ul&gt;
+   &lt;li&gt;&lt;a href="cats.sim"&gt;Download simulator file&lt;/a&gt;
+   &lt;li&gt;&lt;a href="https://sims.example.com/watch?v=LYds5xY4INU"&gt;Use online simulator&lt;/a&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;Alternatively, upgrade to the Mellblom Browser.&lt;/p&gt;
+ &lt;/object&gt;
+ &lt;p&gt;I'm quite proud of it.&lt;/p&gt;
+&lt;/section&gt;</pre>
+
+  </div>
+
+
+  <h4 id=global-attributes><span class=secno>3.2.5</span> <dfn>Global attributes</dfn><a href=#global-attributes class=self-link></a></h4>
+
+  <p>以下の属性は共通で、すべての<a id=global-attributes:html-elements href=infrastructure.html#html-elements>HTML要素</a>で指定してもよいものである：</p>
+
+  <ul class=brief><li><code id=global-attributes:the-accesskey-attribute><a href=interaction.html#the-accesskey-attribute>accesskey</a></code></li><li><code id=global-attributes:attr-contenteditable><a href=interaction.html#attr-contenteditable>contenteditable</a></code></li><li><code id=global-attributes:the-dir-attribute><a href=#the-dir-attribute>dir</a></code></li><li><code id=global-attributes:the-draggable-attribute><a href=dnd.html#the-draggable-attribute>draggable</a></code></li><li><code id=global-attributes:the-hidden-attribute><a href=interaction.html#the-hidden-attribute>hidden</a></code></li><li><code id=global-attributes:attr-is><a href=custom-elements.html#attr-is>is</a></code></li><li><code id=global-attributes:attr-itemid><a href=microdata.html#attr-itemid>itemid</a></code></li><li><code id=global-attributes:names:-the-itemprop-attribute><a href=microdata.html#names:-the-itemprop-attribute>itemprop</a></code></li><li><code id=global-attributes:attr-itemref><a href=microdata.html#attr-itemref>itemref</a></code></li><li><code id=global-attributes:attr-itemscope><a href=microdata.html#attr-itemscope>itemscope</a></code></li><li><code id=global-attributes:attr-itemtype><a href=microdata.html#attr-itemtype>itemtype</a></code></li><li><code id=global-attributes:attr-lang><a href=#attr-lang>lang</a></code></li><li><code id=global-attributes:attr-spellcheck><a href=interaction.html#attr-spellcheck>spellcheck</a></code></li><li><code id=global-attributes:the-style-attribute><a href=#the-style-attribute>style</a></code></li><li><code id=global-attributes:attr-tabindex><a href=interaction.html#attr-tabindex>tabindex</a></code></li><li><code id=global-attributes:attr-title><a href=#attr-title>title</a></code></li><li><code id=global-attributes:attr-translate><a href=#attr-translate>translate</a></code></li></ul>
+
+  
+
+  <hr>
+
+  <p>WHATWG DOM標準は、すべての名前空間ですべての要素に<dfn id=classes><code>class</code></dfn>、<dfn id=the-id-attribute><code>id</code></dfn>および<dfn id=attr-slot><code>slot</code></dfn>属性に対するユーザーエージェントの要求を定義する。<a href=references.html#refsDOM>[DOM]</a></p>
+
+  <p><code id=global-attributes:classes><a href=#classes>class</a></code>、<code id=global-attributes:the-id-attribute><a href=#the-id-attribute>id</a></code>および<code id=global-attributes:attr-slot><a href=#attr-slot>slot</a></code>属性は、すべての<a id=global-attributes:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>に指定されてもよい。</p>
+
+  <p><a id=global-attributes:html-elements-3 href=infrastructure.html#html-elements>HTML要素</a>で指定される場合、<code id=global-attributes:classes-2><a href=#classes>class</a></code>属性は、要素が属する様々なクラスを表す<a id=global-attributes:set-of-space-separated-tokens href=common-microsyntaxes.html#set-of-space-separated-tokens>スペース区切りトークンの組</a>の値を持たなければならない。</p>
+
+  <div class=note>
+
+  <p>クラスを要素に割り当てることは、クラスのCSSセレクターでのマッチング、DOMにおける<code id=global-attributes:dom-document-getelementsbyclassname><a data-x-internal=dom-document-getelementsbyclassname href=https://triple-underscore.github.io/DOM4-ja.html#dom-document-getelementsbyclassname>getElementsByClassName()</a></code>メソッド、および他のそのような機能に影響を与える。</p>
+
+  <p>著者が使用できる<code id=global-attributes:classes-3><a href=#classes>class</a></code>属性のトークンに追加の制限は存在しないが、著者は、コンテンツの期待するプレゼンテーションを記述する値よりもむしろ、コンテンツの性質を記述する値を使用するよう推奨される。</p>
+
+  </div>
+
+  <p><a id=global-attributes:html-elements-4 href=infrastructure.html#html-elements>HTML要素</a>で指定される場合、<code id=global-attributes:the-id-attribute-2><a href=#the-id-attribute>id</a></code>属性値は、要素の<a id=global-attributes:tree href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree data-x-internal=tree>ツリー</a>ですべての<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=global-attributes:concept-id data-x-internal=concept-id>ID</a>に共通して固有でなければならず、かつ少なくとも1つの文字を含まなければならない。値は一切の<a id=global-attributes:space-characters href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII空白文字</a>を含んではならない。</p>
+
+  
+
+  <div class=note>
+
+  <p><code id=global-attributes:the-id-attribute-3><a href=#the-id-attribute>id</a></code>属性はその要素の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=global-attributes:concept-id-2 data-x-internal=concept-id>固有識別子（ID）</a>を指定する。</p>
+
+  <p>IDを取ることができる形式に制限は存在しない。具体的に、IDは数字のみまたは句読点のみで構成することができ、数字やアンダースコアで開始できる、などである。</p>
+
+  <p>要素の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=global-attributes:concept-id-3 data-x-internal=concept-id>固有識別子</a>は様々な目的に使用されうる。中でも注目すべきは<a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=global-attributes:concept-url-fragment data-x-internal=concept-url-fragment>フラグメント</a>を用いた文書の特定部分へのリンクする方法として、およびCSS由来の特定要素へのスタイル付けする方法としての目的である。</p>
+
+  </div>
+
+  
+
+  <p><a id=global-attributes:html-elements-5 href=infrastructure.html#html-elements>HTML要素</a>に固有な<code id=global-attributes:attr-slot-2><a href=#attr-slot>slot</a></code>属性に適合性要件は存在しない。</p>
+
+  <p class=note><code id=global-attributes:attr-slot-3><a href=#attr-slot>slot</a></code>属性は、要素に<a id=global-attributes:assign-a-slot href=https://dom.spec.whatwg.org/#assign-a-slot data-x-internal=assign-a-slot>スロットを割り当てる</a>ために使用される：<code id=global-attributes:attr-slot-4><a href=#attr-slot>slot</a></code>属性をもつ要素は、<a href=scripting.html#attr-slot-name id=global-attributes:attr-slot-name>name</a>属性の値がその<code id=global-attributes:attr-slot-5><a href=#attr-slot>slot</a></code>属性の値と一致する<code id=global-attributes:the-slot-element><a href=scripting.html#the-slot-element>slot</a></code>要素によって作成された<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-slot id=global-attributes:concept-slot data-x-internal=concept-slot>スロット</a>に<a href=https://dom.spec.whatwg.org/#assign-a-slot id=global-attributes:assign-a-slot-2 data-x-internal=assign-a-slot>割り当てられる</a>。ただし、その<code id=global-attributes:the-slot-element-2><a href=scripting.html#the-slot-element>slot</a></code>要素が、<a id=global-attributes:root href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-root data-x-internal=root>ルート</a>の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-documentfragment-host id=global-attributes:concept-documentfragment-host data-x-internal=concept-documentfragment-host>ホスト</a>が対応する<code id=global-attributes:attr-slot-6><a href=#attr-slot>slot</a></code>属性値を持つ<a id=global-attributes:shadow-tree href=https://triple-underscore.github.io/DOM4-ja.html#concept-shadow-tree data-x-internal=shadow-tree>シャドウツリー</a>内で見つかった場合に限る。</p>
+
+  <hr>
+
+  <p>よりきめ細かいインターフェイスを公開できるよう支援技術製品が別の方法でHTML要素と属性で可能にするために、<a href=#wai-aria>支援技術製品への注釈</a>の組が指定できる（ARIA <code id=global-attributes:attr-aria-role><a href=infrastructure.html#attr-aria-role>role</a></code>および<code id=global-attributes:attr-aria-*><a href=infrastructure.html#attr-aria-*>aria-*</a></code>属性）。<a href=references.html#refsARIA>[ARIA]</a></p>
+
+  <hr>
+
+  <p>以下の<a id=global-attributes:event-handler-content-attributes href=webappapis.html#event-handler-content-attributes>イベントハンドラーコンテンツ属性</a>は任意の<a href=infrastructure.html#html-elements id=global-attributes:html-elements-6>HTML要素</a>に指定されてもよい：</p>
+
+  <ul class=brief><li><code id=global-attributes:handler-onabort><a href=webappapis.html#handler-onabort>onabort</a></code></li><li><code id=global-attributes:handler-onauxclick><a href=webappapis.html#handler-onauxclick>onauxclick</a></code></li><li><code id=global-attributes:handler-onblur><a href=webappapis.html#handler-onblur>onblur</a></code>*</li><li><code id=global-attributes:handler-oncancel><a href=webappapis.html#handler-oncancel>oncancel</a></code></li><li><code id=global-attributes:handler-oncanplay><a href=webappapis.html#handler-oncanplay>oncanplay</a></code></li><li><code id=global-attributes:handler-oncanplaythrough><a href=webappapis.html#handler-oncanplaythrough>oncanplaythrough</a></code></li><li><code id=global-attributes:handler-onchange><a href=webappapis.html#handler-onchange>onchange</a></code></li><li><code id=global-attributes:handler-onclick><a href=webappapis.html#handler-onclick>onclick</a></code></li><li><code id=global-attributes:handler-onclose><a href=webappapis.html#handler-onclose>onclose</a></code></li><li><code id=global-attributes:handler-oncontextmenu><a href=webappapis.html#handler-oncontextmenu>oncontextmenu</a></code></li><li><code id=global-attributes:handler-oncuechange><a href=webappapis.html#handler-oncuechange>oncuechange</a></code></li><li><code id=global-attributes:handler-ondblclick><a href=webappapis.html#handler-ondblclick>ondblclick</a></code></li><li><code id=global-attributes:handler-ondrag><a href=webappapis.html#handler-ondrag>ondrag</a></code></li><li><code id=global-attributes:handler-ondragend><a href=webappapis.html#handler-ondragend>ondragend</a></code></li><li><code id=global-attributes:handler-ondragenter><a href=webappapis.html#handler-ondragenter>ondragenter</a></code></li><li><code id=global-attributes:handler-ondragexit><a href=webappapis.html#handler-ondragexit>ondragexit</a></code></li><li><code id=global-attributes:handler-ondragleave><a href=webappapis.html#handler-ondragleave>ondragleave</a></code></li><li><code id=global-attributes:handler-ondragover><a href=webappapis.html#handler-ondragover>ondragover</a></code></li><li><code id=global-attributes:handler-ondragstart><a href=webappapis.html#handler-ondragstart>ondragstart</a></code></li><li><code id=global-attributes:handler-ondrop><a href=webappapis.html#handler-ondrop>ondrop</a></code></li><li><code id=global-attributes:handler-ondurationchange><a href=webappapis.html#handler-ondurationchange>ondurationchange</a></code></li><li><code id=global-attributes:handler-onemptied><a href=webappapis.html#handler-onemptied>onemptied</a></code></li><li><code id=global-attributes:handler-onended><a href=webappapis.html#handler-onended>onended</a></code></li><li><code id=global-attributes:handler-onerror><a href=webappapis.html#handler-onerror>onerror</a></code>*</li><li><code id=global-attributes:handler-onfocus><a href=webappapis.html#handler-onfocus>onfocus</a></code>*</li><li><code id=global-attributes:handler-oninput><a href=webappapis.html#handler-oninput>oninput</a></code></li><li><code id=global-attributes:handler-oninvalid><a href=webappapis.html#handler-oninvalid>oninvalid</a></code></li><li><code id=global-attributes:handler-onkeydown><a href=webappapis.html#handler-onkeydown>onkeydown</a></code></li><li><code id=global-attributes:handler-onkeypress><a href=webappapis.html#handler-onkeypress>onkeypress</a></code></li><li><code id=global-attributes:handler-onkeyup><a href=webappapis.html#handler-onkeyup>onkeyup</a></code></li><li><code id=global-attributes:handler-onload><a href=webappapis.html#handler-onload>onload</a></code>*</li><li><code id=global-attributes:handler-onloadeddata><a href=webappapis.html#handler-onloadeddata>onloadeddata</a></code></li><li><code id=global-attributes:handler-onloadedmetadata><a href=webappapis.html#handler-onloadedmetadata>onloadedmetadata</a></code></li><li><code id=global-attributes:handler-onloadend><a href=webappapis.html#handler-onloadend>onloadend</a></code></li><li><code id=global-attributes:handler-onloadstart><a href=webappapis.html#handler-onloadstart>onloadstart</a></code></li><li><code id=global-attributes:handler-onmousedown><a href=webappapis.html#handler-onmousedown>onmousedown</a></code></li><li><code id=global-attributes:handler-onmouseenter><a href=webappapis.html#handler-onmouseenter>onmouseenter</a></code></li><li><code id=global-attributes:handler-onmouseleave><a href=webappapis.html#handler-onmouseleave>onmouseleave</a></code></li><li><code id=global-attributes:handler-onmousemove><a href=webappapis.html#handler-onmousemove>onmousemove</a></code></li><li><code id=global-attributes:handler-onmouseout><a href=webappapis.html#handler-onmouseout>onmouseout</a></code></li><li><code id=global-attributes:handler-onmouseover><a href=webappapis.html#handler-onmouseover>onmouseover</a></code></li><li><code id=global-attributes:handler-onmouseup><a href=webappapis.html#handler-onmouseup>onmouseup</a></code></li><li><code id=global-attributes:handler-onwheel><a href=webappapis.html#handler-onwheel>onwheel</a></code></li><li><code id=global-attributes:handler-onpause><a href=webappapis.html#handler-onpause>onpause</a></code></li><li><code id=global-attributes:handler-onplay><a href=webappapis.html#handler-onplay>onplay</a></code></li><li><code id=global-attributes:handler-onplaying><a href=webappapis.html#handler-onplaying>onplaying</a></code></li><li><code id=global-attributes:handler-onprogress><a href=webappapis.html#handler-onprogress>onprogress</a></code></li><li><code id=global-attributes:handler-onratechange><a href=webappapis.html#handler-onratechange>onratechange</a></code></li><li><code id=global-attributes:handler-onreset><a href=webappapis.html#handler-onreset>onreset</a></code></li><li><code id=global-attributes:handler-onresize><a href=webappapis.html#handler-onresize>onresize</a></code>*</li><li><code id=global-attributes:handler-onscroll><a href=webappapis.html#handler-onscroll>onscroll</a></code>*</li><li><code id=global-attributes:handler-onseeked><a href=webappapis.html#handler-onseeked>onseeked</a></code></li><li><code id=global-attributes:handler-onseeking><a href=webappapis.html#handler-onseeking>onseeking</a></code></li><li><code id=global-attributes:handler-onselect><a href=webappapis.html#handler-onselect>onselect</a></code></li><li><code id=global-attributes:handler-onstalled><a href=webappapis.html#handler-onstalled>onstalled</a></code></li><li><code id=global-attributes:handler-onsubmit><a href=webappapis.html#handler-onsubmit>onsubmit</a></code></li><li><code id=global-attributes:handler-onsuspend><a href=webappapis.html#handler-onsuspend>onsuspend</a></code></li><li><code id=global-attributes:handler-ontimeupdate><a href=webappapis.html#handler-ontimeupdate>ontimeupdate</a></code></li><li><code id=global-attributes:handler-ontoggle><a href=webappapis.html#handler-ontoggle>ontoggle</a></code></li><li><code id=global-attributes:handler-onvolumechange><a href=webappapis.html#handler-onvolumechange>onvolumechange</a></code></li><li><code id=global-attributes:handler-onwaiting><a href=webappapis.html#handler-onwaiting>onwaiting</a></code></li></ul>
+
+  <p class=note>The attributes marked with an asterisk have a different meaning when specified on
+  <code id=global-attributes:the-body-element><a href=sections.html#the-body-element>body</a></code> elements as those elements expose <a id=global-attributes:event-handlers href=webappapis.html#event-handlers>event handlers</a> of the
+  <code>Window</code> object with the same names.</p>
+
+  <p class=note>これら属性がすべての要素に適用される一方で、属性はすべての要素で役立つわけでない。たとえば、<a href=media.html#media-element id=global-attributes:media-element>メディア要素</a>のみがユーザーエージェントによって発火された<code id=global-attributes:event-media-volumechange><a href=media.html#event-media-volumechange>volumechange</a></code>イベントを受け取るだろう。</p>
+
+  <hr>
+
+  <p><a href=#custom-data-attribute id=global-attributes:custom-data-attribute>カスタムデータ属性</a>（たとえば<code>data-foldername</code>や<code>data-msgid</code>）は、任意の<a href=infrastructure.html#html-elements id=global-attributes:html-elements-7>HTML要素</a>に指定されてよく、ページ特有のカスタムデータ、ステート、アノテーションなどの類似のものを保存可能である。</p>
+
+  <hr>
+
+  <p><a id=global-attributes:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>で、<a id=global-attributes:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML名前空間</a>での要素は指定する<code>xmlns</code>属性を持つかもしれない。もし存在するなら値は正確に"<code>http://www.w3.org/1999/xhtml</code>"のみを持つ。これは<a id=global-attributes:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML文書</a>に当てはまらない。</p>
+
+  <p class=note>HTMLにおいて、<code>xmlns</code>属性は一切影響しない。これは基本的に魔除けである。It is allowed merely to make migration to and from XML mildly easier. When parsed by an <span>HTML parser</span>, the attribute ends up in no namespace, not the "<code>http://www.w3.org/2000/xmlns/</code>" namespace like namespace declaration attributes in XML do.</p>
+
+  <p class=note>XMLにおいて、<code>xmlns</code>属性は名前空間宣言メカニズムの一部であり、要素は実際に名前空間を指定されない<code>xmlns</code>属性を持つことはできない。</p>
+
+  <hr>
+
+  <p>XML仕様はまた、<a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=global-attributes:xml-documents-2 data-x-internal=xml-documents>XML文書</a>における任意の要素上の<a id=global-attributes:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a>で<code id=global-attributes:attr-xml-space><a href=infrastructure.html#attr-xml-space>xml:space</a></code>属性の使用を許可する。HTMLにおいてデフォルトの振る舞いは空白文字を維持するため、この属性は<a id=global-attributes:html-elements-8 href=infrastructure.html#html-elements>HTML要素</a>で影響しない。<a href=references.html#refsXML>[XML]</a></p>
+
+  <p class=note><code id=global-attributes:text/html><a href=iana.html#text/html>text/html</a></code>構文で<a id=global-attributes:html-elements-9 href=infrastructure.html#html-elements>HTML要素</a>上の<code id=global-attributes:attr-xml-space-2><a href=infrastructure.html#attr-xml-space>xml:space</a></code>属性をシリアル化する方法は存在しない。</p>
+
+
+
+  <h5 id=the-title-attribute><span class=secno>3.2.5.1</span> The <code id=the-title-attribute:attr-title><a href=#attr-title>title</a></code> attribute<a href=#the-title-attribute class=self-link></a></h5>
+
+  <p><dfn id=attr-title><code>title</code></dfn>属性は、ツールチップに適するような要素に対する助言的な情報を<a href=#represents id=the-title-attribute:represents>表す</a>。リンクでは、これはタイトルまたは対象リソースの記述であるかもしれない。画像では、画像のタイトルや説明であるかもしれない。段落では、テキストの脚注や解説であるかもしれない。引用では、ソースに関する詳細情報かもしれない。<a href=#interactive-content-2 id=the-title-attribute:interactive-content-2>インタラクティブコンテンツ</a>では、要素の用途に対する分類や指示などかもしれない、などである。値はテキストである。</p>
+
+  
+  <p class=note><code id=the-title-attribute:attr-title-2><a href=#attr-title>title</a></code>属性に依存することは、多くのユーザーエージェントがこの仕様で要求されるようなアクセス可能な方法で属性を公開しないため、現在推奨されない（たとえば、ツールチップを出現させるマウスなどのポインティングデバイスが必要になり、これはモダンな携帯端末やタブレットをもつ人のような、キーボードのみのユーザーとタッチのみのユーザーを締め出す）。</p>
+
+  <p>この属性が要素から省略される場合、<code id=the-title-attribute:attr-title-4><a href=#attr-title>title</a></code>属性をもつ最も近い先祖<a href=infrastructure.html#html-elements id=the-title-attribute:html-elements>HTML要素</a>の<code id=the-title-attribute:attr-title-3><a href=#attr-title>title</a></code>属性がその要素にとっても適切であることを意味する。属性を設定することはこれを上書きし、明示的に先祖の助言的な情報がこの要素に関連しないことを示す。空文字列を属性に設定すると、要素は助言的な情報を持たないことを示す。</p>
+
+  <p><code id=the-title-attribute:attr-title-5><a href=#attr-title>title</a></code>属性値がU+000A LINE FEED（LF）文字を含む場合、コンテンツは複数行に分割される。各U+000A LINE FEED（LF）文字は改行を表す。</p>
+
+  <div class=example>
+
+   <p>警告は、<code id=the-title-attribute:attr-title-6><a href=#attr-title>title</a></code>属性内の改行の使用について報告される。</p>
+
+   <p>たとえば、実際に次の断片は<em>改行とともに</em>省略語の拡張を定義する。</p>
+
+   <pre class=bad>&lt;p&gt;My logs show that there was some interest in &lt;abbr title="Hypertext
+Transport Protocol"&gt;HTTP&lt;/abbr&gt; today.&lt;/p&gt;</pre> 
+
+  </div>
+
+  <p><code id=the-title-attribute:the-link-element><a href=semantics.html#the-link-element>link</a></code>、<code id=the-title-attribute:the-abbr-element><a href=text-level-semantics.html#the-abbr-element>abbr</a></code>、<code id=the-title-attribute:the-input-element><a href=input.html#the-input-element>input</a></code>のような一部の要素は、上記で説明されるセマンティックスを越えて<code id=the-title-attribute:attr-title-7><a href=#attr-title>title</a></code>属性に対する追加のセマンティックスを定義する。</p> 
+
+  
+
+
+
+  <h5 id=the-lang-and-xml:lang-attributes><span class=secno>3.2.5.2</span> The <code id=the-lang-and-xml:lang-attributes:attr-lang><a href=#attr-lang>lang</a></code> and <code id=the-lang-and-xml:lang-attributes:attr-xml-lang><a href=#attr-xml-lang>xml:lang</a></code> attributes<a href=#the-lang-and-xml:lang-attributes class=self-link></a></h5>
+
+  <p><dfn id=attr-lang><code>lang</code></dfn>属性（名前空間なし）は、要素のコンテンツに対する基本言語およびテキストを含むあらゆる要素の属性に対して指定する。その値は妥当なBCP 47言語タグまたは空文字列でなければならない。属性に空文字列を設定することは第一言語が不明であることを指す。<a href=references.html#refsBCP47>[BCP47]</a></p>
+
+  <p><a id=the-lang-and-xml:lang-attributes:xml-namespace href=https://infra.spec.whatwg.org/#xml-namespace data-x-internal=xml-namespace>XML名前空間</a>での<dfn id=attr-xml-lang><code>lang</code></dfn>属性はXMLで定義されている。<a href=references.html#refsXML>[XML]</a></p>
+
+  <p>これらの属性が要素から省略される場合、この要素の言語がもしあれば、その親要素の言語と同じである。</p>
+
+  <p>名前空間のない<code id=the-lang-and-xml:lang-attributes:attr-lang-2><a href=#attr-lang>lang</a></code>属性は任意の<a href=infrastructure.html#html-elements id=the-lang-and-xml:lang-attributes:html-elements>HTML要素</a>で使用されてもよい。</p>
+
+  <p><a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-2><span>XML名前空間</span>での<code>lang</code>属性</a>は、<a id=the-lang-and-xml:lang-attributes:xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML文書</a>での<a id=the-lang-and-xml:lang-attributes:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>上で使用されてもよい。同様に、関連仕様が許可する（特に、MathMLおよびSVGがそれらの要素で指定される<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-3><span>XML名前空間</span>で<code>lang</code>属性</a>を許可する）場合、他の名前空間で使用されてもよい。名前空間なしの<code id=the-lang-and-xml:lang-attributes:attr-lang-3><a href=#attr-lang>lang</a></code>属性と<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-4><span>XML名前空間</span>での<code>lang</code>属性</a>の両方が同じ要素に指定される場合、<a id=the-lang-and-xml:lang-attributes:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で比較したときに、これらは正確に同じ値を持たなければならない。</p>
+
+  <p>著者は、<a id=the-lang-and-xml:lang-attributes:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>における<a id=the-lang-and-xml:lang-attributes:html-elements-3 href=infrastructure.html#html-elements>HTML要素</a>で<a href=#attr-xml-lang id=the-lang-and-xml:lang-attributes:attr-xml-lang-5><span>XML名前空間</span>内で<code>lang</code>属性</a>を使用してはならない。XMLとの移行を容易にするために、著者は、接頭辞なしで名前空間のない属性、および<a id=the-lang-and-xml:lang-attributes:html-documents-2 href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>内の<a id=the-lang-and-xml:lang-attributes:html-elements-4 href=infrastructure.html#html-elements>HTML要素</a>にリテラルでローカル名"<code>xml:lang</code>"を指定してもよいが、名前空間のない<code id=the-lang-and-xml:lang-attributes:attr-lang-4><a href=#attr-lang>lang</a></code>属性も指定されている場合、そのような属性のみが指定されなければならず、<a id=the-lang-and-xml:lang-attributes:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で比較するとき、両方の属性は同じ値を持たなければならない。</p>
+
+  <p class=note>接頭辞なしで名前空間のない属性およびリテラルにローカル"<code>xml:lang</code>"は、言語処理に影響を与えない。</p>
+
+  
+
+
+
+  <h5 id=the-translate-attribute><span class=secno>3.2.5.3</span> The <code id=the-translate-attribute:attr-translate><a href=#attr-translate>translate</a></code> attribute<a href=#the-translate-attribute class=self-link></a></h5>
+
+  
+
+  <p><dfn id=attr-translate><code>translate</code></dfn>属性は、ページがローカライズされる場合に要素の属性値およびその<code id=the-translate-attribute:text><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードの子の値を翻訳するかどうか、または変更せずにそのままにするかどうかを指定するために使用される<a id=the-translate-attribute:enumerated-attribute href=common-microsyntaxes.html#enumerated-attribute>列挙属性</a>である。</p>
+
+  <p>属性のキーワードは、空文字列、<code>yes</code>および<code>no</code>である。空文字列および<code>yes</code>キーワードは<i>yes</i>状態に対応する。<code>no</code>キーワードは<i>no</i>状態に対応する。さらに、<i>inherit</i>状態という第3の状態が存在する。これは<i id=the-translate-attribute:missing-value-default><a href=common-microsyntaxes.html#missing-value-default>欠損値のデフォルト</a></i>（および<i id=the-translate-attribute:invalid-value-default><a href=common-microsyntaxes.html#invalid-value-default>不正な値のデフォルト</a></i>）である。</p>
+
+  <p>（非HTML要素でさえも）各要素は、<a href=#translate-enabled id=the-translate-attribute:translate-enabled>翻訳可能</a>状態または<a href=#no-translate id=the-translate-attribute:no-translate>無翻訳</a>状態のいずれかの<dfn id=translation-mode>翻訳モード</dfn>を持つ。<a href=infrastructure.html#html-elements id=the-translate-attribute:html-elements>HTML要素</a>の<code id=the-translate-attribute:attr-translate-2><a href=#attr-translate>translate</a></code>属性が<i>yes</i>状態である場合、その要素の<a href=#translation-mode id=the-translate-attribute:translation-mode>翻訳モード</a>は<a href=#translate-enabled id=the-translate-attribute:translate-enabled-2>翻訳可能な</a>状態となる。そうでなければ、要素の<code id=the-translate-attribute:attr-translate-3><a href=#attr-translate>translate</a></code>属性が<i>no</i>状態である場合、その要素の<a href=#translation-mode id=the-translate-attribute:translation-mode-2>翻訳モード</a>は<a href=#no-translate id=the-translate-attribute:no-translate-2>無翻訳</a>状態となる。そうでなければ、要素の<code id=the-translate-attribute:attr-translate-4><a href=#attr-translate>translate</a></code>属性は<i>inherit</i>状態となるか、または要素が<a href=infrastructure.html#html-elements id=the-translate-attribute:html-elements-2>HTML要素</a>でないかのいずれかであり、したがって<code id=the-translate-attribute:attr-translate-5><a href=#attr-translate>translate</a></code>属性を持たない。いずれにせよ、もしあれば要素の<a href=#translation-mode id=the-translate-attribute:translation-mode-3>翻訳モード</a>が、その親要素と同じ状態となる、または要素が<a id=the-translate-attribute:document-element href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>文書要素</a>である場合、<a href=#translate-enabled id=the-translate-attribute:translate-enabled-3>翻訳可能</a>状態となる。</p>
+
+  <p>要素が<dfn id=translate-enabled>翻訳可能</dfn>状態にある場合、要素の<a href=#translatable-attributes id=the-translate-attribute:translatable-attributes>翻訳可能属性</a>とその<code id=the-translate-attribute:text-2><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードの子の値は、ページがローカライズされる際に翻訳される。</p>
+
+  <p>要素が<dfn id=no-translate>無翻訳</dfn>状態にある場合、要素の属性値とその<code id=the-translate-attribute:text-3><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードの子の値は、たとえば要素が人物名やコンピュータープログラム名を含むため、ページがローカライズされるときに、そのままで残される。</p>
+
+  <p>以下の属性は<dfn id=translatable-attributes>翻訳可能属性</dfn>である：</p>
+
+  <ul class=brief><li><code id=the-translate-attribute:the-th-element><a href=tables.html#the-th-element>th</a></code>要素の<code id=the-translate-attribute:attr-th-abbr><a href=tables.html#attr-th-abbr>abbr</a></code></li><li><code id=the-translate-attribute:attr-area-alt><a href=image-maps.html#attr-area-alt>area</a></code>、<code id=the-translate-attribute:attr-img-alt><a href=embedded-content.html#attr-img-alt>img</a></code>、<code id=the-translate-attribute:attr-input-alt><a href=input.html#attr-input-alt>input</a></code>要素の<code>alt</code></li><li><code id=the-translate-attribute:attr-meta-name><a href=semantics.html#attr-meta-name>name</a></code>属性が値に翻訳可能として知られるメタデータ名を指定する場合、<code id=the-translate-attribute:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>要素の<code id=the-translate-attribute:attr-meta-content><a href=semantics.html#attr-meta-content>content</a></code></li><li><code id=the-translate-attribute:the-a-element><a href=text-level-semantics.html#the-a-element>a</a></code>および<code id=the-translate-attribute:the-area-element><a href=image-maps.html#the-area-element>area</a></code>要素の<code id=the-translate-attribute:attr-hyperlink-download><a href=links.html#attr-hyperlink-download>download</a></code></li><li><code id=the-translate-attribute:attr-optgroup-label><a href=form-elements.html#attr-optgroup-label>optgroup</a></code>、 <code id=the-translate-attribute:attr-option-label><a href=form-elements.html#attr-option-label>option</a></code>、および<code id=the-translate-attribute:attr-track-label><a href=media.html#attr-track-label>track</a></code>要素の<code>label</code></li><li><a id=the-translate-attribute:html-elements-3 href=infrastructure.html#html-elements>HTML要素</a>の<code id=the-translate-attribute:attr-lang><a href=#attr-lang>lang</a></code>。翻訳で使用される言語と一致する"翻訳された"ものでなければならない。</li><li><code id=the-translate-attribute:attr-input-placeholder><a href=input.html#attr-input-placeholder>input</a></code>および<code id=the-translate-attribute:attr-textarea-placeholder><a href=form-elements.html#attr-textarea-placeholder>textarea</a></code>要素の<code>placeholder</code></li><li><code id=the-translate-attribute:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>要素の<code id=the-translate-attribute:attr-iframe-srcdoc><a href=iframe-embed-object.html#attr-iframe-srcdoc>srcdoc</a></code>。解析されかつ再帰的に処理されなければならない</li><li><a id=the-translate-attribute:html-elements-4 href=infrastructure.html#html-elements>HTML要素</a>の<code id=the-translate-attribute:the-style-attribute><a href=#the-style-attribute>style</a></code>。解析されかつ再帰的に処理されなければならない（たとえば<a id="the-translate-attribute:'content'" href=https://momdo.github.io/css2/generate.html#content data-x-internal="'content'">'content'</a>プロパティの値）</li><li>全<a id=the-translate-attribute:html-elements-5 href=infrastructure.html#html-elements>HTML要素</a>の<code id=the-translate-attribute:attr-title><a href=#attr-title>title</a></code></li><li><a href="input.html#button-state-(type=button)" id="the-translate-attribute:button-state-(type=button)">Button</a>状態または<a href="input.html#reset-button-state-(type=reset)" id="the-translate-attribute:reset-button-state-(type=reset)">Reset Button</a>状態で<code id=the-translate-attribute:attr-input-type><a href=input.html#attr-input-type>type</a></code>属性をもつ<code id=the-translate-attribute:the-input-element><a href=input.html#the-input-element>input</a></code>要素の<code id=the-translate-attribute:attr-input-value><a href=input.html#attr-input-value>value</a></code></li></ul>
+
+  <p>他の仕様は、<a href=#translatable-attributes id=the-translate-attribute:translatable-attributes-2>翻訳可能な属性</a>でもある他の属性を定義してもよい。たとえば、ARIAは翻訳可能として<code id=the-translate-attribute:attr-aria-label><a data-x-internal=attr-aria-label href=http://momdo.github.io/wai-aria-1.1/#aria-label>aria-label</a></code>属性を定義する。</p>
+
+  
+
+  <div class=example>
+
+   <p>次の例で、サンプルのキーボード入力とサンプルプログラム出力を除き、ページがローカライズされるときに文書内のすべてが翻訳される：</p>
+
+   <pre>&lt;!DOCTYPE HTML&gt;
+&lt;html lang=en&gt; &lt;!-- default on the document element is translate=yes --&gt;
+ &lt;head&gt;
+  &lt;title&gt;The Bee Game&lt;/title&gt; &lt;!-- implied translate=yes inherited from ancestors --&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+  &lt;p&gt;The Bee Game is a text adventure game in English.&lt;/p&gt;
+  &lt;p&gt;When the game launches, the first thing you should do is type
+  &lt;kbd <strong>translate=no</strong>&gt;eat honey&lt;/kbd&gt;. The game will respond with:&lt;/p&gt;
+  &lt;pre&gt;&lt;samp <strong>translate=no</strong>&gt;Yum yum! That was some good honey!&lt;/samp&gt;&lt;/pre&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+  </div>
+
+
+
+  <h5 id=the-dir-attribute><span class=secno>3.2.5.4</span> The <dfn><code>dir</code></dfn> attribute<a href=#the-dir-attribute class=self-link></a></h5>
+
+  <p><code id=the-dir-attribute:the-dir-attribute><a href=#the-dir-attribute>dir</a></code>属性は、要素のテキスト方向を指定する。属性は、次のキーワードと状態を持つ<a id=the-dir-attribute:enumerated-attribute href=common-microsyntaxes.html#enumerated-attribute>列挙属性</a>である：</p>
+
+  <dl><dt><dfn id=attr-dir-ltr><code>ltr</code></dfn>キーワード。<dfn id=attr-dir-ltr-state>ltr</dfn>状態に対応する。<dd>
+
+    <p>要素のコンテンツは、明示的に孤立した左から右へのテキストであることを示す。</p>
+
+   <dt><dfn id=attr-dir-rtl><code>rtl</code></dfn>キーワード。<dfn id=attr-dir-rtl-state>rtl</dfn>状態に対応する。<dd>
+
+    <p>要素のコンテンツは、明示的に孤立した右から左へのテキストであることを示す。</p>
+
+   <dt><dfn id=attr-dir-auto><code>auto</code></dfn>キーワード。<dfn id=attr-dir-auto-state>auto</dfn>状態に対応する。<dd>
+
+    <p>要素のコンテンツは明示的に孤立したテキストであることを示すが、方向は、プログラムでの要素のコンテンツを用いて（後述）決定される。</p>
+
+    <p class=note>この状態で用いられるヒューリスティックは非常に粗雑である（双方向アルゴリズムにおける段落レベルの決定に類似した方法で、強い指向性をもつ最初の文字のみを見る）。著者は、テキストの方向が全く未知である場合、最後の手段としてのみこの値を使用するよう要請し、同様のサーバー側のヒューリスティックを適用できる。<a href=references.html#refsBIDI>[BIDI]</a></p>
+
+    <p class=note><code id=the-dir-attribute:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code>および<code id=the-dir-attribute:the-pre-element><a href=grouping-content.html#the-pre-element>pre</a></code>要素に対して、ヒューリスティックは段落レベルごとに適用される。</p>
+
+   </dl>
+
+  <p>属性は<i id=the-dir-attribute:invalid-value-default><a href=common-microsyntaxes.html#invalid-value-default>妥当でない値のデフォルト</a></i>および<i id=the-dir-attribute:missing-value-default><a href=common-microsyntaxes.html#missing-value-default>欠損値のデフォルト</a></i>を持たない。</p>
+
+  <hr>
+
+  <p>（<a href=infrastructure.html#html-elements id=the-dir-attribute:html-elements>HTML要素</a>だけでなく、任意の要素で）要素の<dfn id=the-directionality>方向</dfn>は、'<dfn id=concept-ltr>ltr</dfn>'または'<dfn id=concept-rtl>rtl</dfn>'のいずれかであり、次のリストから最初の適切な一連のステップごとに決定される：</p>
+
+  <dl class=switch><dt>要素の<code id=the-dir-attribute:the-dir-attribute-2><a href=#the-dir-attribute>dir</a></code>属性が<a href=#attr-dir-ltr-state id=the-dir-attribute:attr-dir-ltr-state>ltr</a>状態の場合<dt>要素が<a id=the-dir-attribute:document-element href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>文書要素</a>であり、かつ<code id=the-dir-attribute:the-dir-attribute-3><a href=#the-dir-attribute>dir</a></code>属性が状態を定義されない（すなわち、存在しないまたは妥当でない値を持つ）場合<dt>要素が<code id=the-dir-attribute:attr-input-type><a href=input.html#attr-input-type>type</a></code>属性が<a href="input.html#telephone-state-(type=tel)" id="the-dir-attribute:telephone-state-(type=tel)">Telephone</a>状態である<code id=the-dir-attribute:the-input-element><a href=input.html#the-input-element>input</a></code>要素であり、かつ<code id=the-dir-attribute:the-dir-attribute-4><a href=#the-dir-attribute>dir</a></code>属性が状態を定義されない場合（すなわち、存在しないか妥当でない値を持つ）<dd><p>要素の<a href=#the-directionality id=the-dir-attribute:the-directionality>方向</a>は'<a href=#concept-ltr id=the-dir-attribute:concept-ltr>ltr</a>'となる。<dt>要素の<code id=the-dir-attribute:the-dir-attribute-5><a href=#the-dir-attribute>dir</a></code>属性が<a href=#attr-dir-rtl-state id=the-dir-attribute:attr-dir-rtl-state>rtl</a>状態の場合<dd><p>要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-2>方向</a>は'<a href=#concept-rtl id=the-dir-attribute:concept-rtl>rtl</a>'となる。<dt><code id=the-dir-attribute:attr-input-type-2><a href=input.html#attr-input-type>type</a></code>属性が<a href="input.html#text-(type=text)-state-and-search-state-(type=search)" id="the-dir-attribute:text-(type=text)-state-and-search-state-(type=search)">Text</a>、<a href="input.html#text-(type=text)-state-and-search-state-(type=search)" id="the-dir-attribute:text-(type=text)-state-and-search-state-(type=search)-2">Search</a>、<a href="input.html#telephone-state-(type=tel)" id="the-dir-attribute:telephone-state-(type=tel)-2">Telephone</a>、<a href="input.html#url-state-(type=url)" id="the-dir-attribute:url-state-(type=url)">URL</a>または<a href="input.html#e-mail-state-(type=email)" id="the-dir-attribute:e-mail-state-(type=email)">E-mail</a>状態である<code id=the-dir-attribute:the-input-element-2><a href=input.html#the-input-element>input</a></code>要素で、かつ<code id=the-dir-attribute:the-dir-attribute-6><a href=#the-dir-attribute>dir</a></code>属性が<a href=#attr-dir-auto-state id=the-dir-attribute:attr-dir-auto-state>auto</a>状態である要素の場合<dt><code id=the-dir-attribute:the-textarea-element-2><a href=form-elements.html#the-textarea-element>textarea</a></code>要素かつ<code id=the-dir-attribute:the-dir-attribute-7><a href=#the-dir-attribute>dir</a></code>属性が<a href=#attr-dir-auto-state id=the-dir-attribute:attr-dir-auto-state-2>auto</a>状態である要素の場合<dd>
+
+    <p>要素の<a href=form-control-infrastructure.html#concept-fe-value id=the-dir-attribute:concept-fe-value>値</a>が双方向性文字の文字型ALまたはRを含み、かつ要素の<a href=form-control-infrastructure.html#concept-fe-value id=the-dir-attribute:concept-fe-value-2>値</a>の前に双方向性文字の文字型Lが存在しない場合、要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-3>方向</a>は'<a href=#concept-rtl id=the-dir-attribute:concept-rtl-2>rtl</a>'となる。<a href=references.html#refsBIDI>[BIDI]</a></p>
+
+    <p>そうでなければ、要素の<a href=form-control-infrastructure.html#concept-fe-value id=the-dir-attribute:concept-fe-value-3>値</a>が空文字列でない場合、または要素が<a id=the-dir-attribute:document-element-2 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>文書要素</a>である場合、要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-4>方向</a>は'<a href=#concept-ltr id=the-dir-attribute:concept-ltr-2>ltr</a>'である。</p>
+
+    <p>そうでなければ、要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-5>方向</a>は、その要素の親要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-6>方向</a>と同じである。</p>
+
+   <dt>要素の<code id=the-dir-attribute:the-dir-attribute-8><a href=#the-dir-attribute>dir</a></code>属性が<a href=#attr-dir-auto-state id=the-dir-attribute:attr-dir-auto-state-3>auto</a>状態の場合<dt>要素が<code id=the-dir-attribute:the-bdi-element><a href=text-level-semantics.html#the-bdi-element>bdi</a></code>要素であり、かつ<code id=the-dir-attribute:the-dir-attribute-9><a href=#the-dir-attribute>dir</a></code>属性が状態を定義されない場合（すなわち、存在しないか妥当でない値を持つ）<dd>
+
+    <p><a id=the-dir-attribute:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>ツリー順</a>で次の基準に一致する最初の文字を見つける：</p>
+
+    <ul><li><p>文字が<a href=#the-directionality id=the-dir-attribute:the-directionality-7>方向</a>が決定されている要素の子孫の<code id=the-dir-attribute:text><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノード由来である。</li><li><p>文字が双方向性文字型L、AL、またはRからなる。<a href=references.html#refsBIDI>[BIDI]</a></li><li>
+
+      <p>文字が<a href=#the-directionality id=the-dir-attribute:the-directionality-8>方向</a>が決定されている要素の祖先の<code id=the-dir-attribute:text-2><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノード由来でなく、次のいずれか：</p>
+
+      <ul class=brief><li><code id=the-dir-attribute:the-bdi-element-2><a href=text-level-semantics.html#the-bdi-element>bdi</a></code>要素。
+       </li><li><code id=the-dir-attribute:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素。
+       </li><li><code id=the-dir-attribute:the-style-element><a href=semantics.html#the-style-element>style</a></code>要素。
+       </li><li><code id=the-dir-attribute:the-textarea-element-3><a href=form-elements.html#the-textarea-element>textarea</a></code>要素。
+       </li><li>定義された<code id=the-dir-attribute:the-dir-attribute-10><a href=#the-dir-attribute>dir</a></code>属性をもつ要素。
+      </li></ul>
+
+     </li></ul>
+
+    <p>そのような文字が見つけられ、その文字が双方向性文字型ALまたはRの場合、要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-9>方向</a>は'<a href=#concept-rtl id=the-dir-attribute:concept-rtl-3>rtl</a>'である。</p>
+
+    <p>そのような文字が見つけられ、その文字が双方向性文字型Lである場合、要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-10>方向</a>は'<a href=#concept-ltr id=the-dir-attribute:concept-ltr-3>ltr</a>'である。</p>
+
+    <p>そうでなければ、要素が<a id=the-dir-attribute:document-element-3 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>文書要素</a>である場合、要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-11>方向は</a>'<a href=#concept-ltr id=the-dir-attribute:concept-ltr-4>ltr</a>'である。</p>
+
+    <p>そうでなければ、要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-12>方向</a>は、その要素の親要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-13>方向</a>と同じである。</p>
+
+   <dt>要素が親要素を持ち、かつ<code id=the-dir-attribute:the-dir-attribute-11><a href=#the-dir-attribute>dir</a></code>属性が状態を定義されない場合（すなわち、存在しないか妥当でない値を持つ）<dd><p>要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-14>方向</a>は、その要素の親要素の<a href=#the-directionality id=the-dir-attribute:the-directionality-15>方向</a>と同じである。</dl>
+
+  <p class=note><code id=the-dir-attribute:the-dir-attribute-12><a href=#the-dir-attribute>dir</a></code>属性は<a id=the-dir-attribute:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>に対してのみ定義されるので、他の名前空間からの要素では存在し得ない。したがって、他の名前空間由来の要素は常に親要素からのみ<a href=#the-directionality id=the-dir-attribute:the-directionality-16>方向</a>を継承する。つまり、存在しない場合、デフォルトは'<a href=#concept-ltr id=the-dir-attribute:concept-ltr-5>ltr</a>'となる。</p>
+
+  
+
+  <hr>
+
+  <p>属性の文字列が何らかの方法でレンダリングに含まれる際に使用される、<a href=infrastructure.html#html-elements id=the-dir-attribute:html-elements-3>HTML要素</a>の<dfn id=directionality-of-the-attribute>属性の方向</dfn>は、下記リストからステップの最初の適切なセットに従って決定される：</p>
+
+  <dl class=switch><dt>属性が<a href=#directionality-capable-attribute id=the-dir-attribute:directionality-capable-attribute>方向可能属性</a>かつ要素の<code id=the-dir-attribute:the-dir-attribute-13><a href=#the-dir-attribute>dir</a></code>属性が<a href=#attr-dir-auto-state id=the-dir-attribute:attr-dir-auto-state-4>auto</a>状態である場合<dd>
+
+    <p>双方向性文字型L、AL、またはRのある属性値の最初の文字を（論理的な順序で）見つける。<a href=references.html#refsBIDI>[BIDI]</a></p>
+
+    <p>そのような文字が見つけられ、その文字が双方向性文字型ALまたはRの場合、属性の<a href=#directionality-of-the-attribute id=the-dir-attribute:directionality-of-the-attribute>方向</a>は'<a href=#concept-rtl id=the-dir-attribute:concept-rtl-4>rtl</a>'である。</p>
+
+    <p>そうでなければ、属性の<a href=#directionality-of-the-attribute id=the-dir-attribute:directionality-of-the-attribute-2>方向</a>は'<a href=#concept-ltr id=the-dir-attribute:concept-ltr-6>ltr</a>'である。</p>
+
+   <dt>そうでなければ<dd><a href=#directionality-of-the-attribute id=the-dir-attribute:directionality-of-the-attribute-3>属性の方向</a>は<a href=#the-directionality id=the-dir-attribute:the-directionality-17>要素の方向</a>と同じである。</dl>
+
+  <p>以下の属性は<dfn id=directionality-capable-attribute>方向可能属性</dfn>である：</p>
+
+  <ul class=brief><li><code id=the-dir-attribute:the-th-element><a href=tables.html#the-th-element>th</a></code>要素の<code id=the-dir-attribute:attr-th-abbr><a href=tables.html#attr-th-abbr>abbr</a></code></li><li><code id=the-dir-attribute:attr-area-alt><a href=image-maps.html#attr-area-alt>area</a></code>、<code id=the-dir-attribute:attr-img-alt><a href=embedded-content.html#attr-img-alt>img</a></code>、<code id=the-dir-attribute:attr-input-alt><a href=input.html#attr-input-alt>input</a></code>要素の<code>alt</code></li><li><code id=the-dir-attribute:attr-meta-name><a href=semantics.html#attr-meta-name>name</a></code>属性が値に主に機械可読よりむしろ人間可読であることを意図するものを指定する場合、<code id=the-dir-attribute:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>要素の<code id=the-dir-attribute:attr-meta-content><a href=semantics.html#attr-meta-content>content</a></code></li><li><code id=the-dir-attribute:attr-optgroup-label><a href=form-elements.html#attr-optgroup-label>optgroup</a></code>、 <code id=the-dir-attribute:attr-option-label><a href=form-elements.html#attr-option-label>option</a></code>、および<code id=the-dir-attribute:attr-track-label><a href=media.html#attr-track-label>track</a></code>要素の<code>label</code></li><li><code id=the-dir-attribute:attr-input-placeholder><a href=input.html#attr-input-placeholder>input</a></code>および<code id=the-dir-attribute:attr-textarea-placeholder><a href=form-elements.html#attr-textarea-placeholder>textarea</a></code>要素の<code>placeholder</code></li><li>全<a id=the-dir-attribute:html-elements-4 href=infrastructure.html#html-elements>HTML要素</a>の<code id=the-dir-attribute:attr-title><a href=#attr-title>title</a></code></li></ul>
+
+  <hr>
+
+  <dl class=domintro><dt><var>document</var> . <code>dir</code> [ = <var>value</var> ]<dd>
+    <p>もしあれば、<a href=#the-html-element-2 id=the-dir-attribute:the-html-element-2><code>html</code>要素</a>の<code id=the-dir-attribute:the-dir-attribute-14><a href=#the-dir-attribute>dir</a></code>属性値を返す。</p>
+    <p><a href=#the-html-element-2 id=the-dir-attribute:the-html-element-2-2><code>html</code>要素</a>の<code id=the-dir-attribute:the-dir-attribute-15><a href=#the-dir-attribute>dir</a></code>属性値を置換するために、"<code>ltr</code>"、"<code>rtl</code>"、"<code>auto</code>"が設定可能である。</p>
+    <p><a href=#the-html-element-2 id=the-dir-attribute:the-html-element-2-3><code>html</code>要素</a>が存在しない場合、空文字列を返し新しい値を無視する。</p>
+   </dl>
+
+  
+
+  <p class=note>著者は、CSS不在（たとえば、検索エンジンによって解釈されるような）であっても正しく文書のレンダリングが継続するよう、CSSを使用するよりもテキストの方向を示すための<code id=the-dir-attribute:the-dir-attribute-16><a href=#the-dir-attribute>dir</a></code>属性を使用するよう強く推奨される。</p>
+
+  <div class=example>
+
+   <p>次のマークアップ断片は、インスタントメッセージの会話である。</p>
+
+   <pre>&lt;p dir=auto class="u1"&gt;&lt;b&gt;&lt;bdi&gt;Student&lt;/bdi&gt;:&lt;/b&gt; How do you write "What's your name?" in Arabic?&lt;/p&gt;
+&lt;p dir=auto class="u2"&gt;&lt;b&gt;&lt;bdi&gt;Teacher&lt;/bdi&gt;:&lt;/b&gt; ما اسمك؟&lt;/p&gt;
+&lt;p dir=auto class="u1"&gt;&lt;b&gt;&lt;bdi&gt;Student&lt;/bdi&gt;:&lt;/b&gt; Thanks.&lt;/p&gt;
+&lt;p dir=auto class="u2"&gt;&lt;b&gt;&lt;bdi&gt;Teacher&lt;/bdi&gt;:&lt;/b&gt; That's written "شكرًا".&lt;/p&gt;
+&lt;p dir=auto class="u2"&gt;&lt;b&gt;&lt;bdi&gt;Teacher&lt;/bdi&gt;:&lt;/b&gt; Do you know how to write "Please"?&lt;/p&gt;
+&lt;p dir=auto class="u1"&gt;&lt;b&gt;&lt;bdi&gt;Student&lt;/bdi&gt;:&lt;/b&gt; "من فضلك", right?&lt;/p&gt;</pre>
+
+
+
+   <p>適切なスタイルシートと<code id=the-dir-attribute:the-p-element><a href=grouping-content.html#the-p-element>p</a></code>要素へのデフォルトの配置スタイルを与えられる、すなわちテキストを段落の<i>開始端</i>へ揃えることで、結果として生じるレンダリングは以下のようになる：</p>
+
+   <p><img alt="各段落は、独立したブロックとして表示され、ユーザー名（この例では'Student'と'Teacher'）を右に流すとともに、コロンの左側に最初のテキストをもつ右揃えとなる、第二段落と最後段落を除いて、段落は左揃えとなる。" src=https://html.spec.whatwg.org/multipage/images/im.png width=366 height=157></p>
+
+   <p>前述したように、<code id=the-dir-attribute:attr-dir-auto><a href=#attr-dir-auto>auto</a></code>値は万能薬ではない。"正しく？"アラビア語テキストの左側になることが起きるアラビア文字で始まるので、この例の最後の段落は、右から左へのテキストであると誤って解釈される。</p>
+
+  </div>
+
+
+
+  <h5 id=the-style-attribute><span class=secno>3.2.5.5</span> The <dfn><code>style</code></dfn> attribute<a href=#the-style-attribute class=self-link></a></h5>
+
+  <p>すべての<a id=the-style-attribute:html-elements href=infrastructure.html#html-elements>HTML要素</a>は、指定の<code id=the-style-attribute:the-style-attribute><a href=#the-style-attribute>style</a></code>コンテンツ属性をもってもよい。これは、<cite>CSS Style Attributes</cite>仕様によって定義されるとおりの<a href=https://triple-underscore.github.io/css-style-attr-ja.html#style-attribute id=the-style-attribute:css-styling-attribute data-x-internal=css-styling-attribute>スタイル属性</a>である。<a href=references.html#refsCSSATTR>[CSSATTR]</a></p>
+
+  
+
+  <p>要素のどこでも<code id=the-style-attribute:the-style-attribute-2><a href=#the-style-attribute>style</a></code>属性を使用する文書は、属性が削除された場合、それでも理解可能でありかつ使用可能でなければならない。</p>
+
+  <p class=note>特に、コンテンツを非表示および表示する<code id=the-style-attribute:the-style-attribute-3><a href=#the-style-attribute>style</a></code>属性の使用、または他に文書に含まれない意味の伝達は不適合である。（コンテンツを非表示および表示するには、<code id=the-style-attribute:the-hidden-attribute><a href=interaction.html#the-hidden-attribute>hidden</a></code>属性を用いる。）</p>
+
+  <hr>
+
+  <dl class=domintro><dt><var>element</var> . <code>style</code><dd>
+    <p>要素の<code id=the-style-attribute:the-style-attribute-4><a href=#the-style-attribute>style</a></code>属性へ<code id=the-style-attribute:cssstyledeclaration><a data-x-internal=cssstyledeclaration href=https://triple-underscore.github.io/cssom-ja.html#the-cssstyledeclaration-interface>CSSStyleDeclaration</a></code>オブジェクトを返す。</p>
+   </dl>
+
+  
+
+  <div class=example>
+
+   <p>次の例で、色を参照する単語は、単語に視覚メディアで関連色を表すよう<code id=the-style-attribute:the-span-element><a href=text-level-semantics.html#the-span-element>span</a></code>要素と<code id=the-style-attribute:the-style-attribute-5><a href=#the-style-attribute>style</a></code>属性を用いてマークアップされている。</p>
+
+   <pre>&lt;p&gt;My sweat suit is &lt;span style="color: green; background:
+transparent"&gt;green&lt;/span&gt; and my eyes are &lt;span style="color: blue;
+background: transparent"&gt;blue&lt;/span&gt;.&lt;/p&gt;</pre>
+
+  </div>
+
+
+
+  <h5 id=embedding-custom-non-visible-data-with-the-data-*-attributes><span class=secno>3.2.5.6</span> <dfn>Embedding custom non-visible data</dfn> with the <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:attr-data-*><a href=#attr-data-*>data-*</a></code> attributes<a href=#embedding-custom-non-visible-data-with-the-data-*-attributes class=self-link></a></h5>
+
+  <p><dfn id=custom-data-attribute>カスタムデータ属性</dfn>は、文字列"<dfn id=attr-data-*><code>data-</code></dfn>"で始まる名前空間のない名前をもつ属性であり、ハイフンの後に少なくとも1文字を持ち、<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:xml-compatible href=infrastructure.html#xml-compatible>XML互換</a>であり、<a href=https://infra.spec.whatwg.org/#ascii-upper-alpha id=embedding-custom-non-visible-data-with-the-data-*-attributes:uppercase-ascii-letters data-x-internal=uppercase-ascii-letters>ASCII大文字</a>を含まない。</p>
+
+  <p class=note>ASCII大文字での制約はそのような文書に影響しないので、<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:html-documents href=https://triple-underscore.github.io/DOM4-ja.html#html-document data-x-internal=html-documents>HTML文書</a>において<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:html-elements href=infrastructure.html#html-elements>HTML要素</a>のすべての属性名はASCII小文字を自動的に取得する。</p>
+
+  <p><a href=#custom-data-attribute id=embedding-custom-non-visible-data-with-the-data-*-attributes:custom-data-attribute>カスタムデータ属性</a>は、ページまたはアプリケーションへ私的なカスタムデータ、ステート、アノテーションなど類似のものを記憶することを意図する。これ以上適切な属性や要素は存在しない。</p>
+
+  <p>この属性は、属性を使用するサイトの管理者に知られないソフトウェアによる使用を意図しない。複数の独立したツールによって使用される一般的な拡張のために、この仕様は明示的に機能を提供するために拡張されるべきである、または<a id=embedding-custom-non-visible-data-with-the-data-*-attributes:microdata href=microdata.html#microdata>マイクロデータ</a>のような技術は（標準化された語彙で）使用されるべきかのいずれかである。</p>
+
+  <div class=example>
+
+   <p>たとえば、音楽に関するサイトは、各トラックの長さを含むカスタムデータ属性でアルバム内のトラックを表すリスト項目に注釈を付けるかもしれない。その後この情報は、ユーザーがトラックの長さでリストをソートできるようにするため、または一定長さのトラックのリストをフィルターリングするために、サイト自体が使用するかもしれない。</p>
+
+   <pre>&lt;ol&gt;
+ &lt;li data-length="2m11s"&gt;Beyond The Sea&lt;/li&gt;
+ ...
+&lt;/ol&gt;</pre>
+
+   <p>しかし、このデータを見ることで一定の長さの曲を検索するために、ユーザーがその音楽サイトに関連付けられていない一般的なソフトウェアを使用することは、不適当だろう。</p>
+
+   <p>これは、この属性がサイトの独自スクリプトによる使用を意図し、公開で利用可能なメタデータのための一般的な拡張メカニズムでないためである。</p>
+
+  </div>
+
+  <div class=example>
+
+   <p>同様に、ページ著者は、使用しようとしている翻訳ツールに対して情報を提供するマークアップを書くことができる：</p>
+
+   <pre>&lt;p&gt;The third &lt;span data-mytrans-de="Anspruch"&gt;claim&lt;/span&gt; covers the case of &lt;span
+translate="no"&gt;HTML&lt;/span&gt; markup.&lt;/p&gt;</pre>
+
+   <p>この例において、"<code>data-mytrans-de</code>"属性は、フレーズ"claim"をドイツ語に翻訳する際に使用するためのMyTrans製品に特定のテキストを提供する。しかし、標準<code id=embedding-custom-non-visible-data-with-the-data-*-attributes:attr-translate><a href=#attr-translate>translate</a></code>属性はすべての言語で翻訳であることを伝えるために使用される。"HTML"は不変のままである。標準属性が使用可能である場合、使用される<a href=#custom-data-attribute id=embedding-custom-non-visible-data-with-the-data-*-attributes:custom-data-attribute-2>カスタムデータ属性</a>に対するニーズは存在しない。</p>
+
+  </div>
+
+  <div class=example>
+
+   <p>この例において、カスタムデータ属性は、チェックアウトページの異なるスタイル付けをするためにCSSで使用できる、<code id=embedding-custom-non-visible-data-with-the-data-*-attributes:paymentrequest><a data-x-internal=paymentrequest href=https://w3c.github.io/browser-payment-api/#paymentrequest-interface>PaymentRequest</a></code>の機能検出の結果を格納するために使用される。</p>
+
+   <pre>&lt;script&gt;
+ if ('PaymentRequest' in window) {
+   document.documentElement.dataset.hasPaymentRequest = '';
+ }
+&lt;/script&gt;</pre>
+
+   <p>ここでは、<code>data-has-payment-request</code>属性は事実上 <a id=embedding-custom-non-visible-data-with-the-data-*-attributes:boolean-attribute href=common-microsyntaxes.html#boolean-attribute>真偽属性</a>として使用されている。属性の有無を確認するだけで十分である。しかし、著者が望む場合、後で何らかの値を持つことができる、制限された機能を示すかもしれない。</p>
+
+  </div>
+
+  <p>各<a href=infrastructure.html#html-elements id=embedding-custom-non-visible-data-with-the-data-*-attributes:html-elements-2>HTML要素</a>は任意の値とともに、任意の数の指定された<a href=#custom-data-attribute id=embedding-custom-non-visible-data-with-the-data-*-attributes:custom-data-attribute-3>カスタムデータ属性</a>を持ってもよい。</p>
+
+  <p>属性が無視され、かつ関連するすべてのCSSが破棄された場合、ページがそれでも使用可能であるよう、著者はこのような拡張を慎重に設計すべきである。</p>
+
+  
+
+  <p>JavaScriptライブラリーが使用されるページの一部であると考えられるとして、JavaScriptライブラリーは<a href=#custom-data-attribute id=embedding-custom-non-visible-data-with-the-data-*-attributes:custom-data-attribute-4>カスタムデータ属性</a>を使用してもよい。多くの著者によって再利用されるライブラリーの著者は、衝突のリスクを軽減するために、属性名にライブラリーの名前を含むよう推奨される。理にかなっている場合には、著者が無意識のうちに同じ名前を選んだライブラリーが同じページ上で使用できるように、そしてバージョンの相互の互換性がない場合でも、特定ライブラリーの複数のバージョンが同じページ上で使用できるように、ライブラリー著者はまた、正確な名前がカスタマイズ可能な属性名に使用されることを推奨される。</p>
+
+  <div class=example>
+
+   <p>たとえば、"DoQuery"と呼ばれるライブラリーは<code>data-doquery-range</code>のような属性名を使用するかもしれないし、"jJo"と呼ばれるライブラリーは<code>data-jjo-range</code>のような属性名を使用するかもしれない。jJoライブラリーはまた、APIに接頭辞の使用の設定を供給するかもしれない（たとえば<code>J.setDataPrefix('j2')</code>が、<code>data-j2-range</code>のような名前を持つようにする）。</p>
+
+  </div>
+
+  <hr>
+
+  <dl class=domintro><dt><var>element</var> . <code id=dom-dataset>dataset</code><dd>
+
+    <p>Returns a <code>DOMStringMap</code> object for the element's <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:attr-data-*-2><a href=#attr-data-*>data-*</a></code> attributes.</p>
+
+    <p>ハイフン付き名前はキャメルケースになる。たとえば、<code>data-foo-bar=""</code>は<code>element.dataset.fooBar</code>になる。</p>
+
+   </dl>
+
+  
+
+  <p>The <code>DOMStringMap</code> interface is used for the <code id=embedding-custom-non-visible-data-with-the-data-*-attributes:dom-dataset><a href=#dom-dataset>dataset</a></code> attribute. Each <code>DOMStringMap</code> has an <dfn id=concept-domstringmap-element>associated element</dfn>.</p>
+
+  
+
+  
+
+  <div class=example>
+
+   <p>たとえばゲームの一部として、ウェブページが宇宙船を表す要素を望んだ場合、<code id=embedding-custom-non-visible-data-with-the-data-*-attributes:attr-data-*-3><a href=#attr-data-*>data-*</a></code>属性とともに<code id=embedding-custom-non-visible-data-with-the-data-*-attributes:classes><a href=#classes>class</a></code>属性を使用する必要がある：</p>
+
+   <pre>&lt;div class="spaceship" data-ship-id="92432"
+     data-weapons="laser 2" data-shields="50%"
+     data-x="30" data-y="10" data-z="90"&gt;
+ &lt;button class="fire"
+         onclick="spaceships[this.parentNode.dataset.shipId].fire()"&gt;
+  Fire
+ &lt;/button&gt;
+&lt;/div&gt;</pre>
+
+   <p>APIにおいてハイフン付き属性名は、キャメルケースになることに注目すること。</p>
+
+  </div>
+
+  <div class=example>
+
+   <p>類似の構造とともに以下の引数および要素が与えられるとする：</p>
+
+   <pre>&lt;img class="tower" id="tower5" data-x="12" data-y="5"
+     data-ai="robotarget" data-hp="46" data-ability="flames"
+     src="towers/rocket.png" alt="Rocket Tower"&gt;</pre>
+
+   <p>1つは関数<code>splashDamage()</code>がいくつかの引数を取ることが考えられ、第1引数は処理する要素となる：</p>
+
+   <pre>function splashDamage(node, x, y, damage) {
+  if (node.classList.contains('tower') &amp;&amp; // checking the 'class' attribute
+      node.dataset.x == x &amp;&amp; // reading the 'data-x' attribute
+      node.dataset.y == y) { // reading the 'data-y' attribute
+    var hp = parseInt(node.dataset.hp); // reading the 'data-hp' attribute
+    hp = hp - damage;
+    if (hp &lt; 0) {
+      hp = 0;
+      node.dataset.ai = 'dead'; // setting the 'data-ai' attribute
+      delete node.dataset.ability; // removing the 'data-ability' attribute
+    }
+    node.dataset.hp = hp; // setting the 'data-hp' attribute
+  }
+}</pre>
+
+  </div>
+
+
+  <h4 id=the-innertext-idl-attribute><span class=secno>3.2.6</span> The <code id=the-innertext-idl-attribute:dom-innertext><a href=#dom-innertext>innerText</a></code> IDL attribute<a href=#the-innertext-idl-attribute class=self-link></a></h4>
+
+  <dl class=domintro><dt><var>element</var> . <code id=dom-innertext>innerText</code> [ = <var>value</var> ]<dd>
+
+    <p>"レンダリングの通りに"要素のテキストコンテンツ返す。</p>
+
+    <p>指定された値をもつのでなく、<code id=the-innertext-idl-attribute:the-br-element><a href=text-level-semantics.html#the-br-element>br</a></code>に変換された改行をもつ要素の子に置換するために、設定することができる。</p>
+
+  </dl>
+
+  
+
+  <h4 id=requirements-relating-to-the-bidirectional-algorithm><span class=secno>3.2.7</span> Requirements relating to the bidirectional algorithm<a href=#requirements-relating-to-the-bidirectional-algorithm class=self-link></a></h4>
+
+  
+
+  <p>HTML要素の<a href=#concept-html-contents id=requirements-relating-to-the-bidirectional-algorithm:concept-html-contents>コンテンツ</a>で<code id=requirements-relating-to-the-bidirectional-algorithm:text><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code>ノードをもつ<a id=requirements-relating-to-the-bidirectional-algorithm:html-elements href=infrastructure.html#html-elements>HTML要素</a>における<a href=#text-content id=requirements-relating-to-the-bidirectional-algorithm:text-content>テキストコンテンツ</a>、および自由形式のテキストを許可する<a id=requirements-relating-to-the-bidirectional-algorithm:html-elements-2 href=infrastructure.html#html-elements>HTML要素</a>の属性のテキストは、U+202AからU+202Eまでの範囲（双方向アルゴリズムの書式設定文字）の文字を含んでもよい。<a href=references.html#refsBIDI>[BIDI]</a></p>
+
+  <p class=note>著者は、手動で双方向アルゴリズムの書式設定文字を維持するよりもむしろ、<code id=requirements-relating-to-the-bidirectional-algorithm:the-dir-attribute><a href=#the-dir-attribute>dir</a></code>属性、<code id=requirements-relating-to-the-bidirectional-algorithm:the-bdo-element><a href=text-level-semantics.html#the-bdo-element>bdo</a></code>要素、および<code id=requirements-relating-to-the-bidirectional-algorithm:the-bdi-element><a href=text-level-semantics.html#the-bdi-element>bdi</a></code>要素を使用するよう推奨される。双方向アルゴリズムの書式設定文字は、CSSと互いに不完全に影響しあう。</p>
+
+
+  
+
+  
+
+
+
+  <nav><a href=common-dom-interfaces.html>← 2.5 Common DOM interfaces</a> — <a href=index.html>Table of Contents</a> — <a href=semantics.html>4 The elements of HTML →</a></nav>
+</body></html>

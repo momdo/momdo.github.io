@@ -1,0 +1,592 @@
+<!DOCTYPE html><html class=split lang=ja>
+<script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
+<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold"><link rel=stylesheet href=styles.css>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script>
+<body>
+  
+  
+  <header id=head class="head with-buttons">
+   <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
+   
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>30 June 2017</span></h2></hgroup>
+   
+  </header>
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=tables.html>← 4.9 Tabular data</a> — <a href=index.html>Table of Contents</a> — <a href=input.html>4.10.5 The
+  input element →</a></nav><ol class=toc><li><ol><li><a href=forms.html#forms><span class=secno>4.10</span> Forms</a><ol><li><a href=forms.html#introduction-4><span class=secno>4.10.1</span> Introduction</a><ol><li><a href="forms.html#writing-a-form's-user-interface"><span class=secno>4.10.1.1</span> Writing a form's user interface</a></li><li><a href=forms.html#implementing-the-server-side-processing-for-a-form><span class=secno>4.10.1.2</span> Implementing the server-side processing for a form</a></li><li><a href=forms.html#configuring-a-form-to-communicate-with-a-server><span class=secno>4.10.1.3</span> Configuring a form to communicate with a server</a></li><li><a href=forms.html#client-side-form-validation><span class=secno>4.10.1.4</span> Client-side form validation</a></li><li><a href=forms.html#enabling-client-side-automatic-filling-of-form-controls><span class=secno>4.10.1.5</span> Enabling client-side automatic filling of form controls</a></li><li><a href=forms.html#improving-the-user-experience-on-mobile-devices><span class=secno>4.10.1.6</span> Improving the user experience on mobile devices</a></li><li><a href=forms.html#the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality><span class=secno>4.10.1.7</span> The difference between the field type, the autofill field name, and the input modality</a></li><li><a href=forms.html#input-author-notes><span class=secno>4.10.1.8</span> Date, time, and number formats</a></li></ol></li><li><a href=forms.html#categories><span class=secno>4.10.2</span> Categories</a></li><li><a href=forms.html#the-form-element><span class=secno>4.10.3</span> The <code>form</code> element</a></li><li><a href=forms.html#the-label-element><span class=secno>4.10.4</span> The <code>label</code> element</a></li></ol></li></ol></li></ol><h3 id=forms><span class=secno>4.10</span> Forms<a href=#forms class=self-link></a></h3>
+
+  <h4 id=introduction-4><span class=secno>4.10.1</span> Introduction<a href=#introduction-4 class=self-link></a></h4>
+
+  
+
+  <p>A form is a component of a Web page that has form controls, such as text, buttons, checkboxes, range, or color picker controls. さらなる処理（たとえば、検索または計算結果を返す）に対してサーバーに送信できるデータを提供して、ユーザーはそのようなフォームで情報を交換できる。スクリプトがユーザーエクスペリエンスを補強するか、またはサーバーにデータを送信する以外の意義に対してフォームを使用できるようなAPIが利用可能であるが、多くの場合クライアント側のスクリプトは必要ない。</p>
+
+  <p>フォームの記述は、ユーザーインターフェイスを記述する、サーバー側の処理を実装する、そのサーバーと通信するためのユーザーインターフェイスを構成するという、任意の順序で実行される複数のステップから成る。</p>
+
+
+  <h5 id="writing-a-form's-user-interface"><span class=secno>4.10.1.1</span> Writing a form's user interface<a href="#writing-a-form's-user-interface" class=self-link></a></h5>
+
+  
+
+  <p>この簡単な手引きの目的に対して、ピザを注文するフォームを作成する。</p>
+
+  <p>すべてのフォームは、内部にコントロールを配置された<code id="writing-a-form's-user-interface:the-form-element"><a href=#the-form-element>form</a></code>要素で始まる。Most controls are represented by the <code id="writing-a-form's-user-interface:the-input-element"><a href=input.html#the-input-element>input</a></code> element, which by default provides a text control. コントロールをラベル付けするために、<code id="writing-a-form's-user-interface:the-label-element"><a href=#the-label-element>label</a></code>要素が使用される。ラベルテキストおよびコントロール自身は、<code id="writing-a-form's-user-interface:the-label-element-2"><a href=#the-label-element>label</a></code>要素の中に入る。フォームの各部分は<a id="writing-a-form's-user-interface:paragraph" href=dom.html#paragraph>段落</a>とみなされ、通常は<code id="writing-a-form's-user-interface:the-p-element"><a href=grouping-content.html#the-p-element>p</a></code>要素を使用して他の部分から分離される。これを一緒に置くと、これは顧客の名前を尋ねることができる方法の一つである：</p>
+
+  <pre><strong>&lt;form&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;/form&gt;</strong></pre>
+
+  <p>ユーザーにピザのサイズを選択させるために、ラジオボタンのセットを使用できる。ラジオボタンはまた、今回は値の<code id="writing-a-form's-user-interface:radio-button-state-(type=radio)"><a href="input.html#radio-button-state-(type=radio)">radio</a></code>とともに<code id="writing-a-form's-user-interface:attr-input-type"><a href=input.html#attr-input-type>type</a></code>属性をもつ、<code id="writing-a-form's-user-interface:the-input-element-2"><a href=input.html#the-input-element>input</a></code>要素を使用する。グループとしてラジオボタンを動作させるために、それらは<code id="writing-a-form's-user-interface:attr-fe-name"><a href=form-control-infrastructure.html#attr-fe-name>name</a></code>属性を使用して、共通の名前を与えられる。この場合、ラジオボタンのように、一緒にコントロールのバッチをグループ化するために、<code id="writing-a-form's-user-interface:the-fieldset-element"><a href=form-elements.html#the-fieldset-element>fieldset</a></code>要素を使用できる。コントロールのグループのようなタイトルは、<code id="writing-a-form's-user-interface:the-fieldset-element-2"><a href=form-elements.html#the-fieldset-element>fieldset</a></code>内の最初の要素で与えられる。これは、<code id="writing-a-form's-user-interface:the-legend-element"><a href=form-elements.html#the-legend-element>legend</a></code>要素である必要がある。</p>
+
+  <pre>&lt;form&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;</strong>
+&lt;/form&gt;</pre>
+
+  <p class=note>前のステップからの変更点が強調表示される。</p>
+
+  <p>トッピングを選ぶために、チェックボックスを使用できる。これらは、値<code id="writing-a-form's-user-interface:checkbox-state-(type=checkbox)"><a href="input.html#checkbox-state-(type=checkbox)">checkbox</a></code>をもつ<code id="writing-a-form's-user-interface:attr-input-type-2"><a href=input.html#attr-input-type>type</a></code>属性とともに<code id="writing-a-form's-user-interface:the-input-element-3"><a href=input.html#the-input-element>input</a></code>要素を使用する。</p>
+
+  <pre>&lt;form&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+<strong> &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;</strong>
+&lt;/form&gt;</pre>
+
+  <p>このフォームで注文するピザ屋は、いつも間違いをするので、顧客に連絡する方法を必要とする。この目的のために、電話番号（<code id="writing-a-form's-user-interface:telephone-state-(type=tel)"><a href="input.html#telephone-state-(type=tel)">tel</a></code>に設定された<code id="writing-a-form's-user-interface:attr-input-type-3"><a href=input.html#attr-input-type>type</a></code>属性をもつ<code id="writing-a-form's-user-interface:the-input-element-4"><a href=input.html#the-input-element>input</a></code>要素）、および電子メールアドレス（<code id="writing-a-form's-user-interface:e-mail-state-(type=email)"><a href="input.html#e-mail-state-(type=email)">email</a></code>に設定された<code id="writing-a-form's-user-interface:attr-input-type-4"><a href=input.html#attr-input-type>type</a></code>属性をもつ<code id="writing-a-form's-user-interface:the-input-element-5"><a href=input.html#the-input-element>input</a></code>要素）に対してフォームコントロールを特別に使用できる：</p>
+
+  <pre>&lt;form&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;</strong>
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+&lt;/form&gt;</pre>
+
+  <p>配達時間を尋ねるために<code id="writing-a-form's-user-interface:time-state-(type=time)"><a href="input.html#time-state-(type=time)">time</a></code>に設定された<code id="writing-a-form's-user-interface:attr-input-type-5"><a href=input.html#attr-input-type>type</a></code>属性に<code id="writing-a-form's-user-interface:the-input-element-6"><a href=input.html#the-input-element>input</a></code>要素を使用できる。フォームコントロールの多くは、値が指定できるものを正確に制御するための属性を持つ。この場合、特に関心のある3つの属性は、<code id="writing-a-form's-user-interface:attr-input-min"><a href=input.html#attr-input-min>min</a></code>、<code id="writing-a-form's-user-interface:attr-input-max"><a href=input.html#attr-input-max>max</a></code>、および<code id="writing-a-form's-user-interface:attr-input-step"><a href=input.html#attr-input-step>step</a></code>である。これらは、最小時間、最大時間、及び許可された値の間隔（秒単位で）を設定する。このピザは、午前11時と午後9時の間で配送され、15分刻み以上を約束するものでなく、次のようにマークアップすることができる：</p>
+
+  <pre>&lt;form&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+<strong> &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900"&gt;&lt;/label&gt;&lt;/p&gt;</strong>
+&lt;/form&gt;</pre>
+
+  <p>The <code id="writing-a-form's-user-interface:the-textarea-element"><a href=form-elements.html#the-textarea-element>textarea</a></code> element can be used to provide a multiline text control. この文脈において、配送指示を与えるために顧客に対してスペースを提供するために要素を使用しようとしている：</p>
+
+  <pre>&lt;form&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900"&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;</strong>
+&lt;/form&gt;</pre>
+
+  <p>最後に、フォームを投稿可能にするために、<code id="writing-a-form's-user-interface:the-button-element"><a href=form-elements.html#the-button-element>button</a></code>要素を使用する：</p>
+
+  <pre>&lt;form&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900"&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;</strong>
+&lt;/form&gt;</pre>
+
+
+  <h5 id=implementing-the-server-side-processing-for-a-form><span class=secno>4.10.1.2</span> Implementing the server-side processing for a form<a href=#implementing-the-server-side-processing-for-a-form class=self-link></a></h5>
+
+  
+
+  <p>サーバー側の処理機構の記述に対する正確な詳細は、この仕様書の範囲外である。この手引きの目的のために、HTTP POSTボディ内で以下のパラメーターが送信されたと期待し、<code>https://pizza.example.com/order.cgi</code>でスクリプトが<code id=implementing-the-server-side-processing-for-a-form:attr-fs-enctype-urlencoded><a href=form-control-infrastructure.html#attr-fs-enctype-urlencoded>application/x-www-form-urlencoded</a></code>形式を使用して投稿を受け付ける設定がされていると仮定する：</p>
+
+  <dl><dt><code>custname</code><dd>顧客の名前<dt><code>custtel</code><dd>顧客の電話番号<dt><code>custemail</code><dd>顧客の電子メールアドレス<dt><code>size</code><dd><code>small</code>、<code>medium</code>、または<code>large</code>のいずれかの、ピザのサイズ<dt><code>topping</code><dd>トッピングで、許可される値<code>bacon</code>、<code>cheese</code>、<code>onion</code>、および<code>mushroom</code>をもつ、各選択されたトッピングに対して一度に指定される。<dt><code>delivery</code><dd>リクエストされた配達時刻<dt><code>comments</code><dd>配達指示</dl>
+
+
+  <h5 id=configuring-a-form-to-communicate-with-a-server><span class=secno>4.10.1.3</span> Configuring a form to communicate with a server<a href=#configuring-a-form-to-communicate-with-a-server class=self-link></a></h5>
+
+  
+
+  <p>フォームの送信は、最も一般的なHTTP GETまたはPOSTリクエストとして、種々の方法でサーバーに公開される。使用される正確な方法を指定するために、<code id=configuring-a-form-to-communicate-with-a-server:attr-fs-method><a href=form-control-infrastructure.html#attr-fs-method>method</a></code>属性は<code id=configuring-a-form-to-communicate-with-a-server:the-form-element><a href=#the-form-element>form</a></code>要素で指定される。ただし、これはフォームデータがどのようにエンコードされるかを指定しない。指定するためには、<code id=configuring-a-form-to-communicate-with-a-server:attr-fs-enctype><a href=form-control-infrastructure.html#attr-fs-enctype>enctype</a></code>属性を使用する。また、<code id=configuring-a-form-to-communicate-with-a-server:attr-fs-action><a href=form-control-infrastructure.html#attr-fs-action>action</a></code>属性を使用して、送信されたデータを処理するサービスの<a id=configuring-a-form-to-communicate-with-a-server:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>を指定する必要がある。</p>
+
+  <p>提出したい各フォームコントロールについて、提出でのデータを参照するために使用される名前を付ける必要がある。すでに、ラジオボタンのグループの名前を指定している。同じ属性（<code id=configuring-a-form-to-communicate-with-a-server:attr-fe-name><a href=form-control-infrastructure.html#attr-fe-name>name</a></code>）も提出名を指定する。ラジオボタンは<code id=configuring-a-form-to-communicate-with-a-server:attr-input-value><a href=input.html#attr-input-value>value</a></code>属性を使用して、それぞれに異なる値を与えることにより提出で互いに区別できる。</p>
+
+  <p>複数のコントロールは、同じ名前を持つことができる。たとえば、すべてのチェックボックスに同じ名前を与え、サーバーは、どの値がその名前で提出されたかを見ることによって、どのチェックボックスがチェックされたかを区別する―ラジオボタンのように、これらはまた、<code id=configuring-a-form-to-communicate-with-a-server:attr-input-value-2><a href=input.html#attr-input-value>value</a></code>属性を持つ一意な値を与えられる。</p>
+
+  <p>前節の設定を考えれば、次のようになる：</p>
+
+  <pre>&lt;form<strong> method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi"</strong>&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input<strong> name="custname"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel<strong> name="custtel"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email<strong> name="custemail"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> value="small"</strong>&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> value="medium"</strong>&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> value="large"</strong>&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name="topping" value="bacon"</strong>&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name="topping" value="cheese"</strong>&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name="topping" value="onion"</strong>&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name="topping" value="mushroom"</strong>&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900"<strong> name="delivery"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea<strong> name="comments"</strong>&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+
+  <p class=note>属性が引用符で囲まれた値を持ったり囲まれなかったりするが、特に意味はない。<a href=syntax.html#syntax-attributes id=configuring-a-form-to-communicate-with-a-server:syntax-attributes>構文のセクションで</a>説明されるように、HTML構文は属性を指定するための等価で妥当な様々な方法を可能にする。</p>
+
+  <p>For example, if the customer entered "Denise Lawrence" as their name, "555-321-8642" as their
+  telephone number, did not specify an e-mail address, asked for a medium-sized pizza, selected the
+  Extra Cheese and Mushroom toppings, entered a delivery time of 7pm, and left the delivery
+  instructions text control blank, the user agent would submit the following to the online Web
+  service:</p>
+
+  <pre>custname=Denise+Lawrence&amp;custtel=555-321-8642&amp;custemail=&amp;size=medium&amp;topping=cheese&amp;topping=mushroom&amp;delivery=19%3A00&amp;comments=</pre>
+
+
+  <h5 id=client-side-form-validation><span class=secno>4.10.1.4</span> Client-side form validation<a href=#client-side-form-validation class=self-link></a></h5>
+
+  
+
+  <p>フォームは、フォームが送信される前に、どのようにユーザーエージェントがユーザーの入力をチェックするかのような注釈を付けることができる。（悪意あるユーザーが簡単にフォームの検証を迂回することができるので）サーバーは依然として入力が妥当であることを確認する必要があるが、ユーザーは、ユーザーの入力の独占的なチェッカーであるサーバーを持つことによって発生した待ち時間を回避できる。</p>
+
+  <p>最も簡単な注釈は、値が指定されるまでフォームが送信されないことを示すために<code id=client-side-form-validation:the-input-element><a href=input.html#the-input-element>input</a></code>要素で指定できる、<code id=client-side-form-validation:attr-input-required><a href=input.html#attr-input-required>required</a></code>属性である。顧客の名前と配達時間のフィールドにこの属性を追加することによって、ユーザーがフィールドに入力せずにフォームを送信する際に、ユーザーエージェントはユーザーに通知できる：</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi"&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input name="custname"<strong> required</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name="custtel"&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email name="custemail"&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> required</strong> value="small"&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> required</strong> value="medium"&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> required</strong> value="large"&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="bacon"&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="cheese"&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="onion"&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="mushroom"&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery"<strong> required</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name="comments"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+
+  <p><code id=client-side-form-validation:attr-fe-maxlength><a href=form-control-infrastructure.html#attr-fe-maxlength>maxlength</a></code>属性を使用して、入力の長さを制限することも可能である。<code id=client-side-form-validation:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code>要素にこれを追加することによって、ユーザーに1000文字の制限ができ、焦点を合わせて留まる代わりに忙しい配送ドライバーに対してユーザーが巨大なエッセイを書かないようにする。</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi"&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input name="custname" required&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name="custtel"&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email name="custemail"&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="small"&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="medium"&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="large"&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="bacon"&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="cheese"&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="onion"&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="mushroom"&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery" required&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name="comments"<strong> maxlength=1000</strong>&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+
+  <p class=note>フォームが送信される際、<code id=client-side-form-validation:event-invalid><a href=indices.html#event-invalid>invalid</a></code>イベントは無効な各フォームコントロールで発火し、その後<code id=client-side-form-validation:the-form-element><a href=#the-form-element>form</a></code>要素自身で発火する。典型的にブラウザー自体は一度に一つの問題を報告するので、これはフォームに関する問題の要約を表示するために有用でありうる。</p>
+
+
+
+  <h5 id=enabling-client-side-automatic-filling-of-form-controls><span class=secno>4.10.1.5</span> Enabling client-side automatic filling of form controls<a href=#enabling-client-side-automatic-filling-of-form-controls class=self-link></a></h5>
+
+  
+
+  <p>一部のブラウザーは、ユーザーに情報を毎回再入力させるのではなく、フォームコントロールを自動的に埋めることでユーザーを支援しようとする。たとえば、ユーザーの電話番号を要求するフィールドは、自動的にユーザーの電話番号を埋めることができる。</p>
+
+  <p>これとともにユーザーエージェントを助けるために、<code id=enabling-client-side-automatic-filling-of-form-controls:attr-fe-autocomplete><a href=form-control-infrastructure.html#attr-fe-autocomplete>autocomplete</a></code>属性はフィールドの目的を説明するために使用できる。次のフォームの場合、誰がピザに配信されるかに関する情報について、このように有用な注釈を付けることができる3つのフィールドを持つ。この情報を追加すると、次のようになる：</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi"&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input name="custname" required <strong>autocomplete="shipping name"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name="custtel" <strong>autocomplete="shipping tel"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email name="custemail" <strong>autocomplete="shipping email"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="small"&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="medium"&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="large"&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="bacon"&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="cheese"&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="onion"&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="mushroom"&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery" required&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name="comments" maxlength=1000&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+
+
+  <h5 id=improving-the-user-experience-on-mobile-devices><span class=secno>4.10.1.6</span> Improving the user experience on mobile devices<a href=#improving-the-user-experience-on-mobile-devices class=self-link></a></h5>
+
+  
+
+  <p>一部のデバイスは、とりわけオンスクリーンキーボードのものおよび多数の文字を持つ言語（たとえば日本語）でロケールを使用するものは、複数の入力モダリティーをユーザーに提供できる。たとえば、自分の名前を入力する際に、デフォルトで各単語を大文字にするフォームフィールドを見たいかもしれない一方で、クレジットカードの番号を入力する際にユーザーは0～9の数字キーのみを表示したいかもしれない。</p>
+
+  <p>適切な入力モダリティーを選択できる<code id=improving-the-user-experience-on-mobile-devices:attr-fe-inputmode><a href=form-control-infrastructure.html#attr-fe-inputmode>inputmode</a></code>属性を使用する：</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi"&gt;
+ &lt;p&gt;&lt;label&gt;Customer name: &lt;input name="custname" required autocomplete="shipping name" <strong>inputmode="latin-name"</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name="custtel" autocomplete="shipping tel"&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;E-mail address: &lt;input type=email name="custemail" autocomplete="shipping email"&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Size &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="small"&gt; Small &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="medium"&gt; Medium &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value="large"&gt; Large &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;fieldset&gt;
+  &lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="bacon"&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="cheese"&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="onion"&gt; Onion &lt;/label&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;label&gt; &lt;input type=checkbox name="topping" value="mushroom"&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+ &lt;/fieldset&gt;
+ &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery" required&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name="comments" maxlength=1000 <strong>inputmode="latin-prose"</strong>&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+ &lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+
+
+
+  <h5 id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality><span class=secno>4.10.1.7</span> The difference between the field type, the autofill field name, and the input modality<a href=#the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality class=self-link></a></h5>
+
+  
+
+  <p><code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-input-type><a href=input.html#attr-input-type>type</a></code>、<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete><a href=form-control-infrastructure.html#attr-fe-autocomplete>autocomplete</a></code>、および<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-inputmode><a href=form-control-infrastructure.html#attr-fe-inputmode>inputmode</a></code>は、紛らわしいほど酷似しているように見えるだろう。たとえば、3つすべての場合において文字列"<code>email</code>"は妥当な値である。このセクションでは、3つの属性の違いについて説明を試み、どのように属性を使用するかを提案する助言を提供する。</p>
+
+  <p><code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:the-input-element><a href=input.html#the-input-element>input</a></code>要素の<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-input-type-2><a href=input.html#attr-input-type>type</a></code>属性は、ユーザーエージェントがフィールドを公開するために使用するコントロールの種類を決定する。Choosing between different values of this attribute is the same choice as choosing whether to use an <code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:the-input-element-2><a href=input.html#the-input-element>input</a></code> element, a <code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code> element, a <code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:the-select-element><a href=form-elements.html#the-select-element>select</a></code> element, etc.</p>
+
+  <p>対照的に<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-2><a href=form-control-infrastructure.html#attr-fe-autocomplete>autocomplete</a></code>属性は、ユーザーが実際に入力する値が何を表すかを記載する。この属性の異なる値の間で選択は、要素のラベルがどのようなものかを選択するのと同じ選択肢である。</p>
+
+  <p>まず、電話番号を考えてみよう。ページがユーザーから電話番号を求める場合、適切な使用すべきフォームコントロールは<code id="the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:telephone-state-(type=tel)"><a href="input.html#telephone-state-(type=tel)">&lt;input type=tel&gt;</a></code>である。しかし、どの<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-3><a href=form-control-infrastructure.html#attr-fe-autocomplete>autocomplete</a></code>値を使用べきかは、ユーザーが国際形式または単にローカル形式の電話番号を期待するかどうかなど、ページがどの電話番号を求めるかに依存する。</p>
+
+  <p>たとえば、友人に出荷するギフトを購入する顧客に対してeコマースサイトで検査プロセスの一部を構成するページは、購入者の電話番号（支払いの問題の場合）と友人の電話番号（配達の問題の場合）の両方を必要とするかもしれない。サイトが（国コードプレフィックスを持つ）国際電話番号想定する場合、これはこのようになる：</p>
+
+  <pre>&lt;p&gt;&lt;label&gt;Your phone number: &lt;input type=tel name=custtel autocomplete="billing tel"&gt;&lt;/label&gt;
+&lt;p&gt;&lt;label&gt;Recipient's phone number: &lt;input type=tel name=shiptel autocomplete="shipping tel"&gt;&lt;/label&gt;
+&lt;p&gt;Please enter complete phone numbers including the country code prefix, as in "+1 555 123 4567".</pre>
+
+  <p>しかし、サイトがイギリスの顧客や受信者のみをサポートする場合、代わりに次のようになるだろう（<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-tel><a href=form-control-infrastructure.html#attr-fe-autocomplete-tel>tel</a></code>よりもむしろ<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-tel-national><a href=form-control-infrastructure.html#attr-fe-autocomplete-tel-national>tel-national</a></code>の仕様に注意する）：</p>
+
+  <pre>&lt;p&gt;&lt;label&gt;Your phone number: &lt;input type=tel name=custtel autocomplete="billing tel-national"&gt;&lt;/label&gt;
+&lt;p&gt;&lt;label&gt;Recipient's phone number: &lt;input type=tel name=shiptel autocomplete="shipping tel-national"&gt;&lt;/label&gt;
+&lt;p&gt;Please enter complete UK phone numbers, as in "(01632) 960 123".</pre>
+
+  <p>さて、ある人の優先言語を考えてみよう。正確な<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-4><a href=form-control-infrastructure.html#attr-fe-autocomplete>autocomplete</a></code>値は<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-language><a href=form-control-infrastructure.html#attr-fe-autocomplete-language>language</a></code>である。However, there could be a number of different form controls used for the purpose: a text control (<code id="the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:text-(type=text)-state-and-search-state-(type=search)"><a href="input.html#text-(type=text)-state-and-search-state-(type=search)">&lt;input type=text&gt;</a></code>), a drop-down list (<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:the-select-element-2><a href=form-elements.html#the-select-element>&lt;select&gt;</a></code>), radio buttons (<code id="the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:radio-button-state-(type=radio)"><a href="input.html#radio-button-state-(type=radio)">&lt;input type=radio&gt;</a></code>), etc. これは、どの種類のインターフェイスが望まれているかのみに依存する。</p>
+
+  <p>The <code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-inputmode-2><a href=form-control-infrastructure.html#attr-fe-inputmode>inputmode</a></code> decides what kind of input modality (e.g.
+  keyboard) to use, when the control is a text control.</p>
+
+  <p>名前を考えてみよう。ページが単にユーザーから1つ名前を望む場合、該当するコントロールは<code id="the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:text-(type=text)-state-and-search-state-(type=search)-2"><a href="input.html#text-(type=text)-state-and-search-state-(type=search)">&lt;input type=text&gt;</a></code>である。ページがユーザーのフルネームを求めている場合、該当する<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-5><a href=form-control-infrastructure.html#attr-fe-autocomplete>autocomplete</a></code>値は<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-name><a href=form-control-infrastructure.html#attr-fe-autocomplete-name>name</a></code>である。しかしユーザーが日本人であり、かつページがユーザーの日本語名とローマ字名を求めている場合、最初のフィールドが日本語入力モダリティをデフォルトにし、一方で2番目のフィールドが（理想的には各単語を自動で大文字の）英数字入力モダリティをデフォルトにする場合に、ユーザーに役立つだろう。以下は<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-inputmode-3><a href=form-control-infrastructure.html#attr-fe-inputmode>inputmode</a></code>属性が援助可能な場所である：</p>
+
+  <pre>&lt;p&gt;&lt;label&gt;Japanese name: &lt;input name="j" type="text" autocomplete="section-jp name" inputmode="kana"&gt;&lt;/label&gt;
+&lt;label&gt;Romanized name: &lt;input name="e" type="text" autocomplete="section-en name" inputmode="latin-name"&gt;&lt;/label&gt;</pre>
+
+  <p>この例で、<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-6><a href=form-control-infrastructure.html#attr-fe-autocomplete>autocomplete</a></code>属性値における"<code id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality:attr-fe-autocomplete-section><a href=form-control-infrastructure.html#attr-fe-autocomplete-section>section-*</a></code>"キーワードは、2つのフィールドが<em>別の</em>名前を期待することをユーザーエージェントに知らせる。キーワードなしで、ユーザーが最初のフィールドに値を与える際に、ユーザーエージェントは、最初のフィールドで与えられた値とともに2番目のフィールドを自動的に埋めることができる。</p>
+
+  <p class=note>キーワードの"<code>-jp</code>"および"<code>-en</code>"部分は、ユーザーエージェントに対して不明瞭である。キーワードからユーザーエージェントは、2つの名前がそれぞれ日本語とおよび英語であることを期待されていると推測できない。</p>
+
+
+  <h5 id=input-author-notes><span class=secno>4.10.1.8</span> Date, time, and number formats<a href=#input-author-notes class=self-link></a></h5>
+  
+
+  
+
+  <p>このピザ配達の例において、時刻は、24時間形式で2桁の時間と2桁の分、形式"HH:MM"で指定される。（この例において必要ないが、秒もまた指定できる。）</p>
+
+  <p>しかし、ユーザーに提示される際、一部のロケールにおいて、時刻はしばしば異なった表現がなされる。たとえば、アメリカでは"2pm"のように、am/pm表示付きの12時間制を使用するのが一般的である。フランスでは"14h00"のように、"h"の文字を用いて時間と分を分離するのが一般的である。</p>
+
+  <p>コンポーネントの順序が常に一貫しないような複雑な関係を付加されるとともに、日付に同様の問題が存在する―たとえば、キプロスで2003年2月1日は一般に"1/2/03"と書かれ、一方で日本において同じ日付は一般に"2003年02月01日"のように書かれるだろう―数字と平行して、たとえば、どのような句読点が小数点記号や桁区切り記号として使用されるという点でロケールが異なる。</p>
+
+  <p>したがって、ブラウザーでユーザーに提示され、ブラウザーでユーザーからの入力として受け入れられる時刻、日付、および数値形式から、常に形式がこの仕様で定義される（およびコンピューター可読の日付と時刻の形式に対して十分に確立されたISO 8601規格に基づく）場合、HTMLとフォームの送信で使用される時刻、日付、および数値形式を区別することが重要である。</p>
+
+  <p>形式は"ワイヤ上で"使用される。すなわち、HTMLマークアップとフォームの送信で、これはコンピューター可読およびユーザーのロケールに関わらず、一貫性があることを意図する。たとえば、日付は常に"2003-02-01"のように、形式"YYYY-MM-DD"で記述される。ユーザーは、これまでにこの形式を参照することが期待されていない。</p>
+
+  <p>時刻、日付、またはワイヤ形式でページによって与えられた数字は、ユーザーに表示される前に、（ユーザー設定に基づくか、ページ自身のロケールに基づいて）ユーザーの好みの表現に変換される。同様に、ユーザーは、好みの形式を使用して、時刻、日付、または数値の入力する後に、ユーザーエージェントは、DOMに入れるまたは送信する前に、ワイヤ形式に戻って変換する。</p>
+
+  <p>依然としてユーザーのニーズをサポートする一方で、これは、ページ内やサーバー上のスクリプトに、多数の異なるフォーマットをサポートする必要なしに、一貫性のある方法で、時刻、日付、および数値を処理できる。</p>
+
+  
+
+
+  <h4 id=categories><span class=secno>4.10.2</span> Categories<a href=#categories class=self-link></a></h4>
+
+  <p>多くの歴史的な理由のために、この節における要素は、<a id=categories:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>、<a id=categories:phrasing-content-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>、および<a id=categories:interactive-content-2 href=dom.html#interactive-content-2>インタラクティブコンテンツ</a>のように通常のものに加えて、複数の（しかし微妙に異なる）カテゴリーが重複して分類される。</p>
+
+  <p>要素の数は、<a id=categories:form-owner href=form-control-infrastructure.html#form-owner>フォーム所有者</a>を持つことができることを意味する、<dfn id=form-associated-element>フォーム関連要素</dfn>である。
+
+  
+  <ul class="brief category-list"><li><code id=categories:the-button-element><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=categories:the-fieldset-element><a href=form-elements.html#the-fieldset-element>fieldset</a></code></li><li><code id=categories:the-input-element><a href=input.html#the-input-element>input</a></code></li><li><code id=categories:the-object-element><a href=iframe-embed-object.html#the-object-element>object</a></code></li><li><code id=categories:the-output-element><a href=form-elements.html#the-output-element>output</a></code></li><li><code id=categories:the-select-element><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=categories:the-textarea-element><a href=form-elements.html#the-textarea-element>textarea</a></code></li><li><code id=categories:the-img-element><a href=embedded-content.html#the-img-element>img</a></code></li></ul>
+
+  <p><a href=#form-associated-element id=categories:form-associated-element>フォーム関連要素</a>は、複数のサブカテゴリーに分類される：</p>
+
+  <dl><dt><dfn id=category-listed>記載要素</dfn><dd>
+
+    <p><code id=categories:dom-form-elements><a href=#dom-form-elements><var>form</var>.elements</a></code>と<code id=categories:dom-fieldset-elements><a href=form-elements.html#dom-fieldset-elements><var>fieldset</var>.elements</a></code> APIに記載される要素を表す。この要素はまた、<code id=categories:attr-fae-form><a href=form-control-infrastructure.html#attr-fae-form>form</a></code>コンテンツ属性、および著者が明示的に<a id=categories:form-owner-2 href=form-control-infrastructure.html#form-owner>フォーム所有者</a>を指定するのを可能にする、一致する<code id=categories:dom-fae-form><a href=form-control-infrastructure.html#dom-fae-form>form</a></code> IDL属性を持つ。</p>
+
+    
+    <ul class="brief category-list"><li><code id=categories:the-button-element-2><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=categories:the-fieldset-element-2><a href=form-elements.html#the-fieldset-element>fieldset</a></code></li><li><code id=categories:the-input-element-2><a href=input.html#the-input-element>input</a></code></li><li><code id=categories:the-object-element-2><a href=iframe-embed-object.html#the-object-element>object</a></code></li><li><code id=categories:the-output-element-2><a href=form-elements.html#the-output-element>output</a></code></li><li><code id=categories:the-select-element-2><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=categories:the-textarea-element-2><a href=form-elements.html#the-textarea-element>textarea</a></code></li></ul>
+
+   <dt><dfn id=category-submit>送信可能要素</dfn><dd>
+
+    <p>Denotes elements that can be used for <a href=#constructing-form-data-set>constructing the
+    form data set</a> when a <code id=categories:the-form-element><a href=#the-form-element>form</a></code> element is <span>submitted</span>.</p>
+
+    
+    <ul class="brief category-list"><li><code id=categories:the-button-element-3><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=categories:the-input-element-3><a href=input.html#the-input-element>input</a></code></li><li><code id=categories:the-object-element-3><a href=iframe-embed-object.html#the-object-element>object</a></code></li><li><code id=categories:the-select-element-3><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=categories:the-textarea-element-3><a href=form-elements.html#the-textarea-element>textarea</a></code></li></ul>
+
+    <p>一部の<a href=#category-submit id=categories:category-submit>送信可能要素</a>は、その属性<dfn id=concept-button>ボタン</dfn>に応じて存在できる。要素がボタンである場合、以下の文が定義される。一部のボタンは、特に<dfn id=concept-submit-button>送信ボタン</dfn>である。</p>
+
+   <dt><dfn id=category-reset>リセット可能要素</dfn><dd>
+
+    <p>Denotes elements that can be affected when a <code id=categories:the-form-element-2><a href=#the-form-element>form</a></code> element is <span>reset</span>.</p>
+
+    
+    <ul class="brief category-list"><li><code id=categories:the-input-element-4><a href=input.html#the-input-element>input</a></code></li><li><code id=categories:the-output-element-3><a href=form-elements.html#the-output-element>output</a></code></li><li><code id=categories:the-select-element-4><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=categories:the-textarea-element-4><a href=form-elements.html#the-textarea-element>textarea</a></code></li></ul>
+
+   </dl>
+
+  <p><a href=#form-associated-element id=categories:form-associated-element-2>フォーム関連</a>のすべてでなく、一部の要素が<dfn id=category-label>ラベル付け可能要素</dfn>として分類される。これは、<code id=categories:the-label-element><a href=#the-label-element>label</a></code>要素に関連付けることができる要素である。
+
+  
+  <ul class="brief category-list"><li><code id=categories:the-button-element-4><a href=form-elements.html#the-button-element>button</a></code></li><li><code id=categories:the-input-element-5><a href=input.html#the-input-element>input</a></code>（<code id=categories:attr-input-type><a href=input.html#attr-input-type>type</a></code>属性が<a href="input.html#hidden-state-(type=hidden)" id="categories:hidden-state-(type=hidden)">Hidden</a>状態で<em>ない</em>場合）</li><li><code id=categories:the-meter-element><a href=form-elements.html#the-meter-element>meter</a></code></li><li><code id=categories:the-output-element-4><a href=form-elements.html#the-output-element>output</a></code></li><li><code id=categories:the-progress-element><a href=form-elements.html#the-progress-element>progress</a></code></li><li><code id=categories:the-select-element-5><a href=form-elements.html#the-select-element>select</a></code></li><li><code id=categories:the-textarea-element-5><a href=form-elements.html#the-textarea-element>textarea</a></code></li></ul>
+
+
+  <h4 id=the-form-element data-dfn-type=element data-lt=form><span class=secno>4.10.3</span> The <dfn><code>form</code></dfn> element<a href=#the-form-element class=self-link></a></h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-form-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-form-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dd><a id=the-form-element:palpable-content-2 href=dom.html#palpable-content-2>パルパブルコンテンツ</a>。<dt><a href=dom.html#concept-element-contexts id=the-form-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><a id=the-form-element:flow-content-2-2 href=dom.html#flow-content-2>フローコンテンツ</a>が期待される場所。<dt><a href=dom.html#concept-element-content-model id=the-form-element:concept-element-content-model>コンテンツモデル</a>：<dd><a id=the-form-element:flow-content-2-3 href=dom.html#flow-content-2>フローコンテンツ</a>、ただし<code id=the-form-element:the-form-element><a href=#the-form-element>form</a></code>要素の子孫を除く。<dt><a href=dom.html#concept-element-tag-omission id=the-form-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd>どちらのタグも省略不可。<dt><a href=dom.html#concept-element-attributes id=the-form-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-form-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-form-element:attr-form-accept-charset><a href=#attr-form-accept-charset>accept-charset</a></code> — <a id=the-form-element:form-submission-2 href=form-control-infrastructure.html#form-submission-2>フォーム送信</a>に使用する文字エンコーディング<dd><code id=the-form-element:attr-fs-action><a href=form-control-infrastructure.html#attr-fs-action>action</a></code> — <a id=the-form-element:form-submission-2-2 href=form-control-infrastructure.html#form-submission-2>フォーム送信</a>に使用する<a id=the-form-element:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a><dd><code id=the-form-element:attr-form-autocomplete><a href=#attr-form-autocomplete>autocomplete</a></code> — フォーム内のコントロールのオールフィル機能に対するデフォルト設定<dd><code id=the-form-element:attr-fs-enctype><a href=form-control-infrastructure.html#attr-fs-enctype>enctype</a></code> — <a id=the-form-element:form-submission-2-3 href=form-control-infrastructure.html#form-submission-2>フォーム送信</a>に使用するエンコーディングタイプを設定するフォームデータ<dd><code id=the-form-element:attr-fs-method><a href=form-control-infrastructure.html#attr-fs-method>method</a></code> — <a id=the-form-element:form-submission-2-4 href=form-control-infrastructure.html#form-submission-2>フォーム送信</a>に使用するHTTPメソッド<dd><code id=the-form-element:attr-form-name><a href=#attr-form-name>name</a></code> — <code id=the-form-element:dom-document-forms><a href=dom.html#dom-document-forms>document.forms</a></code> APIで使用するためのフォーム名<dd><code id=the-form-element:attr-fs-novalidate><a href=form-control-infrastructure.html#attr-fs-novalidate>novalidate</a></code> — <a id=the-form-element:form-submission-2-5 href=form-control-infrastructure.html#form-submission-2>フォーム送信</a>のためのフォームコントロール検証を回避する<dd><code id=the-form-element:attr-fs-target><a href=form-control-infrastructure.html#attr-fs-target>target</a></code> — <a id=the-form-element:form-submission-2-6 href=form-control-infrastructure.html#form-submission-2>フォーム送信</a>に対する<a id=the-form-element:browsing-context href=browsers.html#browsing-context>ブラウジングコンテキスト</a><dt><a href=dom.html#concept-element-dom id=the-form-element:concept-element-dom>DOMインターフェイス</a>：<dd>Uses <code>HTMLFormElement</code>.</dl>
+
+  <p><code id=the-form-element:the-form-element-2><a href=#the-form-element>form</a></code>要素は、処理のためにサーバーに送信できる編集可能な値を表すことができる一部で、<a href=#form-associated-element id=the-form-element:form-associated-element>フォーム関連要素</a>のコレクションを<a id=the-form-element:represents href=dom.html#represents>表す</a>。</p>
+
+  <p><dfn id=attr-form-accept-charset><code>accept-charset</code></dfn>属性は送信に対して使用される文字エンコーディングを提供する。指定した場合、値は<a id=the-form-element:ascii-case-insensitive href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>な<a id=the-form-element:ordered-set-of-unique-space-separated-tokens href=common-microsyntaxes.html#ordered-set-of-unique-space-separated-tokens>一意なスペース区切りトークンの順序付けられたセット</a>でなければならず、各トークンは<a id=the-form-element:ascii-compatible-encoding href=infrastructure.html#ascii-compatible-encoding>ASCII互換エンコーディング</a>の<a href=https://encoding.spec.whatwg.org/#label id=the-form-element:encoding-label data-x-internal=encoding-label>ラベル</a>と<a id=the-form-element:ascii-case-insensitive-2 href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII大文字・小文字不区別</a>で一致しなければならない。<a href=references.html#refsENCODING>[ENCODING]</a></p>
+
+  <p><dfn id=attr-form-name><code>name</code></dfn>属性は<code id=the-form-element:dom-document-forms-2><a href=dom.html#dom-document-forms>forms</a></code>コレクション内の<code id=the-form-element:the-form-element-3><a href=#the-form-element>form</a></code>の名前を表す。値は空文字列であってはならず、いかなる場合も、値は<code id=the-form-element:dom-document-forms-3><a href=dom.html#dom-document-forms>forms</a></code>コレクションの<code id=the-form-element:the-form-element-4><a href=#the-form-element>form</a></code>要素の中で一意でなければならない。</p>
+
+  <p><dfn id=attr-form-autocomplete><code>autocomplete</code></dfn>属性は<a id=the-form-element:enumerated-attribute href=common-microsyntaxes.html#enumerated-attribute>列挙属性</a>である。この属性は2つの状態を持つ。<dfn id=attr-form-autocomplete-on><code>on</code></dfn>キーワードは<dfn id=attr-form-autocomplete-on-state>on</dfn>状態に対応し、<dfn id=attr-form-autocomplete-off><code>off</code></dfn>キーワードは<dfn id=attr-form-autocomplete-off-state>off</dfn>状態に対応する。属性は省略されてもよい。<i id=the-form-element:missing-value-default><a href=common-microsyntaxes.html#missing-value-default>欠損値のデフォルト</a></i>は<a href=#attr-form-autocomplete-on-state id=the-form-element:attr-form-autocomplete-on-state>on</a>状態である。The <a href=#attr-form-autocomplete-off-state id=the-form-element:attr-form-autocomplete-off-state>off</a> state indicates that by default, form controls in the form will have their <span>autofill field name</span> set to "<code id=the-form-element:attr-fe-autocomplete-off><a href=form-control-infrastructure.html#attr-fe-autocomplete-off>off</a></code>"; the <a href=#attr-form-autocomplete-on-state id=the-form-element:attr-form-autocomplete-on-state-2>on</a> state indicates that by default, form controls in the form will have their <span>autofill field name</span> set to "<code id=the-form-element:attr-fe-autocomplete-on><a href=form-control-infrastructure.html#attr-fe-autocomplete-on>on</a></code>".</p>
+
+  <p><code id=the-form-element:attr-fs-action-2><a href=form-control-infrastructure.html#attr-fs-action>action</a></code>、<code id=the-form-element:attr-fs-enctype-2><a href=form-control-infrastructure.html#attr-fs-enctype>enctype</a></code>、<code id=the-form-element:attr-fs-method-2><a href=form-control-infrastructure.html#attr-fs-method>method</a></code>、<code id=the-form-element:attr-fs-novalidate-2><a href=form-control-infrastructure.html#attr-fs-novalidate>novalidate</a></code>、および<code id=the-form-element:attr-fs-target-2><a href=form-control-infrastructure.html#attr-fs-target>target</a></code>属性は<a id=the-form-element:attributes-for-form-submission href=form-control-infrastructure.html#attributes-for-form-submission>フォーム送信に対する属性</a>である。</p>
+
+  <dl class=domintro><dt><var>form</var> . <code id=dom-form-elements>elements</code><dd>
+
+    <p>Returns an <code>HTMLFormControlsCollection</code> of the form controls in the form (excluding image
+    buttons for historical reasons).</p>
+
+   <dt><var>form</var> . <code>length</code><dd>
+
+    <p>（歴史的な理由でイメージボタンを除く）フォームにおけるフォームコントロールの数を返す。</p>
+
+   <dt><var>form</var>[<var>index</var>]<dd>
+
+    <p>（歴史的な理由でイメージボタンを除く）フォームで<var>index</var>番目の要素を返す。</p>
+
+   <dt><var>form</var>[<var>name</var>]<dd>
+
+    <p>Returns the form control (or, if there are several, a <code>RadioNodeList</code> of the form
+    controls) in the form with the given <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=the-form-element:concept-id data-x-internal=concept-id>ID</a> or <code id=the-form-element:attr-fe-name><a href=form-control-infrastructure.html#attr-fe-name>name</a></code> (excluding image buttons for historical reasons); or, if there
+    are none, returns the <code id=the-form-element:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element with the given ID.</p>
+
+    <p>一度要素が特定の名前を使用して参照されると、たとえ要素の実際の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=the-form-element:concept-id-2 data-x-internal=concept-id>ID</a>または<code id=the-form-element:attr-fe-name-2><a href=form-control-infrastructure.html#attr-fe-name>name</a></code>を変更しても、要素が<a id=the-form-element:tree href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree data-x-internal=tree>ツリー</a>に残る限り、その名前は、この方法でその要素を参照する方法として利用され続ける。</p>
+
+    <p>If there are multiple matching items, then a <code>RadioNodeList</code> object containing all
+    those elements is returned.</p>
+
+   <dt><var>form</var> . <code>submit</code>()<dd>
+
+    <p>フォームを送信する。</p>
+
+   <dt><var>form</var> . <code>reset</code>()<dd>
+
+    <p>フォームをリセットする。</p>
+
+   <dt><var>form</var> . <code>checkValidity</code>()<dd>
+
+    <p>フォームのコントロールがすべて有効である場合はtrueを返す。そうでなければfalseを返す。</p>
+
+   <dt><var>form</var> . <code>reportValidity</code>()<dd>
+
+    <p>フォームのコントロールがすべて有効である場合はtrueを返す。そうでなければfalseを返す。</p>
+
+   </dl>
+
+  
+
+  <div class=example>
+
+   <p>この例は、2つの検索フォームを示す：</p>
+
+   <pre>&lt;form action="https://www.google.com/search" method="get"&gt;
+ &lt;label&gt;Google: &lt;input type="search" name="q"&gt;&lt;/label&gt; &lt;input type="submit" value="Search..."&gt;
+&lt;/form&gt;
+&lt;form action="https://www.bing.com/search" method="get"&gt;
+ &lt;label&gt;Bing: &lt;input type="search" name="q"&gt;&lt;/label&gt; &lt;input type="submit" value="Search..."&gt;
+&lt;/form&gt;</pre>
+
+  </div>
+
+
+
+  <h4 id=the-label-element><span class=secno>4.10.4</span> The <dfn><code>label</code></dfn> element<a href=#the-label-element class=self-link></a></h4>
+
+  <dl class=element><dt><a href=dom.html#concept-element-categories id=the-label-element:concept-element-categories>カテゴリー</a>：<dd><a id=the-label-element:flow-content-2 href=dom.html#flow-content-2>フローコンテンツ</a>。<dd><a id=the-label-element:phrasing-content-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>。<dd><a id=the-label-element:interactive-content-2 href=dom.html#interactive-content-2>インタラクティブコンテンツ</a>。<dd><a id=the-label-element:palpable-content-2 href=dom.html#palpable-content-2>パルパブルコンテンツ</a>。<dt><a href=dom.html#concept-element-contexts id=the-label-element:concept-element-contexts>この要素を使用できるコンテキスト</a>：<dd><a id=the-label-element:phrasing-content-2-2 href=dom.html#phrasing-content-2>フレージングコンテンツ</a>が期待される場所。<dt><a href=dom.html#concept-element-content-model id=the-label-element:concept-element-content-model>コンテンツモデル</a>：<dd><a id=the-label-element:phrasing-content-2-3 href=dom.html#phrasing-content-2>Phrasing content</a>, but with no descendant <a href=#category-label id=the-label-element:category-label>labelable elements</a> unless it is the element's <span>labeled control</span>, and no descendant <code id=the-label-element:the-label-element><a href=#the-label-element>label</a></code> elements.<dt><a href=dom.html#concept-element-tag-omission id=the-label-element:concept-element-tag-omission>text/htmlにおけるタグ省略</a>：<dd>どちらのタグも省略不可。<dt><a href=dom.html#concept-element-attributes id=the-label-element:concept-element-attributes>コンテンツ属性</a>：<dd><a id=the-label-element:global-attributes href=dom.html#global-attributes>グローバル属性</a><dd><code id=the-label-element:attr-label-for><a href=#attr-label-for>for</a></code> — フォームコントロールとラベルを関連付ける<dt><a href=dom.html#concept-element-dom id=the-label-element:concept-element-dom>DOMインターフェイス</a>：<dd>Uses <code>HTMLLabelElement</code>.</dl>
+
+  <p><code id=the-label-element:the-label-element-2><a href=#the-label-element>label</a></code>は、ユーザーインターフェイスでのキャプションを<a id=the-label-element:represents href=dom.html#represents>表す</a>。The caption can be associated with a specific form control, either using the <code id=the-label-element:attr-label-for-2><a href=#attr-label-for>for</a></code> attribute, or by putting the form control inside the <code id=the-label-element:the-label-element-3><a href=#the-label-element>label</a></code> element itself.</p>
+
+  
+
+  <p><dfn id=attr-label-for><code>for</code></dfn>属性は、キャプションが関連付けされることになっているフォームコントロールを示すために指定されてもよい。この属性が指定される場合、属性値は、<code id=the-label-element:the-label-element-4><a href=#the-label-element>label</a></code>要素と同じ<a id=the-label-element:tree href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree data-x-internal=tree>ツリー</a>で<a href=#category-label id=the-label-element:category-label-2>ラベル付け可能要素</a>の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=the-label-element:concept-id data-x-internal=concept-id>ID</a>でなければならない。 </p>
+
+  
+
+  <div class=example>
+
+   <p>次の例は、ラベルを伴う3つのフォームコントロールであり、そのうちの2つが使用するユーザーに対して適切なフォーマットを示す小さなテキストを持つことを示す。</p>
+
+   <pre>&lt;p&gt;&lt;label&gt;Full name: &lt;input name=fn&gt; &lt;small&gt;Format: First Last&lt;/small&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Age: &lt;input name=age type=number min=0&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Post code: &lt;input name=pc&gt; &lt;small&gt;Format: AB12 3CD&lt;/small&gt;&lt;/label&gt;&lt;/p&gt;</pre>
+
+  </div>
+
+  <dl class=domintro><dt><var>label</var> . <code>control</code><dd>
+
+    <p>この要素に関連付けられるフォームコントロールを返す。</p>
+
+   <dt><var>label</var> . <code id=dom-label-form>form</code><dd>
+
+    <p>この要素に関連付けられるフォームコントロールの<a id=the-label-element:form-owner href=form-control-infrastructure.html#form-owner>フォーム所有者</a>を返す。</p>
+
+    <p>存在しない場合nullを返す。</p>
+
+   </dl>
+
+  
+
+  <p class=note>The <code id=the-label-element:dom-label-form><a href=#dom-label-form>form</a></code> IDL attribute on the
+  <code id=the-label-element:the-label-element-5><a href=#the-label-element>label</a></code> element is different from the <code id=the-label-element:attr-fae-form><a href=form-control-infrastructure.html#attr-fae-form>form</a></code> IDL
+  attribute on <a href=#category-listed id=the-label-element:category-listed>listed</a> <a href=#form-associated-element id=the-label-element:form-associated-element>form-associated elements</a>, and the <code id=the-label-element:the-label-element-6><a href=#the-label-element>label</a></code> element does not have a <code id=the-label-element:attr-fae-form-2><a href=form-control-infrastructure.html#attr-fae-form>form</a></code> content attribute.</p>
+
+  <hr>
+
+  <dl class=domintro><dt><var>control</var> . <code>labels</code><dd>
+
+    <p>フォームコントロールが関連付けられているすべての<code id=the-label-element:the-label-element-7><a href=#the-label-element>label</a></code>要素の<code id=the-label-element:nodelist><a data-x-internal=nodelist href=https://triple-underscore.github.io/DOM4-ja.html#interface-nodelist>NodeList</a></code>を返す。</p>
+
+   </dl>
+
+  
+
+
+  <nav><a href=tables.html>← 4.9 Tabular data</a> — <a href=index.html>Table of Contents</a> — <a href=input.html>4.10.5 The
+  input element →</a></nav>
+</body></html>

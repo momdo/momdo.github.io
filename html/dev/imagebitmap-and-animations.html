@@ -1,0 +1,163 @@
+<!DOCTYPE html><html class=split lang=ja>
+<script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
+<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold"><link rel=stylesheet href=styles.css>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script>
+<body>
+  
+  
+  <header id=head class="head with-buttons">
+   <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
+   
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>30 June 2017</span></h2></hgroup>
+   
+  </header>
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=system-state.html>← 8.7 System state and capabilities</a> — <a href=index.html>Table of Contents</a> — <a href=comms.html>9 Communication →</a></nav><ol class=toc><li><ol><li><a href=imagebitmap-and-animations.html#images-2><span class=secno>8.8</span> Images</a></li><li><a href=imagebitmap-and-animations.html#animation-frames><span class=secno>8.9</span> Animation Frames</a></li></ol></li></ol><h3 id=images-2><span class=secno>8.8</span> Images<a href=#images-2 class=self-link></a></h3>
+
+  
+
+  <p>An <code>ImageBitmap</code> object represents a bitmap image that can be painted to a canvas
+  without undue latency.</p>
+
+  <p class=note>この過度の待ち時間は何かの正確な判断は実装者に委ねるが、一般にビットマップを活用することは、ネットワークI/O、あるいはローカルディスクI/Oを必要とする場合、その後待ち時間はおそらく過度である。一方それが唯一のGPUやシステムRAMからのブロッキングの読み出しを必要とする場合、待ち時間はおそらく許容できる。</p>
+
+  <dl class=domintro><dt><var>promise</var> = self . <code id=dom-createimagebitmap>createImageBitmap</code>(<var>image</var> [, <var>options</var> ])<dt><var>promise</var> = self . <code id=images-2:dom-createimagebitmap><a href=#dom-createimagebitmap>createImageBitmap</a></code>(<var>image</var>, <var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var> [, <var>options</var> ])<dd>
+
+    <p>Takes <var>image</var>, which can be an <code id=images-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element, an <a id=images-2:svg-image href=https://triple-underscore.github.io/SVG11/struct.html#ImageElement data-x-internal=svg-image>SVG
+    <code>image</code></a> element, a <code id=images-2:the-video-element><a href=media.html#the-video-element>video</a></code> element, a <code id=images-2:the-canvas-element><a href=canvas.html#the-canvas-element>canvas</a></code>
+    element, a <code id=images-2:blob><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> object, an <code>ImageData</code> object, or another
+    <code>ImageBitmap</code> object, and returns a promise that is resolved when a new
+    <code>ImageBitmap</code> is created.</p>
+
+    <p>If no <code>ImageBitmap</code> object can be constructed, for example because the provided
+    <var>image</var> data is not actually an image, then the promise is rejected instead.</p>
+
+    <p><var>sx</var>、<var>sy</var>、<var>sw</var>、および<var>sh</var>引数が提供される場合、ソース画像は、透明な黒によって置き換えられたオリジナルで任意のピクセル欠損とともに、与えられたピクセルにトリミングされる。These coordinates are in the source image's pixel coordinate space, <em>not</em> in <a href=https://momdo.github.io/css3-values/#px id="images-2:'px'" data-x-internal="'px'">CSS pixels</a>.</p>
+
+    <p>If <var>options</var> is provided, the <code>ImageBitmap</code> object's bitmap
+    data is modified according to <var>options</var>. For example,
+    if the <code>premultiplyAlpha</code>
+    option is set to "<code>premultiply</code>",
+    the <span>bitmap data</span>'s color channels are
+    premultiplied by its alpha channel.
+
+    
+
+    <p>Rejects the promise with an <a id=images-2:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+    <code id=images-2:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the source image is not in a valid state (e.g. an <code id=images-2:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code>
+    element that hasn't loaded successfully, an <code>ImageBitmap</code> object whose
+    <span>[[Detached]]</span> internal slot value is true, an <code>ImageData</code> object whose
+    <code id=images-2:dom-imagedata-data><a href=canvas.html#dom-imagedata-data>data</a></code> attribute value's <span>[[Detached]]</span>
+    internal slot value is true, or a <code id=images-2:blob-2><a data-x-internal=blob href=https://triple-underscore.github.io/File_API-ja.html#blob>Blob</a></code> whose data cannot be interpreted as a bitmap
+    image).</p>
+
+    <p>Rejects the promise with a <a id=images-2:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
+    <code id=images-2:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the script is not allowed to access the image data of the source
+    image (e.g. a <code id=images-2:the-video-element-2><a href=media.html#the-video-element>video</a></code> that is <span>CORS-cross-origin</span>, or a
+    <code id=images-2:the-canvas-element-2><a href=canvas.html#the-canvas-element>canvas</a></code> being drawn on by a script in a worker from another
+    <a id=images-2:concept-origin href=origin.html#concept-origin>origin</a>).</p>
+
+   <dt><var>imageBitmap</var> . <code>close</code>()<dd>
+
+    <p>Releases <var>imageBitmap</var>'s underlying <span>bitmap data</span>.</p>
+
+   <dt><var>imageBitmap</var> . <code>width</code><dd>
+
+    <p>Returns the <a id=images-2:intrinsic-width href=infrastructure.html#intrinsic-width>intrinsic width</a> of the image, in <a href=https://momdo.github.io/css3-values/#px id="images-2:'px'-2" data-x-internal="'px'">CSS
+    pixels</a>.</p>
+
+   <dt><var>imageBitmap</var> . <code>height</code><dd>
+
+    <p>Returns the <a id=images-2:intrinsic-height href=infrastructure.html#intrinsic-height>intrinsic height</a> of the image, in <a href=https://momdo.github.io/css3-values/#px id="images-2:'px'-3" data-x-internal="'px'">CSS
+    pixels</a>.</p>
+
+   </dl>
+
+  
+
+  <div class=example>
+
+   <p>このAPIを使用すると、スプライトシートは、プレカットと調製することができる：</p>
+
+   <pre>var sprites = {};
+function loadMySprites() {
+  var image = new Image();
+  image.src = 'mysprites.png';
+  var resolver;
+  var promise = new Promise(function (arg) { resolver = arg });
+  image.onload = function () {
+    resolver(Promise.all([
+      createImageBitmap(image,  0,  0, 40, 40).then(function (image) { sprites.woman = image }),
+      createImageBitmap(image, 40,  0, 40, 40).then(function (image) { sprites.man   = image }),
+      createImageBitmap(image, 80,  0, 40, 40).then(function (image) { sprites.tree  = image }),
+      createImageBitmap(image,  0, 40, 40, 40).then(function (image) { sprites.hut   = image }),
+      createImageBitmap(image, 40, 40, 40, 40).then(function (image) { sprites.apple = image }),
+      createImageBitmap(image, 80, 40, 40, 40).then(function (image) { sprites.snake = image })
+    ]));
+  };
+  return promise;
+}
+
+function runDemo() {
+  var canvas = document.querySelector('canvas#demo');
+  var context = canvas.getContext('2d');
+  context.drawImage(sprites.tree, 30, 10);
+  context.drawImage(sprites.snake, 70, 10);
+}
+
+loadMySprites().then(runDemo);</pre>
+
+  </div>
+
+
+
+  <h3 id=animation-frames><span class=secno>8.9</span> Animation Frames<a href=#animation-frames class=self-link></a></h3>
+
+  <p>Each <code>Document</code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
+  initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback identifier</dfn>, which is a number which
+  must initially be zero.</p>
+
+  <p>When the <dfn id=dom-window-requestanimationframe><code>requestAnimationFrame()</code></dfn> method is called,
+  the user agent must run the following steps:</p>
+
+  <ol><li><p>Let <var>document</var> be this <code>Window</code> object's <span>associated <code>Document</code></span>.</li><li><p>Increment <var>document</var>'s <a href=#animation-frame-callback-identifier id=animation-frames:animation-frame-callback-identifier>animation frame callback identifier</a> by
+   one.</li><li><p>Append the method's argument to <var>document</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks>list of animation frame
+   callbacks</a>, associated with <var>document</var>'s <a href=#animation-frame-callback-identifier id=animation-frames:animation-frame-callback-identifier-2>animation frame callback
+   identifier</a>'s current value.</li><li><p>Return <var>document</var>'s <a href=#animation-frame-callback-identifier id=animation-frames:animation-frame-callback-identifier-3>animation frame callback identifier</a>'s current
+   value.</li></ol>
+
+  <p>When the <dfn id=dom-window-cancelanimationframe><code>cancelAnimationFrame()</code></dfn> method is called,
+  the user agent must run the following steps:</p>
+
+  <ol><li><p>Let <var>document</var> be this <code>Window</code> object's <span>associated <code>Document</code></span>.</li><li><p>Find the entry in <var>document</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-2>list of animation frame callbacks</a>
+   that is associated with the value given by the method's argument.</li><li><p>If there is such an entry, remove it from <var>document</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-3>list of animation
+   frame callbacks</a>.</li></ol>
+
+  <p>When the user agent is to <dfn id=run-the-animation-frame-callbacks>run the animation frame callbacks</dfn> for a
+  <code>Document</code> <var>doc</var> with a timestamp <var>now</var>, it must run the following
+  steps:</p>
+
+  <ol><li><p>Let <var>callbacks</var> be a list of the entries in <var>doc</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-4>list of
+   animation frame callbacks</a>, in the order in which they were added to the list.</li><li><p>Set <var>doc</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-5>list of animation frame callbacks</a> to the empty
+   list.</li><li><p>For each entry in <var>callbacks</var>, in order: <a href=https://heycam.github.io/webidl/#invoke-a-callback-function id=animation-frames:es-invoking-callback-functions data-x-internal=es-invoking-callback-functions>invoke the callback</a>, passing
+   <var>now</var> as the only argument, and if an exception is thrown, <span>report the
+   exception</span>. <a href=references.html#refsWEBIDL>[WEBIDL]</a></li></ol>
+
+
+
+  <nav><a href=system-state.html>← 8.7 System state and capabilities</a> — <a href=index.html>Table of Contents</a> — <a href=comms.html>9 Communication →</a></nav>
+</body></html>

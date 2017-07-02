@@ -1,0 +1,462 @@
+<!DOCTYPE html><html class=split lang=ja>
+<script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
+<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold"><link rel=stylesheet href=styles.css>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script>
+<body>
+  
+  
+  <header id=head class="head with-buttons">
+   <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
+   
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>30 June 2017</span></h2></hgroup>
+   
+  </header>
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=offline.html>← 7.7 Offline Web applications</a> — <a href=index.html>Table of Contents</a> — <a href=dynamic-markup-insertion.html>8.4 Dynamic markup insertion →</a></nav><ol class=toc><li><a href=webappapis.html#webappapis><span class=secno>8</span> Web application APIs</a><ol><li><a href=webappapis.html#scripting><span class=secno>8.1</span> Scripting</a><ol><li><a href=webappapis.html#introduction-10><span class=secno>8.1.1</span> Introduction</a><ol><li><a href=webappapis.html#runtime-script-errors><span class=secno>8.1.1.1</span> Runtime script errors</a></li><li><a href=webappapis.html#unhandled-promise-rejections><span class=secno>8.1.1.2</span> Unhandled promise rejections</a><ol><li><a href=webappapis.html#the-hostpromiserejectiontracker-implementation><span class=secno>8.1.1.2.1</span> HostPromiseRejectionTracker(<var>promise</var>, <var>operation</var>)</a></li><li><a href=webappapis.html#the-promiserejectionevent-interface><span class=secno>8.1.1.2.2</span> The <code>PromiseRejectionEvent</code> interface</a></li></ol></li><li><a href=webappapis.html#hostensurecancompilestrings(callerrealm,-calleerealm)><span class=secno>8.1.1.3</span> HostEnsureCanCompileStrings(<var>callerRealm</var>, <var>calleeRealm</var>)</a></li></ol></li><li><a href=webappapis.html#events><span class=secno>8.1.2</span> Events</a><ol><li><a href=webappapis.html#event-handler-attributes><span class=secno>8.1.2.1</span> Event handlers</a></li><li><a href=webappapis.html#event-handlers-on-elements,-document-objects,-and-window-objects><span class=secno>8.1.2.2</span> Event handlers on elements, <code>Document</code> objects, and <code>Window</code> objects</a><ol><li><a href=webappapis.html#idl-definitions><span class=secno>8.1.2.2.1</span> IDL definitions</a></li></ol></li></ol></li></ol></li><li><a href=webappapis.html#windoworworkerglobalscope-mixin><span class=secno>8.2</span> The <code>WindowOrWorkerGlobalScope</code> mixin</a></li><li><a href=webappapis.html#atob><span class=secno>8.3</span> Base64 utility methods</a></li></ol></li></ol><h2 id=webappapis><span class=secno>8</span> Web application APIs<a href=#webappapis class=self-link></a></h2>
+
+  <h3 id=scripting><span class=secno>8.1</span> Scripting<a href=#scripting class=self-link></a></h3>
+
+  <h4 id=introduction-10><span class=secno>8.1.1</span> Introduction<a href=#introduction-10 class=self-link></a></h4>
+
+  <p>様々なメカニズムが文書のコンテキストで実行するよう著者が提供する実行可能コードを引き起こすかもしれない。これらのメカニズムは以下を含むが、おそらく以下に限定されない：</p>
+
+  <ul><li><code id=introduction-10:the-script-element><a href=scripting.html#the-script-element>script</a></code>要素の処理。</li><li>Navigating to <span><code>javascript:</code> URLs</span>.</li><li>Event handlers, whether registered through the DOM using <code>addEventListener()</code>, by explicit <a href=#event-handler-content-attributes id=introduction-10:event-handler-content-attributes>event handler content attributes</a>, by
+   <span>event handler IDL attributes</span>, or otherwise.</li><li>独自のスクリプト機能を持つSVGのような技術の処理。</li></ul>
+
+
+  
+
+
+  
+
+
+  <h5 id=runtime-script-errors><span class=secno>8.1.1.1</span> Runtime script errors<a href=#runtime-script-errors class=self-link></a></h5>
+
+  
+
+  
+
+  <p><dfn id=dom-errorevent-message><code>message</code></dfn>属性は、属性が初期化された値を返さなければならない。これはエラーメッセージを表す。</p>
+
+  <p><dfn id=dom-errorevent-filename><code>filename</code></dfn>属性は、属性が初期化された値を返さなければならない。It represents the <a id=runtime-script-errors:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the script in which the error originally occurred.</p>
+
+  <p><dfn id=dom-errorevent-lineno><code>lineno</code></dfn>属性は、属性が初期化された値を返さなければならない。これは、スクリプトでエラーが発生した行番号を表す。</p>
+
+  <p><dfn id=dom-errorevent-colno><code>colno</code></dfn>属性は、属性が初期化された値を返さなければならない。これは、スクリプトでエラーが発生した列番号を表す。</p>
+
+  <p><dfn id=dom-errorevent-error><code>error</code></dfn>属性は、属性が初期化された値を返さなければならない。Where appropriate, it is set to the object representing the error (e.g., the exception object in the case of an uncaught DOM exception).</p>
+
+  <h5 id=unhandled-promise-rejections><span class=secno>8.1.1.2</span> Unhandled promise rejections<a href=#unhandled-promise-rejections class=self-link></a></h5>
+
+  <p>In addition to synchronous <a href=#runtime-script-errors>runtime script errors</a>, scripts
+  may experience asynchronous promise rejections, tracked via the <code id=unhandled-promise-rejections:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> and <code id=unhandled-promise-rejections:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> events.</p>
+
+  <p>When the user agent is to <dfn id=notify-about-rejected-promises>notify about rejected promises</dfn> on a given
+  <span>environment settings object</span> <var>settings object</var>, it must run these steps:</p>
+
+  <ol><li><p>Let <var>list</var> be a copy of <var>settings object</var>'s <span>about-to-be-notified
+   rejected promises list</span>.</li><li><p>If <var>list</var> is empty, abort these steps.</li><li><p>Clear <var>settings object</var>'s <span>about-to-be-notified rejected promises
+   list</span>.</li><li>
+
+    <p><span>Queue a task</span> to run the following substep:</p>
+
+    <ol><li><p>For each promise <var>p</var> in <var>list</var>:</p>
+
+      <ol><li><p>If <var>p</var>'s [[PromiseIsHandled]] internal slot is true, continue to the next
+       iteration of the loop.</li><li><p>Let <var>notHandled</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-fire id=unhandled-promise-rejections:concept-event-fire data-x-internal=concept-event-fire>firing an
+       event</a> named <code id=unhandled-promise-rejections:event-unhandledrejection-2><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> at
+       <var>settings object</var>'s <span>global
+       object</span>, using <code>PromiseRejectionEvent</code>, with the <code id=unhandled-promise-rejections:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute initialized to true, the <code id=unhandled-promise-rejections:dom-promiserejectionevent-promise><a href=#dom-promiserejectionevent-promise>promise</a></code> attribute initialized to
+       <var>p</var>, and the <code id=unhandled-promise-rejections:dom-promiserejectionevent-reason><a href=#dom-promiserejectionevent-reason>reason</a></code> attribute
+       initialized to the value of <var>p</var>'s [[PromiseResult]] internal slot.</li><li><p>If <var>notHandled</var> is false, then the promise rejection is <i id=unhandled-promise-rejections:concept-promise-rejection-handled><a href=#concept-promise-rejection-handled>handled</a></i>. Otherwise, the promise rejection is
+       <i id=unhandled-promise-rejections:concept-promise-rejection-nothandled><a href=#concept-promise-rejection-nothandled>not handled</a></i>.</li><li><p>If <var>p</var>'s [[PromiseIsHandled]] internal slot is false, add <var>p</var> to
+       <var>settings object</var>'s <span>outstanding rejected promises weak set</span>.
+
+      
+
+      </li></ol>
+     </li></ol>
+   </li></ol>
+
+  <p>This algorithm results in promise rejections being marked as <dfn id=concept-promise-rejection-handled><i>handled</i></dfn> or <dfn id=concept-promise-rejection-nothandled><i>not handled</i></dfn>. These concepts parallel
+  <i>handled</i> and <i>not
+  handled</i> script errors. If a rejection is still <i id=unhandled-promise-rejections:concept-promise-rejection-nothandled-2><a href=#concept-promise-rejection-nothandled>not handled</a></i> after this, then the rejection may
+  be reported to a developer console.</p>
+
+
+  <h6 id=the-hostpromiserejectiontracker-implementation><span class=secno>8.1.1.2.1</span> <dfn>HostPromiseRejectionTracker</dfn>(<var>promise</var>, <var>operation</var>)<a href=#the-hostpromiserejectiontracker-implementation class=self-link></a></h6>
+
+  <p>JavaScript contains an implementation-defined <a href=https://tc39.github.io/ecma262/#sec-host-promise-rejection-tracker id=the-hostpromiserejectiontracker-implementation:js-hostpromiserejectiontracker data-x-internal=js-hostpromiserejectiontracker>HostPromiseRejectionTracker</a>(<var>promise</var>,
+  <var>operation</var>) abstract operation. User agents must use the following implementation:
+  <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
+
+  <ol><li><p>Let <var>script</var> be the <span>running script</span>.</li><li><p>If <var>script</var> has <span>muted errors</span>, terminate these steps.</li><li><p>Let <var>settings object</var> be <var>script</var>'s <span>settings object</span>.</p>
+   </li><li>
+    <p>If <var>operation</var> is <code>"reject"</code>,
+
+    
+
+    <ol><li><p>Add <var>promise</var> to <var>settings object</var>'s <span>about-to-be-notified
+     rejected promises list</span>.</li></ol>
+   </li><li>
+    <p>If <var>operation</var> is <code>"handle"</code>,
+
+    
+
+    <ol><li><p>If <var>settings object</var>'s <span>about-to-be-notified rejected promises
+     list</span> contains <var>promise</var>, remove <var>promise</var> from that list and abort
+     these steps.</li><li><p>If <var>settings object</var>'s <span>outstanding rejected promises weak set</span>
+     does not contain <var>promise</var>, abort these steps.</li><li><p>Remove <var>promise</var> from <var>settings object</var>'s <span>outstanding rejected
+     promises weak set</span>.</li><li><p><span>Queue a task</span> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-hostpromiserejectiontracker-implementation:concept-event-fire data-x-internal=concept-event-fire>fire an event</a>
+     named <code id=the-hostpromiserejectiontracker-implementation:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> at <var>settings
+     object</var>'s <span>global object</span>, using
+     <code>PromiseRejectionEvent</code>, with the <code id=the-hostpromiserejectiontracker-implementation:dom-promiserejectionevent-promise><a href=#dom-promiserejectionevent-promise>promise</a></code> attribute initialized to
+     <var>promise</var>, and the <code id=the-hostpromiserejectiontracker-implementation:dom-promiserejectionevent-reason><a href=#dom-promiserejectionevent-reason>reason</a></code>
+     attribute initialized to the value of <var>promise</var>'s [[PromiseResult]] internal
+     slot.</li></ol>
+   </li></ol>
+
+  <h6 id=the-promiserejectionevent-interface><span class=secno>8.1.1.2.2</span> The <code>PromiseRejectionEvent</code> interface<a href=#the-promiserejectionevent-interface class=self-link></a></h6>
+
+  
+
+  <p>The <dfn id=dom-promiserejectionevent-promise><code>promise</code></dfn> attribute must
+  return the value it was initialized to. It represents the promise which this notification is about.</p>
+
+  <p>The <dfn id=dom-promiserejectionevent-reason><code>reason</code></dfn> attribute must
+  return the value it was initialized to. It represents the rejection reason for the promise.</p>
+
+  <h5 id=hostensurecancompilestrings(callerrealm,-calleerealm)><span class=secno>8.1.1.3</span> <dfn>HostEnsureCanCompileStrings</dfn>(<var>callerRealm</var>, <var>calleeRealm</var>)<a href=#hostensurecancompilestrings(callerrealm,-calleerealm) class=self-link></a></h5>
+
+  <p>JavaScript contains an implementation-defined <a href=https://tc39.github.io/ecma262/#sec-hostensurecancompilestrings id=hostensurecancompilestrings(callerrealm,-calleerealm):js-hostensurecancompilestrings data-x-internal=js-hostensurecancompilestrings>HostEnsureCanCompileStrings</a>(<var>callerRealm</var>,
+  <var>calleeRealm</var>) abstract operation. User agents must use the following implementation:
+  <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a>
+
+  <ol><li><p>Perform ? <a href=https://triple-underscore.github.io/CSP3-ja.html#can-compile-strings id=hostensurecancompilestrings(callerrealm,-calleerealm):csp-ensurecspdoesnotblockstringcompilation data-x-internal=csp-ensurecspdoesnotblockstringcompilation>EnsureCSPDoesNotBlockStringCompilation</a>(<var>callerRealm</var>,
+   <var>calleeRealm</var>). <a href=references.html#refsCSP>[CSP]</a></li></ol>
+
+  
+
+  <h4 id=events><span class=secno>8.1.2</span> Events<a href=#events class=self-link></a></h4>
+
+  <h5 id=event-handler-attributes><span class=secno>8.1.2.1</span> Event handlers<a href=#event-handler-attributes class=self-link></a></h5>
+
+  
+
+  <p>多くのオブジェクトは、指定した<dfn id=event-handlers data-lt="event handler" data-export="">イベントハンドラー</dfn>を持つことができる。これらは、それらが指定されるオブジェクトに対する非キャプチャーイベントリスナーとして作動する。<a href=references.html#refsDOM>[DOM]</a></p>
+
+  <p><a href=#event-handlers id=event-handler-attributes:event-handlers>イベントハンドラー</a>は、常に"<code>on</code>"で始まり、意図されるイベントの名前が後に続く名前を持つ。</p>
+
+  <p>An <a href=#event-handlers id=event-handler-attributes:event-handlers-2>event handler</a> has a value, which is either null, or is
+  a callback object.
+  The <code>EventHandler</code> callback function type describes how this is exposed to scripts.
+  
+  </p>
+
+  <p>イベントハンドラーは、2つの方法のいずれかで公開される。</p>
+
+  <p>The first way, common to all event handlers, is as an <span>event handler IDL attribute</span>.</p>
+
+  <p>2つ目の方法は、<a href=#event-handler-content-attributes id=event-handler-attributes:event-handler-content-attributes>イベントハンドラーコンテンツ属性</a>としてである。Event handlers on <a id=event-handler-attributes:html-elements href=infrastructure.html#html-elements>HTML elements</a> and some of the event handlers on <code>Window</code> objects are exposed in this way.</p>
+
+  
+
+  <p><dfn id=event-handler-content-attributes data-export="">イベントハンドラーコンテンツ属性</dfn>は、特定の<a href=#event-handlers id=event-handler-attributes:event-handlers-3>イベントハンドラー</a>に対するコンテンツ属性である。コンテンツ属性の名前は、<a href=#event-handlers id=event-handler-attributes:event-handlers-4>イベントハンドラー</a>の名前と同じである。</p>
+
+  <p><a href=#event-handler-content-attributes id=event-handler-attributes:event-handler-content-attributes-2>イベントハンドラーコンテンツ属性</a>が指定される場合、解析される際に、<a id=event-handler-attributes:automatic-semicolon-insertion href=https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion data-x-internal=automatic-semicolon-insertion>自動セミコロン挿入</a>後の<i id=event-handler-attributes:js-prod-functionbody><a data-x-internal=js-prod-functionbody href=https://tc39.github.io/ecma262/#prod-FunctionBody>FunctionBody</a></i>生成物と一致する、妥当なJavaScriptコードを含まなければならない。</p>
+
+  
+
+  <div class=example>
+
+   <p>この例は、イベントリスナーが呼び出される順序を示す。この例でボタンがユーザーによってクリックされる場合、ページはそれぞれテキスト"ONE"、"TWO"、"THREE"、"FOUR"をもつ4つの警告を表示する。</p>
+
+   <pre>&lt;button id="test"&gt;Start Demo&lt;/button&gt;
+&lt;script&gt;
+ var button = document.getElementById('test');
+ button.addEventListener('click', function () { alert('ONE') }, false);
+ button.setAttribute('onclick', "alert('NOT CALLED')"); // event handler listener is registered here
+ button.addEventListener('click', function () { alert('THREE') }, false);
+ button.onclick = function () { alert('TWO'); };
+ button.addEventListener('click', function () { alert('FOUR') }, false);
+&lt;/script&gt;</pre>
+
+  </div>
+
+  
+
+  <hr>
+
+  <p>The <code>EventHandler</code> callback function type represents a callback used for event
+  handlers.</p>
+
+  
+
+  <p class=note>In JavaScript, any <code id=event-handler-attributes:idl-function><a data-x-internal=idl-function href=https://triple-underscore.github.io/WebIDL-ja.html#common-Function>Function</a></code> object implements
+  this interface.</p>
+
+  <div class=example>
+
+   <p>たとえば、次の文書断片で：</p>
+
+   <pre>&lt;body onload="alert(this)" onclick="alert(this)"&gt;</pre>
+
+   <p>文書がロードされるときに"<code>[object&nbsp;Window]</code>"という警告を、ページでユーザーが何かをクリックするときはいつでも"<code>[object&nbsp;HTMLBodyElement]</code>"という警告を流す。</p>
+
+  </div>
+
+  <div class=note>
+   <p>The return value of the function affects whether the event is canceled or not: if the return value is false, the event is canceled.</p>
+
+   <p>There are two exceptions in the platform, for historical reasons:</p>
+
+   <ul><li><p>The <code id=event-handler-attributes:handler-onerror><a href=#handler-onerror>onerror</a></code> handlers on global objects, where
+    returning <em>true</em> cancels the event</li><li><p>The <code id=event-handler-attributes:handler-window-onbeforeunload><a href=#handler-window-onbeforeunload>onbeforeunload</a></code> handler, where
+    returning any non-null and non-undefined value will cancel the event.</li></ul>
+  </div>
+
+  <p>歴史的な理由により、<code id=event-handler-attributes:handler-onerror-2><a href=#handler-onerror>onerror</a></code>ハンドラーは、異なる引数を持つ。</p>
+
+  
+
+  <div class=example>
+   <pre>window.onerror = (message, source, lineno, colno, error) =&gt; { … };</pre>
+  </div>
+
+  <p>Similarly, the <code id=event-handler-attributes:handler-window-onbeforeunload-2><a href=#handler-window-onbeforeunload>onbeforeunload</a></code> handler has a
+  different return value: it will be cast to a string.</p>
+
+  
+
+  
+
+  
+
+
+
+  <h5 id=event-handlers-on-elements,-document-objects,-and-window-objects><span class=secno>8.1.2.2</span> Event handlers on elements, <code>Document</code> objects, and <code>Window</code> objects<a href=#event-handlers-on-elements,-document-objects,-and-window-objects class=self-link></a></h5>
+
+  <p>The following are the <a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers>event handlers</a> (and their corresponding <span>event handler event types</span>) 
+  supported by all <a id=event-handlers-on-elements,-document-objects,-and-window-objects:html-elements href=infrastructure.html#html-elements>HTML elements</a>, as both <a href=#event-handler-content-attributes id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handler-content-attributes>event handler content attributes</a>
+  and <span>event handler IDL attributes</span>; and 
+  supported by all <code>Document</code> and <code>Window</code> objects, as <span>event handler IDL
+  attributes</span>:</p>
+
+  <table><thead><tr><th><a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-2>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
+   <tbody></th></tr><tr><td><dfn id=handler-onabort><code>onabort</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-abort><a href=indices.html#event-abort>abort</a></code>
+    </td></tr><tr><td><dfn id=handler-onauxclick><code>onauxclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-auxclick><a data-x-internal=event-auxclick href=https://wicg.github.io/auxclick/#the-auxclick-event>auxclick</a></code>
+    </td></tr><tr><td><dfn id=handler-oncancel><code>oncancel</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-cancel><a href=indices.html#event-cancel>cancel</a></code>
+    </td></tr><tr><td><dfn id=handler-oncanplay><code>oncanplay</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-canplay><a href=media.html#event-media-canplay>canplay</a></code>
+    </td></tr><tr><td><dfn id=handler-oncanplaythrough><code>oncanplaythrough</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-canplaythrough><a href=media.html#event-media-canplaythrough>canplaythrough</a></code>
+    </td></tr><tr><td><dfn id=handler-onchange><code>onchange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-change><a href=indices.html#event-change>change</a></code> 
+    </td></tr><tr><td><dfn id=handler-onclick><code>onclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-click><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> 
+    </td></tr><tr><td><dfn id=handler-onclose><code>onclose</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-close><a href=indices.html#event-close>close</a></code> 
+    </td></tr><tr><td><dfn id=handler-oncontextmenu><code>oncontextmenu</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-contextmenu><a href=indices.html#event-contextmenu>contextmenu</a></code> 
+    </td></tr><tr><td><dfn id=handler-oncuechange><code>oncuechange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-cuechange><a href=media.html#event-media-cuechange>cuechange</a></code>
+    </td></tr><tr><td><dfn id=handler-ondblclick><code>ondblclick</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dblclick><a data-x-internal=event-dblclick href=https://w3c.github.io/uievents/#event-type-dblclick>dblclick</a></code> 
+    </td></tr><tr><td><dfn id=handler-ondrag><code>ondrag</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-drag><a href=dnd.html#event-dnd-drag>drag</a></code>
+    </td></tr><tr><td><dfn id=handler-ondragend><code>ondragend</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragend><a href=dnd.html#event-dnd-dragend>dragend</a></code>
+    </td></tr><tr><td><dfn id=handler-ondragenter><code>ondragenter</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragenter><a href=dnd.html#event-dnd-dragenter>dragenter</a></code>
+    </td></tr><tr><td><dfn id=handler-ondragexit><code>ondragexit</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragexit><a href=dnd.html#event-dnd-dragexit>dragexit</a></code>
+    </td></tr><tr><td><dfn id=handler-ondragleave><code>ondragleave</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragleave><a href=dnd.html#event-dnd-dragleave>dragleave</a></code>
+    </td></tr><tr><td><dfn id=handler-ondragover><code>ondragover</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragover><a href=dnd.html#event-dnd-dragover>dragover</a></code>
+    </td></tr><tr><td><dfn id=handler-ondragstart><code>ondragstart</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-dragstart><a href=dnd.html#event-dnd-dragstart>dragstart</a></code> 
+    </td></tr><tr><td><dfn id=handler-ondrop><code>ondrop</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-dnd-drop><a href=dnd.html#event-dnd-drop>drop</a></code>
+    </td></tr><tr><td><dfn id=handler-ondurationchange><code>ondurationchange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-durationchange><a href=media.html#event-media-durationchange>durationchange</a></code>
+    </td></tr><tr><td><dfn id=handler-onemptied><code>onemptied</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-emptied><a href=media.html#event-media-emptied>emptied</a></code>
+    </td></tr><tr><td><dfn id=handler-onended><code>onended</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-ended><a href=media.html#event-media-ended>ended</a></code>
+    </td></tr><tr><td><dfn id=handler-oninput><code>oninput</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-input><a href=indices.html#event-input>input</a></code>
+    </td></tr><tr><td><dfn id=handler-oninvalid><code>oninvalid</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-invalid><a href=indices.html#event-invalid>invalid</a></code>
+    </td></tr><tr><td><dfn id=handler-onkeydown><code>onkeydown</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keydown><a data-x-internal=event-keydown href=https://w3c.github.io/uievents/#event-type-keydown>keydown</a></code> 
+    </td></tr><tr><td><dfn id=handler-onkeypress><code>onkeypress</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keypress><a data-x-internal=event-keypress href=https://w3c.github.io/uievents/#event-type-keypress>keypress</a></code> 
+    </td></tr><tr><td><dfn id=handler-onkeyup><code>onkeyup</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-keyup><a data-x-internal=event-keyup href=https://w3c.github.io/uievents/#event-type-keyup>keyup</a></code> 
+    </td></tr><tr><td><dfn id=handler-onloadeddata><code>onloadeddata</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-loadeddata><a href=media.html#event-media-loadeddata>loadeddata</a></code>
+    </td></tr><tr><td><dfn id=handler-onloadedmetadata><code>onloadedmetadata</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-loadedmetadata><a href=media.html#event-media-loadedmetadata>loadedmetadata</a></code>
+    </td></tr><tr><td><dfn id=handler-onloadend><code>onloadend</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-loadend><a href=indices.html#event-loadend>loadend</a></code>
+    </td></tr><tr><td><dfn id=handler-onloadstart><code>onloadstart</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-loadstart><a href=media.html#event-media-loadstart>loadstart</a></code>
+    </td></tr><tr><td><dfn id=handler-onmousedown><code>onmousedown</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mousedown><a data-x-internal=event-mousedown href=https://w3c.github.io/uievents/#event-type-mousedown>mousedown</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseenter><code>onmouseenter</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseenter><a data-x-internal=event-mouseenter href=https://w3c.github.io/uievents/#event-type-mouseenter>mouseenter</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseleave><code>onmouseleave</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseleave><a data-x-internal=event-mouseleave href=https://w3c.github.io/uievents/#event-type-mouseleave>mouseleave</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmousemove><code>onmousemove</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mousemove><a data-x-internal=event-mousemove href=https://w3c.github.io/uievents/#event-type-mousemove>mousemove</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseout><code>onmouseout</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseout><a data-x-internal=event-mouseout href=https://w3c.github.io/uievents/#event-type-mouseout>mouseout</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseover><code>onmouseover</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseover><a data-x-internal=event-mouseover href=https://w3c.github.io/uievents/#event-type-mouseover>mouseover</a></code> 
+    </td></tr><tr><td><dfn id=handler-onmouseup><code>onmouseup</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-mouseup><a data-x-internal=event-mouseup href=https://w3c.github.io/uievents/#event-type-mouseup>mouseup</a></code> 
+    </td></tr><tr><td><dfn id=handler-onwheel><code>onwheel</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-wheel><a data-x-internal=event-wheel href=https://w3c.github.io/uievents/#event-type-wheel>wheel</a></code> 
+    </td></tr><tr><td><dfn id=handler-onpause><code>onpause</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-pause><a href=media.html#event-media-pause>pause</a></code>
+    </td></tr><tr><td><dfn id=handler-onplay><code>onplay</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-play><a href=media.html#event-media-play>play</a></code>
+    </td></tr><tr><td><dfn id=handler-onplaying><code>onplaying</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-playing><a href=media.html#event-media-playing>playing</a></code>
+    </td></tr><tr><td><dfn id=handler-onprogress><code>onprogress</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-progress><a href=media.html#event-media-progress>progress</a></code>
+    </td></tr><tr><td><dfn id=handler-onratechange><code>onratechange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-ratechange><a href=media.html#event-media-ratechange>ratechange</a></code>
+    </td></tr><tr><td><dfn id=handler-onreset><code>onreset</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-reset><a href=indices.html#event-reset>reset</a></code>
+    </td></tr><tr><td><dfn id=handler-onseeked><code>onseeked</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-seeked><a href=media.html#event-media-seeked>seeked</a></code>
+    </td></tr><tr><td><dfn id=handler-onseeking><code>onseeking</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-seeking><a href=media.html#event-media-seeking>seeking</a></code>
+    </td></tr><tr><td><dfn id=handler-onselect><code>onselect</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-select><a href=indices.html#event-select>select</a></code>  
+    </td></tr><tr><td><dfn id=handler-onstalled><code>onstalled</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-stalled><a href=media.html#event-media-stalled>stalled</a></code>
+    </td></tr><tr><td><dfn id=handler-onsubmit><code>onsubmit</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-submit><a href=indices.html#event-submit>submit</a></code> 
+    </td></tr><tr><td><dfn id=handler-onsuspend><code>onsuspend</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-suspend><a href=media.html#event-media-suspend>suspend</a></code>
+    </td></tr><tr><td><dfn id=handler-ontimeupdate><code>ontimeupdate</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-timeupdate><a href=media.html#event-media-timeupdate>timeupdate</a></code>
+    </td></tr><tr><td><dfn id=handler-ontoggle><code>ontoggle</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-toggle><a href=indices.html#event-toggle>toggle</a></code>
+    </td></tr><tr><td><dfn id=handler-onvolumechange><code>onvolumechange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-volumechange><a href=media.html#event-media-volumechange>volumechange</a></code>
+    </td></tr><tr><td><dfn id=handler-onwaiting><code>onwaiting</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-media-waiting><a href=media.html#event-media-waiting>waiting</a></code>
+
+
+ 
+ 
+ 
+
+ 
+  </td></tr></table>
+
+  <hr>
+
+  <p>The following are the <a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-3>event handlers</a> (and their corresponding <span>event handler event types</span>) 
+  supported by all <a id=event-handlers-on-elements,-document-objects,-and-window-objects:html-elements-2 href=infrastructure.html#html-elements>HTML elements</a> other than <code id=event-handlers-on-elements,-document-objects,-and-window-objects:the-body-element><a href=sections.html#the-body-element>body</a></code> and <code>frameset</code>
+  elements, as both <a href=#event-handler-content-attributes id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handler-content-attributes-2>event handler content attributes</a> and <span>event handler IDL
+  attributes</span>;  supported by all <code>Document</code>
+  objects, as <span>event handler IDL attributes</span>; and 
+  supported by all <code>Window</code> objects, as <span>event handler IDL attributes</span> on the
+  <code>Window</code> objects themselves, and with corresponding <a href=#event-handler-content-attributes id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handler-content-attributes-3>event handler content
+  attributes</a> and <span>event handler IDL attributes</span> exposed on all <code id=event-handlers-on-elements,-document-objects,-and-window-objects:the-body-element-2><a href=sections.html#the-body-element>body</a></code>
+  and <code>frameset</code> elements that are owned by that <code>Window</code> object's <span>associated <code>Document</code></span>:</p>
+
+  <table><thead><tr><th><a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-4>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
+   <tbody></th></tr><tr><td><dfn id=handler-onblur><code>onblur</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-blur><a href=indices.html#event-blur>blur</a></code> 
+    </td></tr><tr><td><dfn id=handler-onerror><code>onerror</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-error><a href=indices.html#event-error>error</a></code>
+    </td></tr><tr><td><dfn id=handler-onfocus><code>onfocus</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-focus><a href=indices.html#event-focus>focus</a></code> 
+    </td></tr><tr><td><dfn id=handler-onload><code>onload</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-load><a href=indices.html#event-load>load</a></code>
+    </td></tr><tr><td><dfn id=handler-onresize><code>onresize</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-resize><a data-x-internal=event-resize href=https://triple-underscore.github.io/cssom-view-ja.html#eventdef-window-resize>resize</a></code>
+    </td></tr><tr><td><dfn id=handler-onscroll><code>onscroll</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-scroll><a data-x-internal=event-scroll href=https://triple-underscore.github.io/cssom-view-ja.html#eventdef-document-scroll>scroll</a></code>
+  </td></tr></table>
+
+  <hr>
+
+  <p>The following are the <a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-5>event handlers</a> (and their corresponding <span>event handler event types</span>) 
+  supported by <code>Window</code> objects, as <span>event handler IDL attributes</span> on the
+  <code>Window</code> objects themselves, and with corresponding <a href=#event-handler-content-attributes id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handler-content-attributes-4>event handler content
+  attributes</a> and <span>event handler IDL attributes</span> exposed on all <code id=event-handlers-on-elements,-document-objects,-and-window-objects:the-body-element-3><a href=sections.html#the-body-element>body</a></code>
+  and <code>frameset</code> elements that are owned by that <code>Window</code> object's <span>associated <code>Document</code></span>:</p>
+
+  <table><thead><tr><th><a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-6>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
+   <tbody></th></tr><tr><td><dfn id=handler-window-onafterprint><code>onafterprint</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-afterprint><a href=indices.html#event-afterprint>afterprint</a></code>
+    </td></tr><tr><td><dfn id=handler-window-onbeforeprint><code>onbeforeprint</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-beforeprint><a href=indices.html#event-beforeprint>beforeprint</a></code>
+    </td></tr><tr><td><dfn id=handler-window-onbeforeunload><code>onbeforeunload</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code>
+    </td></tr><tr><td><dfn id=handler-window-onhashchange><code>onhashchange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-hashchange><a href=indices.html#event-hashchange>hashchange</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onlanguagechange><code>onlanguagechange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-languagechange><a href=indices.html#event-languagechange>languagechange</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onmessage><code>onmessage</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-message><a href=indices.html#event-message>message</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onmessageerror><code>onmessageerror</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-messageerror><a href=indices.html#event-messageerror>messageerror</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onoffline><code>onoffline</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-offline><a href=indices.html#event-offline>offline</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-ononline><code>ononline</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-online><a href=indices.html#event-online>online</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onpagehide><code>onpagehide</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-pagehide><a href=indices.html#event-pagehide>pagehide</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onpageshow><code>onpageshow</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-pageshow><a href=indices.html#event-pageshow>pageshow</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onpopstate><code>onpopstate</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-popstate><a href=indices.html#event-popstate>popstate</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onrejectionhandled><code>onrejectionhandled</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code>
+    </td></tr><tr><td><dfn id=handler-window-onstorage><code>onstorage</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-storage><a href=indices.html#event-storage>storage</a></code> 
+    </td></tr><tr><td><dfn id=handler-window-onunhandledrejection><code>onunhandledrejection</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code>
+    </td></tr><tr><td><dfn id=handler-window-onunload><code>onunload</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-unload><a href=indices.html#event-unload>unload</a></code> 
+  </td></tr></table>
+
+  <hr>
+
+  
+
+  <p>The following are the <a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-7>event handlers</a> (and their corresponding <span>event handler event types</span>) 
+  supported by all <a id=event-handlers-on-elements,-document-objects,-and-window-objects:html-elements-3 href=infrastructure.html#html-elements>HTML elements</a>, as both <a href=#event-handler-content-attributes id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handler-content-attributes-5>event handler content attributes</a>
+  and <span>event handler IDL attributes</span>; and 
+  supported by all <code>Document</code> objects, as <span>event handler IDL attributes</span>:</p>
+
+  <table><thead><tr><th><a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-8>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
+   <tbody></th></tr><tr><td><dfn id=handler-oncut><code>oncut</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-cut><a href=indices.html#event-cut>cut</a></code>
+    </td></tr><tr><td><dfn id=handler-oncopy><code>oncopy</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-copy><a href=indices.html#event-copy>copy</a></code>
+    </td></tr><tr><td><dfn id=handler-onpaste><code>onpaste</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-paste><a href=indices.html#event-paste>paste</a></code>
+  </td></tr></table>
+
+  <p>The following are the <a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-9>event handlers</a> (and their corresponding <span>event handler event types</span>) 
+  supported on <code>Document</code> objects as <span>event handler IDL attributes</span>:</p>
+
+  <table><thead><tr><th><a href=#event-handlers id=event-handlers-on-elements,-document-objects,-and-window-objects:event-handlers-10>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
+   <tbody></th></tr><tr><td><dfn id=handler-onreadystatechange><code>onreadystatechange</code></dfn> </td><td> <code id=event-handlers-on-elements,-document-objects,-and-window-objects:event-readystatechange><a href=indices.html#event-readystatechange>readystatechange</a></code>
+  </td></tr></table>
+
+
+  <h6 id=idl-definitions><span class=secno>8.1.2.2.1</span> IDL definitions<a href=#idl-definitions class=self-link></a></h6>
+
+  
+
+  
+
+
+  <h3 id=windoworworkerglobalscope-mixin><span class=secno>8.2</span> The <code>WindowOrWorkerGlobalScope</code> mixin<a href=#windoworworkerglobalscope-mixin class=self-link></a></h3>
+
+  <p>The <code>WindowOrWorkerGlobalScope</code> mixin is for use of APIs that are to be exposed on
+  <code>Window</code> and <code id=windoworworkerglobalscope-mixin:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> objects.</p>
+
+  <p class=note>Other standards are encouraged to further extend it using <code>partial
+  interface <span>WindowOrWorkerGlobalScope</span> { … };</code> along with an appropriate
+  reference.</p>
+
+  
+
+  <dl class=domintro><dt><var>origin</var> = self . <code id=windoworworkerglobalscope-mixin:dom-origin><a href=#dom-origin>origin</a></code><dd><p>Returns the global object's <a id=windoworworkerglobalscope-mixin:concept-origin href=origin.html#concept-origin>origin</a>, serialized as string.</dl>
+
+  <div class=example>
+   <p>Developers are strongly encouraged to use <code>self.origin</code> over <code>location.origin</code>. The former returns the <a id=windoworworkerglobalscope-mixin:concept-origin-2 href=origin.html#concept-origin>origin</a> of the environment,
+   the latter of the URL of the environment. Imagine the following script executing in a document on
+   <code>https://stargate.example/</code>:</p>
+
+   <pre>var frame = document.createElement("iframe")
+frame.onload = function() {
+  var frameWin = frame.contentWindow
+  console.log(frameWin.location.origin) // "null"
+  console.log(frameWin.origin) // "https://stargate.example"
+}
+document.body.appendChild(frame)</pre>
+
+   <p><code>self.origin</code> is a more reliable security indicator.</p>
+  </div>
+
+  <p>The <dfn id=dom-origin><code>origin</code></dfn> attribute's getter must return this
+  object's <span>relevant settings object</span>'s <span>origin</span>, <span>serialized</span>.</p>
+
+
+  <h3 id=atob><span class=secno>8.3</span> Base64 utility methods<a href=#atob class=self-link></a></h3>
+
+  <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
+  allow developers to transform content to and from the base64 encoding.</p>
+
+  <p class=note>これらAPIにおいて、簡略のために、"b"は"binary"、"a"は"ASCII"を表すと考えることができる。ただし実際には、主に歴史的な理由で、これらの関数の入力と出力の両方にはUnicode文字列である。</p>
+
+  <dl class=domintro><dt><var>result</var> = self . <code id=dom-btoa>btoa</code>( <var>data</var> )<dd>
+
+    <p>入力データを取得し、U+0000からU+00FFまでの範囲で文字のみを含むUnicode文字列の形式で、それぞれ値0x00から0xFFまでを持つバイナリーバイトを表し、そのbase64表現に変換したものを返す。</p>
+
+    <p>Throws an <a id=atob:invalidcharactererror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidcharactererror data-x-internal=invalidcharactererror>"<code>InvalidCharacterError</code>"</a> <code id=atob:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>
+    exception if the input string contains any out-of-range characters.</p>
+
+   <dt><var>result</var> = self . <code id=dom-atob>atob</code>( <var>data</var> )<dd>
+
+    <p>入力データを取得し、base64でエンコードされたバイナリーデータを含むUnicode文字列の形式で、これをデコードし、それぞれ0x00から0xFFまでの値を持つバイナリーバイトを表す、そのバイナリーデータに対応した、範囲U+0000からU+00FFまでの文字から成る文字列を返す。</p>
+
+    <p>Throws an <a id=atob:invalidcharactererror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidcharactererror data-x-internal=invalidcharactererror>"<code>InvalidCharacterError</code>"</a> <code id=atob:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
+    input string is not valid base64 data.</p>
+
+   </dl>
+
+  
+
+
+  <nav><a href=offline.html>← 7.7 Offline Web applications</a> — <a href=index.html>Table of Contents</a> — <a href=dynamic-markup-insertion.html>8.4 Dynamic markup insertion →</a></nav>
+</body></html>

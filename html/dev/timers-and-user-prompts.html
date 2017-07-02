@@ -1,0 +1,131 @@
+<!DOCTYPE html><html class=split lang=ja>
+<script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
+<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold"><link rel=stylesheet href=styles.css>
+<script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script>
+<body>
+  
+  
+  <header id=head class="head with-buttons">
+   <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
+   
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>30 June 2017</span></h2></hgroup>
+   
+  </header>
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=dynamic-markup-insertion.html>← 8.4 Dynamic markup insertion</a> — <a href=index.html>Table of Contents</a> — <a href=system-state.html>8.7 System state and capabilities →</a></nav><ol class=toc><li><ol><li><a href=timers-and-user-prompts.html#timers><span class=secno>8.5</span> Timers</a></li><li><a href=timers-and-user-prompts.html#user-prompts><span class=secno>8.6</span> User prompts</a><ol><li><a href=timers-and-user-prompts.html#simple-dialogs><span class=secno>8.6.1</span> Simple dialogs</a></li><li><a href=timers-and-user-prompts.html#printing><span class=secno>8.6.2</span> Printing</a></li></ol></li></ol></li></ol><h3 id=timers><span class=secno>8.5</span> Timers<a href=#timers class=self-link></a></h3>
+
+  <p><code id=timers:dom-settimeout><a href=#dom-settimeout>setTimeout()</a></code>と<code id=timers:dom-setinterval><a href=#dom-setinterval>setInterval()</a></code>メソッドは、著者がタイマーベースのコールバックをスケジュールできるようにする。</p>
+
+  <dl class=domintro><dt><var>handle</var> = self . <code id=dom-settimeout>setTimeout</code>( <var>handler</var> [, <var>timeout</var> [, <var>arguments</var>... ] ] )<dd>
+
+    <p><var>timeout</var>ミリ秒後に<var>handler</var>を実行するためにタイムアウトをスケジュールする。すべての<var>arguments</var>は直接<var>handler</var>に渡される。</p>
+
+   <dt><var>handle</var> = self . <code id=timers:dom-settimeout-2><a href=#dom-settimeout>setTimeout</a></code>( <var>code</var> [, <var>timeout</var> ] )<dd>
+
+    <p><var>timeout</var>ミリ秒後に<var>code</var>を実行するためにタイムアウトをスケジュールする。</p>
+
+   <dt>self . <code>clearTimeout</code>( <var>handle</var> )<dd>
+
+    <p>Cancels the timeout set with <code id=timers:dom-settimeout-3><a href=#dom-settimeout>setTimeout()</a></code> or <code id=timers:dom-setinterval-2><a href=#dom-setinterval>setInterval()</a></code> identified by <var>handle</var>.</p>
+
+   <dt><var>handle</var> = self . <code id=dom-setinterval>setInterval</code>( <var>handler</var> [, <var>timeout</var> [, <var>arguments</var>... ] ] )<dd>
+
+    <p><var>timeout</var>ミリ秒ごとに<var>handler</var>を実行するためにタイムアウトをスケジュールする。すべての<var>arguments</var>は直接<var>handler</var>に渡される。</p>
+
+   <dt><var>handle</var> = self . <code id=timers:dom-setinterval-3><a href=#dom-setinterval>setInterval</a></code>( <var>code</var> [, <var>timeout</var> ] )<dd>
+
+    <p><var>timeout</var>ミリ秒ごとに<var>code</var>を実行するためにタイムアウトをスケジュールする。</p>
+
+   <dt>self . <code>clearInterval</code>( <var>handle</var> )<dd>
+
+    <p>Cancels the timeout set with <code id=timers:dom-setinterval-4><a href=#dom-setinterval>setInterval()</a></code> or <code id=timers:dom-settimeout-4><a href=#dom-settimeout>setTimeout()</a></code> identified by <var>handle</var>.</p>
+
+   </dl>
+
+  <p class=note>タイマーは入れ子にすることができる。しかし、5つのそのようなネストされたタイマー後に、間隔は少なくとも4ミリ秒であることが強制される。</p>
+
+  <p class=note>このAPIは、タイマーがスケジュールどおり正確に動作することを保証しない。CPU負荷やその他のタスクなどによる遅延が予想される。</p>
+
+  
+
+  <div class=example>
+
+   <p>遅延なく背中合わせに数ミリ秒のタスクを実行するために、飢えたユーザーインターフェイスを避けるために（およびCPUを占有するためのスクリプトを殺すブラウザーを避けるために）ブラウザーに戻って従いつつ、作業を実行する前の簡単なキューの次のタイマー：</p>
+
+   <pre>function doExpensiveWork() {
+  var done = false;
+  // ...
+  // this part of the function takes up to five milliseconds
+  // set done to true if we're done
+  // ...
+  return done;
+}
+
+function rescheduleWork() {
+  var handle = setTimeout(rescheduleWork, 0); // preschedule next iteration
+  if (doExpensiveWork())
+    clearTimeout(handle); // clear the timeout if we don't need it
+}
+
+function scheduleWork() {
+  setTimeout(rescheduleWork, 0);
+}
+
+scheduleWork(); // queues a task to do lots of work</pre>
+
+  </div>
+
+
+  <h3 id=user-prompts><span class=secno>8.6</span> User prompts<a href=#user-prompts class=self-link></a></h3>
+
+  
+
+  <h4 id=simple-dialogs><span class=secno>8.6.1</span> Simple dialogs<a href=#simple-dialogs class=self-link></a></h4>
+
+  <dl class=domintro><dt><var>window</var> . <code id=dom-alert>alert</code>(<var>message</var>)<dd>
+
+    <p>指定されたメッセージを持つモーダルアラートを表示し、それを命令するユーザーに対して待機する。</p>
+
+   <dt><var>result</var> = <var>window</var> . <code id=dom-confirm>confirm</code>(<var>message</var>)<dd>
+
+    <p>与えられたメッセージとともにモーダルOK/Cancelプロンプトを表示し、それを命令するユーザーに対して待機し、ユーザーがOKをクリックした場合はtrueを返し、ユーザーがCancelをクリックする場合はfalseを返す。</p>
+
+   <dt><var>result</var> = <var>window</var> . <code id=dom-prompt>prompt</code>(<var>message</var> [, <var>default</var>] )<dd>
+
+    <p>Displays a modal text control prompt with the given message, waits for the user to dismiss it, and returns the value that the user entered. ユーザーがプロンプトをキャンセルした場合、代わりにnullを返す。2番目の引数が存在する場合、指定された値がデフォルトとして使用される。</p>
+
+   </dl>
+
+  <p class=note>Logic that depends on <span>tasks</span> or <span>microtasks</span>, such as <a href=media.html#media-element id=simple-dialogs:media-element>media elements</a>
+  loading their <a id=simple-dialogs:media-data href=media.html#media-data>media data</a>, are stalled when these methods are invoked.</p>
+
+  
+
+
+  <h4 id=printing><span class=secno>8.6.2</span> Printing<a href=#printing class=self-link></a></h4>
+
+  <dl class=domintro><dt><var>window</var> . <code id=dom-print>print</code>()<dd>
+
+    <p>ページを印刷するようユーザーに指示する。</p>
+
+   </dl>
+
+  
+
+
+  <nav><a href=dynamic-markup-insertion.html>← 8.4 Dynamic markup insertion</a> — <a href=index.html>Table of Contents</a> — <a href=system-state.html>8.7 System state and capabilities →</a></nav>
+</body></html>
