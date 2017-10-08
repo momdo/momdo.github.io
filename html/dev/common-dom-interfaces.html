@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>6 September 2017</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>6 October 2017</span></h2></hgroup>
    
 
    <div id=search>
@@ -80,7 +80,7 @@
 
   <p>この仕様の焦点は、読みやすさとアクセスの容易さである。<a href=https://momdo.github.io/html/>完全なHTML標準</a>とは異なり、この「開発者版」では、ブラウザベンダーだけが知る必要がある情報が削除される。ビルドツールによって完全な仕様から自動的に生成されるため、常に最新のHTML開発と同期する。</p>
 
-  <p>その構想、創出、未来について読むためには、<a href=http://web.archive.org/web/20150220020906/http://archive.germanforblack.com:80/articles/html5-for-web-developers>オリジナルのプレスリリース</a>と、<a href=https://blog.whatwg.org/developers-edition-comeback>再開についてのブログ記事</a>を読まれたい。</p>
+  <p>その構想、創出、未来について読むためには、<a href=https://web.archive.org/web/20150220020906/http://archive.germanforblack.com:80/articles/html5-for-web-developers>オリジナルのプレスリリース</a>と、<a href=https://blog.whatwg.org/developers-edition-comeback>再開についてのブログ記事</a>を読まれたい。</p>
 
   <p>最後に、みんなのためにこのエディションをより良くするために<a href=https://github.com/whatwg/html/labels/dev%20edition>GitHubで貢献されたい</a>。</p>
 
@@ -108,7 +108,30 @@
 
   
 
-  <dl class=domintro><dt><var>collection</var> . <code id=dom-htmlallcollection-length>length</code><dd>
+  <div class=note>
+   <p>Objects that implement the <code>HTMLAllCollection</code> interface have several unusual
+   behaviors, due of the fact that they have an <a id=the-htmlallcollection-interface:ishtmldda href=https://tc39.github.io/ecma262/#sec-IsHTMLDDA-internal-slot data-x-internal=ishtmldda>[[IsHTMLDDA]]</a> internal slot:</p>
+
+   <ul><li><p>The <a href=https://tc39.github.io/ecma262/#sec-toboolean id=the-htmlallcollection-interface:js-toboolean data-x-internal=js-toboolean>ToBoolean</a> abstract operation in JavaScript returns
+    false when given objects implementing the <code>HTMLAllCollection</code> interface.</li><li><p>The <a href=https://tc39.github.io/ecma262/#sec-abstract-equality-comparison id=the-htmlallcollection-interface:js-abstract-equality data-x-internal=js-abstract-equality>Abstract Equality Comparison</a> algorithm,
+    when given objects implementing the <code>HTMLAllCollection</code> interface, returns true when
+    compared to the <code>undefined</code> and <code>null</code> values.
+    (Comparisons using the <a href=https://tc39.github.io/ecma262/#sec-strict-equality-comparison id=the-htmlallcollection-interface:js-strict-equality data-x-internal=js-strict-equality>Strict Equality Comparison</a>
+    algorithm, and Abstract Equality comparisons to other values such as strings or objects, are
+    unaffected.)</li><li><p>The <code id=the-htmlallcollection-interface:js-typeof><a data-x-internal=js-typeof href=https://tc39.github.io/ecma262/#sec-typeof-operator>typeof</a></code> operator in JavaScript returns the string
+    <code>"undefined"</code> when applied to objects implementing the
+    <code>HTMLAllCollection</code> interface.</li></ul>
+
+   <p>These special behaviors are motivated by a desire for compatibility with two classes of legacy
+   content: one that uses the presence of <code>document.all</code> as a
+   way to detect legacy user agents, and one that only supports those legacy user agents and uses
+   the <code>document.all</code> object without testing for its presence
+   first. <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
+  </div>
+
+  
+
+  <dl class=domintro><dt><var>collection</var> . <code>length</code><dd>
     <p>コレクションの要素数を返す。</p>
    <dt><var>element</var> = <var>collection</var> . <code id=dom-htmlallcollection-item>item</code>(<var>index</var>)<dt><var>element</var> = <var>collection</var>(<var>index</var>)<dt><var>element</var> = <var>collection</var>[<var>index</var>]<dd>
     <p>（<a id=the-htmlallcollection-interface:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>ツリー順で</a>決定される）コレクションからのインデックス<var>index</var>とともにアイテムを返す。</p>
@@ -150,7 +173,7 @@
 
   
 
-  <dl class=domintro><dt><var>collection</var> . <code id=dom-htmloptionscollection-length>length</code> [ = <var>value</var> ]<dd>
+  <dl class=domintro><dt><var>collection</var> . <code>length</code> [ = <var>value</var> ]<dd>
     <p>コレクションの要素数を返す。</p>
     <p>より小さい数に設定する場合、対応するコンテナ内の<code id=the-htmloptionscollection-interface:the-option-element-2><a href=form-elements.html#the-option-element>option</a></code>要素数は切り捨てられる。</p>
     <p>より大きい数に設定する場合、そのコンテナに新しい空白の<code id=the-htmloptionscollection-interface:the-option-element-3><a href=form-elements.html#the-option-element>option</a></code>要素を追加する。</p>
@@ -160,17 +183,17 @@
     <p><var>index</var>がコレクションで項目の数より大きい数である場合、対応するコンテナで新しい空白の<code id=the-htmloptionscollection-interface:the-option-element-4><a href=form-elements.html#the-option-element>option</a></code>要素を追加する。
     <p>nullに設定する場合、コレクションからインデックス<var>index</var>で項目を削除する。</p>
     <p><code id=the-htmloptionscollection-interface:the-option-element-5><a href=form-elements.html#the-option-element>option</a></code>要素に設定する場合、コレクションからインデックス<var>index</var>で追加または置換する。</p>
-   <dt><var>element</var> = <var>collection</var> . <code id=dom-htmlcollection-nameditem-2><a data-x-internal=dom-htmlcollection-nameditem href=https://triple-underscore.github.io/DOM4-ja.html#dom-htmlcollection-nameditem>namedItem</a></code>(<var>name</var>)<dt><var>element</var> = <var>collection</var>[<var>name</var>]<dd>
+   <dt><var>element</var> = <var>collection</var> . <code id=the-htmloptionscollection-interface:dom-htmlcollection-nameditem><a data-x-internal=dom-htmlcollection-nameditem href=https://triple-underscore.github.io/DOM4-ja.html#dom-htmlcollection-nameditem>namedItem</a></code>(<var>name</var>)<dt><var>element</var> = <var>collection</var>[<var>name</var>]<dd>
     <p>コレクションからの<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-id id=the-htmloptionscollection-interface:concept-id data-x-internal=concept-id>ID</a>または<code id=the-htmloptionscollection-interface:attr-option-name><a href=obsolete.html#attr-option-name>name</a></code> <var>name</var>とともにアイテムを返す。</p>
     <p>複数のマッチするアイテムが存在する場合、最初のものが返される。</p>
-   <dt><var>collection</var> . <code id=dom-htmloptionscollection-add>add</code>(<var>element</var> [, <var>before</var> ] )<dd>
+   <dt><var>collection</var> . <code>add</code>(<var>element</var> [, <var>before</var> ] )<dd>
     <p><var>before</var>によって与えられるノードの前の<var>要素</var>を挿入する。</p>
     <p><var>before</var>引数は数字でもよく、その場合<var>element</var>はその数字をもつアイテムの前に挿入され、またはコレクションからの要素でもよい。その場合<var>element</var>はその要素の前に挿入される。</p>
     <p><var>before</var>が省略された、null、または範囲外の数字の場合、<var>element</var>はリストの最後に加えられるだろう。</p>
     <p><var>element</var>に挿入された要素が親要素である場合、このメソッドは<a id=the-htmloptionscollection-interface:hierarchyrequesterror href=https://triple-underscore.github.io/WebIDL-ja.html#hierarchyrequesterror data-x-internal=hierarchyrequesterror>"<code>HierarchyRequestError</code>"</a> <code id=the-htmloptionscollection-interface:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>を投げる。</p>
-   <dt><var>collection</var> . <code id=dom-htmloptionscollection-remove>remove</code>(<var>index</var>)<dd>
+   <dt><var>collection</var> . <code>remove</code>(<var>index</var>)<dd>
     <p>コレクションからのインデックス<var>index</var>をもつ項目を削除する。</p>
-   <dt><var>collection</var> . <code id=dom-htmloptionscollection-selectedindex>selectedIndex</code> [ = <var>value</var> ]<dd>
+   <dt><var>collection</var> . <code>selectedIndex</code> [ = <var>value</var> ]<dd>
 
     <p>もしあるならば、最初に選ばれたアイテムのインデックスを、または選択したアイテムが存在しない場合−1を返す。</p>
 
@@ -189,7 +212,7 @@
 
   
 
-  <dl class=domintro><dt><var>strings</var> . <code id=dom-domstringlist-length>length</code><dd><p><var>strings</var>内の文字列の数を返す。<dt><var>strings</var>[<var>index</var>]<dt><var>strings</var> . <code id=dom-domstringlist-item>item</code>(<var>index</var>)<dd><p><var>strings</var>からインデックス<var>index</var>をもつ文字列を返す。<dt><var>strings</var> . <code id=dom-domstringlist-contains>contains</code>(<var>string</var>)<dd><p><var>strings</var>に<var>string</var>が含まれる場合はtrueを返し、そうでなければfalseを返す。</dl>
+  <dl class=domintro><dt><var>strings</var> . <code>length</code><dd><p><var>strings</var>内の文字列の数を返す。<dt><var>strings</var>[<var>index</var>]<dt><var>strings</var> . <code>item</code>(<var>index</var>)<dd><p><var>strings</var>からインデックス<var>index</var>をもつ文字列を返す。<dt><var>strings</var> . <code>contains</code>(<var>string</var>)<dd><p><var>strings</var>に<var>string</var>が含まれる場合はtrueを返し、そうでなければfalseを返す。</dl>
 
   
 
