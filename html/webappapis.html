@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>6 October 2017</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>31 October 2017</span></h2></hgroup>
    
    
 
@@ -245,7 +245,15 @@
    with other <a href=#concept-script id=definitions-2:concept-script>scripts</a> in the same context.<dt>A <dfn data-dfn-for=script id=concept-script-record data-export="">record</dfn><dd><p>Either a <a id=definitions-2:script-record href=https://tc39.github.io/ecma262/#sec-script-records data-x-internal=script-record>Script Record</a>, for <a href=#classic-script id=definitions-2:classic-script>classic
    scripts</a>; a <a id=definitions-2:source-text-module-record href=https://tc39.github.io/ecma262/#sec-source-text-module-records data-x-internal=source-text-module-record>Source Text Module Record</a>, for <a href=#module-script id=definitions-2:module-script>module scripts</a>; or null. In the former two cases, it represents a parsed script;
    null represents a failure parsing.<dt>A <dfn data-dfn-for=script id=concept-script-parse-error data-export="">parse
-   error</dfn><dd><p>A JavaScript value, which has meaning only if the <a href=#concept-script-record id=definitions-2:concept-script-record>record</a> is null.<dt><dfn data-dfn-for=script id=concept-script-script-fetch-options data-export="">Fetch options</dfn><dd>A <a href=#script-fetch-options id=definitions-2:script-fetch-options>script fetch options</a>, containing various options related to fetching this
+   error</dfn><dd><p>A JavaScript value, which has meaning only if the <a href=#concept-script-record id=definitions-2:concept-script-record>record</a> is null, indicating that the corresponding script
+   source text could not be parsed.<dt>An <dfn data-dfn-for=script id=concept-script-error-to-rethrow data-export="">error
+   to rethrow</dfn><dd>
+    <p>A JavaScript value representing an error that will prevent evaluation from succeeding. It
+    will be re-thrown by any attempts to <a href=#calling-scripts>run</a> the script.</p>
+
+    <p class=note>Since this exception value is provided by the JavaScript specification, we know
+    that it is never null, so we use null to signal that no error has occurred.</p>
+   <dt><dfn data-dfn-for=script id=concept-script-script-fetch-options data-export="">Fetch options</dfn><dd>A <a href=#script-fetch-options id=definitions-2:script-fetch-options>script fetch options</a>, containing various options related to fetching this
    script or <a href=#module-script id=definitions-2:module-script-2>module scripts</a> that it imports.<dt>A <dfn data-dfn-for=script id=concept-script-base-url data-export="">base
    URL</dfn><dd><p>A base <a id=definitions-2:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> used for <a href=#resolve-a-module-specifier id=definitions-2:resolve-a-module-specifier>resolving a
    module specifiers</a>. This will either be the URL from which the script was obtained, for
@@ -260,24 +268,6 @@
    information.</dl>
 
   <p>A <dfn id=module-script data-export="">module script</dfn> is another type of <a href=#concept-script id=definitions-2:concept-script-3>script</a>. It has no additional <a href=https://infra.spec.whatwg.org/#struct-item id=definitions-2:struct-item-2 data-x-internal=struct-item>items</a>.</p>
-
-  <p>We say that a <a href=#module-script id=definitions-2:module-script-3>module script</a> <dfn id=concept-module-script-is-errored>is
-  errored</dfn> if either its <a href=#concept-script-record id=definitions-2:concept-script-record-2>record</a> is null, or its
-  <a href=#concept-script-record id=definitions-2:concept-script-record-3>record</a>'s [[Status]] field has the value "<code>errored</code>".</p>
-
-  <p>When a <a href=#module-script id=definitions-2:module-script-4>module script</a> <a href=#concept-module-script-is-errored id=definitions-2:concept-module-script-is-errored>is
-  errored</a>, we say that its <dfn id=concept-module-script-error>error</dfn> is either
-  its <a href=#concept-script-parse-error id=definitions-2:concept-script-parse-error>parse error</a>, when its <a href=#concept-script-record id=definitions-2:concept-script-record-4>record</a> is null, or its <a href=#concept-script-record id=definitions-2:concept-script-record-5>record</a>'s [[ErrorCompletion]] field's [[Value]] field,
-  otherwise.</p>
-
-  <p>To <dfn id=concept-module-script-set-pre-instantiation-error>set the pre-instantiation
-  error</dfn> of a <a href=#module-script id=definitions-2:module-script-5>module script</a> <var>script</var>:</p>
-
-  <ol><li><p>Let <var>moduleRecord</var> be <var>script</var>'s <a href=#concept-script-record id=definitions-2:concept-script-record-6>record</a>.</li><li><p>If <var>moduleRecord</var> is not null, set <var>moduleRecord</var>.[[HostDefined]] to
-   undefined.</li><li><p>Set <var>script</var>'s <a href=#concept-script-record id=definitions-2:concept-script-record-7>record</a> to
-   null.</li><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=definitions-2:concept-script-parse-error-2>parse error</a> to <var>error</var>.</li></ol>
-
-  <p>We say that a <a href=#module-script id=definitions-2:module-script-6>module script</a> <dfn id=concept-module-script-has-instantiated>has instantiated</dfn> if its <a href=#concept-script-record id=definitions-2:concept-script-record-8>record</a> is not null, and its <a href=#concept-script-record id=definitions-2:concept-script-record-9>record</a>'s [[Status]] field is either "<code>instantiated</code>" or "<code>evaluated</code>".</p>
 
   <hr>
 
@@ -582,10 +572,8 @@
    module script</a>.</p>
 
    </li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-3>fetching a single module script</a> asynchronously completes with
-   <var>result</var>:</li><li><p>If <var>result</var> is null, <a href=#concept-module-script-is-errored id=fetching-scripts:concept-module-script-is-errored>is
-   errored</a>, or <a href=#concept-module-script-has-instantiated id=fetching-scripts:concept-module-script-has-instantiated>has instantiated</a>,
-   asynchronously complete this algorithm with <var>result</var>, and abort these steps.</li><li><p>Assert: <var>result</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record>record</a>'s
-   [[Status]] is "<code>uninstantiated</code>".</li><li><p>If the <var>top-level module fetch</var> flag is set, <a href=#fetch-the-descendants-of-and-instantiate-a-module-script id=fetching-scripts:fetch-the-descendants-of-and-instantiate-a-module-script>fetch the descendants of and instantiate</a>
+   <var>result</var>:</li><li><p>If <var>result</var> is null, asynchronously complete this algorithm with null, and abort
+   these steps.</li><li><p>If the <var>top-level module fetch</var> flag is set, <a href=#fetch-the-descendants-of-and-instantiate-a-module-script id=fetching-scripts:fetch-the-descendants-of-and-instantiate-a-module-script>fetch the descendants of and instantiate</a>
    <var>result</var> given <var>destination</var> and <var>visited set</var>. Otherwise,
    <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script>fetch the descendants of</a>
    <var>result</var> given the same arguments.</li><li><p>When the appropriate algorithm asynchronously completes with <var>final result</var>,
@@ -647,9 +635,8 @@
   asynchronously complete with either null (on failure) or with <var>module script</var> (on
   success).</p>
 
-  <ol><li><p>If <var>module script</var> <a href=#concept-module-script-is-errored id=fetching-scripts:concept-module-script-is-errored-2>is
-   errored</a> or <a href=#concept-module-script-has-instantiated id=fetching-scripts:concept-module-script-has-instantiated-2>has instantiated</a>,
-   asynchronously complete this algorithm with <var>module script</var>, and abort these
+  <ol><li><p>If <var>module script</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record>record</a> is null,
+   then asynchronously complete this algorithm with <var>module script</var> and abort these
    steps.</li><li><p>Let <var>record</var> be <var>module script</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record-2>record</a>.</li><li><p>If <var>record</var>.[[RequestedModules]] <a href=https://triple-underscore.github.io/infra-ja.html#list-empty id=fetching-scripts:list-is-empty data-x-internal=list-is-empty>is empty</a>,
    asynchronously complete this algorithm with <var>module script</var>.</li><li><p>Let <var>urls</var> be a new empty <a id=fetching-scripts:list href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>list</a>.</li><li>
     <p><a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=fetching-scripts:list-iterate data-x-internal=list-iterate>For each</a> string <var>requested</var> of
@@ -678,31 +665,13 @@
     <p>These invocations of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-7>internal module script graph fetching procedure</a> should
     be performed in parallel to each other.</p>
 
-    <p>Wait for all invocations of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-8>internal module script graph fetching procedure</a>
-    to asynchronously complete, and let <var>results</var> be a <a id=fetching-scripts:list-2 href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>list</a> of the results,
-    corresponding to the same order they appeared in <var>urls</var>. Then, <a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=fetching-scripts:list-iterate-3 data-x-internal=list-iterate>for each</a> <var>result</var> of <var>results</var>:</p>
+    <p>If any of the invocations of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-8>internal module script graph fetching procedure</a>
+    asynchronously complete with null, asynchronously complete this algorithm with null, aborting
+    these steps.</p>
 
-    <ol><li><p>If <var>result</var> is null, asynchronously complete this algorithm with null, aborting
-     these steps.</li><li><p>If <var>result</var> <a href=#concept-module-script-is-errored id=fetching-scripts:concept-module-script-is-errored-3>is errored</a>,
-     then <a href=#concept-module-script-set-pre-instantiation-error id=fetching-scripts:concept-module-script-set-pre-instantiation-error>set the pre-instantiation
-     error</a> for <var>module script</var> to <var>result</var>'s <a href=#concept-module-script-error id=fetching-scripts:concept-module-script-error>error</a>. Asynchronously complete this algorithm with
-     <var>module script</var>, aborting these steps.</li></ol>
-
-    <div class=note>
-     <p>It is important to wait for all invocations to complete, and then iterate the results in
-     order, so that any fetching or pre-instantiation errors are deterministically surfaced to the
-     developer. Otherwise, a module script graph with multiple errors would surface a
-     nondeterministically chosen error, making debugging quite difficult.</p>
-
-     <p>As an unobservable optimization, implementations can quit early if an invocation returns
-     null or an <a href=#concept-module-script-is-errored id=fetching-scripts:concept-module-script-is-errored-4>errored</a> <a href=#module-script id=fetching-scripts:module-script-10>module
-     script</a>, and all previous invocations have completed already. However, this is optimizing
-     for the rare failure case, so likely not worth the trouble.</p>
-    </div>
-
-    <p>If we've reached this point, all of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-9>internal module script graph fetching
-    procedure</a> invocations have asynchronously completed, with <a href=#module-script id=fetching-scripts:module-script-11>module scripts</a> that are not <a href=#concept-module-script-is-errored id=fetching-scripts:concept-module-script-is-errored-5>errored</a>. Asynchronously complete this algorithm
-    with <var>module script</var>.</p>
+    <p>Otherwise, wait until all of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-9>internal module script graph fetching procedure</a>
+    invocations have asynchronously completed. Asynchronously complete this algorithm with
+    <var>module script</var>.</p>
    </li></ol>
 
   <p>To <dfn id=fetch-the-descendants-of-and-instantiate-a-module-script>fetch the descendants of and instantiate a module script</dfn> <var>module
@@ -713,19 +682,46 @@
   <ol><li><p>If <var>visited set</var> was not given, let it be an empty <a id=fetching-scripts:set href=https://triple-underscore.github.io/infra-ja.html#ordered-set data-x-internal=set>set</a>.</li><li><p><a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-2>Fetch the descendants of</a>
    <var>module script</var>, given <var>destination</var> and <var>visited set</var>.</li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-3>fetching the descendants of a module script</a> asynchronously
    completes with <var>result</var>.</li><li>
-    <p>If <var>result</var> is null or <a href=#concept-module-script-is-errored id=fetching-scripts:concept-module-script-is-errored-6>is
-    errored</a>, then asynchronously complete this algorithm with <var>result</var>.</p>
+    <p>If <var>result</var> is null, then asynchronously complete this algorithm with
+    <var>result</var>.</p>
 
-    <p class=note>In this case, there was an error fetching the descendants, or one of them
-    failed to parse, or was previously marked as errored. We will not attempt to instantiate.</p>
-   </li><li><p>Let <var>record</var> be <var>result</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record-3>record</a>.</li><li>
-    <p>Perform <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-instantiate data-x-internal=js-instantiate>Instantiate</a>().</p>
+    <p class=note>In this case, there was an error fetching one or more of the descendants. We
+    will not attempt to instantiate.</p>
+   </li><li><p>Let <var>parse error</var> be the result of <a href=#finding-the-first-parse-error id=fetching-scripts:finding-the-first-parse-error>finding the first parse error</a>
+   given <var>result</var>.</li><li><p>If <var>parse error</var> is null, then:</p>
 
-    <p class=note>This step will recursively call <a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-instantiate-2 data-x-internal=js-instantiate>Instantiate</a>
-    on all of the module's uninstantiated dependencies.</p>
+    <ol><li><p>Let <var>record</var> be <var>result</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record-3>record</a>.</li><li>
+      <p>Perform <var>record</var>.<a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-instantiate data-x-internal=js-instantiate>Instantiate</a>().</p>
 
-    <p>If this throws an exception, ignore it for now; it is stored as <var>result</var>'s <a href=#concept-module-script-error id=fetching-scripts:concept-module-script-error-2>error</a>, and will be reported when we <a href=#run-a-module-script id=fetching-scripts:run-a-module-script>run</a> <var>result</var>.</p>
-   </li><li><p>Asynchronously complete this algorithm with <var>result</var>.</li></ol>
+      <p class=note>This step will recursively call <a href=https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation id=fetching-scripts:js-instantiate-2 data-x-internal=js-instantiate>Instantiate</a> on all of the module's uninstantiated
+      dependencies.</p>
+
+      <p>If this throws an exception, set <var>result</var>'s <a href=#concept-script-error-to-rethrow id=fetching-scripts:concept-script-error-to-rethrow>error to rethrow</a> to that exception.</p>
+     </li></ol>
+   </li><li><p>Otherwise, set <var>result</var>'s <a href=#concept-script-error-to-rethrow id=fetching-scripts:concept-script-error-to-rethrow-2>error to
+   rethrow</a> to <var>parse error</var>.</li><li><p>Asynchronously complete this algorithm with <var>result</var>.</li></ol>
+
+  <p>To <dfn id=finding-the-first-parse-error>find the first parse error</dfn> given a root
+  <var>moduleScript</var> and an optional <var>discoveredSet</var>:</p>
+
+  <ol><li><p>Let <var>moduleMap</var> be <var>moduleScript</var>'s <a href=#settings-object id=fetching-scripts:settings-object-3>settings object</a>'s
+   <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map-2>module map</a>.</li><li><p>If <var>discoveredSet</var> was not given, let it be an empty <a id=fetching-scripts:set-2 href=https://triple-underscore.github.io/infra-ja.html#ordered-set data-x-internal=set>set</a>.</li><li><p><a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append-2 data-x-internal=list-append>Append</a> <var>moduleScript</var> to
+   <var>discoveredSet</var>.</li><li><p>If <var>moduleScript</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record-4>record</a> is null,
+   then return <var>moduleScript</var>'s <a href=#concept-script-parse-error id=fetching-scripts:concept-script-parse-error>parse
+   error</a>.</li><li><p>Let <var>childSpecifiers</var> be the value of <var>moduleScript</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record-5>record</a>'s [[RequestedModules]] internal slot.</li><li><p>Let <var>childURLs</var> be the <a id=fetching-scripts:list-2 href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>list</a> obtained by calling <a href=#resolve-a-module-specifier id=fetching-scripts:resolve-a-module-specifier-3>resolve a
+   module specifier</a> once for each item of <var>childSpecifiers</var>,
+   given <var>moduleScript</var> and that item. (None of these will ever fail, as otherwise
+   <var>moduleScript</var> would have been marked as itself having a parse error.)</li><li><p>Let <var>childModules</var> be the <a id=fetching-scripts:list-3 href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>list</a> obtained by <a href=https://triple-underscore.github.io/infra-ja.html#map-get id=fetching-scripts:map-get data-x-internal=map-get>getting each value</a> in <var>moduleMap</var> whose key is given by an
+   item of <var>childURLs</var>.</li><li>
+    <p><a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=fetching-scripts:list-iterate-3 data-x-internal=list-iterate>For each</a> <var>childModule</var> of
+    <var>childModules</var>:</p>
+
+    <ol><li><p>Assert: <var>childModule</var> is a <a href=#module-script id=fetching-scripts:module-script-10>module script</a> (i.e., it is not "<code>fetching</code>" or null); by now all <a href=#module-script id=fetching-scripts:module-script-11>module
+     scripts</a> in the graph rooted at <var>moduleScript</var> will have successfully been
+     fetched.</li><li><p>If <var>discoveredSet</var> already <a href=https://triple-underscore.github.io/infra-ja.html#list-contain id=fetching-scripts:list-contains-3 data-x-internal=list-contains>contains</a>
+     <var>childModule</var>, <a id=fetching-scripts:continue href=https://triple-underscore.github.io/infra-ja.html#iteration-continue data-x-internal=continue>continue</a>.</li><li><p>Let <var>childParseError</var> be the result of <a href=#finding-the-first-parse-error id=fetching-scripts:finding-the-first-parse-error-2>finding the first parse
+     error</a> given <var>childModule</var> and <var>discoveredSet</var>.</li><li><p>If <var>childParseError</var> is not null, return <var>childParseError</var>.</li></ol>
+   </li><li><p>Return null.</li></ol>
 
   <h5 id=creating-scripts><span class=secno>8.1.3.3</span> Creating scripts<a href=#creating-scripts class=self-link></a></h5>
 
@@ -737,7 +733,8 @@
   <ol><li><p>If <var>muted errors</var> was not provided, let it be false.</li><li><p>If <a href=#concept-bc-noscript id=creating-scripts:concept-bc-noscript>scripting is disabled</a> for
    <var>settings</var>'s <a href=#responsible-browsing-context id=creating-scripts:responsible-browsing-context>responsible browsing context</a>, then set <var>source</var> to
    the empty string.</li><li><p>Let <var>script</var> be a new <a href=#classic-script id=creating-scripts:classic-script>classic script</a> that this algorithm will
-   subsequently initialize.</li><li><p>Set <var>script</var>'s <a href=#settings-object id=creating-scripts:settings-object>settings object</a> to <var>settings</var>.</li><li><p>Set <var>script</var>'s <a href=#muted-errors id=creating-scripts:muted-errors>muted errors</a> to <var>muted errors</var>.</li><li>
+   subsequently initialize.</li><li><p>Set <var>script</var>'s <a href=#settings-object id=creating-scripts:settings-object>settings object</a> to <var>settings</var>.</li><li><p>Set <var>script</var>'s <a href=#muted-errors id=creating-scripts:muted-errors>muted errors</a> to <var>muted errors</var>.</li><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error>parse error</a> and
+   <a href=#concept-script-error-to-rethrow id=creating-scripts:concept-script-error-to-rethrow>error to rethrow</a> to null.</li><li>
     <p>Let <var>result</var> be <a href=https://tc39.github.io/ecma262/#sec-parse-script id=creating-scripts:js-parsescript data-x-internal=js-parsescript>ParseScript</a>(<var>source</var>,
     <var>settings</var>'s <a href="#environment-settings-object's-realm" id="creating-scripts:environment-settings-object's-realm">Realm</a>,
     <var>script</var>).</p>
@@ -745,9 +742,12 @@
     <p class=note>Passing <var>script</var> as the last parameter here ensures
     <var>result</var>.[[HostDefined]] will be <var>script</var>.</p>
    </li><li>
-    <p>If <var>result</var> is a <a id=creating-scripts:list href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>List</a> of errors, then:</p>
+    <p>If <var>result</var> is a <a id=creating-scripts:list href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>list</a> of errors, then:
 
-    <ol><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error>parse error</a> to
+    
+
+    <ol><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error-2>parse error</a> and
+     its <a href=#concept-script-error-to-rethrow id=creating-scripts:concept-script-error-to-rethrow-2>error to rethrow</a> to
      <var>result</var>[0].</li><li><p>Return <var>script</var>.</li></ol>
    </li><li><p>Set <var>script</var>'s <a href=#concept-script-record id=creating-scripts:concept-script-record>record</a> to
    <var>result</var>.</li><li><p>Set <var>script</var>'s <a href=#concept-script-base-url id=creating-scripts:concept-script-base-url>base URL</a> to
@@ -762,7 +762,8 @@
   <ol><li><p>If <a href=#concept-bc-noscript id=creating-scripts:concept-bc-noscript-2>scripting is disabled</a> for
    <var>settings</var>'s <a href=#responsible-browsing-context id=creating-scripts:responsible-browsing-context-2>responsible browsing context</a>, then set <var>source</var> to
    the empty string.</li><li><p>Let <var>script</var> be a new <a href=#module-script id=creating-scripts:module-script>module script</a> that this algorithm will
-   subsequently initialize.</li><li><p>Set <var>script</var>'s <a href=#settings-object id=creating-scripts:settings-object-2>settings object</a> to <var>settings</var>.</li><li>
+   subsequently initialize.</li><li><p>Set <var>script</var>'s <a href=#settings-object id=creating-scripts:settings-object-2>settings object</a> to <var>settings</var>.</li><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error-3>parse error</a> and
+   <a href=#concept-script-error-to-rethrow id=creating-scripts:concept-script-error-to-rethrow-3>error to rethrow</a> to null.</li><li>
     <p>Let <var>result</var> be <a href=https://tc39.github.io/ecma262/#sec-parsemodule id=creating-scripts:js-parsemodule data-x-internal=js-parsemodule>ParseModule</a>(<var>source</var>,
     <var>settings</var>'s <a href="#environment-settings-object's-realm" id="creating-scripts:environment-settings-object's-realm-2">Realm</a>,
     <var>script</var>).</p>
@@ -770,9 +771,9 @@
     <p class=note>Passing <var>script</var> as the last parameter here ensures
     <var>result</var>.[[HostDefined]] will be <var>script</var>.</p>
    </li><li>
-    <p>If <var>result</var> is a <a id=creating-scripts:list-2 href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>List</a> of errors, then:</p>
+    <p>If <var>result</var> is a <a id=creating-scripts:list-2 href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>list</a> of errors, then:</p>
 
-    <ol><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error-2>parse error</a> to
+    <ol><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error-4>parse error</a> to
      <var>result</var>[0].</li><li><p>Return <var>script</var>.</li></ol>
    </li><li id=validate-requested-module-specifiers>
     <p><a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=creating-scripts:list-iterate data-x-internal=list-iterate>For each</a> string <var>requested</var> of
@@ -782,7 +783,7 @@
      a module specifier</a> given <var>script</var> and <var>requested</var>.</li><li>
       <p>If <var>url</var> is failure, then:</p>
 
-      <ol><li><p>Let <var>error</var> be a new <code id=creating-scripts:typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception.</li><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error-3>parse error</a>
+      <ol><li><p>Let <var>error</var> be a new <code id=creating-scripts:typeerror><a data-x-internal=typeerror href=https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception.</li><li><p>Set <var>script</var>'s <a href=#concept-script-parse-error id=creating-scripts:concept-script-parse-error-5>parse error</a>
        to <var>error</var>.</li><li><p>Return <var>script</var>.</li></ol>
      </li></ol>
 
@@ -801,10 +802,10 @@
   <var>script</var> and an optional <var>rethrow errors</var> boolean:</p>
 
   <ol><li><p>If <var>rethrow errors</var> is not given, let it be false.</li><li><p>Let <var>settings</var> be the <a href=#settings-object id=calling-scripts:settings-object>settings object</a> of <var>script</var>.</li><li><p><a href=#check-if-we-can-run-script id=calling-scripts:check-if-we-can-run-script>Check if we can run script</a> with <var>settings</var>. If this returns "do
-   not run" then return.</li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script>Prepare to run script</a> given <var>settings</var>.</li><li><p>Let <var>evaluationStatus</var> be null.</li><li><p>If <var>script</var>'s <a href=#concept-script-parse-error id=calling-scripts:concept-script-parse-error>parse error</a> is not
-   null, then set <var>evaluationStatus</var> to Completion { [[Type]]: throw, [[Value]]:
-   <var>script</var>'s <a href=#concept-script-parse-error id=calling-scripts:concept-script-parse-error-2>parse error</a>, [[Target]]:
-   empty }.</li><li>
+   not run" then return.</li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script>Prepare to run script</a> given <var>settings</var>.</li><li><p>Let <var>evaluationStatus</var> be null.</li><li><p>If <var>script</var>'s <a href=#concept-script-error-to-rethrow id=calling-scripts:concept-script-error-to-rethrow>error to
+   rethrow</a> is not null, then set <var>evaluationStatus</var> to Completion { [[Type]]: throw,
+   [[Value]]: <var>script</var>'s <a href=#concept-script-error-to-rethrow id=calling-scripts:concept-script-error-to-rethrow-2>error to
+   rethrow</a>, [[Target]]: empty }.</li><li>
     <p>Otherwise, set <var>evaluationStatus</var> to <a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation id=calling-scripts:js-scriptevaluation data-x-internal=js-scriptevaluation>ScriptEvaluation</a>(<var>script</var>'s <a href=#concept-script-record id=calling-scripts:concept-script-record>record</a>).</p>
 
     <p>If <a href=https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation id=calling-scripts:js-scriptevaluation-2 data-x-internal=js-scriptevaluation>ScriptEvaluation</a> does not complete because the
@@ -843,10 +844,10 @@
   <var>script</var>, with an optional <var>rethrow errors</var> boolean:</p>
 
   <ol><li><p>If <var>rethrow errors</var> is not given, let it be false.</li><li><p>Let <var>settings</var> be the <a href=#settings-object id=calling-scripts:settings-object-2>settings object</a> of <var>script</var>.</li><li><p><a href=#check-if-we-can-run-script id=calling-scripts:check-if-we-can-run-script-2>Check if we can run script</a> with <var>settings</var>. If this returns "do
-   not run" then return.</li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script-2>Prepare to run script</a> given <var>settings</var>.</li><li><p>Let <var>evaluationStatus</var> be null.</li><li><p>If <var>script</var> <a href=#concept-module-script-is-errored id=calling-scripts:concept-module-script-is-errored>is errored</a>,
-   then set <var>evaluationStatus</var> to Completion { [[Type]]: throw, [[Value]]:
-   <var>script</var>'s <a href=#concept-module-script-error id=calling-scripts:concept-module-script-error>error</a>, [[Target]]:
-   empty }.</li><li>
+   not run" then return.</li><li><p><a href=#prepare-to-run-script id=calling-scripts:prepare-to-run-script-2>Prepare to run script</a> given <var>settings</var>.</li><li><p>Let <var>evaluationStatus</var> be null.</li><li><p>If <var>script</var>'s <a href=#concept-script-error-to-rethrow id=calling-scripts:concept-script-error-to-rethrow-3>error to
+   rethrow</a> is not null, then set <var>evaluationStatus</var> to Completion { [[Type]]: throw,
+   [[Value]]: <var>script</var>'s <a href=#concept-script-error-to-rethrow id=calling-scripts:concept-script-error-to-rethrow-4>error to
+   rethrow</a>, [[Target]]: empty }.</li><li>
     <p>Otherwise:</p>
 
     <ol><li><p>Let <var>record</var> be <var>script</var>'s <a href=#concept-script-record id=calling-scripts:concept-script-record-2>record</a>.</p>
@@ -1473,9 +1474,9 @@ import "https://example.com/foo/../module2.js";</pre>
    module specifier</a> given <var>referencing script</var> and <var>specifier</var>.</li><li><p>Assert: <var>url</var> is never failure, because <a href=#resolve-a-module-specifier id=hostresolveimportedmodule(referencingscriptormodule,-specifier):resolve-a-module-specifier-2>resolving a module specifier</a> must have been <a href=#validate-requested-module-specifiers>previously successful</a> with these
    same two arguments.</li><li><p>Let <var>resolved module script</var> be <var>moduleMap</var>[<var>url</var>]. (This entry
    must <a href=https://triple-underscore.github.io/infra-ja.html#map-exists id=hostresolveimportedmodule(referencingscriptormodule,-specifier):map-exists data-x-internal=map-exists>exist</a> for us to have gotten to this point.)</li><li><p>Assert: <var>resolved module script</var> is a <a href=#module-script id=hostresolveimportedmodule(referencingscriptormodule,-specifier):module-script>module script</a> (i.e., is not
-   null or "<code>fetching</code>").</li><li><p>Assert: <var>resolved module script</var> is not <a href=#concept-module-script-is-errored id=hostresolveimportedmodule(referencingscriptormodule,-specifier):concept-module-script-is-errored>errored</a>.</p>
+   null or "<code>fetching</code>").</li><li><p>Assert: <var>resolved module script</var>'s <a href=#concept-script-record id=hostresolveimportedmodule(referencingscriptormodule,-specifier):concept-script-record>record</a> is not null.</p>
 
-   </li><li><p>Return <var>resolved module script</var>'s <a href=#concept-script-record id=hostresolveimportedmodule(referencingscriptormodule,-specifier):concept-script-record>record</a>.</li></ol>
+   </li><li><p>Return <var>resolved module script</var>'s <a href=#concept-script-record id=hostresolveimportedmodule(referencingscriptormodule,-specifier):concept-script-record-2>record</a>.</li></ol>
 
   <h6 id=hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability)><span class=secno>8.1.3.8.2</span> <dfn>HostImportModuleDynamically</dfn>(<var>referencingScriptOrModule</var>,
   <var>specifier</var>, <var>promiseCapability</var>)<a href=#hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability) class=self-link></a></h6>
@@ -2118,13 +2119,21 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   <h5 id=event-loop-for-spec-authors><span class=secno>8.1.4.4</span> Dealing with the event loop from other specifications<a href=#event-loop-for-spec-authors class=self-link></a></h5>
 
   <p>Writing specifications that correctly interact with the <a href=#event-loop id=event-loop-for-spec-authors:event-loop>event loop</a> can be tricky.
-  This is compounded by how this specification uses a concurrency-model-independent processing
-  model, so we say things like "<a href=#event-loop id=event-loop-for-spec-authors:event-loop-2>event loop</a>" and "<a id=event-loop-for-spec-authors:in-parallel href=infrastructure.html#in-parallel>in parallel</a>" instead of
-  using more familiar model-specific terms like "main thread" or "on a background thread".</p>
+  This is compounded by how this specification uses concurrency-model-independent terminology, so we
+  say things like "<a href=#event-loop id=event-loop-for-spec-authors:event-loop-2>event loop</a>" and "<a id=event-loop-for-spec-authors:in-parallel href=infrastructure.html#in-parallel>in parallel</a>" instead of using more
+  familiar model-specific terms like "main thread" or "on a background thread".</p>
 
-  <p>The overriding guideline is that any work which would otherwise block the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-3>event
-  loop</a> must instead be performed <a id=event-loop-for-spec-authors:in-parallel-2 href=infrastructure.html#in-parallel>in parallel</a> with it. This includes (but is not
-  limited to):</p>
+  <p>By default, specification text generally runs on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-3>event loop</a>. This falls out
+  from the formal <a href=#event-loop-processing-model>event loop processing model</a>, in that
+  you can eventually trace most algorithms back to a <a href=#concept-task id=event-loop-for-spec-authors:concept-task>task</a> <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task>queued</a> there.</p>
+
+  <p class=example>The algorithm steps for any JavaScript method will be invoked by author code
+  calling that method. And author code can only be run via queued tasks, usually originating
+  somewhere in the <a href=script-processing-model><code>script</code> processing model</a>.</p>
+
+  <p>From this starting point, the overriding guideline is that any work a specification needs to
+  perform that would otherwise block the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-4>event loop</a> must instead be performed <a id=event-loop-for-spec-authors:in-parallel-2 href=infrastructure.html#in-parallel>in
+  parallel</a> with it. This includes (but is not limited to):</p>
 
   <ul><li><p>performing heavy computation;</li><li><p>displaying a user-facing prompt;</li><li><p>performing operations which could require involving outside systems (i.e. "going out of
    process").</li></ul>
@@ -2141,30 +2150,30 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   a specific conversion taking place (often <a href=https://triple-underscore.github.io/WebIDL-ja.html#es-type-mapping id=event-loop-for-spec-authors:concept-idl-convert data-x-internal=concept-idl-convert>via Web IDL</a>).
   <a href=references.html#refsINFRA>[INFRA]</a> <a href=references.html#refsWEBIDL>[WEBIDL]</a></p>
 
-  <p>To affect the world of observable JavaScript objects, then, you must <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task>queue a task</a>
+  <p>To affect the world of observable JavaScript objects, then, you must <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-2>queue a task</a>
   to perform any such manipulations. This ensures your steps are properly interleaved with respect
-  to other things happening on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-4>event loop</a>. Furthermore, you must choose a
-  <a href=#task-source id=event-loop-for-spec-authors:task-source>task source</a> when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-2>queueing a task</a>; this governs the
+  to other things happening on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-5>event loop</a>. Furthermore, you must choose a
+  <a href=#task-source id=event-loop-for-spec-authors:task-source>task source</a> when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-3>queueing a task</a>; this governs the
   relative order of your steps versus others. If you are unsure which <a href=#task-source id=event-loop-for-spec-authors:task-source-2>task source</a> to
   use, pick one of the <a href=#generic-task-sources>generic task sources</a> that sounds most
   applicable.</p>
 
-  <p>Most invocations of <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-3>queue a task</a> implicitly use "the relevant <a href=#event-loop id=event-loop-for-spec-authors:event-loop-5>event
+  <p>Most invocations of <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-4>queue a task</a> implicitly use "the relevant <a href=#event-loop id=event-loop-for-spec-authors:event-loop-6>event
   loop</a>", i.e., the one that is obvious from context. That is because it is very rare for
   algorithms to be invoked in contexts involving multiple event loops. (Unlike contexts involving
   multiple global objects, which happen all the time!) So unless you are writing a specification
   which, e.g., deals with manipulating <a href=workers.html#workers>workers</a>, you can omit this argument
-  when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-4>queueing a task</a>.</p>
+  when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-5>queueing a task</a>.</p>
 
   <p>Putting this all together, we can provide a template for a typical algorithm that needs to do
   work asynchronously:</p>
 
-  <ol><li><p>Do any synchronous setup work, while still on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-6>event loop</a>. This may
-   include converting <a href=https://tc39.github.io/ecma262/#sec-code-realms id=event-loop-for-spec-authors:javascript-realm-2 data-x-internal=javascript-realm>realm-specific</a> JavaScript values into
+  <ol><li><p>Do any synchronous setup work, while still on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-7>event loop</a>. This may
+   include converting <a href=https://tc39.github.io/ecma262/#sec-code-realms id=event-loop-for-spec-authors:javascript-realm-2 data-x-internal=javascript-realm>realm</a>-specific JavaScript values into
    realm-agnostic specification-level values.</li><li><p>Perform a set of potentially-expensive steps <a id=event-loop-for-spec-authors:in-parallel-5 href=infrastructure.html#in-parallel>in parallel</a>, operating entirely on
-   realm-agnostic values, and producing a realm-agnostic result.</li><li><p><a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-5>Queue a task</a>, on a specified <a href=#task-source id=event-loop-for-spec-authors:task-source-3>task source</a>, to convert the
+   realm-agnostic values, and producing a realm-agnostic result.</li><li><p><a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-6>Queue a task</a>, on a specified <a href=#task-source id=event-loop-for-spec-authors:task-source-3>task source</a>, to convert the
    realm-agnostic result back into observable effects on the observable world of JavaScript objects
-   on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-7>event loop</a>.</li></ol>
+   on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-8>event loop</a>.</li></ol>
 
   <div id=example-event-loop-using-algorithm class=example>
 
@@ -2189,7 +2198,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
         <var>encryptedURLs</var>.</p>
        </li></ol>
       </li><li>
-       <p><a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-6>Queue a task</a>, on the <a href=#networking-task-source id=event-loop-for-spec-authors:networking-task-source>networking task source</a>, to perform the
+       <p><a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-7>Queue a task</a>, on the <a href=#networking-task-source id=event-loop-for-spec-authors:networking-task-source>networking task source</a>, to perform the
        following steps:</p>
 
        <ol><li><p>Let <var>array</var> be the result of <a href=https://triple-underscore.github.io/WebIDL-ja.html#es-type-mapping id=event-loop-for-spec-authors:concept-idl-convert-2 data-x-internal=concept-idl-convert>converting</a> <var>encryptedURLs</var> to a JavaScript
@@ -2199,7 +2208,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
    <p>Here are several things to notice about this algorithm:</p>
 
-   <ul><li><p>It does its URL parsing up front, on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-8>event loop</a>, before going to the
+   <ul><li><p>It does its URL parsing up front, on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-9>event loop</a>, before going to the
     <a id=event-loop-for-spec-authors:in-parallel-7 href=infrastructure.html#in-parallel>in parallel</a> steps. This is necessary, since parsing depends on the <a href=#current-settings-object id=event-loop-for-spec-authors:current-settings-object-2>current
     settings object</a>, which would no longer be current after going <a id=event-loop-for-spec-authors:in-parallel-8 href=infrastructure.html#in-parallel>in
     parallel</a>.</li><li><p>Alternately, it could have saved a reference to the <a href=#current-settings-object id=event-loop-for-spec-authors:current-settings-object-3>current settings
@@ -2211,9 +2220,9 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
     strings</a> from the initial steps to the <a id=event-loop-for-spec-authors:in-parallel-10 href=infrastructure.html#in-parallel>in parallel</a> steps. This is OK, as
     both <a href=https://triple-underscore.github.io/infra-ja.html#list id=event-loop-for-spec-authors:list-5 data-x-internal=list>lists</a> and <a href=https://triple-underscore.github.io/infra-ja.html#javascript-string id=event-loop-for-spec-authors:javascript-string-3 data-x-internal=javascript-string>JavaScript
     strings</a> are <a href=https://tc39.github.io/ecma262/#sec-code-realms id=event-loop-for-spec-authors:javascript-realm-3 data-x-internal=javascript-realm>realm</a>-agnostic.</li><li><p>It performs "expensive computation" (waiting for 100 milliseconds per input URL) during
-    the <a id=event-loop-for-spec-authors:in-parallel-11 href=infrastructure.html#in-parallel>in parallel</a> steps, thus not blocking the main <a href=#event-loop id=event-loop-for-spec-authors:event-loop-9>event loop</a>.</li><li><p>Promises, as observable JavaScript objects, are never created and manipulated during the
+    the <a id=event-loop-for-spec-authors:in-parallel-11 href=infrastructure.html#in-parallel>in parallel</a> steps, thus not blocking the main <a href=#event-loop id=event-loop-for-spec-authors:event-loop-10>event loop</a>.</li><li><p>Promises, as observable JavaScript objects, are never created and manipulated during the
     <a id=event-loop-for-spec-authors:in-parallel-12 href=infrastructure.html#in-parallel>in parallel</a> steps. <var>p</var> is created before entering those steps, and then is
-    manipulated during a <a href=#concept-task id=event-loop-for-spec-authors:concept-task>task</a> that is <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-7>queued</a> specifically for that purpose.</li><li><p>The creation of a JavaScript array object also happens during the queued task, and is
+    manipulated during a <a href=#concept-task id=event-loop-for-spec-authors:concept-task-2>task</a> that is <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-8>queued</a> specifically for that purpose.</li><li><p>The creation of a JavaScript array object also happens during the queued task, and is
     careful to specify which realm it creates the array in since that is no longer obvious from
     context.</li></ul>
 
@@ -2225,7 +2234,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
    input, into the realm-agnostic <code>sequence</code>&lt;<code id=event-loop-for-spec-authors:idl-usvstring-2><a data-x-internal=idl-usvstring href=https://triple-underscore.github.io/WebIDL-ja.html#idl-USVString>USVString</a></code>&gt; Web IDL type, which we then treat as a
    <a id=event-loop-for-spec-authors:list-6 href=https://triple-underscore.github.io/infra-ja.html#list data-x-internal=list>list</a> of <a href=https://triple-underscore.github.io/infra-ja.html#scalar-value-string id=event-loop-for-spec-authors:scalar-value-string-2 data-x-internal=scalar-value-string>scalar value strings</a>. So depending
    on how your specification is structured, there may be other implicit steps happening on the main
-   <a href=#event-loop id=event-loop-for-spec-authors:event-loop-10>event loop</a> that play a part in this whole process of getting you ready to go
+   <a href=#event-loop id=event-loop-for-spec-authors:event-loop-11>event loop</a> that play a part in this whole process of getting you ready to go
    <a id=event-loop-for-spec-authors:in-parallel-13 href=infrastructure.html#in-parallel>in parallel</a>.</p>
 
   </div>
@@ -2703,6 +2712,8 @@ typedef <a href=#onbeforeunloadeventhandlernonnull id=event-handler-attributes:o
   </td></tr></table>
 
 
+  
+
   <h6 id=idl-definitions><span class=secno>8.1.5.2.1</span> IDL定義<a href=#idl-definitions class=self-link></a></h6>
 
   <pre class=idl>[Exposed=Window,
@@ -2801,8 +2812,6 @@ interface <dfn id=documentandelementeventhandlers>DocumentAndElementEventHandler
   attribute <a href=#eventhandler id=idl-definitions:eventhandler-79>EventHandler</a> <a href=#handler-onpaste id=idl-definitions:handler-onpaste>onpaste</a>;
 };</pre>
 
-  
-
   <h5 id=event-firing><span class=secno>8.1.5.3</span> Event firing<a href=#event-firing class=self-link></a></h5>
 
   <p>Certain operations and methods are defined as firing events on elements. For example, the <code id=event-firing:dom-click><a href=interaction.html#dom-click>click()</a></code> method on the <code id=event-firing:htmlelement><a href=dom.html#htmlelement>HTMLElement</a></code> interface is defined as
@@ -2861,7 +2870,7 @@ interface <dfn id=windoworworkerglobalscope>WindowOrWorkerGlobalScope</dfn> {
 <a id=windoworworkerglobalscope-mixin:window-2 href=window-object.html#window>Window</a> implements <a href=#windoworworkerglobalscope id=windoworworkerglobalscope-mixin:windoworworkerglobalscope-4>WindowOrWorkerGlobalScope</a>;
 <a id=windoworworkerglobalscope-mixin:workerglobalscope-2 href=workers.html#workerglobalscope>WorkerGlobalScope</a> implements <a href=#windoworworkerglobalscope id=windoworworkerglobalscope-mixin:windoworworkerglobalscope-5>WindowOrWorkerGlobalScope</a>;</pre>
 
-  <dl class=domintro><dt><var>origin</var> = self . <code id=windoworworkerglobalscope-mixin:dom-origin-2><a href=#dom-origin>origin</a></code><dd><p>Returns the global object's <a id=windoworworkerglobalscope-mixin:concept-origin href=origin.html#concept-origin>origin</a>, serialized as string.</dl>
+  <dl class=domintro><dt><var>origin</var> = self . <code id=dom-origin-dev><a href=#dom-origin>origin</a></code><dd><p>Returns the global object's <a id=windoworworkerglobalscope-mixin:concept-origin href=origin.html#concept-origin>origin</a>, serialized as string.</dl>
 
   <div class=example>
    <p>Developers are strongly encouraged to use <code>self.origin</code> over <code>location.origin</code>. The former returns the <a id=windoworworkerglobalscope-mixin:concept-origin-2 href=origin.html#concept-origin>origin</a> of the environment,
@@ -2890,14 +2899,14 @@ document.body.appendChild(frame)</pre>
 
   <p class=note>これらAPIにおいて、簡略のために、"b"は"binary"、"a"は"ASCII"を表すと考えることができる。ただし実際には、主に歴史的な理由で、これらの関数の入力と出力の両方にはUnicode文字列である。</p>
 
-  <dl class=domintro><dt><var>result</var> = self . <code id=atob:dom-btoa-2><a href=#dom-btoa>btoa</a></code>( <var>data</var> )<dd>
+  <dl class=domintro><dt><var>result</var> = self . <code id=dom-btoa-dev><a href=#dom-btoa>btoa</a></code>( <var>data</var> )<dd>
 
     <p>入力データを取得し、U+0000からU+00FFまでの範囲で文字のみを含むUnicode文字列の形式で、それぞれ値0x00から0xFFまでを持つバイナリーバイトを表し、そのbase64表現に変換したものを返す。</p>
 
     <p>Throws an <a id=atob:invalidcharactererror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidcharactererror data-x-internal=invalidcharactererror>"<code>InvalidCharacterError</code>"</a> <code id=atob:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>
     exception if the input string contains any out-of-range characters.</p>
 
-   <dt><var>result</var> = self . <code id=atob:dom-atob-2><a href=#dom-atob>atob</a></code>( <var>data</var> )<dd>
+   <dt><var>result</var> = self . <code id=dom-atob-dev><a href=#dom-atob>atob</a></code>( <var>data</var> )<dd>
 
     <p>入力データを取得し、base64でエンコードされたバイナリーデータを含むUnicode文字列の形式で、これをデコードし、それぞれ0x00から0xFFまでの値を持つバイナリーバイトを表す、そのバイナリーデータに対応した、範囲U+0000からU+00FFまでの文字から成る文字列を返す。</p>
 
