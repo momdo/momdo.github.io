@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>31 October 2017</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>5 December 2017</span></h2></hgroup>
    
    
 
@@ -467,7 +467,7 @@ console.assert(iframeWindow.frameElement === null);
   <ol><li><p>If <var>A</var> is not the same <a href=#browsing-context id=security-nav:browsing-context-5>browsing context</a> as <var>B</var>, and <var>A</var> is not one of the <a href=#ancestor-browsing-context id=security-nav:ancestor-browsing-context-2>ancestor browsing contexts</a> of <var>B</var>, and <var>B</var>
    is not a <a href=#top-level-browsing-context id=security-nav:top-level-browsing-context-4>top-level browsing context</a>, and <var>A</var>'s <a href=#active-document id=security-nav:active-document-5>active
    document</a>'s <a id=security-nav:active-sandboxing-flag-set href=origin.html#active-sandboxing-flag-set>active sandboxing flag set</a> has its <a id=security-nav:sandboxed-navigation-browsing-context-flag href=origin.html#sandboxed-navigation-browsing-context-flag>sandboxed navigation
-   browsing context flag</a> set, then abort these steps negatively.</li><li>
+   browsing context flag</a> set, then return negatively.</li><li>
     <p>Otherwise, if <var>B</var> is a <a href=#top-level-browsing-context id=security-nav:top-level-browsing-context-5>top-level browsing context</a>, and is one of the
     <a href=#ancestor-browsing-context id=security-nav:ancestor-browsing-context-3>ancestor browsing contexts</a> of <var>A</var>,
     then:</p>
@@ -478,13 +478,13 @@ console.assert(iframeWindow.frameElement === null);
      steps negatively.</li><li><p>Otherwise, If this algorithm is not <a id=security-nav:triggered-by-user-activation-2 href=interaction.html#triggered-by-user-activation>triggered by user activation</a> and
      <var>A</var>'s <a href=#active-document id=security-nav:active-document-7>active document</a>'s <a id=security-nav:active-sandboxing-flag-set-3 href=origin.html#active-sandboxing-flag-set>active sandboxing flag set</a> has its
      <a id=security-nav:sandboxed-top-level-navigation-without-user-activation-browsing-context-flag href=origin.html#sandboxed-top-level-navigation-without-user-activation-browsing-context-flag>sandboxed top-level navigation without user activation browsing context flag</a> set,
-     then abort these steps negatively.</li></ol>
+     then return negatively.</li></ol>
    </li><li><p>Otherwise, if <var>B</var> is a <a href=#top-level-browsing-context id=security-nav:top-level-browsing-context-6>top-level browsing context</a>, and is
    neither <var>A</var> nor one of the <a href=#ancestor-browsing-context id=security-nav:ancestor-browsing-context-4>ancestor
    browsing contexts</a> of <var>A</var>, and <var>A</var>'s
    <code id=security-nav:document><a href=dom.html#document>Document</a></code>'s <a id=security-nav:active-sandboxing-flag-set-4 href=origin.html#active-sandboxing-flag-set>active sandboxing flag set</a> has its <a id=security-nav:sandboxed-navigation-browsing-context-flag-2 href=origin.html#sandboxed-navigation-browsing-context-flag>sandboxed
    navigation browsing context flag</a> set, and <var>A</var> is not the <a id=security-nav:one-permitted-sandboxed-navigator href=origin.html#one-permitted-sandboxed-navigator>one
-   permitted sandboxed navigator</a> of <var>B</var>, then abort these steps
+   permitted sandboxed navigator</a> of <var>B</var>, then return
    negatively.</li><li><p>Otherwise, terminate positively!</li></ol>
 
   <hr>
@@ -922,7 +922,7 @@ console.assert(iframeWindow.frameElement === null);
          an anonymous built-in function, created in the <a id=crossorigingetownpropertyhelper-(-o,-p-):current-realm-record href=https://tc39.github.io/ecma262/#current-realm data-x-internal=current-realm-record>current Realm Record</a>, that
          performs the same steps as the IDL operation <var>P</var> on object <var>O</var>.</li><li><p>Set <var>crossOriginDesc</var> to <a id=crossorigingetownpropertyhelper-(-o,-p-):propertydescriptor-2 href=https://tc39.github.io/ecma262/#sec-property-descriptor-specification-type data-x-internal=propertydescriptor>PropertyDescriptor</a>{
          [[Value]]: <var>value</var>,
-         [[Enumerable]]: true,
+         [[Enumerable]]: false,
          [[Writable]]: false,
          [[Configurable]]: true }.</li></ol>
        </li><li>
@@ -937,7 +937,7 @@ console.assert(iframeWindow.frameElement === null);
          <var>O</var>.</li><li><p>Set <var>crossOriginDesc</var> to <a id=crossorigingetownpropertyhelper-(-o,-p-):propertydescriptor-3 href=https://tc39.github.io/ecma262/#sec-property-descriptor-specification-type data-x-internal=propertydescriptor>PropertyDescriptor</a>{
          [[Get]]: <var>crossOriginGet</var>,
          [[Set]]: <var>crossOriginSet</var>,
-         [[Enumerable]]: true,
+         [[Enumerable]]: false,
          [[Configurable]]: true }.</li></ol>
        </li><li><p>Create an entry in the value of the <a href=#crossoriginpropertydescriptormap id=crossorigingetownpropertyhelper-(-o,-p-):crossoriginpropertydescriptormap-2>[[CrossOriginPropertyDescriptorMap]]</a>
        internal slot of <var>O</var> with key <var>crossOriginKey</var> and value
@@ -951,6 +951,9 @@ console.assert(iframeWindow.frameElement === null);
   navigation, it is required that the property be configurable. (However, see <a href=https://github.com/tc39/ecma262/issues/672>tc39/ecma262 issue #672</a> and references to it
   elsewhere in this specification for cases where we are not able to preserve these invariants, for
   compatibility with existing Web content.) <a href=references.html#refsJAVASCRIPT>[JAVASCRIPT]</a></p>
+
+  <p class=note>The reason the property descriptors are non-enumerable, despite this mismatching
+  the same-origin behavior, is for compatibility with existing Web content. See <a href=https://github.com/whatwg/html/issues/3183>issue #3183</a> for details.</p>
 
   <h5 id=crossoriginget-(-o,-p,-receiver-)><span class=secno>7.2.3.4</span> <dfn>CrossOriginGet</dfn> ( <var>O</var>, <var>P</var>, <var>Receiver</var> )<a href=#crossoriginget-(-o,-p,-receiver-) class=self-link></a></h5>
 
