@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>5 December 2017</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>9 February 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -228,41 +228,37 @@
 
   <h5 id=navigating-auxiliary-browsing-contexts-in-the-dom><span class=secno>7.1.2.1</span> DOM内の補助ブラウジングコンテキストを操作する<a href=#navigating-auxiliary-browsing-contexts-in-the-dom class=self-link></a></h5>
 
-  <p>The <dfn id=dom-opener><code>opener</code></dfn> IDL attribute on the <code>Window</code>
-  object, on getting, must return the <code>WindowProxy</code> object of the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context>browsing
-  context</a> from which the current <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-2>browsing context</a> was created (its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context>opener
-  browsing context</a>), if there is one, if it is still available, and if the current
-  <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-3>browsing context</a> has not <i id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener><a href=#disowned-its-opener>disowned its opener</a></i>;
-  otherwise, it must return null. On setting, if the new value is null then the current
-  <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-4>browsing context</a> must <dfn id=disowned-its-opener data-export="">disown its
-  opener</dfn>; if the new value is anything else then the user agent must
+  <p>An <a href=#auxiliary-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:auxiliary-browsing-context>auxiliary browsing context</a> can be <dfn id=disowned-its-opener>disowned</dfn>.</p>
 
-    
-    call the [[DefineOwnProperty]] internal method of the <code>Window</code> object, passing the
-    property name "<code>opener</code>" as the property key, and the Property Descriptor {
-    [[Value]]: <var>value</var>, [[Writable]]: true, [[Enumerable]]: true,
-    [[Configurable]]: true } as the property descriptor,
-    
+  <p>The <dfn id=dom-opener><code>opener</code></dfn> attribute's getter, must run these
+  steps:</p>
 
-  where <var>value</var> is the new value.</p>
+  <ol><li><p>If the current <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context>browsing context</a> is <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener>disowned</a>, then return
+   null.</li><li><p>If the current <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-2>browsing context</a> has no <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context>opener browsing context</a>,
+   then return null.</li><li><p>Return the current <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-3>browsing context</a>'s <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-2>opener browsing context</a>'s
+   <code>WindowProxy</code> object.</li></ol>
 
- <div class=note>
-  <p>If a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-5>browsing context</a> has <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-2>disowned its
-  opener</a>, the value of its <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener><a href=#dom-opener>window.opener</a></code> is <code>null</code>. That prevents scripts in the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-6>browsing context</a> from changing
-  any properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-2>opener browsing context</a>'s <code>Window</code> (i.e., the window
-  from which the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-7>browsing context</a> was created).</p>
+  <p>The <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener><a href=#dom-opener>opener</a></code> attribute's setter, must run these steps:</p>
 
-  <p>Otherwise, if a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-8>browsing context</a> has <em>not</em> <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-3>disowned its
-  opener</a>, then scripts in that <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-9>browsing context</a> can use <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener-2><a href=#dom-opener>window.opener</a></code> to change properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-3>opener browsing
-  context</a>'s <code>Window</code>. For example, a script running in the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-10>browsing
-  context</a> can change the value of <code>window.opener.location</code>, causing the
-  <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-4>opener browsing context</a> to navigate to a completely different document.</p>
- </div>
+  <ol><li><p>If the given value is null, then <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-2>disown</a> the current
+   <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-4>browsing context</a> and return.</li><li><p>Return the result of calling <a id=navigating-auxiliary-browsing-contexts-in-the-dom:ordinarydefineownproperty href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty data-x-internal=ordinarydefineownproperty>OrdinaryDefineOwnProperty</a>(this <code>Window</code> object, "<code>opener</code>", { [[Value]]: the given value, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: true }). 例外を再度投げる。</li></ol>
+
+  <div class=note>
+   <p>If a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-5>browsing context</a> is <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-3>disowned</a>, its <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener-2><a href=#dom-opener>window.opener</a></code> attribute is null. That prevents scripts in the
+   <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-6>browsing context</a> from changing any properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-3>opener browsing
+   context</a>'s <code>Window</code> object (i.e., the <code>Window</code> object from which the
+   <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-7>browsing context</a> was created).</p>
+
+   <p>Otherwise, if a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-8>browsing context</a> is not <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-4>disowned</a>, then scripts in
+   that <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-9>browsing context</a> can use <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener-3><a href=#dom-opener>window.opener</a></code> to
+   change properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-4>opener browsing context</a>'s <code>Window</code> object. For
+   example, a script running in the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-10>browsing context</a> can change the value of <code>window.opener.location</code>, causing the <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-5>opener browsing context</a> to
+   navigate to a completely different document.</p>
+  </div>
 
 
 
   
-
 
 
   

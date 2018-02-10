@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>5 December 2017</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>9 February 2018</span></h2></hgroup>
    
    
 
@@ -586,33 +586,7 @@ o.myself = o;</pre>
     <p class=note>The purpose of the <var>memory</var> map is to avoid deserializing objects
     twice. This ends up preserving cycles and the identity of duplicate objects in graphs.</p>
    </li><li><p>If <var>memory</var>[<var>serialized</var>] <a href=https://triple-underscore.github.io/infra-ja.html#map-exists id=structureddeserialize:map-exists data-x-internal=map-exists>exists</a>, then
-   return <var>memory</var>[<var>serialized</var>].</li><li><p>Let <var>deep</var> be false.</li><li><p>Let <var>value</var> be an uninitialized value.</li><li>
-    <p>If <var>serialized</var> contains a [[TransferConsumed]] field, then:</p>
-
-    <ol><li><p>Assert: <var>serialized</var>.[[TransferConsumed]] is false. (It must be impossible to
-     get in a situation where <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-2>StructuredDeserialize</a> is being called multiple times on
-     the same serialization, if that serialization contains transfer data holders.)</li><li><p>Set <var>serialized</var>.[[TransferConsumed]] to true.</li><li>
-      <p>If <var>serialized</var>.[[Type]] is "ArrayBuffer", then set <var>value</var> to a new
-      ArrayBuffer object in <var>targetRealm</var> whose [[ArrayBufferData]] internal slot value is
-      <var>serialized</var>.[[ArrayBufferData]], and whose [[ArrayBufferByteLength]] internal slot
-      value is <var>serialized</var>.[[ArrayBufferByteLength]].</p>
-
-      <p class=note>In cases where the original memory occupied by [[ArrayBufferData]] is
-      accessible during the deserialization, this step is unlikely to throw an exception, as no new
-      memory needs to be allocated: the memory occupied by [[ArrayBufferData]] is instead just
-      getting transferred into the new ArrayBuffer. This could be true, for example, when both the
-      source and target Realms are in the same process.</p>
-     </li><li>
-      <p>Otherwise:</p>
-
-      <ol><li><p>Let <var>interfaceName</var> be <var>serialized</var>.[[Type]].</li><li><p>If the interface identified by <var>interfaceName</var> is not exposed in
-       <var>targetRealm</var>, then throw a <a id=structureddeserialize:datacloneerror href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a>
-       <code id=structureddeserialize:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Set <var>value</var> to a new instance of the interface identified by
-       <var>interfaceName</var>, created in <var>targetRealm</var>.</li><li><p>Perform the appropriate <a href=#transfer-receiving-steps id=structureddeserialize:transfer-receiving-steps>transfer-receiving steps</a> for the interface
-       identified by <var>interfaceName</var> given <var>serialized</var> and
-       <var>value</var>.</li></ol>
-     </li></ol>
-   </li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "primitive", then set <var>value</var> to
+   return <var>memory</var>[<var>serialized</var>].</li><li><p>Let <var>deep</var> be false.</li><li><p>Let <var>value</var> be an uninitialized value.</li><li><p>If <var>serialized</var>.[[Type]] is "primitive", then set <var>value</var> to
    <var>serialized</var>.[[Value]].</p>
 
    </li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "Boolean", then set <var>value</var> to a new Boolean object in
@@ -632,7 +606,7 @@ o.myself = o;</pre>
 
     <ol><li><p>If <var>targetRealm</var>'s corresponding <a id=structureddeserialize:agent-cluster href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a> is not
      <var>serialized</var>.[[AgentCluster]], then then throw a
-     <a id=structureddeserialize:datacloneerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structureddeserialize:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Otherwise, set <var>value</var> to a new SharedArrayBuffer object in
+     <a id=structureddeserialize:datacloneerror href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structureddeserialize:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Otherwise, set <var>value</var> to a new SharedArrayBuffer object in
      <var>targetRealm</var> whose [[ArrayBufferData]] internal slot value is
      <var>serialized</var>.[[ArrayBufferData]] and whose [[ArrayBufferByteLength]] internal slot
      value is <var>serialized</var>.[[ArrayBufferByteLength]].</li></ol>
@@ -643,7 +617,7 @@ o.myself = o;</pre>
     value is <var>serialized</var>.[[ArrayBufferByteLength]].</p>
 
     <p>If this throws an exception, catch it, and then throw a
-    <a id=structureddeserialize:datacloneerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structureddeserialize:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</p>
+    <a id=structureddeserialize:datacloneerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structureddeserialize:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</p>
 
     <p class=note>This step might throw an exception if there is not enough memory available to
     create such an ArrayBuffer object.</p>
@@ -651,7 +625,7 @@ o.myself = o;</pre>
     <p>Otherwise, if <var>serialized</var>.[[Type]] is "ArrayBufferView", then:</p>
 
     <ol><li><p>Let <var>deserializedArrayBuffer</var> be ?
-     <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-3>StructuredDeserialize</a>(<var>serialized</var>.[[ArrayBufferSerialized]],
+     <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-2>StructuredDeserialize</a>(<var>serialized</var>.[[ArrayBufferSerialized]],
      <var>targetRealm</var>, <var>memory</var>).</li><li><p>If <var>serialized</var>.[[Constructor]] is "DataView", then set <var>value</var> to a
      new DataView object in <var>targetRealm</var> whose [[ViewedArrayBuffer]] internal slot value
      is <var>deserializedArrayBuffer</var>, whose [[ByteLength]] internal slot value is
@@ -687,8 +661,8 @@ o.myself = o;</pre>
     <p>Otherwise:</p>
 
     <ol><li><p>Let <var>interfaceName</var> be <var>serialized</var>.[[Type]].</li><li><p>If the interface identified by <var>interfaceName</var> is not exposed in
-     <var>targetRealm</var>, then throw a <a id=structureddeserialize:datacloneerror-4 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a>
-     <code id=structureddeserialize:domexception-4><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Set <var>value</var> to a new instance of the interface identified by
+     <var>targetRealm</var>, then throw a <a id=structureddeserialize:datacloneerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a>
+     <code id=structureddeserialize:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Set <var>value</var> to a new instance of the interface identified by
      <var>interfaceName</var>, created in <var>targetRealm</var>.</p>
 
      </li><li><p>Set <var>deep</var> to true.</li></ol>
@@ -704,9 +678,9 @@ o.myself = o;</pre>
         <var>entry</var> of <var>serialized</var>.[[MapData]]:</p>
 
         <ol><li><p>Let <var>deserializedKey</var> be ?
-         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-4>StructuredDeserialize</a>(<var>entry</var>.[[Key]], <var>targetRealm</var>,
+         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-3>StructuredDeserialize</a>(<var>entry</var>.[[Key]], <var>targetRealm</var>,
          <var>memory</var>).</li><li><p>Let <var>deserializedValue</var> be ?
-         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-5>StructuredDeserialize</a>(<var>entry</var>.[[Value]], <var>targetRealm</var>,
+         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-4>StructuredDeserialize</a>(<var>entry</var>.[[Value]], <var>targetRealm</var>,
          <var>memory</var>).</li><li><p><a href=https://infra.spec.whatwg.org/#list-append id=structureddeserialize:list-append data-x-internal=list-append>Append</a> { [[Key]]: <var>deserializedKey</var>,
          [[Value]]: <var>deserializedValue</var> } to <var>value</var>.[[MapData]].</li></ol>
        </li></ol>
@@ -718,7 +692,7 @@ o.myself = o;</pre>
         <var>serialized</var>.[[SetData]]:</p>
 
         <ol><li><p>Let <var>deserializedEntry</var> be ?
-         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-6>StructuredDeserialize</a>(<var>entry</var>, <var>targetRealm</var>,
+         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-5>StructuredDeserialize</a>(<var>entry</var>, <var>targetRealm</var>,
          <var>memory</var>).</li><li><p><a href=https://infra.spec.whatwg.org/#list-append id=structureddeserialize:list-append-2 data-x-internal=list-append>Append</a> <var>deserializedEntry</var> to
          <var>value</var>.[[SetData]].</li></ol>
        </li></ol>
@@ -730,7 +704,7 @@ o.myself = o;</pre>
         <var>entry</var> of <var>serialized</var>.[[Properties]]:</p>
 
         <ol><li><p>Let <var>deserializedValue</var> be ?
-         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-7>StructuredDeserialize</a>(<var>entry</var>.[[Value]], <var>targetRealm</var>,
+         <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-6>StructuredDeserialize</a>(<var>entry</var>.[[Value]], <var>targetRealm</var>,
          <var>memory</var>).</li><li><p>Let <var>result</var> be ! <a id=structureddeserialize:createdataproperty href=https://tc39.github.io/ecma262/#sec-createdataproperty data-x-internal=createdataproperty>CreateDataProperty</a>(<var>value</var>,
          <var>entry</var>.[[Key]], <var>deserializedValue</var>).</li><li><p>Assert: <var>result</var> is true.</li></ol>
        </li></ol>
@@ -743,9 +717,9 @@ o.myself = o;</pre>
 
         <p>The <a href=#deserialization-steps id=structureddeserialize:deserialization-steps-2>deserialization steps</a> may need to perform a <dfn id=sub-deserialization data-export="">sub-deserialization</dfn>. This is an operation which takes as input a
         previously-serialized <a id=structureddeserialize:record-4 href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type data-x-internal=record>Record</a> <var>subSerialized</var>, and returns
-        <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-8>StructuredDeserialize</a>(<var>subSerialized</var>, <var>targetRealm</var>,
+        <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-7>StructuredDeserialize</a>(<var>subSerialized</var>, <var>targetRealm</var>,
         <var>memory</var>). (In other words, a <a href=#sub-deserialization id=structureddeserialize:sub-deserialization>sub-deserialization</a> is a specialization
-        of <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-9>StructuredDeserialize</a> to be consistent within this invocation.)</p>
+        of <a href=#structureddeserialize id=structureddeserialize:structureddeserialize-8>StructuredDeserialize</a> to be consistent within this invocation.)</p>
        </li></ol>
     </li></ol>
    </li><li><p>Return <var>value</var>.</li></ol>
@@ -771,28 +745,31 @@ o.myself = o;</pre>
      <a id=structuredserializewithtransfer:isdetachedbuffer href=https://tc39.github.io/ecma262/#sec-isdetachedbuffer data-x-internal=isdetachedbuffer>IsDetachedBuffer</a>(<var>transferable</var>) is true, then throw a
      <a id=structuredserializewithtransfer:datacloneerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializewithtransfer:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If <var>transferable</var> has a <a href=#detached id=structuredserializewithtransfer:detached-2>[[Detached]]</a> internal slot and
      <var>transferable</var>.<a href=#detached id=structuredserializewithtransfer:detached-3>[[Detached]]</a> is true, then throw a
-     <a id=structuredserializewithtransfer:datacloneerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializewithtransfer:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Let <var>placeholder</var> be a user-agent-defined placeholder object.</li><li><p><a href=https://triple-underscore.github.io/infra-ja.html#map-set id=structuredserializewithtransfer:map-set data-x-internal=map-set>Set</a> <var>memory</var>[<var>transferable</var>] to
-     <var>placeholder</var>.</li></ol>
-   </li><li><p>Let <var>serialized</var> be ? <a href=#structuredserializeinternal id=structuredserializewithtransfer:structuredserializeinternal-3>StructuredSerializeInternal</a>(<var>value</var>,
+     <a id=structuredserializewithtransfer:datacloneerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializewithtransfer:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li>
+      <p><a href=https://triple-underscore.github.io/infra-ja.html#map-set id=structuredserializewithtransfer:map-set data-x-internal=map-set>Set</a> <var>memory</var>[<var>transferable</var>] to {
+      [[Type]]: an uninitialized value }.</p>
+
+      <p class=note><var>transferable</var> is not transferred yet as that operation has side
+      effects and <a href=#structuredserializeinternal id=structuredserializewithtransfer:structuredserializeinternal-3>StructuredSerializeInternal</a> can throw.</p>
+     </li></ol>
+   </li><li><p>Let <var>serialized</var> be ? <a href=#structuredserializeinternal id=structuredserializewithtransfer:structuredserializeinternal-4>StructuredSerializeInternal</a>(<var>value</var>,
    false, <var>memory</var>).</li><li><p>Let <var>transferDataHolders</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structuredserializewithtransfer:js-list data-x-internal=js-list>List</a>.</li><li>
     <p><a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=structuredserializewithtransfer:list-iterate-2 data-x-internal=list-iterate>For each</a> <var>transferable</var> of
     <var>transferList</var>:</p>
 
-    <ol><li><p>Let <var>placeholder</var> be <var>memory</var>[<var>transferable</var>].</li><li><p>Let <var>dataHolder</var> be an uninitialized value.</li><li>
+    <ol><li><p>Let <var>dataHolder</var> be <var>memory</var>[<var>transferable</var>].</li><li>
       <p>If <var>transferable</var> has an [[ArrayBufferData]] internal slot, then:</p>
 
-      <ol><li><p>Set <var>dataHolder</var> to { [[TransferConsumed]]: false, [[Type]]: "ArrayBuffer",
-       [[ArrayBufferData]]: <var>transferable</var>.[[ArrayBufferData]], [[ArrayBufferByteLength]]:
-       <var>transferable</var>.[[ArrayBufferByteLength]] }.</li><li><p>Perform ! <a id=structuredserializewithtransfer:detacharraybuffer href=https://tc39.github.io/ecma262/#sec-detacharraybuffer data-x-internal=detacharraybuffer>DetachArrayBuffer</a>(<var>transferable</var>).</li></ol>
+      <ol><li><p>Set <var>dataHolder</var>.[[Type]] to "ArrayBuffer".</li><li><p>Set <var>dataHolder</var>.[[ArrayBufferData]] to
+       <var>transferable</var>.[[ArrayBufferData]].</li><li><p>Set <var>dataHolder</var>.[[ArrayBufferByteLength]] to
+       <var>transferable</var>.[[ArrayBufferByteLength]].</li><li><p>Perform ! <a id=structuredserializewithtransfer:detacharraybuffer href=https://tc39.github.io/ecma262/#sec-detacharraybuffer data-x-internal=detacharraybuffer>DetachArrayBuffer</a>(<var>transferable</var>).</li></ol>
      </li><li>
       <p>Otherwise:</p>
 
       <ol><li><p>Assert: <var>transferable</var> is a <a id=structuredserializewithtransfer:platform-object href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-platform-object data-x-internal=platform-object>platform object</a> that is a <a href=#transferable-objects id=structuredserializewithtransfer:transferable-objects>transferable object</a>.</li><li><p>Let <var>interfaceName</var> be the identifier of the <a id=structuredserializewithtransfer:primary-interface href=https://heycam.github.io/webidl/#dfn-primary-interface data-x-internal=primary-interface>primary interface</a>
-       of <var>transferable</var>.</li><li><p>Set <var>dataHolder</var> to { [[TransferConsumed]]: false, [[Type]]:
-       <var>interfaceName</var> }.</li><li><p>Perform the appropriate <a href=#transfer-steps id=structuredserializewithtransfer:transfer-steps>transfer steps</a> for the interface identified by
+       of <var>transferable</var>.</li><li><p>Set <var>dataHolder</var>.[[Type]] to <var>interfaceName</var>.</li><li><p>Perform the appropriate <a href=#transfer-steps id=structuredserializewithtransfer:transfer-steps>transfer steps</a> for the interface identified by
        <var>interfaceName</var>, given <var>transferable</var> and <var>dataHolder</var>.</li><li><p>Set <var>transferable</var>.<a href=#detached id=structuredserializewithtransfer:detached-4>[[Detached]]</a> to true.</li></ol>
-     </li><li><p>Within <var>serialized</var>, replace all instances of <var>placeholder</var> with
-     <var>dataHolder</var>.</li><li><p><a href=https://infra.spec.whatwg.org/#list-append id=structuredserializewithtransfer:list-append data-x-internal=list-append>Append</a> <var>dataHolder</var> to
+     </li><li><p><a href=https://infra.spec.whatwg.org/#list-append id=structuredserializewithtransfer:list-append data-x-internal=list-append>Append</a> <var>dataHolder</var> to
      <var>transferDataHolders</var>.</li></ol>
    </li><li><p>Return { [[Serialized]]: <var>serialized</var>, [[TransferDataHolders]]:
    <var>transferDataHolders</var> }.</li></ol>
@@ -803,18 +780,41 @@ o.myself = o;</pre>
   <ol><li>
     <p>Let <var>memory</var> be an empty <a href=https://triple-underscore.github.io/infra-ja.html#ordered-map id=structureddeserializewithtransfer:ordered-map data-x-internal=ordered-map>map</a>.</p>
 
-    <p class=note>In addition to how it is used normally by <a href=#structureddeserialize id=structureddeserializewithtransfer:structureddeserialize>StructuredDeserialize</a>, in
-    this algorithm <var>memory</var> is also used to help us determine the list of transferred
-    values.</p>
-   </li><li><p>Let <var>deserialized</var> be ?
-   <a href=#structureddeserialize id=structureddeserializewithtransfer:structureddeserialize-2>StructuredDeserialize</a>(<var>serializeWithTransferResult</var>.[[Serialized]],
-   <var>targetRealm</var>, <var>memory</var>).</li><li><p>Let <var>transferredValues</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structureddeserializewithtransfer:js-list data-x-internal=js-list>List</a>.</li><li>
+    <p class=note>Analogous to <a href=#structuredserializewithtransfer id=structureddeserializewithtransfer:structuredserializewithtransfer>StructuredSerializeWithTransfer</a>, in addition to how it
+    is used normally by <a href=#structureddeserialize id=structureddeserializewithtransfer:structureddeserialize>StructuredDeserialize</a>, in this algorithm <var>memory</var> is
+    also used to ensure that <a href=#structureddeserialize id=structureddeserializewithtransfer:structureddeserialize-2>StructuredDeserialize</a> ignores items in
+    <var>serializeWithTransferResult</var>.[[TransferDataHolders]], and let us do our own handling
+    instead.</p>
+   </li><li><p>Let <var>transferredValues</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structureddeserializewithtransfer:js-list data-x-internal=js-list>List</a>.</li><li>
     <p><a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=structureddeserializewithtransfer:list-iterate data-x-internal=list-iterate>For each</a> <var>transferDataHolder</var> of
     <var>serializeWithTransferResult</var>.[[TransferDataHolders]]:</p>
 
-    <ol><li><p><a href=https://infra.spec.whatwg.org/#list-append id=structureddeserializewithtransfer:list-append data-x-internal=list-append>Append</a>
-     <var>memory</var>[<var>transferDataHolder</var>] to <var>transferredValues</var>.</li></ol>
-   </li><li><p>Return { [[Deserialized]]: <var>deserialized</var>, [[TransferredValues]]:
+    <ol><li><p>Let <var>value</var> be an uninitialized value.</li><li>
+      <p>If <var>transferDataHolder</var>.[[Type]] is "ArrayBuffer", then set <var>value</var> to a
+      new ArrayBuffer object in <var>targetRealm</var> whose [[ArrayBufferData]] internal slot value
+      is <var>transferDataHolder</var>.[[ArrayBufferData]], and whose [[ArrayBufferByteLength]]
+      internal slot value is <var>transferDataHolder</var>.[[ArrayBufferByteLength]].</p>
+
+      <p class=note>In cases where the original memory occupied by [[ArrayBufferData]] is
+      accessible during the deserialization, this step is unlikely to throw an exception, as no new
+      memory needs to be allocated: the memory occupied by [[ArrayBufferData]] is instead just
+      getting transferred into the new ArrayBuffer. This could be true, for example, when both the
+      source and target Realms are in the same process.</p>
+     </li><li>
+      <p>Otherwise:</p>
+
+      <ol><li><p>Let <var>interfaceName</var> be <var>transferDataHolder</var>.[[Type]].</li><li><p>If the interface identified by <var>interfaceName</var> is not exposed in
+       <var>targetRealm</var>, then throw a <a id=structureddeserializewithtransfer:datacloneerror href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a>
+       <code id=structureddeserializewithtransfer:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Set <var>value</var> to a new instance of the interface identified by
+       <var>interfaceName</var>, created in <var>targetRealm</var>.</li><li><p>Perform the appropriate <a href=#transfer-receiving-steps id=structureddeserializewithtransfer:transfer-receiving-steps>transfer-receiving steps</a> for the interface
+       identified by <var>interfaceName</var> given <var>transferDataHolder</var> and
+       <var>value</var>.</li></ol>
+     </li><li><p><a href=https://triple-underscore.github.io/infra-ja.html#map-set id=structureddeserializewithtransfer:map-set data-x-internal=map-set>Set</a> <var>memory</var>[<var>transferDataHolder</var>] to
+     <var>value</var>.</li><li><p><a href=https://infra.spec.whatwg.org/#list-append id=structureddeserializewithtransfer:list-append data-x-internal=list-append>Append</a> <var>value</var> to
+     <var>transferredValues</var>.</li></ol>
+   </li><li><p>Let <var>deserialized</var> be ?
+   <a href=#structureddeserialize id=structureddeserializewithtransfer:structureddeserialize-3>StructuredDeserialize</a>(<var>serializeWithTransferResult</var>.[[Serialized]],
+   <var>targetRealm</var>, <var>memory</var>).</li><li><p>Return { [[Deserialized]]: <var>deserialized</var>, [[TransferredValues]]:
    <var>transferredValues</var> }.</li></ol>
 
 

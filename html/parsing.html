@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>5 December 2017</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>9 February 2018</span></h2></hgroup>
    
    
 
@@ -781,8 +781,7 @@
     not efficient, in which case these substeps are entirely skipped.</p>
 
     <p>The aforementioned algorithm either aborts unsuccessfully or returns a character encoding. If
-    it returns a character encoding, then this algorithm must be aborted, returning the same
-    encoding, with <a href=#concept-encoding-confidence id=determining-the-character-encoding:concept-encoding-confidence-4>confidence</a> <i>tentative</i>.</p>
+    it returns a character encoding, then return the same encoding, with <a href=#concept-encoding-confidence id=determining-the-character-encoding:concept-encoding-confidence-4>confidence</a> <i>tentative</i>.</p>
 
    </li><li>
 
@@ -793,16 +792,13 @@
     <ol><li><p>Let <var>new document</var> be the <code id=determining-the-character-encoding:document-2><a href=dom.html#document>Document</a></code> with which the
      <a href=#html-parser id=determining-the-character-encoding:html-parser-2>HTML parser</a> is associated.</li><li><p>Let <var>parent document</var> be the <code id=determining-the-character-encoding:document-3><a href=dom.html#document>Document</a></code> <a href=browsers.html#browsing-context-nested-through id=determining-the-character-encoding:browsing-context-nested-through>through which <var>new document</var> is
      nested</a> (the <a id=determining-the-character-encoding:active-document href=browsers.html#active-document>active document</a> of the <a id=determining-the-character-encoding:parent-browsing-context href=browsers.html#parent-browsing-context>parent browsing context</a> of
-     <var>new document</var>).</li><li><p>If <var>parent document</var>'s <a id=determining-the-character-encoding:concept-origin href=origin.html#concept-origin>origin</a> is not the <a id=determining-the-character-encoding:same-origin href=origin.html#same-origin>same
-     origin</a> as <var>new document</var>'s <a id=determining-the-character-encoding:concept-origin-2 href=origin.html#concept-origin>origin</a>, then abort these
-     substeps.</li><li><p>If <var>parent document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding id="determining-the-character-encoding:document's-character-encoding" data-x-internal="document's-character-encoding">character encoding</a> is not an <a id=determining-the-character-encoding:ascii-compatible-encoding href=infrastructure.html#ascii-compatible-encoding>ASCII-compatible encoding</a>, then
-     abort these substeps.</li><li><p>Return <var>parent document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding id="determining-the-character-encoding:document's-character-encoding-2" data-x-internal="document's-character-encoding">character encoding</a>, with the <a href=#concept-encoding-confidence id=determining-the-character-encoding:concept-encoding-confidence-5>confidence</a> <i>tentative</i>, and abort the
-     <a href=#encoding-sniffing-algorithm id=determining-the-character-encoding:encoding-sniffing-algorithm>encoding sniffing algorithm</a>'s steps.</li></ol>
+     <var>new document</var>).</li><li><p>If <var>parent document</var>'s <a id=determining-the-character-encoding:concept-origin href=origin.html#concept-origin>origin</a> is <a id=determining-the-character-encoding:same-origin href=origin.html#same-origin>same origin</a> with
+     <var>new document</var>'s <a id=determining-the-character-encoding:concept-origin-2 href=origin.html#concept-origin>origin</a>, and <var>parent document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding id="determining-the-character-encoding:document's-character-encoding" data-x-internal="document's-character-encoding">character encoding</a> is an <a id=determining-the-character-encoding:ascii-compatible-encoding href=infrastructure.html#ascii-compatible-encoding>ASCII-compatible
+     encoding</a>, then return <var>parent document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding id="determining-the-character-encoding:document's-character-encoding-2" data-x-internal="document's-character-encoding">character encoding</a>, with the <a href=#concept-encoding-confidence id=determining-the-character-encoding:concept-encoding-confidence-5>confidence</a> <i>tentative</i>.</li></ol>
 
    </li><li><p>Otherwise, if the user agent has information on the likely encoding for this page, e.g.
    based on the encoding of the page when it was last visited, then return that encoding, with the
-   <a href=#concept-encoding-confidence id=determining-the-character-encoding:concept-encoding-confidence-6>confidence</a> <i>tentative</i>, and abort these
-   steps.</li><li>
+   <a href=#concept-encoding-confidence id=determining-the-character-encoding:concept-encoding-confidence-6>confidence</a> <i>tentative</i>.</li><li>
 
     <p>The user agent may attempt to autodetect the character encoding from applying frequency
     analysis or other algorithms to the data stream. Such algorithms may use information about the
@@ -1461,8 +1457,7 @@
    Unicode interpretations in both the current encoding and the new encoding, and if the user agent
    supports changing the converter on the fly, then the user agent may change to the new converter
    for the encoding on the fly. Set the <a id="changing-the-encoding-while-parsing:document's-character-encoding" href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding data-x-internal="document's-character-encoding">document's character encoding</a> and the encoding
-   used to convert the input stream to the new encoding, set the <a href=#concept-encoding-confidence id=changing-the-encoding-while-parsing:concept-encoding-confidence-3>confidence</a> to <i>certain</i>, and abort these
-   steps.</li><li><p>Otherwise, <a id=changing-the-encoding-while-parsing:navigate href=browsing-the-web.html#navigate>navigate</a> to the document again, with
+   used to convert the input stream to the new encoding, set the <a href=#concept-encoding-confidence id=changing-the-encoding-while-parsing:concept-encoding-confidence-3>confidence</a> to <i>certain</i>, and return.</li><li><p>Otherwise, <a id=changing-the-encoding-while-parsing:navigate href=browsing-the-web.html#navigate>navigate</a> to the document again, with
    <a id=changing-the-encoding-while-parsing:replacement-enabled href=browsing-the-web.html#replacement-enabled>replacement enabled</a>, and using the same <a id=changing-the-encoding-while-parsing:source-browsing-context href=browsing-the-web.html#source-browsing-context>source browsing context</a>, but
    this time skip the <a href=#encoding-sniffing-algorithm id=changing-the-encoding-while-parsing:encoding-sniffing-algorithm-3>encoding sniffing algorithm</a> and instead just set the encoding to
    the new encoding and the <a href=#concept-encoding-confidence id=changing-the-encoding-while-parsing:concept-encoding-confidence-4>confidence</a> to
@@ -1580,24 +1575,26 @@
      open elements</a>, jump to the step below labeled <i>done</i>.</li><li><p>Let <var>ancestor</var> be the node before <var>ancestor</var> in the
      <a href=#stack-of-open-elements id=the-insertion-mode:stack-of-open-elements-3>stack of open elements</a>.</li><li><p>If <var>ancestor</var> is a <code id=the-insertion-mode:the-template-element-2><a href=scripting.html#the-template-element>template</a></code> node, jump to the step below
      labeled <i>done</i>.</li><li><p>If <var>ancestor</var> is a <code id=the-insertion-mode:the-table-element><a href=tables.html#the-table-element>table</a></code> node, switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-5>insertion
-     mode</a> to "<a href=#parsing-main-inselectintable id=the-insertion-mode:parsing-main-inselectintable-2>in select in table</a>" and
-     return.</li><li><p>Jump back to the step labeled <i>loop</i>.</li><li><p><i>Done</i>: Switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-6>insertion mode</a> to "<a href=#parsing-main-inselect id=the-insertion-mode:parsing-main-inselect-3>in select</a>" and return.</li></ol>
+     mode</a> to "<a href=#parsing-main-inselectintable id=the-insertion-mode:parsing-main-inselectintable-2>in select in table</a>"
+     and return.</li><li><p>Jump back to the step labeled <i>loop</i>.</li><li><p><i>Done</i>: Switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-6>insertion mode</a> to "<a href=#parsing-main-inselect id=the-insertion-mode:parsing-main-inselect-3>in select</a>" and return.</li></ol>
 
-   </li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-td-element><a href=tables.html#the-td-element>td</a></code> or <code id=the-insertion-mode:the-th-element><a href=tables.html#the-th-element>th</a></code> element and <var>last</var> is false, then switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-7>insertion mode</a> to "<a href=#parsing-main-intd id=the-insertion-mode:parsing-main-intd-2>in cell</a>" and return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-tr-element><a href=tables.html#the-tr-element>tr</a></code> element, then switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-8>insertion
-   mode</a> to "<a href=#parsing-main-intr id=the-insertion-mode:parsing-main-intr-2>in row</a>" and abort these
-   steps.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-tbody-element><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=the-insertion-mode:the-thead-element><a href=tables.html#the-thead-element>thead</a></code>, or
+   </li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-td-element><a href=tables.html#the-td-element>td</a></code> or <code id=the-insertion-mode:the-th-element><a href=tables.html#the-th-element>th</a></code> element and <var>last</var> is
+   false, then switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-7>insertion mode</a> to "<a href=#parsing-main-intd id=the-insertion-mode:parsing-main-intd-2>in
+   cell</a>" and return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-tr-element><a href=tables.html#the-tr-element>tr</a></code> element, then switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-8>insertion
+   mode</a> to "<a href=#parsing-main-intr id=the-insertion-mode:parsing-main-intr-2>in row</a>" and return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-tbody-element><a href=tables.html#the-tbody-element>tbody</a></code>, <code id=the-insertion-mode:the-thead-element><a href=tables.html#the-thead-element>thead</a></code>, or
    <code id=the-insertion-mode:the-tfoot-element><a href=tables.html#the-tfoot-element>tfoot</a></code> element, then switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-9>insertion mode</a> to "<a href=#parsing-main-intbody id=the-insertion-mode:parsing-main-intbody-2>in table body</a>" and return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-caption-element><a href=tables.html#the-caption-element>caption</a></code> element, then switch the
    <a href=#insertion-mode id=the-insertion-mode:insertion-mode-10>insertion mode</a> to "<a href=#parsing-main-incaption id=the-insertion-mode:parsing-main-incaption-2>in caption</a>" and
    return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-colgroup-element><a href=tables.html#the-colgroup-element>colgroup</a></code> element, then switch the
    <a href=#insertion-mode id=the-insertion-mode:insertion-mode-11>insertion mode</a> to "<a href=#parsing-main-incolgroup id=the-insertion-mode:parsing-main-incolgroup-2>in column
    group</a>" and return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-table-element-2><a href=tables.html#the-table-element>table</a></code> element, then switch the
-   <a href=#insertion-mode id=the-insertion-mode:insertion-mode-12>insertion mode</a> to "<a href=#parsing-main-intable id=the-insertion-mode:parsing-main-intable-3>in table</a>" and return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-template-element-3><a href=scripting.html#the-template-element>template</a></code> element, then switch the
-   <a href=#insertion-mode id=the-insertion-mode:insertion-mode-13>insertion mode</a> to the <a href=#current-template-insertion-mode id=the-insertion-mode:current-template-insertion-mode>current template insertion mode</a> and abort these
-   steps.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-head-element><a href=semantics.html#the-head-element>head</a></code> element and <var>last</var> is
+   <a href=#insertion-mode id=the-insertion-mode:insertion-mode-12>insertion mode</a> to "<a href=#parsing-main-intable id=the-insertion-mode:parsing-main-intable-3>in table</a>" and
+   return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-template-element-3><a href=scripting.html#the-template-element>template</a></code> element, then switch the
+   <a href=#insertion-mode id=the-insertion-mode:insertion-mode-13>insertion mode</a> to the <a href=#current-template-insertion-mode id=the-insertion-mode:current-template-insertion-mode>current template insertion mode</a> and
+   return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-head-element><a href=semantics.html#the-head-element>head</a></code> element and <var>last</var> is
    false, then switch the <a href=#insertion-mode id=the-insertion-mode:insertion-mode-14>insertion mode</a> to "<a href=#parsing-main-inhead id=the-insertion-mode:parsing-main-inhead-3>in
    head</a>" and return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:the-body-element><a href=sections.html#the-body-element>body</a></code> element, then switch the
-   <a href=#insertion-mode id=the-insertion-mode:insertion-mode-15>insertion mode</a> to "<a href=#parsing-main-inbody id=the-insertion-mode:parsing-main-inbody-3>in body</a>" and abort
-   these steps.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:frameset><a href=obsolete.html#frameset>frameset</a></code> element, then switch the
+   <a href=#insertion-mode id=the-insertion-mode:insertion-mode-15>insertion mode</a> to "<a href=#parsing-main-inbody id=the-insertion-mode:parsing-main-inbody-3>in body</a>" and
+   return.</li><li><p>If <var>node</var> is a <code id=the-insertion-mode:frameset><a href=obsolete.html#frameset>frameset</a></code> element, then switch the
    <a href=#insertion-mode id=the-insertion-mode:insertion-mode-16>insertion mode</a> to "<a href=#parsing-main-inframeset id=the-insertion-mode:parsing-main-inframeset-2>in frameset</a>" and
    return. (<a href=#fragment-case id=the-insertion-mode:fragment-case-2>fragment case</a>)</li><li>
 
@@ -3082,8 +3079,7 @@
        
 
        </li><li><p>If <var>last table</var> has a parent node, then let <var>adjusted insertion location</var> be inside <var>last table</var>'s parent
-       node, immediately before <var>last table</var>, and abort these
-       substeps.</li><li><p>Let <var>previous element</var> be the element immediately above <var>last table</var> in the <a href=#stack-of-open-elements id=creating-and-inserting-nodes:stack-of-open-elements-5>stack of open elements</a>.</li><li><p>Let <var>adjusted insertion location</var> be inside <var>previous
+       node, immediately before <var>last table</var>, and abort these substeps.</li><li><p>Let <var>previous element</var> be the element immediately above <var>last table</var> in the <a href=#stack-of-open-elements id=creating-and-inserting-nodes:stack-of-open-elements-5>stack of open elements</a>.</li><li><p>Let <var>adjusted insertion location</var> be inside <var>previous
        element</var>, after its last child (if any).</li></ol>
 
       <p class=note>These steps are involved in part because it's possible for elements, the
@@ -5833,10 +5829,9 @@ document.body.appendChild(text);
     <ol><li><p>Initialize <var>node</var> to be the <a href=#current-node id=parsing-main-inforeign:current-node-6>current node</a> (the bottommost
      node of the stack).</li><li><p>If <var>node</var>'s tag name, <a id=parsing-main-inforeign:converted-to-ascii-lowercase href=https://triple-underscore.github.io/infra-ja.html#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, is
      not the same as the tag name of the token, then this is a <a href=#parse-errors id=parsing-main-inforeign:parse-errors-4>parse error</a>.</li><li><p><i>Loop</i>: If <var>node</var> is the topmost element in the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-5>stack of
-     open elements</a>, return. (<a href=#fragment-case id=parsing-main-inforeign:fragment-case-2>fragment case</a>)</li><li><p>If <var>node</var>'s tag name, <a id=parsing-main-inforeign:converted-to-ascii-lowercase-2 href=https://triple-underscore.github.io/infra-ja.html#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, is
+     open elements</a>, then return. (<a href=#fragment-case id=parsing-main-inforeign:fragment-case-2>fragment case</a>)</li><li><p>If <var>node</var>'s tag name, <a id=parsing-main-inforeign:converted-to-ascii-lowercase-2 href=https://triple-underscore.github.io/infra-ja.html#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, is
      the same as the tag name of the token, pop elements from the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-6>stack of open
-     elements</a> until <var>node</var> has been popped from the stack, and then abort
-     these steps.</li><li><p>Set <var>node</var> to the previous entry in the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-7>stack of open
+     elements</a> until <var>node</var> has been popped from the stack, and then return.</li><li><p>Set <var>node</var> to the previous entry in the <a href=#stack-of-open-elements id=parsing-main-inforeign:stack-of-open-elements-7>stack of open
      elements</a>.</li><li><p>If <var>node</var> is not an element in the <a id=parsing-main-inforeign:html-namespace-2-2 href=https://triple-underscore.github.io/infra-ja.html#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, return
      to the step labeled <i>loop</i>.</li><li><p>Otherwise, process the token according to the rules given in the section corresponding
      to the current <a href=#insertion-mode id=parsing-main-inforeign:insertion-mode>insertion mode</a> in HTML content.</li></ol>
@@ -5851,7 +5846,7 @@ document.body.appendChild(text);
   <h4 id=the-end><span class=secno>12.2.7</span> The end<a href=#the-end class=self-link></a></h4>
 
   <p>Once the user agent <dfn id=stop-parsing>stops parsing</dfn> the document, the user agent
-  must run the following steps:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> domcontentloaded<span class="and_chr yes"><span>Chrome for Android</span> <span>62+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=domcontentloaded">caniuse.com</a></div>
+  must run the following steps:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> domcontentloaded<span class="and_chr yes"><span>Chrome for Android</span> <span>64+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=domcontentloaded">caniuse.com</a></div>
 
   <ol><li><p>Set the <a id=the-end:current-document-readiness href=dom.html#current-document-readiness>current document readiness</a> to "<code>interactive</code>"
     and the <a href=#insertion-point id=the-end:insertion-point>insertion point</a> to
@@ -5893,8 +5888,8 @@ document.body.appendChild(text);
     <p>If the <code id=the-end:document-7><a href=dom.html#document>Document</a></code> has a <a href=browsers.html#concept-document-bc id=the-end:concept-document-bc-2>browsing
     context</a>, then <a id=the-end:queue-a-task-3 href=webappapis.html#queue-a-task>queue a task</a> to run the following substeps:</p>
 
-    <ol><li><p>If the <code id=the-end:document-8><a href=dom.html#document>Document</a></code>'s <a id=the-end:page-showing href=browsing-the-web.html#page-showing>page showing</a> flag is true, then abort this
-     task (i.e. don't fire the event below).</li><li><p>Set the <code id=the-end:document-9><a href=dom.html#document>Document</a></code>'s <a id=the-end:page-showing-2 href=browsing-the-web.html#page-showing>page showing</a> flag to true.</li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-end:concept-event-fire-3 data-x-internal=concept-event-fire>Fire an event</a> named <code id=the-end:event-pageshow><a href=indices.html#event-pageshow>pageshow</a></code> at the <code id=the-end:document-10><a href=dom.html#document>Document</a></code> object's
+    <ol><li><p>If the <code id=the-end:document-8><a href=dom.html#document>Document</a></code>'s <a id=the-end:page-showing href=browsing-the-web.html#page-showing>page showing</a> flag is true, then return
+     (i.e. don't fire the event below).</li><li><p>Set the <code id=the-end:document-9><a href=dom.html#document>Document</a></code>'s <a id=the-end:page-showing-2 href=browsing-the-web.html#page-showing>page showing</a> flag to true.</li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-end:concept-event-fire-3 data-x-internal=concept-event-fire>Fire an event</a> named <code id=the-end:event-pageshow><a href=indices.html#event-pageshow>pageshow</a></code> at the <code id=the-end:document-10><a href=dom.html#document>Document</a></code> object's
      <code id=the-end:window-2><a href=window-object.html#window>Window</a></code> object, using <code id=the-end:pagetransitionevent><a href=browsing-the-web.html#pagetransitionevent>PageTransitionEvent</a></code>, with the <code id=the-end:dom-pagetransitionevent-persisted><a href=browsing-the-web.html#dom-pagetransitionevent-persisted>persisted</a></code> attribute initialized to false, and
      <var>legacy target override flag</var> set.</li></ol>
 

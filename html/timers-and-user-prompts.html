@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>5 December 2017</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>9 February 2018</span></h2></hgroup>
    
    
 
@@ -265,13 +265,14 @@
    user-agent-defined integer that is greater than zero that will identify the timeout to be set by
    this call in the <a href=#list-of-active-timers id=timers:list-of-active-timers-3>list of active timers</a>.</li><li><p>If <var>previous handle</var> was not provided, add an entry to the <a href=#list-of-active-timers id=timers:list-of-active-timers-4>list of
    active timers</a> for <var>handle</var>.</li><li><p>Let <var>callerRealm</var> be the <a id=timers:current-realm-record href=https://tc39.github.io/ecma262/#current-realm data-x-internal=current-realm-record>current Realm Record</a>, and
-   <var>calleeRealm</var> be <var>method context</var>'s <a id=timers:javascript-realm href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript realm</a>.</li><li>
+   <var>calleeRealm</var> be <var>method context</var>'s <a id=timers:javascript-realm href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript realm</a>.</li><li><p>Let <var>initiating script</var> be the <a id=timers:active-script href=webappapis.html#active-script>active script</a>.</li><li><p>Assert: <var>initiating script</var> is not null, since this algorithm is always called
+   from some script.</li><li>
 
     <p>Let <var>task</var> be a <a href=webappapis.html#concept-task id=timers:concept-task>task</a> that runs the
     following substeps:</p>
 
-    <ol><li><p>If the entry for <var>handle</var> in the <a href=#list-of-active-timers id=timers:list-of-active-timers-5>list of active timers</a>
-     has been cleared, then abort this <a href=webappapis.html#concept-task id=timers:concept-task-2>task</a>'s substeps.</li><li>
+    <ol><li><p>If the entry for <var>handle</var> in the <a href=#list-of-active-timers id=timers:list-of-active-timers-5>list of active timers</a> has been
+     cleared, then abort these steps.</li><li>
 
       <p>Run the appropriate set of steps from the following list:</p>
 
@@ -284,12 +285,26 @@
        <dt>そうでなければ<dd>
 
         <ol><li><p>Perform <a href=webappapis.html#hostensurecancompilestrings(callerrealm,-calleerealm) id=timers:hostensurecancompilestrings(callerrealm,-calleerealm)>HostEnsureCanCompileStrings</a>(<var>callerRealm</var>,
-         <var>calleeRealm</var>). If this throws an exception, catch it, and <a id=timers:report-the-exception href=webappapis.html#report-the-exception>report the
-         exception</a>.</li><li><p>Let <var>script source</var> be the first method argument.</li><li><p>Let <var>settings object</var> be <var>method context</var>'s <a id=timers:environment-settings-object href=webappapis.html#environment-settings-object>environment
-         settings object</a>.</li><li><p>Let <var>base URL</var> be <var>settings object</var>'s <a id=timers:api-base-url href=webappapis.html#api-base-url>API base
-         URL</a>.</li><li><p>Let <var>script</var> be the result of <a id=timers:creating-a-classic-script href=webappapis.html#creating-a-classic-script>creating a classic script</a> given
-         <var>script source</var>, <var>settings object</var>, <var>base URL</var>, and the
-         <a id=timers:default-classic-script-fetch-options href=webappapis.html#default-classic-script-fetch-options>default classic script fetch options</a>.</li><li><p><a href=webappapis.html#run-a-classic-script id=timers:run-a-classic-script>Run the classic script</a>
+         <var>calleeRealm</var>). If this throws an exception, catch it, <a id=timers:report-the-exception href=webappapis.html#report-the-exception>report the
+         exception</a>, and abort these steps.</li><li><p>Let <var>script source</var> be the first method argument.</li><li><p>Let <var>settings object</var> be <var>method context</var>'s <a id=timers:environment-settings-object href=webappapis.html#environment-settings-object>environment
+         settings object</a>.</li><li><p>Let <var>base URL</var> be <var>initiating script</var>'s <a href=webappapis.html#concept-script-base-url id=timers:concept-script-base-url>base URL</a>.</li><li>
+          <p>Let <var>fetch options</var> be a <a id=timers:script-fetch-options href=webappapis.html#script-fetch-options>script fetch options</a> whose <a href=webappapis.html#concept-script-fetch-options-nonce id=timers:concept-script-fetch-options-nonce>cryptographic nonce</a> is <var>initiating
+          script</var>'s <a href=webappapis.html#concept-script-script-fetch-options id=timers:concept-script-script-fetch-options>fetch options</a>'s
+          <a href=webappapis.html#concept-script-fetch-options-nonce id=timers:concept-script-fetch-options-nonce-2>cryptographic nonce</a>, <a href=webappapis.html#concept-script-fetch-options-integrity id=timers:concept-script-fetch-options-integrity>integrity metadata</a> is the empty
+          string, <a href=webappapis.html#concept-script-fetch-options-parser id=timers:concept-script-fetch-options-parser>parser metadata</a> is
+          "<code>not-parser-inserted</code>", <a href=webappapis.html#concept-script-fetch-options-credentials id=timers:concept-script-fetch-options-credentials>credentials mode</a> is
+          <var>initiating script</var>'s <a href=webappapis.html#concept-script-script-fetch-options id=timers:concept-script-script-fetch-options-2>fetch
+          options</a>'s <a href=webappapis.html#concept-script-fetch-options-credentials id=timers:concept-script-fetch-options-credentials-2>credentials
+          mode</a>, and <a href=webappapis.html#concept-script-fetch-options-referrer-policy id=timers:concept-script-fetch-options-referrer-policy>referrer
+          policy</a> is <var>initiating script</var>'s <a href=webappapis.html#concept-script-script-fetch-options id=timers:concept-script-script-fetch-options-3>fetch options</a>'s <a href=webappapis.html#concept-script-fetch-options-referrer-policy id=timers:concept-script-fetch-options-referrer-policy-2>referrer policy</a>.</p>
+
+          <p class=note>The effect of these options ensures that the string compilation done by
+          <code id=timers:dom-settimeout-6><a href=#dom-settimeout>setTimeout()</a></code> and <code id=timers:dom-setinterval-6><a href=#dom-setinterval>setInterval()</a></code> behaves equivalently to that done by
+          <code id=timers:eval()><a data-x-internal=eval() href=https://tc39.github.io/ecma262/#sec-eval-x>eval()</a></code>. That is, <a id=timers:module-script href=webappapis.html#module-script>module script</a> fetches via <code id=timers:import()><a data-x-internal=import() href=https://tc39.github.io/proposal-dynamic-import/#sec-import-calls>import()</a></code>
+          will behave the same in both contexts.</p>
+         </li><li><p>Let <var>script</var> be the result of <a id=timers:creating-a-classic-script href=webappapis.html#creating-a-classic-script>creating a classic script</a> given
+         <var>script source</var>, <var>settings object</var>, <var>base URL</var>, and <var>fetch
+         options</var>.</li><li><p><a href=webappapis.html#run-a-classic-script id=timers:run-a-classic-script>Run the classic script</a>
          <var>script</var>.</li></ol>
 
        </dl>
@@ -299,12 +314,12 @@
      context</var>, with the <var>repeat</var> flag still set to true, and with the <var>previous handle</var> set to <var>handler</var>.</li></ol>
 
    </li><li><p>Let <var>timeout</var> be the second method argument.</li><li>
-    <p>If the currently running <a href=webappapis.html#concept-task id=timers:concept-task-3>task</a> is a task that was created
-    by this algorithm, then let <var>nesting level</var> be the <a href=webappapis.html#concept-task id=timers:concept-task-4>task</a>'s <a href=#timer-nesting-level id=timers:timer-nesting-level>timer nesting level</a>. Otherwise, let
+    <p>If the currently running <a href=webappapis.html#concept-task id=timers:concept-task-2>task</a> is a task that was created
+    by this algorithm, then let <var>nesting level</var> be the <a href=webappapis.html#concept-task id=timers:concept-task-3>task</a>'s <a href=#timer-nesting-level id=timers:timer-nesting-level>timer nesting level</a>. Otherwise, let
     <var>nesting level</var> be zero.</p>
 
     <p class=note>The task's <a href=#timer-nesting-level id=timers:timer-nesting-level-2>timer nesting level</a> is used both for nested calls to
-    <code id=timers:dom-settimeout-6><a href=#dom-settimeout>setTimeout()</a></code>, and for the repeating timers created by <code id=timers:dom-setinterval-6><a href=#dom-setinterval>setInterval()</a></code>. (Or, indeed, for any combination of the two.) In
+    <code id=timers:dom-settimeout-7><a href=#dom-settimeout>setTimeout()</a></code>, and for the repeating timers created by <code id=timers:dom-setinterval-7><a href=#dom-setinterval>setInterval()</a></code>. (Or, indeed, for any combination of the two.) In
     other words, it represents nested invocations of this algorithm, not of a particular method.</p>
    </li><li><p>If <var>timeout</var> is less than 0, then set <var>timeout</var> to 0.</li><li><p>If <var>nesting level</var> is greater than 5, and <var>timeout</var> is less than 4, then
    set <var>timeout</var> to 4.</li><li><p>Increment <var>nesting level</var> by one.</li><li><p>Let <var>task</var>'s <dfn id=timer-nesting-level>timer nesting level</dfn> be <var>nesting
@@ -355,7 +370,7 @@ setTimeout({ toString: function () {
 
    </li><li>
 
-    <p><a href=webappapis.html#queue-a-task id=timers:queue-a-task>Queue</a> the <a href=webappapis.html#concept-task id=timers:concept-task-5>task</a> <var>task</var>.</p>
+    <p><a href=webappapis.html#queue-a-task id=timers:queue-a-task>Queue</a> the <a href=webappapis.html#concept-task id=timers:concept-task-4>task</a> <var>task</var>.</p>
 
     <p class=note>Once the task has been processed, if the <var>repeat</var> flag is
     false, it is safe to remove the entry for <var>handle</var> from the <a href=#list-of-active-timers id=timers:list-of-active-timers-6>list of
@@ -364,7 +379,7 @@ setTimeout({ toString: function () {
 
    </li></ol>
 
-  <p>The <a id=timers:task-source href=webappapis.html#task-source>task source</a> for these <a href=webappapis.html#concept-task id=timers:concept-task-6>tasks</a> is the
+  <p>The <a id=timers:task-source href=webappapis.html#task-source>task source</a> for these <a href=webappapis.html#concept-task id=timers:concept-task-5>tasks</a> is the
   <dfn id=timer-task-source>timer task source</dfn>.</p>
 
   
