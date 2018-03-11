@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>9 February 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 March 2018</span></h2></hgroup>
    
    
 
@@ -349,11 +349,14 @@
     This ends up preserving cycles and the identity of duplicate objects in graphs.</p>
    </li><li><p>If <var>memory</var>[<var>value</var>] <a href=https://triple-underscore.github.io/infra-ja.html#map-exists id=structuredserializeinternal:map-exists data-x-internal=map-exists>exists</a>, then
    return <var>memory</var>[<var>value</var>].</li><li><p>Let <var>deep</var> be false.</li><li><p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredserializeinternal:js-type data-x-internal=js-type>Type</a>(<var>value</var>) is Undefined, Null, Boolean,
-   String, or Number, then return { [[Type]]: "primitive", [[Value]]: <var>value</var> }.</li><li><p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredserializeinternal:js-type-2 data-x-internal=js-type>Type</a>(<var>value</var>) is Symbol, then throw a
+   Number, BigInt, or String, then return { [[Type]]: "primitive",
+   [[Value]]: <var>value</var> }. <a href=references.html#refsJSBIGINT>[JSBIGINT]</a></li><li><p>If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=structuredserializeinternal:js-type-2 data-x-internal=js-type>Type</a>(<var>value</var>) is Symbol, then throw a
    <a id=structuredserializeinternal:datacloneerror href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializeinternal:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Let <var>serialized</var> be an uninitialized value.</li><li><p>If <var>value</var> has a [[BooleanData]] internal slot, then set <var>serialized</var> to
    { [[Type]]: "Boolean", [[BooleanData]]: <var>value</var>.[[BooleanData]] }.</li><li><p>Otherwise, if <var>value</var> has a [[NumberData]] internal slot, then set
    <var>serialized</var> to { [[Type]]: "Number", [[NumberData]]: <var>value</var>.[[NumberData]]
-   }.</li><li><p>Otherwise, if <var>value</var> has a [[StringData]] internal slot, then set
+   }.</li><li><p>Otherwise, if <var>value</var> has a [[BigIntData]]
+   internal slot, then set <var>serialized</var> to { [[Type]]: "BigInt", [[BigIntData]]:
+   <var>value</var>.[[BigIntData]] }. <a href=references.html#refsJSBIGINT>[JSBIGINT]</a></li><li><p>Otherwise, if <var>value</var> has a [[StringData]] internal slot, then set
    <var>serialized</var> to { [[Type]]: "String", [[StringData]]: <var>value</var>.[[StringData]]
    }.</li><li><p>Otherwise, if <var>value</var> has a [[DateValue]] internal slot, then set
    <var>serialized</var> to { [[Type]]: "Date", [[DateValue]]: <var>value</var>.[[DateValue]]
@@ -589,16 +592,18 @@ o.myself = o;</pre>
    return <var>memory</var>[<var>serialized</var>].</li><li><p>Let <var>deep</var> be false.</li><li><p>Let <var>value</var> be an uninitialized value.</li><li><p>If <var>serialized</var>.[[Type]] is "primitive", then set <var>value</var> to
    <var>serialized</var>.[[Value]].</p>
 
-   </li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "Boolean", then set <var>value</var> to a new Boolean object in
-   <var>targetRealm</var> whose [[BooleanData]] internal slot value is
-   <var>serialized</var>.[[BooleanData]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "Number", then set <var>value</var> to a new Number object in
-   <var>targetRealm</var> whose [[NumberData]] internal slot value is
-   <var>serialized</var>.[[NumberData]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "String", then set <var>value</var> to a new String object in
-   <var>targetRealm</var> whose [[StringData]] internal slot value is
-   <var>serialized</var>.[[StringData]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "Date", then set <var>value</var> to a new Date object in
-   <var>targetRealm</var> whose [[DateValue]] internal slot value is
-   <var>serialized</var>.[[DateValue]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "RegExp", then set <var>value</var> to a new RegExp object in
-   <var>targetRealm</var> whose [[RegExpMatcher]] internal slot value is
+   </li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "Boolean", then set <var>value</var> to a
+   new Boolean object in <var>targetRealm</var> whose [[BooleanData]] internal slot value is
+   <var>serialized</var>.[[BooleanData]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "Number", then set <var>value</var> to a
+   new Number object in <var>targetRealm</var> whose [[NumberData]] internal slot value is
+   <var>serialized</var>.[[NumberData]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "BigInt", then set <var>value</var> to a
+   new BigInt object in <var>targetRealm</var> whose [[BigIntData]] internal slot value is
+   <var>serialized</var>.[[BigIntData]]. <a href=references.html#refsJSBIGINT>[JSBIGINT]</a></li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "String", then set <var>value</var> to a
+   new String object in <var>targetRealm</var> whose [[StringData]] internal slot value is
+   <var>serialized</var>.[[StringData]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "Date", then set <var>value</var> to a new
+   Date object in <var>targetRealm</var> whose [[DateValue]] internal slot value is
+   <var>serialized</var>.[[DateValue]].</li><li><p>Otherwise, if <var>serialized</var>.[[Type]] is "RegExp", then set <var>value</var> to a
+   new RegExp object in <var>targetRealm</var> whose [[RegExpMatcher]] internal slot value is
    <var>serialized</var>.[[RegExpMatcher]], whose [[OriginalSource]] internal slot value is
    <var>serialized</var>.[[OriginalSource]], and whose [[OriginalFlags]] internal slot value is
    <var>serialized</var>.[[OriginalFlags]].</li><li>
@@ -745,12 +750,13 @@ o.myself = o;</pre>
      <a id=structuredserializewithtransfer:isdetachedbuffer href=https://tc39.github.io/ecma262/#sec-isdetachedbuffer data-x-internal=isdetachedbuffer>IsDetachedBuffer</a>(<var>transferable</var>) is true, then throw a
      <a id=structuredserializewithtransfer:datacloneerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializewithtransfer:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If <var>transferable</var> has a <a href=#detached id=structuredserializewithtransfer:detached-2>[[Detached]]</a> internal slot and
      <var>transferable</var>.<a href=#detached id=structuredserializewithtransfer:detached-3>[[Detached]]</a> is true, then throw a
-     <a id=structuredserializewithtransfer:datacloneerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializewithtransfer:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li>
+     <a id=structuredserializewithtransfer:datacloneerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializewithtransfer:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If <var>memory</var>[<var>transferable</var>] <a href=https://triple-underscore.github.io/infra-ja.html#map-exists id=structuredserializewithtransfer:map-exists data-x-internal=map-exists>exists</a>,
+     then throw a <a id=structuredserializewithtransfer:datacloneerror-4 href=https://triple-underscore.github.io/WebIDL-ja.html#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a> <code id=structuredserializewithtransfer:domexception-4><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li>
       <p><a href=https://triple-underscore.github.io/infra-ja.html#map-set id=structuredserializewithtransfer:map-set data-x-internal=map-set>Set</a> <var>memory</var>[<var>transferable</var>] to {
       [[Type]]: an uninitialized value }.</p>
 
-      <p class=note><var>transferable</var> is not transferred yet as that operation has side
-      effects and <a href=#structuredserializeinternal id=structuredserializewithtransfer:structuredserializeinternal-3>StructuredSerializeInternal</a> can throw.</p>
+      <p class=note><var>transferable</var> is not transferred yet as transferring has side
+      effects and <a href=#structuredserializeinternal id=structuredserializewithtransfer:structuredserializeinternal-3>StructuredSerializeInternal</a> needs to be able to throw first.</p>
      </li></ol>
    </li><li><p>Let <var>serialized</var> be ? <a href=#structuredserializeinternal id=structuredserializewithtransfer:structuredserializeinternal-4>StructuredSerializeInternal</a>(<var>value</var>,
    false, <var>memory</var>).</li><li><p>Let <var>transferDataHolders</var> be a new empty <a href=https://tc39.github.io/ecma262/#sec-list-and-record-specification-type id=structuredserializewithtransfer:js-list data-x-internal=js-list>List</a>.</li><li>
