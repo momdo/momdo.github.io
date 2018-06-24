@@ -1,6 +1,6 @@
 <!DOCTYPE html><html class=split lang=ja>
 <script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport>
-<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><link rel=icon href=https://resources.whatwg.org/logo.svg>
+<title>HTML Standard 日本語訳</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/spec.css><link rel=stylesheet href=https://resources.whatwg.org/standard.css><link href=https://resources.whatwg.org/logo.svg rel=icon>
 <script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
@@ -165,16 +165,20 @@
   </style>
 <body>
   
-  <script async="" src=/html-dfn.js></script>
-  <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
+  <script src=/html-dfn.js async=""></script>
+  <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 May 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>22 June 2018</span></h2></hgroup>
    
    
 
    
   </header>
+
+  
+
+  
 
   
 
@@ -290,7 +294,14 @@
    <dt>A <dfn data-dfn-for=environment id=concept-environment-target-browsing-context data-export="">target browsing context</dfn><dd><p>Null or a target <a id=definitions-2:browsing-context href=browsers.html#browsing-context>browsing context</a> for a <a href=https://fetch.spec.whatwg.org/#navigation-request id=definitions-2:navigation-request data-x-internal=navigation-request>navigation request</a>.<dt>An <dfn data-dfn-for=environment id=concept-environment-active-service-worker data-export="">active service worker</dfn><dd><p>Null or a <a href=https://w3c.github.io/ServiceWorker/#dfn-service-worker id=definitions-2:dfn-service-worker data-x-internal=dfn-service-worker>service worker</a> that <a href=https://w3c.github.io/ServiceWorker/#dfn-control id=definitions-2:dfn-control data-x-internal=dfn-control>controls</a> the <a href=#environment id=definitions-2:environment-4>environment</a>.<dt>An <dfn data-dfn-for=environment id=concept-environment-execution-ready-flag data-export="">execution ready flag</dfn><dd><p>A flag that indicates whether the environment setup is done. It is initially
    unset.</dl>
 
-  <p>An <dfn id=environment-settings-object data-export="">environment settings object</dfn> is an <a href=#environment id=definitions-2:environment-5>environment</a> that
+  <p>Specifications may define <dfn id=environment-discarding-steps data-export="">environment discarding steps</dfn> for
+  environments. The steps take an <a href=#environment id=definitions-2:environment-5>environment</a> as input.</p>
+
+  <p class=note>The <a href=#environment-discarding-steps id=definitions-2:environment-discarding-steps>environment discarding
+  steps</a> are run for only a select few environments: the ones that will
+  never become execution ready because, for example, they failed to load.</p>
+
+  <p>An <dfn id=environment-settings-object data-export="">environment settings object</dfn> is an <a href=#environment id=definitions-2:environment-6>environment</a> that
   additionally specifies algorithms for:</p>
 
   <dl><dt>A <dfn data-dfn-for="environment settings object" id=realm-execution-context data-export="">realm execution
@@ -563,7 +574,7 @@
   <p>The following algorithms are meant for internal use by this specification only as part of <a href=#fetch-a-module-script-tree id=fetching-scripts:fetch-a-module-script-tree-2>fetching a module script graph</a> or <a href=scripting.html#prepare-a-script id=fetching-scripts:prepare-a-script>preparing a script</a>, and should not be used directly by other specifications.</p>
 
   <p>To perform the <dfn id=internal-module-script-graph-fetching-procedure>internal module script graph fetching procedure</dfn> given a
-  <var>url</var>, a <var>fetch client settings object</var>, a <var>destination</var>, a some
+  <var>url</var>, a <var>fetch client settings object</var>, a <var>destination</var>, some
   <var>options</var>, a <var>module map settings object</var>, a <var>visited set</var>, a
   <var>referrer</var>, and a <var>top-level module fetch</var> flag, perform these steps. The
   algorithm will asynchronously complete with either null (on failure) or a <a href=#module-script id=fetching-scripts:module-script-7>module
@@ -580,9 +591,9 @@
    </li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-a-single-module-script id=fetching-scripts:fetch-a-single-module-script-3>fetching a single module script</a> asynchronously completes with
    <var>result</var>:</li><li><p>If <var>result</var> is null, asynchronously complete this algorithm with null, and abort
    these steps.</li><li><p>If the <var>top-level module fetch</var> flag is set, <a href=#fetch-the-descendants-of-and-instantiate-a-module-script id=fetching-scripts:fetch-the-descendants-of-and-instantiate-a-module-script>fetch the descendants of and instantiate</a>
-   <var>result</var> given <var>destination</var> and <var>visited set</var>. Otherwise,
-   <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script>fetch the descendants of</a>
-   <var>result</var> given the same arguments.</li><li><p>When the appropriate algorithm asynchronously completes with <var>final result</var>,
+   <var>result</var> given <var>fetch client settings object</var>, <var>destination</var>, and
+   <var>visited set</var>. Otherwise, <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script>fetch
+   the descendants of</a> <var>result</var> given the same arguments.</li><li><p>When the appropriate algorithm asynchronously completes with <var>final result</var>,
    asynchronously complete this algorithm with <var>final result</var>.</li></ol>
 
   <p>To <dfn id=fetch-a-single-module-script>fetch a single module script</dfn>, given a <var>url</var>, a <var>fetch client
@@ -637,9 +648,9 @@
    </li></ol>
 
   <p>To <dfn id=fetch-the-descendants-of-a-module-script>fetch the descendants of a module script</dfn> <var>module script</var>, given a
-  <var>destination</var> and a <var>visited set</var>, run these steps. The algorithm will
-  asynchronously complete with either null (on failure) or with <var>module script</var> (on
-  success).</p>
+  <var>fetch client settings object</var>, a <var>destination</var>, and a <var>visited set</var>,
+  run these steps. The algorithm will asynchronously complete with either null (on failure) or
+  with <var>module script</var> (on success).</p>
 
   <ol><li><p>If <var>module script</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record>record</a> is null,
    then asynchronously complete this algorithm with <var>module script</var> and abort these
@@ -661,11 +672,10 @@
    script</var>'s <a href=#concept-script-script-fetch-options id=fetching-scripts:concept-script-script-fetch-options>fetch options</a>.</li><li>
     <p><a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=fetching-scripts:list-iterate-2 data-x-internal=list-iterate>For each</a> <var>url</var> in <var>urls</var>, perform the
     <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-5>internal module script graph fetching procedure</a> given <var>url</var>,
-    <var>options</var>, <var>destination</var>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings
-    object</a>, <var>module script</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>, <var>visited set</var>,
-    <var>module script</var>'s <a href=#concept-script-base-url id=fetching-scripts:concept-script-base-url-2>base URL</a>, and with the
-    <var>top-level module fetch</var> flag unset. If the caller of this algorithm specified custom
-    <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-14>perform the fetch</a> steps, pass those along
+    <var>fetch client settings object</var>, <var>destination</var>, <var>options</var>, <var>module
+    script</var>'s <a href=#settings-object id=fetching-scripts:settings-object>settings object</a>, <var>visited set</var>, <var>module script</var>'s
+    <a href=#concept-script-base-url id=fetching-scripts:concept-script-base-url-2>base URL</a>, and with the <var>top-level module
+    fetch</var> flag unset. If the caller of this algorithm specified custom <a href=#fetching-scripts-perform-fetch id=fetching-scripts:fetching-scripts-perform-fetch-14>perform the fetch</a> steps, pass those along
     while performing the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-6>internal module script graph fetching procedure</a>.</p>
 
     <p>These invocations of the <a href=#internal-module-script-graph-fetching-procedure id=fetching-scripts:internal-module-script-graph-fetching-procedure-7>internal module script graph fetching procedure</a> should
@@ -681,12 +691,13 @@
    </li></ol>
 
   <p>To <dfn id=fetch-the-descendants-of-and-instantiate-a-module-script>fetch the descendants of and instantiate a module script</dfn> <var>module
-  script</var>, given a <var>destination</var> and an optional <var>visited set</var>, run these
-  steps. The algorithm will asynchronously complete with either null (on failure) or with
-  <var>module script</var> (on success).</p>
+  script</var>, given a <var>fetch client settings object</var>, a <var>destination</var>, and an
+  optional <var>visited set</var>, run these steps. The algorithm will asynchronously complete with
+  either null (on failure) or with <var>module script</var> (on success).</p>
 
   <ol><li><p>If <var>visited set</var> was not given, let it be an empty <a id=fetching-scripts:set href=https://triple-underscore.github.io/infra-ja.html#ordered-set data-x-internal=set>set</a>.</li><li><p><a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-2>Fetch the descendants of</a>
-   <var>module script</var>, given <var>destination</var> and <var>visited set</var>.</li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-3>fetching the descendants of a module script</a> asynchronously
+   <var>module script</var>, given <var>fetch client settings object</var>, <var>destination</var>,
+   and <var>visited set</var>.</li><li><p>Return from this algorithm, and run the following steps when <a href=#fetch-the-descendants-of-a-module-script id=fetching-scripts:fetch-the-descendants-of-a-module-script-3>fetching the descendants of a module script</a> asynchronously
    completes with <var>result</var>.</li><li>
     <p>If <var>result</var> is null, then asynchronously complete this algorithm with
     <var>result</var>.</p>
@@ -710,7 +721,7 @@
   <p>To <dfn id=finding-the-first-parse-error>find the first parse error</dfn> given a root
   <var>moduleScript</var> and an optional <var>discoveredSet</var>:</p>
 
-  <ol><li><p>Let <var>moduleMap</var> be <var>moduleScript</var>'s <a href=#settings-object id=fetching-scripts:settings-object-3>settings object</a>'s
+  <ol><li><p>Let <var>moduleMap</var> be <var>moduleScript</var>'s <a href=#settings-object id=fetching-scripts:settings-object-2>settings object</a>'s
    <a href=#concept-settings-object-module-map id=fetching-scripts:concept-settings-object-module-map-2>module map</a>.</li><li><p>If <var>discoveredSet</var> was not given, let it be an empty <a id=fetching-scripts:set-2 href=https://triple-underscore.github.io/infra-ja.html#ordered-set data-x-internal=set>set</a>.</li><li><p><a href=https://infra.spec.whatwg.org/#list-append id=fetching-scripts:list-append-2 data-x-internal=list-append>Append</a> <var>moduleScript</var> to
    <var>discoveredSet</var>.</li><li><p>If <var>moduleScript</var>'s <a href=#concept-script-record id=fetching-scripts:concept-script-record-4>record</a> is null,
    then return <var>moduleScript</var>'s <a href=#concept-script-parse-error id=fetching-scripts:concept-script-parse-error>parse
@@ -1525,9 +1536,10 @@ import "https://example.com/foo/../module2.js";</pre>
        <var>specifier</var>, <var>promiseCapability</var>, <var>completion</var>).</li><li><p>Return.</li></ol>
      </li><li><p>Let <var>options</var> be the <a href=#descendant-script-fetch-options id=hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability):descendant-script-fetch-options>descendant script fetch options</a> for
      <var>referencing script</var>'s <a href=#concept-script-script-fetch-options id=hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability):concept-script-script-fetch-options>fetch
-     options</a>.</li><li><p><a href=#fetch-a-module-script-tree id=hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability):fetch-a-module-script-tree>Fetch a module script graph</a> given <var>url</var>, <var>settings
-     object</var>, "<code>script</code>", and <var>options</var>. Wait until the algorithm
-     asynchronously completes with <var>result</var>.</li><li>
+     options</a>.</li><li><p><a href=#fetch-a-module-script-tree id=hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability):fetch-a-module-script-tree>Fetch a module script graph</a> given <var>url</var>, <var>referencing
+     script</var>'s <a href=#settings-object id=hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability):settings-object>settings object</a>, "<code>script</code>", and
+     <var>options</var>. Wait until the algorithm asynchronously completes with
+     <var>result</var>.</li><li>
       <p>If <var>result</var> is null, then:</p>
 
       <ol><li><p>Let <var>completion</var> be Completion { [[Type]]: throw, [[Value]]: a new
@@ -1725,7 +1737,7 @@ dictionary <dfn id=erroreventinit>ErrorEventInit</dfn> : <a id=the-errorevent-in
   <h5 id=unhandled-promise-rejections><span class=secno>8.1.3.12</span> Unhandled promise rejections<a href=#unhandled-promise-rejections class=self-link></a></h5>
 
   <p>In addition to synchronous <a href=#runtime-script-errors>runtime script errors</a>, scripts
-  may experience asynchronous promise rejections, tracked via the <code id=unhandled-promise-rejections:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> and <code id=unhandled-promise-rejections:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> events.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> unhandledrejection<span class="and_chr yes"><span>Chrome for Android</span> <span>66+</span></span><span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>5+</span></span><span class="safari yes"><span>Safari</span> <span>11+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="android yes"><span>Android Browser</span> <span>62+</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=unhandledrejection">caniuse.com</a></div>
+  may experience asynchronous promise rejections, tracked via the <code id=unhandled-promise-rejections:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> and <code id=unhandled-promise-rejections:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> events.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> unhandledrejection<span class="and_chr yes"><span>Chrome for Android</span> <span>66+</span></span><span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>5+</span></span><span class="safari yes"><span>Safari</span> <span>11+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><span class="android yes"><span>Android Browser</span> <span>66+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=unhandledrejection">caniuse.com</a></div>
 
   <p>When the user agent is to <dfn id=notify-about-rejected-promises>notify about rejected promises</dfn> on a given
   <a href=#environment-settings-object id=unhandled-promise-rejections:environment-settings-object>environment settings object</a> <var>settings object</var>, it must run these steps:</p>
@@ -1919,10 +1931,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
     <p><dfn id=update-the-rendering data-export="">Update the rendering</dfn>: If this <a href=#event-loop id=event-loop-processing-model:event-loop-6>event loop</a> is a
     <a id=event-loop-processing-model:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-7>event loop</a> (as opposed to a <a href=workers.html#workers>worker</a> <a href=#event-loop id=event-loop-processing-model:event-loop-8>event loop</a>), then run the following substeps.</p>
 
-    <ol><li><p>Let <var>now</var> be the value that would be returned by the <code id=event-loop-processing-model:performance><a data-x-internal=performance href=https://w3c.github.io/hr-time/#the-performance-interface>Performance</a></code>
-     object's <code id=event-loop-processing-model:dom-performance-now><a data-x-internal=dom-performance-now href=https://w3c.github.io/hr-time/#dom-performance-now()>now()</a></code> method. <a href=references.html#refsHRT>[HRT]</a></p>
-
-     </li><li>
+    <ol><li><p>Let <var>now</var> be the <a id=event-loop-processing-model:current-high-resolution-time href=https://w3c.github.io/hr-time/#dfn-current-high-resolution-time data-x-internal=current-high-resolution-time>current high resolution time</a>. <a href=references.html#refsHRT>[HRT]</a></li><li>
       <p>Let <var>docs</var> be the list of <code id=event-loop-processing-model:document-2><a href=dom.html#document>Document</a></code> objects associated with the
       <a href=#event-loop id=event-loop-processing-model:event-loop-9>event loop</a> in question, sorted arbitrarily except that the following conditions
       must be met:</p>
@@ -2163,7 +2172,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
   <p class=example>The algorithm steps for any JavaScript method will be invoked by author code
   calling that method. And author code can only be run via queued tasks, usually originating
-  somewhere in the <a href=script-processing-model><code>script</code> processing model</a>.</p>
+  somewhere in the <a href=scripting.html#script-processing-model><code>script</code> processing model</a>.</p>
 
   <p>From this starting point, the overriding guideline is that any work a specification needs to
   perform that would otherwise block the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-4>event loop</a> must instead be performed <a id=event-loop-for-spec-authors:in-parallel-2 href=infrastructure.html#in-parallel>in
@@ -2929,7 +2938,7 @@ document.body.appendChild(frame)</pre>
   object's <a href=#relevant-settings-object id=windoworworkerglobalscope-mixin:relevant-settings-object>relevant settings object</a>'s <a href=#concept-settings-object-origin id=windoworworkerglobalscope-mixin:concept-settings-object-origin>origin</a>, <a href=origin.html#ascii-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:ascii-serialisation-of-an-origin>serialized</a>.</p>
 
 
-  <h3 id=atob><span class=secno>8.3</span> Base64ユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>66+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob><span class=secno>8.3</span> Base64ユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>66+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>
