@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>22 June 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -91,9 +91,7 @@
 
   <h4 id=opening-the-input-stream><span class=secno>8.4.1</span> 入力ストリームを開く<a href=#opening-the-input-stream class=self-link></a></h4>
 
-  <p><dfn id=dom-document-open><code>open()</code></dfn>メソッドは、異なる引数の数をもつ異形を提供する。</p>
-
-  <dl class=domintro><dt><var>document</var> = <var>document</var> . <code id=dom-document-open-2><a href=#dom-document-open>open</a></code>( [ <var>type</var> [, <var>replace</var> ] ] )<dd>
+  <dl class=domintro><dt><var>document</var> = <var>document</var> . <code id=dom-document-open>open</code>( [ <var>type</var> [, <var>replace</var> ] ] )<dd>
     <p>Causes the <code>Document</code> to be replaced in-place, as if it was a new
     <code>Document</code> object, but reusing the previous object, which is then returned.</p>
 
@@ -111,7 +109,7 @@
 
     <p>Throws an <a id=opening-the-input-stream:invalidstateerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=opening-the-input-stream:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
     parser is currently executing a <a id=opening-the-input-stream:custom-element-constructor href=custom-elements.html#custom-element-constructor>custom element constructor</a>.</p>
-   <dt><var>window</var> = <var>document</var> . <code id=opening-the-input-stream:dom-document-open><a href=#dom-document-open>open</a></code>( <var>url</var>, <var>name</var>, <var>features</var> )<dd><p><code id=opening-the-input-stream:dom-open><a href=window-object.html#dom-open>window.open()</a></code>メソッドのように動作する。</dl>
+   <dt><var>window</var> = <var>document</var> . <code>open</code>( <var>url</var>, <var>name</var>, <var>features</var> )<dd><p><code id=opening-the-input-stream:dom-open><a href=window-object.html#dom-open>window.open()</a></code>メソッドのように動作する。</dl>
 
   
 
@@ -121,7 +119,7 @@
 
   <dl class=domintro><dt><var>document</var> . <code id=dom-document-close>close</code>()<dd>
 
-    <p><code id=closing-the-input-stream:dom-document-open><a href=#dom-document-open>document.open()</a></code>メソッドによって開かれた入力ストリームを閉じる。</p>
+    <p>Closes the input stream that was opened by the <code id=closing-the-input-stream:dom-document-open><a href=#dom-document-open>document.open(<var>type</var>, <var>replace</var>)</a></code> method.</p>
 
     <p>Throws an <a id=closing-the-input-stream:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=closing-the-input-stream:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the
     <code>Document</code> is an <a href=https://triple-underscore.github.io/DOM4-ja.html#xml-document id=closing-the-input-stream:xml-documents data-x-internal=xml-documents>XML document</a>.</p>
@@ -141,7 +139,7 @@
 
     <p>In general, adds the given string(s) to the <code>Document</code>'s input stream.</p>
 
-    <p class=warning>このメソッドは非常に特異な振る舞いを持つ。In some cases, this method can affect the state of the <span>HTML parser</span> while the parser is running, resulting in a DOM that does not correspond to the source of the document (e.g. if the string written is the string "<code>&lt;plaintext&gt;</code>" or "<code>&lt;!--</code>"). 他の例では、あたかも<code id=document.write():dom-document-open><a href=#dom-document-open>document.open()</a></code>が呼び出されていたかのように、呼び出しが最初に現在のページをクリアできる。さらに多くの例では、メソッドは単に無視されるか、または例外を投げる。Users agents are <a href=#document-written-scripts-intervention>explicitly allowed to avoid executing <code>script</code> elements inserted via this method</a>. And to make matters even worse, the exact behavior of this method can in some cases be dependent on network latency, which can lead to failures that are very hard to debug. <strong>For all these reasons, use of this method is strongly discouraged.</strong></p>
+    <p class=warning>このメソッドは非常に特異な振る舞いを持つ。In some cases, this method can affect the state of the <span>HTML parser</span> while the parser is running, resulting in a DOM that does not correspond to the source of the document (e.g. if the string written is the string "<code>&lt;plaintext&gt;</code>" or "<code>&lt;!--</code>"). In other cases, the call can clear the current page first, as if <code id=document.write():dom-document-open><a href=#dom-document-open>document.open(<var>type</var>, <var>replace</var>)</a></code> had been called. さらに多くの例では、メソッドは単に無視されるか、または例外を投げる。Users agents are <a href=#document-written-scripts-intervention>explicitly allowed to avoid executing <code>script</code> elements inserted via this method</a>. And to make matters even worse, the exact behavior of this method can in some cases be dependent on network latency, which can lead to failures that are very hard to debug. <strong>For all these reasons, use of this method is strongly discouraged.</strong></p>
 
     <p>Throws an <a id=document.write():invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.write():domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> when
     invoked on <a id=document.write():xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML documents</a>.</p>
@@ -159,8 +157,8 @@
   <dl class=domintro><dt><var>document</var> . <code id=dom-document-writeln>writeln</code>(<var>text</var>...)<dd>
 
     <p>Adds the given string(s) to the <code>Document</code>'s input stream, followed by a newline
-    character. If necessary, calls the <code id=document.writeln():dom-document-open><a href=#dom-document-open>open()</a></code> method
-    implicitly first.</p>
+    character. If necessary, calls the <code id=document.writeln():dom-document-open><a href=#dom-document-open>open(<var>type</var>,
+    <var>replace</var>)</a></code> method implicitly first.</p>
 
     <p>Throws an <a id=document.writeln():invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=document.writeln():domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> when
     invoked on <a id=document.writeln():xml-documents href=https://triple-underscore.github.io/DOM4-ja.html#xml-document data-x-internal=xml-documents>XML documents</a>.</p>
