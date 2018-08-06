@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -155,12 +155,12 @@
     <p>2つ目の引数が与えられた場合、返される画像の型（たとえば、PNGまたはJPEG）を制御する。デフォルトは"<code id=the-canvas-element:image/png-3><a href=indices.html#image/png>image/png</a></code>"である。指定された型がサポートされない場合、そのタイプも使用される。The third argument applies if the type is an image format that supports variable quality (such as "<code id=the-canvas-element:image/jpeg-2><a href=indices.html#image/jpeg>image/jpeg</a></code>"), and is a number in the range 0.0 to 1.0 inclusive indicating the desired quality level for the resulting image.</p>
 
    <dt><var>canvas</var> . <code id=dom-canvas-transfercontroltooffscreen>transferControlToOffscreen</code>()<dd>
-    <p>Returns a newly created <code>OffscreenCanvas</code> object that uses the
+    <p>Returns a newly created <code id=the-canvas-element:offscreencanvas><a href=#offscreencanvas>OffscreenCanvas</a></code> object that uses the
     <code id=the-canvas-element:the-canvas-element-24><a href=#the-canvas-element>canvas</a></code> element as a placeholder. Once the <code id=the-canvas-element:the-canvas-element-25><a href=#the-canvas-element>canvas</a></code> element has become a
-    placeholder for an <code>OffscreenCanvas</code> object, its intrinsic size can no longer be
+    placeholder for an <code id=the-canvas-element:offscreencanvas-2><a href=#offscreencanvas>OffscreenCanvas</a></code> object, its intrinsic size can no longer be
     changed, and it cannot have a rendering context. The content of the placeholder canvas is
     updated by calling the <code id=the-canvas-element:offscreencontext-commit><a href=#offscreencontext-commit>commit()</a></code> method of the
-    <code>OffscreenCanvas</code> object's rendering context.
+    <code id=the-canvas-element:offscreencanvas-3><a href=#offscreencanvas>OffscreenCanvas</a></code> object's rendering context.
     
     </p>
    </dl>
@@ -173,7 +173,240 @@
 
   
 
-  
+  <pre><code class='idl'><c- b>typedef</c-> (<span><c- n>HTMLImageElement</c-></span> <c- b>or</c->
+         <a href='https://svgwg.org/svg2-draft/embedded.html#InterfaceSVGImageElement' data-x-internal='svgimageelement' id='2dcontext:svgimageelement'><c- n>SVGImageElement</c-></a>) <dfn id='htmlorsvgimageelement'><c- g>HTMLOrSVGImageElement</c-></dfn>;
+
+<c- b>typedef</c-> (<a href='#htmlorsvgimageelement' id='2dcontext:htmlorsvgimageelement'><c- n>HTMLOrSVGImageElement</c-></a> <c- b>or</c->
+         <span><c- n>HTMLVideoElement</c-></span> <c- b>or</c->
+         <span><c- n>HTMLCanvasElement</c-></span> <c- b>or</c->
+         <a href='imagebitmap-and-animations.html#imagebitmap' id='2dcontext:imagebitmap'><c- n>ImageBitmap</c-></a> <c- b>or</c->
+         <a href='#offscreencanvas' id='2dcontext:offscreencanvas'><c- n>OffscreenCanvas</c-></a>) <dfn id='canvasimagesource'><c- g>CanvasImageSource</c-></dfn>;
+
+<c- b>enum</c-> <dfn id='canvasfillrule'><c- g>CanvasFillRule</c-></dfn> { <c- s>"</c-><a href='#dom-context-2d-fillrule-nonzero' id='2dcontext:dom-context-2d-fillrule-nonzero'><c- s>nonzero</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-fillrule-evenodd' id='2dcontext:dom-context-2d-fillrule-evenodd'><c- s>evenodd</c-></a><c- s>"</c-> };
+
+<c- b>dictionary</c-> <dfn id='canvasrenderingcontext2dsettings'><c- g>CanvasRenderingContext2DSettings</c-></dfn> {
+  <c- b>boolean</c-> <span><c- g>alpha</c-></span> = <c- b>true</c->;
+};
+
+<c- b>enum</c-> <dfn id='imagesmoothingquality'><c- g>ImageSmoothingQuality</c-></dfn> { <c- s>"</c-><a href='#dom-context-2d-imagesmoothingquality-low' id='2dcontext:dom-context-2d-imagesmoothingquality-low'><c- s>low</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-imagesmoothingquality-medium' id='2dcontext:dom-context-2d-imagesmoothingquality-medium'><c- s>medium</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-imagesmoothingquality-high' id='2dcontext:dom-context-2d-imagesmoothingquality-high'><c- s>high</c-></a><c- s>"</c-> };
+
+[<c- g>Exposed</c->=<c- n>Window</c->]
+<c- b>interface</c-> <dfn id='canvasrenderingcontext2d'><c- g>CanvasRenderingContext2D</c-></dfn> {
+  // back-reference to the canvas
+  <c- b>readonly</c-> <c- b>attribute</c-> <span><c- n>HTMLCanvasElement</c-></span> <a href='#dom-context-2d-canvas' id='2dcontext:dom-context-2d-canvas'><c- g>canvas</c-></a>;
+};
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasstate' id='2dcontext:canvasstate'><c- n>CanvasState</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-2'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvastransform' id='2dcontext:canvastransform'><c- n>CanvasTransform</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-3'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvascompositing' id='2dcontext:canvascompositing'><c- n>CanvasCompositing</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-4'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasimagesmoothing' id='2dcontext:canvasimagesmoothing'><c- n>CanvasImageSmoothing</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-5'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasfillstrokestyles' id='2dcontext:canvasfillstrokestyles'><c- n>CanvasFillStrokeStyles</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-6'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasshadowstyles' id='2dcontext:canvasshadowstyles'><c- n>CanvasShadowStyles</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-7'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasfilters' id='2dcontext:canvasfilters'><c- n>CanvasFilters</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-8'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasrect' id='2dcontext:canvasrect'><c- n>CanvasRect</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-9'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasdrawpath' id='2dcontext:canvasdrawpath'><c- n>CanvasDrawPath</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-10'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasuserinterface' id='2dcontext:canvasuserinterface'><c- n>CanvasUserInterface</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-11'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvastext' id='2dcontext:canvastext'><c- n>CanvasText</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-12'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasdrawimage' id='2dcontext:canvasdrawimage'><c- n>CanvasDrawImage</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-13'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasimagedata' id='2dcontext:canvasimagedata'><c- n>CanvasImageData</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-14'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvaspathdrawingstyles' id='2dcontext:canvaspathdrawingstyles'><c- n>CanvasPathDrawingStyles</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-15'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvastextdrawingstyles' id='2dcontext:canvastextdrawingstyles'><c- n>CanvasTextDrawingStyles</c-></a>;
+<a href='#canvasrenderingcontext2d' id='2dcontext:canvasrenderingcontext2d-16'><c- n>CanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvaspath' id='2dcontext:canvaspath'><c- n>CanvasPath</c-></a>;
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasstate'><c- g>CanvasState</c-></dfn> {
+  // state
+  <c- b>void</c-> <a href='#dom-context-2d-save' id='2dcontext:dom-context-2d-save'><c- g>save</c-></a>(); // push state on state stack
+  <c- b>void</c-> <a href='#dom-context-2d-restore' id='2dcontext:dom-context-2d-restore'><c- g>restore</c-></a>(); // pop state stack and restore state
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvastransform'><c- g>CanvasTransform</c-></dfn> {
+  // transformations (default transform is the identity matrix)
+  <c- b>void</c-> <a href='#dom-context-2d-scale' id='2dcontext:dom-context-2d-scale'><c- g>scale</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-rotate' id='2dcontext:dom-context-2d-rotate'><c- g>rotate</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>angle</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-translate' id='2dcontext:dom-context-2d-translate'><c- g>translate</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-transform' id='2dcontext:dom-context-2d-transform'><c- g>transform</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>a</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>b</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>c</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>d</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>e</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>f</c->);
+
+  [<c- g>NewObject</c->] <a href='https://drafts.fxtf.org/geometry/#dommatrix' data-x-internal='dommatrix' id='2dcontext:dommatrix'><c- n>DOMMatrix</c-></a> <a href='#dom-context-2d-gettransform' id='2dcontext:dom-context-2d-gettransform'><c- g>getTransform</c-></a>();
+  <c- b>void</c-> <a href='#dom-context-2d-settransform' id='2dcontext:dom-context-2d-settransform'><c- g>setTransform</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>a</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>b</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>c</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>d</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>e</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>f</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-settransform-matrix' id='2dcontext:dom-context-2d-settransform-matrix'><c- g>setTransform</c-></a>(<c- b>optional</c-> <a href='https://drafts.fxtf.org/geometry/#dictdef-dommatrix2dinit' data-x-internal='dommatrix2dinit' id='2dcontext:dommatrix2dinit'><c- n>DOMMatrix2DInit</c-></a> <c- g>transform</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-resettransform' id='2dcontext:dom-context-2d-resettransform'><c- g>resetTransform</c-></a>();
+
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvascompositing'><c- g>CanvasCompositing</c-></dfn> {
+  // compositing
+  <c- b>attribute</c-> <c- b>unrestricted</c-> <c- b>double</c-> <a href='#dom-context-2d-globalalpha' id='2dcontext:dom-context-2d-globalalpha'><c- g>globalAlpha</c-></a>; // (default 1.0)
+  <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-context-2d-globalcompositeoperation' id='2dcontext:dom-context-2d-globalcompositeoperation'><c- g>globalCompositeOperation</c-></a>; // (default source-over)
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasimagesmoothing'><c- g>CanvasImageSmoothing</c-></dfn> {
+  // image smoothing
+  <c- b>attribute</c-> <c- b>boolean</c-> <a href='#dom-context-2d-imagesmoothingenabled' id='2dcontext:dom-context-2d-imagesmoothingenabled'><c- g>imageSmoothingEnabled</c-></a>; // (default true)
+  <c- b>attribute</c-> <a href='#imagesmoothingquality' id='2dcontext:imagesmoothingquality'><c- n>ImageSmoothingQuality</c-></a> <a href='#dom-context-2d-imagesmoothingquality' id='2dcontext:dom-context-2d-imagesmoothingquality'><c- g>imageSmoothingQuality</c-></a>; // (default low)
+
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasfillstrokestyles'><c- g>CanvasFillStrokeStyles</c-></dfn> {
+  // colors and styles (see also the <a href='#canvaspathdrawingstyles' id='2dcontext:canvaspathdrawingstyles-2'>CanvasPathDrawingStyles</a> and <a href='#canvastextdrawingstyles' id='2dcontext:canvastextdrawingstyles-2'>CanvasTextDrawingStyles</a> interfaces)
+  <c- b>attribute</c-> (<c- b>DOMString</c-> <c- b>or</c-> <c- n>CanvasGradient</c-> <c- b>or</c-> <c- n>CanvasPattern</c->) <a href='#dom-context-2d-strokestyle' id='2dcontext:dom-context-2d-strokestyle'><c- g>strokeStyle</c-></a>; // (default black)
+  <c- b>attribute</c-> (<c- b>DOMString</c-> <c- b>or</c-> <c- n>CanvasGradient</c-> <c- b>or</c-> <c- n>CanvasPattern</c->) <a href='#dom-context-2d-fillstyle' id='2dcontext:dom-context-2d-fillstyle'><c- g>fillStyle</c-></a>; // (default black)
+  <a href='#canvasgradient' id='2dcontext:canvasgradient'><c- n>CanvasGradient</c-></a> <a href='#dom-context-2d-createlineargradient' id='2dcontext:dom-context-2d-createlineargradient'><c- g>createLinearGradient</c-></a>(<c- b>double</c-> <c- g>x0</c->, <c- b>double</c-> <c- g>y0</c->, <c- b>double</c-> <c- g>x1</c->, <c- b>double</c-> <c- g>y1</c->);
+  <a href='#canvasgradient' id='2dcontext:canvasgradient-2'><c- n>CanvasGradient</c-></a> <a href='#dom-context-2d-createradialgradient' id='2dcontext:dom-context-2d-createradialgradient'><c- g>createRadialGradient</c-></a>(<c- b>double</c-> <c- g>x0</c->, <c- b>double</c-> <c- g>y0</c->, <c- b>double</c-> <c- g>r0</c->, <c- b>double</c-> <c- g>x1</c->, <c- b>double</c-> <c- g>y1</c->, <c- b>double</c-> <c- g>r1</c->);
+  <a href='#canvaspattern' id='2dcontext:canvaspattern'><c- n>CanvasPattern</c-></a>? <a href='#dom-context-2d-createpattern' id='2dcontext:dom-context-2d-createpattern'><c- g>createPattern</c-></a>(<a href='#canvasimagesource' id='2dcontext:canvasimagesource'><c- n>CanvasImageSource</c-></a> <c- g>image</c->, [<c- g>TreatNullAs</c->=<c- n>EmptyString</c->] <c- b>DOMString</c-> <c- g>repetition</c->);
+
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasshadowstyles'><c- g>CanvasShadowStyles</c-></dfn> {
+  // shadows
+  <c- b>attribute</c-> <c- b>unrestricted</c-> <c- b>double</c-> <a href='#dom-context-2d-shadowoffsetx' id='2dcontext:dom-context-2d-shadowoffsetx'><c- g>shadowOffsetX</c-></a>; // (default 0)
+  <c- b>attribute</c-> <c- b>unrestricted</c-> <c- b>double</c-> <a href='#dom-context-2d-shadowoffsety' id='2dcontext:dom-context-2d-shadowoffsety'><c- g>shadowOffsetY</c-></a>; // (default 0)
+  <c- b>attribute</c-> <c- b>unrestricted</c-> <c- b>double</c-> <a href='#dom-context-2d-shadowblur' id='2dcontext:dom-context-2d-shadowblur'><c- g>shadowBlur</c-></a>; // (default 0)
+  <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-context-2d-shadowcolor' id='2dcontext:dom-context-2d-shadowcolor'><c- g>shadowColor</c-></a>; // (default <a href='https://drafts.csswg.org/css-color/#transparent-black' data-x-internal='transparent-black' id='2dcontext:transparent-black'>transparent black</a>)
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasfilters'><c- g>CanvasFilters</c-></dfn> {
+  // filters
+  <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-context-2d-filter' id='2dcontext:dom-context-2d-filter'><c- g>filter</c-></a>; // (default "none")
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasrect'><c- g>CanvasRect</c-></dfn> {
+  // rects
+  <c- b>void</c-> <a href='#dom-context-2d-clearrect' id='2dcontext:dom-context-2d-clearrect'><c- g>clearRect</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>w</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>h</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-fillrect' id='2dcontext:dom-context-2d-fillrect'><c- g>fillRect</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>w</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>h</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-strokerect' id='2dcontext:dom-context-2d-strokerect'><c- g>strokeRect</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>w</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>h</c->);
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasdrawpath'><c- g>CanvasDrawPath</c-></dfn> {
+  // path API (see also <a href='#canvaspath' id='2dcontext:canvaspath-2'>CanvasPath</a>)
+  <c- b>void</c-> <a href='#dom-context-2d-beginpath' id='2dcontext:dom-context-2d-beginpath'><c- g>beginPath</c-></a>();
+  <c- b>void</c-> <a href='#dom-context-2d-fill' id='2dcontext:dom-context-2d-fill'><c- g>fill</c-></a>(<c- b>optional</c-> <a href='#canvasfillrule' id='2dcontext:canvasfillrule'><c- n>CanvasFillRule</c-></a> <c- g>fillRule</c-> = "<a href='#dom-context-2d-fillrule-nonzero' id='2dcontext:dom-context-2d-fillrule-nonzero-2'>nonzero</a>");
+  <c- b>void</c-> <a href='#dom-context-2d-fill' id='2dcontext:dom-context-2d-fill-2'><c- g>fill</c-></a>(<a href='#path2d' id='2dcontext:path2d'><c- n>Path2D</c-></a> <c- g>path</c->, <c- b>optional</c-> <a href='#canvasfillrule' id='2dcontext:canvasfillrule-2'><c- n>CanvasFillRule</c-></a> <c- g>fillRule</c-> = "<a href='#dom-context-2d-fillrule-nonzero' id='2dcontext:dom-context-2d-fillrule-nonzero-3'>nonzero</a>");
+  <c- b>void</c-> <a href='#dom-context-2d-stroke' id='2dcontext:dom-context-2d-stroke'><c- g>stroke</c-></a>();
+  <c- b>void</c-> <a href='#dom-context-2d-stroke' id='2dcontext:dom-context-2d-stroke-2'><c- g>stroke</c-></a>(<a href='#path2d' id='2dcontext:path2d-2'><c- n>Path2D</c-></a> <c- g>path</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-clip' id='2dcontext:dom-context-2d-clip'><c- g>clip</c-></a>(<c- b>optional</c-> <a href='#canvasfillrule' id='2dcontext:canvasfillrule-3'><c- n>CanvasFillRule</c-></a> <c- g>fillRule</c-> = "<a href='#dom-context-2d-fillrule-nonzero' id='2dcontext:dom-context-2d-fillrule-nonzero-4'>nonzero</a>");
+  <c- b>void</c-> <a href='#dom-context-2d-clip' id='2dcontext:dom-context-2d-clip-2'><c- g>clip</c-></a>(<a href='#path2d' id='2dcontext:path2d-3'><c- n>Path2D</c-></a> <c- g>path</c->, <c- b>optional</c-> <a href='#canvasfillrule' id='2dcontext:canvasfillrule-4'><c- n>CanvasFillRule</c-></a> <c- g>fillRule</c-> = "<a href='#dom-context-2d-fillrule-nonzero' id='2dcontext:dom-context-2d-fillrule-nonzero-5'>nonzero</a>");
+  <c- b>boolean</c-> <a href='#dom-context-2d-ispointinpath' id='2dcontext:dom-context-2d-ispointinpath'><c- g>isPointInPath</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>optional</c-> <a href='#canvasfillrule' id='2dcontext:canvasfillrule-5'><c- n>CanvasFillRule</c-></a> <c- g>fillRule</c-> = "<a href='#dom-context-2d-fillrule-nonzero' id='2dcontext:dom-context-2d-fillrule-nonzero-6'>nonzero</a>");
+  <c- b>boolean</c-> <a href='#dom-context-2d-ispointinpath' id='2dcontext:dom-context-2d-ispointinpath-2'><c- g>isPointInPath</c-></a>(<a href='#path2d' id='2dcontext:path2d-4'><c- n>Path2D</c-></a> <c- g>path</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>optional</c-> <a href='#canvasfillrule' id='2dcontext:canvasfillrule-6'><c- n>CanvasFillRule</c-></a> <c- g>fillRule</c-> = "<a href='#dom-context-2d-fillrule-nonzero' id='2dcontext:dom-context-2d-fillrule-nonzero-7'>nonzero</a>");
+  <c- b>boolean</c-> <a href='#dom-context-2d-ispointinstroke' id='2dcontext:dom-context-2d-ispointinstroke'><c- g>isPointInStroke</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+  <c- b>boolean</c-> <a href='#dom-context-2d-ispointinstroke' id='2dcontext:dom-context-2d-ispointinstroke-2'><c- g>isPointInStroke</c-></a>(<a href='#path2d' id='2dcontext:path2d-5'><c- n>Path2D</c-></a> <c- g>path</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasuserinterface'><c- g>CanvasUserInterface</c-></dfn> {
+  <c- b>void</c-> <a href='#dom-context-2d-drawfocusifneeded' id='2dcontext:dom-context-2d-drawfocusifneeded'><c- g>drawFocusIfNeeded</c-></a>(<a href='https://triple-underscore.github.io/DOM4-ja.html#interface-element' data-x-internal='element' id='2dcontext:element'><c- n>Element</c-></a> <c- g>element</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-drawfocusifneeded' id='2dcontext:dom-context-2d-drawfocusifneeded-2'><c- g>drawFocusIfNeeded</c-></a>(<a href='#path2d' id='2dcontext:path2d-6'><c- n>Path2D</c-></a> <c- g>path</c->, <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-element' data-x-internal='element' id='2dcontext:element-2'><c- n>Element</c-></a> <c- g>element</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-scrollpathintoview' id='2dcontext:dom-context-2d-scrollpathintoview'><c- g>scrollPathIntoView</c-></a>();
+  <c- b>void</c-> <a href='#dom-context-2d-scrollpathintoview' id='2dcontext:dom-context-2d-scrollpathintoview-2'><c- g>scrollPathIntoView</c-></a>(<a href='#path2d' id='2dcontext:path2d-7'><c- n>Path2D</c-></a> <c- g>path</c->);
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvastext'><c- g>CanvasText</c-></dfn> {
+  // text (see also the <a href='#canvaspathdrawingstyles' id='2dcontext:canvaspathdrawingstyles-3'>CanvasPathDrawingStyles</a> and <a href='#canvastextdrawingstyles' id='2dcontext:canvastextdrawingstyles-3'>CanvasTextDrawingStyles</a> interfaces)
+  <c- b>void</c-> <a href='#dom-context-2d-filltext' id='2dcontext:dom-context-2d-filltext'><c- g>fillText</c-></a>(<c- b>DOMString</c-> <c- g>text</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>optional</c-> <c- b>unrestricted</c-> <c- b>double</c-> <c- g>maxWidth</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-stroketext' id='2dcontext:dom-context-2d-stroketext'><c- g>strokeText</c-></a>(<c- b>DOMString</c-> <c- g>text</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>optional</c-> <c- b>unrestricted</c-> <c- b>double</c-> <c- g>maxWidth</c->);
+  <a href='#textmetrics' id='2dcontext:textmetrics'><c- n>TextMetrics</c-></a> <a href='#dom-context-2d-measuretext' id='2dcontext:dom-context-2d-measuretext'><c- g>measureText</c-></a>(<c- b>DOMString</c-> <c- g>text</c->);
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasdrawimage'><c- g>CanvasDrawImage</c-></dfn> {
+  // drawing images
+  <c- b>void</c-> <a href='#dom-context-2d-drawimage' id='2dcontext:dom-context-2d-drawimage'><c- g>drawImage</c-></a>(<a href='#canvasimagesource' id='2dcontext:canvasimagesource-2'><c- n>CanvasImageSource</c-></a> <c- g>image</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dx</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dy</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-drawimage' id='2dcontext:dom-context-2d-drawimage-2'><c- g>drawImage</c-></a>(<a href='#canvasimagesource' id='2dcontext:canvasimagesource-3'><c- n>CanvasImageSource</c-></a> <c- g>image</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dx</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dy</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dw</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dh</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-drawimage' id='2dcontext:dom-context-2d-drawimage-3'><c- g>drawImage</c-></a>(<a href='#canvasimagesource' id='2dcontext:canvasimagesource-4'><c- n>CanvasImageSource</c-></a> <c- g>image</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>sx</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>sy</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>sw</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>sh</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dx</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dy</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dw</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>dh</c->);
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvasimagedata'><c- g>CanvasImageData</c-></dfn> {
+  // <a href='#pixel-manipulation' id='2dcontext:pixel-manipulation'>pixel manipulation</a>
+  <a href='#imagedata' id='2dcontext:imagedata'><c- n>ImageData</c-></a> <a href='#dom-context-2d-createimagedata' id='2dcontext:dom-context-2d-createimagedata'><c- g>createImageData</c-></a>(<c- b>long</c-> <c- g>sw</c->, <c- b>long</c-> <c- g>sh</c->);
+  <a href='#imagedata' id='2dcontext:imagedata-2'><c- n>ImageData</c-></a> <a href='#dom-context-2d-createimagedata' id='2dcontext:dom-context-2d-createimagedata-2'><c- g>createImageData</c-></a>(<a href='#imagedata' id='2dcontext:imagedata-3'><c- n>ImageData</c-></a> <c- g>imagedata</c->);
+  <a href='#imagedata' id='2dcontext:imagedata-4'><c- n>ImageData</c-></a> <a href='#dom-context-2d-getimagedata' id='2dcontext:dom-context-2d-getimagedata'><c- g>getImageData</c-></a>(<c- b>long</c-> <c- g>sx</c->, <c- b>long</c-> <c- g>sy</c->, <c- b>long</c-> <c- g>sw</c->, <c- b>long</c-> <c- g>sh</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-putimagedata' id='2dcontext:dom-context-2d-putimagedata'><c- g>putImageData</c-></a>(<a href='#imagedata' id='2dcontext:imagedata-5'><c- n>ImageData</c-></a> <c- g>imagedata</c->, <c- b>long</c-> <c- g>dx</c->, <c- b>long</c-> <c- g>dy</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-putimagedata' id='2dcontext:dom-context-2d-putimagedata-2'><c- g>putImageData</c-></a>(<a href='#imagedata' id='2dcontext:imagedata-6'><c- n>ImageData</c-></a> <c- g>imagedata</c->, <c- b>long</c-> <c- g>dx</c->, <c- b>long</c-> <c- g>dy</c->, <c- b>long</c-> <c- g>dirtyX</c->, <c- b>long</c-> <c- g>dirtyY</c->, <c- b>long</c-> <c- g>dirtyWidth</c->, <c- b>long</c-> <c- g>dirtyHeight</c->);
+};
+
+<c- b>enum</c-> <dfn id='canvaslinecap'><c- g>CanvasLineCap</c-></dfn> { <c- s>"butt"</c->, <c- s>"round"</c->, <c- s>"square"</c-> };
+<c- b>enum</c-> <dfn id='canvaslinejoin'><c- g>CanvasLineJoin</c-></dfn> { <c- s>"round"</c->, <c- s>"bevel"</c->, <c- s>"miter"</c-> };
+<c- b>enum</c-> <dfn id='canvastextalign'><c- g>CanvasTextAlign</c-></dfn> { <c- s>"</c-><a href='#dom-context-2d-textalign-start' id='2dcontext:dom-context-2d-textalign-start'><c- s>start</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textalign-end' id='2dcontext:dom-context-2d-textalign-end'><c- s>end</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textalign-left' id='2dcontext:dom-context-2d-textalign-left'><c- s>left</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textalign-right' id='2dcontext:dom-context-2d-textalign-right'><c- s>right</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textalign-center' id='2dcontext:dom-context-2d-textalign-center'><c- s>center</c-></a><c- s>"</c-> };
+<c- b>enum</c-> <dfn id='canvastextbaseline'><c- g>CanvasTextBaseline</c-></dfn> { <c- s>"</c-><a href='#dom-context-2d-textbaseline-top' id='2dcontext:dom-context-2d-textbaseline-top'><c- s>top</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textbaseline-hanging' id='2dcontext:dom-context-2d-textbaseline-hanging'><c- s>hanging</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textbaseline-middle' id='2dcontext:dom-context-2d-textbaseline-middle'><c- s>middle</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textbaseline-alphabetic' id='2dcontext:dom-context-2d-textbaseline-alphabetic'><c- s>alphabetic</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textbaseline-ideographic' id='2dcontext:dom-context-2d-textbaseline-ideographic'><c- s>ideographic</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-textbaseline-bottom' id='2dcontext:dom-context-2d-textbaseline-bottom'><c- s>bottom</c-></a><c- s>"</c-> };
+<c- b>enum</c-> <dfn id='canvasdirection'><c- g>CanvasDirection</c-></dfn> { <c- s>"</c-><a href='#dom-context-2d-direction-ltr' id='2dcontext:dom-context-2d-direction-ltr'><c- s>ltr</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-direction-rtl' id='2dcontext:dom-context-2d-direction-rtl'><c- s>rtl</c-></a><c- s>"</c->, <c- s>"</c-><a href='#dom-context-2d-direction-inherit' id='2dcontext:dom-context-2d-direction-inherit'><c- s>inherit</c-></a><c- s>"</c-> };
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvaspathdrawingstyles'><c- g>CanvasPathDrawingStyles</c-></dfn> {
+  // line caps/joins
+  <c- b>attribute</c-> <c- b>unrestricted</c-> <c- b>double</c-> <a href='#dom-context-2d-linewidth' id='2dcontext:dom-context-2d-linewidth'><c- g>lineWidth</c-></a>; // (default 1)
+  <c- b>attribute</c-> <a href='#canvaslinecap' id='2dcontext:canvaslinecap'><c- n>CanvasLineCap</c-></a> <a href='#dom-context-2d-linecap' id='2dcontext:dom-context-2d-linecap'><c- g>lineCap</c-></a>; // (default "butt")
+  <c- b>attribute</c-> <a href='#canvaslinejoin' id='2dcontext:canvaslinejoin'><c- n>CanvasLineJoin</c-></a> <a href='#dom-context-2d-linejoin' id='2dcontext:dom-context-2d-linejoin'><c- g>lineJoin</c-></a>; // (default "miter")
+  <c- b>attribute</c-> <c- b>unrestricted</c-> <c- b>double</c-> <a href='#dom-context-2d-miterlimit' id='2dcontext:dom-context-2d-miterlimit'><c- g>miterLimit</c-></a>; // (default 10)
+
+  // dashed lines
+  <c- b>void</c-> <a href='#dom-context-2d-setlinedash' id='2dcontext:dom-context-2d-setlinedash'><c- g>setLineDash</c-></a>(<c- b>sequence</c->&lt;<c- b>unrestricted</c-> <c- b>double</c->&gt; <c- g>segments</c->); // default empty
+  <c- b>sequence</c->&lt;<c- b>unrestricted</c-> <c- b>double</c->&gt; <a href='#dom-context-2d-getlinedash' id='2dcontext:dom-context-2d-getlinedash'><c- g>getLineDash</c-></a>();
+  <c- b>attribute</c-> <c- b>unrestricted</c-> <c- b>double</c-> <a href='#dom-context-2d-linedashoffset' id='2dcontext:dom-context-2d-linedashoffset'><c- g>lineDashOffset</c-></a>;
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvastextdrawingstyles'><c- g>CanvasTextDrawingStyles</c-></dfn> {
+  // text
+  <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-context-2d-font' id='2dcontext:dom-context-2d-font'><c- g>font</c-></a>; // (default 10px sans-serif)
+  <c- b>attribute</c-> <a href='#canvastextalign' id='2dcontext:canvastextalign'><c- n>CanvasTextAlign</c-></a> <a href='#dom-context-2d-textalign' id='2dcontext:dom-context-2d-textalign'><c- g>textAlign</c-></a>; // (default: "start")
+  <c- b>attribute</c-> <a href='#canvastextbaseline' id='2dcontext:canvastextbaseline'><c- n>CanvasTextBaseline</c-></a> <a href='#dom-context-2d-textbaseline' id='2dcontext:dom-context-2d-textbaseline'><c- g>textBaseline</c-></a>; // (default: "alphabetic")
+  <c- b>attribute</c-> <a href='#canvasdirection' id='2dcontext:canvasdirection'><c- n>CanvasDirection</c-></a> <a href='#dom-context-2d-direction' id='2dcontext:dom-context-2d-direction'><c- g>direction</c-></a>; // (default: "inherit")
+};
+
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='canvaspath'><c- g>CanvasPath</c-></dfn> {
+  // shared path API methods
+  <c- b>void</c-> <a href='#dom-context-2d-closepath' id='2dcontext:dom-context-2d-closepath'><c- g>closePath</c-></a>();
+  <c- b>void</c-> <a href='#dom-context-2d-moveto' id='2dcontext:dom-context-2d-moveto'><c- g>moveTo</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-lineto' id='2dcontext:dom-context-2d-lineto'><c- g>lineTo</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-quadraticcurveto' id='2dcontext:dom-context-2d-quadraticcurveto'><c- g>quadraticCurveTo</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>cpx</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>cpy</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-beziercurveto' id='2dcontext:dom-context-2d-beziercurveto'><c- g>bezierCurveTo</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>cp1x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>cp1y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>cp2x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>cp2y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-arcto' id='2dcontext:dom-context-2d-arcto'><c- g>arcTo</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x1</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y1</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>x2</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y2</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>radius</c->); 
+  <c- b>void</c-> <a href='#dom-context-2d-rect' id='2dcontext:dom-context-2d-rect'><c- g>rect</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>w</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>h</c->);
+  <c- b>void</c-> <a href='#dom-context-2d-arc' id='2dcontext:dom-context-2d-arc'><c- g>arc</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>radius</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>startAngle</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>endAngle</c->, <c- b>optional</c-> <c- b>boolean</c-> <c- g>anticlockwise</c-> = <c- b>false</c->); 
+  <c- b>void</c-> <a href='#dom-context-2d-ellipse' id='2dcontext:dom-context-2d-ellipse'><c- g>ellipse</c-></a>(<c- b>unrestricted</c-> <c- b>double</c-> <c- g>x</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>y</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>radiusX</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>radiusY</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>rotation</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>startAngle</c->, <c- b>unrestricted</c-> <c- b>double</c-> <c- g>endAngle</c->, <c- b>optional</c-> <c- b>boolean</c-> <c- g>anticlockwise</c-> = <c- b>false</c->); 
+};
+
+[<c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='canvasgradient'><c- g>CanvasGradient</c-></dfn> {
+  // opaque object
+  <c- b>void</c-> <a href='#dom-canvasgradient-addcolorstop' id='2dcontext:dom-canvasgradient-addcolorstop'><c- g>addColorStop</c-></a>(<c- b>double</c-> <c- g>offset</c->, <c- b>DOMString</c-> <c- g>color</c->);
+};
+
+[<c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='canvaspattern'><c- g>CanvasPattern</c-></dfn> {
+  // opaque object
+  <c- b>void</c-> <a href='#dom-canvaspattern-settransform' id='2dcontext:dom-canvaspattern-settransform'><c- g>setTransform</c-></a>(<c- b>optional</c-> <a href='https://drafts.fxtf.org/geometry/#dictdef-dommatrix2dinit' data-x-internal='dommatrix2dinit' id='2dcontext:dommatrix2dinit-2'><c- n>DOMMatrix2DInit</c-></a> <c- g>transform</c->);
+};
+
+[<c- g>Exposed</c->=<c- n>Window</c->]
+<c- b>interface</c-> <dfn id='textmetrics'><c- g>TextMetrics</c-></dfn> {
+  // x-direction
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-width-2' id='2dcontext:dom-textmetrics-width-2'><c- g>width</c-></a>; // advance width
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-actualboundingboxleft-2' id='2dcontext:dom-textmetrics-actualboundingboxleft-2'><c- g>actualBoundingBoxLeft</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-actualboundingboxright-2' id='2dcontext:dom-textmetrics-actualboundingboxright-2'><c- g>actualBoundingBoxRight</c-></a>;
+
+  // y-direction
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-fontboundingboxascent-2' id='2dcontext:dom-textmetrics-fontboundingboxascent-2'><c- g>fontBoundingBoxAscent</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-fontboundingboxdescent-2' id='2dcontext:dom-textmetrics-fontboundingboxdescent-2'><c- g>fontBoundingBoxDescent</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-actualboundingboxascent-2' id='2dcontext:dom-textmetrics-actualboundingboxascent-2'><c- g>actualBoundingBoxAscent</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-actualboundingboxdescent-2' id='2dcontext:dom-textmetrics-actualboundingboxdescent-2'><c- g>actualBoundingBoxDescent</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-emheightascent-2' id='2dcontext:dom-textmetrics-emheightascent-2'><c- g>emHeightAscent</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-emheightdescent-2' id='2dcontext:dom-textmetrics-emheightdescent-2'><c- g>emHeightDescent</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-hangingbaseline-2' id='2dcontext:dom-textmetrics-hangingbaseline-2'><c- g>hangingBaseline</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-alphabeticbaseline-2' id='2dcontext:dom-textmetrics-alphabeticbaseline-2'><c- g>alphabeticBaseline</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>double</c-> <a href='#dom-textmetrics-ideographicbaseline-2' id='2dcontext:dom-textmetrics-ideographicbaseline-2'><c- g>ideographicBaseline</c-></a>;
+};
+
+[<a href='#dom-imagedata' id='2dcontext:dom-imagedata'><c- g>Constructor</c-></a>(<c- b>unsigned</c-> <c- b>long</c-> <c- g>sw</c->, <c- b>unsigned</c-> <c- b>long</c-> <c- g>sh</c->),
+ <a href='#dom-imagedata' id='2dcontext:dom-imagedata-2'><c- g>Constructor</c-></a>(<a href='https://triple-underscore.github.io/WebIDL-ja.html#idl-Uint8ClampedArray' data-x-internal='idl-uint8clampedarray' id='2dcontext:idl-uint8clampedarray'><c- b>Uint8ClampedArray</c-></a> <c- g>data</c->, <c- b>unsigned</c-> <c- b>long</c-> <c- g>sw</c->, <c- b>optional</c-> <c- b>unsigned</c-> <c- b>long</c-> <c- g>sh</c->),
+ <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->),
+ <span><c- g>Serializable</c-></span>]
+<c- b>interface</c-> <dfn id='imagedata'><c- g>ImageData</c-></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <a href='#dom-imagedata-width' id='2dcontext:dom-imagedata-width'><c- g>width</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <a href='#dom-imagedata-height' id='2dcontext:dom-imagedata-height'><c- g>height</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='https://triple-underscore.github.io/WebIDL-ja.html#idl-Uint8ClampedArray' data-x-internal='idl-uint8clampedarray' id='2dcontext:idl-uint8clampedarray-2'><c- b>Uint8ClampedArray</c-></a> <a href='#dom-imagedata-data' id='2dcontext:dom-imagedata-data'><c- g>data</c-></a>;
+};
+
+[<a href='#dom-path2d' id='2dcontext:dom-path2d'><c- g>Constructor</c-></a>(<c- b>optional</c-> (<a href='#path2d' id='2dcontext:path2d-8'><c- n>Path2D</c-></a> <c- b>or</c-> <c- b>DOMString</c->) <c- g>path</c->),
+ <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='path2d'><c- g>Path2D</c-></dfn> {
+  <c- b>void</c-> <a href='#dom-path2d-addpath' id='2dcontext:dom-path2d-addpath'><c- g>addPath</c-></a>(<a href='#path2d' id='2dcontext:path2d-9'><c- n>Path2D</c-></a> <c- g>path</c->, <c- b>optional</c-> <a href='https://drafts.fxtf.org/geometry/#dictdef-dommatrix2dinit' data-x-internal='dommatrix2dinit' id='2dcontext:dommatrix2dinit-3'><c- n>DOMMatrix2DInit</c-></a> <c- g>transform</c->);
+};
+<a href='#path2d' id='2dcontext:path2d-10'><c- n>Path2D</c-></a> <c- b>includes</c-> <a href='#canvaspath' id='2dcontext:canvaspath-3'><c- n>CanvasPath</c-></a>;</code></pre>
 
  
 
@@ -181,7 +414,7 @@
 
   <dl class=domintro><dt><var>context</var> = <var>canvas</var> . <code id=2dcontext:dom-canvas-getcontext><a href=#dom-canvas-getcontext>getContext</a></code>('2d' [, { [ <code>alpha</code>: false ] } ] )<dd>
 
-    <p>Returns a <code>CanvasRenderingContext2D</code> object that is permanently bound to a
+    <p>Returns a <code id=2dcontext:canvasrenderingcontext2d-17><a href=#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object that is permanently bound to a
     particular <code id=2dcontext:the-canvas-element><a href=#the-canvas-element>canvas</a></code> element.</p>
 
     <p>If the <code>alpha</code> setting is
@@ -197,7 +430,7 @@
 
   <hr>
 
-  <p>The <code>CanvasFillRule</code> enumeration is used to select the <dfn id=fill-rule>fill rule</dfn>
+  <p>The <code id=2dcontext:canvasfillrule-7><a href=#canvasfillrule>CanvasFillRule</a></code> enumeration is used to select the <dfn id=fill-rule>fill rule</dfn>
   algorithm by which to determine if a point is inside or outside a path.</p>
 
   <p>The value "<dfn id=dom-context-2d-fillrule-nonzero><code>nonzero</code></dfn>" value
@@ -227,7 +460,7 @@
 
   <hr>
 
-  <p>The <code>ImageSmoothingQuality</code> enumeration is used to express a preference for the
+  <p>The <code id=2dcontext:imagesmoothingquality-2><a href=#imagesmoothingquality>ImageSmoothingQuality</a></code> enumeration is used to express a preference for the
   interpolation quality to use when smoothing images.</p>
 
   <p>The "<dfn id=dom-context-2d-imagesmoothingquality-low><code>low</code></dfn>" value
@@ -269,7 +502,7 @@
 
   <h6 id=the-canvas-state><span class=secno>4.12.5.1.2</span> The canvas state<a href=#the-canvas-state class=self-link></a></h6>
 
-  <p>Objects that implement the <code>CanvasState</code> interface maintain a stack of drawing
+  <p>Objects that implement the <code id=the-canvas-state:canvasstate><a href=#canvasstate>CanvasState</a></code> interface maintain a stack of drawing
   states. <dfn id=drawing-state>Drawing states</dfn> consist of:</p>
 
   <ul class=brief><li>The current <a href=#transformations id=the-canvas-state:transformations>transformation matrix</a>.</li><li>The current <span>clipping region</span>.</li><li>The current values of the following attributes: <code id=the-canvas-state:dom-context-2d-strokestyle><a href=#dom-context-2d-strokestyle>strokeStyle</a></code>, <code id=the-canvas-state:dom-context-2d-fillstyle><a href=#dom-context-2d-fillstyle>fillStyle</a></code>, <code id=the-canvas-state:dom-context-2d-globalalpha><a href=#dom-context-2d-globalalpha>globalAlpha</a></code>, <code id=the-canvas-state:dom-context-2d-linewidth><a href=#dom-context-2d-linewidth>lineWidth</a></code>, <code id=the-canvas-state:dom-context-2d-linecap><a href=#dom-context-2d-linecap>lineCap</a></code>, <code id=the-canvas-state:dom-context-2d-linejoin><a href=#dom-context-2d-linejoin>lineJoin</a></code>, <code id=the-canvas-state:dom-context-2d-miterlimit><a href=#dom-context-2d-miterlimit>miterLimit</a></code>, <code id=the-canvas-state:dom-context-2d-linedashoffset><a href=#dom-context-2d-linedashoffset>lineDashOffset</a></code>, <code id=the-canvas-state:dom-context-2d-shadowoffsetx><a href=#dom-context-2d-shadowoffsetx>shadowOffsetX</a></code>, <code id=the-canvas-state:dom-context-2d-shadowoffsety><a href=#dom-context-2d-shadowoffsety>shadowOffsetY</a></code>, <code id=the-canvas-state:dom-context-2d-shadowblur><a href=#dom-context-2d-shadowblur>shadowBlur</a></code>, <code id=the-canvas-state:dom-context-2d-shadowcolor><a href=#dom-context-2d-shadowcolor>shadowColor</a></code>, <code id=the-canvas-state:dom-context-2d-filter><a href=#dom-context-2d-filter>filter</a></code>, <code id=the-canvas-state:dom-context-2d-globalcompositeoperation><a href=#dom-context-2d-globalcompositeoperation>globalCompositeOperation</a></code>, <code id=the-canvas-state:dom-context-2d-font><a href=#dom-context-2d-font>font</a></code>, <code id=the-canvas-state:dom-context-2d-textalign><a href=#dom-context-2d-textalign>textAlign</a></code>, <code id=the-canvas-state:dom-context-2d-textbaseline><a href=#dom-context-2d-textbaseline>textBaseline</a></code>, <code id=the-canvas-state:dom-context-2d-direction><a href=#dom-context-2d-direction>direction</a></code>, <code id=the-canvas-state:dom-context-2d-imagesmoothingenabled><a href=#dom-context-2d-imagesmoothingenabled>imageSmoothingEnabled</a></code>, <code id=the-canvas-state:dom-context-2d-imagesmoothingquality><a href=#dom-context-2d-imagesmoothingquality>imageSmoothingQuality</a></code>.</li><li>The current <span>dash list</span>.</li></ul>
@@ -419,11 +652,11 @@
 
    <dd><p>Treat input to the <a href=#text-preparation-algorithm id=text-styles:text-preparation-algorithm-2>text preparation algorithm</a> as right-to-left text.<dt><dfn id=dom-context-2d-direction-inherit><code>inherit</code></dfn>
 
-   <dd><p>Default to the directionality of the <code id=text-styles:the-canvas-element-2><a href=#the-canvas-element>canvas</a></code> element or <code>Document</code>
+   <dd><p>Default to the directionality of the <code id=text-styles:the-canvas-element-2><a href=#the-canvas-element>canvas</a></code> element or <code id=text-styles:document><a href=dom.html#document>Document</a></code>
    as appropriate.</dl>
 
   <p>The <dfn id=text-preparation-algorithm>text preparation algorithm</dfn> is as follows. It takes as input a string <var>text
-  </var>, a <code>CanvasTextDrawingStyles</code> object <var>target</var>, and an optional length
+  </var>, a <code id=text-styles:canvastextdrawingstyles><a href=#canvastextdrawingstyles>CanvasTextDrawingStyles</a></code> object <var>target</var>, and an optional length
   <var>maxWidth</var>. It returns an array of glyph shapes, each positioned on a common coordinate
   space, a <var>physical alignment</var> whose value is one of <i>left</i>, <i>right</i>, and
   <i>center</i>, and an <a id=text-styles:inline-box href=https://momdo.github.io/css2/visuren.html#inline-box data-x-internal=inline-box>inline box</a>. (Most callers of this algorithm ignore the
@@ -438,7 +671,7 @@
 
     <dl class=switch><dt>If the <var>target</var> object's <code id=text-styles:dom-context-2d-direction-3><a href=#dom-context-2d-direction>direction</a></code> attribute has the value "<code id=text-styles:dom-context-2d-direction-ltr><a href=#dom-context-2d-direction-ltr>ltr</a></code>"<dd>Let <var>direction</var> be '<a href=dom.html#concept-ltr id=text-styles:concept-ltr>ltr</a>'.<dt>If the <var>target</var> object's <code id=text-styles:dom-context-2d-direction-4><a href=#dom-context-2d-direction>direction</a></code> attribute has the value "<code id=text-styles:dom-context-2d-direction-rtl><a href=#dom-context-2d-direction-rtl>rtl</a></code>"<dd>Let <var>direction</var> be '<a href=dom.html#concept-rtl id=text-styles:concept-rtl>rtl</a>'.<dt>If the <var>target</var> object's <span>font style source object</span> is an
      element<dd>Let <var>direction</var> be <a id=text-styles:the-directionality href=dom.html#the-directionality>the directionality</a> of the <var>target</var> object's <span>font style source object</span>.<dt>If the <var>target</var> object's <span>font style source object</span> is a
-     <code>Document</code> with a non-null <a id=text-styles:document-element href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a><dd>Let <var>direction</var> be <a id=text-styles:the-directionality-2 href=dom.html#the-directionality>the directionality</a> of the <var>target</var>
+     <code id=text-styles:document-2><a href=dom.html#document>Document</a></code> with a non-null <a id=text-styles:document-element href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a><dd>Let <var>direction</var> be <a id=text-styles:the-directionality-2 href=dom.html#the-directionality>the directionality</a> of the <var>target</var>
      object's <span>font style source object</span>'s <a id=text-styles:document-element-2 href=https://triple-underscore.github.io/DOM4-ja.html#document-element data-x-internal=document-element>document element</a>.<dt>そうでなければ<dd>Let <var>direction</var> be '<a href=dom.html#concept-ltr id=text-styles:concept-ltr-2>ltr</a>'.</dl>
 
    </li><li><p>Form a hypothetical infinitely-wide CSS <a id=text-styles:line-box href=https://momdo.github.io/css2/visuren.html#line-box data-x-internal=line-box>line box</a> containing a single
@@ -491,7 +724,7 @@
 
   <h6 id=building-paths><span class=secno>4.12.5.1.5</span> Building paths<a href=#building-paths class=self-link></a></h6>
 
-  <p>Objects that implement the <code>CanvasPath</code> interface have a <a href=#concept-path id=building-paths:concept-path>path</a>. A <dfn id=concept-path>path</dfn> has a list of zero or
+  <p>Objects that implement the <code id=building-paths:canvaspath><a href=#canvaspath>CanvasPath</a></code> interface have a <a href=#concept-path id=building-paths:concept-path>path</a>. A <dfn id=concept-path>path</dfn> has a list of zero or
   more subpaths. Each subpath consists of a list of one or more points, connected by straight or
   curved <dfn id=line-segments>line segments</dfn>, and a flag indicating whether the subpath is closed or not. A
   closed subpath is one where the last point of the subpath is connected to the first point of the
@@ -502,7 +735,7 @@
   <a href=#concept-path id=building-paths:concept-path-3>path</a> is created, its <a href=#need-new-subpath id=building-paths:need-new-subpath>need new subpath</a> flag must be
   set.</p>
 
-  <p>When an object implementing the <code>CanvasPath</code> interface is created, its <a href=#concept-path id=building-paths:concept-path-4>path</a> must be initialized to zero subpaths.</p>
+  <p>When an object implementing the <code id=building-paths:canvaspath-2><a href=#canvaspath>CanvasPath</a></code> interface is created, its <a href=#concept-path id=building-paths:concept-path-4>path</a> must be initialized to zero subpaths.</p>
 
   <dl class=domintro><dt><var>context</var> . <code id=dom-context-2d-moveto>moveTo</code>(<var>x</var>, <var>y</var>)<dt><var>path</var> . <code id=building-paths:dom-context-2d-moveto><a href=#dom-context-2d-moveto>moveTo</a></code>(<var>x</var>, <var>y</var>)<dd>
 
@@ -582,15 +815,15 @@
 
 
 
-  <h6 id=path2d-objects><span class=secno>4.12.5.1.6</span> <code>Path2D</code> objects<a href=#path2d-objects class=self-link></a></h6><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> path2d<span class="and_chr partial"><span>Chrome for Android (limited)</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>68+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>9.0+</span></span><span class="and_uc partial"><span>UC Browser for Android (limited)</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>48+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>9.1+</span></span><span class="samsung partial"><span>Samsung Internet (limited)</span> <span>4+</span></span><span class="edge partial"><span>Edge (limited)</span> <span>14+</span></span><span class="opera partial"><span>Opera (limited)</span> <span>23+</span></span><span class="android partial"><span>Android Browser (limited)</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=path2d">caniuse.com</a></div>
+  <h6 id=path2d-objects><span class=secno>4.12.5.1.6</span> <code id=path2d-objects:path2d><a href=#path2d>Path2D</a></code> objects<a href=#path2d-objects class=self-link></a></h6><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> path2d<span class="and_chr partial"><span>Chrome for Android (limited)</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>68+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>9.0+</span></span><span class="and_uc partial"><span>UC Browser for Android (limited)</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>48+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>9.1+</span></span><span class="samsung partial"><span>Samsung Internet (limited)</span> <span>4+</span></span><span class="edge partial"><span>Edge (limited)</span> <span>14+</span></span><span class="opera partial"><span>Opera (limited)</span> <span>23+</span></span><span class="android partial"><span>Android Browser (limited)</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=path2d">caniuse.com</a></div>
 
-  <p><code>Path2D</code> objects can be used to declare paths that are then later used on
-  objects implementing the <code>CanvasDrawPath</code> interface. In addition to many of the APIs
-  described in earlier sections, <code>Path2D</code> objects have methods to combine paths, and to
+  <p><code id=path2d-objects:path2d-2><a href=#path2d>Path2D</a></code> objects can be used to declare paths that are then later used on
+  objects implementing the <code id=path2d-objects:canvasdrawpath><a href=#canvasdrawpath>CanvasDrawPath</a></code> interface. In addition to many of the APIs
+  described in earlier sections, <code id=path2d-objects:path2d-3><a href=#path2d>Path2D</a></code> objects have methods to combine paths, and to
   add text to paths.</p>
 
-  <dl class=domintro><dt><var>path</var> = new <code id=dom-path2d>Path2D</code>()<dd><p>Creates a new empty <code>Path2D</code> object.<dt><var>path</var> = new <code id=path2d-objects:dom-path2d><a href=#dom-path2d>Path2D</a></code>(<var>path</var>)<dd>
-    <p>When <var>path</var> is a <code>Path2D</code> object, returns a copy.</p>
+  <dl class=domintro><dt><var>path</var> = new <code id=dom-path2d>Path2D</code>()<dd><p>Creates a new empty <code id=path2d-objects:path2d-4><a href=#path2d>Path2D</a></code> object.<dt><var>path</var> = new <code id=path2d-objects:dom-path2d><a href=#dom-path2d>Path2D</a></code>(<var>path</var>)<dd>
+    <p>When <var>path</var> is a <code id=path2d-objects:path2d-5><a href=#path2d>Path2D</a></code> object, returns a copy.</p>
 
     <p>When <var>path</var> is a string, creates the path described by the argument, interpreted as
     SVG path data. <a href=references.html#refsSVG>[SVG]</a>
@@ -601,14 +834,14 @@
 
   <h6 id=transformations><span class=secno>4.12.5.1.7</span> <dfn>Transformations</dfn><a href=#transformations class=self-link></a></h6><div class=status><input onclick=toggleStatus(this) value=⋰ type=button></div>
 
-  <p>Objects that implement the <code>CanvasTransform</code> interface have a <dfn id=current-transformation-matrix>current
+  <p>Objects that implement the <code id=transformations:canvastransform><a href=#canvastransform>CanvasTransform</a></code> interface have a <dfn id=current-transformation-matrix>current
   transformation matrix</dfn>, as well as methods (described in this section) to manipulate it. When
-  an object implementing the <code>CanvasTransform</code> interface is created, its transformation
+  an object implementing the <code id=transformations:canvastransform-2><a href=#canvastransform>CanvasTransform</a></code> interface is created, its transformation
   matrix must be initialized to the identity matrix.</p>
 
   <p>The <a href=#current-transformation-matrix id=transformations:current-transformation-matrix>current transformation matrix</a> is applied to coordinates when creating the
-  <a href=#current-default-path id=transformations:current-default-path>current default path</a>, and when painting text, shapes, and <code>Path2D</code>
-  objects, on objects implementing the <code>CanvasTransform</code> interface.</p>
+  <a href=#current-default-path id=transformations:current-default-path>current default path</a>, and when painting text, shapes, and <code id=transformations:path2d><a href=#path2d>Path2D</a></code>
+  objects, on objects implementing the <code id=transformations:canvastransform-3><a href=#canvastransform>CanvasTransform</a></code> interface.</p>
   
 
   
@@ -672,30 +905,30 @@
 
   <h6 id=image-sources-for-2d-rendering-contexts><span class=secno>4.12.5.1.8</span> Image sources for 2D rendering contexts<a href=#image-sources-for-2d-rendering-contexts class=self-link></a></h6>
 
-  <p>Some methods on the <code>CanvasDrawImage</code> and <code>CanvasFillStrokeStyles</code>
-  interfaces take the union type <code>CanvasImageSource</code> as an argument.</p>
+  <p>Some methods on the <code id=image-sources-for-2d-rendering-contexts:canvasdrawimage><a href=#canvasdrawimage>CanvasDrawImage</a></code> and <code id=image-sources-for-2d-rendering-contexts:canvasfillstrokestyles><a href=#canvasfillstrokestyles>CanvasFillStrokeStyles</a></code>
+  interfaces take the union type <code id=image-sources-for-2d-rendering-contexts:canvasimagesource><a href=#canvasimagesource>CanvasImageSource</a></code> as an argument.</p>
 
   <p>This union type allows objects implementing any of the following interfaces to be used as image
   sources:</p>
 
-  <ul><li><code>HTMLOrSVGImageElement</code> (<code id=image-sources-for-2d-rendering-contexts:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> or <a id=image-sources-for-2d-rendering-contexts:svg-image href=https://svgwg.org/svg2-draft/embedded.html#ImageElement data-x-internal=svg-image>SVG <code>image</code></a>
-   elements)</li><li><code>HTMLVideoElement</code> (<code id=image-sources-for-2d-rendering-contexts:the-video-element><a href=media.html#the-video-element>video</a></code> elements)</li><li><code>HTMLCanvasElement</code> (<code id=image-sources-for-2d-rendering-contexts:the-canvas-element><a href=#the-canvas-element>canvas</a></code> elements)</li><li><code>ImageBitmap</code></li></ul>
+  <ul><li><code id=image-sources-for-2d-rendering-contexts:htmlorsvgimageelement><a href=#htmlorsvgimageelement>HTMLOrSVGImageElement</a></code> (<code id=image-sources-for-2d-rendering-contexts:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> or <a id=image-sources-for-2d-rendering-contexts:svg-image href=https://svgwg.org/svg2-draft/embedded.html#ImageElement data-x-internal=svg-image>SVG <code>image</code></a>
+   elements)</li><li><code>HTMLVideoElement</code> (<code id=image-sources-for-2d-rendering-contexts:the-video-element><a href=media.html#the-video-element>video</a></code> elements)</li><li><code>HTMLCanvasElement</code> (<code id=image-sources-for-2d-rendering-contexts:the-canvas-element><a href=#the-canvas-element>canvas</a></code> elements)</li><li><code id=image-sources-for-2d-rendering-contexts:imagebitmap><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a></code></li></ul>
 
   <p class=note>Although not formally specified as such, <a id=image-sources-for-2d-rendering-contexts:svg-image-2 href=https://svgwg.org/svg2-draft/embedded.html#ImageElement data-x-internal=svg-image>SVG <code>image</code></a>
   elements are expected to be implemented nearly identical to <code id=image-sources-for-2d-rendering-contexts:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code> elements. That is,
   <a id=image-sources-for-2d-rendering-contexts:svg-image-3 href=https://svgwg.org/svg2-draft/embedded.html#ImageElement data-x-internal=svg-image>SVG <code>image</code></a> elements share the fundamental concepts and features of
   <code id=image-sources-for-2d-rendering-contexts:the-img-element-3><a href=embedded-content.html#the-img-element>img</a></code> elements.</p>
 
-  <p class=note>The <code>ImageBitmap</code> interface can be created from a number of other
-  image-representing types, including <code>ImageData</code>.</p>
+  <p class=note>The <code id=image-sources-for-2d-rendering-contexts:imagebitmap-2><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a></code> interface can be created from a number of other
+  image-representing types, including <code id=image-sources-for-2d-rendering-contexts:imagedata><a href=#imagedata>ImageData</a></code>.</p>
 
   <p>To <dfn id=check-the-usability-of-the-image-argument>check the usability of the <var>image</var> argument</dfn>, where <var>image</var>
-  is a <code>CanvasImageSource</code> object, run these steps:</p>
+  is a <code id=image-sources-for-2d-rendering-contexts:canvasimagesource-2><a href=#canvasimagesource>CanvasImageSource</a></code> object, run these steps:</p>
 
   <ol><li>
     <p>Switch on <var>image</var>:</p>
 
-    <dl class=switch><dt><code>HTMLOrSVGImageElement</code><dd>
+    <dl class=switch><dt><code id=image-sources-for-2d-rendering-contexts:htmlorsvgimageelement-2><a href=#htmlorsvgimageelement>HTMLOrSVGImageElement</a></code><dd>
       <p>If <var>image</var>'s <span>current request</span>'s <span>state</span> is <span>broken</span>, then
       throw an <a id=image-sources-for-2d-rendering-contexts:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=image-sources-for-2d-rendering-contexts:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</p>
 
@@ -705,51 +938,51 @@
       <p>If <var>image</var> has an <a id=image-sources-for-2d-rendering-contexts:intrinsic-width href=infrastructure.html#intrinsic-width>intrinsic width</a> or <a id=image-sources-for-2d-rendering-contexts:intrinsic-height href=infrastructure.html#intrinsic-height>intrinsic height</a>
       (or both) equal to zero, then return <i>bad</i>.</p> 
      <dt><code>HTMLVideoElement</code><dd><p>If <var>image</var>'s <code id=image-sources-for-2d-rendering-contexts:dom-media-readystate><a href=media.html#dom-media-readystate>readyState</a></code>
-     attribute is either <code id=image-sources-for-2d-rendering-contexts:dom-media-have_nothing><a href=media.html#dom-media-have_nothing>HAVE_NOTHING</a></code> or <code id=image-sources-for-2d-rendering-contexts:dom-media-have_metadata><a href=media.html#dom-media-have_metadata>HAVE_METADATA</a></code>, then return <i>bad</i>.<dt><code>HTMLCanvasElement</code><dt><code>OffscreenCanvas</code><dd><p>If <var>image</var> has either a horizontal dimension or a vertical dimension
+     attribute is either <code id=image-sources-for-2d-rendering-contexts:dom-media-have_nothing><a href=media.html#dom-media-have_nothing>HAVE_NOTHING</a></code> or <code id=image-sources-for-2d-rendering-contexts:dom-media-have_metadata><a href=media.html#dom-media-have_metadata>HAVE_METADATA</a></code>, then return <i>bad</i>.<dt><code>HTMLCanvasElement</code><dt><code id=image-sources-for-2d-rendering-contexts:offscreencanvas><a href=#offscreencanvas>OffscreenCanvas</a></code><dd><p>If <var>image</var> has either a horizontal dimension or a vertical dimension
      equal to zero, then throw an <a id=image-sources-for-2d-rendering-contexts:invalidstateerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
-     <code id=image-sources-for-2d-rendering-contexts:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.<dt><code>ImageBitmap</code><dd><p>If <var>image</var>'s <span>[[Detached]]</span> internal slot value
+     <code id=image-sources-for-2d-rendering-contexts:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.<dt><code id=image-sources-for-2d-rendering-contexts:imagebitmap-3><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a></code><dd><p>If <var>image</var>'s <span>[[Detached]]</span> internal slot value
      is set to true, then throw an <a id=image-sources-for-2d-rendering-contexts:invalidstateerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
      <code id=image-sources-for-2d-rendering-contexts:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</dl>
    </li><li>
     <p>Return <i>good</i>.</p>
    </li></ol>
 
-  <p>When a <code>CanvasImageSource</code> object represents an <code>HTMLOrSVGImageElement</code>,
+  <p>When a <code id=image-sources-for-2d-rendering-contexts:canvasimagesource-3><a href=#canvasimagesource>CanvasImageSource</a></code> object represents an <code id=image-sources-for-2d-rendering-contexts:htmlorsvgimageelement-3><a href=#htmlorsvgimageelement>HTMLOrSVGImageElement</a></code>,
   the element's image must be used as the source image.</p>
 
-  <p>Specifically, when a <code>CanvasImageSource</code> object represents an animated image in an
-  <code>HTMLOrSVGImageElement</code>, the user agent must use the default image of the animation
+  <p>Specifically, when a <code id=image-sources-for-2d-rendering-contexts:canvasimagesource-4><a href=#canvasimagesource>CanvasImageSource</a></code> object represents an animated image in an
+  <code id=image-sources-for-2d-rendering-contexts:htmlorsvgimageelement-4><a href=#htmlorsvgimageelement>HTMLOrSVGImageElement</a></code>, the user agent must use the default image of the animation
   (the one that the format defines is to be used when animation is not supported or is disabled),
   or, if there is no such image, the first frame of the animation, when rendering the image for
-  <code>CanvasRenderingContext2D</code> APIs.</p>
+  <code id=image-sources-for-2d-rendering-contexts:canvasrenderingcontext2d><a href=#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> APIs.</p>
 
-  <p>When a <code>CanvasImageSource</code> object represents an <code>HTMLVideoElement</code>, then
+  <p>When a <code id=image-sources-for-2d-rendering-contexts:canvasimagesource-5><a href=#canvasimagesource>CanvasImageSource</a></code> object represents an <code>HTMLVideoElement</code>, then
   the frame at the <span>current playback position</span> when the method with the argument is
   invoked must be used as the source image when rendering the image for
-  <code>CanvasRenderingContext2D</code> APIs, and the source image's dimensions must be the <span>intrinsic width</span> and <span>intrinsic height</span> of the <a id=image-sources-for-2d-rendering-contexts:media-resource href=media.html#media-resource>media resource</a>
+  <code id=image-sources-for-2d-rendering-contexts:canvasrenderingcontext2d-2><a href=#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> APIs, and the source image's dimensions must be the <span>intrinsic width</span> and <span>intrinsic height</span> of the <a id=image-sources-for-2d-rendering-contexts:media-resource href=media.html#media-resource>media resource</a>
   (i.e. after any aspect-ratio correction has been applied).</p>
 
-  <p>When a <code>CanvasImageSource</code> object represents an <code>HTMLCanvasElement</code>, the
+  <p>When a <code id=image-sources-for-2d-rendering-contexts:canvasimagesource-6><a href=#canvasimagesource>CanvasImageSource</a></code> object represents an <code>HTMLCanvasElement</code>, the
   element's bitmap must be used as the source image.</p>
 
-  <p>When a <code>CanvasImageSource</code> object represents an element that is <span>being
+  <p>When a <code id=image-sources-for-2d-rendering-contexts:canvasimagesource-7><a href=#canvasimagesource>CanvasImageSource</a></code> object represents an element that is <span>being
   rendered</span> and that element has been resized, the original image data of the source image
   must be used, not the image as it is rendered (e.g. <code id=image-sources-for-2d-rendering-contexts:attr-dim-width><a href=embedded-content-other.html#attr-dim-width>width</a></code> and
   <code id=image-sources-for-2d-rendering-contexts:attr-dim-height><a href=embedded-content-other.html#attr-dim-height>height</a></code> attributes on the source element have no effect on how
-  the object is interpreted when rendering the image for <code>CanvasRenderingContext2D</code>
+  the object is interpreted when rendering the image for <code id=image-sources-for-2d-rendering-contexts:canvasrenderingcontext2d-3><a href=#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code>
   APIs).</p>
 
-  <p>When a <code>CanvasImageSource</code> object represents an <code>ImageBitmap</code>, the
+  <p>When a <code id=image-sources-for-2d-rendering-contexts:canvasimagesource-8><a href=#canvasimagesource>CanvasImageSource</a></code> object represents an <code id=image-sources-for-2d-rendering-contexts:imagebitmap-4><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a></code>, the
   object's bitmap image data must be used as the source image.</p>
 
   <p>An object <var>image</var> <dfn id=the-image-argument-is-not-origin-clean>is not
   origin-clean</dfn> if, switching on <var>image</var>:</p>
 
-  <dl class=switch><dt><code>HTMLOrSVGImageElement</code>
+  <dl class=switch><dt><code id=image-sources-for-2d-rendering-contexts:htmlorsvgimageelement-5><a href=#htmlorsvgimageelement>HTMLOrSVGImageElement</a></code>
    <dt><code>HTMLVideoElement</code>
    <dd><p><var>image</var>'s <a id=image-sources-for-2d-rendering-contexts:concept-origin href=origin.html#concept-origin>origin</a> is not <span>same origin</span> with <span>entry
    settings object</span>'s <span>origin</span>.<dt><code>HTMLCanvasElement</code>
-   <dt><code>ImageBitMap</code>
+   <dt><code id=image-sources-for-2d-rendering-contexts:imagebitmap-5><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitMap</a></code>
    <dd><p><var>image</var>'s bitmap's <span>origin-clean</span>
    flag is false.</dl>
 
@@ -763,8 +996,8 @@
 
     <p>Can be set, to change the fill style.</p>
 
-    <p>The style can be either a string containing a CSS color, or a <code>CanvasGradient</code> or
-    <code>CanvasPattern</code> object. Invalid values are ignored.</p>
+    <p>The style can be either a string containing a CSS color, or a <code id=fill-and-stroke-styles:canvasgradient><a href=#canvasgradient>CanvasGradient</a></code> or
+    <code id=fill-and-stroke-styles:canvaspattern><a href=#canvaspattern>CanvasPattern</a></code> object. Invalid values are ignored.</p>
 
    <dt><var>context</var> . <code id=dom-context-2d-strokestyle>strokeStyle</code> [ = <var>value</var> ]<dd>
 
@@ -772,8 +1005,8 @@
 
     <p>Can be set, to change the stroke style.</p>
 
-    <p>The style can be either a string containing a CSS color, or a <code>CanvasGradient</code> or
-    <code>CanvasPattern</code> object. Invalid values are ignored.</p>
+    <p>The style can be either a string containing a CSS color, or a <code id=fill-and-stroke-styles:canvasgradient-2><a href=#canvasgradient>CanvasGradient</a></code> or
+    <code id=fill-and-stroke-styles:canvaspattern-2><a href=#canvaspattern>CanvasPattern</a></code> object. Invalid values are ignored.</p>
 
    </dl>
 
@@ -782,7 +1015,7 @@
   <hr>
 
   <p>There are two types of gradients, linear gradients and radial gradients, both represented by
-  objects implementing the opaque <code>CanvasGradient</code> interface.</p>
+  objects implementing the opaque <code id=fill-and-stroke-styles:canvasgradient-3><a href=#canvasgradient>CanvasGradient</a></code> interface.</p>
 
   <p id=interpolation>Once a gradient has been created (see below), stops are placed along it to
   define how the colors are distributed along the gradient.  </p>
@@ -798,13 +1031,13 @@
 
    <dt><var>gradient</var> = <var>context</var> . <code id=dom-context-2d-createlineargradient>createLinearGradient</code>(<var>x0</var>, <var>y0</var>, <var>x1</var>, <var>y1</var>)<dd>
 
-    <p>Returns a <code>CanvasGradient</code> object that represents a
+    <p>Returns a <code id=fill-and-stroke-styles:canvasgradient-4><a href=#canvasgradient>CanvasGradient</a></code> object that represents a
     linear gradient that paints along the line given by the
     coordinates represented by the arguments.</p>
 
    <dt><var>gradient</var> = <var>context</var> . <code id=dom-context-2d-createradialgradient>createRadialGradient</code>(<var>x0</var>, <var>y0</var>, <var>r0</var>, <var>x1</var>, <var>y1</var>, <var>r1</var>)<dd>
 
-    <p>Returns a <code>CanvasGradient</code> object that represents a
+    <p>Returns a <code id=fill-and-stroke-styles:canvasgradient-5><a href=#canvasgradient>CanvasGradient</a></code> object that represents a
     radial gradient that paints along the cone given by the circles
     represented by the arguments.</p>
 
@@ -817,12 +1050,12 @@
 
   <hr>
 
-  <p>Patterns are represented by objects implementing the opaque <code>CanvasPattern</code>
+  <p>Patterns are represented by objects implementing the opaque <code id=fill-and-stroke-styles:canvaspattern-3><a href=#canvaspattern>CanvasPattern</a></code>
   interface.</p>
 
   <dl class=domintro><dt><var>pattern</var> = <var>context</var> . <code id=dom-context-2d-createpattern>createPattern</code>(<var>image</var>, <var>repetition</var>)<dd>
 
-    <p>Returns a <code>CanvasPattern</code> object that uses the given image and repeats in the
+    <p>Returns a <code id=fill-and-stroke-styles:canvaspattern-4><a href=#canvaspattern>CanvasPattern</a></code> object that uses the given image and repeats in the
     direction(s) given by the <var>repetition</var> argument.</p>
 
     <p>The allowed values for <var>repetition</var> are <code>repeat</code> (both
@@ -846,7 +1079,7 @@
 
   <h6 id=drawing-rectangles-to-the-bitmap><span class=secno>4.12.5.1.10</span> Drawing rectangles to the bitmap<a href=#drawing-rectangles-to-the-bitmap class=self-link></a></h6>
 
-  <p>Objects that implement the <code>CanvasRect</code> interface provide the following methods for
+  <p>Objects that implement the <code id=drawing-rectangles-to-the-bitmap:canvasrect><a href=#canvasrect>CanvasRect</a></code> interface provide the following methods for
   immediately drawing rectangles to the bitmap. The methods each take four arguments; the first two
   give the <var>x</var> and <var>y</var> coordinates of the top left of the rectangle, and the
   second two give the width <var>w</var> and height <var>h</var> of the rectangle, respectively.</p>
@@ -881,7 +1114,7 @@
 
    <dt><var>metrics</var> = <var>context</var> . <code id=dom-context-2d-measuretext>measureText</code>(<var>text</var>)<dd>
 
-    <p>Returns a <code>TextMetrics</code> object with the metrics of the given text in the current
+    <p>Returns a <code id=drawing-text-to-the-bitmap:textmetrics><a href=#textmetrics>TextMetrics</a></code> object with the metrics of the given text in the current
     font.</p>
 
    <dt><var>metrics</var> . <code id=dom-textmetrics-width><a href=#dom-textmetrics-width-2>width</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-actualboundingboxleft><a href=#dom-textmetrics-actualboundingboxleft-2>actualBoundingBoxLeft</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-actualboundingboxright><a href=#dom-textmetrics-actualboundingboxright-2>actualBoundingBoxRight</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-fontboundingboxascent><a href=#dom-textmetrics-fontboundingboxascent-2>fontBoundingBoxAscent</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-fontboundingboxdescent><a href=#dom-textmetrics-fontboundingboxdescent-2>fontBoundingBoxDescent</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-actualboundingboxascent><a href=#dom-textmetrics-actualboundingboxascent-2>actualBoundingBoxAscent</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-actualboundingboxdescent><a href=#dom-textmetrics-actualboundingboxdescent-2>actualBoundingBoxDescent</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-emheightascent><a href=#dom-textmetrics-emheightascent-2>emHeightAscent</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-emheightdescent><a href=#dom-textmetrics-emheightdescent-2>emHeightDescent</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-hangingbaseline><a href=#dom-textmetrics-hangingbaseline-2>hangingBaseline</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-alphabeticbaseline><a href=#dom-textmetrics-alphabeticbaseline-2>alphabeticBaseline</a></code><dt><var>metrics</var> . <code id=dom-textmetrics-ideographicbaseline><a href=#dom-textmetrics-ideographicbaseline-2>ideographicBaseline</a></code><dd>
@@ -973,7 +1206,7 @@
 
   <h6 id=drawing-paths-to-the-canvas><span class=secno>4.12.5.1.12</span> Drawing paths to the canvas<a href=#drawing-paths-to-the-canvas class=self-link></a></h6>
 
-  <p>Objects that implement the <code>CanvasDrawPath</code> interface have a <dfn id=current-default-path>current default
+  <p>Objects that implement the <code id=drawing-paths-to-the-canvas:canvasdrawpath><a href=#canvasdrawpath>CanvasDrawPath</a></code> interface have a <dfn id=current-default-path>current default
   path</dfn>. There is only one <a href=#current-default-path id=drawing-paths-to-the-canvas:current-default-path>current default path</a>, it is not part of the
   <a href=#drawing-state id=drawing-paths-to-the-canvas:drawing-state>drawing state</a>. The <a href=#current-default-path id=drawing-paths-to-the-canvas:current-default-path-2>current default path</a> is a <a href=#concept-path id=drawing-paths-to-the-canvas:concept-path>path</a>, as described above.</p>
 
@@ -1015,75 +1248,75 @@
    <p>This <code id=drawing-paths-to-the-canvas:the-canvas-element><a href=#the-canvas-element>canvas</a></code> element has a couple of checkboxes. The path-related commands are
    highlighted:</p>
 
-   <pre>&lt;canvas height=400 width=750&gt;
- &lt;label&gt;&lt;input type=checkbox id=showA&gt; Show As&lt;/label&gt;
- &lt;label&gt;&lt;input type=checkbox id=showB&gt; Show Bs&lt;/label&gt;
- &lt;!-- ... --&gt;
-&lt;/canvas&gt;
-&lt;script&gt;
- function drawCheckbox(context, element, x, y, paint) {
-   context.save();
-   context.font = '10px sans-serif';
-   context.textAlign = 'left';
-   context.textBaseline = 'middle';
-   var metrics = context.measureText(element.labels[0].textContent);
-   if (paint) {
-<strong>     context.beginPath();
-     context.strokeStyle = 'black';
-     context.rect(x-5, y-5, 10, 10);
-     context.stroke();
-</strong>     if (element.checked) {
-<strong>       context.fillStyle = 'black';
-       context.fill();
-</strong>     }
-     context.fillText(element.labels[0].textContent, x+5, y);
-   }
-<strong>   context.beginPath();
-   context.rect(x-7, y-7, 12 + metrics.width+2, 14);
+   <pre><code class='html'><c- p>&lt;</c-><c- f>canvas</c-> <c- e>height</c-><c- o>=</c-><c- s>400</c-> <c- e>width</c-><c- o>=</c-><c- s>750</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>checkbox</c-> <c- e>id</c-><c- o>=</c-><c- s>showA</c-><c- p>&gt;</c-> Show As<c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>checkbox</c-> <c- e>id</c-><c- o>=</c-><c- s>showB</c-><c- p>&gt;</c-> Show Bs<c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- c>&lt;!-- ... --&gt;</c->
+<c- p>&lt;/</c-><c- f>canvas</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>function</c-> drawCheckbox<c- p>(</c->context<c- p>,</c-> element<c- p>,</c-> x<c- p>,</c-> y<c- p>,</c-> paint<c- p>)</c-> <c- p>{</c->
+   context<c- p>.</c->save<c- p>();</c->
+   context<c- p>.</c->font <c- o>=</c-> <c- t>&amp;apos;10px sans-serif&amp;apos;</c-><c- p>;</c->
+   context<c- p>.</c->textAlign <c- o>=</c-> <c- t>&amp;apos;left&amp;apos;</c-><c- p>;</c->
+   context<c- p>.</c->textBaseline <c- o>=</c-> <c- t>&amp;apos;middle&amp;apos;</c-><c- p>;</c->
+   <c- a>var</c-> metrics <c- o>=</c-> context<c- p>.</c->measureText<c- p>(</c->element<c- p>.</c->labels<c- p>[</c-><c- mi>0</c-><c- p>].</c->textContent<c- p>);</c->
+   <c- k>if</c-> <c- p>(</c->paint<c- p>)</c-> <c- p>{</c->
+<strong>     context<c- p>.</c->beginPath<c- p>();</c->
+     context<c- p>.</c->strokeStyle <c- o>=</c-> <c- t>&amp;apos;black&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->rect<c- p>(</c->x<c- o>-</c-><c- mi>5</c-><c- p>,</c-> y<c- o>-</c-><c- mi>5</c-><c- p>,</c-> <c- mi>10</c-><c- p>,</c-> <c- mi>10</c-><c- p>);</c->
+     context<c- p>.</c->stroke<c- p>();</c->
+</strong>     <c- k>if</c-> <c- p>(</c->element<c- p>.</c->checked<c- p>)</c-> <c- p>{</c->
+<strong>       context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;black&amp;apos;</c-><c- p>;</c->
+       context<c- p>.</c->fill<c- p>();</c->
+</strong>     <c- p>}</c->
+     context<c- p>.</c->fillText<c- p>(</c->element<c- p>.</c->labels<c- p>[</c-><c- mi>0</c-><c- p>].</c->textContent<c- p>,</c-> x<c- o>+</c-><c- mi>5</c-><c- p>,</c-> y<c- p>);</c->
+   <c- p>}</c->
+<strong>   context<c- p>.</c->beginPath<c- p>();</c->
+   context<c- p>.</c->rect<c- p>(</c->x<c- o>-</c-><c- mi>7</c-><c- p>,</c-> y<c- o>-</c-><c- mi>7</c-><c- p>,</c-> <c- mi>12</c-> <c- o>+</c-> metrics<c- p>.</c->width<c- o>+</c-><c- mi>2</c-><c- p>,</c-> <c- mi>14</c-><c- p>);</c->
 </strong>
-   context.drawFocusIfNeeded(element);
-   context.restore();
- }
- function drawBase() { /* ... */ }
- function drawAs() { /* ... */ }
- function drawBs() { /* ... */ }
- function redraw() {
-   var canvas = document.getElementsByTagName('canvas')[0];
-   var context = canvas.getContext('2d');
-   context.clearRect(0, 0, canvas.width, canvas.height);
-   drawCheckbox(context, document.getElementById('showA'), 20, 40, true);
-   drawCheckbox(context, document.getElementById('showB'), 20, 60, true);
-   drawBase();
-   if (document.getElementById('showA').checked)
-     drawAs();
-   if (document.getElementById('showB').checked)
-     drawBs();
- }
- function processClick(event) {
-   var canvas = document.getElementsByTagName('canvas')[0];
-   var context = canvas.getContext('2d');
-   var x = event.clientX;
-   var y = event.clientY;
-   var node = event.target;
-   while (node) {
-     x -= node.offsetLeft - node.scrollLeft;
-     y -= node.offsetTop - node.scrollTop;
-     node = node.offsetParent;
-   }
-   drawCheckbox(context, document.getElementById('showA'), 20, 40, false);
-   if (<strong>context.isPointInPath(x, y)</strong>)
-     document.getElementById('showA').checked = !(document.getElementById('showA').checked);
-   drawCheckbox(context, document.getElementById('showB'), 20, 60, false);
-   if (<strong>context.isPointInPath(x, y)</strong>)
-     document.getElementById('showB').checked = !(document.getElementById('showB').checked);
-   redraw();
- }
- document.getElementsByTagName('canvas')[0].addEventListener('focus', redraw, true);
- document.getElementsByTagName('canvas')[0].addEventListener('blur', redraw, true);
- document.getElementsByTagName('canvas')[0].addEventListener('change', redraw, true);
- document.getElementsByTagName('canvas')[0].addEventListener('click', processClick, false);
- redraw();
-&lt;/script&gt;</pre>
+   context<c- p>.</c->drawFocusIfNeeded<c- p>(</c->element<c- p>);</c->
+   context<c- p>.</c->restore<c- p>();</c->
+ <c- p>}</c->
+ <c- a>function</c-> drawBase<c- p>()</c-> <c- p>{</c-> <c- d>/* ... */</c-> <c- p>}</c->
+ <c- a>function</c-> drawAs<c- p>()</c-> <c- p>{</c-> <c- d>/* ... */</c-> <c- p>}</c->
+ <c- a>function</c-> drawBs<c- p>()</c-> <c- p>{</c-> <c- d>/* ... */</c-> <c- p>}</c->
+ <c- a>function</c-> redraw<c- p>()</c-> <c- p>{</c->
+   <c- a>var</c-> canvas <c- o>=</c-> document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+   <c- a>var</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
+   context<c- p>.</c->clearRect<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
+   drawCheckbox<c- p>(</c->context<c- p>,</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showA&amp;apos;</c-><c- p>),</c-> <c- mi>20</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- kc>true</c-><c- p>);</c->
+   drawCheckbox<c- p>(</c->context<c- p>,</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showB&amp;apos;</c-><c- p>),</c-> <c- mi>20</c-><c- p>,</c-> <c- mi>60</c-><c- p>,</c-> <c- kc>true</c-><c- p>);</c->
+   drawBase<c- p>();</c->
+   <c- k>if</c-> <c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showA&amp;apos;</c-><c- p>).</c->checked<c- p>)</c->
+     drawAs<c- p>();</c->
+   <c- k>if</c-> <c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showB&amp;apos;</c-><c- p>).</c->checked<c- p>)</c->
+     drawBs<c- p>();</c->
+ <c- p>}</c->
+ <c- a>function</c-> processClick<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+   <c- a>var</c-> canvas <c- o>=</c-> document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+   <c- a>var</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
+   <c- a>var</c-> x <c- o>=</c-> event<c- p>.</c->clientX<c- p>;</c->
+   <c- a>var</c-> y <c- o>=</c-> event<c- p>.</c->clientY<c- p>;</c->
+   <c- a>var</c-> node <c- o>=</c-> event<c- p>.</c->target<c- p>;</c->
+   <c- k>while</c-> <c- p>(</c->node<c- p>)</c-> <c- p>{</c->
+     x <c- o>-=</c-> node<c- p>.</c->offsetLeft <c- o>-</c-> node<c- p>.</c->scrollLeft<c- p>;</c->
+     y <c- o>-=</c-> node<c- p>.</c->offsetTop <c- o>-</c-> node<c- p>.</c->scrollTop<c- p>;</c->
+     node <c- o>=</c-> node<c- p>.</c->offsetParent<c- p>;</c->
+   <c- p>}</c->
+   drawCheckbox<c- p>(</c->context<c- p>,</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showA&amp;apos;</c-><c- p>),</c-> <c- mi>20</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- kc>false</c-><c- p>);</c->
+   <c- k>if</c-> <c- p>(</c-><strong>context<c- p>.</c->isPointInPath<c- p>(</c->x<c- p>,</c-> y<c- p>)</c-></strong><c- p>)</c->
+     document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showA&amp;apos;</c-><c- p>).</c->checked <c- o>=</c-> <c- o>!</c-><c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showA&amp;apos;</c-><c- p>).</c->checked<c- p>);</c->
+   drawCheckbox<c- p>(</c->context<c- p>,</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showB&amp;apos;</c-><c- p>),</c-> <c- mi>20</c-><c- p>,</c-> <c- mi>60</c-><c- p>,</c-> <c- kc>false</c-><c- p>);</c->
+   <c- k>if</c-> <c- p>(</c-><strong>context<c- p>.</c->isPointInPath<c- p>(</c->x<c- p>,</c-> y<c- p>)</c-></strong><c- p>)</c->
+     document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showB&amp;apos;</c-><c- p>).</c->checked <c- o>=</c-> <c- o>!</c-><c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;showB&amp;apos;</c-><c- p>).</c->checked<c- p>);</c->
+   redraw<c- p>();</c->
+ <c- p>}</c->
+ document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->addEventListener<c- p>(</c-><c- t>&amp;apos;focus&amp;apos;</c-><c- p>,</c-> redraw<c- p>,</c-> <c- kc>true</c-><c- p>);</c->
+ document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->addEventListener<c- p>(</c-><c- t>&amp;apos;blur&amp;apos;</c-><c- p>,</c-> redraw<c- p>,</c-> <c- kc>true</c-><c- p>);</c->
+ document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->addEventListener<c- p>(</c-><c- t>&amp;apos;change&amp;apos;</c-><c- p>,</c-> redraw<c- p>,</c-> <c- kc>true</c-><c- p>);</c->
+ document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->addEventListener<c- p>(</c-><c- t>&amp;apos;click&amp;apos;</c-><c- p>,</c-> processClick<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
+ redraw<c- p>();</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
 
   </div>
@@ -1106,7 +1339,7 @@
 
   <h6 id=drawing-images><span class=secno>4.12.5.1.14</span> Drawing images<a href=#drawing-images class=self-link></a></h6>
 
-  <p>Objects that implement the <code>CanvasDrawImage</code> interface have the <dfn id=dom-context-2d-drawimage><code>drawImage</code></dfn> method to draw images.</p>
+  <p>Objects that implement the <code id=drawing-images:canvasdrawimage><a href=#canvasdrawimage>CanvasDrawImage</a></code> interface have the <dfn id=dom-context-2d-drawimage><code>drawImage</code></dfn> method to draw images.</p>
 
   
 
@@ -1128,14 +1361,14 @@
   <h6 id=pixel-manipulation><span class=secno>4.12.5.1.15</span> <dfn>Pixel manipulation</dfn><a href=#pixel-manipulation class=self-link></a></h6>
 
   <dl class=domintro><dt><var>imagedata</var> = new <code id=dom-imagedata>ImageData</code>(<var>sw</var>, <var>sh</var>)<dt><var>imagedata</var> = <var>context</var> . <code id=dom-context-2d-createimagedata>createImageData</code>(<var>sw</var>, <var>sh</var>)<dd>
-    <p>Returns an <code>ImageData</code> object with the given dimensions. All the pixels in the
+    <p>Returns an <code id=pixel-manipulation:imagedata><a href=#imagedata>ImageData</a></code> object with the given dimensions. All the pixels in the
     returned object are <a id=pixel-manipulation:transparent-black href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent black</a>.</p>
 
     <p>Throws an <a id=pixel-manipulation:indexsizeerror href=https://triple-underscore.github.io/WebIDL-ja.html#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code id=pixel-manipulation:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if either of
     the width or height arguments are zero.</p>
-   <dt><var>imagedata</var> = <var>context</var> . <code id=pixel-manipulation:dom-context-2d-createimagedata><a href=#dom-context-2d-createimagedata>createImageData</a></code>(<var>imagedata</var>)<dd><p>Returns an <code>ImageData</code> object with the same dimensions as the argument. All the
+   <dt><var>imagedata</var> = <var>context</var> . <code id=pixel-manipulation:dom-context-2d-createimagedata><a href=#dom-context-2d-createimagedata>createImageData</a></code>(<var>imagedata</var>)<dd><p>Returns an <code id=pixel-manipulation:imagedata-2><a href=#imagedata>ImageData</a></code> object with the same dimensions as the argument. All the
    pixels in the returned object are <a id=pixel-manipulation:transparent-black-2 href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent black</a>.<dt><var>imagedata</var> = new <code id=pixel-manipulation:dom-imagedata><a href=#dom-imagedata>ImageData</a></code>(<var>data</var>, <var>sw</var> [, <var>sh</var> ] )<dd>
-    <p>Returns an <code>ImageData</code> object using the data provided in the <code id=pixel-manipulation:idl-uint8clampedarray><a data-x-internal=idl-uint8clampedarray href=https://triple-underscore.github.io/WebIDL-ja.html#idl-Uint8ClampedArray>Uint8ClampedArray</a></code> argument, interpreted using the given
+    <p>Returns an <code id=pixel-manipulation:imagedata-3><a href=#imagedata>ImageData</a></code> object using the data provided in the <code id=pixel-manipulation:idl-uint8clampedarray><a data-x-internal=idl-uint8clampedarray href=https://triple-underscore.github.io/WebIDL-ja.html#idl-Uint8ClampedArray>Uint8ClampedArray</a></code> argument, interpreted using the given
     dimensions.</p>
 
     <p>As each pixel in the data is represented by four numbers, the length of the data needs to be
@@ -1145,15 +1378,15 @@
     <p>Throws an <a id=pixel-manipulation:indexsizeerror-2 href=https://triple-underscore.github.io/WebIDL-ja.html#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code id=pixel-manipulation:domexception-2><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the given
     data and dimensions can't be interpreted consistently, or if either dimension is zero.</p>
    <dt><var>imagedata</var> = <var>context</var> . <code id=dom-context-2d-getimagedata>getImageData</code>(<var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var>)<dd>
-    <p>Returns an <code>ImageData</code> object containing the image data for the given rectangle of
+    <p>Returns an <code id=pixel-manipulation:imagedata-4><a href=#imagedata>ImageData</a></code> object containing the image data for the given rectangle of
     the bitmap.</p>
 
     <p>Throws an <a id=pixel-manipulation:indexsizeerror-3 href=https://triple-underscore.github.io/WebIDL-ja.html#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code id=pixel-manipulation:domexception-3><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the either
     of the width or height arguments are zero.</p>
-   <dt><var>imagedata</var> . <code id=dom-imagedata-width>width</code><dt><var>imagedata</var> . <code id=dom-imagedata-height>height</code><dd><p>Returns the actual dimensions of the data in the <code>ImageData</code> object, in
+   <dt><var>imagedata</var> . <code id=dom-imagedata-width>width</code><dt><var>imagedata</var> . <code id=dom-imagedata-height>height</code><dd><p>Returns the actual dimensions of the data in the <code id=pixel-manipulation:imagedata-5><a href=#imagedata>ImageData</a></code> object, in
    pixels.<dt><var>imagedata</var> . <code id=dom-imagedata-data>data</code><dd><p>Returns the one-dimensional array containing the data in RGBA order, as integers in the
    range 0 to 255.<dt><var>context</var> . <code id=dom-context-2d-putimagedata>putImageData</code>(<var>imagedata</var>, <var>dx</var>, <var>dy</var> [, <var>dirtyX</var>, <var>dirtyY</var>, <var>dirtyWidth</var>, <var>dirtyHeight</var> ] )<dd>
-    <p>Paints the data from the given <code>ImageData</code> object onto the bitmap. If a dirty
+    <p>Paints the data from the given <code id=pixel-manipulation:imagedata-6><a href=#imagedata>ImageData</a></code> object onto the bitmap. If a dirty
     rectangle is provided, only the pixels from that rectangle are painted.</p>
 
     <p>The <code id=pixel-manipulation:dom-context-2d-globalalpha><a href=#dom-context-2d-globalalpha>globalAlpha</a></code> and <code id=pixel-manipulation:dom-context-2d-globalcompositeoperation><a href=#dom-context-2d-globalcompositeoperation>globalCompositeOperation</a></code> attributes, as
@@ -1169,27 +1402,27 @@
 
   <div class=example>
 
-   <p>In the following example, the script generates an <code>ImageData</code> object so that it can
+   <p>In the following example, the script generates an <code id=pixel-manipulation:imagedata-7><a href=#imagedata>ImageData</a></code> object so that it can
    draw onto it.</p>
 
-   <pre>// canvas is a reference to a &lt;canvas&gt; element
-var context = canvas.getContext('2d');
+   <pre><code class='js'><c- c1>// canvas is a reference to a &lt;canvas&gt; element</c->
+<c- c1></c-><c- a>var</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
 
-// create a blank slate
-var data = context.createImageData(canvas.width, canvas.height);
+<c- c1>// create a blank slate</c->
+<c- c1></c-><c- a>var</c-> data <c- o>=</c-> context<c- p>.</c->createImageData<c- p>(</c->canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
 
-// create some plasma
-FillPlasma(data, 'green'); // green plasma
+<c- c1>// create some plasma</c->
+<c- c1></c->FillPlasma<c- p>(</c->data<c- p>,</c-> <c- t>&amp;apos;green&amp;apos;</c-><c- p>);</c-> <c- c1>// green plasma</c->
+<c- c1></c->
+<c- c1>// add a cloud to the plasma</c->
+<c- c1></c->AddCloud<c- p>(</c->data<c- p>,</c-> data<c- p>.</c->width<c- o>/</c-><c- mi>2</c-><c- p>,</c-> data<c- p>.</c->height<c- o>/</c-><c- mi>2</c-><c- p>);</c-> <c- c1>// put a cloud in the middle</c->
+<c- c1></c->
+<c- c1>// paint the plasma+cloud on the canvas</c->
+<c- c1></c->context<c- p>.</c->putImageData<c- p>(</c->data<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
 
-// add a cloud to the plasma
-AddCloud(data, data.width/2, data.height/2); // put a cloud in the middle
-
-// paint the plasma+cloud on the canvas
-context.putImageData(data, 0, 0);
-
-// support methods
-function FillPlasma(data, color) { ... }
-function AddCloud(data, x, y) { ... }</pre>
+<c- c1>// support methods</c->
+<c- c1></c-><c- a>function</c-> FillPlasma<c- p>(</c->data<c- p>,</c-> color<c- p>)</c-> <c- p>{</c-> <c- p>...</c-> <c- p>}</c->
+<c- a>function</c-> AddCloud<c- p>(</c->data<c- p>,</c-> x<c- p>,</c-> y<c- p>)</c-> <c- p>{</c-> <c- p>...</c-> <c- p>}</c-></code></pre>
 
   </div>
 
@@ -1198,59 +1431,59 @@ function AddCloud(data, x, y) { ... }</pre>
    <p>Here is an example of using <code id=pixel-manipulation:dom-context-2d-getimagedata><a href=#dom-context-2d-getimagedata>getImageData()</a></code> and <code id=pixel-manipulation:dom-context-2d-putimagedata><a href=#dom-context-2d-putimagedata>putImageData()</a></code> to implement an edge detection
    filter.</p>
 
-   <pre>&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
- &lt;head&gt;
-  &lt;title&gt;Edge detection demo&lt;/title&gt;
-  &lt;script&gt;
-   var image = new Image();
-   function init() {
-     image.onload = demo;
-     image.src = "image.jpeg";
-   }
-   function demo() {
-     var canvas = document.getElementsByTagName('canvas')[0];
-     var context = canvas.getContext('2d');
+   <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>"en"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>head</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Edge detection demo<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+   <c- a>var</c-> image <c- o>=</c-> <c- k>new</c-> Image<c- p>();</c->
+   <c- a>function</c-> init<c- p>()</c-> <c- p>{</c->
+     image<c- p>.</c->onload <c- o>=</c-> demo<c- p>;</c->
+     image<c- p>.</c->src <c- o>=</c-> <c- u>"image.jpeg"</c-><c- p>;</c->
+   <c- p>}</c->
+   <c- a>function</c-> demo<c- p>()</c-> <c- p>{</c->
+     <c- a>var</c-> canvas <c- o>=</c-> document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+     <c- a>var</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
 
-     // draw the image onto the canvas
-     context.drawImage(image, 0, 0);
+     <c- c1>// draw the image onto the canvas</c->
+<c- c1></c->     context<c- p>.</c->drawImage<c- p>(</c->image<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
 
-     // get the image data to manipulate
-     var input = context.getImageData(0, 0, canvas.width, canvas.height);
+     <c- c1>// get the image data to manipulate</c->
+<c- c1></c->     <c- a>var</c-> input <c- o>=</c-> context<c- p>.</c->getImageData<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
 
-     // get an empty slate to put the data into
-     var output = context.createImageData(canvas.width, canvas.height);
+     <c- c1>// get an empty slate to put the data into</c->
+<c- c1></c->     <c- a>var</c-> output <c- o>=</c-> context<c- p>.</c->createImageData<c- p>(</c->canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
 
-     // alias some variables for convenience
-     // In this case input.width and input.height
-     // match canvas.width and canvas.height
-     // but we'll use the former to keep the code generic.
-     var w = input.width, h = input.height;
-     var inputData = input.data;
-     var outputData = output.data;
+     <c- c1>// alias some variables for convenience</c->
+<c- c1></c->     <c- c1>// In this case input.width and input.height</c->
+<c- c1></c->     <c- c1>// match canvas.width and canvas.height</c->
+<c- c1></c->     <c- c1>// but we&amp;apos;ll use the former to keep the code generic.</c->
+<c- c1></c->     <c- a>var</c-> w <c- o>=</c-> input<c- p>.</c->width<c- p>,</c-> h <c- o>=</c-> input<c- p>.</c->height<c- p>;</c->
+     <c- a>var</c-> inputData <c- o>=</c-> input<c- p>.</c->data<c- p>;</c->
+     <c- a>var</c-> outputData <c- o>=</c-> output<c- p>.</c->data<c- p>;</c->
 
-     // edge detection
-     for (var y = 1; y &lt; h-1; y += 1) {
-       for (var x = 1; x &lt; w-1; x += 1) {
-         for (var c = 0; c &lt; 3; c += 1) {
-           var i = (y*w + x)*4 + c;
-           outputData[i] = 127 + -inputData[i - w*4 - 4] -   inputData[i - w*4] - inputData[i - w*4 + 4] +
-                                 -inputData[i - 4]       + 8*inputData[i]       - inputData[i + 4] +
-                                 -inputData[i + w*4 - 4] -   inputData[i + w*4] - inputData[i + w*4 + 4];
-         }
-         outputData[(y*w + x)*4 + 3] = 255; // alpha
-       }
-     }
+     <c- c1>// edge detection</c->
+<c- c1></c->     <c- k>for</c-> <c- p>(</c-><c- a>var</c-> y <c- o>=</c-> <c- mi>1</c-><c- p>;</c-> y <c- o>&lt;</c-> h<c- o>-</c-><c- mi>1</c-><c- p>;</c-> y <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+       <c- k>for</c-> <c- p>(</c-><c- a>var</c-> x <c- o>=</c-> <c- mi>1</c-><c- p>;</c-> x <c- o>&lt;</c-> w<c- o>-</c-><c- mi>1</c-><c- p>;</c-> x <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+         <c- k>for</c-> <c- p>(</c-><c- a>var</c-> c <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> c <c- o>&lt;</c-> <c- mi>3</c-><c- p>;</c-> c <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+           <c- a>var</c-> i <c- o>=</c-> <c- p>(</c->y<c- o>*</c->w <c- o>+</c-> x<c- p>)</c-><c- o>*</c-><c- mi>4</c-> <c- o>+</c-> c<c- p>;</c->
+           outputData<c- p>[</c->i<c- p>]</c-> <c- o>=</c-> <c- mi>127</c-> <c- o>+</c-> <c- o>-</c->inputData<c- p>[</c->i <c- o>-</c-> w<c- o>*</c-><c- mi>4</c-> <c- o>-</c-> <c- mi>4</c-><c- p>]</c-> <c- o>-</c->   inputData<c- p>[</c->i <c- o>-</c-> w<c- o>*</c-><c- mi>4</c-><c- p>]</c-> <c- o>-</c-> inputData<c- p>[</c->i <c- o>-</c-> w<c- o>*</c-><c- mi>4</c-> <c- o>+</c-> <c- mi>4</c-><c- p>]</c-> <c- o>+</c->
+                                 <c- o>-</c->inputData<c- p>[</c->i <c- o>-</c-> <c- mi>4</c-><c- p>]</c->       <c- o>+</c-> <c- mi>8</c-><c- o>*</c->inputData<c- p>[</c->i<c- p>]</c->       <c- o>-</c-> inputData<c- p>[</c->i <c- o>+</c-> <c- mi>4</c-><c- p>]</c-> <c- o>+</c->
+                                 <c- o>-</c->inputData<c- p>[</c->i <c- o>+</c-> w<c- o>*</c-><c- mi>4</c-> <c- o>-</c-> <c- mi>4</c-><c- p>]</c-> <c- o>-</c->   inputData<c- p>[</c->i <c- o>+</c-> w<c- o>*</c-><c- mi>4</c-><c- p>]</c-> <c- o>-</c-> inputData<c- p>[</c->i <c- o>+</c-> w<c- o>*</c-><c- mi>4</c-> <c- o>+</c-> <c- mi>4</c-><c- p>];</c->
+         <c- p>}</c->
+         outputData<c- p>[(</c->y<c- o>*</c->w <c- o>+</c-> x<c- p>)</c-><c- o>*</c-><c- mi>4</c-> <c- o>+</c-> <c- mi>3</c-><c- p>]</c-> <c- o>=</c-> <c- mi>255</c-><c- p>;</c-> <c- c1>// alpha</c->
+<c- c1></c->       <c- p>}</c->
+     <c- p>}</c->
 
-     // put the image data back after manipulation
-     context.putImageData(output, 0, 0);
-   }
-  &lt;/script&gt;
- &lt;/head&gt;
- &lt;body onload="init()"&gt;
-  &lt;canvas&gt;&lt;/canvas&gt;
- &lt;/body&gt;
-&lt;/html&gt;</pre>
+     <c- c1>// put the image data back after manipulation</c->
+<c- c1></c->     context<c- p>.</c->putImageData<c- p>(</c->output<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
+   <c- p>}</c->
+  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>head</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>body</c-> <c- e>onload</c-><c- o>=</c-><c- s>"init()"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>canvas</c-><c- p>&gt;&lt;/</c-><c- f>canvas</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>body</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>html</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -1302,7 +1535,7 @@ function AddCloud(data, x, y) { ... }</pre>
 
   <h6 id=shadows><span class=secno>4.12.5.1.18</span> <dfn>Shadows</dfn><a href=#shadows class=self-link></a></h6>
 
-  <p>All drawing operations on an object which implements the <code>CanvasShadowStyles</code>
+  <p>All drawing operations on an object which implements the <code id=shadows:canvasshadowstyles><a href=#canvasshadowstyles>CanvasShadowStyles</a></code>
   interface are affected by the four global shadow attributes.</p>
 
   <dl class=domintro><dt><var>context</var> . <code id=dom-context-2d-shadowcolor>shadowColor</code> [ = <var>value</var> ]<dd>
@@ -1333,7 +1566,7 @@ function AddCloud(data, x, y) { ... }</pre>
 
   <h6 id=filters><span class=secno>4.12.5.1.19</span> Filters<a href=#filters class=self-link></a></h6>
 
-  <p>All drawing operations on an object which implements the <code>CanvasFilters</code>
+  <p>All drawing operations on an object which implements the <code id=filters:canvasfilters><a href=#canvasfilters>CanvasFilters</a></code>
   interface are affected by the global <dfn id=dom-context-2d-filter><code>filter</code></dfn>
   attribute.</p>
 
@@ -1403,46 +1636,46 @@ function AddCloud(data, x, y) { ... }</pre>
 
   <p>Here is an example of a script that uses canvas to draw <a href="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIEhUTUw%2BDQo8aHRtbCBsYW5nPSJlbiI%2BDQogPGhlYWQ%2BDQogIDx0aXRsZT5QcmV0dHkgR2xvd2luZyBMaW5lczwvdGl0bGU%2BDQogPC9oZWFkPg0KIDxib2R5Pg0KPGNhbnZhcyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCI%2BPC9jYW52YXM%2BDQo8c2NyaXB0Pg0KDQogdmFyIGNvbnRleHQgPSBkb2N1bWVudC5nZXRFbGVtZW50c0J5VGFnTmFtZSgnY2FudmFzJylbMF0uZ2V0Q29udGV4dCgnMmQnKTsNCg0KIHZhciBsYXN0WCA9IGNvbnRleHQuY2FudmFzLndpZHRoICogTWF0aC5yYW5kb20oKTsNCiB2YXIgbGFzdFkgPSBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpOw0KIHZhciBodWUgPSAwOw0KIGZ1bmN0aW9uIGxpbmUoKSB7DQogICBjb250ZXh0LnNhdmUoKTsNCiAgIGNvbnRleHQudHJhbnNsYXRlKGNvbnRleHQuY2FudmFzLndpZHRoLzIsIGNvbnRleHQuY2FudmFzLmhlaWdodC8yKTsNCiAgIGNvbnRleHQuc2NhbGUoMC45LCAwLjkpOw0KICAgY29udGV4dC50cmFuc2xhdGUoLWNvbnRleHQuY2FudmFzLndpZHRoLzIsIC1jb250ZXh0LmNhbnZhcy5oZWlnaHQvMik7DQogICBjb250ZXh0LmJlZ2luUGF0aCgpOw0KICAgY29udGV4dC5saW5lV2lkdGggPSA1ICsgTWF0aC5yYW5kb20oKSAqIDEwOw0KICAgY29udGV4dC5tb3ZlVG8obGFzdFgsIGxhc3RZKTsNCiAgIGxhc3RYID0gY29udGV4dC5jYW52YXMud2lkdGggKiBNYXRoLnJhbmRvbSgpOw0KICAgbGFzdFkgPSBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpOw0KICAgY29udGV4dC5iZXppZXJDdXJ2ZVRvKGNvbnRleHQuY2FudmFzLndpZHRoICogTWF0aC5yYW5kb20oKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpLA0KICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRleHQuY2FudmFzLndpZHRoICogTWF0aC5yYW5kb20oKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpLA0KICAgICAgICAgICAgICAgICAgICAgICAgIGxhc3RYLCBsYXN0WSk7DQoNCiAgIGh1ZSA9IGh1ZSArIDEwICogTWF0aC5yYW5kb20oKTsNCiAgIGNvbnRleHQuc3Ryb2tlU3R5bGUgPSAnaHNsKCcgKyBodWUgKyAnLCA1MCUsIDUwJSknOw0KICAgY29udGV4dC5zaGFkb3dDb2xvciA9ICd3aGl0ZSc7DQogICBjb250ZXh0LnNoYWRvd0JsdXIgPSAxMDsNCiAgIGNvbnRleHQuc3Ryb2tlKCk7DQogICBjb250ZXh0LnJlc3RvcmUoKTsNCiB9DQogc2V0SW50ZXJ2YWwobGluZSwgNTApOw0KDQogZnVuY3Rpb24gYmxhbmsoKSB7DQogICBjb250ZXh0LmZpbGxTdHlsZSA9ICdyZ2JhKDAsMCwwLDAuMSknOw0KICAgY29udGV4dC5maWxsUmVjdCgwLCAwLCBjb250ZXh0LmNhbnZhcy53aWR0aCwgY29udGV4dC5jYW52YXMuaGVpZ2h0KTsNCiB9DQogc2V0SW50ZXJ2YWwoYmxhbmssIDQwKTsNCg0KPC9zY3JpcHQ%2BDQogPC9ib2R5Pg0KPC9odG1sPg0K">pretty glowing lines</a>.</p>
 
-  <pre>&lt;canvas width="800" height="450"&gt;&lt;/canvas&gt;
-&lt;script&gt;
+  <pre><code class='html'><c- p>&lt;</c-><c- f>canvas</c-> <c- e>width</c-><c- o>=</c-><c- s>"800"</c-> <c- e>height</c-><c- o>=</c-><c- s>"450"</c-><c- p>&gt;&lt;/</c-><c- f>canvas</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
 
- var context = document.getElementsByTagName('canvas')[0].getContext('2d');
+ <c- a>var</c-> context <c- o>=</c-> document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
 
- var lastX = context.canvas.width * Math.random();
- var lastY = context.canvas.height * Math.random();
- var hue = 0;
- function line() {
-   context.save();
-   context.translate(context.canvas.width/2, context.canvas.height/2);
-   context.scale(0.9, 0.9);
-   context.translate(-context.canvas.width/2, -context.canvas.height/2);
-   context.beginPath();
-   context.lineWidth = 5 + Math.random() * 10;
-   context.moveTo(lastX, lastY);
-   lastX = context.canvas.width * Math.random();
-   lastY = context.canvas.height * Math.random();
-   context.bezierCurveTo(context.canvas.width * Math.random(),
-                         context.canvas.height * Math.random(),
-                         context.canvas.width * Math.random(),
-                         context.canvas.height * Math.random(),
-                         lastX, lastY);
+ <c- a>var</c-> lastX <c- o>=</c-> context<c- p>.</c->canvas<c- p>.</c->width <c- o>*</c-> Math<c- p>.</c->random<c- p>();</c->
+ <c- a>var</c-> lastY <c- o>=</c-> context<c- p>.</c->canvas<c- p>.</c->height <c- o>*</c-> Math<c- p>.</c->random<c- p>();</c->
+ <c- a>var</c-> hue <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+ <c- a>function</c-> line<c- p>()</c-> <c- p>{</c->
+   context<c- p>.</c->save<c- p>();</c->
+   context<c- p>.</c->translate<c- p>(</c->context<c- p>.</c->canvas<c- p>.</c->width<c- o>/</c-><c- mi>2</c-><c- p>,</c-> context<c- p>.</c->canvas<c- p>.</c->height<c- o>/</c-><c- mi>2</c-><c- p>);</c->
+   context<c- p>.</c->scale<c- p>(</c-><c- mf>0.9</c-><c- p>,</c-> <c- mf>0.9</c-><c- p>);</c->
+   context<c- p>.</c->translate<c- p>(</c-><c- o>-</c->context<c- p>.</c->canvas<c- p>.</c->width<c- o>/</c-><c- mi>2</c-><c- p>,</c-> <c- o>-</c->context<c- p>.</c->canvas<c- p>.</c->height<c- o>/</c-><c- mi>2</c-><c- p>);</c->
+   context<c- p>.</c->beginPath<c- p>();</c->
+   context<c- p>.</c->lineWidth <c- o>=</c-> <c- mi>5</c-> <c- o>+</c-> Math<c- p>.</c->random<c- p>()</c-> <c- o>*</c-> <c- mi>10</c-><c- p>;</c->
+   context<c- p>.</c->moveTo<c- p>(</c->lastX<c- p>,</c-> lastY<c- p>);</c->
+   lastX <c- o>=</c-> context<c- p>.</c->canvas<c- p>.</c->width <c- o>*</c-> Math<c- p>.</c->random<c- p>();</c->
+   lastY <c- o>=</c-> context<c- p>.</c->canvas<c- p>.</c->height <c- o>*</c-> Math<c- p>.</c->random<c- p>();</c->
+   context<c- p>.</c->bezierCurveTo<c- p>(</c->context<c- p>.</c->canvas<c- p>.</c->width <c- o>*</c-> Math<c- p>.</c->random<c- p>(),</c->
+                         context<c- p>.</c->canvas<c- p>.</c->height <c- o>*</c-> Math<c- p>.</c->random<c- p>(),</c->
+                         context<c- p>.</c->canvas<c- p>.</c->width <c- o>*</c-> Math<c- p>.</c->random<c- p>(),</c->
+                         context<c- p>.</c->canvas<c- p>.</c->height <c- o>*</c-> Math<c- p>.</c->random<c- p>(),</c->
+                         lastX<c- p>,</c-> lastY<c- p>);</c->
 
-   hue = hue + 10 * Math.random();
-   context.strokeStyle = 'hsl(' + hue + ', 50%, 50%)';
-   context.shadowColor = 'white';
-   context.shadowBlur = 10;
-   context.stroke();
-   context.restore();
- }
- setInterval(line, 50);
+   hue <c- o>=</c-> hue <c- o>+</c-> <c- mi>10</c-> <c- o>*</c-> Math<c- p>.</c->random<c- p>();</c->
+   context<c- p>.</c->strokeStyle <c- o>=</c-> <c- t>&amp;apos;hsl(&amp;apos;</c-> <c- o>+</c-> hue <c- o>+</c-> <c- t>&amp;apos;, 50%, 50%)&amp;apos;</c-><c- p>;</c->
+   context<c- p>.</c->shadowColor <c- o>=</c-> <c- t>&amp;apos;white&amp;apos;</c-><c- p>;</c->
+   context<c- p>.</c->shadowBlur <c- o>=</c-> <c- mi>10</c-><c- p>;</c->
+   context<c- p>.</c->stroke<c- p>();</c->
+   context<c- p>.</c->restore<c- p>();</c->
+ <c- p>}</c->
+ setInterval<c- p>(</c->line<c- p>,</c-> <c- mi>50</c-><c- p>);</c->
 
- function blank() {
-   context.fillStyle = 'rgba(0,0,0,0.1)';
-   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
- }
- setInterval(blank, 40);
+ <c- a>function</c-> blank<c- p>()</c-> <c- p>{</c->
+   context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;rgba(0,0,0,0.1)&amp;apos;</c-><c- p>;</c->
+   context<c- p>.</c->fillRect<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> context<c- p>.</c->canvas<c- p>.</c->width<c- p>,</c-> context<c- p>.</c->canvas<c- p>.</c->height<c- p>);</c->
+ <c- p>}</c->
+ setInterval<c- p>(</c->blank<c- p>,</c-> <c- mi>40</c-><c- p>);</c->
 
-&lt;/script&gt;</pre>
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -1455,214 +1688,222 @@ function AddCloud(data, x, y) { ... }</pre>
 
    <p>Here is the source for this example:</p>
 
-   <pre>&lt;!DOCTYPE HTML&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;title&gt;Blue Robot Demo&lt;/title&gt;
-&lt;style&gt;
-  html { overflow: hidden; min-height: 200px; min-width: 380px; }
-  body { height: 200px; position: relative; margin: 8px; }
-  .buttons { position: absolute; bottom: 0px; left: 0px; margin: 4px; }
-&lt;/style&gt;
-&lt;canvas width="380" height="200"&gt;&lt;/canvas&gt;
-&lt;script&gt;
- var Landscape = function (context, width, height) {
-   this.offset = 0;
-   this.width = width;
-   this.advance = function (dx) {
-     this.offset += dx;
-   };
-   this.horizon = height * 0.7;
-   // This creates the sky gradient (from a darker blue to white at the bottom)
-   this.sky = context.createLinearGradient(0, 0, 0, this.horizon);
-   this.sky.addColorStop(0.0, 'rgb(55,121,179)');
-   this.sky.addColorStop(0.7, 'rgb(121,194,245)');
-   this.sky.addColorStop(1.0, 'rgb(164,200,214)');
-   // this creates the grass gradient (from a darker green to a lighter green)
-   this.earth = context.createLinearGradient(0, this.horizon, 0, height);
-   this.earth.addColorStop(0.0, 'rgb(81,140,20)');
-   this.earth.addColorStop(1.0, 'rgb(123,177,57)');
-   this.paintBackground = function (context, width, height) {
-     // first, paint the sky and grass rectangles
-     context.fillStyle = this.sky;
-     context.fillRect(0, 0, width, this.horizon);
-     context.fillStyle = this.earth;
-     context.fillRect(0, this.horizon, width, height-this.horizon);
-     // then, draw the cloudy banner
-     // we make it cloudy by having the draw text off the top of the
-     // canvas, and just having the blurred shadow shown on the canvas
-     context.save();
-     context.translate(width-((this.offset+(this.width*3.2)) % (this.width*4.0))+0, 0);
-     context.shadowColor = 'white';
-     context.shadowOffsetY = 30+this.horizon/3; // offset down on canvas
-     context.shadowBlur = '5';
-     context.fillStyle = 'white';
-     context.textAlign = 'left';
-     context.textBaseline = 'top';
-     context.font = '20px sans-serif';
-     context.fillText('WHATWG ROCKS', 10, -30); // text up above canvas
-     context.restore();
-     // then, draw the background tree
-     context.save();
-     context.translate(width-((this.offset+(this.width*0.2)) % (this.width*1.5))+30, 0);
-     context.beginPath();
-     context.fillStyle = 'rgb(143,89,2)';
-     context.lineStyle = 'rgb(10,10,10)';
-     context.lineWidth = 2;
-     context.rect(0, this.horizon+5, 10, -50); // trunk
-     context.fill();
-     context.stroke();
-     context.beginPath();
-     context.fillStyle = 'rgb(78,154,6)';
-     context.arc(5, this.horizon-60, 30, 0, Math.PI*2); // leaves
-     context.fill();
-     context.stroke();
-     context.restore();
-   };
-   this.paintForeground = function (context, width, height) {
-     // draw the box that goes in front
-     context.save();
-     context.translate(width-((this.offset+(this.width*0.7)) % (this.width*1.1))+0, 0);
-     context.beginPath();
-     context.rect(0, this.horizon - 5, 25, 25);
-     context.fillStyle = 'rgb(220,154,94)';
-     context.lineStyle = 'rgb(10,10,10)';
-     context.lineWidth = 2;
-     context.fill();
-     context.stroke();
-     context.restore();
-   };
- };
-&lt;/script&gt;
-&lt;script&gt;
- var BlueRobot = function () {
-   this.sprites = new Image();
-   this.sprites.src = 'blue-robot.png'; // this sprite sheet has 8 cells
-   this.targetMode = 'idle';
-   this.walk = function () {
-     this.targetMode = 'walk';
-   };
-   this.stop = function () {
-     this.targetMode = 'idle';
-   };
-   this.frameIndex = {
-     'idle': [0], // first cell is the idle frame
-     'walk': [1,2,3,4,5,6], // the walking animation is cells 1-6
-     'stop': [7], // last cell is the stopping animation
-   };
-   this.mode = 'idle';
-   this.frame = 0; // index into frameIndex
-   this.tick = function () {
-     // this advances the frame and the robot
-     // the return value is how many pixels the robot has moved
-     this.frame += 1;
-     if (this.frame &gt;= this.frameIndex[this.mode].length) {
-       // we've reached the end of this animation cycle
-       this.frame = 0;
-       if (this.mode != this.targetMode) {
-         // switch to next cycle
-         if (this.mode == 'walk') {
-           // we need to stop walking before we decide what to do next
-           this.mode = 'stop';
-         } else if (this.mode == 'stop') {
-           if (this.targetMode == 'walk')
-             this.mode = 'walk';
-           else
-             this.mode = 'idle';
-         } else if (this.mode == 'idle') {
-           if (this.targetMode == 'walk')
-             this.mode = 'walk';
-         }
-       }
-     }
-     if (this.mode == 'walk')
-       return 8;
-     return 0;
-   },
-   this.paint = function (context, x, y) {
-     if (!this.sprites.complete) return;
-     // draw the right frame out of the sprite sheet onto the canvas
-     // we assume each frame is as high as the sprite sheet
-     // the x,y coordinates give the position of the bottom center of the sprite
-     context.drawImage(this.sprites,
-                       this.frameIndex[this.mode][this.frame] * this.sprites.height, 0, this.sprites.height, this.sprites.height,
-                       x-this.sprites.height/2, y-this.sprites.height, this.sprites.height, this.sprites.height);
-   };
- };
-&lt;/script&gt;
-&lt;script&gt;
- var canvas = document.getElementsByTagName('canvas')[0];
- var context = canvas.getContext('2d');
- var landscape = new Landscape(context, canvas.width, canvas.height);
- var blueRobot = new BlueRobot();
- // paint when the browser wants us to, using requestAnimationFrame()
- function paint() {
-   context.clearRect(0, 0, canvas.width, canvas.height);
-   landscape.paintBackground(context, canvas.width, canvas.height);
-   blueRobot.paint(context, canvas.width/2, landscape.horizon*1.1);
-   landscape.paintForeground(context, canvas.width, canvas.height);
-   requestAnimationFrame(paint);
- }
- paint();
- // but tick every 150ms, so that we don't slow down when we don't paint
- setInterval(function () {
-   var dx = blueRobot.tick();
-   landscape.advance(dx);
- }, 100);
-&lt;/script&gt;
-&lt;p class="buttons"&gt;
- &lt;input type=button value="Walk" onclick="blueRobot.walk()"&gt;
- &lt;input type=button value="Stop" onclick="blueRobot.stop()"&gt;
-&lt;footer&gt;
- &lt;small&gt; Blue Robot Player Sprite by &lt;a href="https://johncolburn.deviantart.com/"&gt;JohnColburn&lt;/a&gt;.
- Licensed under the terms of the Creative Commons Attribution Share-Alike 3.0 Unported license.&lt;/small&gt;
- &lt;small&gt; This work is itself licensed under a &lt;a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/"&gt;Creative
- Commons Attribution-ShareAlike 3.0 Unported License&lt;/a&gt;.&lt;/small&gt;
-&lt;/footer&gt;
-</pre>
+   <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Blue Robot Demo<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>style</c-><c- p>&gt;</c->
+  <c- f>html</c-> <c- p>{</c-> <c- k>overflow</c-><c- p>:</c-> <c- kc>hidden</c-><c- p>;</c-> <c- k>min-height</c-><c- p>:</c-> <c- mi>200</c-><c- b>px</c-><c- p>;</c-> <c- k>min-width</c-><c- p>:</c-> <c- mi>380</c-><c- b>px</c-><c- p>;</c-> <c- p>}</c->
+  <c- f>body</c-> <c- p>{</c-> <c- k>height</c-><c- p>:</c-> <c- mi>200</c-><c- b>px</c-><c- p>;</c-> <c- k>position</c-><c- p>:</c-> <c- kc>relative</c-><c- p>;</c-> <c- k>margin</c-><c- p>:</c-> <c- mi>8</c-><c- b>px</c-><c- p>;</c-> <c- p>}</c->
+  <c- p>.</c-><c- nc>buttons</c-> <c- p>{</c-> <c- k>position</c-><c- p>:</c-> <c- kc>absolute</c-><c- p>;</c-> <c- k>bottom</c-><c- p>:</c-> <c- mi>0</c-><c- b>px</c-><c- p>;</c-> <c- k>left</c-><c- p>:</c-> <c- mi>0</c-><c- b>px</c-><c- p>;</c-> <c- k>margin</c-><c- p>:</c-> <c- mi>4</c-><c- b>px</c-><c- p>;</c-> <c- p>}</c->
+<c- p>&lt;/</c-><c- f>style</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>canvas</c-> <c- e>width</c-><c- o>=</c-><c- s>"380"</c-> <c- e>height</c-><c- o>=</c-><c- s>"200"</c-><c- p>&gt;&lt;/</c-><c- f>canvas</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>var</c-> Landscape <c- o>=</c-> <c- a>function</c-> <c- p>(</c->context<c- p>,</c-> width<c- p>,</c-> height<c- p>)</c-> <c- p>{</c->
+   <c- k>this</c-><c- p>.</c->offset <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+   <c- k>this</c-><c- p>.</c->width <c- o>=</c-> width<c- p>;</c->
+   <c- k>this</c-><c- p>.</c->advance <c- o>=</c-> <c- a>function</c-> <c- p>(</c->dx<c- p>)</c-> <c- p>{</c->
+     <c- k>this</c-><c- p>.</c->offset <c- o>+=</c-> dx<c- p>;</c->
+   <c- p>};</c->
+   <c- k>this</c-><c- p>.</c->horizon <c- o>=</c-> height <c- o>*</c-> <c- mf>0.7</c-><c- p>;</c->
+   <c- c1>// This creates the sky gradient (from a darker blue to white at the bottom)</c->
+<c- c1></c->   <c- k>this</c-><c- p>.</c->sky <c- o>=</c-> context<c- p>.</c->createLinearGradient<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->horizon<c- p>);</c->
+   <c- k>this</c-><c- p>.</c->sky<c- p>.</c->addColorStop<c- p>(</c-><c- mf>0.0</c-><c- p>,</c-> <c- t>&amp;apos;rgb(55,121,179)&amp;apos;</c-><c- p>);</c->
+   <c- k>this</c-><c- p>.</c->sky<c- p>.</c->addColorStop<c- p>(</c-><c- mf>0.7</c-><c- p>,</c-> <c- t>&amp;apos;rgb(121,194,245)&amp;apos;</c-><c- p>);</c->
+   <c- k>this</c-><c- p>.</c->sky<c- p>.</c->addColorStop<c- p>(</c-><c- mf>1.0</c-><c- p>,</c-> <c- t>&amp;apos;rgb(164,200,214)&amp;apos;</c-><c- p>);</c->
+   <c- c1>// this creates the grass gradient (from a darker green to a lighter green)</c->
+<c- c1></c->   <c- k>this</c-><c- p>.</c->earth <c- o>=</c-> context<c- p>.</c->createLinearGradient<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->horizon<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> height<c- p>);</c->
+   <c- k>this</c-><c- p>.</c->earth<c- p>.</c->addColorStop<c- p>(</c-><c- mf>0.0</c-><c- p>,</c-> <c- t>&amp;apos;rgb(81,140,20)&amp;apos;</c-><c- p>);</c->
+   <c- k>this</c-><c- p>.</c->earth<c- p>.</c->addColorStop<c- p>(</c-><c- mf>1.0</c-><c- p>,</c-> <c- t>&amp;apos;rgb(123,177,57)&amp;apos;</c-><c- p>);</c->
+   <c- k>this</c-><c- p>.</c->paintBackground <c- o>=</c-> <c- a>function</c-> <c- p>(</c->context<c- p>,</c-> width<c- p>,</c-> height<c- p>)</c-> <c- p>{</c->
+     <c- c1>// first, paint the sky and grass rectangles</c->
+<c- c1></c->     context<c- p>.</c->fillStyle <c- o>=</c-> <c- k>this</c-><c- p>.</c->sky<c- p>;</c->
+     context<c- p>.</c->fillRect<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> width<c- p>,</c-> <c- k>this</c-><c- p>.</c->horizon<c- p>);</c->
+     context<c- p>.</c->fillStyle <c- o>=</c-> <c- k>this</c-><c- p>.</c->earth<c- p>;</c->
+     context<c- p>.</c->fillRect<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->horizon<c- p>,</c-> width<c- p>,</c-> height<c- o>-</c-><c- k>this</c-><c- p>.</c->horizon<c- p>);</c->
+     <c- c1>// then, draw the cloudy banner</c->
+<c- c1></c->     <c- c1>// we make it cloudy by having the draw text off the top of the</c->
+<c- c1></c->     <c- c1>// canvas, and just having the blurred shadow shown on the canvas</c->
+<c- c1></c->     context<c- p>.</c->save<c- p>();</c->
+     context<c- p>.</c->translate<c- p>(</c->width<c- o>-</c-><c- p>((</c-><c- k>this</c-><c- p>.</c->offset<c- o>+</c-><c- p>(</c-><c- k>this</c-><c- p>.</c->width<c- o>*</c-><c- mf>3.2</c-><c- p>))</c-> <c- o>%</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->width<c- o>*</c-><c- mf>4.0</c-><c- p>))</c-><c- o>+</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
+     context<c- p>.</c->shadowColor <c- o>=</c-> <c- t>&amp;apos;white&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->shadowOffsetY <c- o>=</c-> <c- mi>30</c-><c- o>+</c-><c- k>this</c-><c- p>.</c->horizon<c- o>/</c-><c- mi>3</c-><c- p>;</c-> <c- c1>// offset down on canvas</c->
+<c- c1></c->     context<c- p>.</c->shadowBlur <c- o>=</c-> <c- t>&amp;apos;5&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;white&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->textAlign <c- o>=</c-> <c- t>&amp;apos;left&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->textBaseline <c- o>=</c-> <c- t>&amp;apos;top&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->font <c- o>=</c-> <c- t>&amp;apos;20px sans-serif&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->fillText<c- p>(</c-><c- t>&amp;apos;WHATWG ROCKS&amp;apos;</c-><c- p>,</c-> <c- mi>10</c-><c- p>,</c-> <c- o>-</c-><c- mi>30</c-><c- p>);</c-> <c- c1>// text up above canvas</c->
+<c- c1></c->     context<c- p>.</c->restore<c- p>();</c->
+     <c- c1>// then, draw the background tree</c->
+<c- c1></c->     context<c- p>.</c->save<c- p>();</c->
+     context<c- p>.</c->translate<c- p>(</c->width<c- o>-</c-><c- p>((</c-><c- k>this</c-><c- p>.</c->offset<c- o>+</c-><c- p>(</c-><c- k>this</c-><c- p>.</c->width<c- o>*</c-><c- mf>0.2</c-><c- p>))</c-> <c- o>%</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->width<c- o>*</c-><c- mf>1.5</c-><c- p>))</c-><c- o>+</c-><c- mi>30</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
+     context<c- p>.</c->beginPath<c- p>();</c->
+     context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;rgb(143,89,2)&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->lineStyle <c- o>=</c-> <c- t>&amp;apos;rgb(10,10,10)&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->lineWidth <c- o>=</c-> <c- mi>2</c-><c- p>;</c->
+     context<c- p>.</c->rect<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->horizon<c- o>+</c-><c- mi>5</c-><c- p>,</c-> <c- mi>10</c-><c- p>,</c-> <c- o>-</c-><c- mi>50</c-><c- p>);</c-> <c- c1>// trunk</c->
+<c- c1></c->     context<c- p>.</c->fill<c- p>();</c->
+     context<c- p>.</c->stroke<c- p>();</c->
+     context<c- p>.</c->beginPath<c- p>();</c->
+     context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;rgb(78,154,6)&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->arc<c- p>(</c-><c- mi>5</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->horizon<c- o>-</c-><c- mi>60</c-><c- p>,</c-> <c- mi>30</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> Math<c- p>.</c->PI<c- o>*</c-><c- mi>2</c-><c- p>);</c-> <c- c1>// leaves</c->
+<c- c1></c->     context<c- p>.</c->fill<c- p>();</c->
+     context<c- p>.</c->stroke<c- p>();</c->
+     context<c- p>.</c->restore<c- p>();</c->
+   <c- p>};</c->
+   <c- k>this</c-><c- p>.</c->paintForeground <c- o>=</c-> <c- a>function</c-> <c- p>(</c->context<c- p>,</c-> width<c- p>,</c-> height<c- p>)</c-> <c- p>{</c->
+     <c- c1>// draw the box that goes in front</c->
+<c- c1></c->     context<c- p>.</c->save<c- p>();</c->
+     context<c- p>.</c->translate<c- p>(</c->width<c- o>-</c-><c- p>((</c-><c- k>this</c-><c- p>.</c->offset<c- o>+</c-><c- p>(</c-><c- k>this</c-><c- p>.</c->width<c- o>*</c-><c- mf>0.7</c-><c- p>))</c-> <c- o>%</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->width<c- o>*</c-><c- mf>1.1</c-><c- p>))</c-><c- o>+</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
+     context<c- p>.</c->beginPath<c- p>();</c->
+     context<c- p>.</c->rect<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->horizon <c- o>-</c-> <c- mi>5</c-><c- p>,</c-> <c- mi>25</c-><c- p>,</c-> <c- mi>25</c-><c- p>);</c->
+     context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;rgb(220,154,94)&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->lineStyle <c- o>=</c-> <c- t>&amp;apos;rgb(10,10,10)&amp;apos;</c-><c- p>;</c->
+     context<c- p>.</c->lineWidth <c- o>=</c-> <c- mi>2</c-><c- p>;</c->
+     context<c- p>.</c->fill<c- p>();</c->
+     context<c- p>.</c->stroke<c- p>();</c->
+     context<c- p>.</c->restore<c- p>();</c->
+   <c- p>};</c->
+ <c- p>};</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>var</c-> BlueRobot <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
+   <c- k>this</c-><c- p>.</c->sprites <c- o>=</c-> <c- k>new</c-> Image<c- p>();</c->
+   <c- k>this</c-><c- p>.</c->sprites<c- p>.</c->src <c- o>=</c-> <c- t>&amp;apos;blue-robot.png&amp;apos;</c-><c- p>;</c-> <c- c1>// this sprite sheet has 8 cells</c->
+<c- c1></c->   <c- k>this</c-><c- p>.</c->targetMode <c- o>=</c-> <c- t>&amp;apos;idle&amp;apos;</c-><c- p>;</c->
+   <c- k>this</c-><c- p>.</c->walk <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
+     <c- k>this</c-><c- p>.</c->targetMode <c- o>=</c-> <c- t>&amp;apos;walk&amp;apos;</c-><c- p>;</c->
+   <c- p>};</c->
+   <c- k>this</c-><c- p>.</c->stop <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
+     <c- k>this</c-><c- p>.</c->targetMode <c- o>=</c-> <c- t>&amp;apos;idle&amp;apos;</c-><c- p>;</c->
+   <c- p>};</c->
+   <c- k>this</c-><c- p>.</c->frameIndex <c- o>=</c-> <c- p>{</c->
+     <c- t>&amp;apos;idle&amp;apos;</c-><c- o>:</c-> <c- p>[</c-><c- mi>0</c-><c- p>],</c-> <c- c1>// first cell is the idle frame</c->
+<c- c1></c->     <c- t>&amp;apos;walk&amp;apos;</c-><c- o>:</c-> <c- p>[</c-><c- mi>1</c-><c- p>,</c-><c- mi>2</c-><c- p>,</c-><c- mi>3</c-><c- p>,</c-><c- mi>4</c-><c- p>,</c-><c- mi>5</c-><c- p>,</c-><c- mi>6</c-><c- p>],</c-> <c- c1>// the walking animation is cells 1-6</c->
+<c- c1></c->     <c- t>&amp;apos;stop&amp;apos;</c-><c- o>:</c-> <c- p>[</c-><c- mi>7</c-><c- p>],</c-> <c- c1>// last cell is the stopping animation</c->
+<c- c1></c->   <c- p>};</c->
+   <c- k>this</c-><c- p>.</c->mode <c- o>=</c-> <c- t>&amp;apos;idle&amp;apos;</c-><c- p>;</c->
+   <c- k>this</c-><c- p>.</c->frame <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> <c- c1>// index into frameIndex</c->
+<c- c1></c->   <c- k>this</c-><c- p>.</c->tick <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
+     <c- c1>// this advances the frame and the robot</c->
+<c- c1></c->     <c- c1>// the return value is how many pixels the robot has moved</c->
+<c- c1></c->     <c- k>this</c-><c- p>.</c->frame <c- o>+=</c-> <c- mi>1</c-><c- p>;</c->
+     <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->frame <c- o>&gt;=</c-> <c- k>this</c-><c- p>.</c->frameIndex<c- p>[</c-><c- k>this</c-><c- p>.</c->mode<c- p>].</c->length<c- p>)</c-> <c- p>{</c->
+       <c- c1>// we&amp;apos;ve reached the end of this animation cycle</c->
+<c- c1></c->       <c- k>this</c-><c- p>.</c->frame <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+       <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->mode <c- o>!=</c-> <c- k>this</c-><c- p>.</c->targetMode<c- p>)</c-> <c- p>{</c->
+         <c- c1>// switch to next cycle</c->
+<c- c1></c->         <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->mode <c- o>==</c-> <c- t>&amp;apos;walk&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+           <c- c1>// we need to stop walking before we decide what to do next</c->
+<c- c1></c->           <c- k>this</c-><c- p>.</c->mode <c- o>=</c-> <c- t>&amp;apos;stop&amp;apos;</c-><c- p>;</c->
+         <c- p>}</c-> <c- k>else</c-> <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->mode <c- o>==</c-> <c- t>&amp;apos;stop&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+           <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->targetMode <c- o>==</c-> <c- t>&amp;apos;walk&amp;apos;</c-><c- p>)</c->
+             <c- k>this</c-><c- p>.</c->mode <c- o>=</c-> <c- t>&amp;apos;walk&amp;apos;</c-><c- p>;</c->
+           <c- k>else</c->
+             <c- k>this</c-><c- p>.</c->mode <c- o>=</c-> <c- t>&amp;apos;idle&amp;apos;</c-><c- p>;</c->
+         <c- p>}</c-> <c- k>else</c-> <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->mode <c- o>==</c-> <c- t>&amp;apos;idle&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+           <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->targetMode <c- o>==</c-> <c- t>&amp;apos;walk&amp;apos;</c-><c- p>)</c->
+             <c- k>this</c-><c- p>.</c->mode <c- o>=</c-> <c- t>&amp;apos;walk&amp;apos;</c-><c- p>;</c->
+         <c- p>}</c->
+       <c- p>}</c->
+     <c- p>}</c->
+     <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->mode <c- o>==</c-> <c- t>&amp;apos;walk&amp;apos;</c-><c- p>)</c->
+       <c- k>return</c-> <c- mi>8</c-><c- p>;</c->
+     <c- k>return</c-> <c- mi>0</c-><c- p>;</c->
+   <c- p>},</c->
+   <c- k>this</c-><c- p>.</c->paint <c- o>=</c-> <c- a>function</c-> <c- p>(</c->context<c- p>,</c-> x<c- p>,</c-> y<c- p>)</c-> <c- p>{</c->
+     <c- k>if</c-> <c- p>(</c-><c- o>!</c-><c- k>this</c-><c- p>.</c->sprites<c- p>.</c->complete<c- p>)</c-> <c- k>return</c-><c- p>;</c->
+     <c- c1>// draw the right frame out of the sprite sheet onto the canvas</c->
+<c- c1></c->     <c- c1>// we assume each frame is as high as the sprite sheet</c->
+<c- c1></c->     <c- c1>// the x,y coordinates give the position of the bottom center of the sprite</c->
+<c- c1></c->     context<c- p>.</c->drawImage<c- p>(</c-><c- k>this</c-><c- p>.</c->sprites<c- p>,</c->
+                       <c- k>this</c-><c- p>.</c->frameIndex<c- p>[</c-><c- k>this</c-><c- p>.</c->mode<c- p>][</c-><c- k>this</c-><c- p>.</c->frame<c- p>]</c-> <c- o>*</c-> <c- k>this</c-><c- p>.</c->sprites<c- p>.</c->height<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->sprites<c- p>.</c->height<c- p>,</c-> <c- k>this</c-><c- p>.</c->sprites<c- p>.</c->height<c- p>,</c->
+                       x<c- o>-</c-><c- k>this</c-><c- p>.</c->sprites<c- p>.</c->height<c- o>/</c-><c- mi>2</c-><c- p>,</c-> y<c- o>-</c-><c- k>this</c-><c- p>.</c->sprites<c- p>.</c->height<c- p>,</c-> <c- k>this</c-><c- p>.</c->sprites<c- p>.</c->height<c- p>,</c-> <c- k>this</c-><c- p>.</c->sprites<c- p>.</c->height<c- p>);</c->
+   <c- p>};</c->
+ <c- p>};</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>var</c-> canvas <c- o>=</c-> document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+ <c- a>var</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
+ <c- a>var</c-> landscape <c- o>=</c-> <c- k>new</c-> Landscape<c- p>(</c->context<c- p>,</c-> canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
+ <c- a>var</c-> blueRobot <c- o>=</c-> <c- k>new</c-> BlueRobot<c- p>();</c->
+ <c- c1>// paint when the browser wants us to, using requestAnimationFrame()</c->
+<c- c1></c-> <c- a>function</c-> paint<c- p>()</c-> <c- p>{</c->
+   context<c- p>.</c->clearRect<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
+   landscape<c- p>.</c->paintBackground<c- p>(</c->context<c- p>,</c-> canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
+   blueRobot<c- p>.</c->paint<c- p>(</c->context<c- p>,</c-> canvas<c- p>.</c->width<c- o>/</c-><c- mi>2</c-><c- p>,</c-> landscape<c- p>.</c->horizon<c- o>*</c-><c- mf>1.1</c-><c- p>);</c->
+   landscape<c- p>.</c->paintForeground<c- p>(</c->context<c- p>,</c-> canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
+   requestAnimationFrame<c- p>(</c->paint<c- p>);</c->
+ <c- p>}</c->
+ paint<c- p>();</c->
+ <c- c1>// but tick every 100ms, so that we don&amp;apos;t slow down when we don&amp;apos;t paint</c->
+<c- c1></c-> setInterval<c- p>(</c-><c- a>function</c-> <c- p>()</c-> <c- p>{</c->
+   <c- a>var</c-> dx <c- o>=</c-> blueRobot<c- p>.</c->tick<c- p>();</c->
+   landscape<c- p>.</c->advance<c- p>(</c->dx<c- p>);</c->
+ <c- p>},</c-> <c- mi>100</c-><c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>p</c-> <c- e>class</c-><c- o>=</c-><c- s>"buttons"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>value</c-><c- o>=</c-><c- s>"Walk"</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"blueRobot.walk()"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>value</c-><c- o>=</c-><c- s>"Stop"</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"blueRobot.stop()"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>footer</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>small</c-><c- p>&gt;</c-> Blue Robot Player Sprite by <c- p>&lt;</c-><c- f>a</c-> <c- e>href</c-><c- o>=</c-><c- s>"https://johncolburn.deviantart.com/"</c-><c- p>&gt;</c->JohnColburn<c- p>&lt;/</c-><c- f>a</c-><c- p>&gt;</c->.
+ Licensed under the terms of the Creative Commons Attribution Share-Alike 3.0 Unported license.<c- p>&lt;/</c-><c- f>small</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>small</c-><c- p>&gt;</c-> This work is itself licensed under a <c- p>&lt;</c-><c- f>a</c-> <c- e>rel</c-><c- o>=</c-><c- s>"license"</c-> <c- e>href</c-><c- o>=</c-><c- s>"https://creativecommons.org/licenses/by-sa/3.0/"</c-><c- p>&gt;</c->Creative
+ Commons Attribution-ShareAlike 3.0 Unported License<c- p>&lt;/</c-><c- f>a</c-><c- p>&gt;</c->.<c- p>&lt;/</c-><c- f>small</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>footer</c-><c- p>&gt;</c->
+</code></pre>
 
   </div>
 
 
 
 
-  <h5 id=the-imagebitmap-rendering-context><span class=secno>4.12.5.2</span> The <code>ImageBitmap</code> rendering context<a href=#the-imagebitmap-rendering-context class=self-link></a></h5>
+  <h5 id=the-imagebitmap-rendering-context><span class=secno>4.12.5.2</span> The <code id=the-imagebitmap-rendering-context:imagebitmap><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a></code> rendering context<a href=#the-imagebitmap-rendering-context class=self-link></a></h5>
 
   <h6 id=introduction-5><span class=secno>4.12.5.2.1</span> Introduction<a href=#introduction-5 class=self-link></a></h6>
 
-  <p><code>ImageBitmapRenderingContext</code> is a performance-oriented interface that provides a
-  low overhead method for displaying the contents of <code>ImageBitmap</code> objects. It uses
+  <p><code id=introduction-5:imagebitmaprenderingcontext><a href=#imagebitmaprenderingcontext>ImageBitmapRenderingContext</a></code> is a performance-oriented interface that provides a
+  low overhead method for displaying the contents of <code id=introduction-5:imagebitmap><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a></code> objects. It uses
   transfer semantics to reduce overall memory consumption. It also streamlines performance by
   avoiding intermediate compositing, unlike the <code id=introduction-5:dom-context-2d-drawimage><a href=#dom-context-2d-drawimage>drawImage()</a></code> method of
-  <code>CanvasRenderingContext2D</code>.</p>
+  <code id=introduction-5:canvasrenderingcontext2d><a href=#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code>.</p>
 
   <p>Using an <code id=introduction-5:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element as an intermediate for getting an image resource into a
   canvas, for example, would result in two copies of the decoded image existing in memory at the
   same time: the <code id=introduction-5:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code> element's copy, and the one in the canvas's backing store. This
   memory cost can be prohibitive when dealing with extremely large images. This can be avoided by
-  using <code>ImageBitmapRenderingContext</code>.</p>
+  using <code id=introduction-5:imagebitmaprenderingcontext-2><a href=#imagebitmaprenderingcontext>ImageBitmapRenderingContext</a></code>.</p>
 
   <div class=example>
-   <p>Using <code>ImageBitmapRenderingContext</code>, here is how to transcode an image to the JPEG
+   <p>Using <code id=introduction-5:imagebitmaprenderingcontext-3><a href=#imagebitmaprenderingcontext>ImageBitmapRenderingContext</a></code>, here is how to transcode an image to the JPEG
    format in a memory- and CPU-efficient way:</p>
 
-   <pre>createImageBitmap(inputImageBlob).then(image =&gt; {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('bitmaprenderer');
-  context.transferFromImageBitmap(image);
+   <pre><code class='js'>createImageBitmap<c- p>(</c->inputImageBlob<c- p>).</c->then<c- p>(</c->image <c- p>=&gt;</c-> <c- p>{</c->
+  <c- kr>const</c-> canvas <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;canvas&amp;apos;</c-><c- p>);</c->
+  <c- kr>const</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;bitmaprenderer&amp;apos;</c-><c- p>);</c->
+  context<c- p>.</c->transferFromImageBitmap<c- p>(</c->image<c- p>);</c->
 
-  canvas.toBlob(outputJPEGBlob =&gt; {
-    // Do something with outputJPEGBlob.
-  }, 'image/jpeg');
-});</pre>
+  canvas<c- p>.</c->toBlob<c- p>(</c->outputJPEGBlob <c- p>=&gt;</c-> <c- p>{</c->
+    <c- c1>// Do something with outputJPEGBlob.</c->
+<c- c1></c->  <c- p>},</c-> <c- t>&amp;apos;image/jpeg&amp;apos;</c-><c- p>);</c->
+<c- p>});</c-></code></pre>
   </div>
 
-  <h6 id=the-imagebitmaprenderingcontext-interface><span class=secno>4.12.5.2.2</span> The <code>ImageBitmapRenderingContext</code> interface<a href=#the-imagebitmaprenderingcontext-interface class=self-link></a></h6>
+  <h6 id=the-imagebitmaprenderingcontext-interface><span class=secno>4.12.5.2.2</span> The <code id=the-imagebitmaprenderingcontext-interface:imagebitmaprenderingcontext><a href=#imagebitmaprenderingcontext>ImageBitmapRenderingContext</a></code> interface<a href=#the-imagebitmaprenderingcontext-interface class=self-link></a></h6>
 
-  
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->]
+<c- b>interface</c-> <dfn id='imagebitmaprenderingcontext'><c- g>ImageBitmapRenderingContext</c-></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <span><c- n>HTMLCanvasElement</c-></span> <a href='#dom-imagebitmaprenderingcontext-canvas' id='the-imagebitmaprenderingcontext-interface:dom-imagebitmaprenderingcontext-canvas'><c- g>canvas</c-></a>;
+  <c- b>void</c-> <a href='#dom-imagebitmaprenderingcontext-transferfromimagebitmap' id='the-imagebitmaprenderingcontext-interface:dom-imagebitmaprenderingcontext-transferfromimagebitmap'><c- g>transferFromImageBitmap</c-></a>(<c- n>ImageBitmap</c->? <c- g>bitmap</c->);
+};
+
+<c- b>dictionary</c-> <dfn id='imagebitmaprenderingcontextsettings'><c- g>ImageBitmapRenderingContextSettings</c-></dfn> {
+  <c- b>boolean</c-> <span><c- g>alpha</c-></span> = <c- b>true</c->;
+};</code></pre>
 
   <dl class=domintro><dt><var>context</var> = <var>canvas</var> . <code id=the-imagebitmaprenderingcontext-interface:dom-canvas-getcontext><a href=#dom-canvas-getcontext>getContext</a></code>('bitmaprenderer' [, { [ <code>alpha</code>: false ] } ] )<dd>
 
-    <p>Returns an <code>ImageBitmapRenderingContext</code> object that is permanently bound to a
+    <p>Returns an <code id=the-imagebitmaprenderingcontext-interface:imagebitmaprenderingcontext-2><a href=#imagebitmaprenderingcontext>ImageBitmapRenderingContext</a></code> object that is permanently bound to a
     particular <code id=the-imagebitmaprenderingcontext-interface:the-canvas-element><a href=#the-canvas-element>canvas</a></code> element.</p>
 
     <p>If the <code>alpha</code> setting is
@@ -1678,7 +1919,7 @@ function AddCloud(data, x, y) { ... }</pre>
     from <var>imageBitmap</var> to <var>context</var>, and the bitmap becomes the contents of the
     <code id=the-imagebitmaprenderingcontext-interface:the-canvas-element-3><a href=#the-canvas-element>canvas</a></code> element to which <var>context</var> is bound.</p>
 
-   <dt><var>context</var> . <code id=the-imagebitmaprenderingcontext-interface:dom-imagebitmaprenderingcontext-transferfromimagebitmap><a href=#dom-imagebitmaprenderingcontext-transferfromimagebitmap>transferFromImageBitmap</a></code>(
+   <dt><var>context</var> . <code id=the-imagebitmaprenderingcontext-interface:dom-imagebitmaprenderingcontext-transferfromimagebitmap-2><a href=#dom-imagebitmaprenderingcontext-transferfromimagebitmap>transferFromImageBitmap</a></code>(
    null)<dd>
 
     <p>Replaces contents of the <code id=the-imagebitmaprenderingcontext-interface:the-canvas-element-4><a href=#the-canvas-element>canvas</a></code> element to which <var>context</var>
@@ -1692,36 +1933,54 @@ function AddCloud(data, x, y) { ... }</pre>
 
 
 
-  <h5 id=the-offscreencanvas-interface><span class=secno>4.12.5.3</span> The <code>OffscreenCanvas</code> interface<a href=#the-offscreencanvas-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> offscreencanvas<span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="chrome no"><span>Chrome</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera no"><span>Opera</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=offscreencanvas">caniuse.com</a></div>
+  <h5 id=the-offscreencanvas-interface><span class=secno>4.12.5.3</span> The <code id=the-offscreencanvas-interface:offscreencanvas><a href=#offscreencanvas>OffscreenCanvas</a></code> interface<a href=#the-offscreencanvas-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> offscreencanvas<span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="chrome no"><span>Chrome</span> <span>None</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc no"><span>UC Browser for Android</span> <span>None</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="samsung no"><span>Samsung Internet</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera no"><span>Opera</span> <span>None</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=offscreencanvas">caniuse.com</a></div>
 
-  
+  <pre><code class='idl'><c- b>typedef</c-> (<a href='#offscreencanvasrenderingcontext2d' id='the-offscreencanvas-interface:offscreencanvasrenderingcontext2d'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>or</c->
+        <a href='https://www.khronos.org/registry/webgl/specs/latest/1.0/#WebGLRenderingContext' data-x-internal='webglrenderingcontext' id='the-offscreencanvas-interface:webglrenderingcontext'><c- n>WebGLRenderingContext</c-></a>) <dfn id='offscreenrenderingcontext'><c- g>OffscreenRenderingContext</c-></dfn>;
 
-  <p class=note><code>OffscreenCanvas</code> is an <code id=the-offscreencanvas-interface:eventtarget><a data-x-internal=eventtarget href=https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget>EventTarget</a></code> so that WebGL can
+<c- b>dictionary</c-> <dfn id='imageencodeoptions'><c- g>ImageEncodeOptions</c-></dfn> {
+  <c- b>DOMString</c-> <span><c- g>type</c-></span> = "image/png";
+  <c- b>unrestricted</c-> <c- b>double</c-> <span><c- g>quality</c-></span> = 1.0;
+};
+
+<c- b>enum</c-> <dfn id='offscreenrenderingcontextid'><c- g>OffscreenRenderingContextId</c-></dfn> { <c- s>"</c-><span><c- s>2d</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>webgl</c-></span><c- s>"</c-> };
+
+[<a href='#dom-offscreencanvas' id='the-offscreencanvas-interface:dom-offscreencanvas'><c- g>Constructor</c-></a>([<c- g>EnforceRange</c->] <c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-> <c- g>width</c->, [<c- g>EnforceRange</c->] <c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-> <c- g>height</c->), <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->), <span><c- g>Transferable</c-></span>]
+<c- b>interface</c-> <dfn id='offscreencanvas'><c- g>OffscreenCanvas</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='the-offscreencanvas-interface:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-> <a href='#dom-offscreencanvas-width' id='the-offscreencanvas-interface:dom-offscreencanvas-width'><c- g>width</c-></a>;
+  <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-> <a href='#dom-offscreencanvas-height' id='the-offscreencanvas-interface:dom-offscreencanvas-height'><c- g>height</c-></a>;
+
+  <a href='#offscreenrenderingcontext' id='the-offscreencanvas-interface:offscreenrenderingcontext'><c- n>OffscreenRenderingContext</c-></a>? <a href='#dom-offscreencanvas-getcontext' id='the-offscreencanvas-interface:dom-offscreencanvas-getcontext'><c- g>getContext</c-></a>(<a href='#offscreenrenderingcontextid' id='the-offscreencanvas-interface:offscreenrenderingcontextid'><c- n>OffscreenRenderingContextId</c-></a> <c- g>contextId</c->, <c- b>optional</c-> <c- b>any</c-> <c- g>options</c-> = <c- b>null</c->);
+  <a href='imagebitmap-and-animations.html#imagebitmap' id='the-offscreencanvas-interface:imagebitmap'><c- n>ImageBitmap</c-></a> <a href='#dom-offscreencanvas-transfertoimagebitmap' id='the-offscreencanvas-interface:dom-offscreencanvas-transfertoimagebitmap'><c- g>transferToImageBitmap</c-></a>();
+  <c- b>Promise</c->&lt;<a href='https://w3c.github.io/FileAPI/#dfn-Blob' data-x-internal='blob' id='the-offscreencanvas-interface:blob'><c- n>Blob</c-></a>&gt; <a href='#dom-offscreencanvas-converttoblob' id='the-offscreencanvas-interface:dom-offscreencanvas-converttoblob'><c- g>convertToBlob</c-></a>(<c- b>optional</c-> <a href='#imageencodeoptions' id='the-offscreencanvas-interface:imageencodeoptions'><c- n>ImageEncodeOptions</c-></a> <c- g>options</c->);
+};</code></pre>
+
+  <p class=note><code id=the-offscreencanvas-interface:offscreencanvas-2><a href=#offscreencanvas>OffscreenCanvas</a></code> is an <code id=the-offscreencanvas-interface:eventtarget-2><a data-x-internal=eventtarget href=https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget>EventTarget</a></code> so that WebGL can
   fire <code>webglcontextlost</code> and <code>webglcontextrestored</code>
   events at it. <a href=references.html#refsWEBGL>[WEBGL]</a></p>
 
-  <p><code>OffscreenCanvas</code> objects are used to create rendering contexts, much like an
+  <p><code id=the-offscreencanvas-interface:offscreencanvas-3><a href=#offscreencanvas>OffscreenCanvas</a></code> objects are used to create rendering contexts, much like an
   <code>HTMLCanvasElement</code>, but with no connection to the DOM. This makes it possible to
   use canvas rendering contexts in <a href=workers.html#workers>workers</a>.</p>
 
-  <p>An <code>OffscreenCanvas</code> object may hold a weak reference to a <dfn id=offscreencanvas-placeholder>placeholder <code>canvas</code> element</dfn>, which is
-  typically in the DOM, whose embedded content is provided by the <code>OffscreenCanvas</code>
-  object. The bitmap of the <code>OffscreenCanvas</code> object is pushed to the <a href=#offscreencanvas-placeholder id=the-offscreencanvas-interface:offscreencanvas-placeholder>placeholder <code>canvas</code> element</a> by
+  <p>An <code id=the-offscreencanvas-interface:offscreencanvas-4><a href=#offscreencanvas>OffscreenCanvas</a></code> object may hold a weak reference to a <dfn id=offscreencanvas-placeholder>placeholder <code>canvas</code> element</dfn>, which is
+  typically in the DOM, whose embedded content is provided by the <code id=the-offscreencanvas-interface:offscreencanvas-5><a href=#offscreencanvas>OffscreenCanvas</a></code>
+  object. The bitmap of the <code id=the-offscreencanvas-interface:offscreencanvas-6><a href=#offscreencanvas>OffscreenCanvas</a></code> object is pushed to the <a href=#offscreencanvas-placeholder id=the-offscreencanvas-interface:offscreencanvas-placeholder>placeholder <code>canvas</code> element</a> by
   calling the <dfn id=offscreencontext-commit><code>commit()</code></dfn> method of the
-  <code>OffscreenCanvas</code> object's rendering context. All rendering context types that
-  can be created by an <code>OffscreenCanvas</code> object must implement a <code id=the-offscreencanvas-interface:offscreencontext-commit><a href=#offscreencontext-commit>commit()</a></code> method. The exact behavior of the commit
+  <code id=the-offscreencanvas-interface:offscreencanvas-7><a href=#offscreencanvas>OffscreenCanvas</a></code> object's rendering context. All rendering context types that
+  can be created by an <code id=the-offscreencanvas-interface:offscreencanvas-8><a href=#offscreencanvas>OffscreenCanvas</a></code> object must implement a <code id=the-offscreencanvas-interface:offscreencontext-commit><a href=#offscreencontext-commit>commit()</a></code> method. The exact behavior of the commit
   method (e.g. whether it copies or transfers bitmaps) may vary, as defined by the rendering
-  contexts' respective specifications. Only the <span>2D context for offscreen canvases</span> is defined
+  contexts' respective specifications. Only the <a href=#offscreencanvasrenderingcontext2d id=the-offscreencanvas-interface:offscreencanvasrenderingcontext2d-2>2D context for offscreen canvases</a> is defined
   in this specification.</p>
 
   <dl class=domintro><dt><var>offscreenCanvas</var> = new <code id=dom-offscreencanvas>OffscreenCanvas</code>(<var>width</var>,
    <var>height</var>)<dt>
    <dd>
-    <p>Returns a new <code>OffscreenCanvas</code> object that is not linked to a <a href=#offscreencanvas-placeholder id=the-offscreencanvas-interface:offscreencanvas-placeholder-2>placeholder <code>canvas</code> element</a>, and
+    <p>Returns a new <code id=the-offscreencanvas-interface:offscreencanvas-9><a href=#offscreencanvas>OffscreenCanvas</a></code> object that is not linked to a <a href=#offscreencanvas-placeholder id=the-offscreencanvas-interface:offscreencanvas-placeholder-2>placeholder <code>canvas</code> element</a>, and
     whose bitmap's size is determined by the <var>width</var> and <var>height</var> arguments.</p>
    <dt><var>context</var> = <var>offscreenCanvas</var> . <code id=dom-offscreencanvas-getcontext>getContext</code>(<var>contextId</var> [,
    <var>options</var> ] )<dd>
-    <p>Returns an object that exposes an API for drawing on the <code>OffscreenCanvas</code>
+    <p>Returns an object that exposes an API for drawing on the <code id=the-offscreencanvas-interface:offscreencanvas-10><a href=#offscreencanvas>OffscreenCanvas</a></code>
     object. <var>contextId</var> specifies the desired API: "<code>2d</code>" or "<code>webgl</code>". <var>options</var> is handled by that
     API.</p>
 
@@ -1740,7 +1999,7 @@ function AddCloud(data, x, y) { ... }</pre>
   <dl class=domintro><dt><var>offscreenCanvas</var> . <code id=dom-offscreencanvas-width>width</code> [
    = <var>value</var> ]<dt><var>offscreenCanvas</var> . <code id=dom-offscreencanvas-height>height</code> [
    = <var>value</var> ]<dd>
-    <p>These attributes return the dimensions of the <code>OffscreenCanvas</code> object's <span>bitmap</span>.</p>
+    <p>These attributes return the dimensions of the <code id=the-offscreencanvas-interface:offscreencanvas-11><a href=#offscreencanvas>OffscreenCanvas</a></code> object's <span>bitmap</span>.</p>
 
     <p>They can be set, to replace the <span>bitmap</span> with a
     new, <a id=the-offscreencanvas-interface:transparent-black href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent black</a> bitmap of the specified dimensions (effectively resizing
@@ -1749,15 +2008,15 @@ function AddCloud(data, x, y) { ... }</pre>
 
   
 
-  <p class=note>If an <code>OffscreenCanvas</code> object whose dimensions were changed has
+  <p class=note>If an <code id=the-offscreencanvas-interface:offscreencanvas-12><a href=#offscreencanvas>OffscreenCanvas</a></code> object whose dimensions were changed has
   a <a href=#offscreencanvas-placeholder id=the-offscreencanvas-interface:offscreencanvas-placeholder-3>placeholder <code>canvas</code> element</a>, then
   the <a href=#offscreencanvas-placeholder id=the-offscreencanvas-interface:offscreencanvas-placeholder-4>placeholder <code>canvas</code> element</a>'s
-  <a href=https://momdo.github.io/css2/conform.html#intrinsic id=the-offscreencanvas-interface:intrinsic-dimensions data-x-internal=intrinsic-dimensions>intrinsic size</a> will only be updated via the <code id=the-offscreencanvas-interface:offscreencontext-commit-2><a href=#offscreencontext-commit>commit()</a></code> method of the <code>OffscreenCanvas</code>
+  <a href=https://momdo.github.io/css2/conform.html#intrinsic id=the-offscreencanvas-interface:intrinsic-dimensions data-x-internal=intrinsic-dimensions>intrinsic size</a> will only be updated via the <code id=the-offscreencanvas-interface:offscreencontext-commit-2><a href=#offscreencontext-commit>commit()</a></code> method of the <code id=the-offscreencanvas-interface:offscreencanvas-13><a href=#offscreencanvas>OffscreenCanvas</a></code>
   object's rendering context.</p>
 
   <dl class=domintro><dt><var>promise</var> = <var>offscreenCanvas</var> . <code id=dom-offscreencanvas-converttoblob>convertToBlob</code>( [<var>options</var>] )<dd>
-    <p>Returns a promise that will fulfill with a new <code id=the-offscreencanvas-interface:blob><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> object representing a file
-    containing the image in the <code>OffscreenCanvas</code> object.</p>
+    <p>Returns a promise that will fulfill with a new <code id=the-offscreencanvas-interface:blob-2><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> object representing a file
+    containing the image in the <code id=the-offscreencanvas-interface:offscreencanvas-14><a href=#offscreencanvas>OffscreenCanvas</a></code> object.</p>
 
     <p>The argument, if provided, is a dictionary that controls the encoding options of the image
     file to be created. The <code>type</code>
@@ -1766,8 +2025,8 @@ function AddCloud(data, x, y) { ... }</pre>
     quality (such as "<code id=the-offscreencanvas-interface:image/jpeg><a href=indices.html#image/jpeg>image/jpeg</a></code>"), then the <code>quality</code> field is a number in the range 0.0
     to 1.0 inclusive indicating the desired quality level for the resulting image.</p>
    <dt><var>canvas</var> . <code id=dom-offscreencanvas-transfertoimagebitmap>transferToImageBitmap</code>()<dd>
-    <p>Returns a newly created <code>ImageBitmap</code> object with the image in the
-    <code>OffscreenCanvas</code> object. The image in the <code>OffscreenCanvas</code> object is
+    <p>Returns a newly created <code id=the-offscreencanvas-interface:imagebitmap-2><a href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a></code> object with the image in the
+    <code id=the-offscreencanvas-interface:offscreencanvas-15><a href=#offscreencanvas>OffscreenCanvas</a></code> object. The image in the <code id=the-offscreencanvas-interface:offscreencanvas-16><a href=#offscreencanvas>OffscreenCanvas</a></code> object is
     replaced with a new blank image.</p>
    </dl>
 
@@ -1775,33 +2034,51 @@ function AddCloud(data, x, y) { ... }</pre>
 
   <h6 id=the-offscreen-2d-rendering-context><span class=secno>4.12.5.3.1</span> The offscreen 2D rendering context<a href=#the-offscreen-2d-rendering-context class=self-link></a></h6>
 
-  
+  <pre><code class='idl'>[<c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='offscreencanvasrenderingcontext2d'><c- g>OffscreenCanvasRenderingContext2D</c-></dfn> {
+  <c- b>void</c-> <a href='#offscreencontext2d-commit' id='the-offscreen-2d-rendering-context:offscreencontext2d-commit'><c- g>commit</c-></a>();
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#offscreencanvas' id='the-offscreen-2d-rendering-context:offscreencanvas'><c- n>OffscreenCanvas</c-></a> <a href='#offscreencontext2d-canvas' id='the-offscreen-2d-rendering-context:offscreencontext2d-canvas'><c- g>canvas</c-></a>;
+};
 
-  <p>The <code>OffscreenCanvasRenderingContext2D</code> object is a rendering context for drawing to
-  the <span>bitmap</span> of an <code>OffscreenCanvas</code> object.
-  It is similar to the <code>CanvasRenderingContext2D</code> object, with the following
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasstate' id='the-offscreen-2d-rendering-context:canvasstate'><c- n>CanvasState</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-2'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvastransform' id='the-offscreen-2d-rendering-context:canvastransform'><c- n>CanvasTransform</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-3'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvascompositing' id='the-offscreen-2d-rendering-context:canvascompositing'><c- n>CanvasCompositing</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-4'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasimagesmoothing' id='the-offscreen-2d-rendering-context:canvasimagesmoothing'><c- n>CanvasImageSmoothing</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-5'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasfillstrokestyles' id='the-offscreen-2d-rendering-context:canvasfillstrokestyles'><c- n>CanvasFillStrokeStyles</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-6'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasshadowstyles' id='the-offscreen-2d-rendering-context:canvasshadowstyles'><c- n>CanvasShadowStyles</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-7'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasfilters' id='the-offscreen-2d-rendering-context:canvasfilters'><c- n>CanvasFilters</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-8'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasrect' id='the-offscreen-2d-rendering-context:canvasrect'><c- n>CanvasRect</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-9'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasdrawpath' id='the-offscreen-2d-rendering-context:canvasdrawpath'><c- n>CanvasDrawPath</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-10'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasdrawimage' id='the-offscreen-2d-rendering-context:canvasdrawimage'><c- n>CanvasDrawImage</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-11'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvasimagedata' id='the-offscreen-2d-rendering-context:canvasimagedata'><c- n>CanvasImageData</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-12'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvaspathdrawingstyles' id='the-offscreen-2d-rendering-context:canvaspathdrawingstyles'><c- n>CanvasPathDrawingStyles</c-></a>;
+<a href='#offscreencanvasrenderingcontext2d' id='the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-13'><c- n>OffscreenCanvasRenderingContext2D</c-></a> <c- b>includes</c-> <a href='#canvaspath' id='the-offscreen-2d-rendering-context:canvaspath'><c- n>CanvasPath</c-></a>;</code></pre>
+
+  <p>The <code id=the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-14><a href=#offscreencanvasrenderingcontext2d>OffscreenCanvasRenderingContext2D</a></code> object is a rendering context for drawing to
+  the <span>bitmap</span> of an <code id=the-offscreen-2d-rendering-context:offscreencanvas-2><a href=#offscreencanvas>OffscreenCanvas</a></code> object.
+  It is similar to the <code id=the-offscreen-2d-rendering-context:canvasrenderingcontext2d><a href=#canvasrenderingcontext2d>CanvasRenderingContext2D</a></code> object, with the following
   differences:</p>
 
-  <ul><li><p><span>text rendering</span> is not supported;</li><li><p>there is no support for <span>user interface</span>
-   features;</li><li><p>its <code id=the-offscreen-2d-rendering-context:offscreencontext2d-canvas><a href=#offscreencontext2d-canvas>canvas</a></code> attribute refers to an
-   <code>OffscreenCanvas</code> object rather than a <code id=the-offscreen-2d-rendering-context:the-canvas-element><a href=#the-canvas-element>canvas</a></code> element;</li><li><p>it has a <code id=the-offscreen-2d-rendering-context:offscreencontext2d-commit><a href=#offscreencontext2d-commit>commit()</a></code> method for pushing the
-   rendered image to the context's <code>OffscreenCanvas</code> object's <a href=#offscreencanvas-placeholder id=the-offscreen-2d-rendering-context:offscreencanvas-placeholder>placeholder <code>canvas</code> element</a>.</li></ul>
+  <ul><li><p><a href=#canvastext id=the-offscreen-2d-rendering-context:canvastext>text rendering</a> is not supported;</li><li><p>there is no support for <a href=#canvasuserinterface id=the-offscreen-2d-rendering-context:canvasuserinterface>user interface</a>
+   features;</li><li><p>its <code id=the-offscreen-2d-rendering-context:offscreencontext2d-canvas-2><a href=#offscreencontext2d-canvas>canvas</a></code> attribute refers to an
+   <code id=the-offscreen-2d-rendering-context:offscreencanvas-3><a href=#offscreencanvas>OffscreenCanvas</a></code> object rather than a <code id=the-offscreen-2d-rendering-context:the-canvas-element><a href=#the-canvas-element>canvas</a></code> element;</li><li><p>it has a <code id=the-offscreen-2d-rendering-context:offscreencontext2d-commit-2><a href=#offscreencontext2d-commit>commit()</a></code> method for pushing the
+   rendered image to the context's <code id=the-offscreen-2d-rendering-context:offscreencanvas-4><a href=#offscreencanvas>OffscreenCanvas</a></code> object's <a href=#offscreencanvas-placeholder id=the-offscreen-2d-rendering-context:offscreencanvas-placeholder>placeholder <code>canvas</code> element</a>.</li></ul>
 
-  <p>An <code>OffscreenCanvasRenderingContext2D</code> object has a <dfn id=offscreencontext2d-bitmap>bitmap</dfn> that is initialized when the object is
+  <p>An <code id=the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-15><a href=#offscreencanvasrenderingcontext2d>OffscreenCanvasRenderingContext2D</a></code> object has a <dfn id=offscreencontext2d-bitmap>bitmap</dfn> that is initialized when the object is
   created.</p>
 
   <p>The <a href=#offscreencontext2d-bitmap id=the-offscreen-2d-rendering-context:offscreencontext2d-bitmap>bitmap</a> has an <dfn id=offscreencontext2d-origin-clean>origin-clean</dfn> flag, which can be set to true or
   false. Initially, when one of these bitmaps is created, its <a href=#offscreencontext2d-origin-clean id=the-offscreen-2d-rendering-context:offscreencontext2d-origin-clean>origin-clean</a> flag must be set to true.</p>
 
-  <p>An <code>OffscreenCanvasRenderingContext2D</code> object also has an <dfn id=offscreencontext2d-alpha>alpha</dfn> flag, which can be set to true or false. Initially,
+  <p>An <code id=the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-16><a href=#offscreencanvasrenderingcontext2d>OffscreenCanvasRenderingContext2D</a></code> object also has an <dfn id=offscreencontext2d-alpha>alpha</dfn> flag, which can be set to true or false. Initially,
   when the context is created, its alpha flag must be set to true. When an
-  <code>OffscreenCanvasRenderingContext2D</code> object has its <a href=#offscreencontext2d-alpha id=the-offscreen-2d-rendering-context:offscreencontext2d-alpha>alpha</a> flag set to false, then its alpha channel must be
+  <code id=the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-17><a href=#offscreencanvasrenderingcontext2d>OffscreenCanvasRenderingContext2D</a></code> object has its <a href=#offscreencontext2d-alpha id=the-offscreen-2d-rendering-context:offscreencontext2d-alpha>alpha</a> flag set to false, then its alpha channel must be
   fixed to 1.0 (fully opaque) for all pixels, and attempts to change the alpha component of any pixel
   must be silently ignored.</p>
 
-  <p>An <code>OffscreenCanvasRenderingContext2D</code> object has an <dfn id=associated-offscreencanvas-object>associated
-  <code>OffscreenCanvas</code> object</dfn>, which is the <code>OffscreenCanvas</code> object
-  from which the <code>OffscreenCanvasRenderingContext2D</code> object was created.
+  <p>An <code id=the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-18><a href=#offscreencanvasrenderingcontext2d>OffscreenCanvasRenderingContext2D</a></code> object has an <dfn id=associated-offscreencanvas-object>associated
+  <code>OffscreenCanvas</code> object</dfn>, which is the <code id=the-offscreen-2d-rendering-context:offscreencanvas-5><a href=#offscreencanvas>OffscreenCanvas</a></code> object
+  from which the <code id=the-offscreen-2d-rendering-context:offscreencanvasrenderingcontext2d-19><a href=#offscreencanvasrenderingcontext2d>OffscreenCanvasRenderingContext2D</a></code> object was created.
 
   
 

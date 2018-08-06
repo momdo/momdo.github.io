@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -102,26 +102,26 @@
 
    <p>For example, if document A contains an <code id=introduction-11:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> element that contains document B,
    and script in document A calls <code id=introduction-11:dom-window-postmessage><a href=#dom-window-postmessage>postMessage()</a></code> on the
-   <code>Window</code> object of document B, then a message event will be fired on that object,
-   marked as originating from the <code>Window</code> of document A. The script in document A might
+   <code id=introduction-11:window><a href=window-object.html#window>Window</a></code> object of document B, then a message event will be fired on that object,
+   marked as originating from the <code id=introduction-11:window-2><a href=window-object.html#window>Window</a></code> of document A. The script in document A might
    look like:</p>
 
-   <pre>var o = document.getElementsByTagName('iframe')[0];
-o.contentWindow.postMessage('Hello world', 'https://b.example.org/');</pre>
+   <pre><code class='js'><c- a>var</c-> o <c- o>=</c-> document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;iframe&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+o<c- p>.</c->contentWindow<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;Hello world&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;https://b.example.org/&amp;apos;</c-><c- p>);</c-></code></pre>
 
    <p>To register an event handler for incoming events, the script would use <code>addEventListener()</code> (or similar mechanisms). For example, the script in document B
    might look like:</p>
 
-   <pre>window.addEventListener('message', receiver, false);
-function receiver(e) {
-  if (e.origin == 'https://example.com') {
-    if (e.data == 'Hello world') {
-      e.source.postMessage('Hello', e.origin);
-    } else {
-      alert(e.data);
-    }
-  }
-}</pre>
+   <pre><code class='js'>window<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> receiver<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
+<c- a>function</c-> receiver<c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->e<c- p>.</c->origin <c- o>==</c-> <c- t>&amp;apos;https://example.com&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- t>&amp;apos;Hello world&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+      e<c- p>.</c->source<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;Hello&amp;apos;</c-><c- p>,</c-> e<c- p>.</c->origin<c- p>);</c->
+    <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+      alert<c- p>(</c->e<c- p>.</c->data<c- p>);</c->
+    <c- p>}</c->
+  <c- p>}</c->
+<c- p>}</c-></code></pre>
 
    <p>This script first checks the domain is the expected domain, and then looks at the message,
    which it either displays to the user, or responds to by sending a message back to the document
@@ -190,12 +190,12 @@ function receiver(e) {
 
    </dl>
 
-  <p class=note>When posting a message to a <code>Window</code> of a <a id=posting-messages:browsing-context href=browsers.html#browsing-context>browsing context</a>
-  that has just been navigated to a new <code>Document</code> is likely to result in the message not
+  <p class=note>When posting a message to a <code id=posting-messages:window><a href=window-object.html#window>Window</a></code> of a <a id=posting-messages:browsing-context href=browsers.html#browsing-context>browsing context</a>
+  that has just been navigated to a new <code id=posting-messages:document><a href=dom.html#document>Document</a></code> is likely to result in the message not
   receiving its intended recipient: the scripts in the target <a id=posting-messages:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> have to
   have had time to set up listeners for the messages. Thus, for instance, in situations where a
-  message is to be sent to the <code>Window</code> of newly created child <code id=posting-messages:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>,
-  authors are advised to have the child <code>Document</code> post a message to their parent
+  message is to be sent to the <code id=posting-messages:window-2><a href=window-object.html#window>Window</a></code> of newly created child <code id=posting-messages:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>,
+  authors are advised to have the child <code id=posting-messages:document-2><a href=dom.html#document>Document</a></code> post a message to their parent
   announcing their readiness to receive messages, and for the parent to wait for this message before
   beginning posting messages.</p>
 
@@ -220,30 +220,30 @@ function receiver(e) {
   <p>To create a connection (two "entangled" ports), the <code>MessageChannel()</code>
   constructor is called:</p>
 
-  <pre>var channel = new MessageChannel();</pre>
+  <pre><code class='js'><c- a>var</c-> channel <c- o>=</c-> <c- k>new</c-> MessageChannel<c- p>();</c-></code></pre>
 
   <p>One of the ports is kept as the local port, and the other port is sent to the remote code, e.g.
   using <code id=introduction-12:dom-window-postmessage><a href=#dom-window-postmessage>postMessage()</a></code>:</p>
 
-  <pre>otherWindow.postMessage('hello', 'https://example.com', [channel.port2]);</pre>
+  <pre><code class='js'>otherWindow<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;hello&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;https://example.com&amp;apos;</c-><c- p>,</c-> <c- p>[</c->channel<c- p>.</c->port2<c- p>]);</c-></code></pre>
 
   <p>To send messages, the <code id=introduction-12:dom-messageport-postmessage><a href=#dom-messageport-postmessage>postMessage()</a></code> method on
   the port is used:</p>
 
-  <pre>channel.port1.postMessage('hello');</pre>
+  <pre><code class='js'>channel<c- p>.</c->port1<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;hello&amp;apos;</c-><c- p>);</c-></code></pre>
 
   <p>To receive messages, one listens to <code id=introduction-12:event-message><a href=indices.html#event-message>message</a></code> events:</p>
 
-  <pre>channel.port1.onmessage = handleMessage;
-function handleMessage(event) {
-  // message is in event.data
-  // ...
-}</pre>
+  <pre><code class='js'>channel<c- p>.</c->port1<c- p>.</c->onmessage <c- o>=</c-> handleMessage<c- p>;</c->
+<c- a>function</c-> handleMessage<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  <c- c1>// message is in event.data</c->
+<c- c1></c->  <c- c1>// ...</c->
+<c- c1></c-><c- p>}</c-></code></pre>
 
   <p>Data sent on a port can be structured data; for example here an array of strings is passed on a
-  <code>MessagePort</code>:</p>
+  <code id=introduction-12:messageport><a href=#messageport>MessagePort</a></code>:</p>
 
-  <pre>port1.postMessage(['hello', 'world']);</pre>
+  <pre><code class='js'>port1<c- p>.</c->postMessage<c- p>([</c-><c- t>&amp;apos;hello&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;world&amp;apos;</c-><c- p>]);</c-></code></pre>
 
 
   <h5 id=examples-5><span class=secno>9.5.1.1</span> Examples<a href=#examples-5 class=self-link></a></h5>
@@ -253,48 +253,48 @@ function handleMessage(event) {
   <div class=example>
 
    <p>In this example, two JavaScript libraries are connected to each other using
-   <code>MessagePort</code>s. This allows the libraries to later be hosted in different frames, or
-   in <code id=examples-5:worker><a href=workers.html#worker>Worker</a></code> objects, without any change to the APIs.</p>
+   <code id=examples-5:messageport><a href=#messageport>MessagePort</a></code>s. This allows the libraries to later be hosted in different frames, or
+   in <code id=examples-5:worker-2><a href=workers.html#worker-2>Worker</a></code> objects, without any change to the APIs.</p>
 
-   <pre>&lt;script src="contacts.js"&gt;&lt;/script&gt; &lt;!-- exposes a contacts object --&gt;
-&lt;script src="compose-mail.js"&gt;&lt;/script&gt; &lt;!-- exposes a composer object --&gt;
-&lt;script&gt;
- var channel = new MessageChannel();
- composer.addContactsProvider(channel.port1);
- contacts.registerConsumer(channel.port2);
-&lt;/script&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-> <c- e>src</c-><c- o>=</c-><c- s>"contacts.js"</c-><c- p>&gt;&lt;/</c-><c- f>script</c-><c- p>&gt;</c-> <c- c>&lt;!-- exposes a contacts object --&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-> <c- e>src</c-><c- o>=</c-><c- s>"compose-mail.js"</c-><c- p>&gt;&lt;/</c-><c- f>script</c-><c- p>&gt;</c-> <c- c>&lt;!-- exposes a composer object --&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>var</c-> channel <c- o>=</c-> <c- k>new</c-> MessageChannel<c- p>();</c->
+ composer<c- p>.</c->addContactsProvider<c- p>(</c->channel<c- p>.</c->port1<c- p>);</c->
+ contacts<c- p>.</c->registerConsumer<c- p>(</c->channel<c- p>.</c->port2<c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>Here's what the "addContactsProvider()" function's implementation could look like:</p>
 
-   <pre>function addContactsProvider(port) {
-  port.onmessage = function (event) {
-    switch (event.data.messageType) {
-      'search-result': handleSearchResult(event.data.results); break;
-      'search-done': handleSearchDone(); break;
-      'search-error': handleSearchError(event.data.message); break;
-      // ...
-    }
-  };
-};</pre>
+   <pre><code class='js'><c- a>function</c-> addContactsProvider<c- p>(</c->port<c- p>)</c-> <c- p>{</c->
+  port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>switch</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType<c- p>)</c-> <c- p>{</c->
+      <c- t>&amp;apos;search-result&amp;apos;</c-><c- o>:</c-> handleSearchResult<c- p>(</c->event<c- p>.</c->data<c- p>.</c->results<c- p>);</c-> <c- k>break</c-><c- p>;</c->
+      <c- t>&amp;apos;search-done&amp;apos;</c-><c- o>:</c-> handleSearchDone<c- p>();</c-> <c- k>break</c-><c- p>;</c->
+      <c- t>&amp;apos;search-error&amp;apos;</c-><c- o>:</c-> handleSearchError<c- p>(</c->event<c- p>.</c->data<c- p>.</c->message<c- p>);</c-> <c- k>break</c-><c- p>;</c->
+      <c- c1>// ...</c->
+<c- c1></c->    <c- p>}</c->
+  <c- p>};</c->
+<c- p>};</c-></code></pre>
 
    <p>Alternatively, it could be implemented as follows:</p>
 
-   <pre>function addContactsProvider(port) {
-  port.addEventListener('message', function (event) {
-    if (event.data.messageType == 'search-result')
-      handleSearchResult(event.data.results);
-  });
-  port.addEventListener('message', function (event) {
-    if (event.data.messageType == 'search-done')
-      handleSearchDone();
-  });
-  port.addEventListener('message', function (event) {
-    if (event.data.messageType == 'search-error')
-      handleSearchError(event.data.message);
-  });
-  // ...
-  port.start();
-};</pre>
+   <pre><code class='js'><c- a>function</c-> addContactsProvider<c- p>(</c->port<c- p>)</c-> <c- p>{</c->
+  port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType <c- o>==</c-> <c- t>&amp;apos;search-result&amp;apos;</c-><c- p>)</c->
+      handleSearchResult<c- p>(</c->event<c- p>.</c->data<c- p>.</c->results<c- p>);</c->
+  <c- p>});</c->
+  port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType <c- o>==</c-> <c- t>&amp;apos;search-done&amp;apos;</c-><c- p>)</c->
+      handleSearchDone<c- p>();</c->
+  <c- p>});</c->
+  port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType <c- o>==</c-> <c- t>&amp;apos;search-error&amp;apos;</c-><c- p>)</c->
+      handleSearchError<c- p>(</c->event<c- p>.</c->data<c- p>.</c->message<c- p>);</c->
+  <c- p>});</c->
+  <c- c1>// ...</c->
+<c- c1></c->  port<c- p>.</c->start<c- p>();</c->
+<c- p>};</c-></code></pre>
 
    <p>The key difference is that when using <code id=examples-5:dom-eventtarget-addeventlistener><a data-x-internal=dom-eventtarget-addeventlistener href=https://triple-underscore.github.io/DOM4-ja.html#dom-eventtarget-addeventlistener>addEventListener()</a></code>, the <code id=examples-5:dom-messageport-start><a href=#dom-messageport-start>start()</a></code> method must also be invoked. When using <code>onmessage</code>, the call to <code id=examples-5:dom-messageport-start-2><a href=#dom-messageport-start>start()</a></code> is implied.</p>
 
@@ -324,8 +324,8 @@ function handleMessage(event) {
 
   <ul class=brief><li><span>Navigate</span> the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-5><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> to a new <a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, such as the same
    <a id=ports-as-the-basis-of-an-object-capability-model-on-the-web:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> but with a different <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=ports-as-the-basis-of-an-object-capability-model-on-the-web:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a>,
-   causing the <code>Window</code> in the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-6><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> to receive a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-hashchange><a href=indices.html#event-hashchange>hashchange</a></code> event.</li><li>Resize the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-7><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>, causing the <code>Window</code> in the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-8><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> to
-   receive a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-resize><a data-x-internal=event-resize href=https://triple-underscore.github.io/cssom-view-ja.html#eventdef-window-resize>resize</a></code> event.</li><li>Send a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-message><a href=indices.html#event-message>message</a></code> event to the <code>Window</code> in the
+   causing the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:window><a href=window-object.html#window>Window</a></code> in the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-6><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> to receive a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-hashchange><a href=indices.html#event-hashchange>hashchange</a></code> event.</li><li>Resize the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-7><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>, causing the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:window-2><a href=window-object.html#window>Window</a></code> in the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-8><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> to
+   receive a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-resize><a data-x-internal=event-resize href=https://triple-underscore.github.io/cssom-view-ja.html#eventdef-window-resize>resize</a></code> event.</li><li>Send a <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:event-message><a href=indices.html#event-message>message</a></code> event to the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:window-3><a href=window-object.html#window>Window</a></code> in the
    <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:the-iframe-element-9><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> using the <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:dom-window-postmessage><a href=#dom-window-postmessage>window.postMessage()</a></code>
    API.</li></ul>
 
@@ -348,10 +348,10 @@ function handleMessage(event) {
   contacts, or deleting them); it also requires some additional complexity if there's ever the
   possibility of multiple games simultaneously trying to interact with the contacts provider.</p>
 
-  <p>Using message channels and <code>MessagePort</code> objects, however, all of these problems can
+  <p>Using message channels and <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:messageport><a href=#messageport>MessagePort</a></code> objects, however, all of these problems can
   go away. When the game tells the social site that it wants to add a contact, the social site can
   ask the contacts provider not for it to add a contact, but for the <em>capability</em> to add a
-  single contact. The contacts provider then creates a pair of <code>MessagePort</code> objects, and
+  single contact. The contacts provider then creates a pair of <code id=ports-as-the-basis-of-an-object-capability-model-on-the-web:messageport-2><a href=#messageport>MessagePort</a></code> objects, and
   sends one of them back to the social site, who forwards it on to the game. The game and the
   contacts provider then have a direct connection, and the contacts provider knows to only honor a
   single "add contact" request, nothing else. In other words, the game has been granted the
@@ -364,12 +364,12 @@ function handleMessage(event) {
 
   <p>Continuing the example from the previous section, consider the contacts provider in particular.
   While an initial implementation might have simply used <code id=ports-as-the-basis-of-abstracting-out-service-implementations:xmlhttprequest><a data-x-internal=xmlhttprequest href=https://triple-underscore.github.io/XHR-ja.html#xmlhttprequest>XMLHttpRequest</a></code> objects in the
-  service's <code id=ports-as-the-basis-of-abstracting-out-service-implementations:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>, an evolution of the service might instead want to use a <a href=workers.html#sharedworker id=ports-as-the-basis-of-abstracting-out-service-implementations:sharedworker>shared worker</a> with a single <code>WebSocket</code> connection.</p>
+  service's <code id=ports-as-the-basis-of-abstracting-out-service-implementations:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>, an evolution of the service might instead want to use a <a href=workers.html#sharedworker-2 id=ports-as-the-basis-of-abstracting-out-service-implementations:sharedworker-2>shared worker</a> with a single <code id=ports-as-the-basis-of-abstracting-out-service-implementations:websocket><a href=web-sockets.html#websocket>WebSocket</a></code> connection.</p>
 
-  <p>If the initial design used <code>MessagePort</code> objects to grant capabilities, or even just
+  <p>If the initial design used <code id=ports-as-the-basis-of-abstracting-out-service-implementations:messageport><a href=#messageport>MessagePort</a></code> objects to grant capabilities, or even just
   to allow multiple simultaneous independent sessions, the service implementation can switch from
   the <code id=ports-as-the-basis-of-abstracting-out-service-implementations:xmlhttprequest-2><a data-x-internal=xmlhttprequest href=https://triple-underscore.github.io/XHR-ja.html#xmlhttprequest>XMLHttpRequest</a></code>s-in-each-<code id=ports-as-the-basis-of-abstracting-out-service-implementations:the-iframe-element-2><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> model to the
-  shared-<code>WebSocket</code> model without changing the API at all: the ports on the service
+  shared-<code id=ports-as-the-basis-of-abstracting-out-service-implementations:websocket-2><a href=web-sockets.html#websocket>WebSocket</a></code> model without changing the API at all: the ports on the service
   provider side can all be forwarded to the shared worker without it affecting the users of the API
   in the slightest.</p>
 
@@ -377,19 +377,23 @@ function handleMessage(event) {
 
   <h4 id=message-channels><span class=secno>9.5.2</span> Message channels<a href=#message-channels class=self-link></a></h4>
 
-  
+  <pre><code class='idl'>[<a href='#dom-messagechannel' id='message-channels:dom-messagechannel'><c- g>Constructor</c-></a>, <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='messagechannel'><c- g>MessageChannel</c-></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#messageport' id='message-channels:messageport'><c- n>MessagePort</c-></a> <a href='#dom-messagechannel-port1' id='message-channels:dom-messagechannel-port1'><c- g>port1</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#messageport' id='message-channels:messageport-2'><c- n>MessagePort</c-></a> <a href='#dom-messagechannel-port2' id='message-channels:dom-messagechannel-port2'><c- g>port2</c-></a>;
+};</code></pre>
 
   <dl class=domintro><dt><var>channel</var> = new <code id=dom-messagechannel>MessageChannel</code>()<dd>
 
-    <p>Returns a new <code>MessageChannel</code> object with two new <code>MessagePort</code> objects.</p>
+    <p>Returns a new <code id=message-channels:messagechannel><a href=#messagechannel>MessageChannel</a></code> object with two new <code id=message-channels:messageport-3><a href=#messageport>MessagePort</a></code> objects.</p>
 
    <dt><var>channel</var> . <code id=dom-messagechannel-port1>port1</code><dd>
 
-    <p>Returns the first <code>MessagePort</code> object.</p>
+    <p>Returns the first <code id=message-channels:messageport-4><a href=#messageport>MessagePort</a></code> object.</p>
 
    <dt><var>channel</var> . <code id=dom-messagechannel-port2>port2</code><dd>
 
-    <p>Returns the second <code>MessagePort</code> object.</p>
+    <p>Returns the second <code id=message-channels:messageport-5><a href=#messageport>MessagePort</a></code> object.</p>
 
    </dl>
 
@@ -402,7 +406,16 @@ function handleMessage(event) {
   <p>Each channel has two message ports. Data sent through one port is received by the other port,
   and vice versa.</p>
 
-  
+  <pre><code class='idl'>[<c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->,<c- n>AudioWorklet</c->), <span><c- g>Transferable</c-></span>]
+<c- b>interface</c-> <dfn id='messageport'><c- g>MessagePort</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='message-ports:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>void</c-> <a href='#dom-messageport-postmessage' id='message-ports:dom-messageport-postmessage'><c- g>postMessage</c-></a>(<c- b>any</c-> <c- g>message</c->, <c- b>optional</c-> <c- b>sequence</c->&lt;<a href='https://triple-underscore.github.io/WebIDL-ja.html#idl-object' data-x-internal='idl-object' id='message-ports:idl-object'><c- b>object</c-></a>&gt; <c- g>transfer</c-> = []);
+  <c- b>void</c-> <a href='#dom-messageport-start' id='message-ports:dom-messageport-start'><c- g>start</c-></a>();
+  <c- b>void</c-> <a href='#dom-messageport-close' id='message-ports:dom-messageport-close'><c- g>close</c-></a>();
+
+  // event handlers
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='message-ports:eventhandler'><c- n>EventHandler</c-></a> <span><c- g>onmessage</c-></span>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='message-ports:eventhandler-2'><c- n>EventHandler</c-></a> <span><c- g>onmessageerror</c-></span>;
+};</code></pre>
 
   <dl class=domintro><dt><var>port</var> . <code id=dom-messageport-postmessage>postMessage</code>(<var>message</var> [, <var>transfer</var>] )<dd>
     <p>Posts a message through the channel. Objects listed in <var>transfer</var> are
@@ -421,11 +434,11 @@ function handleMessage(event) {
   
 
   <p>Broadcasting to many ports is in principle relatively simple: keep an array of
-  <code>MessagePort</code> objects to send messages to, and iterate through the array to send a
+  <code id=broadcasting-to-many-ports:messageport><a href=#messageport>MessagePort</a></code> objects to send messages to, and iterate through the array to send a
   message. However, this has one rather unfortunate effect: it prevents the ports from being garbage
   collected, even if the other side has gone away. To avoid this problem, implement a simple
   protocol whereby the other side acknowledges it still exists. If it doesn't do so after a certain
-  amount of time, assume it's gone, close the <code>MessagePort</code> object, and let it be garbage
+  amount of time, assume it's gone, close the <code id=broadcasting-to-many-ports:messageport-2><a href=#messageport>MessagePort</a></code> object, and let it be garbage
   collected.</p>
 
 
@@ -433,11 +446,11 @@ function handleMessage(event) {
 
   
 
-  <p class=note>Authors are strongly encouraged to explicitly close <code>MessagePort</code>
+  <p class=note>Authors are strongly encouraged to explicitly close <code id=ports-and-garbage-collection:messageport><a href=#messageport>MessagePort</a></code>
   objects to disentangle them, so that their resources can be recollected. Creating many
-  <code>MessagePort</code> objects and discarding them without closing them can lead to high
+  <code id=ports-and-garbage-collection:messageport-2><a href=#messageport>MessagePort</a></code> objects and discarding them without closing them can lead to high
   transient memory usage since garbage collection is not necessarily performed promptly, especially
-  for <code>MessagePort</code>s where garbage collection can involve cross-process coordination.</p>
+  for <code id=ports-and-garbage-collection:messageport-3><a href=#messageport>MessagePort</a></code>s where garbage collection can involve cross-process coordination.</p>
 
 
 
@@ -449,18 +462,25 @@ function handleMessage(event) {
   credentials again".</p>
 
   <p>For elaborate cases, e.g. to manage locking of shared state, to manage synchronization of
-  resources between a server and multiple local clients, to share a <code>WebSocket</code>
-  connection with a remote host, and so forth, <a href=workers.html#sharedworker id=broadcasting-to-other-browsing-contexts:sharedworker>shared workers</a> are
+  resources between a server and multiple local clients, to share a <code id=broadcasting-to-other-browsing-contexts:websocket><a href=web-sockets.html#websocket>WebSocket</a></code>
+  connection with a remote host, and so forth, <a href=workers.html#sharedworker-2 id=broadcasting-to-other-browsing-contexts:sharedworker-2>shared workers</a> are
   the most appropriate solution.</p>
 
   <p>For simple cases, though, where a shared worker would be an unreasonable overhead, authors can
   use the simple channel-based broadcast mechanism described in this section.</p>
 
-  
+  <pre><code class='idl'>[<a href='#dom-broadcastchannel' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel'><c- g>Constructor</c-></a>(<c- b>DOMString</c-> <c- g>name</c->), <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='broadcastchannel'><c- g>BroadcastChannel</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='broadcasting-to-other-browsing-contexts:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-broadcastchannel-name' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel-name'><c- g>name</c-></a>;
+  <c- b>void</c-> <a href='#dom-broadcastchannel-postmessage' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel-postmessage'><c- g>postMessage</c-></a>(<c- b>any</c-> <c- g>message</c->);
+  <c- b>void</c-> <a href='#dom-broadcastchannel-close' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel-close'><c- g>close</c-></a>();
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='broadcasting-to-other-browsing-contexts:eventhandler'><c- n>EventHandler</c-></a> <span><c- g>onmessage</c-></span>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='broadcasting-to-other-browsing-contexts:eventhandler-2'><c- n>EventHandler</c-></a> <span><c- g>onmessageerror</c-></span>;
+};</code></pre>
 
   <dl class=domintro><dt><var>broadcastChannel</var> = new <code id=dom-broadcastchannel>BroadcastChannel</code>(<var>name</var>)<dd>
 
-    <p>Returns a new <code>BroadcastChannel</code> object via which messages for the given channel
+    <p>Returns a new <code id=broadcasting-to-other-browsing-contexts:broadcastchannel><a href=#broadcastchannel>BroadcastChannel</a></code> object via which messages for the given channel
     name can be sent and received.</p>
 
    <dt><var>broadcastChannel</var> . <code id=dom-broadcastchannel-name>name</code><dd>
@@ -469,11 +489,11 @@ function handleMessage(event) {
 
    <dt><var>broadcastChannel</var> . <code id=dom-broadcastchannel-postmessage>postMessage</code>(<var>message</var>)<dd>
 
-    <p>Sends the given message to other <code>BroadcastChannel</code> objects set up for this channel. Messages can be structured objects, e.g. nested objects and arrays.</p>
+    <p>Sends the given message to other <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-2><a href=#broadcastchannel>BroadcastChannel</a></code> objects set up for this channel. Messages can be structured objects, e.g. nested objects and arrays.</p>
 
    <dt><var>broadcastChannel</var> . <code id=dom-broadcastchannel-close>close</code>()<dd>
 
-    <p>Closes the <code>BroadcastChannel</code> object, opening it up to garbage collection.</p>
+    <p>Closes the <code id=broadcasting-to-other-browsing-contexts:broadcastchannel-3><a href=#broadcastchannel>BroadcastChannel</a></code> object, opening it up to garbage collection.</p>
 
    </dl>
 
@@ -484,28 +504,28 @@ function handleMessage(event) {
    <p>Suppose a page wants to know when the user logs out, even when the user does so from another
    tab at the same site:</p>
 
-   <pre>var authChannel = new BroadcastChannel('auth');
-authChannel.onmessage = function (event) {
-  if (event.data == 'logout')
-    showLogout();
-}
+   <pre><code class='js'><c- a>var</c-> authChannel <c- o>=</c-> <c- k>new</c-> BroadcastChannel<c- p>(</c-><c- t>&amp;apos;auth&amp;apos;</c-><c- p>);</c->
+authChannel<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data <c- o>==</c-> <c- t>&amp;apos;logout&amp;apos;</c-><c- p>)</c->
+    showLogout<c- p>();</c->
+<c- p>}</c->
 
-function logoutRequested() {
-  // called when the user asks us to log them out
-  doLogout();
-  showLogout();
-  authChannel.postMessage('logout');
-}
+<c- a>function</c-> logoutRequested<c- p>()</c-> <c- p>{</c->
+  <c- c1>// called when the user asks us to log them out</c->
+<c- c1></c->  doLogout<c- p>();</c->
+  showLogout<c- p>();</c->
+  authChannel<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;logout&amp;apos;</c-><c- p>);</c->
+<c- p>}</c->
 
-function doLogout() {
-  // actually log the user out (e.g. clearing cookies)
-  // ...
-}
+<c- a>function</c-> doLogout<c- p>()</c-> <c- p>{</c->
+  <c- c1>// actually log the user out (e.g. clearing cookies)</c->
+<c- c1></c->  <c- c1>// ...</c->
+<c- c1></c-><c- p>}</c->
 
-function showLogout() {
-  // update the UI to indicate we're logged out
-  // ...
-}</pre>
+<c- a>function</c-> showLogout<c- p>()</c-> <c- p>{</c->
+  <c- c1>// update the UI to indicate we&amp;apos;re logged out</c->
+<c- c1></c->  <c- c1>// ...</c->
+<c- c1></c-><c- p>}</c-></code></pre>
 
   </div>
 

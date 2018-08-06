@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -148,14 +148,13 @@
 
    <p>この例において、<code id=naming-form-controls:-the-name-attribute:the-input-element><a href=input.html#the-input-element>input</a></code>要素は組み込み<code id=naming-form-controls:-the-name-attribute:attr-fs-method><a href=#attr-fs-method>method</a></code> のプロパティを上書きする：</p>
 
-   <pre>let form = document.createElement("form");
-let input = document.createElement("input");
-form.appendChild(input);
+   <pre><code class='js'><c- a>let</c-> form <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"form"</c-><c- p>);</c->
+<c- a>let</c-> input <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"input"</c-><c- p>);</c->
+form<c- p>.</c->appendChild<c- p>(</c->input<c- p>);</c->
 
-form.method;           // =&gt; "get"
-input.name = "method"; // DOM clobbering occurs here
-form.method === input; // =&gt; true
-</pre>
+form<c- p>.</c->method<c- p>;</c->           <c- c1>// =&gt; "get"</c->
+<c- c1></c->input<c- p>.</c->name <c- o>=</c-> <c- u>"method"</c-><c- p>;</c-> <c- c1>// DOM clobbering occurs here</c->
+<c- c1></c->form<c- p>.</c->method <c- o>===</c-> input<c- p>;</c-> <c- c1>// =&gt; true</c-></code></pre>
 
    <p>入力名は組み込みのフォームプロパティよりも優先されるため、JavaScript参照<code>form.method</code>は組み込みの<code id=naming-form-controls:-the-name-attribute:attr-fs-method-2><a href=#attr-fs-method>method</a></code>プロパティの代わりに"method"という名前の<code id=naming-form-controls:-the-name-attribute:the-input-element-2><a href=input.html#the-input-element>input</a></code>要素を指す。</p>
   </div>
@@ -169,10 +168,10 @@ form.method === input; // =&gt; true
 
    <p>この例において、フォームはテキストコントロールと送信ボタンを含む：</p>
 
-   <pre>&lt;form action="addcomment.cgi" method=post&gt;
- &lt;p&gt;&lt;label&gt;Comment: &lt;input type=text name="comment" dirname="comment.dir" required&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;button name="mode" type=submit value="add"&gt;Post Comment&lt;/button&gt;&lt;/p&gt;
-&lt;/form&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>action</c-><c- o>=</c-><c- s>"addcomment.cgi"</c-> <c- e>method</c-><c- o>=</c-><c- s>post</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Comment: <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>text</c-> <c- e>name</c-><c- o>=</c-><c- s>"comment"</c-> <c- e>dirname</c-><c- o>=</c-><c- s>"comment.dir"</c-> <c- e>required</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>button</c-> <c- e>name</c-><c- o>=</c-><c- s>"mode"</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"add"</c-><c- p>&gt;</c->Post Comment<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
    <p>ユーザーがフォームを送信する際、ユーザーエージェントは、"comment"、"comment.dir"、"mode"と呼ばれる3つのフィールドを含む。よって、ユーザーが"Hello"を打ち込んだ場合、送信ボディはこのようになるかもしれない：</p>
 
@@ -210,16 +209,16 @@ form.method === input; // =&gt; true
 
    <p>この例において、4つのテキストコントロールが存在する。1つめは必須であり、少なくとも5文字である必要がある。他の3つは任意だが、ユーザーは1つを記入する場合、ユーザーは少なくとも10文字を入力する必要がある。</p>
 
-   <pre>&lt;form action="/events/menu.cgi" method="post"&gt;
- &lt;p&gt;&lt;label&gt;Name of Event: &lt;input required minlength=5 maxlength=50 name=event&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;label&gt;Describe what you would like for breakfast, if anything:
-    &lt;textarea name="breakfast" minlength="10"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;label&gt;Describe what you would like for lunch, if anything:
-    &lt;textarea name="lunch" minlength="10"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;label&gt;Describe what you would like for dinner, if anything:
-    &lt;textarea name="dinner" minlength="10"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;input type=submit value="Submit Request"&gt;&lt;/p&gt;
-&lt;/form&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>action</c-><c- o>=</c-><c- s>"/events/menu.cgi"</c-> <c- e>method</c-><c- o>=</c-><c- s>"post"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Name of Event: <c- p>&lt;</c-><c- f>input</c-> <c- e>required</c-> <c- e>minlength</c-><c- o>=</c-><c- s>5</c-> <c- e>maxlength</c-><c- o>=</c-><c- s>50</c-> <c- e>name</c-><c- o>=</c-><c- s>event</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Describe what you would like for breakfast, if anything:
+    <c- p>&lt;</c-><c- f>textarea</c-> <c- e>name</c-><c- o>=</c-><c- s>"breakfast"</c-> <c- e>minlength</c-><c- o>=</c-><c- s>"10"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Describe what you would like for lunch, if anything:
+    <c- p>&lt;</c-><c- f>textarea</c-> <c- e>name</c-><c- o>=</c-><c- s>"lunch"</c-> <c- e>minlength</c-><c- o>=</c-><c- s>"10"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Describe what you would like for dinner, if anything:
+    <c- p>&lt;</c-><c- f>textarea</c-> <c- e>name</c-><c- o>=</c-><c- s>"dinner"</c-> <c- e>minlength</c-><c- o>=</c-><c- s>"10"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"Submit Request"</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
 
   </div>
@@ -266,10 +265,10 @@ form.method === input; // =&gt; true
 
    <p>ここで検索クエリがURLに提出されるように、<code id=form-submission:attr-fs-method-4><a href=#attr-fs-method>method</a></code>属性は明示的にデフォルト値"<code id=form-submission:attr-fs-method-get-keyword><a href=#attr-fs-method-get-keyword>get</a></code>"を指定するために使用される：</p>
 
-   <pre>&lt;form method="get" action="/search.cgi"&gt;
- &lt;p&gt;&lt;label&gt;Search terms: &lt;input type=search name=q&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;input type=submit&gt;&lt;/p&gt;
-&lt;/form&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>method</c-><c- o>=</c-><c- s>"get"</c-> <c- e>action</c-><c- o>=</c-><c- s>"/search.cgi"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Search terms: <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>search</c-> <c- e>name</c-><c- o>=</c-><c- s>q</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -277,10 +276,10 @@ form.method === input; // =&gt; true
 
    <p>一方で、ユーザーのメッセージがHTTPリクエストのボディに送信されるように、ここで<code id=form-submission:attr-fs-method-5><a href=#attr-fs-method>method</a></code>属性は、値"<code id=form-submission:attr-fs-method-post-keyword><a href=#attr-fs-method-post-keyword>post</a></code>"を指定するために使用される：</p>
 
-   <pre>&lt;form method="post" action="/post-message.cgi"&gt;
- &lt;p&gt;&lt;label&gt;Message: &lt;input type=text name=m&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;input type=submit value="Submit message"&gt;&lt;/p&gt;
-&lt;/form&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>method</c-><c- o>=</c-><c- s>"post"</c-> <c- e>action</c-><c- o>=</c-><c- s>"/post-message.cgi"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Message: <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>text</c-> <c- e>name</c-><c- o>=</c-><c- s>m</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"Submit message"</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -288,24 +287,24 @@ form.method === input; // =&gt; true
 
    <p>この例において、<code id=form-submission:the-form-element-5><a href=forms.html#the-form-element>form</a></code>は<code id=form-submission:the-dialog-element-2><a href=interactive-elements.html#the-dialog-element>dialog</a></code>とともに使用される。フォームの送信時に、<code id=form-submission:attr-fs-method-6><a href=#attr-fs-method>method</a></code>属性の"<code id=form-submission:attr-fs-method-dialog-keyword><a href=#attr-fs-method-dialog-keyword>dialog</a></code>"キーワードは、自動的に閉じるダイアログを持つために使用される。</p>
 
-   <pre lang=en-GB>&lt;dialog id="ship"&gt;
- &lt;form method=dialog&gt;
-  &lt;p&gt;A ship has arrived in the harbour.&lt;/p&gt;
-  &lt;button type=submit value="board"&gt;Board the ship&lt;/button&gt;
-  &lt;button type=submit value="call"&gt;Call to the captain&lt;/button&gt;
- &lt;/form&gt;
-&lt;/dialog&gt;
-&lt;script&gt;
- var ship = document.getElementById('ship');
- ship.showModal();
- ship.onclose = function (event) {
-   if (ship.returnValue == 'board') {
-     // ...
-   } else {
-     // ...
-   }
- };
-&lt;/script&gt;</pre>
+   <pre lang=en-GB><code class='html'><c- p>&lt;</c-><c- f>dialog</c-> <c- e>id</c-><c- o>=</c-><c- s>"ship"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>form</c-> <c- e>method</c-><c- o>=</c-><c- s>dialog</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->A ship has arrived in the harbour.<c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"board"</c-><c- p>&gt;</c->Board the ship<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"call"</c-><c- p>&gt;</c->Call to the captain<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>dialog</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>var</c-> ship <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;ship&amp;apos;</c-><c- p>);</c->
+ ship<c- p>.</c->showModal<c- p>();</c->
+ ship<c- p>.</c->onclose <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+   <c- k>if</c-> <c- p>(</c->ship<c- p>.</c->returnValue <c- o>==</c-> <c- t>&amp;apos;board&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+     <c- c1>// ...</c->
+<c- c1></c->   <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+     <c- c1>// ...</c->
+<c- c1></c->   <c- p>}</c->
+ <c- p>};</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -333,13 +332,13 @@ form.method === input; // =&gt; true
 
    <p>属性がフォームでデータを完全に入力していないにもかかわらず、ユーザーが自分の進捗状況を保存できるように、この属性は検証の制約を持つフォーム上のボタン"保存"を含めると便利である。次の例は、2つの必須フィールドを持つ単純なフォームを示す。3つのボタンがある。1つは、両方のフィールドに値が入力されている必要があるフォームを提出するためのもの、1つはユーザーが戻ってきて、後で埋めることができるようにフォームを保存するためのもの、1つは完全にフォームをキャンセルするためのものである。</p>
 
-   <pre>&lt;form action="editor.cgi" method="post"&gt;
- &lt;p&gt;&lt;label&gt;Name: &lt;input required name=fn&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;label&gt;Essay: &lt;textarea required name=essay&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
- &lt;p&gt;&lt;input type=submit name=submit value="Submit essay"&gt;&lt;/p&gt;
- &lt;p&gt;&lt;input type=submit formnovalidate name=save value="Save essay"&gt;&lt;/p&gt;
- &lt;p&gt;&lt;input type=submit formnovalidate name=cancel value="Cancel"&gt;&lt;/p&gt;
-&lt;/form&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>action</c-><c- o>=</c-><c- s>"editor.cgi"</c-> <c- e>method</c-><c- o>=</c-><c- s>"post"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Name: <c- p>&lt;</c-><c- f>input</c-> <c- e>required</c-> <c- e>name</c-><c- o>=</c-><c- s>fn</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Essay: <c- p>&lt;</c-><c- f>textarea</c-> <c- e>required</c-> <c- e>name</c-><c- o>=</c-><c- s>essay</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>name</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"Submit essay"</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>formnovalidate</c-> <c- e>name</c-><c- o>=</c-><c- s>save</c-> <c- e>value</c-><c- o>=</c-><c- s>"Save essay"</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>formnovalidate</c-> <c- e>name</c-><c- o>=</c-><c- s>cancel</c-> <c- e>value</c-><c- o>=</c-><c- s>"Cancel"</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -362,8 +361,8 @@ form.method === input; // =&gt; true
 
   <div class=example>
    <p>次の断片において、文書が読み込まれるとき、テキストコントロールにフォーカスされる。</p>
-   <pre>&lt;input maxlength="256" name="q" value="" autofocus&gt;
-&lt;input type="submit" value="Search"&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>input</c-> <c- e>maxlength</c-><c- o>=</c-><c- s>"256"</c-> <c- e>name</c-><c- o>=</c-><c- s>"q"</c-> <c- e>value</c-><c- o>=</c-><c- s>""</c-> <c- e>autofocus</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>"submit"</c-> <c- e>value</c-><c- o>=</c-><c- s>"Search"</c-><c- p>&gt;</c-></code></pre>
   </div>
 
   <h5 id=autofill><span class=secno>4.10.18.7</span> オートフィル<a href=#autofill class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> input-autocomplete-onoff<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome partial"><span>Chrome (limited)</span> <span>27+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox partial"><span>Firefox (limited)</span> <span>30+</span></span><span class="ie partial"><span>IE (limited)</span> <span>11+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari partial"><span>Safari (limited)</span> <span>7+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="edge partial"><span>Edge (limited)</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=input-autocomplete-onoff">caniuse.com</a></div>
@@ -392,18 +391,18 @@ form.method === input; // =&gt; true
 
      <p>たとえば、フォームで2つの配送先住所がある場合、次のようにマークアップできる：</p>
 
-     <pre>&lt;fieldset&gt;
- &lt;legend&gt;Ship the blue gift to...&lt;/legend&gt;
- &lt;p&gt; &lt;label&gt; Address:     &lt;textarea name=ba autocomplete="section-blue shipping street-address"&gt;&lt;/textarea&gt; &lt;/label&gt;
- &lt;p&gt; &lt;label&gt; City:        &lt;input name=bc autocomplete="section-blue shipping address-level2"&gt; &lt;/label&gt;
- &lt;p&gt; &lt;label&gt; Postal Code: &lt;input name=bp autocomplete="section-blue shipping postal-code"&gt; &lt;/label&gt;
-&lt;/fieldset&gt;
-&lt;fieldset&gt;
- &lt;legend&gt;Ship the red gift to...&lt;/legend&gt;
- &lt;p&gt; &lt;label&gt; Address:     &lt;textarea name=ra autocomplete="section-red shipping street-address"&gt;&lt;/textarea&gt; &lt;/label&gt;
- &lt;p&gt; &lt;label&gt; City:        &lt;input name=rc autocomplete="section-red shipping address-level2"&gt; &lt;/label&gt;
- &lt;p&gt; &lt;label&gt; Postal Code: &lt;input name=rp autocomplete="section-red shipping postal-code"&gt; &lt;/label&gt;
-&lt;/fieldset&gt;</pre>
+     <pre><code class='html'><c- p>&lt;</c-><c- f>fieldset</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>legend</c-><c- p>&gt;</c->Ship the blue gift to...<c- p>&lt;/</c-><c- f>legend</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c-> <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c-> Address:     <c- p>&lt;</c-><c- f>textarea</c-> <c- e>name</c-><c- o>=</c-><c- s>ba</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>"section-blue shipping street-address"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;</c-> <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c-> <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c-> City:        <c- p>&lt;</c-><c- f>input</c-> <c- e>name</c-><c- o>=</c-><c- s>bc</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>"section-blue shipping address-level2"</c-><c- p>&gt;</c-> <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c-> <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c-> Postal Code: <c- p>&lt;</c-><c- f>input</c-> <c- e>name</c-><c- o>=</c-><c- s>bp</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>"section-blue shipping postal-code"</c-><c- p>&gt;</c-> <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>fieldset</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>fieldset</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>legend</c-><c- p>&gt;</c->Ship the red gift to...<c- p>&lt;/</c-><c- f>legend</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c-> <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c-> Address:     <c- p>&lt;</c-><c- f>textarea</c-> <c- e>name</c-><c- o>=</c-><c- s>ra</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>"section-red shipping street-address"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;</c-> <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c-> <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c-> City:        <c- p>&lt;</c-><c- f>input</c-> <c- e>name</c-><c- o>=</c-><c- s>rc</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>"section-red shipping address-level2"</c-><c- p>&gt;</c-> <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c-> <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c-> Postal Code: <c- p>&lt;</c-><c- f>input</c-> <c- e>name</c-><c- o>=</c-><c- s>rp</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>"section-red shipping postal-code"</c-><c- p>&gt;</c-> <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>fieldset</c-><c- p>&gt;</c-></code></pre>
 
     </div>
 
@@ -593,13 +592,13 @@ form.method === input; // =&gt; true
 
      <p>この例において、ページは明示的にトランザクションの通貨と金額を指定している。フォームは、クレジットカードや他の請求の詳細を要求する。ユーザーエージェントは、十分なバランスを有し、関連する通貨をサポートしていることを知るクレジットカードを提示するためにこの情報を使用することができる。</p>
 
-     <pre>&lt;form method=post action="step2.cgi"&gt;
- &lt;input type=hidden autocomplete=transaction-currency value="CHF"&gt;
- &lt;input type=hidden autocomplete=transaction-amount value="15.00"&gt;
- &lt;p&gt;&lt;label&gt;Credit card number: &lt;input type=text inputmode=numeric autocomplete=cc-number&gt;&lt;/label&gt;
- &lt;p&gt;&lt;label&gt;Expiry Date: &lt;input type=month autocomplete=cc-exp&gt;&lt;/label&gt;
- &lt;p&gt;&lt;input type=submit value="Continue..."&gt;
-&lt;/form&gt;</pre>
+     <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>method</c-><c- o>=</c-><c- s>post</c-> <c- e>action</c-><c- o>=</c-><c- s>"step2.cgi"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>hidden</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>transaction-currency</c-> <c- e>value</c-><c- o>=</c-><c- s>"CHF"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>hidden</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>transaction-amount</c-> <c- e>value</c-><c- o>=</c-><c- s>"15.00"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Credit card number: <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>text</c-> <c- e>inputmode</c-><c- o>=</c-><c- s>numeric</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>cc-number</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Expiry Date: <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>month</c-> <c- e>autocomplete</c-><c- o>=</c-><c- s>cc-exp</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"Continue..."</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
     </div>
 
@@ -1132,7 +1131,7 @@ MIT Room 32-G524
 
    <p>現在選択されているテキストを取得するためには、次のJavaScriptで十分である：</p>
 
-   <pre>var selectionText = control.value.substring(control.selectionStart, control.selectionEnd);</pre>
+   <pre><code class='js'><c- a>var</c-> selectionText <c- o>=</c-> control<c- p>.</c->value<c- p>.</c->substring<c- p>(</c->control<c- p>.</c->selectionStart<c- p>,</c-> control<c- p>.</c->selectionEnd<c- p>);</c-></code></pre>
 
    <p>ここで、<var>control</var>は<code id=textFieldSelection:the-input-element-2><a href=input.html#the-input-element>input</a></code>または<code id=textFieldSelection:the-textarea-element-2><a href=form-elements.html#the-textarea-element>textarea</a></code>要素である。</p>
 
@@ -1142,12 +1141,12 @@ MIT Room 32-G524
 
    <p>テキストの選択範囲を維持する一方で、テキストコントロールの開始時にテキストを追加するには、3つの属性が保持されなければならない：</p>
 
-   <pre>var oldStart = control.selectionStart;
-var oldEnd = control.selectionEnd;
-var oldDirection = control.selectionDirection;
-var prefix = "http://";
-control.value = prefix + control.value;
-control.setSelectionRange(oldStart + prefix.length, oldEnd + prefix.length, oldDirection);</pre>
+   <pre><code class='js'><c- a>var</c-> oldStart <c- o>=</c-> control<c- p>.</c->selectionStart<c- p>;</c->
+<c- a>var</c-> oldEnd <c- o>=</c-> control<c- p>.</c->selectionEnd<c- p>;</c->
+<c- a>var</c-> oldDirection <c- o>=</c-> control<c- p>.</c->selectionDirection<c- p>;</c->
+<c- a>var</c-> prefix <c- o>=</c-> <c- u>"http://"</c-><c- p>;</c->
+control<c- p>.</c->value <c- o>=</c-> prefix <c- o>+</c-> control<c- p>.</c->value<c- p>;</c->
+control<c- p>.</c->setSelectionRange<c- p>(</c->oldStart <c- o>+</c-> prefix<c- p>.</c->length<c- p>,</c-> oldEnd <c- o>+</c-> prefix<c- p>.</c->length<c- p>,</c-> oldDirection<c- p>);</c-></code></pre>
 
    <p>ここで、<var>control</var>は<code id=textFieldSelection:the-input-element-3><a href=input.html#the-input-element>input</a></code>または<code id=textFieldSelection:the-textarea-element-3><a href=form-elements.html#the-textarea-element>textarea</a></code>要素である。</p>
 
@@ -1243,19 +1242,19 @@ control.setSelectionRange(oldStart + prefix.length, oldEnd + prefix.length, oldD
 
    <p>次の例において、スクリプトは値が編集されるたびにフォームコントロールの値をチェックし、かつ妥当な値でない場合はいつでも、適切なメッセージを設定するために<code id=the-constraint-validation-api:dom-cva-setcustomvalidity><a href=#dom-cva-setcustomvalidity>setCustomValidity()</a></code>メソッドを使用する。</p>
 
-   <pre>&lt;label&gt;Feeling: &lt;input name=f type="text" oninput="check(this)"&gt;&lt;/label&gt;
-&lt;script&gt;
- function check(input) {
-   if (input.value == "good" ||
-       input.value == "fine" ||
-       input.value == "tired") {
-     input.setCustomValidity('"' + input.value + '" is not a feeling.');
-   } else {
-     // input is fine -- reset the error message
-     input.setCustomValidity('');
-   }
- }
-&lt;/script&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c->Feeling: <c- p>&lt;</c-><c- f>input</c-> <c- e>name</c-><c- o>=</c-><c- s>f</c-> <c- e>type</c-><c- o>=</c-><c- s>"text"</c-> <c- e>oninput</c-><c- o>=</c-><c- s>"check(this)"</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>function</c-> check<c- p>(</c->input<c- p>)</c-> <c- p>{</c->
+   <c- k>if</c-> <c- p>(</c->input<c- p>.</c->value <c- o>==</c-> <c- u>"good"</c-> <c- o>||</c->
+       input<c- p>.</c->value <c- o>==</c-> <c- u>"fine"</c-> <c- o>||</c->
+       input<c- p>.</c->value <c- o>==</c-> <c- u>"tired"</c-><c- p>)</c-> <c- p>{</c->
+     input<c- p>.</c->setCustomValidity<c- p>(</c-><c- t>&amp;apos;"&amp;apos;</c-> <c- o>+</c-> input<c- p>.</c->value <c- o>+</c-> <c- t>&amp;apos;" is not a feeling.&amp;apos;</c-><c- p>);</c->
+   <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+     <c- c1>// input is fine -- reset the error message</c->
+<c- c1></c->     input<c- p>.</c->setCustomValidity<c- p>(</c-><c- t>&amp;apos;&amp;apos;</c-><c- p>);</c->
+   <c- p>}</c->
+ <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -1281,21 +1280,21 @@ control.setSelectionRange(oldStart + prefix.length, oldEnd + prefix.length, oldD
 
   <p>たとえば、次のような形式をとる：</p>
 
-  <pre>&lt;form action="/find.cgi" method=get&gt;
- &lt;input type=text name=t&gt;
- &lt;input type=search name=q&gt;
- &lt;input type=submit&gt;
-&lt;/form&gt;</pre>
+  <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>action</c-><c- o>=</c-><c- s>"/find.cgi"</c-> <c- e>method</c-><c- o>=</c-><c- s>get</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>text</c-> <c- e>name</c-><c- o>=</c-><c- s>t</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>search</c-> <c- e>name</c-><c- o>=</c-><c- s>q</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
   <p>ユーザーが最初のフィールドで"cat"および2番目で"猫"と入力し、次に送信ボタンを押す場合、ユーザーエージェントは<code>/find.cgi?t=cats&amp;q=fur</code>を読み込む。</p>
 
   <p>一方、このフォームを考えてみる：</p>
 
-  <pre>&lt;form action="/find.cgi" method=post enctype="multipart/form-data"&gt;
- &lt;input type=text name=t&gt;
- &lt;input type=search name=q&gt;
- &lt;input type=submit&gt;
-&lt;/form&gt;</pre>
+  <pre><code class='html'><c- p>&lt;</c-><c- f>form</c-> <c- e>action</c-><c- o>=</c-><c- s>"/find.cgi"</c-> <c- e>method</c-><c- o>=</c-><c- s>post</c-> <c- e>enctype</c-><c- o>=</c-><c- s>"multipart/form-data"</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>text</c-> <c- e>name</c-><c- o>=</c-><c- s>t</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>search</c-> <c- e>name</c-><c- o>=</c-><c- s>q</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
 
   <p>同じユーザー入力を考えると、提出上の結果はかなり異なる：ユーザーエージェントは、次のテキストのようなエンティティボディとして、代わりに指定されたURLにHTTP POSTを行う。</p>
 

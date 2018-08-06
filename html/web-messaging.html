@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
    
 
@@ -223,22 +223,22 @@
    marked as originating from the <code id=introduction-12:window-2><a href=window-object.html#window>Window</a></code> of document A. The script in document A might
    look like:</p>
 
-   <pre>var o = document.getElementsByTagName('iframe')[0];
-o.contentWindow.postMessage('Hello world', 'https://b.example.org/');</pre>
+   <pre><code class='js'><c- a>var</c-> o <c- o>=</c-> document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;iframe&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+o<c- p>.</c->contentWindow<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;Hello world&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;https://b.example.org/&amp;apos;</c-><c- p>);</c-></code></pre>
 
    <p>To register an event handler for incoming events, the script would use <code>addEventListener()</code> (or similar mechanisms). For example, the script in document B
    might look like:</p>
 
-   <pre>window.addEventListener('message', receiver, false);
-function receiver(e) {
-  if (e.origin == 'https://example.com') {
-    if (e.data == 'Hello world') {
-      e.source.postMessage('Hello', e.origin);
-    } else {
-      alert(e.data);
-    }
-  }
-}</pre>
+   <pre><code class='js'>window<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> receiver<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
+<c- a>function</c-> receiver<c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->e<c- p>.</c->origin <c- o>==</c-> <c- t>&amp;apos;https://example.com&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- t>&amp;apos;Hello world&amp;apos;</c-><c- p>)</c-> <c- p>{</c->
+      e<c- p>.</c->source<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;Hello&amp;apos;</c-><c- p>,</c-> e<c- p>.</c->origin<c- p>);</c->
+    <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+      alert<c- p>(</c->e<c- p>.</c->data<c- p>);</c->
+    <c- p>}</c->
+  <c- p>}</c->
+<c- p>}</c-></code></pre>
 
    <p>This script first checks the domain is the expected domain, and then looks at the message,
    which it either displays to the user, or responds to by sending a message back to the document
@@ -407,30 +407,30 @@ function receiver(e) {
   <p>To create a connection (two "entangled" ports), the <code>MessageChannel()</code>
   constructor is called:</p>
 
-  <pre>var channel = new MessageChannel();</pre>
+  <pre><code class='js'><c- a>var</c-> channel <c- o>=</c-> <c- k>new</c-> MessageChannel<c- p>();</c-></code></pre>
 
   <p>One of the ports is kept as the local port, and the other port is sent to the remote code, e.g.
   using <code id=introduction-13:dom-window-postmessage><a href=#dom-window-postmessage>postMessage()</a></code>:</p>
 
-  <pre>otherWindow.postMessage('hello', 'https://example.com', [channel.port2]);</pre>
+  <pre><code class='js'>otherWindow<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;hello&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;https://example.com&amp;apos;</c-><c- p>,</c-> <c- p>[</c->channel<c- p>.</c->port2<c- p>]);</c-></code></pre>
 
   <p>To send messages, the <code id=introduction-13:dom-messageport-postmessage><a href=#dom-messageport-postmessage>postMessage()</a></code> method on
   the port is used:</p>
 
-  <pre>channel.port1.postMessage('hello');</pre>
+  <pre><code class='js'>channel<c- p>.</c->port1<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;hello&amp;apos;</c-><c- p>);</c-></code></pre>
 
   <p>To receive messages, one listens to <code id=introduction-13:event-message><a href=indices.html#event-message>message</a></code> events:</p>
 
-  <pre>channel.port1.onmessage = handleMessage;
-function handleMessage(event) {
-  // message is in event.data
-  // ...
-}</pre>
+  <pre><code class='js'>channel<c- p>.</c->port1<c- p>.</c->onmessage <c- o>=</c-> handleMessage<c- p>;</c->
+<c- a>function</c-> handleMessage<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  <c- c1>// message is in event.data</c->
+<c- c1></c->  <c- c1>// ...</c->
+<c- c1></c-><c- p>}</c-></code></pre>
 
   <p>Data sent on a port can be structured data; for example here an array of strings is passed on a
   <code id=introduction-13:messageport><a href=#messageport>MessagePort</a></code>:</p>
 
-  <pre>port1.postMessage(['hello', 'world']);</pre>
+  <pre><code class='js'>port1<c- p>.</c->postMessage<c- p>([</c-><c- t>&amp;apos;hello&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;world&amp;apos;</c-><c- p>]);</c-></code></pre>
 
 
   <h5 id=examples-5><span class=secno>9.5.1.1</span> Examples<a href=#examples-5 class=self-link></a></h5>
@@ -443,45 +443,45 @@ function handleMessage(event) {
    <code id=examples-5:messageport><a href=#messageport>MessagePort</a></code>s. This allows the libraries to later be hosted in different frames, or
    in <code id=examples-5:worker><a href=workers.html#worker>Worker</a></code> objects, without any change to the APIs.</p>
 
-   <pre>&lt;script src="contacts.js"&gt;&lt;/script&gt; &lt;!-- exposes a contacts object --&gt;
-&lt;script src="compose-mail.js"&gt;&lt;/script&gt; &lt;!-- exposes a composer object --&gt;
-&lt;script&gt;
- var channel = new MessageChannel();
- composer.addContactsProvider(channel.port1);
- contacts.registerConsumer(channel.port2);
-&lt;/script&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-> <c- e>src</c-><c- o>=</c-><c- s>"contacts.js"</c-><c- p>&gt;&lt;/</c-><c- f>script</c-><c- p>&gt;</c-> <c- c>&lt;!-- exposes a contacts object --&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-> <c- e>src</c-><c- o>=</c-><c- s>"compose-mail.js"</c-><c- p>&gt;&lt;/</c-><c- f>script</c-><c- p>&gt;</c-> <c- c>&lt;!-- exposes a composer object --&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>var</c-> channel <c- o>=</c-> <c- k>new</c-> MessageChannel<c- p>();</c->
+ composer<c- p>.</c->addContactsProvider<c- p>(</c->channel<c- p>.</c->port1<c- p>);</c->
+ contacts<c- p>.</c->registerConsumer<c- p>(</c->channel<c- p>.</c->port2<c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>Here's what the "addContactsProvider()" function's implementation could look like:</p>
 
-   <pre>function addContactsProvider(port) {
-  port.onmessage = function (event) {
-    switch (event.data.messageType) {
-      'search-result': handleSearchResult(event.data.results); break;
-      'search-done': handleSearchDone(); break;
-      'search-error': handleSearchError(event.data.message); break;
-      // ...
-    }
-  };
-};</pre>
+   <pre><code class='js'><c- a>function</c-> addContactsProvider<c- p>(</c->port<c- p>)</c-> <c- p>{</c->
+  port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>switch</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType<c- p>)</c-> <c- p>{</c->
+      <c- t>&amp;apos;search-result&amp;apos;</c-><c- o>:</c-> handleSearchResult<c- p>(</c->event<c- p>.</c->data<c- p>.</c->results<c- p>);</c-> <c- k>break</c-><c- p>;</c->
+      <c- t>&amp;apos;search-done&amp;apos;</c-><c- o>:</c-> handleSearchDone<c- p>();</c-> <c- k>break</c-><c- p>;</c->
+      <c- t>&amp;apos;search-error&amp;apos;</c-><c- o>:</c-> handleSearchError<c- p>(</c->event<c- p>.</c->data<c- p>.</c->message<c- p>);</c-> <c- k>break</c-><c- p>;</c->
+      <c- c1>// ...</c->
+<c- c1></c->    <c- p>}</c->
+  <c- p>};</c->
+<c- p>};</c-></code></pre>
 
    <p>Alternatively, it could be implemented as follows:</p>
 
-   <pre>function addContactsProvider(port) {
-  port.addEventListener('message', function (event) {
-    if (event.data.messageType == 'search-result')
-      handleSearchResult(event.data.results);
-  });
-  port.addEventListener('message', function (event) {
-    if (event.data.messageType == 'search-done')
-      handleSearchDone();
-  });
-  port.addEventListener('message', function (event) {
-    if (event.data.messageType == 'search-error')
-      handleSearchError(event.data.message);
-  });
-  // ...
-  port.start();
-};</pre>
+   <pre><code class='js'><c- a>function</c-> addContactsProvider<c- p>(</c->port<c- p>)</c-> <c- p>{</c->
+  port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType <c- o>==</c-> <c- t>&amp;apos;search-result&amp;apos;</c-><c- p>)</c->
+      handleSearchResult<c- p>(</c->event<c- p>.</c->data<c- p>.</c->results<c- p>);</c->
+  <c- p>});</c->
+  port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType <c- o>==</c-> <c- t>&amp;apos;search-done&amp;apos;</c-><c- p>)</c->
+      handleSearchDone<c- p>();</c->
+  <c- p>});</c->
+  port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->messageType <c- o>==</c-> <c- t>&amp;apos;search-error&amp;apos;</c-><c- p>)</c->
+      handleSearchError<c- p>(</c->event<c- p>.</c->data<c- p>.</c->message<c- p>);</c->
+  <c- p>});</c->
+  <c- c1>// ...</c->
+<c- c1></c->  port<c- p>.</c->start<c- p>();</c->
+<c- p>};</c-></code></pre>
 
    <p>The key difference is that when using <code id=examples-5:dom-eventtarget-addeventlistener><a data-x-internal=dom-eventtarget-addeventlistener href=https://triple-underscore.github.io/DOM4-ja.html#dom-eventtarget-addeventlistener>addEventListener()</a></code>, the <code id=examples-5:dom-messageport-start><a href=#dom-messageport-start>start()</a></code> method must also be invoked. When using <code id=examples-5:handler-messageport-onmessage><a href=#handler-messageport-onmessage>onmessage</a></code>, the call to <code id=examples-5:dom-messageport-start-2><a href=#dom-messageport-start>start()</a></code> is implied.</p>
 
@@ -564,11 +564,11 @@ function handleMessage(event) {
 
   <h4 id=message-channels><span class=secno>9.5.2</span> Message channels<a href=#message-channels class=self-link></a></h4>
 
-  <pre class=idl>[<a href=#dom-messagechannel id=message-channels:dom-messagechannel>Constructor</a>, Exposed=(Window,Worker)]
-interface <dfn id=messagechannel>MessageChannel</dfn> {
-  readonly attribute <a href=#messageport id=message-channels:messageport>MessagePort</a> <a href=#dom-messagechannel-port1 id=message-channels:dom-messagechannel-port1>port1</a>;
-  readonly attribute <a href=#messageport id=message-channels:messageport-2>MessagePort</a> <a href=#dom-messagechannel-port2 id=message-channels:dom-messagechannel-port2>port2</a>;
-};</pre>
+  <pre><code class='idl'>[<a href='#dom-messagechannel' id='message-channels:dom-messagechannel'><c- g>Constructor</c-></a>, <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='messagechannel'><c- g>MessageChannel</c-></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#messageport' id='message-channels:messageport'><c- n>MessagePort</c-></a> <a href='#dom-messagechannel-port1' id='message-channels:dom-messagechannel-port1'><c- g>port1</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#messageport' id='message-channels:messageport-2'><c- n>MessagePort</c-></a> <a href='#dom-messagechannel-port2' id='message-channels:dom-messagechannel-port2'><c- g>port2</c-></a>;
+};</code></pre>
 
   <dl class=domintro><dt><var>channel</var> = new <code id=dom-messagechannel-dev><a href=#dom-messagechannel>MessageChannel</a></code>()<dd>
 
@@ -612,16 +612,16 @@ interface <dfn id=messagechannel>MessageChannel</dfn> {
   <p>Each channel has two message ports. Data sent through one port is received by the other port,
   and vice versa.</p>
 
-  <pre class=idl>[Exposed=(Window,Worker,AudioWorklet), <a id=message-ports:transferable href=structured-data.html#transferable>Transferable</a>]
-interface <dfn id=messageport>MessagePort</dfn> : <a id=message-ports:eventtarget href=https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
-  void <a href=#dom-messageport-postmessage id=message-ports:dom-messageport-postmessage>postMessage</a>(any message, optional sequence&lt;<a href=https://triple-underscore.github.io/WebIDL-ja.html#idl-object id=message-ports:idl-object data-x-internal=idl-object>object</a>&gt; transfer = []);
-  void <a href=#dom-messageport-start id=message-ports:dom-messageport-start>start</a>();
-  void <a href=#dom-messageport-close id=message-ports:dom-messageport-close>close</a>();
+  <pre><code class='idl'>[<c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->,<c- n>AudioWorklet</c->), <a href='structured-data.html#transferable' id='message-ports:transferable'><c- g>Transferable</c-></a>]
+<c- b>interface</c-> <dfn id='messageport'><c- g>MessagePort</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='message-ports:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>void</c-> <a href='#dom-messageport-postmessage' id='message-ports:dom-messageport-postmessage'><c- g>postMessage</c-></a>(<c- b>any</c-> <c- g>message</c->, <c- b>optional</c-> <c- b>sequence</c->&lt;<a href='https://triple-underscore.github.io/WebIDL-ja.html#idl-object' data-x-internal='idl-object' id='message-ports:idl-object'><c- b>object</c-></a>&gt; <c- g>transfer</c-> = []);
+  <c- b>void</c-> <a href='#dom-messageport-start' id='message-ports:dom-messageport-start'><c- g>start</c-></a>();
+  <c- b>void</c-> <a href='#dom-messageport-close' id='message-ports:dom-messageport-close'><c- g>close</c-></a>();
 
   // event handlers
-  attribute <a id=message-ports:eventhandler href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-messageport-onmessage id=message-ports:handler-messageport-onmessage>onmessage</a>;
-  attribute <a id=message-ports:eventhandler-2 href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-messageport-onmessageerror id=message-ports:handler-messageport-onmessageerror>onmessageerror</a>;
-};</pre>
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='message-ports:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-messageport-onmessage' id='message-ports:handler-messageport-onmessage'><c- g>onmessage</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='message-ports:eventhandler-2'><c- n>EventHandler</c-></a> <a href='#handler-messageport-onmessageerror' id='message-ports:handler-messageport-onmessageerror'><c- g>onmessageerror</c-></a>;
+};</code></pre>
 
   <dl class=domintro><dt><var>port</var> . <code id=dom-messageport-postmessage-dev><a href=#dom-messageport-postmessage>postMessage</a></code>(<var>message</var> [, <var>transfer</var>] )<dd>
     <p>Posts a message through the channel. Objects listed in <var>transfer</var> are
@@ -868,14 +868,14 @@ interface <dfn id=messageport>MessagePort</dfn> : <a id=message-ports:eventtarge
   <p>For simple cases, though, where a shared worker would be an unreasonable overhead, authors can
   use the simple channel-based broadcast mechanism described in this section.</p>
 
-  <pre class=idl>[<a href=#dom-broadcastchannel id=broadcasting-to-other-browsing-contexts:dom-broadcastchannel>Constructor</a>(DOMString name), Exposed=(Window,Worker)]
-interface <dfn id=broadcastchannel>BroadcastChannel</dfn> : <a id=broadcasting-to-other-browsing-contexts:eventtarget href=https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget data-x-internal=eventtarget>EventTarget</a> {
-  readonly attribute DOMString <a href=#dom-broadcastchannel-name id=broadcasting-to-other-browsing-contexts:dom-broadcastchannel-name>name</a>;
-  void <a href=#dom-broadcastchannel-postmessage id=broadcasting-to-other-browsing-contexts:dom-broadcastchannel-postmessage>postMessage</a>(any message);
-  void <a href=#dom-broadcastchannel-close id=broadcasting-to-other-browsing-contexts:dom-broadcastchannel-close>close</a>();
-  attribute <a id=broadcasting-to-other-browsing-contexts:eventhandler href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-broadcastchannel-onmessage id=broadcasting-to-other-browsing-contexts:handler-broadcastchannel-onmessage>onmessage</a>;
-  attribute <a id=broadcasting-to-other-browsing-contexts:eventhandler-2 href=webappapis.html#eventhandler>EventHandler</a> <a href=#handler-broadcastchannel-onmessageerror id=broadcasting-to-other-browsing-contexts:handler-broadcastchannel-onmessageerror>onmessageerror</a>;
-};</pre>
+  <pre><code class='idl'>[<a href='#dom-broadcastchannel' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel'><c- g>Constructor</c-></a>(<c- b>DOMString</c-> <c- g>name</c->), <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='broadcastchannel'><c- g>BroadcastChannel</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='broadcasting-to-other-browsing-contexts:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-broadcastchannel-name' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel-name'><c- g>name</c-></a>;
+  <c- b>void</c-> <a href='#dom-broadcastchannel-postmessage' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel-postmessage'><c- g>postMessage</c-></a>(<c- b>any</c-> <c- g>message</c->);
+  <c- b>void</c-> <a href='#dom-broadcastchannel-close' id='broadcasting-to-other-browsing-contexts:dom-broadcastchannel-close'><c- g>close</c-></a>();
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='broadcasting-to-other-browsing-contexts:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-broadcastchannel-onmessage' id='broadcasting-to-other-browsing-contexts:handler-broadcastchannel-onmessage'><c- g>onmessage</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='broadcasting-to-other-browsing-contexts:eventhandler-2'><c- n>EventHandler</c-></a> <a href='#handler-broadcastchannel-onmessageerror' id='broadcasting-to-other-browsing-contexts:handler-broadcastchannel-onmessageerror'><c- g>onmessageerror</c-></a>;
+};</code></pre>
 
   <dl class=domintro><dt><var>broadcastChannel</var> = new <code id=dom-broadcastchannel-dev><a href=#dom-broadcastchannel>BroadcastChannel</a></code>(<var>name</var>)<dd>
 
@@ -995,28 +995,28 @@ interface <dfn id=broadcastchannel>BroadcastChannel</dfn> : <a id=broadcasting-t
    <p>Suppose a page wants to know when the user logs out, even when the user does so from another
    tab at the same site:</p>
 
-   <pre>var authChannel = new BroadcastChannel('auth');
-authChannel.onmessage = function (event) {
-  if (event.data == 'logout')
-    showLogout();
-}
+   <pre><code class='js'><c- a>var</c-> authChannel <c- o>=</c-> <c- k>new</c-> BroadcastChannel<c- p>(</c-><c- t>&amp;apos;auth&amp;apos;</c-><c- p>);</c->
+authChannel<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data <c- o>==</c-> <c- t>&amp;apos;logout&amp;apos;</c-><c- p>)</c->
+    showLogout<c- p>();</c->
+<c- p>}</c->
 
-function logoutRequested() {
-  // called when the user asks us to log them out
-  doLogout();
-  showLogout();
-  authChannel.postMessage('logout');
-}
+<c- a>function</c-> logoutRequested<c- p>()</c-> <c- p>{</c->
+  <c- c1>// called when the user asks us to log them out</c->
+<c- c1></c->  doLogout<c- p>();</c->
+  showLogout<c- p>();</c->
+  authChannel<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;logout&amp;apos;</c-><c- p>);</c->
+<c- p>}</c->
 
-function doLogout() {
-  // actually log the user out (e.g. clearing cookies)
-  // ...
-}
+<c- a>function</c-> doLogout<c- p>()</c-> <c- p>{</c->
+  <c- c1>// actually log the user out (e.g. clearing cookies)</c->
+<c- c1></c->  <c- c1>// ...</c->
+<c- c1></c-><c- p>}</c->
 
-function showLogout() {
-  // update the UI to indicate we're logged out
-  // ...
-}</pre>
+<c- a>function</c-> showLogout<c- p>()</c-> <c- p>{</c->
+  <c- c1>// update the UI to indicate we&amp;apos;re logged out</c->
+<c- c1></c->  <c- c1>// ...</c->
+<c- c1></c-><c- p>}</c-></code></pre>
 
   </div>
 

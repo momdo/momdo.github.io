@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -78,7 +78,7 @@
 
   
 
-  <nav><a href=dynamic-markup-insertion.html>← 8.4 動的マークアップの挿入</a> — <a href=./>目次</a> — <a href=system-state.html>8.7 システム状態および性能 →</a></nav><ol class=toc><li><ol><li><a href=timers-and-user-prompts.html#timers><span class=secno>8.5</span> タイマー</a></li><li><a href=timers-and-user-prompts.html#user-prompts><span class=secno>8.6</span> ユーザープロンプト</a><ol><li><a href=timers-and-user-prompts.html#simple-dialogs><span class=secno>8.6.1</span> 単純ダイアログ</a></li><li><a href=timers-and-user-prompts.html#printing><span class=secno>8.6.2</span> 表示</a></li></ol></li></ol></li></ol><h3 id=timers><span class=secno>8.5</span> タイマー<a href=#timers class=self-link></a></h3>
+  <nav><a href=dynamic-markup-insertion.html>← 8.4 Dynamic markup insertion</a> — <a href=./>Table of Contents</a> — <a href=system-state.html>8.8 System state and capabilities →</a></nav><ol class=toc><li><ol><li><a href=timers-and-user-prompts.html#timers><span class=secno>8.5</span> タイマー</a></li><li><a href=timers-and-user-prompts.html#microtask-queuing><span class=secno>8.6</span> Microtask queuing</a></li><li><a href=timers-and-user-prompts.html#user-prompts><span class=secno>8.7</span> User prompts</a><ol><li><a href=timers-and-user-prompts.html#simple-dialogs><span class=secno>8.7.1</span> Simple dialogs</a></li><li><a href=timers-and-user-prompts.html#printing><span class=secno>8.7.2</span> Printing</a></li></ol></li></ol></li></ol><h3 id=timers><span class=secno>8.5</span> タイマー<a href=#timers class=self-link></a></h3>
 
   <p><code id=timers:dom-settimeout><a href=#dom-settimeout>setTimeout()</a></code>と<code id=timers:dom-setinterval><a href=#dom-setinterval>setInterval()</a></code>メソッドは、著者がタイマーベースのコールバックをスケジュールできるようにする。</p>
 
@@ -118,35 +118,142 @@
 
    <p>遅延なく背中合わせに数ミリ秒のタスクを実行するために、飢えたユーザーインターフェイスを避けるために（およびCPUを占有するためのスクリプトを殺すブラウザーを避けるために）ブラウザーに戻って従いつつ、作業を実行する前の簡単なキューの次のタイマー：</p>
 
-   <pre>function doExpensiveWork() {
-  var done = false;
-  // ...
-  // this part of the function takes up to five milliseconds
-  // set done to true if we're done
-  // ...
-  return done;
-}
+   <pre><code class='js'><c- a>function</c-> doExpensiveWork<c- p>()</c-> <c- p>{</c->
+  <c- a>var</c-> done <c- o>=</c-> <c- kc>false</c-><c- p>;</c->
+  <c- c1>// ...</c->
+<c- c1></c->  <c- c1>// this part of the function takes up to five milliseconds</c->
+<c- c1></c->  <c- c1>// set done to true if we&amp;apos;re done</c->
+<c- c1></c->  <c- c1>// ...</c->
+<c- c1></c->  <c- k>return</c-> done<c- p>;</c->
+<c- p>}</c->
 
-function rescheduleWork() {
-  var handle = setTimeout(rescheduleWork, 0); // preschedule next iteration
-  if (doExpensiveWork())
-    clearTimeout(handle); // clear the timeout if we don't need it
-}
+<c- a>function</c-> rescheduleWork<c- p>()</c-> <c- p>{</c->
+  <c- a>var</c-> handle <c- o>=</c-> setTimeout<c- p>(</c->rescheduleWork<c- p>,</c-> <c- mi>0</c-><c- p>);</c-> <c- c1>// preschedule next iteration</c->
+<c- c1></c->  <c- k>if</c-> <c- p>(</c->doExpensiveWork<c- p>())</c->
+    clearTimeout<c- p>(</c->handle<c- p>);</c-> <c- c1>// clear the timeout if we don&amp;apos;t need it</c->
+<c- c1></c-><c- p>}</c->
 
-function scheduleWork() {
-  setTimeout(rescheduleWork, 0);
-}
+<c- a>function</c-> scheduleWork<c- p>()</c-> <c- p>{</c->
+  setTimeout<c- p>(</c->rescheduleWork<c- p>,</c-> <c- mi>0</c-><c- p>);</c->
+<c- p>}</c->
 
-scheduleWork(); // queues a task to do lots of work</pre>
+scheduleWork<c- p>();</c-> <c- c1>// queues a task to do lots of work</c-></code></pre>
 
   </div>
 
 
-  <h3 id=user-prompts><span class=secno>8.6</span> ユーザープロンプト<a href=#user-prompts class=self-link></a></h3>
+  <h3 id=microtask-queuing><span class=secno>8.6</span> Microtask queuing<a href=#microtask-queuing class=self-link></a></h3>
+
+  <dl class=domintro><dt><var>self</var> . <code id=dom-queuemicrotask>queueMicrotask</code>(<var>callback</var>)<dd><p><span>Queues</span> a <span>microtask</span> to run the given
+   <var>callback</var>.</dl>
 
   
 
-  <h4 id=simple-dialogs><span class=secno>8.6.1</span> 単純ダイアログ<a href=#simple-dialogs class=self-link></a></h4>
+  <p>The <code id=microtask-queuing:dom-queuemicrotask><a href=#dom-queuemicrotask>queueMicrotask()</a></code> method allows authors to schedule
+  a callback on the <span>microtask queue</span>. This allows their code to run after the
+  currently-executing <span>task</span> has run to completion and the
+  <a id=microtask-queuing:javascript-execution-context-stack href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a> is empty, but without yielding control back to the
+  browser's <span>event loop</span>, as would be the case when using, for example, <code id=microtask-queuing:dom-settimeout><a href=#dom-settimeout>setTimeout(<var>f</var>,&nbsp;0)</a></code>.</p>
+
+  <p>Authors ought to be aware that scheduling a lot of microtasks has the same performance
+  downsides as running a lot of synchronous code. Both will prevent the browser from doing its own
+  work, such as rendering or scrolling. In many cases, <code id=microtask-queuing:dom-window-requestanimationframe><a href=imagebitmap-and-animations.html#dom-window-requestanimationframe>requestAnimationFrame()</a></code> or
+  <code id=microtask-queuing:requestidlecallback()><a data-x-internal=requestidlecallback() href=https://w3c.github.io/requestidlecallback/#the-requestidlecallback-method>requestIdleCallback()</a></code> is a better choice. In particular, if the goal is to run code
+  before the next rendering cycle, that is the purpose of <code id=microtask-queuing:dom-window-requestanimationframe-2><a href=imagebitmap-and-animations.html#dom-window-requestanimationframe>requestAnimationFrame()</a></code>.</p>
+
+  <p>As can be seen from the following examples, the best way of thinking about <code id=microtask-queuing:dom-queuemicrotask-2><a href=#dom-queuemicrotask>queueMicrotask()</a></code> is as a mechanism for rearranging synchronous
+  code, effectively placing the queued code immediately after the current task's worth of non-queued
+  JavaScript.</p>
+
+  <div class=example>
+   <p>The most common reason for using <code id=microtask-queuing:dom-queuemicrotask-3><a href=#dom-queuemicrotask>queueMicrotask()</a></code> is
+   to create consistent ordering, even in the cases where information is available synchronously,
+   without introducing undue delay.</p>
+
+   <p>For example, consider a custom element firing a <code>load</code> event, that also
+   maintains an internal cache of previously-loaded data. A naïve implementation might look
+   like:</p>
+
+   <pre><code class='js'>MyElement<c- p>.</c->prototype<c- p>.</c->loadData <c- o>=</c-> <c- a>function</c-> <c- p>(</c->url<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->_cache<c- p>[</c->url<c- p>])</c-> <c- p>{</c->
+    <c- k>this</c-><c- p>.</c->_setData<c- p>(</c-><c- k>this</c-><c- p>.</c->_cache<c- p>[</c->url<c- p>]);</c->
+    <c- k>this</c-><c- p>.</c->dispatchEvent<c- p>(</c-><c- k>new</c-> Event<c- p>(</c-><c- u>"load"</c-><c- p>));</c->
+  <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+    fetch<c- p>(</c->url<c- p>).</c->then<c- p>(</c->res <c- p>=&gt;</c-> res<c- p>.</c->arrayBuffer<c- p>()).</c->then<c- p>(</c->data <c- p>=&gt;</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->_cache<c- p>[</c->url<c- p>]</c-> <c- o>=</c-> data<c- p>;</c->
+      <c- k>this</c-><c- p>.</c->_setData<c- p>(</c->data<c- p>);</c->
+      <c- k>this</c-><c- p>.</c->dispatchEvent<c- p>(</c-><c- k>new</c-> Event<c- p>(</c-><c- u>"load"</c-><c- p>));</c->
+    <c- p>});</c->
+  <c- p>}</c->
+<c- p>};</c-></code></pre>
+
+   <p>This naïve implementation is problematic, however, in that it causes its users to
+   experience inconsistent behavior. For example, code such as</p>
+
+   <pre><code class='js'>element<c- p>.</c->addEventListener<c- p>(</c-><c- u>"load"</c-><c- p>,</c-> <c- p>()</c-> <c- p>=&gt;</c-> console<c- p>.</c->log<c- p>(</c-><c- u>"loaded"</c-><c- p>));</c->
+console<c- p>.</c->log<c- p>(</c-><c- u>"1"</c-><c- p>);</c->
+element<c- p>.</c->loadData<c- p>();</c->
+console<c- p>.</c->log<c- p>(</c-><c- u>"2"</c-><c- p>);</c-></code></pre>
+
+   <p>will sometimes log "1, 2, loaded" (if the data needs to be fetched), and sometimes log "1,
+   loaded, 2" (if the data is already cached). Similarly, after the call to <code>loadData()</code>, it will be inconsistent whether or not the data is set on the
+   element.</p>
+
+   <p>To get a consistent ordering, <code id=microtask-queuing:dom-queuemicrotask-4><a href=#dom-queuemicrotask>queueMicrotask()</a></code> can be
+   used:</p>
+
+   <pre><code class='js'>MyElement<c- p>.</c->prototype<c- p>.</c->loadData <c- o>=</c-> <c- a>function</c-> <c- p>(</c->url<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->_cache<c- p>[</c->url<c- p>])</c-> <c- p>{</c-><strong>
+    queueMicrotask<c- p>(()</c-> <c- p>=&gt;</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->_setData<c- p>(</c-><c- k>this</c-><c- p>.</c->_cache<c- p>[</c->url<c- p>]);</c->
+      <c- k>this</c-><c- p>.</c->dispatchEvent<c- p>(</c-><c- k>new</c-> Event<c- p>(</c-><c- u>"load"</c-><c- p>));</c->
+    <c- p>});</c-></strong>
+  <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+    fetch<c- p>(</c->url<c- p>).</c->then<c- p>(</c->res <c- p>=&gt;</c-> res<c- p>.</c->arrayBuffer<c- p>()).</c->then<c- p>(</c->data <c- p>=&gt;</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->_cache<c- p>[</c->url<c- p>]</c-> <c- o>=</c-> data<c- p>;</c->
+      <c- k>this</c-><c- p>.</c->_setData<c- p>(</c->data<c- p>);</c->
+      <c- k>this</c-><c- p>.</c->dispatchEvent<c- p>(</c-><c- k>new</c-> Event<c- p>(</c-><c- u>"load"</c-><c- p>));</c->
+    <c- p>});</c->
+  <c- p>}</c->
+<c- p>};</c-></code></pre>
+
+   <p>By essentially rearranging the queued code to be after the currently-executing task, this
+   ensures a consistent ordering and update of the element's state.</p>
+  </div>
+
+  <div class=example>
+   <p>Another interesting use of <code id=microtask-queuing:dom-queuemicrotask-5><a href=#dom-queuemicrotask>queueMicrotask()</a></code> is to
+   allow uncoordinated "batching" of work by multiple callers. For example, consider a library
+   function that wants to send data somewhere as soon as possible, but doesn't want to make multiple
+   network requests if doing so is easily avoidable. One way to balance this would be like so:</p>
+
+   <pre><code class='js'><c- kr>const</c-> queuedToSend <c- o>=</c-> <c- p>[];</c->
+
+<c- a>function</c-> sendData<c- p>(</c->data<c- p>)</c-> <c- p>{</c->
+  queuedToSend<c- p>.</c->push<c- p>(</c->data<c- p>);</c->
+
+  <c- k>if</c-> <c- p>(</c->queuedToSend<c- p>.</c->length <c- o>===</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+    queueMicrotask<c- p>(()</c-> <c- p>=&gt;</c-> <c- p>{</c->
+      <c- kr>const</c-> stringToSend <c- o>=</c-> JSON<c- p>.</c->stringify<c- p>(</c->queuedToSend<c- p>);</c->
+      queuedToSend<c- p>.</c->length <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+
+      fetch<c- p>(</c-><c- u>"/endpoint"</c-><c- p>,</c-> stringToSend<c- p>);</c->
+    <c- p>});</c->
+  <c- p>}</c->
+<c- p>}</c-></code></pre>
+
+   <p>With this architecture, multiple subsequent calls to <code>sendData()</code> within
+   the same turn of the event loop will be batched together into one <code id=microtask-queuing:fetch()><a data-x-internal=fetch() href=https://fetch.spec.whatwg.org/#dom-global-fetch>fetch()</a></code> call, but
+   with no intervening event loop tasks preempting the fetch (as would have happened with similar
+   code that instead used <code id=microtask-queuing:dom-settimeout-2><a href=#dom-settimeout>setTimeout()</a></code>).</p>
+  </div>
+
+
+  <h3 id=user-prompts><span class=secno>8.7</span> User prompts<a href=#user-prompts class=self-link></a></h3>
+
+  
+
+  <h4 id=simple-dialogs><span class=secno>8.7.1</span> Simple dialogs<a href=#simple-dialogs class=self-link></a></h4>
 
   <dl class=domintro><dt><var>window</var> . <code id=dom-alert>alert</code>(<var>message</var>)<dd>
 
@@ -168,7 +275,7 @@ scheduleWork(); // queues a task to do lots of work</pre>
   
 
 
-  <h4 id=printing><span class=secno>8.6.2</span> 表示<a href=#printing class=self-link></a></h4>
+  <h4 id=printing><span class=secno>8.7.2</span> Printing<a href=#printing class=self-link></a></h4>
 
   <dl class=domintro><dt><var>window</var> . <code id=dom-print>print</code>()<dd>
 
@@ -179,5 +286,5 @@ scheduleWork(); // queues a task to do lots of work</pre>
   
 
 
-  <nav><a href=dynamic-markup-insertion.html>← 8.4 動的マークアップの挿入</a> — <a href=./>目次</a> — <a href=system-state.html>8.7 システム状態および性能 →</a></nav>
+  <nav><a href=dynamic-markup-insertion.html>← 8.4 Dynamic markup insertion</a> — <a href=./>Table of Contents</a> — <a href=system-state.html>8.8 System state and capabilities →</a></nav>
 </body></html>

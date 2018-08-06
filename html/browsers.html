@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
    
 
@@ -243,18 +243,11 @@
   optionally given <var>noopener</var>:</p>
 
   <ol><li><p>If <var>noopener</var> was not given, let it be false.</li><li><p>Let <var>browsingContext</var> be a new <a href=#browsing-context id=windows:browsing-context-16>browsing context</a>.</li><li>
-    <p>Call the JavaScript <a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm id=windows:js-initializehostdefinedrealm data-x-internal=js-initializehostdefinedrealm>InitializeHostDefinedRealm()</a> abstract operation
-    with the following customizations:</p>
+    <p>Let <var>realm execution context</var> be the result of <a id=windows:creating-a-new-javascript-realm href=webappapis.html#creating-a-new-javascript-realm>creating a new JavaScript
+    realm</a> with the following customizations:</p>
 
-    <ul><li><p>For the global object, create a new <code id=windows:window-5><a href=window-object.html#window>Window</a></code> object
-     <var>window</var>.</li><li><p>For the global <b>this</b> value, use <var>browsingContext</var>'s
+    <ul><li><p>For the global object, create a new <code id=windows:window-5><a href=window-object.html#window>Window</a></code> object.</li><li><p>For the global <b>this</b> binding, use <var>browsingContext</var>'s
      <code id=windows:windowproxy-4><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ul>
-   </li><li>
-    <p>Let <var>realm execution context</var> be the <a id=windows:running-javascript-execution-context href=https://tc39.github.io/ecma262/#running-execution-context data-x-internal=running-javascript-execution-context>running JavaScript execution
-    context</a>.</p>
-
-    <p class=note>This is the <a id=windows:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution context</a> created in the previous
-    step.</p>
    </li><li><p><a id=windows:set-up-a-window-environment-settings-object href=window-object.html#set-up-a-window-environment-settings-object>Set up a window environment settings object</a> with <var>realm execution
    context</var>, and let <var>settingsObject</var> be the result.</li><li><p>Let <var>document</var> be a new <code id=windows:document-13><a href=dom.html#document>Document</a></code>, marked as an <a href=https://triple-underscore.github.io/DOM4-ja.html#html-document id=windows:html-documents data-x-internal=html-documents>HTML document</a> in <a id=windows:quirks-mode href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-quirks data-x-internal=quirks-mode>quirks mode</a>, whose <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-content-type id=windows:concept-document-content-type data-x-internal=concept-document-content-type>content type</a> is "<code>text/html</code>",
    and which is both <a id=windows:ready-for-post-load-tasks href=parsing.html#ready-for-post-load-tasks>ready for post-load tasks</a> and <a id=windows:completely-loaded href=parsing.html#completely-loaded>completely loaded</a>
@@ -323,21 +316,58 @@
 
   <p>Because they are associated with an element, <a href=#child-browsing-context id=nested-browsing-contexts:child-browsing-context-7>child browsing contexts</a> are always tied to a specific <code id=nested-browsing-contexts:document-4><a href=dom.html#document>Document</a></code> in their <a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-6>parent browsing context</a>. ユーザーエージェントは、ユーザーにがいない自身が<a href=#fully-active id=nested-browsing-contexts:fully-active-2>完全にアクティブ</a>でない<code id=nested-browsing-contexts:document-5><a href=dom.html#document>Document</a></code>にある要素の<a href=#child-browsing-context id=nested-browsing-contexts:child-browsing-context-8>子ブラウジングコンテキスト</a>と対話することを許可してはならない。</p>
 
+  <div class=example>
+   <p>The following example illustrates the differences between <a href=#active-document id=nested-browsing-contexts:active-document-3>active</a> and <a href=#fully-active id=nested-browsing-contexts:fully-active-3>fully active</a> <code id=nested-browsing-contexts:document-6><a href=dom.html#document>Document</a></code> objects. Here <code>a.html</code> is loaded into a browser window, <code>b-1.html</code> starts
+   out loaded into an <code id=nested-browsing-contexts:the-iframe-element-2><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> as shown, and <code>b-2.html</code> and <code>c.html</code> are omitted (they can simply be an empty document).</p>
+
+   <pre>&lt;!-- a.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;title&gt;Browsing context A&lt;/title&gt;
+
+&lt;iframe src="b-1.html"&gt;&lt;/iframe&gt;
+&lt;button onclick="frames[0].location.href = 'b-2.html'"&gt;Click me&lt;/button&gt;
+
+&lt;!-- b-1.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;title&gt;Browsing context B&lt;/title&gt;
+
+&lt;iframe src="c.html"&gt;&lt;/iframe&gt;</pre>
+
+   <p>At this point, the documents given by <code>a.html</code>, <code>b-1.html</code>, and <code>c.html</code> are all the <a href=#active-document id=nested-browsing-contexts:active-document-4>active documents</a> of their respective <a href=#concept-document-bc id=nested-browsing-contexts:concept-document-bc-3>browsing
+   contexts</a>. They are also all <a href=#fully-active id=nested-browsing-contexts:fully-active-4>fully active</a>.</p>
+
+   <p>After clicking on the <code id=nested-browsing-contexts:the-button-element><a href=form-elements.html#the-button-element>button</a></code>, and thus loading a new <code id=nested-browsing-contexts:document-7><a href=dom.html#document>Document</a></code> from
+   <code>b-2.html</code> into browsing context B, we have the following results:</p>
+
+   <ul><li><p>The <code>a.html</code> <code id=nested-browsing-contexts:document-8><a href=dom.html#document>Document</a></code> remains both the <a href=#active-document id=nested-browsing-contexts:active-document-5>active
+    document</a> of browsing context A, and <a href=#fully-active id=nested-browsing-contexts:fully-active-5>fully active</a>.</li><li><p>The <code>b-1.html</code> <code id=nested-browsing-contexts:document-9><a href=dom.html#document>Document</a></code> is now <em>not</em> the
+    <a href=#active-document id=nested-browsing-contexts:active-document-6>active document</a> of browsing context B. As such it is also not <a href=#fully-active id=nested-browsing-contexts:fully-active-6>fully
+    active</a>.</li><li><p>The new <code>b-2.html</code> <code id=nested-browsing-contexts:document-10><a href=dom.html#document>Document</a></code> is now the <a href=#active-document id=nested-browsing-contexts:active-document-7>active
+    document</a> of browsing context B, and is also <a href=#fully-active id=nested-browsing-contexts:fully-active-7>fully active</a>.</li><li><p>The <code>c.html</code> <code id=nested-browsing-contexts:document-11><a href=dom.html#document>Document</a></code> is still the <a href=#active-document id=nested-browsing-contexts:active-document-8>active
+    document</a> of browsing context C. However, since it is <a href=#browsing-context-nested-through id=nested-browsing-contexts:browsing-context-nested-through-3>nested through</a> the <code>b-1.html</code> <code id=nested-browsing-contexts:document-12><a href=dom.html#document>Document</a></code>,
+    which is itself not <a href=#fully-active id=nested-browsing-contexts:fully-active-8>fully active</a>, this means the <code>c.html</code>
+    <code id=nested-browsing-contexts:document-13><a href=dom.html#document>Document</a></code> is now not <a href=#fully-active id=nested-browsing-contexts:fully-active-9>fully active</a> (even though it is <a href=#active-document id=nested-browsing-contexts:active-document-9>active</a>).</li></ul>
+
+   <p>For more explorations of the complexities involved here, especially as it impacts <a href=history.html#history>the session history</a>, see <cite>A Model of Navigation History</cite>. <a href=references.html#refsNAVMODEL>[NAVMODEL]</a></p>
+  </div>
+
   <p>A <a href=#browsing-context id=nested-browsing-contexts:browsing-context-15>browsing context</a> that is a <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-6>nested browsing context</a> can be put into
   a <dfn id=delaying-load-events-mode>delaying <code>load</code> events mode</dfn>. This is used when it is
   <a href=browsing-the-web.html#navigate id=nested-browsing-contexts:navigate>navigated</a>, to <a id=nested-browsing-contexts:delay-the-load-event href=parsing.html#delay-the-load-event>delay the load event</a> of its
-  <a href=#browsing-context-container id=nested-browsing-contexts:browsing-context-container-6>browsing context container</a> before the new <code id=nested-browsing-contexts:document-6><a href=dom.html#document>Document</a></code> is created.</p>
+  <a href=#browsing-context-container id=nested-browsing-contexts:browsing-context-container-6>browsing context container</a> before the new <code id=nested-browsing-contexts:document-14><a href=dom.html#document>Document</a></code> is created.</p>
 
 
 
-  <p><a href=#browsing-context id=nested-browsing-contexts:browsing-context-16>ブラウジングコンテキスト</a>の<dfn id=document-family>ドキュメントファミリー</dfn>は、その<a href=#browsing-context id=nested-browsing-contexts:browsing-context-17>ブラウジングコンテキスト</a>の<a id=nested-browsing-contexts:session-history href=history.html#session-history>セッション履歴</a>ですべての<code id=nested-browsing-contexts:document-7><a href=dom.html#document>Document</a></code>オブジェクト　およびすべてのそれら<code id=nested-browsing-contexts:document-8><a href=dom.html#document>Document</a></code>オブジェクトの<a href=#document-family id=nested-browsing-contexts:document-family>ドキュメントファミリー</a>の結合で構成される。<code id=nested-browsing-contexts:document-9><a href=dom.html#document>Document</a></code>オブジェクトの<a href=#document-family id=nested-browsing-contexts:document-family-2>ドキュメントファミリー</a>は、<code id=nested-browsing-contexts:document-10><a href=dom.html#document>Document</a></code>オブジェクトを<a href=#browsing-context-nested-through id=nested-browsing-contexts:browsing-context-nested-through-3>介してネストされる</a><a href=#browsing-context id=nested-browsing-contexts:browsing-context-18>ブラウジングコンテキスト</a>の所有するすべての<a href=#document-family id=nested-browsing-contexts:document-family-3>ドキュメントファミリー</a>の結合で構成される。</p>
+  <p><a href=#browsing-context id=nested-browsing-contexts:browsing-context-16>ブラウジングコンテキスト</a>の<dfn id=document-family>ドキュメントファミリー</dfn>は、その<a href=#browsing-context id=nested-browsing-contexts:browsing-context-17>ブラウジングコンテキスト</a>の<a id=nested-browsing-contexts:session-history href=history.html#session-history>セッション履歴</a>ですべての<code id=nested-browsing-contexts:document-15><a href=dom.html#document>Document</a></code>オブジェクト　およびすべてのそれら<code id=nested-browsing-contexts:document-16><a href=dom.html#document>Document</a></code>オブジェクトの<a href=#document-family id=nested-browsing-contexts:document-family>ドキュメントファミリー</a>の結合で構成される。<code id=nested-browsing-contexts:document-17><a href=dom.html#document>Document</a></code>オブジェクトの<a href=#document-family id=nested-browsing-contexts:document-family-2>ドキュメントファミリー</a>は、<code id=nested-browsing-contexts:document-18><a href=dom.html#document>Document</a></code>オブジェクトを<a href=#browsing-context-nested-through id=nested-browsing-contexts:browsing-context-nested-through-4>介してネストされる</a><a href=#browsing-context id=nested-browsing-contexts:browsing-context-18>ブラウジングコンテキスト</a>の所有するすべての<a href=#document-family id=nested-browsing-contexts:document-family-3>ドキュメントファミリー</a>の結合で構成される。</p>
 
   <p>The <dfn id=concept-bcc-content-document>content document</dfn> of a <a href=#browsing-context-container id=nested-browsing-contexts:browsing-context-container-7>browsing
   context container</a> <var>container</var> is the result of the following algorithm:</p>
 
   <ol><li><p>If <var>container</var>'s <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-7>nested browsing context</a> is null, then return
    null.</li><li><p>Let <var>context</var> be <var>container</var>'s <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-8>nested browsing
-   context</a>.</li><li><p>Let <var>document</var> be <var>context</var>'s <a href=#active-document id=nested-browsing-contexts:active-document-3>active document</a>.</li><li><p>If <var>document</var>'s <a id=nested-browsing-contexts:concept-origin href=origin.html#concept-origin>origin</a> and the <a href=webappapis.html#concept-settings-object-origin id=nested-browsing-contexts:concept-settings-object-origin>origin</a> specified by the <a id=nested-browsing-contexts:current-settings-object href=webappapis.html#current-settings-object>current settings
+   context</a>.</li><li><p>Let <var>document</var> be <var>context</var>'s <a href=#active-document id=nested-browsing-contexts:active-document-10>active document</a>.</li><li><p>If <var>document</var>'s <a id=nested-browsing-contexts:concept-origin href=origin.html#concept-origin>origin</a> and the <a href=webappapis.html#concept-settings-object-origin id=nested-browsing-contexts:concept-settings-object-origin>origin</a> specified by the <a id=nested-browsing-contexts:current-settings-object href=webappapis.html#current-settings-object>current settings
    object</a> are not <a id=nested-browsing-contexts:same-origin-domain href=origin.html#same-origin-domain>same origin-domain</a>, then return null.</li><li><p>Return <var>document</var>.</li></ol>
 
 
@@ -400,19 +430,19 @@
   <div class=example>
    <p>An example of when these IDL attributes can return null is as follows:</p>
 
-   <pre>&lt;!DOCTYPE html&gt;
-&lt;iframe&gt;&lt;/iframe&gt;
+   <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
 
-&lt;script&gt;
-"use strict";
-const element = document.querySelector("iframe");
-const iframeWindow = element.contentWindow;
-element.remove();
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+<c- u>"use strict"</c-><c- p>;</c->
+<c- kr>const</c-> element <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"iframe"</c-><c- p>);</c->
+<c- kr>const</c-> iframeWindow <c- o>=</c-> element<c- p>.</c->contentWindow<c- p>;</c->
+element<c- p>.</c->remove<c- p>();</c->
 
-console.assert(iframeWindow.top === null);
-console.assert(iframeWindow.parent === null);
-console.assert(iframeWindow.frameElement === null);
-&lt;/script&gt;</pre>
+console<c- p>.</c->assert<c- p>(</c->iframeWindow<c- p>.</c->top <c- o>===</c-> <c- kc>null</c-><c- p>);</c->
+console<c- p>.</c->assert<c- p>(</c->iframeWindow<c- p>.</c->parent <c- o>===</c-> <c- kc>null</c-><c- p>);</c->
+console<c- p>.</c->assert<c- p>(</c->iframeWindow<c- p>.</c->frameElement <c- o>===</c-> <c- kc>null</c-><c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>Here the <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-8>browsing context</a> corresponding to <code>iframeWindow</code>
    was <a href=window-object.html#a-browsing-context-is-discarded id=navigating-nested-browsing-contexts-in-the-dom:a-browsing-context-is-discarded>discarded</a> when <code>element</code> was removed from the document.</p>

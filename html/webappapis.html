@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
    
 
@@ -933,14 +933,14 @@
   field of a <a id=realms-settings-objects-global-objects:javascript-realm href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript realm</a>.</p>
 
   <p class=note>In this specification, all <a href=https://tc39.github.io/ecma262/#sec-code-realms id=realms-settings-objects-global-objects:javascript-realm-2 data-x-internal=javascript-realm>JavaScript
-  realms</a> are <a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm id=realms-settings-objects-global-objects:js-initializehostdefinedrealm data-x-internal=js-initializehostdefinedrealm>initialized</a> with <a href=#global-object id=realms-settings-objects-global-objects:global-object>global objects</a> that are either <code id=realms-settings-objects-global-objects:window><a href=window-object.html#window>Window</a></code> or
+  realms</a> are <a href=#creating-a-new-javascript-realm id=realms-settings-objects-global-objects:creating-a-new-javascript-realm>created</a> with <a href=#global-object id=realms-settings-objects-global-objects:global-object>global objects</a> that are either <code id=realms-settings-objects-global-objects:window><a href=window-object.html#window>Window</a></code> or
   <code id=realms-settings-objects-global-objects:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> objects.</p>
 
   <p>There is always a 1-to-1-to-1 mapping between <a href=https://tc39.github.io/ecma262/#sec-code-realms id=realms-settings-objects-global-objects:javascript-realm-3 data-x-internal=javascript-realm>JavaScript
   realms</a>, <a href=#global-object id=realms-settings-objects-global-objects:global-object-2>global objects</a>, and <a href=#environment-settings-object id=realms-settings-objects-global-objects:environment-settings-object>environment settings objects</a>:</p>
 
   <ul><li><p>A <a id=realms-settings-objects-global-objects:javascript-realm-4 href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript realm</a> has a [[HostDefined]] field, which contains <dfn data-dfn-for=Realm id=concept-realm-settings-object data-lt="settings object" data-export="">the Realm's settings object</dfn>.</li><li><p>A <a id=realms-settings-objects-global-objects:javascript-realm-5 href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript realm</a> has a [[GlobalObject]] field, which contains <dfn data-dfn-for=Realm id=concept-realm-global data-lt="global object" data-export="">the
-   Realm's global object</dfn>.</li><li><p>Each <a href=#global-object id=realms-settings-objects-global-objects:global-object-3>global object</a> in this specification is created during the <a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm id=realms-settings-objects-global-objects:js-initializehostdefinedrealm-2 data-x-internal=js-initializehostdefinedrealm>initialization</a> of a corresponding <a id=realms-settings-objects-global-objects:javascript-realm-6 href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript
+   Realm's global object</dfn>.</li><li><p>Each <a href=#global-object id=realms-settings-objects-global-objects:global-object-3>global object</a> in this specification is created during the <a href=#creating-a-new-javascript-realm id=realms-settings-objects-global-objects:creating-a-new-javascript-realm-2>creation</a> of a corresponding <a id=realms-settings-objects-global-objects:javascript-realm-6 href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript
    realm</a>, known as <dfn data-dfn-for="global object" id=concept-global-object-realm data-lt=Realm data-export="">the global object's Realm</dfn>.</li><li id=relevant-settings-object-for-a-global-object><p>Each <a href=#global-object id=realms-settings-objects-global-objects:global-object-4>global object</a> in this
    specification is created alongside a corresponding <a href=#environment-settings-object id=realms-settings-objects-global-objects:environment-settings-object-2>environment settings object</a>,
    known as its <a href=#relevant-settings-object id=realms-settings-objects-global-objects:relevant-settings-object>relevant settings object</a>.</p>
@@ -949,6 +949,21 @@
    Realm component is <dfn data-dfn-for="environment settings object" id="environment-settings-object's-realm" data-lt=Realm data-export="">the environment settings object's
    Realm</dfn>.</li><li><p>An <a href=#environment-settings-object id=realms-settings-objects-global-objects:environment-settings-object-4>environment settings object</a>'s <a href="#environment-settings-object's-realm" id="realms-settings-objects-global-objects:environment-settings-object's-realm">Realm</a> then has a [[GlobalObject]] field, which contains <dfn data-dfn-for="environment
    settings object" id=concept-settings-object-global data-lt="global object" data-export="">the environment settings object's global object</dfn>.</li></ul>
+
+  <p>To <dfn id=creating-a-new-javascript-realm>create a new JavaScript realm</dfn>,
+  optionally with instructions to create a global object or a global <b>this</b> binding (or both),
+  the following steps are taken:</p>
+
+  <ol><li><p>Perform <a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm id=realms-settings-objects-global-objects:js-initializehostdefinedrealm data-x-internal=js-initializehostdefinedrealm>InitializeHostDefinedRealm</a>()
+   with the provided customizations for creating the global object and the global <b>this</b>
+   binding.</li><li>
+    <p>Let <var>realm execution context</var> be the <a id=realms-settings-objects-global-objects:running-javascript-execution-context href=https://tc39.github.io/ecma262/#running-execution-context data-x-internal=running-javascript-execution-context>running JavaScript execution
+    context</a>.</p>
+
+    <p class=note>This is the <a id=realms-settings-objects-global-objects:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution context</a> created in the previous
+    step.</p>
+   </li><li><p>Remove <var>realm execution context</var> from the <a id=realms-settings-objects-global-objects:javascript-execution-context-stack href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context
+   stack</a>.</li><li><p>Return <var>realm execution context</var>.</li></ol>
 
   <hr>
 
@@ -977,30 +992,30 @@
    window, <code>b.html</code> being loaded in an <code id=realms-settings-objects-global-objects:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> as shown, and <code>c.html</code> and <code>d.html</code> omitted (they can simply be empty
    documents):</p>
 
-   <pre>&lt;!-- a.html --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;title&gt;Entry page&lt;/title&gt;
+   <pre><code class='html'><c- c>&lt;!-- a.html --&gt;</c->
+<c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>"en"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Entry page<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
 
-&lt;iframe src="b.html"&gt;&lt;/iframe&gt;
-&lt;button onclick="frames[0].hello()"&gt;Hello&lt;/button&gt;
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"b.html"</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"frames[0].hello()"</c-><c- p>&gt;</c->Hello<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
 
-&lt;!--b.html --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;title&gt;Incumbent page&lt;/title&gt;
+<c- c>&lt;!--b.html --&gt;</c->
+<c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>"en"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Incumbent page<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
 
-&lt;iframe src="c.html" id="c"&gt;&lt;/iframe&gt;
-&lt;iframe src="d.html" id="d"&gt;&lt;/iframe&gt;
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"c.html"</c-> <c- e>id</c-><c- o>=</c-><c- s>"c"</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"d.html"</c-> <c- e>id</c-><c- o>=</c-><c- s>"d"</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
 
-&lt;script&gt;
-  const c = document.querySelector("#c").contentWindow;
-  const d = document.querySelector("#d").contentWindow;
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- kr>const</c-> c <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#c"</c-><c- p>).</c->contentWindow<c- p>;</c->
+  <c- kr>const</c-> d <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#d"</c-><c- p>).</c->contentWindow<c- p>;</c->
 
-  window.hello = () =&gt; {
-    c.print.call(d);
-  };
-&lt;/script&gt;</pre>
+  window<c- p>.</c->hello <c- o>=</c-> <c- p>()</c-> <c- p>=&gt;</c-> <c- p>{</c->
+    c<c- p>.</c->print<c- p>.</c->call<c- p>(</c->d<c- p>);</c->
+  <c- p>};</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>Each page has its own <a id=realms-settings-objects-global-objects:browsing-context href=browsers.html#browsing-context>browsing context</a>, and thus its own <a id=realms-settings-objects-global-objects:javascript-realm-9 href=https://tc39.github.io/ecma262/#sec-code-realms data-x-internal=javascript-realm>JavaScript
    realm</a>, <a href=#global-object id=realms-settings-objects-global-objects:global-object-6>global object</a>, and <a href=#environment-settings-object id=realms-settings-objects-global-objects:environment-settings-object-6>environment settings object</a>.</p>
@@ -1032,34 +1047,34 @@
    <a href=#concept-relevant-realm id=realms-settings-objects-global-objects:concept-relevant-realm-5>relevant Realm</a> for the <code id=realms-settings-objects-global-objects:navigator><a href=system-state.html#navigator>Navigator</a></code> object
    on which it is invoked. This has the following impact: <a href=references.html#refsBATTERY>[BATTERY]</a>
 
-   <pre>&lt;!-- outer.html --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;title&gt;Relevant Realm demo: outer page&lt;/title&gt;
-&lt;script&gt;
-  function doTest() {
-    const promise = navigator.getBattery.call(frames[0].navigator);
+   <pre><code class='html'><c- c>&lt;!-- outer.html --&gt;</c->
+<c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>"en"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Relevant Realm demo: outer page<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- a>function</c-> doTest<c- p>()</c-> <c- p>{</c->
+    <c- kr>const</c-> promise <c- o>=</c-> navigator<c- p>.</c->getBattery<c- p>.</c->call<c- p>(</c->frames<c- p>[</c-><c- mi>0</c-><c- p>].</c->navigator<c- p>);</c->
 
-    console.log(promise instanceof Promise);           // logs false
-    console.log(promise instanceof frames[0].Promise); // logs true
+    console<c- p>.</c->log<c- p>(</c->promise <c- k>instanceof</c-> Promise<c- p>);</c->           <c- c1>// logs false</c->
+<c- c1></c->    console<c- p>.</c->log<c- p>(</c->promise <c- k>instanceof</c-> frames<c- p>[</c-><c- mi>0</c-><c- p>].</c->Promise<c- p>);</c-> <c- c1>// logs true</c->
+<c- c1></c->
+    frames<c- p>[</c-><c- mi>0</c-><c- p>].</c->hello<c- p>();</c->
+  <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"inner.html"</c-> <c- e>onload</c-><c- o>=</c-><c- s>"doTest()"</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
 
-    frames[0].hello();
-  }
-&lt;/script&gt;
-&lt;iframe src="inner.html" onload="doTest()"&gt;&lt;/iframe&gt;
+<c- c>&lt;!-- inner.html --&gt;</c->
+<c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>"en"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Relevant Realm demo: inner page<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- a>function</c-> hello<c- p>()</c-> <c- p>{</c->
+    <c- kr>const</c-> promise <c- o>=</c-> navigator<c- p>.</c->getBattery<c- p>();</c->
 
-&lt;!-- inner.html --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;title&gt;Relevant Realm demo: inner page&lt;/title&gt;
-&lt;script&gt;
-  function hello() {
-    const promise = navigator.getBattery();
-
-    console.log(promise instanceof Promise);        // logs true
-    console.log(promise instanceof parent.Promise); // logs false
-  }
-&lt;/script&gt;</pre>
+    console<c- p>.</c->log<c- p>(</c->promise <c- k>instanceof</c-> Promise<c- p>);</c->        <c- c1>// logs true</c->
+<c- c1></c->    console<c- p>.</c->log<c- p>(</c->promise <c- k>instanceof</c-> parent<c- p>.</c->Promise<c- p>);</c-> <c- c1>// logs false</c->
+<c- c1></c->  <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>If the algorithm for the <code id=realms-settings-objects-global-objects:dom-navigator-getbattery-2><a data-x-internal=dom-navigator-getbattery href=https://w3c.github.io/battery/#widl-Navigator-getBattery-Promise-BatteryManager>getBattery()</a></code> method
    had instead used the <a href=https://tc39.github.io/ecma262/#current-realm id=realms-settings-objects-global-objects:current-realm-record-3 data-x-internal=current-realm-record>current Realm</a>, all the results
@@ -1168,11 +1183,11 @@
   <div class=example>
    <p>Consider the following very simple example:</p>
 
-   <pre>&lt;!DOCTYPE html&gt;
-&lt;iframe&gt;&lt;/iframe&gt;
-&lt;script&gt;
-  new frames[0].MessageChannel();
-&lt;/script&gt;</pre>
+   <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- k>new</c-> frames<c- p>[</c-><c- mi>0</c-><c- p>].</c->MessageChannel<c- p>();</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>When the <code id=incumbent:dom-messagechannel><a href=web-messaging.html#dom-messagechannel>MessageChannel()</a></code> constructor looks up the
    <a href=#incumbent-settings-object id=incumbent:incumbent-settings-object-7>incumbent settings object</a> to use as the <a href=web-messaging.html#concept-port-owner id=incumbent:concept-port-owner>owner</a> of the new <code id=incumbent:messageport><a href=web-messaging.html#messageport>MessagePort</a></code> objects, the
@@ -1192,12 +1207,12 @@
   <div class=example>
    <p>Consider the following more complicated example:</p>
 
-   <pre>&lt;!DOCTYPE html&gt;
-&lt;iframe&gt;&lt;/iframe&gt;
-&lt;script&gt;
-  const bound = frames[0].postMessage.bind(frames[0], "some data", "*");
-  window.setTimeout(bound);
-&lt;/script&gt;</pre>
+   <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- kr>const</c-> bound <c- o>=</c-> frames<c- p>[</c-><c- mi>0</c-><c- p>].</c->postMessage<c- p>.</c->bind<c- p>(</c->frames<c- p>[</c-><c- mi>0</c-><c- p>],</c-> <c- u>"some data"</c-><c- p>,</c-> <c- u>"*"</c-><c- p>);</c->
+  window<c- p>.</c->setTimeout<c- p>(</c->bound<c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>There are two interesting <a href=#environment-settings-object id=incumbent:environment-settings-object-5>environment settings
    objects</a> here: that of <code>window</code>, and that of <code>frames[0]</code>. Our concern is: what is the <a href=#incumbent-settings-object id=incumbent:incumbent-settings-object-9>incumbent settings object</a> at
@@ -1239,24 +1254,24 @@
   <div class=example>
    <p>Consider this final, even more convoluted example:</p>
 
-   <pre>&lt;!-- a.html --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;button&gt;click me&lt;/button&gt;
-&lt;iframe&gt;&lt;/iframe&gt;
-&lt;script&gt;
-const bound = frames[0].location.assign.bind(frames[0].location, "https://example.com/");
-document.querySelector("button").addEventListener("click", bound);
-&lt;/script&gt;
+   <pre><code class='html'><c- c>&lt;!-- a.html --&gt;</c->
+<c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>button</c-><c- p>&gt;</c->click me<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+<c- kr>const</c-> bound <c- o>=</c-> frames<c- p>[</c-><c- mi>0</c-><c- p>].</c->location<c- p>.</c->assign<c- p>.</c->bind<c- p>(</c->frames<c- p>[</c-><c- mi>0</c-><c- p>].</c->location<c- p>,</c-> <c- u>"https://example.com/"</c-><c- p>);</c->
+document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->addEventListener<c- p>(</c-><c- u>"click"</c-><c- p>,</c-> bound<c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
 
-&lt;!-- b.html --&gt;
-&lt;!DOCTYPE html&gt;
-&lt;iframe src="a.html"&gt;&lt;/iframe&gt;
-&lt;script&gt;
-  const iframe = document.querySelector("iframe");
-  iframe.onload = function onLoad() {
-    iframe.contentWindow.document.querySelector("button").click();
-  };
-&lt;/script&gt;</pre>
+<c- c>&lt;!-- b.html --&gt;</c->
+<c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"a.html"</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- kr>const</c-> iframe <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"iframe"</c-><c- p>);</c->
+  iframe<c- p>.</c->onload <c- o>=</c-> <c- a>function</c-> onLoad<c- p>()</c-> <c- p>{</c->
+    iframe<c- p>.</c->contentWindow<c- p>.</c->document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->click<c- p>();</c->
+  <c- p>};</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>Again there are two interesting <a href=#environment-settings-object id=incumbent:environment-settings-object-6>environment
    settings objects</a> in play: that of <code>a.html</code>, and that of <code>b.html</code>. When the <code id=incumbent:dom-location-assign><a href=history.html#dom-location-assign>location.assign()</a></code>
@@ -1343,9 +1358,9 @@ document.querySelector("button").addEventListener("click", bound);
    <p>For example, the following script never terminates. A user agent could, after waiting for a
    few seconds, prompt the user to either terminate the script or let it continue.</p>
 
-   <pre>&lt;script&gt;
- while (true) { /* loop */ }
-&lt;/script&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- k>while</c-> <c- p>(</c-><c- kc>true</c-><c- p>)</c-> <c- p>{</c-> <c- d>/* loop */</c-> <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -1451,9 +1466,9 @@ document.querySelector("button").addEventListener("click", bound);
    create three separate entries in the <a href=#module-map id=integration-with-the-javascript-module-system:module-map-3>module map</a>, since it results in three different
    URLs:</p>
 
-   <pre>import "https://example.com/module.mjs";
-import "https://example.com/module.mjs#map-buster";
-import "https://example.com/module.mjs?debug=true";</pre>
+   <pre><code class='js'><c- kr>import</c-> <c- u>"https://example.com/module.mjs"</c-><c- p>;</c->
+<c- kr>import</c-> <c- u>"https://example.com/module.mjs#map-buster"</c-><c- p>;</c->
+<c- kr>import</c-> <c- u>"https://example.com/module.mjs?debug=true"</c-><c- p>;</c-></code></pre>
 
    <p>That is, URL <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-query id=integration-with-the-javascript-module-system:concept-url-query data-x-internal=concept-url-query>queries</a> and <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=integration-with-the-javascript-module-system:concept-url-fragment data-x-internal=concept-url-fragment>fragments</a> can be varied to create distinct entries in the
    <a href=#module-map id=integration-with-the-javascript-module-system:module-map-4>module map</a>; they are not ignored. Thus, three separate fetches and three separate
@@ -1462,10 +1477,10 @@ import "https://example.com/module.mjs?debug=true";</pre>
    <p>In contrast, the following code would only create a single entry in the <a href=#module-map id=integration-with-the-javascript-module-system:module-map-5>module
    map</a>, since after applying the <a id=integration-with-the-javascript-module-system:url-parser href=https://triple-underscore.github.io/URL-ja.html#concept-url-parser data-x-internal=url-parser>URL parser</a> to these inputs, the resulting <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=integration-with-the-javascript-module-system:url-record-2 data-x-internal=url-record>URL records</a> are equal:</p>
 
-   <pre>import "https://example.com/module2.mjs";
-import "https:example.com/module2.mjs";
-import "https://///example.com\\module2.mjs";
-import "https://example.com/foo/../module2.mjs";</pre>
+   <pre><code class='js'><c- kr>import</c-> <c- u>"https://example.com/module2.mjs"</c-><c- p>;</c->
+<c- kr>import</c-> <c- u>"https:example.com/module2.mjs"</c-><c- p>;</c->
+<c- kr>import</c-> <c- u>"https://///example.com\\module2.mjs"</c-><c- p>;</c->
+<c- kr>import</c-> <c- u>"https://example.com/foo/../module2.mjs"</c-><c- p>;</c-></code></pre>
 
    <p>So in this second example, only one fetch and one module evaluation will occur.</p>
 
@@ -1564,18 +1579,23 @@ import "https://example.com/foo/../module2.mjs";</pre>
 
   <h5 id=integration-with-the-javascript-agent-formalism><span class=secno>8.1.3.9</span> Integration with the JavaScript agent formalism<a href=#integration-with-the-javascript-agent-formalism class=self-link></a></h5>
 
-  <p>JavaScript defines the concept of an <a id=integration-with-the-javascript-agent-formalism:agent href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>. Until such a time that this standard
-  has a better handle on lifetimes, we define five types of <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-2 data-x-internal=agent>agents</a> that
-  user agents must allocate at the appropriate time.</p>
+  <p>JavaScript defines the concept of an <a id=integration-with-the-javascript-agent-formalism:agent href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>. This section gives the mapping of that
+  language-level concept on to the web platform.</p>
 
-  <p class=note>In the future, when this specification has a better handle on lifetimes, we hope
-  to define exactly when <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-3 data-x-internal=agent>agents</a> and <a href=https://tc39.github.io/ecma262/#sec-agent-clusters id=integration-with-the-javascript-agent-formalism:agent-cluster data-x-internal=agent-cluster>agent
-  clusters</a> are created.</p>
+  <p class=XXX>JavaScript is expected to define <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-2 data-x-internal=agent>agents</a> in more detail; in particular that they hold a set of <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm>realms</a>: <a href=https://github.com/tc39/ecma262/issues/882>tc39/ecma262 issue #882</a>.</p>
 
-  <p class=XXX>JavaScript is expected to define <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-4 data-x-internal=agent>agents</a> in more detail; in particular that they hold a set of <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm>realms</a>: <a href=https://github.com/tc39/ecma262/issues/882>tc39/ecma262 issue #882</a>.</p>
+  <p class=note>Conceptually, the <a id=integration-with-the-javascript-agent-formalism:agent-3 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> concept is an architecture-independent,
+  idealized "thread" in which JavaScript code runs. Such code can involve multiple globals/<a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-2>realms</a> that can synchronously access each other, and
+  thus need to run in a single execution thread.</p>
+
+  <p>Until such a time that this standard has a better handle on lifetimes, it defines five types of
+  <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-4 data-x-internal=agent>agents</a> that user agents must allocate at the appropriate time.</p>
+
+  <p class=note>In the future, this standard hopes to define exactly when <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-5 data-x-internal=agent>agents</a> and <a href=https://tc39.github.io/ecma262/#sec-agent-clusters id=integration-with-the-javascript-agent-formalism:agent-cluster data-x-internal=agent-cluster>agent clusters</a> are
+  created.</p>
 
   <dl><dt><dfn id=similar-origin-window-agent data-export="">Similar-origin window agent</dfn><dd>
-    <p>An <a id=integration-with-the-javascript-agent-formalism:agent-5 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is false and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm data-x-internal=javascript-realm>realms</a> consists of all <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-2>realms</a> of <code id=integration-with-the-javascript-agent-formalism:window><a href=window-object.html#window>Window</a></code> objects whose
+    <p>An <a id=integration-with-the-javascript-agent-formalism:agent-6 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is false and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm data-x-internal=javascript-realm>realms</a> consists of all <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-3>realms</a> of <code id=integration-with-the-javascript-agent-formalism:window><a href=window-object.html#window>Window</a></code> objects whose
     <a href=#relevant-settings-object id=integration-with-the-javascript-agent-formalism:relevant-settings-object>relevant settings object</a>'s <a href=#responsible-browsing-context id=integration-with-the-javascript-agent-formalism:responsible-browsing-context>responsible browsing context</a> is in the same
     <a id=integration-with-the-javascript-agent-formalism:unit-of-related-similar-origin-browsing-contexts href=browsers.html#unit-of-related-similar-origin-browsing-contexts>unit of related similar-origin browsing contexts</a>.</p>
 
@@ -1583,19 +1603,32 @@ import "https://example.com/foo/../module2.mjs";</pre>
     different <a href=#similar-origin-window-agent id=integration-with-the-javascript-agent-formalism:similar-origin-window-agent>similar-origin window agents</a>, for
     instance if they are each in their own <a id=integration-with-the-javascript-agent-formalism:unit-of-related-similar-origin-browsing-contexts-2 href=browsers.html#unit-of-related-similar-origin-browsing-contexts>unit of related similar-origin browsing
     contexts</a>.</p>
-   <dt><dfn id=dedicated-worker-agent data-export="">Dedicated worker agent</dfn><dd><p>An <a id=integration-with-the-javascript-agent-formalism:agent-6 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is true and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-2 data-x-internal=javascript-realm>realms</a> consists of a single <code id=integration-with-the-javascript-agent-formalism:dedicatedworkerglobalscope><a href=workers.html#dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</a></code> object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-3>Realm</a>.<dt><dfn id=shared-worker-agent data-export="">Shared worker agent</dfn><dd><p>An <a id=integration-with-the-javascript-agent-formalism:agent-7 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is true and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-3 data-x-internal=javascript-realm>realms</a> consists a single <code id=integration-with-the-javascript-agent-formalism:sharedworkerglobalscope><a href=workers.html#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-4>Realm</a>.<dt><dfn id=service-worker-agent data-export="">Service worker agent</dfn><dd><p>An <a id=integration-with-the-javascript-agent-formalism:agent-8 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is false and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-4 data-x-internal=javascript-realm>realms</a> consists of a single <code id=integration-with-the-javascript-agent-formalism:serviceworkerglobalscope><a data-x-internal=serviceworkerglobalscope href=https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope>ServiceWorkerGlobalScope</a></code> object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-5>Realm</a>.<dt><dfn id=worklet-agent data-export="">Worklet agent</dfn><dd>
-    <p>An <a id=integration-with-the-javascript-agent-formalism:agent-9 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is false and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-5 data-x-internal=javascript-realm>realms</a> consists of a single <code id=integration-with-the-javascript-agent-formalism:workletglobalscope><a data-x-internal=workletglobalscope href=https://drafts.css-houdini.org/worklets/#workletglobalscope>WorkletGlobalScope</a></code>
-    object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-6>Realm</a>.</p>
+   <dt><dfn id=dedicated-worker-agent data-export="">Dedicated worker agent</dfn><dd><p>An <a id=integration-with-the-javascript-agent-formalism:agent-7 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is true and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-2 data-x-internal=javascript-realm>realms</a> consists of a single <code id=integration-with-the-javascript-agent-formalism:dedicatedworkerglobalscope><a href=workers.html#dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</a></code> object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-4>Realm</a>.<dt><dfn id=shared-worker-agent data-export="">Shared worker agent</dfn><dd><p>An <a id=integration-with-the-javascript-agent-formalism:agent-8 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is true and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-3 data-x-internal=javascript-realm>realms</a> consists a single <code id=integration-with-the-javascript-agent-formalism:sharedworkerglobalscope><a href=workers.html#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-5>Realm</a>.<dt><dfn id=service-worker-agent data-export="">Service worker agent</dfn><dd><p>An <a id=integration-with-the-javascript-agent-formalism:agent-9 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is false and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-4 data-x-internal=javascript-realm>realms</a> consists of a single <code id=integration-with-the-javascript-agent-formalism:serviceworkerglobalscope><a data-x-internal=serviceworkerglobalscope href=https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope>ServiceWorkerGlobalScope</a></code> object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-6>Realm</a>.<dt><dfn id=worklet-agent data-export="">Worklet agent</dfn><dd>
+    <p>An <a id=integration-with-the-javascript-agent-formalism:agent-10 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> whose [[CanBlock]] is false and whose set of <a href=https://tc39.github.io/ecma262/#sec-code-realms id=integration-with-the-javascript-agent-formalism:javascript-realm-5 data-x-internal=javascript-realm>realms</a> consists of a single <code id=integration-with-the-javascript-agent-formalism:workletglobalscope><a data-x-internal=workletglobalscope href=https://drafts.css-houdini.org/worklets/#workletglobalscope>WorkletGlobalScope</a></code>
+    object's <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-7>Realm</a>.</p>
 
-    <p class=note>While conceptually it might be cleaner for worklets that end up with multiple
-    realms to put all those in the same agent, it is not observable in practice.</p>
+    <p class=note>Although a given worklet can have multiple realms, each such realm needs its own
+    agent, as each realm can be executing code independently and at the same time as the others.</p>
    </dl>
 
   <h5 id=integration-with-the-javascript-agent-cluster-formalism><span class=secno>8.1.3.10</span> Integration with the JavaScript agent cluster formalism<a href=#integration-with-the-javascript-agent-cluster-formalism class=self-link></a></h5>
 
-  <p><dfn id=can-share-memory-with>Can share memory with</dfn> defines an equivalence relation. An <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a>
-  consists of all <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-cluster-formalism:agent data-x-internal=agent>agents</a> in the same equivalence class with respect to
-  the <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with>can share memory with</a> equivalence relation.</p>
+  <p>JavaScript also defines the concept of an <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a>, which this standard maps
+  to the web platform using the <dfn id=can-share-memory-with>can share memory with</dfn> equivalence relation detailed
+  below. On the web platform, an <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-2 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a> consists of all <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-cluster-formalism:agent data-x-internal=agent>agents</a> in the same equivalence class with respect to the <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with>can share
+  memory with</a> equivalence relation.</p>
+
+  <p>The <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-3 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a> concept is crucial for defining the JavaScript memory model, and
+  in particular among which <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-cluster-formalism:agent-2 data-x-internal=agent>agents</a> the backing data of
+  <code id=integration-with-the-javascript-agent-cluster-formalism:sharedarraybuffer><a data-x-internal=sharedarraybuffer href=https://tc39.github.io/ecma262/#sec-sharedarraybuffer-objects>SharedArrayBuffer</a></code> objects can be shared.</p>
+
+  <p class=note>Conceptually, the <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-4 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a> concept is an
+  architecture-independent, idealized "process boundary" that groups together multiple "threads"
+  (<a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-cluster-formalism:agent-3 data-x-internal=agent>agents</a>). The <a href=https://tc39.github.io/ecma262/#sec-agent-clusters id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-5 data-x-internal=agent-cluster>agent clusters</a>
+  defined by the specification are generally more restrictive than the actual process boundaries
+  implemented in user agents. By enforcing these idealized divisions at the specification level, we
+  ensure that web developers see interoperable behavior with regard to shared memory, even in the
+  face of varying and changing user agent process models.</p>
 
   <p>A <a href=#similar-origin-window-agent id=integration-with-the-javascript-agent-cluster-formalism:similar-origin-window-agent>similar-origin window agent</a>, <a href=#dedicated-worker-agent id=integration-with-the-javascript-agent-cluster-formalism:dedicated-worker-agent>dedicated worker agent</a>, <a href=#shared-worker-agent id=integration-with-the-javascript-agent-cluster-formalism:shared-worker-agent>shared
   worker agent</a>, or <a href=#service-worker-agent id=integration-with-the-javascript-agent-cluster-formalism:service-worker-agent>service worker agent</a>, <var>agent</var>, <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with-2>can share
@@ -1603,26 +1636,22 @@ import "https://example.com/foo/../module2.mjs";</pre>
   set</a> contains an item whose <a href=#concept-relevant-realm id=integration-with-the-javascript-agent-cluster-formalism:concept-relevant-realm>relevant Realm</a>
   belongs to <var>agent</var>.</p>
 
-  <p class=note>We use item above as an <a id=integration-with-the-javascript-agent-cluster-formalism:concept-WorkerGlobalScope-owner-set-2 href=workers.html#concept-WorkerGlobalScope-owner-set>owner set</a> can contain <code id=integration-with-the-javascript-agent-cluster-formalism:document><a href=dom.html#document>Document</a></code>
-  objects.</p>
+  <p class=note>"Item" is used above as an <a id=integration-with-the-javascript-agent-cluster-formalism:concept-WorkerGlobalScope-owner-set-2 href=workers.html#concept-WorkerGlobalScope-owner-set>owner set</a> can contain
+  <code id=integration-with-the-javascript-agent-cluster-formalism:document><a href=dom.html#document>Document</a></code> objects.</p>
 
   <p class=XXX>A <a href=#worklet-agent id=integration-with-the-javascript-agent-cluster-formalism:worklet-agent>worklet agent</a> … currently worklets have
   no clearly defined owner, see: <a href=https://github.com/w3c/css-houdini-drafts/issues/224>w3c/css-houdini-drafts issue
   #224</a>.</p>
 
-  <p>In addition, any <a id=integration-with-the-javascript-agent-cluster-formalism:agent-2 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> <var>A</var> <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with-3>can share memory with</a>:</p>
+  <p>In addition, any <a id=integration-with-the-javascript-agent-cluster-formalism:agent-4 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> <var>A</var> <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with-3>can share memory with</a>:</p>
 
-  <ul class=brief><li><var>A</var>,</li><li>any <a id=integration-with-the-javascript-agent-cluster-formalism:agent-3 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> <var>B</var> such that <var>B</var> <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with-4>can share memory with</a>
-   <var>A</var>, and</li><li>any <a id=integration-with-the-javascript-agent-cluster-formalism:agent-4 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> <var>B</var> such that there exists an <a id=integration-with-the-javascript-agent-cluster-formalism:agent-5 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>
+  <ul class=brief><li><var>A</var>,</li><li>any <a id=integration-with-the-javascript-agent-cluster-formalism:agent-5 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> <var>B</var> such that <var>B</var> <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with-4>can share memory with</a>
+   <var>A</var>, and</li><li>any <a id=integration-with-the-javascript-agent-cluster-formalism:agent-6 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> <var>B</var> such that there exists an <a id=integration-with-the-javascript-agent-cluster-formalism:agent-7 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>
    <var>C</var>, where <var>A</var> <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with-5>can share memory with</a> <var>C</var> and <var>C</var>
    <a href=#can-share-memory-with id=integration-with-the-javascript-agent-cluster-formalism:can-share-memory-with-6>can share memory with</a> <var>B</var>.</li></ul>
 
-  <p>The <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-2 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a> concept is crucial for defining the JavaScript memory model, and
-  in particular among which <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-cluster-formalism:agent-6 data-x-internal=agent>agents</a> the backing data of
-  <code id=integration-with-the-javascript-agent-cluster-formalism:sharedarraybuffer><a data-x-internal=sharedarraybuffer href=https://tc39.github.io/ecma262/#sec-sharedarraybuffer-objects>SharedArrayBuffer</a></code> objects can be shared.</p>
-
   <div class=example>
-   <p>The following pairs of global objects are each within the same <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-3 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a>, and
+   <p>The following pairs of global objects are each within the same <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-6 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent cluster</a>, and
    thus can use <code id=integration-with-the-javascript-agent-cluster-formalism:sharedarraybuffer-2><a data-x-internal=sharedarraybuffer href=https://tc39.github.io/ecma262/#sec-sharedarraybuffer-objects>SharedArrayBuffer</a></code> instances to share memory with each other:</p>
 
    <ul class=brief><li>A <code id=integration-with-the-javascript-agent-cluster-formalism:window><a href=window-object.html#window>Window</a></code> object and a dedicated worker that it created.</li><li>A worker (of any type) and a dedicated worker it created.</li><li>A <code id=integration-with-the-javascript-agent-cluster-formalism:window-2><a href=window-object.html#window>Window</a></code> object <var>A</var> and the <code id=integration-with-the-javascript-agent-cluster-formalism:window-3><a href=window-object.html#window>Window</a></code> object of an
@@ -1630,12 +1659,14 @@ import "https://example.com/foo/../module2.mjs";</pre>
     origin-domain</a> with <var>A</var>.</li><li>A <code id=integration-with-the-javascript-agent-cluster-formalism:window-4><a href=window-object.html#window>Window</a></code> object and a <a id=integration-with-the-javascript-agent-cluster-formalism:same-origin-domain-2 href=origin.html#same-origin-domain>same origin-domain</a> <code id=integration-with-the-javascript-agent-cluster-formalism:window-5><a href=window-object.html#window>Window</a></code>
     object that opened it.</li></ul>
 
-   <p>The following pairs of global objects are <em>not</em> within the same <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-4 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent
+   <p>The following pairs of global objects are <em>not</em> within the same <a id=integration-with-the-javascript-agent-cluster-formalism:agent-cluster-7 href=https://tc39.github.io/ecma262/#sec-agent-clusters data-x-internal=agent-cluster>agent
    cluster</a>, and thus cannot share memory:</p>
 
    <ul class=brief><li>A <code id=integration-with-the-javascript-agent-cluster-formalism:window-6><a href=window-object.html#window>Window</a></code> object and a shared worker it created.</li><li>A worker (of any type) and a shared worker it created.</li><li>A <code id=integration-with-the-javascript-agent-cluster-formalism:window-7><a href=window-object.html#window>Window</a></code> object and a service worker it created.</li><li>A <code id=integration-with-the-javascript-agent-cluster-formalism:window-8><a href=window-object.html#window>Window</a></code> object <var></var> and the <code id=integration-with-the-javascript-agent-cluster-formalism:window-9><a href=window-object.html#window>Window</a></code> object of an
     <code id=integration-with-the-javascript-agent-cluster-formalism:the-iframe-element-2><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code> element that <var>A</var> created that cannot be <a id=integration-with-the-javascript-agent-cluster-formalism:same-origin-domain-3 href=origin.html#same-origin-domain>same
-    origin-domain</a> with <var>A</var>.</li></ul>
+    origin-domain</a> with <var>A</var>.</li><li>Any two <code id=integration-with-the-javascript-agent-cluster-formalism:window-10><a href=window-object.html#window>Window</a></code> objects whose <a href=browsers.html#browsing-context id=integration-with-the-javascript-agent-cluster-formalism:browsing-context>browsing
+    contexts</a> do not have an <a href=browsers.html#opener-browsing-context id=integration-with-the-javascript-agent-cluster-formalism:opener-browsing-context>opener</a> or <a href=browsers.html#ancestor-browsing-context id=integration-with-the-javascript-agent-cluster-formalism:ancestor-browsing-context>ancestor</a> relationship. This holds even if the two
+    <code id=integration-with-the-javascript-agent-cluster-formalism:window-11><a href=window-object.html#window>Window</a></code> objects are <a id=integration-with-the-javascript-agent-cluster-formalism:same-origin href=origin.html#same-origin>same origin</a>.</li></ul>
   </div>
 
   
@@ -1709,22 +1740,22 @@ import "https://example.com/foo/../module2.mjs";</pre>
 
   
 
-  <pre class=idl>[Constructor(DOMString type, optional <a href=#erroreventinit id=the-errorevent-interface:erroreventinit>ErrorEventInit</a> eventInitDict), Exposed=(Window,Worker)]
-interface <dfn id=errorevent>ErrorEvent</dfn> : <a id=the-errorevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
-  readonly attribute DOMString <a href=#dom-errorevent-message id=the-errorevent-interface:dom-errorevent-message>message</a>;
-  readonly attribute USVString <a href=#dom-errorevent-filename id=the-errorevent-interface:dom-errorevent-filename>filename</a>;
-  readonly attribute unsigned long <a href=#dom-errorevent-lineno id=the-errorevent-interface:dom-errorevent-lineno>lineno</a>;
-  readonly attribute unsigned long <a href=#dom-errorevent-colno id=the-errorevent-interface:dom-errorevent-colno>colno</a>;
-  readonly attribute any <a href=#dom-errorevent-error id=the-errorevent-interface:dom-errorevent-error>error</a>;
+  <pre><code class='idl'>[<c- g>Constructor</c->(<c- b>DOMString</c-> <c- g>type</c->, <c- b>optional</c-> <a href='#erroreventinit' id='the-errorevent-interface:erroreventinit'><c- n>ErrorEventInit</c-></a> <c- g>eventInitDict</c->), <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='errorevent'><c- g>ErrorEvent</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='the-errorevent-interface:event'><c- n>Event</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-errorevent-message' id='the-errorevent-interface:dom-errorevent-message'><c- g>message</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <a href='#dom-errorevent-filename' id='the-errorevent-interface:dom-errorevent-filename'><c- g>filename</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <a href='#dom-errorevent-lineno' id='the-errorevent-interface:dom-errorevent-lineno'><c- g>lineno</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <a href='#dom-errorevent-colno' id='the-errorevent-interface:dom-errorevent-colno'><c- g>colno</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>any</c-> <a href='#dom-errorevent-error' id='the-errorevent-interface:dom-errorevent-error'><c- g>error</c-></a>;
 };
 
-dictionary <dfn id=erroreventinit>ErrorEventInit</dfn> : <a id=the-errorevent-interface:eventinit href=https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
-  DOMString message = "";
-  USVString filename = "";
-  unsigned long lineno = 0;
-  unsigned long colno = 0;
-  any error = null;
-};</pre>
+<c- b>dictionary</c-> <dfn id='erroreventinit'><c- g>ErrorEventInit</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit' data-x-internal='eventinit' id='the-errorevent-interface:eventinit'><c- n>EventInit</c-></a> {
+  <c- b>DOMString</c-> <c- g>message</c-> = "";
+  <c- b>USVString</c-> <c- g>filename</c-> = "";
+  <c- b>unsigned</c-> <c- b>long</c-> <c- g>lineno</c-> = 0;
+  <c- b>unsigned</c-> <c- b>long</c-> <c- g>colno</c-> = 0;
+  <c- b>any</c-> <c- g>error</c-> = <c- b>null</c->;
+};</code></pre>
 
   <p><dfn id=dom-errorevent-message><code>message</code></dfn>属性は、属性が初期化された値を返さなければならない。これはエラーメッセージを表す。</p>
 
@@ -1808,16 +1839,16 @@ dictionary <dfn id=erroreventinit>ErrorEventInit</dfn> : <a id=the-errorevent-in
 
   <h6 id=the-promiserejectionevent-interface><span class=secno>8.1.3.12.2</span> The <code id=the-promiserejectionevent-interface:promiserejectionevent><a href=#promiserejectionevent>PromiseRejectionEvent</a></code> interface<a href=#the-promiserejectionevent-interface class=self-link></a></h6>
 
-  <pre class=idl>[Constructor(DOMString type, <a href=#promiserejectioneventinit id=the-promiserejectionevent-interface:promiserejectioneventinit>PromiseRejectionEventInit</a> eventInitDict), Exposed=(Window,Worker)]
-interface <dfn id=promiserejectionevent>PromiseRejectionEvent</dfn> : <a id=the-promiserejectionevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
-  readonly attribute Promise&lt;any&gt; <a href=#dom-promiserejectionevent-promise id=the-promiserejectionevent-interface:dom-promiserejectionevent-promise>promise</a>;
-  readonly attribute any <a href=#dom-promiserejectionevent-reason id=the-promiserejectionevent-interface:dom-promiserejectionevent-reason>reason</a>;
+  <pre><code class='idl'>[<c- g>Constructor</c->(<c- b>DOMString</c-> <c- g>type</c->, <a href='#promiserejectioneventinit' id='the-promiserejectionevent-interface:promiserejectioneventinit'><c- n>PromiseRejectionEventInit</c-></a> <c- g>eventInitDict</c->), <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='promiserejectionevent'><c- g>PromiseRejectionEvent</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='the-promiserejectionevent-interface:event'><c- n>Event</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>Promise</c->&lt;<c- b>any</c->&gt; <a href='#dom-promiserejectionevent-promise' id='the-promiserejectionevent-interface:dom-promiserejectionevent-promise'><c- g>promise</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>any</c-> <a href='#dom-promiserejectionevent-reason' id='the-promiserejectionevent-interface:dom-promiserejectionevent-reason'><c- g>reason</c-></a>;
 };
 
-dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <a id=the-promiserejectionevent-interface:eventinit href=https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
-  required Promise&lt;any&gt; promise;
-  any reason;
-};</pre>
+<c- b>dictionary</c-> <dfn id='promiserejectioneventinit'><c- g>PromiseRejectionEventInit</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit' data-x-internal='eventinit' id='the-promiserejectionevent-interface:eventinit'><c- n>EventInit</c-></a> {
+  <c- b>required</c-> <c- b>Promise</c->&lt;<c- b>any</c->&gt; <c- g>promise</c->;
+  <c- b>any</c-> <c- g>reason</c->;
+};</code></pre>
 
   <p>The <dfn id=dom-promiserejectionevent-promise><code>promise</code></dfn> attribute must
   return the value it was initialized to. It represents the promise which this notification is about.</p>
@@ -2198,7 +2229,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   <p>To affect the world of observable JavaScript objects, then, you must <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-2>queue a task</a>
   to perform any such manipulations. This ensures your steps are properly interleaved with respect
   to other things happening on the <a href=#event-loop id=event-loop-for-spec-authors:event-loop-5>event loop</a>. Furthermore, you must choose a
-  <a href=#task-source id=event-loop-for-spec-authors:task-source>task source</a> when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-3>queueing a task</a>; this governs the
+  <a href=#task-source id=event-loop-for-spec-authors:task-source>task source</a> when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-3>queuing a task</a>; this governs the
   relative order of your steps versus others. If you are unsure which <a href=#task-source id=event-loop-for-spec-authors:task-source-2>task source</a> to
   use, pick one of the <a href=#generic-task-sources>generic task sources</a> that sounds most
   applicable.</p>
@@ -2208,7 +2239,7 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
   algorithms to be invoked in contexts involving multiple event loops. (Unlike contexts involving
   multiple global objects, which happen all the time!) So unless you are writing a specification
   which, e.g., deals with manipulating <a href=workers.html#workers>workers</a>, you can omit this argument
-  when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-5>queueing a task</a>.</p>
+  when <a href=#queue-a-task id=event-loop-for-spec-authors:queue-a-task-5>queuing a task</a>.</p>
 
   <p>Putting this all together, we can provide a template for a typical algorithm that needs to do
   work asynchronously:</p>
@@ -2392,15 +2423,15 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
    <p>この例は、イベントリスナーが呼び出される順序を示す。この例でボタンがユーザーによってクリックされる場合、ページはそれぞれテキスト"ONE"、"TWO"、"THREE"、"FOUR"をもつ4つの警告を表示する。</p>
 
-   <pre>&lt;button id="test"&gt;Start Demo&lt;/button&gt;
-&lt;script&gt;
- var button = document.getElementById('test');
- button.addEventListener('click', function () { alert('ONE') }, false);
- button.setAttribute('onclick', "alert('NOT CALLED')"); // event handler listener is registered here
- button.addEventListener('click', function () { alert('THREE') }, false);
- button.onclick = function () { alert('TWO'); };
- button.addEventListener('click', function () { alert('FOUR') }, false);
-&lt;/script&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>button</c-> <c- e>id</c-><c- o>=</c-><c- s>"test"</c-><c- p>&gt;</c->Start Demo<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- a>var</c-> button <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;test&amp;apos;</c-><c- p>);</c->
+ button<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;click&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c-> alert<c- p>(</c-><c- t>&amp;apos;ONE&amp;apos;</c-><c- p>)</c-> <c- p>},</c-> <c- kc>false</c-><c- p>);</c->
+ button<c- p>.</c->setAttribute<c- p>(</c-><c- t>&amp;apos;onclick&amp;apos;</c-><c- p>,</c-> <c- u>"alert(&amp;apos;NOT CALLED&amp;apos;)"</c-><c- p>);</c-> <c- c1>// event handler listener is registered here</c->
+<c- c1></c-> button<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;click&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c-> alert<c- p>(</c-><c- t>&amp;apos;THREE&amp;apos;</c-><c- p>)</c-> <c- p>},</c-> <c- kc>false</c-><c- p>);</c->
+ button<c- p>.</c->onclick <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c-> alert<c- p>(</c-><c- t>&amp;apos;TWO&amp;apos;</c-><c- p>);</c-> <c- p>};</c->
+ button<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;click&amp;apos;</c-><c- p>,</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c-> alert<c- p>(</c-><c- t>&amp;apos;FOUR&amp;apos;</c-><c- p>)</c-> <c- p>},</c-> <c- kc>false</c-><c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
   </div>
 
@@ -2478,9 +2509,9 @@ dictionary <dfn id=promiserejectioneventinit>PromiseRejectionEventInit</dfn> : <
 
   <p><code id=event-handler-attributes:eventhandler-2><a href=#eventhandler>EventHandler</a></code>コールバック関数型は、イベントハンドラーに対して使用されるコールバックを表す。これは以下のようにWeb IDLで表される：</p>
 
-  <pre class=idl>[TreatNonObjectAsNull]
-callback <dfn id=eventhandlernonnull>EventHandlerNonNull</dfn> = any (<a id=event-handler-attributes:event-4 href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> event);
-typedef <a href=#eventhandlernonnull id=event-handler-attributes:eventhandlernonnull>EventHandlerNonNull</a>? <dfn id=eventhandler>EventHandler</dfn>;</pre>
+  <pre><code class='idl'>[<c- g>TreatNonObjectAsNull</c->]
+<c- b>callback</c-> <dfn id='eventhandlernonnull'><c- g>EventHandlerNonNull</c-></dfn> = <c- b>any</c-> (<a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='event-handler-attributes:event-4'><c- n>Event</c-></a> <c- g>event</c->);
+<c- b>typedef</c-> <a href='#eventhandlernonnull' id='event-handler-attributes:eventhandlernonnull'><c- n>EventHandlerNonNull</c-></a>? <dfn id='eventhandler'><c- g>EventHandler</c-></dfn>;</code></pre>
 
   <p class=note>In JavaScript, any <code id=event-handler-attributes:idl-function><a data-x-internal=idl-function href=https://triple-underscore.github.io/WebIDL-ja.html#common-Function>Function</a></code> object implements
   this interface.</p>
@@ -2489,7 +2520,7 @@ typedef <a href=#eventhandlernonnull id=event-handler-attributes:eventhandlernon
 
    <p>たとえば、次の文書断片で：</p>
 
-   <pre>&lt;body onload="alert(this)" onclick="alert(this)"&gt;</pre>
+   <pre><code class='html'><c- p>&lt;</c-><c- f>body</c-> <c- e>onload</c-><c- o>=</c-><c- s>"alert(this)"</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"alert(this)"</c-><c- p>&gt;</c-></code></pre>
 
    <p>文書がロードされるときに"<code>[object&nbsp;Window]</code>"という警告を、ページでユーザーが何かをクリックするときはいつでも"<code>[object&nbsp;HTMLBodyElement]</code>"という警告を流す。</p>
 
@@ -2507,19 +2538,19 @@ typedef <a href=#eventhandlernonnull id=event-handler-attributes:eventhandlernon
 
   <p>歴史的な理由により、<code id=event-handler-attributes:handler-onerror-2><a href=#handler-onerror>onerror</a></code>ハンドラーは、異なる引数を持つ。</p>
 
-  <pre class=idl>[TreatNonObjectAsNull]
-callback <dfn id=onerroreventhandlernonnull>OnErrorEventHandlerNonNull</dfn> = any ((<a id=event-handler-attributes:event-5 href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> or DOMString) event, optional DOMString source, optional unsigned long lineno, optional unsigned long colno, optional any error);
-typedef <a href=#onerroreventhandlernonnull id=event-handler-attributes:onerroreventhandlernonnull>OnErrorEventHandlerNonNull</a>? <dfn id=onerroreventhandler>OnErrorEventHandler</dfn>;</pre>
+  <pre><code class='idl'>[<c- g>TreatNonObjectAsNull</c->]
+<c- b>callback</c-> <dfn id='onerroreventhandlernonnull'><c- g>OnErrorEventHandlerNonNull</c-></dfn> = <c- b>any</c-> ((<a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='event-handler-attributes:event-5'><c- n>Event</c-></a> <c- b>or</c-> <c- b>DOMString</c->) <c- g>event</c->, <c- b>optional</c-> <c- b>DOMString</c-> <c- g>source</c->, <c- b>optional</c-> <c- b>unsigned</c-> <c- b>long</c-> <c- g>lineno</c->, <c- b>optional</c-> <c- b>unsigned</c-> <c- b>long</c-> <c- g>colno</c->, <c- b>optional</c-> <c- b>any</c-> <c- g>error</c->);
+<c- b>typedef</c-> <a href='#onerroreventhandlernonnull' id='event-handler-attributes:onerroreventhandlernonnull'><c- n>OnErrorEventHandlerNonNull</c-></a>? <dfn id='onerroreventhandler'><c- g>OnErrorEventHandler</c-></dfn>;</code></pre>
 
   <div class=example>
-   <pre>window.onerror = (message, source, lineno, colno, error) =&gt; { … };</pre>
+   <pre><code class='js'>window<c- p>.</c->onerror <c- o>=</c-> <c- p>(</c->message<c- p>,</c-> source<c- p>,</c-> lineno<c- p>,</c-> colno<c- p>,</c-> error<c- p>)</c-> <c- p>=&gt;</c-> <c- p>{</c-> … <c- p>};</c-></code></pre>
   </div>
 
   <p>同様に、<code id=event-handler-attributes:handler-window-onbeforeunload-2><a href=#handler-window-onbeforeunload>onbeforeunload</a></code>ハンドラーは異なる戻り値を持つ：</p>
 
-  <pre class=idl>[TreatNonObjectAsNull]
-callback <dfn id=onbeforeunloadeventhandlernonnull>OnBeforeUnloadEventHandlerNonNull</dfn> = DOMString? (<a id=event-handler-attributes:event-6 href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> event);
-typedef <a href=#onbeforeunloadeventhandlernonnull id=event-handler-attributes:onbeforeunloadeventhandlernonnull>OnBeforeUnloadEventHandlerNonNull</a>? <dfn id=onbeforeunloadeventhandler>OnBeforeUnloadEventHandler</dfn>;</pre>
+  <pre><code class='idl'>[<c- g>TreatNonObjectAsNull</c->]
+<c- b>callback</c-> <dfn id='onbeforeunloadeventhandlernonnull'><c- g>OnBeforeUnloadEventHandlerNonNull</c-></dfn> = <c- b>DOMString</c->? (<a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='event-handler-attributes:event-6'><c- n>Event</c-></a> <c- g>event</c->);
+<c- b>typedef</c-> <a href='#onbeforeunloadeventhandlernonnull' id='event-handler-attributes:onbeforeunloadeventhandlernonnull'><c- n>OnBeforeUnloadEventHandlerNonNull</c-></a>? <dfn id='onbeforeunloadeventhandler'><c- g>OnBeforeUnloadEventHandler</c-></dfn>;</code></pre>
 
   
 
@@ -2771,95 +2802,95 @@ typedef <a href=#onbeforeunloadeventhandlernonnull id=event-handler-attributes:o
 
   <h6 id=idl-definitions><span class=secno>8.1.5.2.1</span> IDL定義<a href=#idl-definitions class=self-link></a></h6>
 
-  <pre class=idl>interface mixin <dfn id=globaleventhandlers>GlobalEventHandlers</dfn> {
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler>EventHandler</a> <a href=#handler-onabort id=idl-definitions:handler-onabort>onabort</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-2>EventHandler</a> <a href=#handler-onauxclick id=idl-definitions:handler-onauxclick>onauxclick</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-3>EventHandler</a> <a href=#handler-onblur id=idl-definitions:handler-onblur>onblur</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-4>EventHandler</a> <a href=#handler-oncancel id=idl-definitions:handler-oncancel>oncancel</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-5>EventHandler</a> <a href=#handler-oncanplay id=idl-definitions:handler-oncanplay>oncanplay</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-6>EventHandler</a> <a href=#handler-oncanplaythrough id=idl-definitions:handler-oncanplaythrough>oncanplaythrough</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-7>EventHandler</a> <a href=#handler-onchange id=idl-definitions:handler-onchange>onchange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-8>EventHandler</a> <a href=#handler-onclick id=idl-definitions:handler-onclick>onclick</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-9>EventHandler</a> <a href=#handler-onclose id=idl-definitions:handler-onclose>onclose</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-10>EventHandler</a> <a href=#handler-oncontextmenu id=idl-definitions:handler-oncontextmenu>oncontextmenu</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-11>EventHandler</a> <a href=#handler-oncuechange id=idl-definitions:handler-oncuechange>oncuechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-12>EventHandler</a> <a href=#handler-ondblclick id=idl-definitions:handler-ondblclick>ondblclick</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-13>EventHandler</a> <a href=#handler-ondrag id=idl-definitions:handler-ondrag>ondrag</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-14>EventHandler</a> <a href=#handler-ondragend id=idl-definitions:handler-ondragend>ondragend</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-15>EventHandler</a> <a href=#handler-ondragenter id=idl-definitions:handler-ondragenter>ondragenter</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-16>EventHandler</a> <a href=#handler-ondragexit id=idl-definitions:handler-ondragexit>ondragexit</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-17>EventHandler</a> <a href=#handler-ondragleave id=idl-definitions:handler-ondragleave>ondragleave</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-18>EventHandler</a> <a href=#handler-ondragover id=idl-definitions:handler-ondragover>ondragover</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-19>EventHandler</a> <a href=#handler-ondragstart id=idl-definitions:handler-ondragstart>ondragstart</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-20>EventHandler</a> <a href=#handler-ondrop id=idl-definitions:handler-ondrop>ondrop</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-21>EventHandler</a> <a href=#handler-ondurationchange id=idl-definitions:handler-ondurationchange>ondurationchange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-22>EventHandler</a> <a href=#handler-onemptied id=idl-definitions:handler-onemptied>onemptied</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-23>EventHandler</a> <a href=#handler-onended id=idl-definitions:handler-onended>onended</a>;
-  attribute <a href=#onerroreventhandler id=idl-definitions:onerroreventhandler>OnErrorEventHandler</a> <a href=#handler-onerror id=idl-definitions:handler-onerror>onerror</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-24>EventHandler</a> <a href=#handler-onfocus id=idl-definitions:handler-onfocus>onfocus</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-25>EventHandler</a> <a href=#handler-oninput id=idl-definitions:handler-oninput>oninput</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-26>EventHandler</a> <a href=#handler-oninvalid id=idl-definitions:handler-oninvalid>oninvalid</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-27>EventHandler</a> <a href=#handler-onkeydown id=idl-definitions:handler-onkeydown>onkeydown</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-28>EventHandler</a> <a href=#handler-onkeypress id=idl-definitions:handler-onkeypress>onkeypress</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-29>EventHandler</a> <a href=#handler-onkeyup id=idl-definitions:handler-onkeyup>onkeyup</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-30>EventHandler</a> <a href=#handler-onload id=idl-definitions:handler-onload>onload</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-31>EventHandler</a> <a href=#handler-onloadeddata id=idl-definitions:handler-onloadeddata>onloadeddata</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-32>EventHandler</a> <a href=#handler-onloadedmetadata id=idl-definitions:handler-onloadedmetadata>onloadedmetadata</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-33>EventHandler</a> <a href=#handler-onloadend id=idl-definitions:handler-onloadend>onloadend</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-34>EventHandler</a> <a href=#handler-onloadstart id=idl-definitions:handler-onloadstart>onloadstart</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-35>EventHandler</a> <a href=#handler-onmousedown id=idl-definitions:handler-onmousedown>onmousedown</a>;
-  [LenientThis] attribute <a href=#eventhandler id=idl-definitions:eventhandler-36>EventHandler</a> <a href=#handler-onmouseenter id=idl-definitions:handler-onmouseenter>onmouseenter</a>;
-  [LenientThis] attribute <a href=#eventhandler id=idl-definitions:eventhandler-37>EventHandler</a> <a href=#handler-onmouseleave id=idl-definitions:handler-onmouseleave>onmouseleave</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-38>EventHandler</a> <a href=#handler-onmousemove id=idl-definitions:handler-onmousemove>onmousemove</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-39>EventHandler</a> <a href=#handler-onmouseout id=idl-definitions:handler-onmouseout>onmouseout</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-40>EventHandler</a> <a href=#handler-onmouseover id=idl-definitions:handler-onmouseover>onmouseover</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-41>EventHandler</a> <a href=#handler-onmouseup id=idl-definitions:handler-onmouseup>onmouseup</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-42>EventHandler</a> <a href=#handler-onwheel id=idl-definitions:handler-onwheel>onwheel</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-43>EventHandler</a> <a href=#handler-onpause id=idl-definitions:handler-onpause>onpause</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-44>EventHandler</a> <a href=#handler-onplay id=idl-definitions:handler-onplay>onplay</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-45>EventHandler</a> <a href=#handler-onplaying id=idl-definitions:handler-onplaying>onplaying</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-46>EventHandler</a> <a href=#handler-onprogress id=idl-definitions:handler-onprogress>onprogress</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-47>EventHandler</a> <a href=#handler-onratechange id=idl-definitions:handler-onratechange>onratechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-48>EventHandler</a> <a href=#handler-onreset id=idl-definitions:handler-onreset>onreset</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-49>EventHandler</a> <a href=#handler-onresize id=idl-definitions:handler-onresize>onresize</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-50>EventHandler</a> <a href=#handler-onscroll id=idl-definitions:handler-onscroll>onscroll</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-51>EventHandler</a> <a href=#handler-onsecuritypolicyviolation id=idl-definitions:handler-onsecuritypolicyviolation>onsecuritypolicyviolation</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-52>EventHandler</a> <a href=#handler-onseeked id=idl-definitions:handler-onseeked>onseeked</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-53>EventHandler</a> <a href=#handler-onseeking id=idl-definitions:handler-onseeking>onseeking</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-54>EventHandler</a> <a href=#handler-onselect id=idl-definitions:handler-onselect>onselect</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-55>EventHandler</a> <a href=#handler-onstalled id=idl-definitions:handler-onstalled>onstalled</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-56>EventHandler</a> <a href=#handler-onsubmit id=idl-definitions:handler-onsubmit>onsubmit</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-57>EventHandler</a> <a href=#handler-onsuspend id=idl-definitions:handler-onsuspend>onsuspend</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-58>EventHandler</a> <a href=#handler-ontimeupdate id=idl-definitions:handler-ontimeupdate>ontimeupdate</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-59>EventHandler</a> <a href=#handler-ontoggle id=idl-definitions:handler-ontoggle>ontoggle</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-60>EventHandler</a> <a href=#handler-onvolumechange id=idl-definitions:handler-onvolumechange>onvolumechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-61>EventHandler</a> <a href=#handler-onwaiting id=idl-definitions:handler-onwaiting>onwaiting</a>;
+  <pre><code class='idl'><c- b>interface</c-> <c- b>mixin</c-> <dfn id='globaleventhandlers'><c- g>GlobalEventHandlers</c-></dfn> {
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-onabort' id='idl-definitions:handler-onabort'><c- g>onabort</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-2'><c- n>EventHandler</c-></a> <a href='#handler-onauxclick' id='idl-definitions:handler-onauxclick'><c- g>onauxclick</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-3'><c- n>EventHandler</c-></a> <a href='#handler-onblur' id='idl-definitions:handler-onblur'><c- g>onblur</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-4'><c- n>EventHandler</c-></a> <a href='#handler-oncancel' id='idl-definitions:handler-oncancel'><c- g>oncancel</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-5'><c- n>EventHandler</c-></a> <a href='#handler-oncanplay' id='idl-definitions:handler-oncanplay'><c- g>oncanplay</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-6'><c- n>EventHandler</c-></a> <a href='#handler-oncanplaythrough' id='idl-definitions:handler-oncanplaythrough'><c- g>oncanplaythrough</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-7'><c- n>EventHandler</c-></a> <a href='#handler-onchange' id='idl-definitions:handler-onchange'><c- g>onchange</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-8'><c- n>EventHandler</c-></a> <a href='#handler-onclick' id='idl-definitions:handler-onclick'><c- g>onclick</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-9'><c- n>EventHandler</c-></a> <a href='#handler-onclose' id='idl-definitions:handler-onclose'><c- g>onclose</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-10'><c- n>EventHandler</c-></a> <a href='#handler-oncontextmenu' id='idl-definitions:handler-oncontextmenu'><c- g>oncontextmenu</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-11'><c- n>EventHandler</c-></a> <a href='#handler-oncuechange' id='idl-definitions:handler-oncuechange'><c- g>oncuechange</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-12'><c- n>EventHandler</c-></a> <a href='#handler-ondblclick' id='idl-definitions:handler-ondblclick'><c- g>ondblclick</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-13'><c- n>EventHandler</c-></a> <a href='#handler-ondrag' id='idl-definitions:handler-ondrag'><c- g>ondrag</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-14'><c- n>EventHandler</c-></a> <a href='#handler-ondragend' id='idl-definitions:handler-ondragend'><c- g>ondragend</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-15'><c- n>EventHandler</c-></a> <a href='#handler-ondragenter' id='idl-definitions:handler-ondragenter'><c- g>ondragenter</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-16'><c- n>EventHandler</c-></a> <a href='#handler-ondragexit' id='idl-definitions:handler-ondragexit'><c- g>ondragexit</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-17'><c- n>EventHandler</c-></a> <a href='#handler-ondragleave' id='idl-definitions:handler-ondragleave'><c- g>ondragleave</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-18'><c- n>EventHandler</c-></a> <a href='#handler-ondragover' id='idl-definitions:handler-ondragover'><c- g>ondragover</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-19'><c- n>EventHandler</c-></a> <a href='#handler-ondragstart' id='idl-definitions:handler-ondragstart'><c- g>ondragstart</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-20'><c- n>EventHandler</c-></a> <a href='#handler-ondrop' id='idl-definitions:handler-ondrop'><c- g>ondrop</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-21'><c- n>EventHandler</c-></a> <a href='#handler-ondurationchange' id='idl-definitions:handler-ondurationchange'><c- g>ondurationchange</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-22'><c- n>EventHandler</c-></a> <a href='#handler-onemptied' id='idl-definitions:handler-onemptied'><c- g>onemptied</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-23'><c- n>EventHandler</c-></a> <a href='#handler-onended' id='idl-definitions:handler-onended'><c- g>onended</c-></a>;
+  <c- b>attribute</c-> <a href='#onerroreventhandler' id='idl-definitions:onerroreventhandler'><c- n>OnErrorEventHandler</c-></a> <a href='#handler-onerror' id='idl-definitions:handler-onerror'><c- g>onerror</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-24'><c- n>EventHandler</c-></a> <a href='#handler-onfocus' id='idl-definitions:handler-onfocus'><c- g>onfocus</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-25'><c- n>EventHandler</c-></a> <a href='#handler-oninput' id='idl-definitions:handler-oninput'><c- g>oninput</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-26'><c- n>EventHandler</c-></a> <a href='#handler-oninvalid' id='idl-definitions:handler-oninvalid'><c- g>oninvalid</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-27'><c- n>EventHandler</c-></a> <a href='#handler-onkeydown' id='idl-definitions:handler-onkeydown'><c- g>onkeydown</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-28'><c- n>EventHandler</c-></a> <a href='#handler-onkeypress' id='idl-definitions:handler-onkeypress'><c- g>onkeypress</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-29'><c- n>EventHandler</c-></a> <a href='#handler-onkeyup' id='idl-definitions:handler-onkeyup'><c- g>onkeyup</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-30'><c- n>EventHandler</c-></a> <a href='#handler-onload' id='idl-definitions:handler-onload'><c- g>onload</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-31'><c- n>EventHandler</c-></a> <a href='#handler-onloadeddata' id='idl-definitions:handler-onloadeddata'><c- g>onloadeddata</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-32'><c- n>EventHandler</c-></a> <a href='#handler-onloadedmetadata' id='idl-definitions:handler-onloadedmetadata'><c- g>onloadedmetadata</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-33'><c- n>EventHandler</c-></a> <a href='#handler-onloadend' id='idl-definitions:handler-onloadend'><c- g>onloadend</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-34'><c- n>EventHandler</c-></a> <a href='#handler-onloadstart' id='idl-definitions:handler-onloadstart'><c- g>onloadstart</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-35'><c- n>EventHandler</c-></a> <a href='#handler-onmousedown' id='idl-definitions:handler-onmousedown'><c- g>onmousedown</c-></a>;
+  [<c- g>LenientThis</c->] <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-36'><c- n>EventHandler</c-></a> <a href='#handler-onmouseenter' id='idl-definitions:handler-onmouseenter'><c- g>onmouseenter</c-></a>;
+  [<c- g>LenientThis</c->] <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-37'><c- n>EventHandler</c-></a> <a href='#handler-onmouseleave' id='idl-definitions:handler-onmouseleave'><c- g>onmouseleave</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-38'><c- n>EventHandler</c-></a> <a href='#handler-onmousemove' id='idl-definitions:handler-onmousemove'><c- g>onmousemove</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-39'><c- n>EventHandler</c-></a> <a href='#handler-onmouseout' id='idl-definitions:handler-onmouseout'><c- g>onmouseout</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-40'><c- n>EventHandler</c-></a> <a href='#handler-onmouseover' id='idl-definitions:handler-onmouseover'><c- g>onmouseover</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-41'><c- n>EventHandler</c-></a> <a href='#handler-onmouseup' id='idl-definitions:handler-onmouseup'><c- g>onmouseup</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-42'><c- n>EventHandler</c-></a> <a href='#handler-onwheel' id='idl-definitions:handler-onwheel'><c- g>onwheel</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-43'><c- n>EventHandler</c-></a> <a href='#handler-onpause' id='idl-definitions:handler-onpause'><c- g>onpause</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-44'><c- n>EventHandler</c-></a> <a href='#handler-onplay' id='idl-definitions:handler-onplay'><c- g>onplay</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-45'><c- n>EventHandler</c-></a> <a href='#handler-onplaying' id='idl-definitions:handler-onplaying'><c- g>onplaying</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-46'><c- n>EventHandler</c-></a> <a href='#handler-onprogress' id='idl-definitions:handler-onprogress'><c- g>onprogress</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-47'><c- n>EventHandler</c-></a> <a href='#handler-onratechange' id='idl-definitions:handler-onratechange'><c- g>onratechange</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-48'><c- n>EventHandler</c-></a> <a href='#handler-onreset' id='idl-definitions:handler-onreset'><c- g>onreset</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-49'><c- n>EventHandler</c-></a> <a href='#handler-onresize' id='idl-definitions:handler-onresize'><c- g>onresize</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-50'><c- n>EventHandler</c-></a> <a href='#handler-onscroll' id='idl-definitions:handler-onscroll'><c- g>onscroll</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-51'><c- n>EventHandler</c-></a> <a href='#handler-onsecuritypolicyviolation' id='idl-definitions:handler-onsecuritypolicyviolation'><c- g>onsecuritypolicyviolation</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-52'><c- n>EventHandler</c-></a> <a href='#handler-onseeked' id='idl-definitions:handler-onseeked'><c- g>onseeked</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-53'><c- n>EventHandler</c-></a> <a href='#handler-onseeking' id='idl-definitions:handler-onseeking'><c- g>onseeking</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-54'><c- n>EventHandler</c-></a> <a href='#handler-onselect' id='idl-definitions:handler-onselect'><c- g>onselect</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-55'><c- n>EventHandler</c-></a> <a href='#handler-onstalled' id='idl-definitions:handler-onstalled'><c- g>onstalled</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-56'><c- n>EventHandler</c-></a> <a href='#handler-onsubmit' id='idl-definitions:handler-onsubmit'><c- g>onsubmit</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-57'><c- n>EventHandler</c-></a> <a href='#handler-onsuspend' id='idl-definitions:handler-onsuspend'><c- g>onsuspend</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-58'><c- n>EventHandler</c-></a> <a href='#handler-ontimeupdate' id='idl-definitions:handler-ontimeupdate'><c- g>ontimeupdate</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-59'><c- n>EventHandler</c-></a> <a href='#handler-ontoggle' id='idl-definitions:handler-ontoggle'><c- g>ontoggle</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-60'><c- n>EventHandler</c-></a> <a href='#handler-onvolumechange' id='idl-definitions:handler-onvolumechange'><c- g>onvolumechange</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-61'><c- n>EventHandler</c-></a> <a href='#handler-onwaiting' id='idl-definitions:handler-onwaiting'><c- g>onwaiting</c-></a>;
 };
 
-interface mixin <dfn id=windoweventhandlers>WindowEventHandlers</dfn> {
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-62>EventHandler</a> <a href=#handler-window-onafterprint id=idl-definitions:handler-window-onafterprint>onafterprint</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-63>EventHandler</a> <a href=#handler-window-onbeforeprint id=idl-definitions:handler-window-onbeforeprint>onbeforeprint</a>;
-  attribute <a href=#onbeforeunloadeventhandler id=idl-definitions:onbeforeunloadeventhandler>OnBeforeUnloadEventHandler</a> <a href=#handler-window-onbeforeunload id=idl-definitions:handler-window-onbeforeunload>onbeforeunload</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-64>EventHandler</a> <a href=#handler-window-onhashchange id=idl-definitions:handler-window-onhashchange>onhashchange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-65>EventHandler</a> <a href=#handler-window-onlanguagechange id=idl-definitions:handler-window-onlanguagechange>onlanguagechange</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-66>EventHandler</a> <a href=#handler-window-onmessage id=idl-definitions:handler-window-onmessage>onmessage</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-67>EventHandler</a> <a href=#handler-window-onmessageerror id=idl-definitions:handler-window-onmessageerror>onmessageerror</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-68>EventHandler</a> <a href=#handler-window-onoffline id=idl-definitions:handler-window-onoffline>onoffline</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-69>EventHandler</a> <a href=#handler-window-ononline id=idl-definitions:handler-window-ononline>ononline</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-70>EventHandler</a> <a href=#handler-window-onpagehide id=idl-definitions:handler-window-onpagehide>onpagehide</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-71>EventHandler</a> <a href=#handler-window-onpageshow id=idl-definitions:handler-window-onpageshow>onpageshow</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-72>EventHandler</a> <a href=#handler-window-onpopstate id=idl-definitions:handler-window-onpopstate>onpopstate</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-73>EventHandler</a> <a href=#handler-window-onrejectionhandled id=idl-definitions:handler-window-onrejectionhandled>onrejectionhandled</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-74>EventHandler</a> <a href=#handler-window-onstorage id=idl-definitions:handler-window-onstorage>onstorage</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-75>EventHandler</a> <a href=#handler-window-onunhandledrejection id=idl-definitions:handler-window-onunhandledrejection>onunhandledrejection</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-76>EventHandler</a> <a href=#handler-window-onunload id=idl-definitions:handler-window-onunload>onunload</a>;
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='windoweventhandlers'><c- g>WindowEventHandlers</c-></dfn> {
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-62'><c- n>EventHandler</c-></a> <a href='#handler-window-onafterprint' id='idl-definitions:handler-window-onafterprint'><c- g>onafterprint</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-63'><c- n>EventHandler</c-></a> <a href='#handler-window-onbeforeprint' id='idl-definitions:handler-window-onbeforeprint'><c- g>onbeforeprint</c-></a>;
+  <c- b>attribute</c-> <a href='#onbeforeunloadeventhandler' id='idl-definitions:onbeforeunloadeventhandler'><c- n>OnBeforeUnloadEventHandler</c-></a> <a href='#handler-window-onbeforeunload' id='idl-definitions:handler-window-onbeforeunload'><c- g>onbeforeunload</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-64'><c- n>EventHandler</c-></a> <a href='#handler-window-onhashchange' id='idl-definitions:handler-window-onhashchange'><c- g>onhashchange</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-65'><c- n>EventHandler</c-></a> <a href='#handler-window-onlanguagechange' id='idl-definitions:handler-window-onlanguagechange'><c- g>onlanguagechange</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-66'><c- n>EventHandler</c-></a> <a href='#handler-window-onmessage' id='idl-definitions:handler-window-onmessage'><c- g>onmessage</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-67'><c- n>EventHandler</c-></a> <a href='#handler-window-onmessageerror' id='idl-definitions:handler-window-onmessageerror'><c- g>onmessageerror</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-68'><c- n>EventHandler</c-></a> <a href='#handler-window-onoffline' id='idl-definitions:handler-window-onoffline'><c- g>onoffline</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-69'><c- n>EventHandler</c-></a> <a href='#handler-window-ononline' id='idl-definitions:handler-window-ononline'><c- g>ononline</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-70'><c- n>EventHandler</c-></a> <a href='#handler-window-onpagehide' id='idl-definitions:handler-window-onpagehide'><c- g>onpagehide</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-71'><c- n>EventHandler</c-></a> <a href='#handler-window-onpageshow' id='idl-definitions:handler-window-onpageshow'><c- g>onpageshow</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-72'><c- n>EventHandler</c-></a> <a href='#handler-window-onpopstate' id='idl-definitions:handler-window-onpopstate'><c- g>onpopstate</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-73'><c- n>EventHandler</c-></a> <a href='#handler-window-onrejectionhandled' id='idl-definitions:handler-window-onrejectionhandled'><c- g>onrejectionhandled</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-74'><c- n>EventHandler</c-></a> <a href='#handler-window-onstorage' id='idl-definitions:handler-window-onstorage'><c- g>onstorage</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-75'><c- n>EventHandler</c-></a> <a href='#handler-window-onunhandledrejection' id='idl-definitions:handler-window-onunhandledrejection'><c- g>onunhandledrejection</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-76'><c- n>EventHandler</c-></a> <a href='#handler-window-onunload' id='idl-definitions:handler-window-onunload'><c- g>onunload</c-></a>;
 };
 
-interface mixin <dfn id=documentandelementeventhandlers>DocumentAndElementEventHandlers</dfn> {
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-77>EventHandler</a> <a href=#handler-oncopy id=idl-definitions:handler-oncopy>oncopy</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-78>EventHandler</a> <a href=#handler-oncut id=idl-definitions:handler-oncut>oncut</a>;
-  attribute <a href=#eventhandler id=idl-definitions:eventhandler-79>EventHandler</a> <a href=#handler-onpaste id=idl-definitions:handler-onpaste>onpaste</a>;
-};</pre>
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='documentandelementeventhandlers'><c- g>DocumentAndElementEventHandlers</c-></dfn> {
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-77'><c- n>EventHandler</c-></a> <a href='#handler-oncopy' id='idl-definitions:handler-oncopy'><c- g>oncopy</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-78'><c- n>EventHandler</c-></a> <a href='#handler-oncut' id='idl-definitions:handler-oncut'><c- g>oncut</c-></a>;
+  <c- b>attribute</c-> <a href='#eventhandler' id='idl-definitions:eventhandler-79'><c- n>EventHandler</c-></a> <a href='#handler-onpaste' id='idl-definitions:handler-onpaste'><c- g>onpaste</c-></a>;
+};</code></pre>
 
   <h5 id=event-firing><span class=secno>8.1.5.3</span> Event firing<a href=#event-firing class=self-link></a></h5>
 
@@ -2896,27 +2927,30 @@ interface mixin <dfn id=documentandelementeventhandlers>DocumentAndElementEventH
   interface mixin <a href=#windoworworkerglobalscope id=windoworworkerglobalscope-mixin:windoworworkerglobalscope-3>WindowOrWorkerGlobalScope</a> { … };</code> along with an
   appropriate reference.</p>
 
-  <pre class=idl>typedef (DOMString or <a href=https://triple-underscore.github.io/WebIDL-ja.html#common-Function id=windoworworkerglobalscope-mixin:idl-function data-x-internal=idl-function>Function</a>) <dfn id=timerhandler>TimerHandler</dfn>;
+  <pre><code class='idl'><c- b>typedef</c-> (<c- b>DOMString</c-> <c- b>or</c-> <a href='https://triple-underscore.github.io/WebIDL-ja.html#common-Function' data-x-internal='idl-function' id='windoworworkerglobalscope-mixin:idl-function'><c- n>Function</c-></a>) <dfn id='timerhandler'><c- g>TimerHandler</c-></dfn>;
 
-interface mixin <dfn id=windoworworkerglobalscope>WindowOrWorkerGlobalScope</dfn> {
-  [Replaceable] readonly attribute USVString <a href=#dom-origin id=windoworworkerglobalscope-mixin:dom-origin>origin</a>;
+<c- b>interface</c-> <c- b>mixin</c-> <dfn id='windoworworkerglobalscope'><c- g>WindowOrWorkerGlobalScope</c-></dfn> {
+  [<c- g>Replaceable</c->] <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <a href='#dom-origin' id='windoworworkerglobalscope-mixin:dom-origin'><c- g>origin</c-></a>;
 
   // base64 utility methods
-  DOMString <a href=#dom-btoa id=windoworworkerglobalscope-mixin:dom-btoa>btoa</a>(DOMString data);
-  ByteString <a href=#dom-atob id=windoworworkerglobalscope-mixin:dom-atob>atob</a>(DOMString data);
+  <c- b>DOMString</c-> <a href='#dom-btoa' id='windoworworkerglobalscope-mixin:dom-btoa'><c- g>btoa</c-></a>(<c- b>DOMString</c-> <c- g>data</c->);
+  <c- b>ByteString</c-> <a href='#dom-atob' id='windoworworkerglobalscope-mixin:dom-atob'><c- g>atob</c-></a>(<c- b>DOMString</c-> <c- g>data</c->);
 
   // timers
-  long <a href=timers-and-user-prompts.html#dom-settimeout id=windoworworkerglobalscope-mixin:dom-settimeout>setTimeout</a>(<a href=#timerhandler id=windoworworkerglobalscope-mixin:timerhandler>TimerHandler</a> handler, optional long timeout = 0, any... arguments);
-  void <a href=timers-and-user-prompts.html#dom-cleartimeout id=windoworworkerglobalscope-mixin:dom-cleartimeout>clearTimeout</a>(optional long handle = 0);
-  long <a href=timers-and-user-prompts.html#dom-setinterval id=windoworworkerglobalscope-mixin:dom-setinterval>setInterval</a>(<a href=#timerhandler id=windoworworkerglobalscope-mixin:timerhandler-2>TimerHandler</a> handler, optional long timeout = 0, any... arguments);
-  void <a href=timers-and-user-prompts.html#dom-clearinterval id=windoworworkerglobalscope-mixin:dom-clearinterval>clearInterval</a>(optional long handle = 0);
+  <c- b>long</c-> <a href='timers-and-user-prompts.html#dom-settimeout' id='windoworworkerglobalscope-mixin:dom-settimeout'><c- g>setTimeout</c-></a>(<a href='#timerhandler' id='windoworworkerglobalscope-mixin:timerhandler'><c- n>TimerHandler</c-></a> <c- g>handler</c->, <c- b>optional</c-> <c- b>long</c-> <c- g>timeout</c-> = 0, <c- b>any</c->... <c- g>arguments</c->);
+  <c- b>void</c-> <a href='timers-and-user-prompts.html#dom-cleartimeout' id='windoworworkerglobalscope-mixin:dom-cleartimeout'><c- g>clearTimeout</c-></a>(<c- b>optional</c-> <c- b>long</c-> <c- g>handle</c-> = 0);
+  <c- b>long</c-> <a href='timers-and-user-prompts.html#dom-setinterval' id='windoworworkerglobalscope-mixin:dom-setinterval'><c- g>setInterval</c-></a>(<a href='#timerhandler' id='windoworworkerglobalscope-mixin:timerhandler-2'><c- n>TimerHandler</c-></a> <c- g>handler</c->, <c- b>optional</c-> <c- b>long</c-> <c- g>timeout</c-> = 0, <c- b>any</c->... <c- g>arguments</c->);
+  <c- b>void</c-> <a href='timers-and-user-prompts.html#dom-clearinterval' id='windoworworkerglobalscope-mixin:dom-clearinterval'><c- g>clearInterval</c-></a>(<c- b>optional</c-> <c- b>long</c-> <c- g>handle</c-> = 0);
+
+  // microtask queuing
+  <c- b>void</c-> <a href='timers-and-user-prompts.html#dom-queuemicrotask' id='windoworworkerglobalscope-mixin:dom-queuemicrotask'><c- g>queueMicrotask</c-></a>(<a href='https://triple-underscore.github.io/WebIDL-ja.html#common-Function' data-x-internal='idl-function' id='windoworworkerglobalscope-mixin:idl-function-2'><c- n>Function</c-></a> <var><c- g>callback</c-></var>);
 
   // ImageBitmap
-  Promise&lt;<a id=windoworworkerglobalscope-mixin:imagebitmap href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a>&gt; <a href=imagebitmap-and-animations.html#dom-createimagebitmap id=windoworworkerglobalscope-mixin:dom-createimagebitmap>createImageBitmap</a>(<a id=windoworworkerglobalscope-mixin:imagebitmapsource href=imagebitmap-and-animations.html#imagebitmapsource>ImageBitmapSource</a> image, optional <a id=windoworworkerglobalscope-mixin:imagebitmapoptions href=imagebitmap-and-animations.html#imagebitmapoptions>ImageBitmapOptions</a> options);
-  Promise&lt;<a id=windoworworkerglobalscope-mixin:imagebitmap-2 href=imagebitmap-and-animations.html#imagebitmap>ImageBitmap</a>&gt; <a href=imagebitmap-and-animations.html#dom-createimagebitmap id=windoworworkerglobalscope-mixin:dom-createimagebitmap-2>createImageBitmap</a>(<a id=windoworworkerglobalscope-mixin:imagebitmapsource-2 href=imagebitmap-and-animations.html#imagebitmapsource>ImageBitmapSource</a> image, long sx, long sy, long sw, long sh, optional <a id=windoworworkerglobalscope-mixin:imagebitmapoptions-2 href=imagebitmap-and-animations.html#imagebitmapoptions>ImageBitmapOptions</a> options);
+  <c- b>Promise</c->&lt;<a href='imagebitmap-and-animations.html#imagebitmap' id='windoworworkerglobalscope-mixin:imagebitmap'><c- n>ImageBitmap</c-></a>&gt; <a href='imagebitmap-and-animations.html#dom-createimagebitmap' id='windoworworkerglobalscope-mixin:dom-createimagebitmap'><c- g>createImageBitmap</c-></a>(<a href='imagebitmap-and-animations.html#imagebitmapsource' id='windoworworkerglobalscope-mixin:imagebitmapsource'><c- n>ImageBitmapSource</c-></a> <c- g>image</c->, <c- b>optional</c-> <a href='imagebitmap-and-animations.html#imagebitmapoptions' id='windoworworkerglobalscope-mixin:imagebitmapoptions'><c- n>ImageBitmapOptions</c-></a> <c- g>options</c->);
+  <c- b>Promise</c->&lt;<a href='imagebitmap-and-animations.html#imagebitmap' id='windoworworkerglobalscope-mixin:imagebitmap-2'><c- n>ImageBitmap</c-></a>&gt; <a href='imagebitmap-and-animations.html#dom-createimagebitmap' id='windoworworkerglobalscope-mixin:dom-createimagebitmap-2'><c- g>createImageBitmap</c-></a>(<a href='imagebitmap-and-animations.html#imagebitmapsource' id='windoworworkerglobalscope-mixin:imagebitmapsource-2'><c- n>ImageBitmapSource</c-></a> <c- g>image</c->, <c- b>long</c-> <c- g>sx</c->, <c- b>long</c-> <c- g>sy</c->, <c- b>long</c-> <c- g>sw</c->, <c- b>long</c-> <c- g>sh</c->, <c- b>optional</c-> <a href='imagebitmap-and-animations.html#imagebitmapoptions' id='windoworworkerglobalscope-mixin:imagebitmapoptions-2'><c- n>ImageBitmapOptions</c-></a> <c- g>options</c->);
 };
-<a id=windoworworkerglobalscope-mixin:window-2 href=window-object.html#window>Window</a> includes <a href=#windoworworkerglobalscope id=windoworworkerglobalscope-mixin:windoworworkerglobalscope-4>WindowOrWorkerGlobalScope</a>;
-<a id=windoworworkerglobalscope-mixin:workerglobalscope-2 href=workers.html#workerglobalscope>WorkerGlobalScope</a> includes <a href=#windoworworkerglobalscope id=windoworworkerglobalscope-mixin:windoworworkerglobalscope-5>WindowOrWorkerGlobalScope</a>;</pre>
+<a href='window-object.html#window' id='windoworworkerglobalscope-mixin:window-2'><c- n>Window</c-></a> <c- b>includes</c-> <a href='#windoworworkerglobalscope' id='windoworworkerglobalscope-mixin:windoworworkerglobalscope-4'><c- n>WindowOrWorkerGlobalScope</c-></a>;
+<a href='workers.html#workerglobalscope' id='windoworworkerglobalscope-mixin:workerglobalscope-2'><c- n>WorkerGlobalScope</c-></a> <c- b>includes</c-> <a href='#windoworworkerglobalscope' id='windoworworkerglobalscope-mixin:windoworworkerglobalscope-5'><c- n>WindowOrWorkerGlobalScope</c-></a>;</code></pre>
 
   <dl class=domintro><dt><var>origin</var> = self . <code id=dom-origin-dev><a href=#dom-origin>origin</a></code><dd><p>Returns the global object's <a id=windoworworkerglobalscope-mixin:concept-origin href=origin.html#concept-origin>origin</a>, serialized as string.</dl>
 
@@ -2925,13 +2959,13 @@ interface mixin <dfn id=windoworworkerglobalscope>WindowOrWorkerGlobalScope</dfn
    the latter of the URL of the environment. Imagine the following script executing in a document on
    <code>https://stargate.example/</code>:</p>
 
-   <pre>var frame = document.createElement("iframe")
-frame.onload = function() {
-  var frameWin = frame.contentWindow
-  console.log(frameWin.location.origin) // "null"
-  console.log(frameWin.origin) // "https://stargate.example"
-}
-document.body.appendChild(frame)</pre>
+   <pre><code class='js'><c- a>var</c-> frame <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"iframe"</c-><c- p>)</c->
+frame<c- p>.</c->onload <c- o>=</c-> <c- a>function</c-><c- p>()</c-> <c- p>{</c->
+  <c- a>var</c-> frameWin <c- o>=</c-> frame<c- p>.</c->contentWindow
+  console<c- p>.</c->log<c- p>(</c->frameWin<c- p>.</c->location<c- p>.</c->origin<c- p>)</c-> <c- c1>// "null"</c->
+<c- c1></c->  console<c- p>.</c->log<c- p>(</c->frameWin<c- p>.</c->origin<c- p>)</c-> <c- c1>// "https://stargate.example"</c->
+<c- c1></c-><c- p>}</c->
+document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->frame<c- p>)</c-></code></pre>
 
    <p><code>self.origin</code> is a more reliable security indicator.</p>
   </div>

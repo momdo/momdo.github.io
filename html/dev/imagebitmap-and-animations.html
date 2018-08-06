@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -78,12 +78,34 @@
 
   
 
-  <nav><a href=system-state.html>← 8.7 システム状態および性能</a> — <a href=./>目次</a> — <a href=comms.html>9 コミュニケーション →</a></nav><ol class=toc><li><ol><li><a href=imagebitmap-and-animations.html#images-2><span class=secno>8.8</span> 画像</a></li><li><a href=imagebitmap-and-animations.html#animation-frames><span class=secno>8.9</span> Animation frames</a></li></ol></li></ol><h3 id=images-2><span class=secno>8.8</span> 画像<a href=#images-2 class=self-link></a></h3>
+  <nav><a href=system-state.html>← 8.8 System state and capabilities</a> — <a href=./>Table of Contents</a> — <a href=comms.html>9 Communication →</a></nav><ol class=toc><li><ol><li><a href=imagebitmap-and-animations.html#images-2><span class=secno>8.9</span> Images</a></li><li><a href=imagebitmap-and-animations.html#animation-frames><span class=secno>8.10</span> Animation frames</a></li></ol></li></ol><h3 id=images-2><span class=secno>8.9</span> Images<a href=#images-2 class=self-link></a></h3>
 
-  
+  <pre><code class='idl'>[<c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->), <span><c- g>Serializable</c-></span>, <span><c- g>Transferable</c-></span>]
+<c- b>interface</c-> <dfn id='imagebitmap'><c- g>ImageBitmap</c-></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <a href='#dom-imagebitmap-width' id='images-2:dom-imagebitmap-width'><c- g>width</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <a href='#dom-imagebitmap-height' id='images-2:dom-imagebitmap-height'><c- g>height</c-></a>;
+  <c- b>void</c-> <a href='#dom-imagebitmap-close' id='images-2:dom-imagebitmap-close'><c- g>close</c-></a>();
+};
 
-  <p>An <code>ImageBitmap</code> object represents a bitmap image that can be painted to a canvas
-  without undue latency.</p>
+<c- b>typedef</c-> (<a href='canvas.html#canvasimagesource' id='images-2:canvasimagesource'><c- n>CanvasImageSource</c-></a> <c- b>or</c->
+         <a href='https://w3c.github.io/FileAPI/#dfn-Blob' data-x-internal='blob' id='images-2:blob'><c- n>Blob</c-></a> <c- b>or</c->
+         <a href='canvas.html#imagedata' id='images-2:imagedata'><c- n>ImageData</c-></a>) <dfn id='imagebitmapsource'><c- g>ImageBitmapSource</c-></dfn>;
+
+<c- b>enum</c-> <dfn id='imageorientation'><c- g>ImageOrientation</c-></dfn> { <c- s>"</c-><span><c- s>none</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>flipY</c-></span><c- s>"</c-> };
+<c- b>enum</c-> <dfn id='premultiplyalpha'><c- g>PremultiplyAlpha</c-></dfn> { <c- s>"</c-><span><c- s>none</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>premultiply</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>default</c-></span><c- s>"</c-> };
+<c- b>enum</c-> <dfn id='colorspaceconversion'><c- g>ColorSpaceConversion</c-></dfn> { <c- s>"</c-><span><c- s>none</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>default</c-></span><c- s>"</c-> };
+<c- b>enum</c-> <dfn id='resizequality'><c- g>ResizeQuality</c-></dfn> { <c- s>"</c-><span><c- s>pixelated</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>low</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>medium</c-></span><c- s>"</c->, <c- s>"</c-><span><c- s>high</c-></span><c- s>"</c-> };
+
+<c- b>dictionary</c-> <dfn id='imagebitmapoptions'><c- g>ImageBitmapOptions</c-></dfn> {
+  <a href='#imageorientation' id='images-2:imageorientation'><c- n>ImageOrientation</c-></a> <span><c- g>imageOrientation</c-></span> = "<span>none</span>";
+  <a href='#premultiplyalpha' id='images-2:premultiplyalpha'><c- n>PremultiplyAlpha</c-></a> <span><c- g>premultiplyAlpha</c-></span> = "<span>default</span>";
+  <a href='#colorspaceconversion' id='images-2:colorspaceconversion'><c- n>ColorSpaceConversion</c-></a> <span><c- g>colorSpaceConversion</c-></span> = "<span>default</span>";
+  [<c- g>EnforceRange</c->] <c- b>unsigned</c-> <c- b>long</c-> <span><c- g>resizeWidth</c-></span>;
+  [<c- g>EnforceRange</c->] <c- b>unsigned</c-> <c- b>long</c-> <span><c- g>resizeHeight</c-></span>;
+  <a href='#resizequality' id='images-2:resizequality'><c- n>ResizeQuality</c-></a> <span><c- g>resizeQuality</c-></span> = "<span>low</span>";
+};</code></pre>
+
+  <p><code id=images-2:imagebitmap><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトは過度の待ち時間なしのキャンバスに塗装できるビットマップ画像を表す。</p>
 
   <p class=note>この過度の待ち時間は何かの正確な判断は実装者に委ねるが、一般にビットマップを活用することは、ネットワークI/O、あるいはローカルディスクI/Oを必要とする場合、その後待ち時間はおそらく過度である。一方それが唯一のGPUやシステムRAMからのブロッキングの読み出しを必要とする場合、待ち時間はおそらく許容できる。</p>
 
@@ -91,19 +113,18 @@
 
     <p>Takes <var>image</var>, which can be an <code id=images-2:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element, an <a id=images-2:svg-image href=https://svgwg.org/svg2-draft/embedded.html#ImageElement data-x-internal=svg-image>SVG
     <code>image</code></a> element, a <code id=images-2:the-video-element><a href=media.html#the-video-element>video</a></code> element, a <code id=images-2:the-canvas-element><a href=canvas.html#the-canvas-element>canvas</a></code>
-    element, a <code id=images-2:blob><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> object, an <code>ImageData</code> object, or another
-    <code>ImageBitmap</code> object, and returns a promise that is resolved when a new
-    <code>ImageBitmap</code> is created.</p>
+    element, a <code id=images-2:blob-2><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> object, an <code id=images-2:imagedata-2><a href=canvas.html#imagedata>ImageData</a></code> object, or another
+    <code id=images-2:imagebitmap-2><a href=#imagebitmap>ImageBitmap</a></code> object, and returns a promise that is resolved when a new
+    <code id=images-2:imagebitmap-3><a href=#imagebitmap>ImageBitmap</a></code> is created.</p>
 
-    <p>If no <code>ImageBitmap</code> object can be constructed, for example because the provided
-    <var>image</var> data is not actually an image, then the promise is rejected instead.</p>
+    <p><code id=images-2:imagebitmap-4><a href=#imagebitmap>ImageBitmap</a></code>オブジェクトを構築することが全くできない場合、たとえば、与えられた<var>image</var> データが実際の画像ではないので、代わりにpromiseが却下される。</p>
 
     <p>If <var>sx</var>, <var>sy</var>, <var>sw</var>, and <var>sh</var> arguments are provided, the
     source image is cropped to the given pixels, with any pixels missing in the original replaced by
     <a id=images-2:transparent-black href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent black</a>. These coordinates are in the source image's pixel coordinate
     space, <em>not</em> in <a href=https://momdo.github.io/css3-values/#px id="images-2:'px'" data-x-internal="'px'">CSS pixels</a>.</p>
 
-    <p>If <var>options</var> is provided, the <code>ImageBitmap</code> object's bitmap
+    <p>If <var>options</var> is provided, the <code id=images-2:imagebitmap-5><a href=#imagebitmap>ImageBitmap</a></code> object's bitmap
     data is modified according to <var>options</var>. For example,
     if the <code>premultiplyAlpha</code>
     option is set to "<code>premultiply</code>",
@@ -114,10 +135,10 @@
 
     <p>Rejects the promise with an <a id=images-2:invalidstateerror href=https://triple-underscore.github.io/WebIDL-ja.html#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
     <code id=images-2:domexception><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code> if the source image is not in a valid state (e.g., an <code id=images-2:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code>
-    element that hasn't loaded successfully, an <code>ImageBitmap</code> object whose
-    <span>[[Detached]]</span> internal slot value is true, an <code>ImageData</code> object whose
+    element that hasn't loaded successfully, an <code id=images-2:imagebitmap-6><a href=#imagebitmap>ImageBitmap</a></code> object whose
+    <span>[[Detached]]</span> internal slot value is true, an <code id=images-2:imagedata-3><a href=canvas.html#imagedata>ImageData</a></code> object whose
     <code id=images-2:dom-imagedata-data><a href=canvas.html#dom-imagedata-data>data</a></code> attribute value's [[ViewedArrayBuffer]] internal
-    slot is detached, or a <code id=images-2:blob-2><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> whose data cannot be interpreted as a bitmap
+    slot is detached, or a <code id=images-2:blob-3><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> whose data cannot be interpreted as a bitmap
     image).</p>
 
     <p>Rejects the promise with a <a id=images-2:securityerror href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
@@ -140,7 +161,7 @@
     <p>Returns the <a id=images-2:intrinsic-height href=infrastructure.html#intrinsic-height>intrinsic height</a> of the image, in <a href=https://momdo.github.io/css3-values/#px id="images-2:'px'-3" data-x-internal="'px'">CSS
     pixels</a>.</p>
 
-   </dl>
+   </dl><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> createimagebitmap<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>59+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>42+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>6.2+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>46+</span></span><span class="android yes"><span>Android Browser</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=createimagebitmap">caniuse.com</a></div>
 
   
 
@@ -148,48 +169,48 @@
 
    <p>このAPIを使用すると、スプライトシートは、プレカットと調製することができる：</p>
 
-   <pre>var sprites = {};
-function loadMySprites() {
-  var image = new Image();
-  image.src = 'mysprites.png';
-  var resolver;
-  var promise = new Promise(function (arg) { resolver = arg });
-  image.onload = function () {
-    resolver(Promise.all([
-      createImageBitmap(image,  0,  0, 40, 40).then(function (image) { sprites.person = image }),
-      createImageBitmap(image, 40,  0, 40, 40).then(function (image) { sprites.grass  = image }),
-      createImageBitmap(image, 80,  0, 40, 40).then(function (image) { sprites.tree   = image }),
-      createImageBitmap(image,  0, 40, 40, 40).then(function (image) { sprites.hut    = image }),
-      createImageBitmap(image, 40, 40, 40, 40).then(function (image) { sprites.apple  = image }),
-      createImageBitmap(image, 80, 40, 40, 40).then(function (image) { sprites.snake  = image })
-    ]));
-  };
-  return promise;
-}
+   <pre><code class='js'><c- a>var</c-> sprites <c- o>=</c-> <c- p>{};</c->
+<c- a>function</c-> loadMySprites<c- p>()</c-> <c- p>{</c->
+  <c- a>var</c-> image <c- o>=</c-> <c- k>new</c-> Image<c- p>();</c->
+  image<c- p>.</c->src <c- o>=</c-> <c- t>&amp;apos;mysprites.png&amp;apos;</c-><c- p>;</c->
+  <c- a>var</c-> resolver<c- p>;</c->
+  <c- a>var</c-> promise <c- o>=</c-> <c- k>new</c-> Promise<c- p>(</c-><c- a>function</c-> <c- p>(</c->arg<c- p>)</c-> <c- p>{</c-> resolver <c- o>=</c-> arg <c- p>});</c->
+  image<c- p>.</c->onload <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
+    resolver<c- p>(</c->Promise<c- p>.</c->all<c- p>([</c->
+      createImageBitmap<c- p>(</c->image<c- p>,</c->  <c- mi>0</c-><c- p>,</c->  <c- mi>0</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>).</c->then<c- p>(</c-><c- a>function</c-> <c- p>(</c->image<c- p>)</c-> <c- p>{</c-> sprites<c- p>.</c->person <c- o>=</c-> image <c- p>}),</c->
+      createImageBitmap<c- p>(</c->image<c- p>,</c-> <c- mi>40</c-><c- p>,</c->  <c- mi>0</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>).</c->then<c- p>(</c-><c- a>function</c-> <c- p>(</c->image<c- p>)</c-> <c- p>{</c-> sprites<c- p>.</c->grass  <c- o>=</c-> image <c- p>}),</c->
+      createImageBitmap<c- p>(</c->image<c- p>,</c-> <c- mi>80</c-><c- p>,</c->  <c- mi>0</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>).</c->then<c- p>(</c-><c- a>function</c-> <c- p>(</c->image<c- p>)</c-> <c- p>{</c-> sprites<c- p>.</c->tree   <c- o>=</c-> image <c- p>}),</c->
+      createImageBitmap<c- p>(</c->image<c- p>,</c->  <c- mi>0</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>).</c->then<c- p>(</c-><c- a>function</c-> <c- p>(</c->image<c- p>)</c-> <c- p>{</c-> sprites<c- p>.</c->hut    <c- o>=</c-> image <c- p>}),</c->
+      createImageBitmap<c- p>(</c->image<c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>).</c->then<c- p>(</c-><c- a>function</c-> <c- p>(</c->image<c- p>)</c-> <c- p>{</c-> sprites<c- p>.</c->apple  <c- o>=</c-> image <c- p>}),</c->
+      createImageBitmap<c- p>(</c->image<c- p>,</c-> <c- mi>80</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>,</c-> <c- mi>40</c-><c- p>).</c->then<c- p>(</c-><c- a>function</c-> <c- p>(</c->image<c- p>)</c-> <c- p>{</c-> sprites<c- p>.</c->snake  <c- o>=</c-> image <c- p>})</c->
+    <c- p>]));</c->
+  <c- p>};</c->
+  <c- k>return</c-> promise<c- p>;</c->
+<c- p>}</c->
 
-function runDemo() {
-  var canvas = document.querySelector('canvas#demo');
-  var context = canvas.getContext('2d');
-  context.drawImage(sprites.tree, 30, 10);
-  context.drawImage(sprites.snake, 70, 10);
-}
+<c- a>function</c-> runDemo<c- p>()</c-> <c- p>{</c->
+  <c- a>var</c-> canvas <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- t>&amp;apos;canvas#demo&amp;apos;</c-><c- p>);</c->
+  <c- a>var</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
+  context<c- p>.</c->drawImage<c- p>(</c->sprites<c- p>.</c->tree<c- p>,</c-> <c- mi>30</c-><c- p>,</c-> <c- mi>10</c-><c- p>);</c->
+  context<c- p>.</c->drawImage<c- p>(</c->sprites<c- p>.</c->snake<c- p>,</c-> <c- mi>70</c-><c- p>,</c-> <c- mi>10</c-><c- p>);</c->
+<c- p>}</c->
 
-loadMySprites().then(runDemo);</pre>
+loadMySprites<c- p>().</c->then<c- p>(</c->runDemo<c- p>);</c-></code></pre>
 
   </div>
 
 
 
-  <h3 id=animation-frames><span class=secno>8.9</span> Animation frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> requestanimationframe<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
+  <h3 id=animation-frames><span class=secno>8.10</span> Animation frames<a href=#animation-frames class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> requestanimationframe<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>24+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>7.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>23+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>6.1+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>15+</span></span><span class="android yes"><span>Android Browser</span> <span>4.4+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=requestanimationframe">caniuse.com</a></div>
 
-  <p>Each <code>Document</code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
+  <p>Each <code id=animation-frames:document><a href=dom.html#document>Document</a></code> has a <dfn id=list-of-animation-frame-callbacks>list of animation frame callbacks</dfn>, which must be
   initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback identifier</dfn>, which is a number which
   must initially be zero.</p>
 
   <p>When the <dfn id=dom-window-requestanimationframe><code>requestAnimationFrame()</code></dfn> method is called,
   the user agent must run the following steps:</p>
 
-  <ol><li><p>Let <var>document</var> be this <code>Window</code> object's <span>associated <code>Document</code></span>.</li><li><p>Increment <var>document</var>'s <a href=#animation-frame-callback-identifier id=animation-frames:animation-frame-callback-identifier>animation frame callback identifier</a> by
+  <ol><li><p>Let <var>document</var> be this <code id=animation-frames:window><a href=window-object.html#window>Window</a></code> object's <span>associated <code id=animation-frames:document-2><a href=dom.html#document>Document</a></code></span>.</li><li><p>Increment <var>document</var>'s <a href=#animation-frame-callback-identifier id=animation-frames:animation-frame-callback-identifier>animation frame callback identifier</a> by
    one.</li><li><p>Append the method's argument to <var>document</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks>list of animation frame
    callbacks</a>, associated with <var>document</var>'s <a href=#animation-frame-callback-identifier id=animation-frames:animation-frame-callback-identifier-2>animation frame callback
    identifier</a>'s current value.</li><li><p>Return <var>document</var>'s <a href=#animation-frame-callback-identifier id=animation-frames:animation-frame-callback-identifier-3>animation frame callback identifier</a>'s current
@@ -198,12 +219,12 @@ loadMySprites().then(runDemo);</pre>
   <p>When the <dfn id=dom-window-cancelanimationframe><code>cancelAnimationFrame()</code></dfn> method is called,
   the user agent must run the following steps:</p>
 
-  <ol><li><p>Let <var>document</var> be this <code>Window</code> object's <span>associated <code>Document</code></span>.</li><li><p>Find the entry in <var>document</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-2>list of animation frame callbacks</a>
+  <ol><li><p>Let <var>document</var> be this <code id=animation-frames:window-2><a href=window-object.html#window>Window</a></code> object's <span>associated <code id=animation-frames:document-3><a href=dom.html#document>Document</a></code></span>.</li><li><p>Find the entry in <var>document</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-2>list of animation frame callbacks</a>
    that is associated with the value given by the method's argument.</li><li><p>If there is such an entry, remove it from <var>document</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-3>list of animation
    frame callbacks</a>.</li></ol>
 
   <p>When the user agent is to <dfn id=run-the-animation-frame-callbacks>run the animation frame callbacks</dfn> for a
-  <code>Document</code> <var>doc</var> with a timestamp <var>now</var>, it must run the following
+  <code id=animation-frames:document-4><a href=dom.html#document>Document</a></code> <var>doc</var> with a timestamp <var>now</var>, it must run the following
   steps:</p>
 
   <ol><li><p>Let <var>callbacks</var> be a list of the entries in <var>doc</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-4>list of
@@ -214,5 +235,5 @@ loadMySprites().then(runDemo);</pre>
 
 
 
-  <nav><a href=system-state.html>← 8.7 システム状態および性能</a> — <a href=./>目次</a> — <a href=comms.html>9 コミュニケーション →</a></nav>
+  <nav><a href=system-state.html>← 8.8 System state and capabilities</a> — <a href=./>Table of Contents</a> — <a href=comms.html>9 Communication →</a></nav>
 </body></html>

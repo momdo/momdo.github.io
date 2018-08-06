@@ -55,7 +55,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
 
    <div id=search>
@@ -122,41 +122,41 @@
 
   <p>The main page is as follows:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;html&gt;
- &lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;title&gt;Worker example: One-core computation&lt;/title&gt;
- &lt;/head&gt;
- &lt;body&gt;
-  &lt;p&gt;The highest prime number discovered so far is: &lt;output id="result"&gt;&lt;/output&gt;&lt;/p&gt;
-  &lt;script&gt;
-   var worker = new Worker('worker.js');
-   worker.onmessage = function (event) {
-     document.getElementById('result').textContent = event.data;
-   };
-  &lt;/script&gt;
- &lt;/body&gt;
-&lt;/html&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>head</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Worker example: One-core computation<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>head</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>body</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->The highest prime number discovered so far is: <c- p>&lt;</c-><c- f>output</c-> <c- e>id</c-><c- o>=</c-><c- s>"result"</c-><c- p>&gt;&lt;/</c-><c- f>output</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+   <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;worker.js&amp;apos;</c-><c- p>);</c->
+   worker<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+     document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;result&amp;apos;</c-><c- p>).</c->textContent <c- o>=</c-> event<c- p>.</c->data<c- p>;</c->
+   <c- p>};</c->
+  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>body</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>html</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>The <code id=a-background-number-crunching-worker:dom-worker><a href=#dom-worker>Worker()</a></code> constructor call creates a worker and returns a
-  <code id=a-background-number-crunching-worker:worker><a href=#worker>Worker</a></code> object representing that worker, which is used to communicate with the worker.
+  <code id=a-background-number-crunching-worker:worker-2><a href=#worker-2>Worker</a></code> object representing that worker, which is used to communicate with the worker.
   That object's <code id=a-background-number-crunching-worker:handler-worker-onmessage><a href=#handler-worker-onmessage>onmessage</a></code> event handler allows the
   code to receive messages from the worker.</p>
 
   <p>The worker itself is as follows:</p>
 
-  <pre>var n = 1;
-search: while (true) {
-  n += 1;
-  for (var i = 2; i &lt;= Math.sqrt(n); i += 1)
-    if (n % i == 0)
-     continue search;
-  // found a prime!
-  postMessage(n);
-}
-</pre>
+  <pre><code class='js'><c- a>var</c-> n <c- o>=</c-> <c- mi>1</c-><c- p>;</c->
+search<c- o>:</c-> <c- k>while</c-> <c- p>(</c-><c- kc>true</c-><c- p>)</c-> <c- p>{</c->
+  n <c- o>+=</c-> <c- mi>1</c-><c- p>;</c->
+  <c- k>for</c-> <c- p>(</c-><c- a>var</c-> i <c- o>=</c-> <c- mi>2</c-><c- p>;</c-> i <c- o>&lt;=</c-> Math<c- p>.</c->sqrt<c- p>(</c->n<c- p>);</c-> i <c- o>+=</c-> <c- mi>1</c-><c- p>)</c->
+    <c- k>if</c-> <c- p>(</c->n <c- o>%</c-> i <c- o>==</c-> <c- mi>0</c-><c- p>)</c->
+     <c- k>continue</c-> search<c- p>;</c->
+  <c- c1>// found a prime!</c->
+<c- c1></c->  postMessage<c- p>(</c->n<c- p>);</c->
+<c- p>}</c->
+</code></pre>
 
   <p>The bulk of this code is simply an unoptimized search for a prime number. The <code id=a-background-number-crunching-worker:dom-dedicatedworkerglobalscope-postmessage><a href=#dom-dedicatedworkerglobalscope-postmessage>postMessage()</a></code> method is used to send a
   message back to the page when a prime is found.</p>
@@ -186,109 +186,109 @@ search: while (true) {
 
   <p>The main page is as follows:</p>
 
-  <pre>&lt;!DOCTYPE html&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;title&gt;Worker example: image decoding&lt;/title&gt;
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Worker example: image decoding<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
 
-&lt;p&gt;
-  &lt;label&gt;
+<c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c->
     Type an image URL to decode
-    &lt;input type="url" id="image-url" list="image-list"&gt;
-    &lt;datalist id="image-list"&gt;
-      &lt;option value="https://html.spec.whatwg.org/images/drawImage.png"&gt;
-      &lt;option value="https://html.spec.whatwg.org/images/robots.jpeg"&gt;
-      &lt;option value="https://html.spec.whatwg.org/images/arcTo2.png"&gt;
-    &lt;/datalist&gt;
-  &lt;/label&gt;
-&lt;/p&gt;
+    <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>"url"</c-> <c- e>id</c-><c- o>=</c-><c- s>"image-url"</c-> <c- e>list</c-><c- o>=</c-><c- s>"image-list"</c-><c- p>&gt;</c->
+    <c- p>&lt;</c-><c- f>datalist</c-> <c- e>id</c-><c- o>=</c-><c- s>"image-list"</c-><c- p>&gt;</c->
+      <c- p>&lt;</c-><c- f>option</c-> <c- e>value</c-><c- o>=</c-><c- s>"https://html.spec.whatwg.org/images/drawImage.png"</c-><c- p>&gt;</c->
+      <c- p>&lt;</c-><c- f>option</c-> <c- e>value</c-><c- o>=</c-><c- s>"https://html.spec.whatwg.org/images/robots.jpeg"</c-><c- p>&gt;</c->
+      <c- p>&lt;</c-><c- f>option</c-> <c- e>value</c-><c- o>=</c-><c- s>"https://html.spec.whatwg.org/images/arcTo2.png"</c-><c- p>&gt;</c->
+    <c- p>&lt;/</c-><c- f>datalist</c-><c- p>&gt;</c->
+  <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
 
-&lt;p&gt;
-  &lt;label&gt;
+<c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>label</c-><c- p>&gt;</c->
     Choose a filter to apply
-    &lt;select id="filter"&gt;
-      &lt;option value="none"&gt;none&lt;/option&gt;
-      &lt;option value="grayscale"&gt;grayscale&lt;/option&gt;
-      &lt;option value="brighten"&gt;brighten by 20%&lt;/option&gt;
-    &lt;/select&gt;
-  &lt;/label&gt;
-&lt;/p&gt;
+    <c- p>&lt;</c-><c- f>select</c-> <c- e>id</c-><c- o>=</c-><c- s>"filter"</c-><c- p>&gt;</c->
+      <c- p>&lt;</c-><c- f>option</c-> <c- e>value</c-><c- o>=</c-><c- s>"none"</c-><c- p>&gt;</c->none<c- p>&lt;/</c-><c- f>option</c-><c- p>&gt;</c->
+      <c- p>&lt;</c-><c- f>option</c-> <c- e>value</c-><c- o>=</c-><c- s>"grayscale"</c-><c- p>&gt;</c->grayscale<c- p>&lt;/</c-><c- f>option</c-><c- p>&gt;</c->
+      <c- p>&lt;</c-><c- f>option</c-> <c- e>value</c-><c- o>=</c-><c- s>"brighten"</c-><c- p>&gt;</c->brighten by 20%<c- p>&lt;/</c-><c- f>option</c-><c- p>&gt;</c->
+    <c- p>&lt;/</c-><c- f>select</c-><c- p>&gt;</c->
+  <c- p>&lt;/</c-><c- f>label</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
 
-&lt;canvas id="output"&gt;&lt;/canvas&gt;
+<c- p>&lt;</c-><c- f>canvas</c-> <c- e>id</c-><c- o>=</c-><c- s>"output"</c-><c- p>&gt;&lt;/</c-><c- f>canvas</c-><c- p>&gt;</c->
 
-&lt;script type="module"&gt;
-  const worker = new Worker("worker.js", { type: "module" });
-  worker.onmessage = receiveFromWorker;
+<c- p>&lt;</c-><c- f>script</c-> <c- e>type</c-><c- o>=</c-><c- s>"module"</c-><c- p>&gt;</c->
+  <c- kr>const</c-> worker <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- u>"worker.js"</c-><c- p>,</c-> <c- p>{</c-> type<c- o>:</c-> <c- u>"module"</c-> <c- p>});</c->
+  worker<c- p>.</c->onmessage <c- o>=</c-> receiveFromWorker<c- p>;</c->
 
-  const url = document.querySelector("#image-url");
-  const filter = document.querySelector("#filter");
-  const output = document.querySelector("#output");
+  <c- kr>const</c-> url <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#image-url"</c-><c- p>);</c->
+  <c- kr>const</c-> filter <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#filter"</c-><c- p>);</c->
+  <c- kr>const</c-> output <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#output"</c-><c- p>);</c->
 
-  url.oninput = updateImage;
-  filter.oninput = sendToWorker;
+  url<c- p>.</c->oninput <c- o>=</c-> updateImage<c- p>;</c->
+  filter<c- p>.</c->oninput <c- o>=</c-> sendToWorker<c- p>;</c->
 
-  let imageData, context;
+  <c- a>let</c-> imageData<c- p>,</c-> context<c- p>;</c->
 
-  function updateImage() {
-    const img = new Image();
-    img.src = url.value;
+  <c- a>function</c-> updateImage<c- p>()</c-> <c- p>{</c->
+    <c- kr>const</c-> img <c- o>=</c-> <c- k>new</c-> Image<c- p>();</c->
+    img<c- p>.</c->src <c- o>=</c-> url<c- p>.</c->value<c- p>;</c->
 
-    img.onload = () =&gt; {
-      output.innerHTML = "";
+    img<c- p>.</c->onload <c- o>=</c-> <c- p>()</c-> <c- p>=&gt;</c-> <c- p>{</c->
+      output<c- p>.</c->innerHTML <c- o>=</c-> <c- u>""</c-><c- p>;</c->
 
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
+      <c- kr>const</c-> canvas <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"canvas"</c-><c- p>);</c->
+      canvas<c- p>.</c->width <c- o>=</c-> img<c- p>.</c->width<c- p>;</c->
+      canvas<c- p>.</c->height <c- o>=</c-> img<c- p>.</c->height<c- p>;</c->
 
-      context = canvas.getContext("2d");
-      context.drawImage(img, 0, 0);
-      imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- u>"2d"</c-><c- p>);</c->
+      context<c- p>.</c->drawImage<c- p>(</c->img<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
+      imageData <c- o>=</c-> context<c- p>.</c->getImageData<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> canvas<c- p>.</c->width<c- p>,</c-> canvas<c- p>.</c->height<c- p>);</c->
 
-      sendToWorker();
-      output.appendChild(canvas);
-    };
-  }
+      sendToWorker<c- p>();</c->
+      output<c- p>.</c->appendChild<c- p>(</c->canvas<c- p>);</c->
+    <c- p>};</c->
+  <c- p>}</c->
 
-  function sendToWorker() {
-    worker.postMessage({ imageData, filter: filter.value });
-  }
+  <c- a>function</c-> sendToWorker<c- p>()</c-> <c- p>{</c->
+    worker<c- p>.</c->postMessage<c- p>({</c-> imageData<c- p>,</c-> filter<c- o>:</c-> filter<c- p>.</c->value <c- p>});</c->
+  <c- p>}</c->
 
-  function receiveFromWorker(e) {
-    context.putImageData(e.data, 0, 0);
-  }
-&lt;/script&gt;
-</pre>
+  <c- a>function</c-> receiveFromWorker<c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    context<c- p>.</c->putImageData<c- p>(</c->e<c- p>.</c->data<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>);</c->
+  <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>The worker file is then:</p>
 
-  <pre>import * as filters from "./filters.js";
+  <pre><code class='js'><c- kr>import</c-> <c- o>*</c-> as filters from <c- u>"./filters.js"</c-><c- p>;</c->
 
-self.onmessage = e =&gt; {
-  const { imageData, filter } = e.data;
-  filters[filter](imageData);
-  self.postMessage(imageData, [imageData.data.buffer]);
-};
-</pre>
+self<c- p>.</c->onmessage <c- o>=</c-> e <c- p>=&gt;</c-> <c- p>{</c->
+  <c- kr>const</c-> <c- p>{</c-> imageData<c- p>,</c-> filter <c- p>}</c-> <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+  filters<c- p>[</c->filter<c- p>](</c->imageData<c- p>);</c->
+  self<c- p>.</c->postMessage<c- p>(</c->imageData<c- p>,</c-> <c- p>[</c->imageData<c- p>.</c->data<c- p>.</c->buffer<c- p>]);</c->
+<c- p>};</c->
+</code></pre>
 
   <p>Which imports the file <code>filters.js</code>:</p>
 
-  <pre>export function none() {}
+  <pre><code class='js'><c- kr>export</c-> <c- a>function</c-> none<c- p>()</c-> <c- p>{}</c->
 
-export function grayscale({ data: d }) {
-  for (let i = 0; i &lt; d.length; i += 4) {
-    const [r, g, b] = [d[i], d[i + 1], d[i + 2]];
+<c- kr>export</c-> <c- a>function</c-> grayscale<c- p>({</c-> data<c- o>:</c-> d <c- p>})</c-> <c- p>{</c->
+  <c- k>for</c-> <c- p>(</c-><c- a>let</c-> i <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> i <c- o>&lt;</c-> d<c- p>.</c->length<c- p>;</c-> i <c- o>+=</c-> <c- mi>4</c-><c- p>)</c-> <c- p>{</c->
+    <c- kr>const</c-> <c- p>[</c->r<c- p>,</c-> g<c- p>,</c-> b<c- p>]</c-> <c- o>=</c-> <c- p>[</c->d<c- p>[</c->i<c- p>],</c-> d<c- p>[</c->i <c- o>+</c-> <c- mi>1</c-><c- p>],</c-> d<c- p>[</c->i <c- o>+</c-> <c- mi>2</c-><c- p>]];</c->
 
-    // CIE luminance for the RGB
-    // The human eye is bad at seeing red and blue, so we de-emphasize them.
-    d[i] = d[i + 1] = d[i + 2] = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  }
-};
+    <c- c1>// CIE luminance for the RGB</c->
+<c- c1></c->    <c- c1>// The human eye is bad at seeing red and blue, so we de-emphasize them.</c->
+<c- c1></c->    d<c- p>[</c->i<c- p>]</c-> <c- o>=</c-> d<c- p>[</c->i <c- o>+</c-> <c- mi>1</c-><c- p>]</c-> <c- o>=</c-> d<c- p>[</c->i <c- o>+</c-> <c- mi>2</c-><c- p>]</c-> <c- o>=</c-> <c- mf>0.2126</c-> <c- o>*</c-> r <c- o>+</c-> <c- mf>0.7152</c-> <c- o>*</c-> g <c- o>+</c-> <c- mf>0.0722</c-> <c- o>*</c-> b<c- p>;</c->
+  <c- p>}</c->
+<c- p>};</c->
 
-export function brighten({ data: d }) {
-  for (let i = 0; i &lt; d.length; ++i) {
-    d[i] *= 1.2;
-  }
-};
-</pre>
+<c- kr>export</c-> <c- a>function</c-> brighten<c- p>({</c-> data<c- o>:</c-> d <c- p>})</c-> <c- p>{</c->
+  <c- k>for</c-> <c- p>(</c-><c- a>let</c-> i <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> i <c- o>&lt;</c-> d<c- p>.</c->length<c- p>;</c-> <c- o>++</c->i<c- p>)</c-> <c- p>{</c->
+    d<c- p>[</c->i<c- p>]</c-> <c- o>*=</c-> <c- mf>1.2</c-><c- p>;</c->
+  <c- p>}</c->
+<c- p>};</c->
+</code></pre>
 
   <p><a href=/demos/workers/modules/page.html>この例をオンラインで見る</a>。</p>
 
@@ -305,26 +305,26 @@ export function brighten({ data: d }) {
 
   <p>Here is the HTML page:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;title&gt;Shared workers: demo 1&lt;/title&gt;
-&lt;pre id="log"&gt;Log:&lt;/pre&gt;
-&lt;script&gt;
-  var worker = new SharedWorker('test.js');
-  var log = document.getElementById('log');
-  worker.port.onmessage = function(e) { // note: not worker.onmessage!
-    log.textContent += '\n' + e.data;
-  }
-&lt;/script&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Shared workers: demo 1<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>pre</c-> <c- e>id</c-><c- o>=</c-><c- s>"log"</c-><c- p>&gt;</c->Log:<c- p>&lt;/</c-><c- f>pre</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> SharedWorker<c- p>(</c-><c- t>&amp;apos;test.js&amp;apos;</c-><c- p>);</c->
+  <c- a>var</c-> log <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;log&amp;apos;</c-><c- p>);</c->
+  worker<c- p>.</c->port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c-> <c- c1>// note: not worker.onmessage!</c->
+<c- c1></c->    log<c- p>.</c->textContent <c- o>+=</c-> <c- t>&amp;apos;\n&amp;apos;</c-> <c- o>+</c-> e<c- p>.</c->data<c- p>;</c->
+  <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>Here is the JavaScript worker:</p>
 
-  <pre>onconnect = function(e) {
-  var port = e.ports[0];
-  port.postMessage('Hello World!');
-}
-</pre>
+  <pre><code class='js'>onconnect <c- o>=</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> port <c- o>=</c-> e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>];</c->
+  port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;Hello World!&amp;apos;</c-><c- p>);</c->
+<c- p>}</c->
+</code></pre>
 
   <p><a href=/demos/workers/shared/001/test.html>この例をオンラインで見る</a>。</p>
 
@@ -337,32 +337,32 @@ export function brighten({ data: d }) {
 
   <p>Here is the HTML page:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;title&gt;Shared workers: demo 2&lt;/title&gt;
-&lt;pre id="log"&gt;Log:&lt;/pre&gt;
-&lt;script&gt;
-  var worker = new SharedWorker('test.js');
-  var log = document.getElementById('log');
-  worker.port.addEventListener('message', function(e) {
-    log.textContent += '\n' + e.data;
-  }, false);
-  worker.port.start(); // note: need this when using addEventListener
-  worker.port.postMessage('ping');
-&lt;/script&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Shared workers: demo 2<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>pre</c-> <c- e>id</c-><c- o>=</c-><c- s>"log"</c-><c- p>&gt;</c->Log:<c- p>&lt;/</c-><c- f>pre</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> SharedWorker<c- p>(</c-><c- t>&amp;apos;test.js&amp;apos;</c-><c- p>);</c->
+  <c- a>var</c-> log <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;log&amp;apos;</c-><c- p>);</c->
+  worker<c- p>.</c->port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    log<c- p>.</c->textContent <c- o>+=</c-> <c- t>&amp;apos;\n&amp;apos;</c-> <c- o>+</c-> e<c- p>.</c->data<c- p>;</c->
+  <c- p>},</c-> <c- kc>false</c-><c- p>);</c->
+  worker<c- p>.</c->port<c- p>.</c->start<c- p>();</c-> <c- c1>// note: need this when using addEventListener</c->
+<c- c1></c->  worker<c- p>.</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;ping&amp;apos;</c-><c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>Here is the JavaScript worker:</p>
 
-  <pre>onconnect = function(e) {
-  var port = e.ports[0];
-  port.postMessage('Hello World!');
-  port.onmessage = function(e) {
-    port.postMessage('pong'); // not e.ports[0].postMessage!
-    // e.target.postMessage('pong'); would work also
-  }
-}
-</pre>
+  <pre><code class='js'>onconnect <c- o>=</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> port <c- o>=</c-> e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>];</c->
+  port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;Hello World!&amp;apos;</c-><c- p>);</c->
+  port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;pong&amp;apos;</c-><c- p>);</c-> <c- c1>// not e.ports[0].postMessage!</c->
+<c- c1></c->    <c- c1>// e.target.postMessage(&amp;apos;pong&amp;apos;); would work also</c->
+<c- c1></c->  <c- p>}</c->
+<c- p>}</c->
+</code></pre>
 
   <p><a href=/demos/workers/shared/002/test.html>この例をオンラインで見る</a>。</p>
 
@@ -375,49 +375,49 @@ export function brighten({ data: d }) {
 
   <p>Here is the outer HTML page:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;title&gt;Shared workers: demo 3&lt;/title&gt;
-&lt;pre id="log"&gt;Log:&lt;/pre&gt;
-&lt;script&gt;
-  var worker = new SharedWorker('test.js');
-  var log = document.getElementById('log');
-  worker.port.addEventListener('message', function(e) {
-    log.textContent += '\n' + e.data;
-  }, false);
-  worker.port.start();
-  worker.port.postMessage('ping');
-&lt;/script&gt;
-&lt;iframe src="inner.html"&gt;&lt;/iframe&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Shared workers: demo 3<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>pre</c-> <c- e>id</c-><c- o>=</c-><c- s>"log"</c-><c- p>&gt;</c->Log:<c- p>&lt;/</c-><c- f>pre</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> SharedWorker<c- p>(</c-><c- t>&amp;apos;test.js&amp;apos;</c-><c- p>);</c->
+  <c- a>var</c-> log <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;log&amp;apos;</c-><c- p>);</c->
+  worker<c- p>.</c->port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    log<c- p>.</c->textContent <c- o>+=</c-> <c- t>&amp;apos;\n&amp;apos;</c-> <c- o>+</c-> e<c- p>.</c->data<c- p>;</c->
+  <c- p>},</c-> <c- kc>false</c-><c- p>);</c->
+  worker<c- p>.</c->port<c- p>.</c->start<c- p>();</c->
+  worker<c- p>.</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;ping&amp;apos;</c-><c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"inner.html"</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>Here is the inner HTML page:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;meta charset="utf-8"&gt;
-&lt;title&gt;Shared workers: demo 3 inner frame&lt;/title&gt;
-&lt;pre id=log&gt;Inner log:&lt;/pre&gt;
-&lt;script&gt;
-  var worker = new SharedWorker('test.js');
-  var log = document.getElementById('log');
-  worker.port.onmessage = function(e) {
-   log.textContent += '\n' + e.data;
-  }
-&lt;/script&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Shared workers: demo 3 inner frame<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>pre</c-> <c- e>id</c-><c- o>=</c-><c- s>log</c-><c- p>&gt;</c->Inner log:<c- p>&lt;/</c-><c- f>pre</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> SharedWorker<c- p>(</c-><c- t>&amp;apos;test.js&amp;apos;</c-><c- p>);</c->
+  <c- a>var</c-> log <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;log&amp;apos;</c-><c- p>);</c->
+  worker<c- p>.</c->port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+   log<c- p>.</c->textContent <c- o>+=</c-> <c- t>&amp;apos;\n&amp;apos;</c-> <c- o>+</c-> e<c- p>.</c->data<c- p>;</c->
+  <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>Here is the JavaScript worker:</p>
 
-  <pre>var count = 0;
-onconnect = function(e) {
-  count += 1;
-  var port = e.ports[0];
-  port.postMessage('Hello World! You are connection #' + count);
-  port.onmessage = function(e) {
-    port.postMessage('pong');
-  }
-}
-</pre>
+  <pre><code class='js'><c- a>var</c-> count <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+onconnect <c- o>=</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  count <c- o>+=</c-> <c- mi>1</c-><c- p>;</c->
+  <c- a>var</c-> port <c- o>=</c-> e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>];</c->
+  port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;Hello World! You are connection #&amp;apos;</c-> <c- o>+</c-> count<c- p>);</c->
+  port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-><c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;pong&amp;apos;</c-><c- p>);</c->
+  <c- p>}</c->
+<c- p>}</c->
+</code></pre>
 
   <p><a href=/demos/workers/shared/003/test.html>この例をオンラインで見る</a>。</p>
 
@@ -433,161 +433,161 @@ onconnect = function(e) {
 
   <p>The main page isn't interesting, it merely provides a way to open the viewers:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;html&gt;
- &lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;title&gt;Workers example: Multiviewer&lt;/title&gt;
-  &lt;script&gt;
-   function openViewer() {
-     window.open('viewer.html');
-   }
-  &lt;/script&gt;
- &lt;/head&gt;
- &lt;body&gt;
-  &lt;p&gt;&lt;button type=button onclick="openViewer()"&gt;Open a new
-  viewer&lt;/button&gt;&lt;/p&gt;
-  &lt;p&gt;Each viewer opens in a new window. You can have as many viewers
-  as you like, they all view the same data.&lt;/p&gt;
- &lt;/body&gt;
-&lt;/html&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>head</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Workers example: Multiviewer<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+   <c- a>function</c-> openViewer<c- p>()</c-> <c- p>{</c->
+     window<c- p>.</c->open<c- p>(</c-><c- t>&amp;apos;viewer.html&amp;apos;</c-><c- p>);</c->
+   <c- p>}</c->
+  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>head</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>body</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"openViewer()"</c-><c- p>&gt;</c->Open a new
+  viewer<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->Each viewer opens in a new window. You can have as many viewers
+  as you like, they all view the same data.<c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>body</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>html</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>The viewer is more involved:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;html&gt;
- &lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;title&gt;Workers example: Multiviewer viewer&lt;/title&gt;
-  &lt;script&gt;
-   var worker = new SharedWorker('worker.js', 'core');
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>head</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Workers example: Multiviewer viewer<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+   <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> SharedWorker<c- p>(</c-><c- t>&amp;apos;worker.js&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;core&amp;apos;</c-><c- p>);</c->
 
-   // CONFIGURATION
-   function configure(event) {
-     if (event.data.substr(0, 4) != 'cfg ') return;
-     var name = event.data.substr(4).split(' ', 1)[0];
-     // update display to mention our name is name
-     document.getElementsByTagName('h1')[0].textContent += ' ' + name;
-     // no longer need this listener
-     worker.port.removeEventListener('message', configure, false);
-   }
-   worker.port.addEventListener('message', configure, false);
+   <c- c1>// CONFIGURATION</c->
+<c- c1></c->   <c- a>function</c-> configure<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+     <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>4</c-><c- p>)</c-> <c- o>!=</c-> <c- t>&amp;apos;cfg &amp;apos;</c-><c- p>)</c-> <c- k>return</c-><c- p>;</c->
+     <c- a>var</c-> name <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>).</c->split<c- p>(</c-><c- t>&amp;apos; &amp;apos;</c-><c- p>,</c-> <c- mi>1</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+     <c- c1>// update display to mention our name is name</c->
+<c- c1></c->     document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;h1&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->textContent <c- o>+=</c-> <c- t>&amp;apos; &amp;apos;</c-> <c- o>+</c-> name<c- p>;</c->
+     <c- c1>// no longer need this listener</c->
+<c- c1></c->     worker<c- p>.</c->port<c- p>.</c->removeEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> configure<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
+   <c- p>}</c->
+   worker<c- p>.</c->port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> configure<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
 
-   // MAP
-   function paintMap(event) {
-     if (event.data.substr(0, 4) != 'map ') return;
-     var data = event.data.substr(4).split(',');
-     // display tiles data[0] .. data[8]
-     var canvas = document.getElementById('map');
-     var context = canvas.getContext('2d');
-     for (var y = 0; y &lt; 3; y += 1) {
-       for (var x = 0; x &lt; 3; x += 1) {
-         var tile = data[y * 3 + x];
-         if (tile == '0')
-           context.fillStyle = 'green';
-         else
-           context.fillStyle = 'maroon';
-         context.fillRect(x * 50, y * 50, 50, 50);
-       }
-     }
-   }
-   worker.port.addEventListener('message', paintMap, false);
+   <c- c1>// MAP</c->
+<c- c1></c->   <c- a>function</c-> paintMap<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+     <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>4</c-><c- p>)</c-> <c- o>!=</c-> <c- t>&amp;apos;map &amp;apos;</c-><c- p>)</c-> <c- k>return</c-><c- p>;</c->
+     <c- a>var</c-> data <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>).</c->split<c- p>(</c-><c- t>&amp;apos;,&amp;apos;</c-><c- p>);</c->
+     <c- c1>// display tiles data[0] .. data[8]</c->
+<c- c1></c->     <c- a>var</c-> canvas <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;map&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>&amp;apos;2d&amp;apos;</c-><c- p>);</c->
+     <c- k>for</c-> <c- p>(</c-><c- a>var</c-> y <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> y <c- o>&lt;</c-> <c- mi>3</c-><c- p>;</c-> y <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+       <c- k>for</c-> <c- p>(</c-><c- a>var</c-> x <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> x <c- o>&lt;</c-> <c- mi>3</c-><c- p>;</c-> x <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+         <c- a>var</c-> tile <c- o>=</c-> data<c- p>[</c->y <c- o>*</c-> <c- mi>3</c-> <c- o>+</c-> x<c- p>];</c->
+         <c- k>if</c-> <c- p>(</c->tile <c- o>==</c-> <c- t>&amp;apos;0&amp;apos;</c-><c- p>)</c->
+           context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;green&amp;apos;</c-><c- p>;</c->
+         <c- k>else</c->
+           context<c- p>.</c->fillStyle <c- o>=</c-> <c- t>&amp;apos;maroon&amp;apos;</c-><c- p>;</c->
+         context<c- p>.</c->fillRect<c- p>(</c->x <c- o>*</c-> <c- mi>50</c-><c- p>,</c-> y <c- o>*</c-> <c- mi>50</c-><c- p>,</c-> <c- mi>50</c-><c- p>,</c-> <c- mi>50</c-><c- p>);</c->
+       <c- p>}</c->
+     <c- p>}</c->
+   <c- p>}</c->
+   worker<c- p>.</c->port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> paintMap<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
 
-   // PUBLIC CHAT
-   function updatePublicChat(event) {
-     if (event.data.substr(0, 4) != 'txt ') return;
-     var name = event.data.substr(4).split(' ', 1)[0];
-     var message = event.data.substr(4 + name.length + 1);
-     // display "&lt;name&gt; message" in public chat
-     var public = document.getElementById('public');
-     var p = document.createElement('p');
-     var n = document.createElement('button');
-     n.textContent = '&lt;' + name + '&gt; ';
-     n.onclick = function () { worker.port.postMessage('msg ' + name); };
-     p.appendChild(n);
-     var m = document.createElement('span');
-     m.textContent = message;
-     p.appendChild(m);
-     public.appendChild(p);
-   }
-   worker.port.addEventListener('message', updatePublicChat, false);
+   <c- c1>// PUBLIC CHAT</c->
+<c- c1></c->   <c- a>function</c-> updatePublicChat<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+     <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>4</c-><c- p>)</c-> <c- o>!=</c-> <c- t>&amp;apos;txt &amp;apos;</c-><c- p>)</c-> <c- k>return</c-><c- p>;</c->
+     <c- a>var</c-> name <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>).</c->split<c- p>(</c-><c- t>&amp;apos; &amp;apos;</c-><c- p>,</c-> <c- mi>1</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+     <c- a>var</c-> message <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-> <c- o>+</c-> name<c- p>.</c->length <c- o>+</c-> <c- mi>1</c-><c- p>);</c->
+     <c- c1>// display "&lt;name&gt; message" in public chat</c->
+<c- c1></c->     <c- a>var</c-> <c- kr>public</c-> <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;public&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> p <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;p&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> n <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;button&amp;apos;</c-><c- p>);</c->
+     n<c- p>.</c->textContent <c- o>=</c-> <c- t>&amp;apos;&lt;&amp;apos;</c-> <c- o>+</c-> name <c- o>+</c-> <c- t>&amp;apos;&gt; &amp;apos;</c-><c- p>;</c->
+     n<c- p>.</c->onclick <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c-> worker<c- p>.</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;msg &amp;apos;</c-> <c- o>+</c-> name<c- p>);</c-> <c- p>};</c->
+     p<c- p>.</c->appendChild<c- p>(</c->n<c- p>);</c->
+     <c- a>var</c-> m <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;span&amp;apos;</c-><c- p>);</c->
+     m<c- p>.</c->textContent <c- o>=</c-> message<c- p>;</c->
+     p<c- p>.</c->appendChild<c- p>(</c->m<c- p>);</c->
+     <c- kr>public</c-><c- p>.</c->appendChild<c- p>(</c->p<c- p>);</c->
+   <c- p>}</c->
+   worker<c- p>.</c->port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> updatePublicChat<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
 
-   // PRIVATE CHAT
-   function startPrivateChat(event) {
-     if (event.data.substr(0, 4) != 'msg ') return;
-     var name = event.data.substr(4).split(' ', 1)[0];
-     var port = event.ports[0];
-     // display a private chat UI
-     var ul = document.getElementById('private');
-     var li = document.createElement('li');
-     var h3 = document.createElement('h3');
-     h3.textContent = 'Private chat with ' + name;
-     li.appendChild(h3);
-     var div = document.createElement('div');
-     var addMessage = function(name, message) {
-       var p = document.createElement('p');
-       var n = document.createElement('strong');
-       n.textContent = '&lt;' + name + '&gt; ';
-       p.appendChild(n);
-       var t = document.createElement('span');
-       t.textContent = message;
-       p.appendChild(t);
-       div.appendChild(p);
-     };
-     port.onmessage = function (event) {
-       addMessage(name, event.data);
-     };
-     li.appendChild(div);
-     var form = document.createElement('form');
-     var p = document.createElement('p');
-     var input = document.createElement('input');
-     input.size = 50;
-     p.appendChild(input);
-     p.appendChild(document.createTextNode(' '));
-     var button = document.createElement('button');
-     button.textContent = 'Post';
-     p.appendChild(button);
-     form.onsubmit = function () {
-       port.postMessage(input.value);
-       addMessage('me', input.value);
-       input.value = '';
-       return false;
-     };
-     form.appendChild(p);
-     li.appendChild(form);
-     ul.appendChild(li);
-   }
-   worker.port.addEventListener('message', startPrivateChat, false);
+   <c- c1>// PRIVATE CHAT</c->
+<c- c1></c->   <c- a>function</c-> startPrivateChat<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+     <c- k>if</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>4</c-><c- p>)</c-> <c- o>!=</c-> <c- t>&amp;apos;msg &amp;apos;</c-><c- p>)</c-> <c- k>return</c-><c- p>;</c->
+     <c- a>var</c-> name <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>).</c->split<c- p>(</c-><c- t>&amp;apos; &amp;apos;</c-><c- p>,</c-> <c- mi>1</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+     <c- a>var</c-> port <c- o>=</c-> event<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>];</c->
+     <c- c1>// display a private chat UI</c->
+<c- c1></c->     <c- a>var</c-> ul <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;private&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> li <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;li&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> h3 <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;h3&amp;apos;</c-><c- p>);</c->
+     h3<c- p>.</c->textContent <c- o>=</c-> <c- t>&amp;apos;Private chat with &amp;apos;</c-> <c- o>+</c-> name<c- p>;</c->
+     li<c- p>.</c->appendChild<c- p>(</c->h3<c- p>);</c->
+     <c- a>var</c-> div <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;div&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> addMessage <c- o>=</c-> <c- a>function</c-><c- p>(</c->name<c- p>,</c-> message<c- p>)</c-> <c- p>{</c->
+       <c- a>var</c-> p <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;p&amp;apos;</c-><c- p>);</c->
+       <c- a>var</c-> n <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;strong&amp;apos;</c-><c- p>);</c->
+       n<c- p>.</c->textContent <c- o>=</c-> <c- t>&amp;apos;&lt;&amp;apos;</c-> <c- o>+</c-> name <c- o>+</c-> <c- t>&amp;apos;&gt; &amp;apos;</c-><c- p>;</c->
+       p<c- p>.</c->appendChild<c- p>(</c->n<c- p>);</c->
+       <c- a>var</c-> t <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;span&amp;apos;</c-><c- p>);</c->
+       t<c- p>.</c->textContent <c- o>=</c-> message<c- p>;</c->
+       p<c- p>.</c->appendChild<c- p>(</c->t<c- p>);</c->
+       div<c- p>.</c->appendChild<c- p>(</c->p<c- p>);</c->
+     <c- p>};</c->
+     port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+       addMessage<c- p>(</c->name<c- p>,</c-> event<c- p>.</c->data<c- p>);</c->
+     <c- p>};</c->
+     li<c- p>.</c->appendChild<c- p>(</c->div<c- p>);</c->
+     <c- a>var</c-> form <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;form&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> p <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;p&amp;apos;</c-><c- p>);</c->
+     <c- a>var</c-> input <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;input&amp;apos;</c-><c- p>);</c->
+     input<c- p>.</c->size <c- o>=</c-> <c- mi>50</c-><c- p>;</c->
+     p<c- p>.</c->appendChild<c- p>(</c->input<c- p>);</c->
+     p<c- p>.</c->appendChild<c- p>(</c->document<c- p>.</c->createTextNode<c- p>(</c-><c- t>&amp;apos; &amp;apos;</c-><c- p>));</c->
+     <c- a>var</c-> button <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;button&amp;apos;</c-><c- p>);</c->
+     button<c- p>.</c->textContent <c- o>=</c-> <c- t>&amp;apos;Post&amp;apos;</c-><c- p>;</c->
+     p<c- p>.</c->appendChild<c- p>(</c->button<c- p>);</c->
+     form<c- p>.</c->onsubmit <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
+       port<c- p>.</c->postMessage<c- p>(</c->input<c- p>.</c->value<c- p>);</c->
+       addMessage<c- p>(</c-><c- t>&amp;apos;me&amp;apos;</c-><c- p>,</c-> input<c- p>.</c->value<c- p>);</c->
+       input<c- p>.</c->value <c- o>=</c-> <c- t>&amp;apos;&amp;apos;</c-><c- p>;</c->
+       <c- k>return</c-> <c- kc>false</c-><c- p>;</c->
+     <c- p>};</c->
+     form<c- p>.</c->appendChild<c- p>(</c->p<c- p>);</c->
+     li<c- p>.</c->appendChild<c- p>(</c->form<c- p>);</c->
+     ul<c- p>.</c->appendChild<c- p>(</c->li<c- p>);</c->
+   <c- p>}</c->
+   worker<c- p>.</c->port<c- p>.</c->addEventListener<c- p>(</c-><c- t>&amp;apos;message&amp;apos;</c-><c- p>,</c-> startPrivateChat<c- p>,</c-> <c- kc>false</c-><c- p>);</c->
 
-   worker.port.start();
-  &lt;/script&gt;
- &lt;/head&gt;
- &lt;body&gt;
-  &lt;h1&gt;Viewer&lt;/h1&gt;
-  &lt;h2&gt;Map&lt;/h2&gt;
-  &lt;p&gt;&lt;canvas id="map" height=150 width=150&gt;&lt;/canvas&gt;&lt;/p&gt;
-  &lt;p&gt;
-   &lt;button type=button onclick="worker.port.postMessage('mov left')"&gt;Left&lt;/button&gt;
-   &lt;button type=button onclick="worker.port.postMessage('mov up')"&gt;Up&lt;/button&gt;
-   &lt;button type=button onclick="worker.port.postMessage('mov down')"&gt;Down&lt;/button&gt;
-   &lt;button type=button onclick="worker.port.postMessage('mov right')"&gt;Right&lt;/button&gt;
-   &lt;button type=button onclick="worker.port.postMessage('set 0')"&gt;Set 0&lt;/button&gt;
-   &lt;button type=button onclick="worker.port.postMessage('set 1')"&gt;Set 1&lt;/button&gt;
-  &lt;/p&gt;
-  &lt;h2&gt;Public Chat&lt;/h2&gt;
-  &lt;div id="public"&gt;&lt;/div&gt;
-  &lt;form onsubmit="worker.port.postMessage('txt ' + message.value); message.value = ''; return false;"&gt;
-   &lt;p&gt;
-    &lt;input type="text" name="message" size="50"&gt;
-    &lt;button&gt;Post&lt;/button&gt;
-   &lt;/p&gt;
-  &lt;/form&gt;
-  &lt;h2&gt;Private Chat&lt;/h2&gt;
-  &lt;ul id="private"&gt;&lt;/ul&gt;
- &lt;/body&gt;
-&lt;/html&gt;
-</pre>
+   worker<c- p>.</c->port<c- p>.</c->start<c- p>();</c->
+  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>head</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>body</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>h1</c-><c- p>&gt;</c->Viewer<c- p>&lt;/</c-><c- f>h1</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>h2</c-><c- p>&gt;</c->Map<c- p>&lt;/</c-><c- f>h2</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>canvas</c-> <c- e>id</c-><c- o>=</c-><c- s>"map"</c-> <c- e>height</c-><c- o>=</c-><c- s>150</c-> <c- e>width</c-><c- o>=</c-><c- s>150</c-><c- p>&gt;&lt;/</c-><c- f>canvas</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"worker.port.postMessage(&amp;apos;mov left&amp;apos;)"</c-><c- p>&gt;</c->Left<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"worker.port.postMessage(&amp;apos;mov up&amp;apos;)"</c-><c- p>&gt;</c->Up<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"worker.port.postMessage(&amp;apos;mov down&amp;apos;)"</c-><c- p>&gt;</c->Down<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"worker.port.postMessage(&amp;apos;mov right&amp;apos;)"</c-><c- p>&gt;</c->Right<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"worker.port.postMessage(&amp;apos;set 0&amp;apos;)"</c-><c- p>&gt;</c->Set 0<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"worker.port.postMessage(&amp;apos;set 1&amp;apos;)"</c-><c- p>&gt;</c->Set 1<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+  <c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>h2</c-><c- p>&gt;</c->Public Chat<c- p>&lt;/</c-><c- f>h2</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>div</c-> <c- e>id</c-><c- o>=</c-><c- s>"public"</c-><c- p>&gt;&lt;/</c-><c- f>div</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>form</c-> <c- e>onsubmit</c-><c- o>=</c-><c- s>"worker.port.postMessage(&amp;apos;txt &amp;apos; + message.value); message.value = &amp;apos;&amp;apos;; return false;"</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->
+    <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>"text"</c-> <c- e>name</c-><c- o>=</c-><c- s>"message"</c-> <c- e>size</c-><c- o>=</c-><c- s>"50"</c-><c- p>&gt;</c->
+    <c- p>&lt;</c-><c- f>button</c-><c- p>&gt;</c->Post<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c->
+   <c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>h2</c-><c- p>&gt;</c->Private Chat<c- p>&lt;/</c-><c- f>h2</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>ul</c-> <c- e>id</c-><c- o>=</c-><c- s>"private"</c-><c- p>&gt;&lt;/</c-><c- f>ul</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>body</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>html</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>There are several key things worth noting about the way the viewer is written.</p>
 
@@ -603,105 +603,105 @@ onconnect = function(e) {
 
   <p>Finally, the worker:</p>
 
-  <pre>var nextName = 0;
-function getNextName() {
-  // this could use more friendly names
-  // but for now just return a number
-  return nextName++;
-}
+  <pre><code class='js'><c- a>var</c-> nextName <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+<c- a>function</c-> getNextName<c- p>()</c-> <c- p>{</c->
+  <c- c1>// this could use more friendly names</c->
+<c- c1></c->  <c- c1>// but for now just return a number</c->
+<c- c1></c->  <c- k>return</c-> nextName<c- o>++</c-><c- p>;</c->
+<c- p>}</c->
 
-var map = [
- [0, 0, 0, 0, 0, 0, 0],
- [1, 1, 0, 1, 0, 1, 1],
- [0, 1, 0, 1, 0, 0, 0],
- [0, 1, 0, 1, 0, 1, 1],
- [0, 0, 0, 1, 0, 0, 0],
- [1, 0, 0, 1, 1, 1, 1],
- [1, 1, 0, 1, 1, 0, 1],
-];
+<c- a>var</c-> map <c- o>=</c-> <c- p>[</c->
+ <c- p>[</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>],</c->
+ <c- p>[</c-><c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>],</c->
+ <c- p>[</c-><c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>],</c->
+ <c- p>[</c-><c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>],</c->
+ <c- p>[</c-><c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>],</c->
+ <c- p>[</c-><c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>],</c->
+ <c- p>[</c-><c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>1</c-><c- p>,</c-> <c- mi>0</c-><c- p>,</c-> <c- mi>1</c-><c- p>],</c->
+<c- p>];</c->
 
-function wrapX(x) {
-  if (x &lt; 0) return wrapX(x + map[0].length);
-  if (x &gt;= map[0].length) return wrapX(x - map[0].length);
-  return x;
-}
+<c- a>function</c-> wrapX<c- p>(</c->x<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->x <c- o>&lt;</c-> <c- mi>0</c-><c- p>)</c-> <c- k>return</c-> wrapX<c- p>(</c->x <c- o>+</c-> map<c- p>[</c-><c- mi>0</c-><c- p>].</c->length<c- p>);</c->
+  <c- k>if</c-> <c- p>(</c->x <c- o>&gt;=</c-> map<c- p>[</c-><c- mi>0</c-><c- p>].</c->length<c- p>)</c-> <c- k>return</c-> wrapX<c- p>(</c->x <c- o>-</c-> map<c- p>[</c-><c- mi>0</c-><c- p>].</c->length<c- p>);</c->
+  <c- k>return</c-> x<c- p>;</c->
+<c- p>}</c->
 
-function wrapY(y) {
-  if (y &lt; 0) return wrapY(y + map.length);
-  if (y &gt;= map[0].length) return wrapY(y - map.length);
-  return y;
-}
+<c- a>function</c-> wrapY<c- p>(</c->y<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->y <c- o>&lt;</c-> <c- mi>0</c-><c- p>)</c-> <c- k>return</c-> wrapY<c- p>(</c->y <c- o>+</c-> map<c- p>.</c->length<c- p>);</c->
+  <c- k>if</c-> <c- p>(</c->y <c- o>&gt;=</c-> map<c- p>[</c-><c- mi>0</c-><c- p>].</c->length<c- p>)</c-> <c- k>return</c-> wrapY<c- p>(</c->y <c- o>-</c-> map<c- p>.</c->length<c- p>);</c->
+  <c- k>return</c-> y<c- p>;</c->
+<c- p>}</c->
 
-function wrap(val, min, max) {
-  if (val &lt; min)
-    return val + (max-min)+1;
-  if (val &gt; max)
-    return val - (max-min)-1;
-  return val;
-}
+<c- a>function</c-> wrap<c- p>(</c->val<c- p>,</c-> min<c- p>,</c-> max<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->val <c- o>&lt;</c-> min<c- p>)</c->
+    <c- k>return</c-> val <c- o>+</c-> <c- p>(</c->max<c- o>-</c->min<c- p>)</c-><c- o>+</c-><c- mi>1</c-><c- p>;</c->
+  <c- k>if</c-> <c- p>(</c->val <c- o>&gt;</c-> max<c- p>)</c->
+    <c- k>return</c-> val <c- o>-</c-> <c- p>(</c->max<c- o>-</c->min<c- p>)</c-><c- o>-</c-><c- mi>1</c-><c- p>;</c->
+  <c- k>return</c-> val<c- p>;</c->
+<c- p>}</c->
 
-function sendMapData(viewer) {
-  var data = '';
-  for (var y = viewer.y-1; y &lt;= viewer.y+1; y += 1) {
-    for (var x = viewer.x-1; x &lt;= viewer.x+1; x += 1) {
-      if (data != '')
-        data += ',';
-      data += map[wrap(y, 0, map[0].length-1)][wrap(x, 0, map.length-1)];
-    }
-  }
-  viewer.port.postMessage('map ' + data);
-}
+<c- a>function</c-> sendMapData<c- p>(</c->viewer<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> data <c- o>=</c-> <c- t>&amp;apos;&amp;apos;</c-><c- p>;</c->
+  <c- k>for</c-> <c- p>(</c-><c- a>var</c-> y <c- o>=</c-> viewer<c- p>.</c->y<c- o>-</c-><c- mi>1</c-><c- p>;</c-> y <c- o>&lt;=</c-> viewer<c- p>.</c->y<c- o>+</c-><c- mi>1</c-><c- p>;</c-> y <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+    <c- k>for</c-> <c- p>(</c-><c- a>var</c-> x <c- o>=</c-> viewer<c- p>.</c->x<c- o>-</c-><c- mi>1</c-><c- p>;</c-> x <c- o>&lt;=</c-> viewer<c- p>.</c->x<c- o>+</c-><c- mi>1</c-><c- p>;</c-> x <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+      <c- k>if</c-> <c- p>(</c->data <c- o>!=</c-> <c- t>&amp;apos;&amp;apos;</c-><c- p>)</c->
+        data <c- o>+=</c-> <c- t>&amp;apos;,&amp;apos;</c-><c- p>;</c->
+      data <c- o>+=</c-> map<c- p>[</c->wrap<c- p>(</c->y<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> map<c- p>[</c-><c- mi>0</c-><c- p>].</c->length<c- o>-</c-><c- mi>1</c-><c- p>)][</c->wrap<c- p>(</c->x<c- p>,</c-> <c- mi>0</c-><c- p>,</c-> map<c- p>.</c->length<c- o>-</c-><c- mi>1</c-><c- p>)];</c->
+    <c- p>}</c->
+  <c- p>}</c->
+  viewer<c- p>.</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;map &amp;apos;</c-> <c- o>+</c-> data<c- p>);</c->
+<c- p>}</c->
 
-var viewers = {};
-onconnect = function (event) {
-  var name = getNextName();
-  event.ports[0]._data = { port: event.ports[0], name: name, x: 0, y: 0, };
-  viewers[name] = event.ports[0]._data;
-  event.ports[0].postMessage('cfg ' + name);
-  event.ports[0].onmessage = getMessage;
-  sendMapData(event.ports[0]._data);
-};
+<c- a>var</c-> viewers <c- o>=</c-> <c- p>{};</c->
+onconnect <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> name <c- o>=</c-> getNextName<c- p>();</c->
+  event<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->_data <c- o>=</c-> <c- p>{</c-> port<c- o>:</c-> event<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>],</c-> name<c- o>:</c-> name<c- p>,</c-> x<c- o>:</c-> <c- mi>0</c-><c- p>,</c-> y<c- o>:</c-> <c- mi>0</c-><c- p>,</c-> <c- p>};</c->
+  viewers<c- p>[</c->name<c- p>]</c-> <c- o>=</c-> event<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->_data<c- p>;</c->
+  event<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->postMessage<c- p>(</c-><c- t>&amp;apos;cfg &amp;apos;</c-> <c- o>+</c-> name<c- p>);</c->
+  event<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->onmessage <c- o>=</c-> getMessage<c- p>;</c->
+  sendMapData<c- p>(</c->event<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->_data<c- p>);</c->
+<c- p>};</c->
 
-function getMessage(event) {
-  switch (event.data.substr(0, 4)) {
-    case 'mov ':
-      var direction = event.data.substr(4);
-      var dx = 0;
-      var dy = 0;
-      switch (direction) {
-        case 'up': dy = -1; break;
-        case 'down': dy = 1; break;
-        case 'left': dx = -1; break;
-        case 'right': dx = 1; break;
-      }
-      event.target._data.x = wrapX(event.target._data.x + dx);
-      event.target._data.y = wrapY(event.target._data.y + dy);
-      sendMapData(event.target._data);
-      break;
-    case 'set ':
-      var value = event.data.substr(4);
-      map[event.target._data.y][event.target._data.x] = value;
-      for (var viewer in viewers)
-        sendMapData(viewers[viewer]);
-      break;
-    case 'txt ':
-      var name = event.target._data.name;
-      var message = event.data.substr(4);
-      for (var viewer in viewers)
-        viewers[viewer].port.postMessage('txt ' + name + ' ' + message);
-      break;
-    case 'msg ':
-      var party1 = event.target._data;
-      var party2 = viewers[event.data.substr(4).split(' ', 1)[0]];
-      if (party2) {
-        var channel = new MessageChannel();
-        party1.port.postMessage('msg ' + party2.name, [channel.port1]);
-        party2.port.postMessage('msg ' + party1.name, [channel.port2]);
-      }
-      break;
-  }
-}
-</pre>
+<c- a>function</c-> getMessage<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  <c- k>switch</c-> <c- p>(</c->event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>0</c-><c- p>,</c-> <c- mi>4</c-><c- p>))</c-> <c- p>{</c->
+    <c- k>case</c-> <c- t>&amp;apos;mov &amp;apos;</c-><c- o>:</c->
+      <c- a>var</c-> direction <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>);</c->
+      <c- a>var</c-> dx <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+      <c- a>var</c-> dy <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+      <c- k>switch</c-> <c- p>(</c->direction<c- p>)</c-> <c- p>{</c->
+        <c- k>case</c-> <c- t>&amp;apos;up&amp;apos;</c-><c- o>:</c-> dy <c- o>=</c-> <c- o>-</c-><c- mi>1</c-><c- p>;</c-> <c- k>break</c-><c- p>;</c->
+        <c- k>case</c-> <c- t>&amp;apos;down&amp;apos;</c-><c- o>:</c-> dy <c- o>=</c-> <c- mi>1</c-><c- p>;</c-> <c- k>break</c-><c- p>;</c->
+        <c- k>case</c-> <c- t>&amp;apos;left&amp;apos;</c-><c- o>:</c-> dx <c- o>=</c-> <c- o>-</c-><c- mi>1</c-><c- p>;</c-> <c- k>break</c-><c- p>;</c->
+        <c- k>case</c-> <c- t>&amp;apos;right&amp;apos;</c-><c- o>:</c-> dx <c- o>=</c-> <c- mi>1</c-><c- p>;</c-> <c- k>break</c-><c- p>;</c->
+      <c- p>}</c->
+      event<c- p>.</c->target<c- p>.</c->_data<c- p>.</c->x <c- o>=</c-> wrapX<c- p>(</c->event<c- p>.</c->target<c- p>.</c->_data<c- p>.</c->x <c- o>+</c-> dx<c- p>);</c->
+      event<c- p>.</c->target<c- p>.</c->_data<c- p>.</c->y <c- o>=</c-> wrapY<c- p>(</c->event<c- p>.</c->target<c- p>.</c->_data<c- p>.</c->y <c- o>+</c-> dy<c- p>);</c->
+      sendMapData<c- p>(</c->event<c- p>.</c->target<c- p>.</c->_data<c- p>);</c->
+      <c- k>break</c-><c- p>;</c->
+    <c- k>case</c-> <c- t>&amp;apos;set &amp;apos;</c-><c- o>:</c->
+      <c- a>var</c-> value <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>);</c->
+      map<c- p>[</c->event<c- p>.</c->target<c- p>.</c->_data<c- p>.</c->y<c- p>][</c->event<c- p>.</c->target<c- p>.</c->_data<c- p>.</c->x<c- p>]</c-> <c- o>=</c-> value<c- p>;</c->
+      <c- k>for</c-> <c- p>(</c-><c- a>var</c-> viewer <c- k>in</c-> viewers<c- p>)</c->
+        sendMapData<c- p>(</c->viewers<c- p>[</c->viewer<c- p>]);</c->
+      <c- k>break</c-><c- p>;</c->
+    <c- k>case</c-> <c- t>&amp;apos;txt &amp;apos;</c-><c- o>:</c->
+      <c- a>var</c-> name <c- o>=</c-> event<c- p>.</c->target<c- p>.</c->_data<c- p>.</c->name<c- p>;</c->
+      <c- a>var</c-> message <c- o>=</c-> event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>);</c->
+      <c- k>for</c-> <c- p>(</c-><c- a>var</c-> viewer <c- k>in</c-> viewers<c- p>)</c->
+        viewers<c- p>[</c->viewer<c- p>].</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;txt &amp;apos;</c-> <c- o>+</c-> name <c- o>+</c-> <c- t>&amp;apos; &amp;apos;</c-> <c- o>+</c-> message<c- p>);</c->
+      <c- k>break</c-><c- p>;</c->
+    <c- k>case</c-> <c- t>&amp;apos;msg &amp;apos;</c-><c- o>:</c->
+      <c- a>var</c-> party1 <c- o>=</c-> event<c- p>.</c->target<c- p>.</c->_data<c- p>;</c->
+      <c- a>var</c-> party2 <c- o>=</c-> viewers<c- p>[</c->event<c- p>.</c->data<c- p>.</c->substr<c- p>(</c-><c- mi>4</c-><c- p>).</c->split<c- p>(</c-><c- t>&amp;apos; &amp;apos;</c-><c- p>,</c-> <c- mi>1</c-><c- p>)[</c-><c- mi>0</c-><c- p>]];</c->
+      <c- k>if</c-> <c- p>(</c->party2<c- p>)</c-> <c- p>{</c->
+        <c- a>var</c-> channel <c- o>=</c-> <c- k>new</c-> MessageChannel<c- p>();</c->
+        party1<c- p>.</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;msg &amp;apos;</c-> <c- o>+</c-> party2<c- p>.</c->name<c- p>,</c-> <c- p>[</c->channel<c- p>.</c->port1<c- p>]);</c->
+        party2<c- p>.</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;msg &amp;apos;</c-> <c- o>+</c-> party1<c- p>.</c->name<c- p>,</c-> <c- p>[</c->channel<c- p>.</c->port2<c- p>]);</c->
+      <c- p>}</c->
+      <c- k>break</c-><c- p>;</c->
+  <c- p>}</c->
+<c- p>}</c->
+</code></pre>
 
   <p><strong>Connecting to multiple pages</strong>. The script uses the <code id=shared-state-using-a-shared-worker:handler-sharedworkerglobalscope-onconnect><a href=#handler-sharedworkerglobalscope-onconnect>onconnect</a></code> event listener to listen for
   multiple connections.</p>
@@ -724,78 +724,78 @@ function getMessage(event) {
 
   <p>The main page is as follows, it just reports the result:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;html&gt;
- &lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;title&gt;Worker example: Multicore computation&lt;/title&gt;
- &lt;/head&gt;
- &lt;body&gt;
-  &lt;p&gt;Result: &lt;output id="result"&gt;&lt;/output&gt;&lt;/p&gt;
-  &lt;script&gt;
-   var worker = new Worker('worker.js');
-   worker.onmessage = function (event) {
-     document.getElementById('result').textContent = event.data;
-   };
-  &lt;/script&gt;
- &lt;/body&gt;
-&lt;/html&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>head</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Worker example: Multicore computation<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>head</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>body</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;</c->Result: <c- p>&lt;</c-><c- f>output</c-> <c- e>id</c-><c- o>=</c-><c- s>"result"</c-><c- p>&gt;&lt;/</c-><c- f>output</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+   <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;worker.js&amp;apos;</c-><c- p>);</c->
+   worker<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+     document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;result&amp;apos;</c-><c- p>).</c->textContent <c- o>=</c-> event<c- p>.</c->data<c- p>;</c->
+   <c- p>};</c->
+  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>body</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>html</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>The worker itself is as follows:</p>
 
-  <pre>// settings
-var num_workers = 10;
-var items_per_worker = 1000000;
+  <pre><code class='js'><c- c1>// settings</c->
+<c- c1></c-><c- a>var</c-> num_workers <c- o>=</c-> <c- mi>10</c-><c- p>;</c->
+<c- a>var</c-> items_per_worker <c- o>=</c-> <c- mi>1000000</c-><c- p>;</c->
 
-// start the workers
-var result = 0;
-var pending_workers = num_workers;
-for (var i = 0; i &lt; num_workers; i += 1) {
-  var worker = new Worker('core.js');
-  worker.postMessage(i * items_per_worker);
-  worker.postMessage((i+1) * items_per_worker);
-  worker.onmessage = storeResult;
-}
+<c- c1>// start the workers</c->
+<c- c1></c-><c- a>var</c-> result <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+<c- a>var</c-> pending_workers <c- o>=</c-> num_workers<c- p>;</c->
+<c- k>for</c-> <c- p>(</c-><c- a>var</c-> i <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> i <c- o>&lt;</c-> num_workers<c- p>;</c-> i <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;core.js&amp;apos;</c-><c- p>);</c->
+  worker<c- p>.</c->postMessage<c- p>(</c->i <c- o>*</c-> items_per_worker<c- p>);</c->
+  worker<c- p>.</c->postMessage<c- p>((</c->i<c- o>+</c-><c- mi>1</c-><c- p>)</c-> <c- o>*</c-> items_per_worker<c- p>);</c->
+  worker<c- p>.</c->onmessage <c- o>=</c-> storeResult<c- p>;</c->
+<c- p>}</c->
 
-// handle the results
-function storeResult(event) {
-  result += 1*event.data;
-  pending_workers -= 1;
-  if (pending_workers &lt;= 0)
-    postMessage(result); // finished!
-}
-</pre>
+<c- c1>// handle the results</c->
+<c- c1></c-><c- a>function</c-> storeResult<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  result <c- o>+=</c-> <c- mi>1</c-><c- o>*</c->event<c- p>.</c->data<c- p>;</c->
+  pending_workers <c- o>-=</c-> <c- mi>1</c-><c- p>;</c->
+  <c- k>if</c-> <c- p>(</c->pending_workers <c- o>&lt;=</c-> <c- mi>0</c-><c- p>)</c->
+    postMessage<c- p>(</c->result<c- p>);</c-> <c- c1>// finished!</c->
+<c- c1></c-><c- p>}</c->
+</code></pre>
 
   <p>It consists of a loop to start the subworkers, and then a handler
   that waits for all the subworkers to respond.</p>
 
   <p>The subworkers are implemented as follows:</p>
 
-  <pre>var start;
-onmessage = getStart;
-function getStart(event) {
-  start = 1*event.data;
-  onmessage = getEnd;
-}
+  <pre><code class='js'><c- a>var</c-> start<c- p>;</c->
+onmessage <c- o>=</c-> getStart<c- p>;</c->
+<c- a>function</c-> getStart<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  start <c- o>=</c-> <c- mi>1</c-><c- o>*</c->event<c- p>.</c->data<c- p>;</c->
+  onmessage <c- o>=</c-> getEnd<c- p>;</c->
+<c- p>}</c->
 
-var end;
-function getEnd(event) {
-  end = 1*event.data;
-  onmessage = null;
-  work();
-}
+<c- a>var</c-> end<c- p>;</c->
+<c- a>function</c-> getEnd<c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  end <c- o>=</c-> <c- mi>1</c-><c- o>*</c->event<c- p>.</c->data<c- p>;</c->
+  onmessage <c- o>=</c-> <c- kc>null</c-><c- p>;</c->
+  work<c- p>();</c->
+<c- p>}</c->
 
-function work() {
-  var result = 0;
-  for (var i = start; i &lt; end; i += 1) {
-    // perform some complex calculation here
-    result += 1;
-  }
-  postMessage(result);
-  close();
-}
-</pre>
+<c- a>function</c-> work<c- p>()</c-> <c- p>{</c->
+  <c- a>var</c-> result <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+  <c- k>for</c-> <c- p>(</c-><c- a>var</c-> i <c- o>=</c-> start<c- p>;</c-> i <c- o>&lt;</c-> end<c- p>;</c-> i <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
+    <c- c1>// perform some complex calculation here</c->
+<c- c1></c->    result <c- o>+=</c-> <c- mi>1</c-><c- p>;</c->
+  <c- p>}</c->
+  postMessage<c- p>(</c->result<c- p>);</c->
+  close<c- p>();</c->
+<c- p>}</c->
+</code></pre>
 
   <p>They receive two numbers in two events, perform the computation for the range of numbers thus
   specified, and then report the result back to the parent.</p>
@@ -818,213 +818,213 @@ function work() {
 
   <p>The library itself is as follows:</p>
 
-  <pre>function handleMessage(e) {
-  if (e.data == "genkeys")
-    genkeys(e.ports[0]);
-  else if (e.data == "encrypt")
-    encrypt(e.ports[0]);
-  else if (e.data == "decrypt")
-    decrypt(e.ports[0]);
-}
+  <pre><code class='js'><c- a>function</c-> handleMessage<c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- u>"genkeys"</c-><c- p>)</c->
+    genkeys<c- p>(</c->e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+  <c- k>else</c-> <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- u>"encrypt"</c-><c- p>)</c->
+    encrypt<c- p>(</c->e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+  <c- k>else</c-> <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- u>"decrypt"</c-><c- p>)</c->
+    decrypt<c- p>(</c->e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+<c- p>}</c->
 
-function genkeys(p) {
-  var keys = _generateKeyPair();
-  p.postMessage(keys[0]);
-  p.postMessage(keys[1]);
-}
+<c- a>function</c-> genkeys<c- p>(</c->p<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> keys <c- o>=</c-> _generateKeyPair<c- p>();</c->
+  p<c- p>.</c->postMessage<c- p>(</c->keys<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+  p<c- p>.</c->postMessage<c- p>(</c->keys<c- p>[</c-><c- mi>1</c-><c- p>]);</c->
+<c- p>}</c->
 
-function encrypt(p) {
-  var key, state = 0;
-  p.onmessage = function (e) {
-    if (state == 0) {
-      key = e.data;
-      state = 1;
-    } else {
-      p.postMessage(_encrypt(key, e.data));
-    }
-  };
-}
+<c- a>function</c-> encrypt<c- p>(</c->p<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> key<c- p>,</c-> state <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+  p<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->state <c- o>==</c-> <c- mi>0</c-><c- p>)</c-> <c- p>{</c->
+      key <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+      state <c- o>=</c-> <c- mi>1</c-><c- p>;</c->
+    <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+      p<c- p>.</c->postMessage<c- p>(</c->_encrypt<c- p>(</c->key<c- p>,</c-> e<c- p>.</c->data<c- p>));</c->
+    <c- p>}</c->
+  <c- p>};</c->
+<c- p>}</c->
 
-function decrypt(p) {
-  var key, state = 0;
-  p.onmessage = function (e) {
-    if (state == 0) {
-      key = e.data;
-      state = 1;
-    } else {
-      p.postMessage(_decrypt(key, e.data));
-    }
-  };
-}
+<c- a>function</c-> decrypt<c- p>(</c->p<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> key<c- p>,</c-> state <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+  p<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->state <c- o>==</c-> <c- mi>0</c-><c- p>)</c-> <c- p>{</c->
+      key <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+      state <c- o>=</c-> <c- mi>1</c-><c- p>;</c->
+    <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+      p<c- p>.</c->postMessage<c- p>(</c->_decrypt<c- p>(</c->key<c- p>,</c-> e<c- p>.</c->data<c- p>));</c->
+    <c- p>}</c->
+  <c- p>};</c->
+<c- p>}</c->
 
-// support being used as a shared worker as well as a dedicated worker
-if ('onmessage' in this) // dedicated worker
-  onmessage = handleMessage;
-else // shared worker
-  onconnect = function (e) { e.port.onmessage = handleMessage; }
+<c- c1>// support being used as a shared worker as well as a dedicated worker</c->
+<c- c1></c-><c- k>if</c-> <c- p>(</c-><c- t>&amp;apos;onmessage&amp;apos;</c-> <c- k>in</c-> <c- k>this</c-><c- p>)</c-> <c- c1>// dedicated worker</c->
+<c- c1></c->  onmessage <c- o>=</c-> handleMessage<c- p>;</c->
+<c- k>else</c-> <c- c1>// shared worker</c->
+<c- c1></c->  onconnect <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c-> e<c- p>.</c->port<c- p>.</c->onmessage <c- o>=</c-> handleMessage<c- p>;</c-> <c- p>}</c->
 
 
-// the "crypto" functions:
+<c- c1>// the "crypto" functions:</c->
+<c- c1></c->
+<c- a>function</c-> _generateKeyPair<c- p>()</c-> <c- p>{</c->
+  <c- k>return</c-> <c- p>[</c->Math<c- p>.</c->random<c- p>(),</c-> Math<c- p>.</c->random<c- p>()];</c->
+<c- p>}</c->
 
-function _generateKeyPair() {
-  return [Math.random(), Math.random()];
-}
+<c- a>function</c-> _encrypt<c- p>(</c->k<c- p>,</c-> s<c- p>)</c-> <c- p>{</c->
+  <c- k>return</c-> <c- t>&amp;apos;encrypted-&amp;apos;</c-> <c- o>+</c-> k <c- o>+</c-> <c- t>&amp;apos; &amp;apos;</c-> <c- o>+</c-> s<c- p>;</c->
+<c- p>}</c->
 
-function _encrypt(k, s) {
-  return 'encrypted-' + k + ' ' + s;
-}
-
-function _decrypt(k, s) {
-  return s.substr(s.indexOf(' ')+1);
-}
-</pre>
+<c- a>function</c-> _decrypt<c- p>(</c->k<c- p>,</c-> s<c- p>)</c-> <c- p>{</c->
+  <c- k>return</c-> s<c- p>.</c->substr<c- p>(</c->s<c- p>.</c->indexOf<c- p>(</c-><c- t>&amp;apos; &amp;apos;</c-><c- p>)</c-><c- o>+</c-><c- mi>1</c-><c- p>);</c->
+<c- p>}</c->
+</code></pre>
 
   <p>Note that the crypto functions here are just stubs and don't do real cryptography.</p>
 
   <p>This library could be used as follows:</p>
 
-  <pre>&lt;!DOCTYPE HTML&gt;
-&lt;html&gt;
- &lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;title&gt;Worker example: Crypto library&lt;/title&gt;
-  &lt;script&gt;
-   const cryptoLib = new Worker('libcrypto-v1.js'); // or could use 'libcrypto-v2.js'
-   function startConversation(source, message) {
-     const messageChannel = new MessageChannel();
-     source.postMessage(message, [messageChannel.port2]);
-     return messageChannel.port1;
-   }
-   function getKeys() {
-     let state = 0;
-     startConversation(cryptoLib, "genkeys").onmessage = function (e) {
-       if (state === 0)
-         document.getElementById('public').value = e.data;
-       else if (state === 1)
-         document.getElementById('private').value = e.data;
-       state += 1;
-     };
-   }
-   function enc() {
-     const port = startConversation(cryptoLib, "encrypt");
-     port.postMessage(document.getElementById('public').value);
-     port.postMessage(document.getElementById('input').value);
-     port.onmessage = function (e) {
-       document.getElementById('input').value = e.data;
-       port.close();
-     };
-   }
-   function dec() {
-     const port = startConversation(cryptoLib, "decrypt");
-     port.postMessage(document.getElementById('private').value);
-     port.postMessage(document.getElementById('input').value);
-     port.onmessage = function (e) {
-       document.getElementById('input').value = e.data;
-       port.close();
-     };
-   }
-  &lt;/script&gt;
-  &lt;style&gt;
-   textarea { display: block; }
-  &lt;/style&gt;
- &lt;/head&gt;
- &lt;body onload="getKeys()"&gt;
-  &lt;fieldset&gt;
-   &lt;legend&gt;Keys&lt;/legend&gt;
-   &lt;p&gt;&lt;label&gt;Public Key: &lt;textarea id="public"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
-   &lt;p&gt;&lt;label&gt;Private Key: &lt;textarea id="private"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
-  &lt;/fieldset&gt;
-  &lt;p&gt;&lt;label&gt;Input: &lt;textarea id="input"&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
-  &lt;p&gt;&lt;button onclick="enc()"&gt;Encrypt&lt;/button&gt; &lt;button onclick="dec()"&gt;Decrypt&lt;/button&gt;&lt;/p&gt;
- &lt;/body&gt;
-&lt;/html&gt;
-</pre>
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE HTML&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>head</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>meta</c-> <c- e>charset</c-><c- o>=</c-><c- s>"utf-8"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Worker example: Crypto library<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+   <c- kr>const</c-> cryptoLib <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;libcrypto-v1.js&amp;apos;</c-><c- p>);</c-> <c- c1>// or could use &amp;apos;libcrypto-v2.js&amp;apos;</c->
+<c- c1></c->   <c- a>function</c-> startConversation<c- p>(</c->source<c- p>,</c-> message<c- p>)</c-> <c- p>{</c->
+     <c- kr>const</c-> messageChannel <c- o>=</c-> <c- k>new</c-> MessageChannel<c- p>();</c->
+     source<c- p>.</c->postMessage<c- p>(</c->message<c- p>,</c-> <c- p>[</c->messageChannel<c- p>.</c->port2<c- p>]);</c->
+     <c- k>return</c-> messageChannel<c- p>.</c->port1<c- p>;</c->
+   <c- p>}</c->
+   <c- a>function</c-> getKeys<c- p>()</c-> <c- p>{</c->
+     <c- a>let</c-> state <c- o>=</c-> <c- mi>0</c-><c- p>;</c->
+     startConversation<c- p>(</c->cryptoLib<c- p>,</c-> <c- u>"genkeys"</c-><c- p>).</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+       <c- k>if</c-> <c- p>(</c->state <c- o>===</c-> <c- mi>0</c-><c- p>)</c->
+         document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;public&amp;apos;</c-><c- p>).</c->value <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+       <c- k>else</c-> <c- k>if</c-> <c- p>(</c->state <c- o>===</c-> <c- mi>1</c-><c- p>)</c->
+         document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;private&amp;apos;</c-><c- p>).</c->value <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+       state <c- o>+=</c-> <c- mi>1</c-><c- p>;</c->
+     <c- p>};</c->
+   <c- p>}</c->
+   <c- a>function</c-> enc<c- p>()</c-> <c- p>{</c->
+     <c- kr>const</c-> port <c- o>=</c-> startConversation<c- p>(</c->cryptoLib<c- p>,</c-> <c- u>"encrypt"</c-><c- p>);</c->
+     port<c- p>.</c->postMessage<c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;public&amp;apos;</c-><c- p>).</c->value<c- p>);</c->
+     port<c- p>.</c->postMessage<c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;input&amp;apos;</c-><c- p>).</c->value<c- p>);</c->
+     port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+       document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;input&amp;apos;</c-><c- p>).</c->value <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+       port<c- p>.</c->close<c- p>();</c->
+     <c- p>};</c->
+   <c- p>}</c->
+   <c- a>function</c-> dec<c- p>()</c-> <c- p>{</c->
+     <c- kr>const</c-> port <c- o>=</c-> startConversation<c- p>(</c->cryptoLib<c- p>,</c-> <c- u>"decrypt"</c-><c- p>);</c->
+     port<c- p>.</c->postMessage<c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;private&amp;apos;</c-><c- p>).</c->value<c- p>);</c->
+     port<c- p>.</c->postMessage<c- p>(</c->document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;input&amp;apos;</c-><c- p>).</c->value<c- p>);</c->
+     port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+       document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;input&amp;apos;</c-><c- p>).</c->value <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+       port<c- p>.</c->close<c- p>();</c->
+     <c- p>};</c->
+   <c- p>}</c->
+  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>style</c-><c- p>&gt;</c->
+   <c- f>textarea</c-> <c- p>{</c-> <c- k>display</c-><c- p>:</c-> <c- kc>block</c-><c- p>;</c-> <c- p>}</c->
+  <c- p>&lt;/</c-><c- f>style</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>head</c-><c- p>&gt;</c->
+ <c- p>&lt;</c-><c- f>body</c-> <c- e>onload</c-><c- o>=</c-><c- s>"getKeys()"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>fieldset</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>legend</c-><c- p>&gt;</c->Keys<c- p>&lt;/</c-><c- f>legend</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Public Key: <c- p>&lt;</c-><c- f>textarea</c-> <c- e>id</c-><c- o>=</c-><c- s>"public"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+   <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Private Key: <c- p>&lt;</c-><c- f>textarea</c-> <c- e>id</c-><c- o>=</c-><c- s>"private"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;/</c-><c- f>fieldset</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>label</c-><c- p>&gt;</c->Input: <c- p>&lt;</c-><c- f>textarea</c-> <c- e>id</c-><c- o>=</c-><c- s>"input"</c-><c- p>&gt;&lt;/</c-><c- f>textarea</c-><c- p>&gt;&lt;/</c-><c- f>label</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>&gt;&lt;</c-><c- f>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"enc()"</c-><c- p>&gt;</c->Encrypt<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c-> <c- p>&lt;</c-><c- f>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"dec()"</c-><c- p>&gt;</c->Decrypt<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
+ <c- p>&lt;/</c-><c- f>body</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>html</c-><c- p>&gt;</c->
+</code></pre>
 
   <p>A later version of the API, though, might want to offload all the crypto work onto subworkers.
   This could be done as follows:</p>
 
-  <pre>function handleMessage(e) {
-  if (e.data == "genkeys")
-    genkeys(e.ports[0]);
-  else if (e.data == "encrypt")
-    encrypt(e.ports[0]);
-  else if (e.data == "decrypt")
-    decrypt(e.ports[0]);
-}
+  <pre><code class='js'><c- a>function</c-> handleMessage<c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- u>"genkeys"</c-><c- p>)</c->
+    genkeys<c- p>(</c->e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+  <c- k>else</c-> <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- u>"encrypt"</c-><c- p>)</c->
+    encrypt<c- p>(</c->e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+  <c- k>else</c-> <c- k>if</c-> <c- p>(</c->e<c- p>.</c->data <c- o>==</c-> <c- u>"decrypt"</c-><c- p>)</c->
+    decrypt<c- p>(</c->e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+<c- p>}</c->
 
-function genkeys(p) {
-  var generator = new Worker('libcrypto-v2-generator.js');
-  generator.postMessage('', [p]);
-}
+<c- a>function</c-> genkeys<c- p>(</c->p<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> generator <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;libcrypto-v2-generator.js&amp;apos;</c-><c- p>);</c->
+  generator<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;&amp;apos;</c-><c- p>,</c-> <c- p>[</c->p<c- p>]);</c->
+<c- p>}</c->
 
-function encrypt(p) {
-  p.onmessage = function (e) {
-    var key = e.data;
-    var encryptor = new Worker('libcrypto-v2-encryptor.js');
-    encryptor.postMessage(key, [p]);
-  };
-}
+<c- a>function</c-> encrypt<c- p>(</c->p<c- p>)</c-> <c- p>{</c->
+  p<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    <c- a>var</c-> key <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+    <c- a>var</c-> encryptor <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;libcrypto-v2-encryptor.js&amp;apos;</c-><c- p>);</c->
+    encryptor<c- p>.</c->postMessage<c- p>(</c->key<c- p>,</c-> <c- p>[</c->p<c- p>]);</c->
+  <c- p>};</c->
+<c- p>}</c->
 
-function encrypt(p) {
-  p.onmessage = function (e) {
-    var key = e.data;
-    var decryptor = new Worker('libcrypto-v2-decryptor.js');
-    decryptor.postMessage(key, [p]);
-  };
-}
+<c- a>function</c-> encrypt<c- p>(</c->p<c- p>)</c-> <c- p>{</c->
+  p<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    <c- a>var</c-> key <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+    <c- a>var</c-> decryptor <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;libcrypto-v2-decryptor.js&amp;apos;</c-><c- p>);</c->
+    decryptor<c- p>.</c->postMessage<c- p>(</c->key<c- p>,</c-> <c- p>[</c->p<c- p>]);</c->
+  <c- p>};</c->
+<c- p>}</c->
 
-// support being used as a shared worker as well as a dedicated worker
-if ('onmessage' in this) // dedicated worker
-  onmessage = handleMessage;
-else // shared worker
-  onconnect = function (e) { e.ports[0].onmessage = handleMessage };
-</pre>
+<c- c1>// support being used as a shared worker as well as a dedicated worker</c->
+<c- c1></c-><c- k>if</c-> <c- p>(</c-><c- t>&amp;apos;onmessage&amp;apos;</c-> <c- k>in</c-> <c- k>this</c-><c- p>)</c-> <c- c1>// dedicated worker</c->
+<c- c1></c->  onmessage <c- o>=</c-> handleMessage<c- p>;</c->
+<c- k>else</c-> <c- c1>// shared worker</c->
+<c- c1></c->  onconnect <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c-> e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->onmessage <c- o>=</c-> handleMessage <c- p>};</c->
+</code></pre>
 
   <p>The little subworkers would then be as follows.</p>
 
   <p>For generating key pairs:</p>
 
-  <pre>onmessage = function (e) {
-  var k = _generateKeyPair();
-  e.ports[0].postMessage(k[0]);
-  e.ports[0].postMessage(k[1]);
-  close();
-}
+  <pre><code class='js'>onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> k <c- o>=</c-> _generateKeyPair<c- p>();</c->
+  e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->postMessage<c- p>(</c->k<c- p>[</c-><c- mi>0</c-><c- p>]);</c->
+  e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->postMessage<c- p>(</c->k<c- p>[</c-><c- mi>1</c-><c- p>]);</c->
+  close<c- p>();</c->
+<c- p>}</c->
 
-function _generateKeyPair() {
-  return [Math.random(), Math.random()];
-}
-</pre>
+<c- a>function</c-> _generateKeyPair<c- p>()</c-> <c- p>{</c->
+  <c- k>return</c-> <c- p>[</c->Math<c- p>.</c->random<c- p>(),</c-> Math<c- p>.</c->random<c- p>()];</c->
+<c- p>}</c->
+</code></pre>
 
   <p>For encrypting:</p>
 
-  <pre>onmessage = function (e) {
-  var key = e.data;
-  e.ports[0].onmessage = function (e) {
-    var s = e.data;
-    postMessage(_encrypt(key, s));
-  }
-}
+  <pre><code class='js'>onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> key <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+  e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    <c- a>var</c-> s <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+    postMessage<c- p>(</c->_encrypt<c- p>(</c->key<c- p>,</c-> s<c- p>));</c->
+  <c- p>}</c->
+<c- p>}</c->
 
-function _encrypt(k, s) {
-  return 'encrypted-' + k + ' ' + s;
-}
-</pre>
+<c- a>function</c-> _encrypt<c- p>(</c->k<c- p>,</c-> s<c- p>)</c-> <c- p>{</c->
+  <c- k>return</c-> <c- t>&amp;apos;encrypted-&amp;apos;</c-> <c- o>+</c-> k <c- o>+</c-> <c- t>&amp;apos; &amp;apos;</c-> <c- o>+</c-> s<c- p>;</c->
+<c- p>}</c->
+</code></pre>
 
   <p>For decrypting:</p>
 
-  <pre>onmessage = function (e) {
-  var key = e.data;
-  e.ports[0].onmessage = function (e) {
-    var s = e.data;
-    postMessage(_decrypt(key, s));
-  }
-}
+  <pre><code class='js'>onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> key <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+  e<c- p>.</c->ports<c- p>[</c-><c- mi>0</c-><c- p>].</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->e<c- p>)</c-> <c- p>{</c->
+    <c- a>var</c-> s <c- o>=</c-> e<c- p>.</c->data<c- p>;</c->
+    postMessage<c- p>(</c->_decrypt<c- p>(</c->key<c- p>,</c-> s<c- p>));</c->
+  <c- p>}</c->
+<c- p>}</c->
 
-function _decrypt(k, s) {
-  return s.substr(s.indexOf(' ')+1);
-}
-</pre>
+<c- a>function</c-> _decrypt<c- p>(</c->k<c- p>,</c-> s<c- p>)</c-> <c- p>{</c->
+  <c- k>return</c-> s<c- p>.</c->substr<c- p>(</c->s<c- p>.</c->indexOf<c- p>(</c-><c- t>&amp;apos; &amp;apos;</c-><c- p>)</c-><c- o>+</c-><c- mi>1</c-><c- p>);</c->
+<c- p>}</c->
+</code></pre>
 
   <p>Notice how the users of the API don't have to even know that this is happening — the API
   hasn't changed; the library can delegate to subworkers without changing its API, even though it is
@@ -1042,49 +1042,49 @@ function _decrypt(k, s) {
   <p>Creating a worker requires a URL to a JavaScript file. The <code id=creating-a-dedicated-worker:dom-worker><a href=#dom-worker>Worker()</a></code> constructor is invoked with the URL to that file as its only
   argument; a worker is then created and returned:</p>
 
-  <pre>var worker = new Worker('helper.js');</pre>
+  <pre><code class='js'><c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;helper.js&amp;apos;</c-><c- p>);</c-></code></pre>
 
   <p>If you want your worker script to be interpreted as a <span>module script</span> instead of
   the default <span>classic script</span>, you need to use a slightly different signature:</p>
 
-  <pre>var worker = new Worker('helper.mjs', { type: "module" });</pre>
+  <pre><code class='js'><c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> Worker<c- p>(</c-><c- t>&amp;apos;helper.mjs&amp;apos;</c-><c- p>,</c-> <c- p>{</c-> type<c- o>:</c-> <c- u>"module"</c-> <c- p>});</c-></code></pre>
 
 
   <h5 id=communicating-with-a-dedicated-worker><span class=secno>10.1.3.2</span> Communicating with a dedicated worker<a href=#communicating-with-a-dedicated-worker class=self-link></a></h5>
 
   
 
-  <p>Dedicated workers use <code>MessagePort</code> objects behind the scenes, and thus support all
+  <p>Dedicated workers use <code id=communicating-with-a-dedicated-worker:messageport><a href=web-messaging.html#messageport>MessagePort</a></code> objects behind the scenes, and thus support all
   the same features, such as sending structured data, transferring binary data, and transferring
   other ports.</p>
 
   <p>To receive messages from a dedicated worker, use the <code id=communicating-with-a-dedicated-worker:handler-worker-onmessage><a href=#handler-worker-onmessage>onmessage</a></code> <span>event
-  handler IDL attribute</span> on the <code id=communicating-with-a-dedicated-worker:worker><a href=#worker>Worker</a></code> object:</p>
+  handler IDL attribute</span> on the <code id=communicating-with-a-dedicated-worker:worker-2><a href=#worker-2>Worker</a></code> object:</p>
 
-  <pre>worker.onmessage = function (event) { ... };</pre>
+  <pre><code class='js'>worker<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c-> <c- p>...</c-> <c- p>};</c-></code></pre>
 
   <p>You can also use the <code id=communicating-with-a-dedicated-worker:dom-eventtarget-addeventlistener><a data-x-internal=dom-eventtarget-addeventlistener href=https://triple-underscore.github.io/DOM4-ja.html#dom-eventtarget-addeventlistener>addEventListener()</a></code>
   method.</p>
 
-  <p class=note>The implicit <code>MessagePort</code> used by dedicated workers has its <span>port
+  <p class=note>The implicit <code id=communicating-with-a-dedicated-worker:messageport-2><a href=web-messaging.html#messageport>MessagePort</a></code> used by dedicated workers has its <span>port
   message queue</span> implicitly enabled when it is created, so there is no equivalent to the
-  <code>MessagePort</code> interface's <code id=communicating-with-a-dedicated-worker:dom-messageport-start><a href=web-messaging.html#dom-messageport-start>start()</a></code> method on
-  the <code id=communicating-with-a-dedicated-worker:worker-2><a href=#worker>Worker</a></code> interface.</p>
+  <code id=communicating-with-a-dedicated-worker:messageport-3><a href=web-messaging.html#messageport>MessagePort</a></code> interface's <code id=communicating-with-a-dedicated-worker:dom-messageport-start><a href=web-messaging.html#dom-messageport-start>start()</a></code> method on
+  the <code id=communicating-with-a-dedicated-worker:worker-2-2><a href=#worker-2>Worker</a></code> interface.</p>
 
   <p>To <em>send</em> data to a worker, use the <code id=communicating-with-a-dedicated-worker:dom-worker-postmessage><a href=#dom-worker-postmessage>postMessage()</a></code> method. Structured data can be sent over this
   communication channel. To send <code id=communicating-with-a-dedicated-worker:idl-arraybuffer><a data-x-internal=idl-arraybuffer href=https://triple-underscore.github.io/WebIDL-ja.html#idl-ArrayBuffer>ArrayBuffer</a></code> objects
   efficiently (by transferring them rather than cloning them), list them in an array in the second
   argument.</p>
 
-  <pre>worker.postMessage({
-  operation: 'find-edges',
-  input: buffer, // an ArrayBuffer object
-  threshold: 0.6,
-}, [buffer]);</pre>
+  <pre><code class='js'>worker<c- p>.</c->postMessage<c- p>({</c->
+  operation<c- o>:</c-> <c- t>&amp;apos;find-edges&amp;apos;</c-><c- p>,</c->
+  input<c- o>:</c-> buffer<c- p>,</c-> <c- c1>// an ArrayBuffer object</c->
+<c- c1></c->  threshold<c- o>:</c-> <c- mf>0.6</c-><c- p>,</c->
+<c- p>},</c-> <c- p>[</c->buffer<c- p>]);</c-></code></pre>
 
   <p>To receive a message inside the worker, the <code id=communicating-with-a-dedicated-worker:handler-dedicatedworkerglobalscope-onmessage><a href=#handler-dedicatedworkerglobalscope-onmessage>onmessage</a></code> <span>event handler IDL attribute</span> is used.</p>
 
-  <pre>onmessage = function (event) { ... };</pre>
+  <pre><code class='js'>onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c-> <c- p>...</c-> <c- p>};</c-></code></pre>
 
   <p>You can again also use the <code id=communicating-with-a-dedicated-worker:dom-eventtarget-addeventlistener-2><a data-x-internal=dom-eventtarget-addeventlistener href=https://triple-underscore.github.io/DOM4-ja.html#dom-eventtarget-addeventlistener>addEventListener()</a></code> method.</p>
 
@@ -1093,7 +1093,7 @@ function _decrypt(k, s) {
   <p>To send messages back, you again use <code id=communicating-with-a-dedicated-worker:dom-dedicatedworkerglobalscope-postmessage><a href=#dom-dedicatedworkerglobalscope-postmessage>postMessage()</a></code>. It supports the
   structured data in the same manner.</p>
 
-  <pre>postMessage(event.data.input, [event.data.input]); // transfer the buffer back</pre>
+  <pre><code class='js'>postMessage<c- p>(</c->event<c- p>.</c->data<c- p>.</c->input<c- p>,</c-> <c- p>[</c->event<c- p>.</c->data<c- p>.</c->input<c- p>]);</c-> <c- c1>// transfer the buffer back</c-></code></pre>
 
 
   <h5 id=shared-workers data-dfn-type=dfn data-lt="shared worker" data-export=""><span class=secno>10.1.3.3</span> Shared workers<a href=#shared-workers class=self-link></a></h5>
@@ -1111,26 +1111,26 @@ function _decrypt(k, s) {
   constructor. This constructor takes the URL to the script to use for its first argument, and the
   name of the worker, if any, as the second argument.</p>
 
-  <pre>var worker = new SharedWorker('service.js');</pre>
+  <pre><code class='js'><c- a>var</c-> worker <c- o>=</c-> <c- k>new</c-> SharedWorker<c- p>(</c-><c- t>&amp;apos;service.js&amp;apos;</c-><c- p>);</c-></code></pre>
 
-  <p>Communicating with shared workers is done with explicit <code>MessagePort</code> objects. The
+  <p>Communicating with shared workers is done with explicit <code id=shared-workers:messageport><a href=web-messaging.html#messageport>MessagePort</a></code> objects. The
   object returned by the <code id=shared-workers:dom-sharedworker-2><a href=#dom-sharedworker>SharedWorker()</a></code> constructor holds a
   reference to the port on its <code id=shared-workers:dom-sharedworker-port><a href=#dom-sharedworker-port>port</a></code> attribute.</p>
 
-  <pre>worker.port.onmessage = function (event) { ... };
-worker.port.postMessage('some message');
-worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']});</pre>
+  <pre><code class='js'>worker<c- p>.</c->port<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c-> <c- p>...</c-> <c- p>};</c->
+worker<c- p>.</c->port<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;some message&amp;apos;</c-><c- p>);</c->
+worker<c- p>.</c->port<c- p>.</c->postMessage<c- p>({</c-> foo<c- o>:</c-> <c- t>&amp;apos;structured&amp;apos;</c-><c- p>,</c-> bar<c- o>:</c-> <c- p>[</c-><c- t>&amp;apos;data&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;also&amp;apos;</c-><c- p>,</c-> <c- t>&amp;apos;possible&amp;apos;</c-><c- p>]});</c-></code></pre>
 
   <p>Inside the shared worker, new clients of the worker are announced using the <code id=shared-workers:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code> event. The port for the new client is
   given by the event object's <code id=shared-workers:dom-messageevent-source><a href=comms.html#dom-messageevent-source>source</a></code> attribute.</p>
 
-  <pre>onconnect = function (event) {
-  var newPort = event.source;
-  // set up a listener
-  newPort.onmessage = function (event) { ... };
-  // send a message back to the port
-  newPort.postMessage('ready!'); // can also send structured data, of course
-};</pre>
+  <pre><code class='js'>onconnect <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c->
+  <c- a>var</c-> newPort <c- o>=</c-> event<c- p>.</c->source<c- p>;</c->
+  <c- c1>// set up a listener</c->
+<c- c1></c->  newPort<c- p>.</c->onmessage <c- o>=</c-> <c- a>function</c-> <c- p>(</c->event<c- p>)</c-> <c- p>{</c-> <c- p>...</c-> <c- p>};</c->
+  <c- c1>// send a message back to the port</c->
+<c- c1></c->  newPort<c- p>.</c->postMessage<c- p>(</c-><c- t>&amp;apos;ready!&amp;apos;</c-><c- p>);</c-> <c- c1>// can also send structured data, of course</c->
+<c- c1></c-><c- p>};</c-></code></pre>
 
 
 
@@ -1148,24 +1148,37 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
 
   <p>The global scope is the "inside" of a worker.</p>
 
-  <h5 id=the-workerglobalscope-common-interface><span class=secno>10.2.1.1</span> The <code id=workerglobalscope>WorkerGlobalScope</code> common interface<a href=#the-workerglobalscope-common-interface class=self-link></a></h5>
+  <h5 id=the-workerglobalscope-common-interface><span class=secno>10.2.1.1</span> The <code id=workerglobalscope><a href=#workerglobalscope-2>WorkerGlobalScope</a></code> common interface<a href=#the-workerglobalscope-common-interface class=self-link></a></h5>
+
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Worker</c->]
+<c- b>interface</c-> <dfn id='workerglobalscope-2'><c- g>WorkerGlobalScope</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='the-workerglobalscope-common-interface:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#workerglobalscope-2' id='the-workerglobalscope-common-interface:workerglobalscope-2'><c- n>WorkerGlobalScope</c-></a> <a href='#dom-workerglobalscope-self' id='the-workerglobalscope-common-interface:dom-workerglobalscope-self'><c- g>self</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#workerlocation-2' id='the-workerglobalscope-common-interface:workerlocation-2'><c- n>WorkerLocation</c-></a> <a href='#dom-workerglobalscope-location' id='the-workerglobalscope-common-interface:dom-workerglobalscope-location'><c- g>location</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='#workernavigator-2' id='the-workerglobalscope-common-interface:workernavigator-2'><c- n>WorkerNavigator</c-></a> <a href='#dom-worker-navigator' id='the-workerglobalscope-common-interface:dom-worker-navigator'><c- g>navigator</c-></a>;
+  <c- b>void</c-> <a href='#dom-workerglobalscope-importscripts' id='the-workerglobalscope-common-interface:dom-workerglobalscope-importscripts'><c- g>importScripts</c-></a>(<c- b>USVString</c->... <c- g>urls</c->);
+
+  <c- b>attribute</c-> <a href='webappapis.html#onerroreventhandler' id='the-workerglobalscope-common-interface:onerroreventhandler'><c- n>OnErrorEventHandler</c-></a> <a href='#handler-workerglobalscope-onerror' id='the-workerglobalscope-common-interface:handler-workerglobalscope-onerror'><c- g>onerror</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='the-workerglobalscope-common-interface:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-workerglobalscope-onlanguagechange' id='the-workerglobalscope-common-interface:handler-workerglobalscope-onlanguagechange'><c- g>onlanguagechange</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='the-workerglobalscope-common-interface:eventhandler-2'><c- n>EventHandler</c-></a> <a href='#handler-workerglobalscope-onoffline' id='the-workerglobalscope-common-interface:handler-workerglobalscope-onoffline'><c- g>onoffline</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='the-workerglobalscope-common-interface:eventhandler-3'><c- n>EventHandler</c-></a> <a href='#handler-workerglobalscope-ononline' id='the-workerglobalscope-common-interface:handler-workerglobalscope-ononline'><c- g>ononline</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='the-workerglobalscope-common-interface:eventhandler-4'><c- n>EventHandler</c-></a> <a href='#handler-workerglobalscope-onrejectionhandled' id='the-workerglobalscope-common-interface:handler-workerglobalscope-onrejectionhandled'><c- g>onrejectionhandled</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='the-workerglobalscope-common-interface:eventhandler-5'><c- n>EventHandler</c-></a> <a href='#handler-workerglobalscope-onunhandledrejection' id='the-workerglobalscope-common-interface:handler-workerglobalscope-onunhandledrejection'><c- g>onunhandledrejection</c-></a>;
+};</code></pre>
+
+  <p><code id=the-workerglobalscope-common-interface:workerglobalscope-2-2><a href=#workerglobalscope-2>WorkerGlobalScope</a></code> serves as the base class for specific types of worker global
+  scope objects, including <code id=the-workerglobalscope-common-interface:dedicatedworkerglobalscope-2><a href=#dedicatedworkerglobalscope-2>DedicatedWorkerGlobalScope</a></code>,
+  <code id=the-workerglobalscope-common-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope-2>SharedWorkerGlobalScope</a></code>, and <code id=the-workerglobalscope-common-interface:serviceworkerglobalscope><a data-x-internal=serviceworkerglobalscope href=https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope>ServiceWorkerGlobalScope</a></code>.</p>
 
   
 
-  <p><code id=the-workerglobalscope-common-interface:workerglobalscope><a href=#workerglobalscope>WorkerGlobalScope</a></code> serves as the base class for specific types of worker global
-  scope objects, including <code id=the-workerglobalscope-common-interface:dedicatedworkerglobalscope><a href=#dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</a></code>,
-  <code id=the-workerglobalscope-common-interface:sharedworkerglobalscope><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code>, and <code id=the-workerglobalscope-common-interface:serviceworkerglobalscope><a data-x-internal=serviceworkerglobalscope href=https://w3c.github.io/ServiceWorker/#serviceworkerglobalscope>ServiceWorkerGlobalScope</a></code>.</p>
-
-  
-
-  <dl class=domintro><dt><var>workerGlobal</var> . <code id=dom-workerglobalscope-self>self</code><dd>Returns <var>workerGlobal</var>.<dt><var>workerGlobal</var> . <code id=dom-workerglobalscope-location>location</code><dd>Returns <var>workerGlobal</var>'s <code id=the-workerglobalscope-common-interface:workerlocation><a href=#workerlocation>WorkerLocation</a></code> object.<dt><var>workerGlobal</var> . <code id=dom-worker-navigator>navigator</code><dd>Returns <var>workerGlobal</var>'s <code id=the-workerglobalscope-common-interface:workernavigator><a href=#workernavigator>WorkerNavigator</a></code> object.<dt><var>workerGlobal</var> . <code id=dom-workerglobalscope-importscripts>importScripts</code>(<var>urls</var>...)<dd>Fetches each <a id=the-workerglobalscope-common-interface:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> in <var>urls</var>, executes them one-by-one in the order they
+  <dl class=domintro><dt><var>workerGlobal</var> . <code id=dom-workerglobalscope-self>self</code><dd>Returns <var>workerGlobal</var>.<dt><var>workerGlobal</var> . <code id=dom-workerglobalscope-location>location</code><dd>Returns <var>workerGlobal</var>'s <code id=the-workerglobalscope-common-interface:workerlocation-2-2><a href=#workerlocation-2>WorkerLocation</a></code> object.<dt><var>workerGlobal</var> . <code id=dom-worker-navigator>navigator</code><dd>Returns <var>workerGlobal</var>'s <code id=the-workerglobalscope-common-interface:workernavigator-2-2><a href=#workernavigator-2>WorkerNavigator</a></code> object.<dt><var>workerGlobal</var> . <code id=dom-workerglobalscope-importscripts>importScripts</code>(<var>urls</var>...)<dd>Fetches each <a id=the-workerglobalscope-common-interface:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> in <var>urls</var>, executes them one-by-one in the order they
    are passed, and then returns (or throws if something went amiss).</dl>
 
   
 
   <p>The following are the <a id=the-workerglobalscope-common-interface:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <span>event handler event types</span>)  supported,
   as <span>event handler IDL attributes</span>, by objects implementing the
-  <code id=the-workerglobalscope-common-interface:workerglobalscope-2><a href=#workerglobalscope>WorkerGlobalScope</a></code> interface:</p>
+  <code id=the-workerglobalscope-common-interface:workerglobalscope-2-3><a href=#workerglobalscope-2>WorkerGlobalScope</a></code> interface:</p>
 
   <table><thead><tr><th><a href=webappapis.html#event-handlers id=the-workerglobalscope-common-interface:event-handlers-2>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
    <tbody></th></tr><tr><td><dfn id=handler-workerglobalscope-onerror><code>onerror</code></dfn> </td><td> <code id=the-workerglobalscope-common-interface:event-error><a href=indices.html#event-error>error</a></code>
@@ -1177,19 +1190,29 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
   </td></tr></table>
 
 
-  <h5 id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface><span class=secno>10.2.1.2</span> Dedicated workers and the <code id=dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</code> interface<a href=#dedicated-workers-and-the-dedicatedworkerglobalscope-interface class=self-link></a></h5>
+  <h5 id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface><span class=secno>10.2.1.2</span> Dedicated workers and the <code id=dedicatedworkerglobalscope><a href=#dedicatedworkerglobalscope-2>DedicatedWorkerGlobalScope</a></code> interface<a href=#dedicated-workers-and-the-dedicatedworkerglobalscope-interface class=self-link></a></h5>
 
-  
+  <pre><code class='idl'>[<c- g>Global</c->=(<c- n>Worker</c->,<c- n>DedicatedWorker</c->),<c- g>Exposed</c->=<c- n>DedicatedWorker</c->]
+<c- b>interface</c-> <dfn id='dedicatedworkerglobalscope-2'><c- g>DedicatedWorkerGlobalScope</c-></dfn> : <a href='#workerglobalscope-2' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:workerglobalscope-2'><c- n>WorkerGlobalScope</c-></a> {
+  [<c- g>Replaceable</c->] <c- b>readonly</c-> <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-dedicatedworkerglobalscope-name' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:dom-dedicatedworkerglobalscope-name'><c- g>name</c-></a>;
 
-  <p><code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:dedicatedworkerglobalscope><a href=#dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</a></code> objects act as if they had an implicit
-  <code>MessagePort</code> associated with them. This port is part of a channel that is set up when
+  <c- b>void</c-> <a href='#dom-dedicatedworkerglobalscope-postmessage' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:dom-dedicatedworkerglobalscope-postmessage'><c- g>postMessage</c-></a>(<c- b>any</c-> <c- g>message</c->, <c- b>optional</c-> <c- b>sequence</c->&lt;<a href='https://triple-underscore.github.io/WebIDL-ja.html#idl-object' data-x-internal='idl-object' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:idl-object'><c- b>object</c-></a>&gt; <c- g>transfer</c-> = []);
+
+  <c- b>void</c-> <a href='#dom-dedicatedworkerglobalscope-close' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:dom-dedicatedworkerglobalscope-close'><c- g>close</c-></a>();
+
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-dedicatedworkerglobalscope-onmessage' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:handler-dedicatedworkerglobalscope-onmessage'><c- g>onmessage</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:eventhandler-2'><c- n>EventHandler</c-></a> <a href='#handler-dedicatedworkerglobalscope-onmessageerror' id='dedicated-workers-and-the-dedicatedworkerglobalscope-interface:handler-dedicatedworkerglobalscope-onmessageerror'><c- g>onmessageerror</c-></a>;
+};</code></pre>
+
+  <p><code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:dedicatedworkerglobalscope-2><a href=#dedicatedworkerglobalscope-2>DedicatedWorkerGlobalScope</a></code> objects act as if they had an implicit
+  <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:messageport><a href=web-messaging.html#messageport>MessagePort</a></code> associated with them. This port is part of a channel that is set up when
   the worker is created, but it is not exposed.</p>
 
   
 
   <dl class=domintro><dt><var>dedicatedWorkerGlobal</var> . <code id=dom-dedicatedworkerglobalscope-name>name</code><dd>Returns <var>dedicatedWorkerGlobal</var>'s <span>name</span>, i.e. the value given to the
-   <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:worker><a href=#worker>Worker</a></code> constructor. Primarily useful for debugging.<dt><var>dedicatedWorkerGlobal</var> . <code id=dom-dedicatedworkerglobalscope-postmessage>postMessage</code>(<var>message</var> [,
-   <var>transfer</var> ])<dd>Clones <var>message</var> and transmits it to the <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:worker-2><a href=#worker>Worker</a></code> object associated with
+   <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:worker-2><a href=#worker-2>Worker</a></code> constructor. Primarily useful for debugging.<dt><var>dedicatedWorkerGlobal</var> . <code id=dom-dedicatedworkerglobalscope-postmessage>postMessage</code>(<var>message</var> [,
+   <var>transfer</var> ])<dd>Clones <var>message</var> and transmits it to the <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:worker-2-2><a href=#worker-2>Worker</a></code> object associated with
    <var>dedicatedWorkerGlobal</var>. <var>transfer</var> can be passed as a list of objects that are
    to be transferred rather than cloned.<dt><var>dedicatedWorkerGlobal</var> . <code id=dom-dedicatedworkerglobalscope-close>close</code>()<dd>Aborts <var>dedicatedWorkerGlobal</var>.</dl>
 
@@ -1197,7 +1220,7 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
 
   <p>The following are the <a id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <span>event handler event types</span>)  supported,
   as <span>event handler IDL attributes</span>, by objects implementing the
-  <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:dedicatedworkerglobalscope-2><a href=#dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</a></code> interface:</p>
+  <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:dedicatedworkerglobalscope-2-2><a href=#dedicatedworkerglobalscope-2>DedicatedWorkerGlobalScope</a></code> interface:</p>
 
   <table><thead><tr><th><a href=webappapis.html#event-handlers id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:event-handlers-2>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
    <tbody></th></tr><tr><td><dfn id=handler-dedicatedworkerglobalscope-onmessage><code>onmessage</code></dfn> </td><td> <code id=dedicated-workers-and-the-dedicatedworkerglobalscope-interface:event-message><a href=indices.html#event-message>message</a></code>
@@ -1209,25 +1232,32 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
 
 
 
-  <h5 id=shared-workers-and-the-sharedworkerglobalscope-interface><span class=secno>10.2.1.3</span> Shared workers and the <code id=sharedworkerglobalscope>SharedWorkerGlobalScope</code> interface<a href=#shared-workers-and-the-sharedworkerglobalscope-interface class=self-link></a></h5>
+  <h5 id=shared-workers-and-the-sharedworkerglobalscope-interface><span class=secno>10.2.1.3</span> Shared workers and the <code id=sharedworkerglobalscope><a href=#sharedworkerglobalscope-2>SharedWorkerGlobalScope</a></code> interface<a href=#shared-workers-and-the-sharedworkerglobalscope-interface class=self-link></a></h5>
+
+  <pre><code class='idl'>[<c- g>Global</c->=(<c- n>Worker</c->,<c- n>SharedWorker</c->),<c- g>Exposed</c->=<c- n>SharedWorker</c->]
+<c- b>interface</c-> <dfn id='sharedworkerglobalscope-2'><c- g>SharedWorkerGlobalScope</c-></dfn> : <a href='#workerglobalscope-2' id='shared-workers-and-the-sharedworkerglobalscope-interface:workerglobalscope-2'><c- n>WorkerGlobalScope</c-></a> {
+  [<c- g>Replaceable</c->] <c- b>readonly</c-> <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-sharedworkerglobalscope-name' id='shared-workers-and-the-sharedworkerglobalscope-interface:dom-sharedworkerglobalscope-name'><c- g>name</c-></a>;
+
+  <c- b>void</c-> <a href='#dom-sharedworkerglobalscope-close' id='shared-workers-and-the-sharedworkerglobalscope-interface:dom-sharedworkerglobalscope-close'><c- g>close</c-></a>();
+
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='shared-workers-and-the-sharedworkerglobalscope-interface:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-sharedworkerglobalscope-onconnect' id='shared-workers-and-the-sharedworkerglobalscope-interface:handler-sharedworkerglobalscope-onconnect'><c- g>onconnect</c-></a>;
+};</code></pre>
 
   
 
-  
-
-  <p>Shared workers receive message ports through <code id=shared-workers-and-the-sharedworkerglobalscope-interface:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code> events on their <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> object for each
+  <p>Shared workers receive message ports through <code id=shared-workers-and-the-sharedworkerglobalscope-interface:event-workerglobalscope-connect><a href=indices.html#event-workerglobalscope-connect>connect</a></code> events on their <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope-2>SharedWorkerGlobalScope</a></code> object for each
   connection.</p>
 
   <dl class=domintro><dt><var>sharedWorkerGlobal</var> . <code id=dom-sharedworkerglobalscope-name>name</code><dd>Returns <var>sharedWorkerGlobal</var>'s <span>name</span>, i.e. the value given to the
-   <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworker><a href=#sharedworker>SharedWorker</a></code> constructor. Multiple <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworker-2><a href=#sharedworker>SharedWorker</a></code> objects can correspond
-   to the same shared worker (and <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-2><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code>), by reusing the same
+   <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworker-2><a href=#sharedworker-2>SharedWorker</a></code> constructor. Multiple <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworker-2-2><a href=#sharedworker-2>SharedWorker</a></code> objects can correspond
+   to the same shared worker (and <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-2-2><a href=#sharedworkerglobalscope-2>SharedWorkerGlobalScope</a></code>), by reusing the same
    name.<dt><var>sharedWorkerGlobal</var> . <code id=dom-sharedworkerglobalscope-close>close</code>()<dd>Aborts <var>sharedWorkerGlobal</var>.</dl>
 
   
 
   <p>The following are the <a id=shared-workers-and-the-sharedworkerglobalscope-interface:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <span>event handler event types</span>)  supported,
   as <span>event handler IDL attributes</span>, by objects implementing the
-  <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-3><a href=#sharedworkerglobalscope>SharedWorkerGlobalScope</a></code> interface:</p>
+  <code id=shared-workers-and-the-sharedworkerglobalscope-interface:sharedworkerglobalscope-2-3><a href=#sharedworkerglobalscope-2>SharedWorkerGlobalScope</a></code> interface:</p>
 
   <table><thead><tr><th><a href=webappapis.html#event-handlers id=shared-workers-and-the-sharedworkerglobalscope-interface:event-handlers-2>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
    <tbody></th></tr><tr><td><dfn id=handler-sharedworkerglobalscope-onconnect><code>onconnect</code></dfn> </td><td> <code id=shared-workers-and-the-sharedworkerglobalscope-interface:event-workerglobalscope-connect-2><a href=indices.html#event-workerglobalscope-connect>connect</a></code>
@@ -1237,16 +1267,16 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
 
   <h4 id=worker-event-loop><span class=secno>10.2.2</span> The event loop<a href=#worker-event-loop class=self-link></a></h4>
 
-  <p>Each <code id=worker-event-loop:workerglobalscope><a href=#workerglobalscope>WorkerGlobalScope</a></code> object has a distinct <span>event loop</span>, separate
+  <p>Each <code id=worker-event-loop:workerglobalscope-2><a href=#workerglobalscope-2>WorkerGlobalScope</a></code> object has a distinct <span>event loop</span>, separate
   from those used by <span>units of related
   similar-origin browsing contexts</span>. This <span>event loop</span> has no associated
   <a id=worker-event-loop:browsing-context href=browsers.html#browsing-context>browsing context</a>, and its <span>task queues</span> only have
   events, callbacks, and networking activity as <span>tasks</span>.</p>
 
-  <p>Each <code id=worker-event-loop:workerglobalscope-2><a href=#workerglobalscope>WorkerGlobalScope</a></code> object also has a <dfn data-export="" data-dfn-type=dfn id=dom-workerglobalscope-closing data-dfn-for=WorkerGlobalScope>closing</dfn> flag,  initially
+  <p>Each <code id=worker-event-loop:workerglobalscope-2-2><a href=#workerglobalscope-2>WorkerGlobalScope</a></code> object also has a <dfn data-export="" data-dfn-type=dfn id=dom-workerglobalscope-closing data-dfn-for=WorkerGlobalScope>closing</dfn> flag,  initially
   false, but which can get set to true <span>when the worker is requested to close</span>.</p>
 
-  <p>Once the <code id=worker-event-loop:workerglobalscope-3><a href=#workerglobalscope>WorkerGlobalScope</a></code>'s <a href=#dom-workerglobalscope-closing id=worker-event-loop:dom-workerglobalscope-closing>closing</a> flag is set to true, the <span>event
+  <p>Once the <code id=worker-event-loop:workerglobalscope-2-3><a href=#workerglobalscope-2>WorkerGlobalScope</a></code>'s <a href=#dom-workerglobalscope-closing id=worker-event-loop:dom-workerglobalscope-closing>closing</a> flag is set to true, the <span>event
   loop</span>'s <span>task queues</span>  discard any
   further <span>tasks</span> that would be added to them (tasks already on the
   queue are unaffected except where otherwise specified). Effectively, once the <a href=#dom-workerglobalscope-closing id=worker-event-loop:dom-workerglobalscope-closing-2>closing</a> flag is true, timers stop firing,
@@ -1262,20 +1292,20 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
   <p>Whenever an uncaught runtime script error occurs in one of the worker's scripts, if the error
   did not occur while handling a previous script error, the user agent 
   <span>will</span> <span>report the error</span> for that <span>script</span>, with the position (line number and column number) where the
-  error occurred, using the <code id=runtime-script-errors-2:workerglobalscope><a href=#workerglobalscope>WorkerGlobalScope</a></code> object as the target.</p>
+  error occurred, using the <code id=runtime-script-errors-2:workerglobalscope-2><a href=#workerglobalscope-2>WorkerGlobalScope</a></code> object as the target.</p>
 
   <p>For shared workers, if the error is still <i>not handled</i>
   afterwards, the error may be reported to a developer console.</p>
 
   <p>For dedicated workers, if the error is still <i>not
-  handled</i> afterwards, <span>the error report propagates to the <code id=runtime-script-errors-2:worker><a href=#worker>Worker</a></code> object,
-  then to any containing workers in the same fashion, eventually reaching the <code>Window</code> if
+  handled</i> afterwards, <span>the error report propagates to the <code id=runtime-script-errors-2:worker-2><a href=#worker-2>Worker</a></code> object,
+  then to any containing workers in the same fashion, eventually reaching the <code id=runtime-script-errors-2:window><a href=window-object.html#window>Window</a></code> if
   it was never handled along the way.</span></p>
 
   
 
   <p class=note><span>Error</span> reports propagate up to
-  the chain of dedicated workers up to the original <code>Document</code>, even if some of the
+  the chain of dedicated workers up to the original <code id=runtime-script-errors-2:document><a href=dom.html#document>Document</a></code>, even if some of the
   workers along this chain have been terminated and garbage collected.</p>
 
   
@@ -1284,13 +1314,15 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
   <h4 id=creating-workers><span class=secno>10.2.4</span> Creating workers<a href=#creating-workers class=self-link></a></h4>
 
   
-  <h5 id=properties-present-on-both-worker-and-sharedworker><span class=secno>10.2.4.1</span> Properties present on both <code id=properties-present-on-both-worker-and-sharedworker:worker><a href=#worker>Worker</a></code> and <code id=properties-present-on-both-worker-and-sharedworker:sharedworker><a href=#sharedworker>SharedWorker</a></code><a href=#properties-present-on-both-worker-and-sharedworker class=self-link></a></h5>
+  <h5 id=properties-present-on-both-worker-and-sharedworker><span class=secno>10.2.4.1</span> Properties present on both <code id=properties-present-on-both-worker-and-sharedworker:worker-2><a href=#worker-2>Worker</a></code> and <code id=properties-present-on-both-worker-and-sharedworker:sharedworker-2><a href=#sharedworker-2>SharedWorker</a></code><a href=#properties-present-on-both-worker-and-sharedworker class=self-link></a></h5>
 
-  
+  <pre><code class='idl'><c- b>interface</c-> <c- b>mixin</c-> <dfn id='abstractworker'><c- g>AbstractWorker</c-></dfn> {
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='properties-present-on-both-worker-and-sharedworker:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-abstractworker-onerror' id='properties-present-on-both-worker-and-sharedworker:handler-abstractworker-onerror'><c- g>onerror</c-></a>;
+};</code></pre>
 
   <p>The following are the <a id=properties-present-on-both-worker-and-sharedworker:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <span>event handler event types</span>)  supported,
-  as <span>event handler IDL attributes</span>, by <span><code id=properties-present-on-both-worker-and-sharedworker:worker-2><a href=#worker>Worker</a></code> and
-  <code id=properties-present-on-both-worker-and-sharedworker:sharedworker-2><a href=#sharedworker>SharedWorker</a></code> objects</span>:</p>
+  as <span>event handler IDL attributes</span>, by <span><code id=properties-present-on-both-worker-and-sharedworker:worker-2-2><a href=#worker-2>Worker</a></code> and
+  <code id=properties-present-on-both-worker-and-sharedworker:sharedworker-2-2><a href=#sharedworker-2>SharedWorker</a></code> objects</span>:</p>
 
   <table><thead><tr><th><a href=webappapis.html#event-handlers id=properties-present-on-both-worker-and-sharedworker:event-handlers-2>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
    <tbody></th></tr><tr><td><dfn id=handler-abstractworker-onerror><code>onerror</code></dfn> </td><td> <code id=properties-present-on-both-worker-and-sharedworker:event-error><a href=indices.html#event-error>error</a></code>
@@ -1300,11 +1332,28 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
   
 
 
-  <h5 id=dedicated-workers-and-the-worker-interface><span class=secno>10.2.4.2</span> Dedicated workers and the <code id=worker>Worker</code> interface<a href=#dedicated-workers-and-the-worker-interface class=self-link></a></h5>
+  <h5 id=dedicated-workers-and-the-worker-interface><span class=secno>10.2.4.2</span> Dedicated workers and the <code id=worker><a href=#worker-2>Worker</a></code> interface<a href=#dedicated-workers-and-the-worker-interface class=self-link></a></h5>
 
-  
+  <pre><code class='idl'>[<a href='#dom-worker' id='dedicated-workers-and-the-worker-interface:dom-worker'><c- g>Constructor</c-></a>(<c- b>USVString</c-> <c- g>scriptURL</c->, <c- b>optional</c-> <a href='#workeroptions' id='dedicated-workers-and-the-worker-interface:workeroptions'><c- n>WorkerOptions</c-></a> <c- g>options</c->), <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='worker-2'><c- g>Worker</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='dedicated-workers-and-the-worker-interface:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>void</c-> <a href='#dom-worker-terminate' id='dedicated-workers-and-the-worker-interface:dom-worker-terminate'><c- g>terminate</c-></a>();
 
-  <dl class=domintro><dt><var>worker</var> = new <code id=dom-worker>Worker</code>(<var>scriptURL</var> [, <var>options</var> ])<dd>Returns a new <code id=dedicated-workers-and-the-worker-interface:worker><a href=#worker>Worker</a></code> object. <var>scriptURL</var> will be fetched and executed
+  <c- b>void</c-> <a href='#dom-worker-postmessage' id='dedicated-workers-and-the-worker-interface:dom-worker-postmessage'><c- g>postMessage</c-></a>(<c- b>any</c-> <c- g>message</c->, <c- b>optional</c-> <c- b>sequence</c->&lt;<a href='https://triple-underscore.github.io/WebIDL-ja.html#idl-object' data-x-internal='idl-object' id='dedicated-workers-and-the-worker-interface:idl-object'><c- b>object</c-></a>&gt; <c- g>transfer</c-> = []);
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='dedicated-workers-and-the-worker-interface:eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-worker-onmessage' id='dedicated-workers-and-the-worker-interface:handler-worker-onmessage'><c- g>onmessage</c-></a>;
+  <c- b>attribute</c-> <a href='webappapis.html#eventhandler' id='dedicated-workers-and-the-worker-interface:eventhandler-2'><c- n>EventHandler</c-></a> <a href='#handler-worker-onmessageerror' id='dedicated-workers-and-the-worker-interface:handler-worker-onmessageerror'><c- g>onmessageerror</c-></a>;
+};
+
+<c- b>dictionary</c-> <dfn id='workeroptions'><c- g>WorkerOptions</c-></dfn> {
+  <a href='#workertype' id='dedicated-workers-and-the-worker-interface:workertype'><c- n>WorkerType</c-></a> <c- g>type</c-> = "classic";
+  <a href='https://triple-underscore.github.io/Fetch-ja.html#requestcredentials' data-x-internal='requestcredentials' id='dedicated-workers-and-the-worker-interface:requestcredentials'><c- n>RequestCredentials</c-></a> <c- g>credentials</c-> = "omit"; // credentials is only used if type is "module"
+  <c- b>DOMString</c-> <c- g>name</c-> = "";
+};
+
+<c- b>enum</c-> <dfn id='workertype'><c- g>WorkerType</c-></dfn> { <c- s>"classic"</c->, <c- s>"module"</c-> };
+
+<a href='#worker-2' id='dedicated-workers-and-the-worker-interface:worker-2'><c- n>Worker</c-></a> <c- b>includes</c-> <a href='#abstractworker' id='dedicated-workers-and-the-worker-interface:abstractworker'><c- n>AbstractWorker</c-></a>;</code></pre>
+
+  <dl class=domintro><dt><var>worker</var> = new <code id=dom-worker>Worker</code>(<var>scriptURL</var> [, <var>options</var> ])<dd>Returns a new <code id=dedicated-workers-and-the-worker-interface:worker-2-2><a href=#worker-2>Worker</a></code> object. <var>scriptURL</var> will be fetched and executed
    in the background, creating a new global environment for which <var>worker</var> represents the
    communication channel. <var>options</var> can be used to define the <span>name</span> of that global environment via the <code>name</code> option, primarily for debugging purposes. It can also ensure this new
    global environment supports JavaScript modules (specify <code>type: "module"</code>),
@@ -1323,15 +1372,15 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
 
   <div class=example>
 
-   <p>The <code id=dedicated-workers-and-the-worker-interface:dom-worker-postmessage><a href=#dom-worker-postmessage>postMessage()</a></code>
+   <p>The <code id=dedicated-workers-and-the-worker-interface:dom-worker-postmessage-2><a href=#dom-worker-postmessage>postMessage()</a></code>
    method's first argument can be structured data:</p>
 
-   <pre>worker.postMessage({opcode: 'activate', device: 1938, parameters: [23, 102]});</pre>
+   <pre><code class='js'>worker<c- p>.</c->postMessage<c- p>({</c->opcode<c- o>:</c-> <c- t>&amp;apos;activate&amp;apos;</c-><c- p>,</c-> device<c- o>:</c-> <c- mi>1938</c-><c- p>,</c-> parameters<c- o>:</c-> <c- p>[</c-><c- mi>23</c-><c- p>,</c-> <c- mi>102</c-><c- p>]});</c-></code></pre>
 
   </div>
 
   <p>The following are the <a id=dedicated-workers-and-the-worker-interface:event-handlers href=webappapis.html#event-handlers>event handlers</a> (and their corresponding <span>event handler event types</span>)  supported,
-  as <span>event handler IDL attributes</span>, by objects implementing the <code id=dedicated-workers-and-the-worker-interface:worker-2><a href=#worker>Worker</a></code>
+  as <span>event handler IDL attributes</span>, by objects implementing the <code id=dedicated-workers-and-the-worker-interface:worker-2-3><a href=#worker-2>Worker</a></code>
   interface:</p>
 
   <table><thead><tr><th><a href=webappapis.html#event-handlers id=dedicated-workers-and-the-worker-interface:event-handlers-2>イベントハンドラー</a> </th><th><span>イベントハンドラーイベント型</span>
@@ -1342,17 +1391,22 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
   
 
 
-  <h5 id=shared-workers-and-the-sharedworker-interface><span class=secno>10.2.4.3</span> Shared workers and the <code id=sharedworker>SharedWorker</code> interface<a href=#shared-workers-and-the-sharedworker-interface class=self-link></a></h5>
+  <h5 id=shared-workers-and-the-sharedworker-interface><span class=secno>10.2.4.3</span> Shared workers and the <code id=sharedworker><a href=#sharedworker-2>SharedWorker</a></code> interface<a href=#shared-workers-and-the-sharedworker-interface class=self-link></a></h5>
 
-  
+  <pre><code class='idl'>[<a href='#dom-sharedworker' id='shared-workers-and-the-sharedworker-interface:dom-sharedworker'><c- g>Constructor</c-></a>(<c- b>USVString</c-> <c- g>scriptURL</c->, <c- b>optional</c-> (<c- b>DOMString</c-> <c- b>or</c-> <a href='#workeroptions' id='shared-workers-and-the-sharedworker-interface:workeroptions'><c- n>WorkerOptions</c-></a>) <c- g>options</c->),
+ <c- g>Exposed</c->=(<c- n>Window</c->,<c- n>Worker</c->)]
+<c- b>interface</c-> <dfn id='sharedworker-2'><c- g>SharedWorker</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-eventtarget' data-x-internal='eventtarget' id='shared-workers-and-the-sharedworker-interface:eventtarget'><c- n>EventTarget</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a href='web-messaging.html#messageport' id='shared-workers-and-the-sharedworker-interface:messageport'><c- n>MessagePort</c-></a> <a href='#dom-sharedworker-port' id='shared-workers-and-the-sharedworker-interface:dom-sharedworker-port'><c- g>port</c-></a>;
+};
+<a href='#sharedworker-2' id='shared-workers-and-the-sharedworker-interface:sharedworker-2'><c- n>SharedWorker</c-></a> <c- b>includes</c-> <a href='#abstractworker' id='shared-workers-and-the-sharedworker-interface:abstractworker'><c- n>AbstractWorker</c-></a>;</code></pre>
 
-  <dl class=domintro><dt><var>sharedWorker</var> = new <code id=dom-sharedworker>SharedWorker</code>(<var>scriptURL</var> [, <var>name</var> ])<dd>Returns a new <code id=shared-workers-and-the-sharedworker-interface:sharedworker><a href=#sharedworker>SharedWorker</a></code> object. <var>scriptURL</var> will be fetched and
+  <dl class=domintro><dt><var>sharedWorker</var> = new <code id=dom-sharedworker>SharedWorker</code>(<var>scriptURL</var> [, <var>name</var> ])<dd>Returns a new <code id=shared-workers-and-the-sharedworker-interface:sharedworker-2-2><a href=#sharedworker-2>SharedWorker</a></code> object. <var>scriptURL</var> will be fetched and
    executed in the background, creating a new global environment for which <var>sharedWorker</var>
-   represents the communication channel. <var>name</var> can be used to define the <span>name</span> of that global environment.<dt><var>sharedWorker</var> = new <code id=shared-workers-and-the-sharedworker-interface:dom-sharedworker><a href=#dom-sharedworker>SharedWorker</a></code>(<var>scriptURL</var> [, <var>options</var> ])<dd>Returns a new <code id=shared-workers-and-the-sharedworker-interface:sharedworker-2><a href=#sharedworker>SharedWorker</a></code> object. <var>scriptURL</var> will be fetched and
+   represents the communication channel. <var>name</var> can be used to define the <span>name</span> of that global environment.<dt><var>sharedWorker</var> = new <code id=shared-workers-and-the-sharedworker-interface:dom-sharedworker-2><a href=#dom-sharedworker>SharedWorker</a></code>(<var>scriptURL</var> [, <var>options</var> ])<dd>Returns a new <code id=shared-workers-and-the-sharedworker-interface:sharedworker-2-3><a href=#sharedworker-2>SharedWorker</a></code> object. <var>scriptURL</var> will be fetched and
    executed in the background, creating a new global environment for which <var>sharedWorker</var>
    represents the communication channel. <var>options</var> can be used to define the <span>name</span> of that global environment via the <code>name</code> option. It can also ensure this new global environment supports JavaScript
    modules (specify <code>type: "module"</code>), and if that is specified, can also be
-   used to specify how <var>scriptURL</var> is fetched through the <code>credentials</code> option.<dt><var>sharedWorker</var> . <code id=dom-sharedworker-port>port</code><dd>Returns <var>sharedWorker</var>'s <code>MessagePort</code> object which can be used to
+   used to specify how <var>scriptURL</var> is fetched through the <code>credentials</code> option.<dt><var>sharedWorker</var> . <code id=dom-sharedworker-port>port</code><dd>Returns <var>sharedWorker</var>'s <code id=shared-workers-and-the-sharedworker-interface:messageport-2><a href=web-messaging.html#messageport>MessagePort</a></code> object which can be used to
    communicate with the global environment.</dl>
 
   
@@ -1360,7 +1414,9 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
 
   <h4 id=navigator.hardwareconcurrency><span class=secno>10.2.5</span> Concurrent hardware capabilities<a href=#navigator.hardwareconcurrency class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hardwareconcurrency<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>37+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>10.3+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>48+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>10.1+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>15+</span></span><span class="opera yes"><span>Opera</span> <span>24+</span></span><span class="android yes"><span>Android Browser</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=hardwareconcurrency">caniuse.com</a></div>
 
-  
+  <pre><code class='idl'><c- b>interface</c-> <c- b>mixin</c-> <dfn id='navigatorconcurrenthardware'><c- g>NavigatorConcurrentHardware</c-></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-> <a href='#dom-navigator-hardwareconcurrency' id='navigator.hardwareconcurrency:dom-navigator-hardwareconcurrency'><c- g>hardwareConcurrency</c-></a>;
+};</code></pre>
 
   <dl class=domintro><dt><var>self</var> . <code>navigator</code> . <code id=dom-navigator-hardwareconcurrency>hardwareConcurrency</code><dd><p>Returns the number of logical processors potentially available to the user agent.</dl>
 
@@ -1371,26 +1427,42 @@ worker.port.postMessage({ foo: 'structured', bar: ['data', 'also', 'possible']})
   
 
 
-  <h4 id=the-workernavigator-object><span class=secno>10.3.1</span> The <code id=workernavigator>WorkerNavigator</code> interface<a href=#the-workernavigator-object class=self-link></a></h4>
+  <h4 id=the-workernavigator-object><span class=secno>10.3.1</span> The <code id=workernavigator><a href=#workernavigator-2>WorkerNavigator</a></code> interface<a href=#the-workernavigator-object class=self-link></a></h4>
 
   
 
-  
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Worker</c->]
+<c- b>interface</c-> <dfn id='workernavigator-2'><c- g>WorkerNavigator</c-></dfn> {};
+<a href='#workernavigator-2' id='the-workernavigator-object:workernavigator-2'><c- n>WorkerNavigator</c-></a> <c- b>includes</c-> <a href='system-state.html#navigatorid' id='the-workernavigator-object:navigatorid'><c- n>NavigatorID</c-></a>;
+<a href='#workernavigator-2' id='the-workernavigator-object:workernavigator-2-2'><c- n>WorkerNavigator</c-></a> <c- b>includes</c-> <a href='system-state.html#navigatorlanguage' id='the-workernavigator-object:navigatorlanguage'><c- n>NavigatorLanguage</c-></a>;
+<a href='#workernavigator-2' id='the-workernavigator-object:workernavigator-2-3'><c- n>WorkerNavigator</c-></a> <c- b>includes</c-> <a href='offline.html#navigatoronline' id='the-workernavigator-object:navigatoronline'><c- n>NavigatorOnLine</c-></a>;
+<a href='#workernavigator-2' id='the-workernavigator-object:workernavigator-2-4'><c- n>WorkerNavigator</c-></a> <c- b>includes</c-> <a href='#navigatorconcurrenthardware' id='the-workernavigator-object:navigatorconcurrenthardware'><c- n>NavigatorConcurrentHardware</c-></a>;</code></pre>
 
   <div>
 
-  <p>The <code id=the-workernavigator-object:workernavigator><a href=#workernavigator>WorkerNavigator</a></code> interface implements a subset of the <code>Navigator</code>
+  <p>The <code id=the-workernavigator-object:workernavigator-2-5><a href=#workernavigator-2>WorkerNavigator</a></code> interface implements a subset of the <code id=the-workernavigator-object:navigator><a href=system-state.html#navigator>Navigator</a></code>
   interface, consisting of the following APIs:</p>
 
   <ul class=brief><li><a href=system-state.html#client-identification>Client identification</a></li><li><a href=system-state.html#language-preferences> 言語の好み</a></li><li><a href=offline.html#navigator.online> ブラウザーの状態</a></li><li><a href=#navigator.hardwareconcurrency>Concurrent hardware capabilities</a></li></ul>
 
   </div>
 
-  <h4 id=worker-locations><span class=secno>10.3.2</span> The <code id=workerlocation>WorkerLocation</code> interface<a href=#worker-locations class=self-link></a></h4>
+  <h4 id=worker-locations><span class=secno>10.3.2</span> The <code id=workerlocation><a href=#workerlocation-2>WorkerLocation</a></code> interface<a href=#worker-locations class=self-link></a></h4>
 
-  
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Worker</c->]
+<c- b>interface</c-> <dfn id='workerlocation-2'><c- g>WorkerLocation</c-></dfn> {
+  <c- b>stringifier</c-> <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>href</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>origin</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>protocol</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>host</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>hostname</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>port</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>pathname</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>search</c-></span>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <span><c- g>hash</c-></span>;
+};</code></pre>
 
-  <p>The <code id=worker-locations:workerlocation><a href=#workerlocation>WorkerLocation</a></code> interface is like the <code>Location</code> interface,
+  <p>The <code id=worker-locations:workerlocation-2><a href=#workerlocation-2>WorkerLocation</a></code> interface is like the <code id=worker-locations:location><a href=history.html#location>Location</a></code> interface,
   but lacks the <code id=worker-locations:dom-location-assign><a href=history.html#dom-location-assign>assign()</a></code>, <code id=worker-locations:dom-location-replace><a href=history.html#dom-location-replace>replace()</a></code>, <code id=worker-locations:dom-location-reload><a href=history.html#dom-location-reload>reload()</a></code>,
   and <code id=worker-locations:dom-location-ancestororigins><a href=history.html#dom-location-ancestororigins>ancestorOrigins</a></code> members.</p>
 

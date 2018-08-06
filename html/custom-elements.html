@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
    
 
@@ -206,59 +206,59 @@
 
   <p><a href=#autonomous-custom-element id=custom-elements-autonomous-example:autonomous-custom-element>自律カスタム要素</a>を作成する方法を説明するために、国旗の小さなアイコンのレンダリングをカプセル化するカスタム要素を定義してみよう。私たちの目標は、次のように使用できるようにすることである：</p>
 
-  <pre>&lt;flag-icon country="nl"&gt;&lt;/flag-icon&gt;</pre>
+  <pre><code class='html'><c- p>&lt;</c-><c- f>flag-icon</c-> <c- e>country</c-><c- o>=</c-><c- s>"nl"</c-><c- p>&gt;&lt;/</c-><c- f>flag-icon</c-><c- p>&gt;</c-></code></pre>
 
   <p>これを行うには、まずカスタム要素のクラスを宣言し、<code id=custom-elements-autonomous-example:htmlelement><a href=dom.html#htmlelement>HTMLElement</a></code>を拡張する：</p>
 
-  <pre>class FlagIcon extends HTMLElement {
-  constructor() {
-    super();
-    this._countryCode = null;
-  }
+  <pre><code class='js'><c- kr>class</c-> FlagIcon <c- kr>extends</c-> HTMLElement <c- p>{</c->
+  constructor<c- p>()</c-> <c- p>{</c->
+    <c- kr>super</c-><c- p>();</c->
+    <c- k>this</c-><c- p>.</c->_countryCode <c- o>=</c-> <c- kc>null</c-><c- p>;</c->
+  <c- p>}</c->
 
-  static get observedAttributes() { return ["country"]; }
+  <c- kr>static</c-> get observedAttributes<c- p>()</c-> <c- p>{</c-> <c- k>return</c-> <c- p>[</c-><c- u>"country"</c-><c- p>];</c-> <c- p>}</c->
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    // name will always be "country" due to observedAttributes
-    this._countryCode = newValue;
-    this._updateRendering();
-  }
-  connectedCallback() {
-    this._updateRendering();
-  }
+  attributeChangedCallback<c- p>(</c->name<c- p>,</c-> oldValue<c- p>,</c-> newValue<c- p>)</c-> <c- p>{</c->
+    <c- c1>// name will always be "country" due to observedAttributes</c->
+<c- c1></c->    <c- k>this</c-><c- p>.</c->_countryCode <c- o>=</c-> newValue<c- p>;</c->
+    <c- k>this</c-><c- p>.</c->_updateRendering<c- p>();</c->
+  <c- p>}</c->
+  connectedCallback<c- p>()</c-> <c- p>{</c->
+    <c- k>this</c-><c- p>.</c->_updateRendering<c- p>();</c->
+  <c- p>}</c->
 
-  get country() {
-    return this._countryCode;
-  }
-  set country(v) {
-    this.setAttribute("country", v);
-  }
+  get country<c- p>()</c-> <c- p>{</c->
+    <c- k>return</c-> <c- k>this</c-><c- p>.</c->_countryCode<c- p>;</c->
+  <c- p>}</c->
+  set country<c- p>(</c->v<c- p>)</c-> <c- p>{</c->
+    <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"country"</c-><c- p>,</c-> v<c- p>);</c->
+  <c- p>}</c->
 
-  _updateRendering() {
-    // Left as an exercise for the reader. But, you'll probably want to
-    // check this.ownerDocument.defaultView to see if we've been
-    // inserted into a document with a browsing context, and avoid
-    // doing any work if not.
-  }
-}</pre>
+  _updateRendering<c- p>()</c-> <c- p>{</c->
+    <c- c1>// Left as an exercise for the reader. But, you&amp;apos;ll probably want to</c->
+<c- c1></c->    <c- c1>// check this.ownerDocument.defaultView to see if we&amp;apos;ve been</c->
+<c- c1></c->    <c- c1>// inserted into a document with a browsing context, and avoid</c->
+<c- c1></c->    <c- c1>// doing any work if not.</c->
+<c- c1></c->  <c- p>}</c->
+<c- p>}</c-></code></pre>
 
   <p>次に、要素を定義するために次のクラスを使用して必要がある：</p>
 
-  <pre>customElements.define("flag-icon", FlagIcon);</pre>
+  <pre><code class='js'>customElements<c- p>.</c->define<c- p>(</c-><c- u>"flag-icon"</c-><c- p>,</c-> FlagIcon<c- p>);</c-></code></pre>
 
   <p>この時点で、上記のコードは動作する。<code>flag-icon</code>タグを見るたびに、パーサーは<code>FlagIcon</code>クラスの新しいインスタンスを作成し、要素の内部状態を設定し、レンダリングを更新するために使用する（適切な場合）、新しい<code>country</code>属性についてコードに伝える。</p>
 
   <p>DOM APIを使用して<code>flag-icon</code>要素を作成することもできる：</p>
 
-  <pre>const flagIcon = document.createElement("flag-icon")
-flagIcon.country = "jp"
-document.body.appendChild(flagIcon)</pre>
+  <pre><code class='js'><c- kr>const</c-> flagIcon <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"flag-icon"</c-><c- p>)</c->
+flagIcon<c- p>.</c->country <c- o>=</c-> <c- u>"jp"</c->
+document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->flagIcon<c- p>)</c-></code></pre>
 
   <p>最後に、<a href=#custom-element-constructor id=custom-elements-autonomous-example:custom-element-constructor>カスタム要素コンストラクタ</a>自体を使用することもできる。つまり、上記のコードは次のコードと同じである：</p>
 
-  <pre>const flagIcon = new FlagIcon()
-flagIcon.country = "jp"
-document.body.appendChild(flagIcon)</pre>
+  <pre><code class='js'><c- kr>const</c-> flagIcon <c- o>=</c-> <c- k>new</c-> FlagIcon<c- p>()</c->
+flagIcon<c- p>.</c->country <c- o>=</c-> <c- u>"jp"</c->
+document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->flagIcon<c- p>)</c-></code></pre>
 
   <h5 id=custom-elements-customized-builtin-example><span class=secno>4.13.1.2</span> カスタマイズされた組み込み要素の作成<a href=#custom-elements-customized-builtin-example class=self-link></a></h5>
 
@@ -270,48 +270,48 @@ document.body.appendChild(flagIcon)</pre>
 
   <p>この例において、<code>plastic-button</code>という<a href=#customized-built-in-element id=custom-elements-customized-builtin-example:customized-built-in-element-5>カスタマイズされた組み込み要素</a>を作成する。これは通常のボタンのように動作するが、クリックするたびにファンシーなアニメーション効果が追加される。今回は<code id=custom-elements-customized-builtin-example:htmlelement><a href=dom.html#htmlelement>HTMLElement</a></code>の代わりに<code id=custom-elements-customized-builtin-example:htmlbuttonelement><a href=form-elements.html#htmlbuttonelement>HTMLButtonElement</a></code>を拡張するが、前と同じようにクラスを定義することから始める：</p>
 
-  <pre>class PlasticButton extends HTMLButtonElement {
-  constructor() {
-    super();
+  <pre><code class='js'><c- kr>class</c-> PlasticButton <c- kr>extends</c-> HTMLButtonElement <c- p>{</c->
+  constructor<c- p>()</c-> <c- p>{</c->
+    <c- kr>super</c-><c- p>();</c->
 
-    this.addEventListener("click", () =&gt; {
-      // Draw some fancy animation effects!
-    });
-  }
-}</pre>
+    <c- k>this</c-><c- p>.</c->addEventListener<c- p>(</c-><c- u>"click"</c-><c- p>,</c-> <c- p>()</c-> <c- p>=&gt;</c-> <c- p>{</c->
+      <c- c1>// Draw some fancy animation effects!</c->
+<c- c1></c->    <c- p>});</c->
+  <c- p>}</c->
+<c- p>}</c-></code></pre>
 
   <p>カスタム要素を定義する場合、<code>extends</code>オプションも指定する必要がある：</p>
 
-  <pre>customElements.define("plastic-button", PlasticButton, { extends: "button" });</pre>
+  <pre><code class='js'>customElements<c- p>.</c->define<c- p>(</c-><c- u>"plastic-button"</c-><c- p>,</c-> PlasticButton<c- p>,</c-> <c- p>{</c-> <c- kr>extends</c-><c- o>:</c-> <c- u>"button"</c-> <c- p>});</c-></code></pre>
 
   <p>一般に、拡張されている要素の名前は、同じインターフェイスを共有する要素（<code id=custom-elements-customized-builtin-example:htmlquoteelement><a href=grouping-content.html#htmlquoteelement>HTMLQuoteElement</a></code>を共有する<code id=custom-elements-customized-builtin-example:the-q-element><a href=text-level-semantics.html#the-q-element>q</a></code>と<code id=custom-elements-customized-builtin-example:the-blockquote-element><a href=grouping-content.html#the-blockquote-element>blockquote</a></code>の両者など）を共有するため、拡張する要素インターフェイスを単に調べるだけでは判断することができない。</p>
 
   <p>To construct our <a href=#customized-built-in-element id=custom-elements-customized-builtin-example:customized-built-in-element-6>customized built-in element</a> from parsed HTML source text, we use
   the <code id=custom-elements-customized-builtin-example:attr-is><a href=#attr-is>is</a></code> attribute on a <code id=custom-elements-customized-builtin-example:the-button-element><a href=form-elements.html#the-button-element>button</a></code> element:</p>
 
-  <pre>&lt;button is="plastic-button"&gt;Click Me!&lt;/button&gt;</pre>
+  <pre><code class='html'><c- p>&lt;</c-><c- f>button</c-> <c- e>is</c-><c- o>=</c-><c- s>"plastic-button"</c-><c- p>&gt;</c->Click Me!<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c-></code></pre>
 
   <p><a href=#customized-built-in-element id=custom-elements-customized-builtin-example:customized-built-in-element-7>カスタマイズされた組み込み要素</a>を<a href=#autonomous-custom-element id=custom-elements-customized-builtin-example:autonomous-custom-element-4>自律カスタム要素</a>として使用しようとするとうまく<em>いかない</em>。つまり、<code>&lt;plastic-button&gt;Click me?&lt;/plastic-button&gt;</code>は特別な動作をしない<code id=custom-elements-customized-builtin-example:htmlelement-2><a href=dom.html#htmlelement>HTMLElement</a></code>を作成するだけである。</p>
 
   <p>If you need to create a customized built-in element programmatically, you can use the following
   form of <code id=custom-elements-customized-builtin-example:dom-document-createelement><a data-x-internal=dom-document-createelement href=https://triple-underscore.github.io/DOM4-ja.html#dom-document-createelement>createElement()</a></code>:</p>
 
-  <pre>const plasticButton = document.createElement("button", { is: "plastic-button" });
-plasticButton.textContent = "Click me!";</pre>
+  <pre><code class='js'><c- kr>const</c-> plasticButton <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"button"</c-><c- p>,</c-> <c- p>{</c-> is<c- o>:</c-> <c- u>"plastic-button"</c-> <c- p>});</c->
+plasticButton<c- p>.</c->textContent <c- o>=</c-> <c- u>"Click me!"</c-><c- p>;</c-></code></pre>
 
   <p>前と同じように、コンストラクタも動作する：</p>
 
-  <pre>const plasticButton2 = new PlasticButton();
-console.log(plasticButton2.localName);  // will output "button"
-console.assert(plasticButton2 instanceof PlasticButton);
-console.assert(plasticButton2 instanceof HTMLButtonElement);</pre>
+  <pre><code class='js'><c- kr>const</c-> plasticButton2 <c- o>=</c-> <c- k>new</c-> PlasticButton<c- p>();</c->
+console<c- p>.</c->log<c- p>(</c->plasticButton2<c- p>.</c->localName<c- p>);</c->  <c- c1>// will output "button"</c->
+<c- c1></c->console<c- p>.</c->assert<c- p>(</c->plasticButton2 <c- k>instanceof</c-> PlasticButton<c- p>);</c->
+console<c- p>.</c->assert<c- p>(</c->plasticButton2 <c- k>instanceof</c-> HTMLButtonElement<c- p>);</c-></code></pre>
 
   <p>Note that when creating a customized built-in element programmatically, the <code id=custom-elements-customized-builtin-example:attr-is-2><a href=#attr-is>is</a></code> attribute will not be present in the DOM, since it was not explicitly
   set. However, <a href=parsing.html#attr-is-during-serialization>it will be added to the output when
   serializing</a>:</p>
 
-  <pre>console.assert(!plasticButton.hasAttribute("is"));
-console.log(plasticButton.outerHTML); // will output '&lt;button is="plastic-button"&gt;&lt;/button&gt;'</pre>
+  <pre><code class='js'>console<c- p>.</c->assert<c- p>(</c-><c- o>!</c->plasticButton<c- p>.</c->hasAttribute<c- p>(</c-><c- u>"is"</c-><c- p>));</c->
+console<c- p>.</c->log<c- p>(</c->plasticButton<c- p>.</c->outerHTML<c- p>);</c-> <c- c1>// will output &amp;apos;&lt;button is="plastic-button"&gt;&lt;/button&gt;&amp;apos;</c-></code></pre>
 
   <p>Regardless of how it is created, all the of the ways in which <code id=custom-elements-customized-builtin-example:the-button-element-2><a href=form-elements.html#the-button-element>button</a></code> is special
   apply to such "plastic buttons" as well: their focus behavior, ability to participate in <a href=form-control-infrastructure.html#concept-form-submit id=custom-elements-customized-builtin-example:concept-form-submit>form submission</a>, the <code id=custom-elements-customized-builtin-example:attr-fe-disabled><a href=form-control-infrastructure.html#attr-fe-disabled>disabled</a></code> attribute, and so on.</p>
@@ -334,71 +334,71 @@ console.log(plasticButton.outerHTML); // will output '&lt;button is="plastic-but
 
   <p>これらの点を念頭に置いて、（無効にする機能を含む）ボタンのセマンティクスを伝える責任を負ったフル機能の<code>taco-button</code>は、次のようになる：</p>
 
-  <pre>class TacoButton extends HTMLElement {
-  static get observedAttributes() { return ["disabled"]; }
+  <pre><code class='js'><c- kr>class</c-> TacoButton <c- kr>extends</c-> HTMLElement <c- p>{</c->
+  <c- kr>static</c-> get observedAttributes<c- p>()</c-> <c- p>{</c-> <c- k>return</c-> <c- p>[</c-><c- u>"disabled"</c-><c- p>];</c-> <c- p>}</c->
 
-  constructor() {
-    super();
+  constructor<c- p>()</c-> <c- p>{</c->
+    <c- kr>super</c-><c- p>();</c->
 
-    this.addEventListener("keydown", e =&gt; {
-      if (e.keyCode === 32 || e.keyCode === 13) {
-        this.dispatchEvent(new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true
-        }));
-      }
-    });
+    <c- k>this</c-><c- p>.</c->addEventListener<c- p>(</c-><c- u>"keydown"</c-><c- p>,</c-> e <c- p>=&gt;</c-> <c- p>{</c->
+      <c- k>if</c-> <c- p>(</c->e<c- p>.</c->keyCode <c- o>===</c-> <c- mi>32</c-> <c- o>||</c-> e<c- p>.</c->keyCode <c- o>===</c-> <c- mi>13</c-><c- p>)</c-> <c- p>{</c->
+        <c- k>this</c-><c- p>.</c->dispatchEvent<c- p>(</c-><c- k>new</c-> MouseEvent<c- p>(</c-><c- u>"click"</c-><c- p>,</c-> <c- p>{</c->
+          bubbles<c- o>:</c-> <c- kc>true</c-><c- p>,</c->
+          cancelable<c- o>:</c-> <c- kc>true</c->
+        <c- p>}));</c->
+      <c- p>}</c->
+    <c- p>});</c->
 
-    this.addEventListener("click", e =&gt; {
-      if (this.disabled) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
+    <c- k>this</c-><c- p>.</c->addEventListener<c- p>(</c-><c- u>"click"</c-><c- p>,</c-> e <c- p>=&gt;</c-> <c- p>{</c->
+      <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->disabled<c- p>)</c-> <c- p>{</c->
+        e<c- p>.</c->preventDefault<c- p>();</c->
+        e<c- p>.</c->stopPropagation<c- p>();</c->
+      <c- p>}</c->
+    <c- p>});</c->
 
-    this._observer = new MutationObserver(() =&gt; {
-      this.setAttribute("aria-label", this.textContent);
-    });
-  }
+    <c- k>this</c-><c- p>.</c->_observer <c- o>=</c-> <c- k>new</c-> MutationObserver<c- p>(()</c-> <c- p>=&gt;</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"aria-label"</c-><c- p>,</c-> <c- k>this</c-><c- p>.</c->textContent<c- p>);</c->
+    <c- p>});</c->
+  <c- p>}</c->
 
-  connectedCallback() {
-    this.setAttribute("role", "button");
-    this.setAttribute("tabindex", "0");
+  connectedCallback<c- p>()</c-> <c- p>{</c->
+    <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"role"</c-><c- p>,</c-> <c- u>"button"</c-><c- p>);</c->
+    <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"tabindex"</c-><c- p>,</c-> <c- u>"0"</c-><c- p>);</c->
 
-    this._observer.observe(this, {
-      childList: true,
-      characterData: true,
-      subtree: true
-    });
-  }
+    <c- k>this</c-><c- p>.</c->_observer<c- p>.</c->observe<c- p>(</c-><c- k>this</c-><c- p>,</c-> <c- p>{</c->
+      childList<c- o>:</c-> <c- kc>true</c-><c- p>,</c->
+      characterData<c- o>:</c-> <c- kc>true</c-><c- p>,</c->
+      subtree<c- o>:</c-> <c- kc>true</c->
+    <c- p>});</c->
+  <c- p>}</c->
 
-  disconnectedCallback() {
-    this._observer.disconnect();
-  }
+  disconnectedCallback<c- p>()</c-> <c- p>{</c->
+    <c- k>this</c-><c- p>.</c->_observer<c- p>.</c->disconnect<c- p>();</c->
+  <c- p>}</c->
 
-  get disabled() {
-    return this.hasAttribute("disabled");
-  }
+  get disabled<c- p>()</c-> <c- p>{</c->
+    <c- k>return</c-> <c- k>this</c-><c- p>.</c->hasAttribute<c- p>(</c-><c- u>"disabled"</c-><c- p>);</c->
+  <c- p>}</c->
 
-  set disabled(v) {
-    if (v) {
-      this.setAttribute("disabled", "");
-    } else {
-      this.removeAttribute("disabled");
-    }
-  }
+  set disabled<c- p>(</c->v<c- p>)</c-> <c- p>{</c->
+    <c- k>if</c-> <c- p>(</c->v<c- p>)</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"disabled"</c-><c- p>,</c-> <c- u>""</c-><c- p>);</c->
+    <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->removeAttribute<c- p>(</c-><c- u>"disabled"</c-><c- p>);</c->
+    <c- p>}</c->
+  <c- p>}</c->
 
-  attributeChangedCallback() {
-    // only is called for the disabled attribute due to observedAttributes
-    if (this.disabled) {
-      this.removeAttribute("tabindex");
-      this.setAttribute("aria-disabled", "true");
-    } else {
-      this.setAttribute("tabindex", "0");
-      this.setAttribute("aria-disabled", "false");
-    }
-  }
-}</pre>
+  attributeChangedCallback<c- p>()</c-> <c- p>{</c->
+    <c- c1>// only is called for the disabled attribute due to observedAttributes</c->
+<c- c1></c->    <c- k>if</c-> <c- p>(</c-><c- k>this</c-><c- p>.</c->disabled<c- p>)</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->removeAttribute<c- p>(</c-><c- u>"tabindex"</c-><c- p>);</c->
+      <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"aria-disabled"</c-><c- p>,</c-> <c- u>"true"</c-><c- p>);</c->
+    <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+      <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"tabindex"</c-><c- p>,</c-> <c- u>"0"</c-><c- p>);</c->
+      <c- k>this</c-><c- p>.</c->setAttribute<c- p>(</c-><c- u>"aria-disabled"</c-><c- p>,</c-> <c- u>"false"</c-><c- p>);</c->
+    <c- p>}</c->
+  <c- p>}</c->
+<c- p>}</c-></code></pre>
 
   <p>このようにかなり複雑な要素定義があっても、その要素はコンシューマーのために使用する喜びとはならない。自身の意志の<code id=custom-elements-autonomous-drawbacks:attr-tabindex-3><a href=interaction.html#attr-tabindex>tabindex</a></code>や<code id=custom-elements-autonomous-drawbacks:attr-aria-*><a href=infrastructure.html#attr-aria-*>aria-*</a></code>属性を継続的に"発芽"させる。これは、現在のところ、（通常はコンシューマーがデフォルトの動作を上書きできるように予約されているにもかかわらず）これらの属性を強制的に使用する必要があり、カスタム要素に対するデフォルトのアクセシビリティセマンティクスやフォーカス動作を指定する方法が存在しないためである。</p>
 
@@ -421,15 +421,15 @@ console.log(plasticButton.outerHTML); // will output '&lt;button is="plastic-but
   document the element definition for <code>img-viewer</code> is loaded
   asynchronously:</p>
 
-  <pre>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;title&gt;Image viewer example&lt;/title&gt;
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>"en"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Image viewer example<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
 
-&lt;img-viewer filter="Kelvin"&gt;
-  &lt;img src="images/tree.jpg" alt="A beautiful tree towering over an empty savannah"&gt;
-&lt;/img-viewer&gt;
+<c- p>&lt;</c-><c- f>img-viewer</c-> <c- e>filter</c-><c- o>=</c-><c- s>"Kelvin"</c-><c- p>&gt;</c->
+  <c- p>&lt;</c-><c- f>img</c-> <c- e>src</c-><c- o>=</c-><c- s>"images/tree.jpg"</c-> <c- e>alt</c-><c- o>=</c-><c- s>"A beautiful tree towering over an empty savannah"</c-><c- p>&gt;</c->
+<c- p>&lt;/</c-><c- f>img-viewer</c-><c- p>&gt;</c->
 
-&lt;script src="js/elements/img-viewer.js" async&gt;&lt;/script&gt;</pre>
+<c- p>&lt;</c-><c- f>script</c-> <c- e>src</c-><c- o>=</c-><c- s>"js/elements/img-viewer.js"</c-> <c- e>async</c-><c- p>&gt;&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
   <p>The definition for the <code>img-viewer</code> element here is loaded using a
   <code id=custom-elements-upgrades-examples:the-script-element><a href=scripting.html#the-script-element>script</a></code> element marked with the <code id=custom-elements-upgrades-examples:attr-script-async><a href=scripting.html#attr-script-async>async</a></code>
@@ -446,34 +446,34 @@ console.log(plasticButton.outerHTML); // will output '&lt;button is="plastic-but
   document tree. (Formally, elements that are <a id=custom-elements-upgrades-examples:connected href=https://triple-underscore.github.io/DOM4-ja.html#connected data-x-internal=connected>connected</a>.) An element that is not
   inserted into a document will stay un-upgraded. An example illustrates this point:</p>
 
-  <pre>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;title&gt;Upgrade edge-cases example&lt;/title&gt;
+  <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>"en"</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Upgrade edge-cases example<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
 
-&lt;example-element&gt;&lt;/example-element&gt;
+<c- p>&lt;</c-><c- f>example-element</c-><c- p>&gt;&lt;/</c-><c- f>example-element</c-><c- p>&gt;</c->
 
-&lt;script&gt;
-  "use strict";
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+  <c- u>"use strict"</c-><c- p>;</c->
 
-  const inDocument = document.querySelector("example-element");
-  const outOfDocument = document.createElement("example-element");
+  <c- kr>const</c-> inDocument <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"example-element"</c-><c- p>);</c->
+  <c- kr>const</c-> outOfDocument <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"example-element"</c-><c- p>);</c->
 
-  // Before the element definition, both are HTMLElement:
-  console.assert(inDocument instanceof HTMLElement);
-  console.assert(outOfDocument instanceof HTMLElement);
+  <c- c1>// Before the element definition, both are HTMLElement:</c->
+<c- c1></c->  console<c- p>.</c->assert<c- p>(</c->inDocument <c- k>instanceof</c-> HTMLElement<c- p>);</c->
+  console<c- p>.</c->assert<c- p>(</c->outOfDocument <c- k>instanceof</c-> HTMLElement<c- p>);</c->
 
-  class ExampleElement extends HTMLElement {}
-  customElements.define("example-element", ExampleElement);
+  <c- kr>class</c-> ExampleElement <c- kr>extends</c-> HTMLElement <c- p>{}</c->
+  customElements<c- p>.</c->define<c- p>(</c-><c- u>"example-element"</c-><c- p>,</c-> ExampleElement<c- p>);</c->
 
-  // After element definition, the in-document element was upgraded:
-  console.assert(inDocument instanceof ExampleElement);
-  console.assert(!(outOfDocument instanceof ExampleElement));
+  <c- c1>// After element definition, the in-document element was upgraded:</c->
+<c- c1></c->  console<c- p>.</c->assert<c- p>(</c->inDocument <c- k>instanceof</c-> ExampleElement<c- p>);</c->
+  console<c- p>.</c->assert<c- p>(</c-><c- o>!</c-><c- p>(</c->outOfDocument <c- k>instanceof</c-> ExampleElement<c- p>));</c->
 
-  document.body.appendChild(outOfDocument);
+  document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->outOfDocument<c- p>);</c->
 
-  // Now that we've moved the element into the document, it too was upgraded:
-  console.assert(outOfDocument instanceof ExampleElement);
-&lt;/script&gt;</pre>
+  <c- c1>// Now that we&amp;apos;ve moved the element into the document, it too was upgraded:</c->
+<c- c1></c->  console<c- p>.</c->assert<c- p>(</c->outOfDocument <c- k>instanceof</c-> ExampleElement<c- p>);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
   <h4 id=custom-element-conformance><span class=secno>4.13.2</span> Requirements for custom element constructors<a href=#custom-element-conformance class=self-link></a></h4>
 
@@ -622,19 +622,19 @@ console.log(plasticButton.outerHTML); // will output '&lt;button is="plastic-but
   of the <code id=custom-elements-api:window-5><a href=window-object.html#window>Window</a></code> interface must return the <code id=custom-elements-api:customelementregistry-3><a href=#customelementregistry>CustomElementRegistry</a></code> object for
   that <code id=custom-elements-api:window-6><a href=window-object.html#window>Window</a></code> object.</p>
 
-  <pre class=idl>[Exposed=Window]
-interface <dfn id=customelementregistry>CustomElementRegistry</dfn> {
-  [<a href=#cereactions id=custom-elements-api:cereactions>CEReactions</a>] void <a href=#dom-customelementregistry-define id=custom-elements-api:dom-customelementregistry-define>define</a>(DOMString name, <a href=#customelementconstructor id=custom-elements-api:customelementconstructor>CustomElementConstructor</a> constructor, optional <a href=#elementdefinitionoptions id=custom-elements-api:elementdefinitionoptions>ElementDefinitionOptions</a> options);
-  any <a href=#dom-customelementregistry-get id=custom-elements-api:dom-customelementregistry-get>get</a>(DOMString name);
-  Promise&lt;void&gt; <a href=#dom-customelementregistry-whendefined id=custom-elements-api:dom-customelementregistry-whendefined>whenDefined</a>(DOMString name);
-  [<a href=#cereactions id=custom-elements-api:cereactions-2>CEReactions</a>] void <a href=#dom-customelementregistry-upgrade id=custom-elements-api:dom-customelementregistry-upgrade>upgrade</a>(<a id=custom-elements-api:node href=https://triple-underscore.github.io/DOM4-ja.html#interface-node data-x-internal=node>Node</a> root);
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->]
+<c- b>interface</c-> <dfn id='customelementregistry'><c- g>CustomElementRegistry</c-></dfn> {
+  [<a href='#cereactions' id='custom-elements-api:cereactions'><c- g>CEReactions</c-></a>] <c- b>void</c-> <a href='#dom-customelementregistry-define' id='custom-elements-api:dom-customelementregistry-define'><c- g>define</c-></a>(<c- b>DOMString</c-> <c- g>name</c->, <a href='#customelementconstructor' id='custom-elements-api:customelementconstructor'><c- n>CustomElementConstructor</c-></a> <c- g>constructor</c->, <c- b>optional</c-> <a href='#elementdefinitionoptions' id='custom-elements-api:elementdefinitionoptions'><c- n>ElementDefinitionOptions</c-></a> <c- g>options</c->);
+  <c- b>any</c-> <a href='#dom-customelementregistry-get' id='custom-elements-api:dom-customelementregistry-get'><c- g>get</c-></a>(<c- b>DOMString</c-> <c- g>name</c->);
+  <c- b>Promise</c->&lt;<c- b>void</c->&gt; <a href='#dom-customelementregistry-whendefined' id='custom-elements-api:dom-customelementregistry-whendefined'><c- g>whenDefined</c-></a>(<c- b>DOMString</c-> <c- g>name</c->);
+  [<a href='#cereactions' id='custom-elements-api:cereactions-2'><c- g>CEReactions</c-></a>] <c- b>void</c-> <a href='#dom-customelementregistry-upgrade' id='custom-elements-api:dom-customelementregistry-upgrade'><c- g>upgrade</c-></a>(<a href='https://triple-underscore.github.io/DOM4-ja.html#interface-node' data-x-internal='node' id='custom-elements-api:node'><c- n>Node</c-></a> <c- g>root</c->);
 };
 
-callback <dfn id=customelementconstructor>CustomElementConstructor</dfn> = any ();
+<c- b>callback</c-> <dfn id='customelementconstructor'><c- g>CustomElementConstructor</c-></dfn> = <c- b>any</c-> ();
 
-dictionary <dfn id=elementdefinitionoptions>ElementDefinitionOptions</dfn> {
-  DOMString extends;
-};</pre>
+<c- b>dictionary</c-> <dfn id='elementdefinitionoptions'><c- g>ElementDefinitionOptions</c-></dfn> {
+  <c- b>DOMString</c-> <c- g>extends</c->;
+};</code></pre>
 
   <p>Every <code id=custom-elements-api:customelementregistry-4><a href=#customelementregistry>CustomElementRegistry</a></code> has a set of <a href=#custom-element-definition id=custom-elements-api:custom-element-definition>custom element definitions</a>, initially empty. In general, algorithms in this
   specification look up elements in the registry by any of <a href=#concept-custom-element-definition-name id=custom-elements-api:concept-custom-element-definition-name>name</a>, <a href=#concept-custom-element-definition-local-name id=custom-elements-api:concept-custom-element-definition-local-name>local name</a>, or <a href=#concept-custom-element-definition-constructor id=custom-elements-api:concept-custom-element-definition-constructor>constructor</a>.</p>
@@ -764,21 +764,21 @@ dictionary <dfn id=elementdefinitionoptions>ElementDefinitionOptions</dfn> {
    combine it with the <code id=custom-elements-api:selector-defined><a href=semantics-other.html#selector-defined>:defined</a></code> pseudo-class to hide a
    dynamically-loaded article's contents until we're sure that all of the <a href=#autonomous-custom-element id=custom-elements-api:autonomous-custom-element-2>autonomous custom elements</a> it uses are defined.</p>
 
-   <pre>articleContainer.hidden = true;
+   <pre><code class='js'>articleContainer<c- p>.</c->hidden <c- o>=</c-> <c- kc>true</c-><c- p>;</c->
 
-fetch(articleURL)
-  .then(response =&gt; response.text())
-  .then(text =&gt; {
-    articleContainer.innerHTML = text;
+fetch<c- p>(</c->articleURL<c- p>)</c->
+  <c- p>.</c->then<c- p>(</c->response <c- p>=&gt;</c-> response<c- p>.</c->text<c- p>())</c->
+  <c- p>.</c->then<c- p>(</c->text <c- p>=&gt;</c-> <c- p>{</c->
+    articleContainer<c- p>.</c->innerHTML <c- o>=</c-> text<c- p>;</c->
 
-    return Promise.all(
-      [...articleContainer.querySelectorAll(":not(:defined)")]
-        .map(el =&gt; customElements.whenDefined(el.localName))
-    );
-  })
-  .then(() =&gt; {
-    articleContainer.hidden = false;
-  });</pre>
+    <c- k>return</c-> Promise<c- p>.</c->all<c- p>(</c->
+      <c- p>[...</c->articleContainer<c- p>.</c->querySelectorAll<c- p>(</c-><c- u>":not(:defined)"</c-><c- p>)]</c->
+        <c- p>.</c->map<c- p>(</c->el <c- p>=&gt;</c-> customElements<c- p>.</c->whenDefined<c- p>(</c->el<c- p>.</c->localName<c- p>))</c->
+    <c- p>);</c->
+  <c- p>})</c->
+  <c- p>.</c->then<c- p>(()</c-> <c- p>=&gt;</c-> <c- p>{</c->
+    articleContainer<c- p>.</c->hidden <c- o>=</c-> <c- kc>false</c-><c- p>;</c->
+  <c- p>});</c-></code></pre>
   </div>
 
   
@@ -799,15 +799,15 @@ fetch(articleURL)
    <a id=custom-elements-api:connected-2 href=https://triple-underscore.github.io/DOM4-ja.html#connected data-x-internal=connected>connected</a>, but this method can be used if you need to upgrade before you're ready to
    connect the element.</p>
 
-   <pre>const el = document.createElement("spider-man");
+   <pre><code class='js'><c- kr>const</c-> el <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"spider-man"</c-><c- p>);</c->
 
-class SpiderMan extends HTMLElement {}
-customElements.define("spider-man", SpiderMan);
+<c- kr>class</c-> SpiderMan <c- kr>extends</c-> HTMLElement <c- p>{}</c->
+customElements<c- p>.</c->define<c- p>(</c-><c- u>"spider-man"</c-><c- p>,</c-> SpiderMan<c- p>);</c->
 
-console.assert(!(el instanceof SpiderMan)); // not yet upgraded
-
-customElements.upgrade(el);
-console.assert(el instanceof SpiderMan);    // upgraded!</pre>
+console<c- p>.</c->assert<c- p>(</c-><c- o>!</c-><c- p>(</c->el <c- k>instanceof</c-> SpiderMan<c- p>));</c-> <c- c1>// not yet upgraded</c->
+<c- c1></c->
+customElements<c- p>.</c->upgrade<c- p>(</c->el<c- p>);</c->
+console<c- p>.</c->assert<c- p>(</c->el <c- k>instanceof</c-> SpiderMan<c- p>);</c->    <c- c1>// upgraded!</c-></code></pre>
   </div>
 
   
@@ -826,27 +826,27 @@ console.assert(el instanceof SpiderMan);    // upgraded!</pre>
      <p>This can occur due to reentrant invocation of this algorithm, as in the following
      example:</p>
 
-     <pre>&lt;!DOCTYPE html&gt;
-&lt;x-foo id="a"&gt;&lt;/x-foo&gt;
-&lt;x-foo id="b"&gt;&lt;/x-foo&gt;
+     <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
+<c- p>&lt;</c-><c- f>x-foo</c-> <c- e>id</c-><c- o>=</c-><c- s>"a"</c-><c- p>&gt;&lt;/</c-><c- f>x-foo</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>x-foo</c-> <c- e>id</c-><c- o>=</c-><c- s>"b"</c-><c- p>&gt;&lt;/</c-><c- f>x-foo</c-><c- p>&gt;</c->
 
-&lt;script&gt;
-// Defining enqueues upgrade reactions for both "a" and "b"
-customElements.define("x-foo", class extends HTMLElement {
-  constructor() {
-    super();
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+<c- c1>// Defining enqueues upgrade reactions for both "a" and "b"</c->
+<c- c1></c->customElements<c- p>.</c->define<c- p>(</c-><c- u>"x-foo"</c-><c- p>,</c-> <c- kr>class</c-> <c- kr>extends</c-> HTMLElement <c- p>{</c->
+  constructor<c- p>()</c-> <c- p>{</c->
+    <c- kr>super</c-><c- p>();</c->
 
-    const b = document.querySelector("#b");
-    b.remove();
+    <c- kr>const</c-> b <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#b"</c-><c- p>);</c->
+    b<c- p>.</c->remove<c- p>();</c->
 
-    // While this constructor is running for "a", "b" is still
-    // undefined, and so inserting it into the document will enqueue a
-    // second upgrade reaction for "b" in addition to the one enqueued
-    // by defining x-foo.
-    document.body.appendChild(b);
-  }
-})
-&lt;/script&gt;</pre>
+    <c- c1>// While this constructor is running for "a", "b" is still</c->
+<c- c1></c->    <c- c1>// undefined, and so inserting it into the document will enqueue a</c->
+<c- c1></c->    <c- c1>// second upgrade reaction for "b" in addition to the one enqueued</c->
+<c- c1></c->    <c- c1>// by defining x-foo.</c->
+<c- c1></c->    document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->b<c- p>);</c->
+  <c- p>}</c->
+<c- p>})</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
      <p>This step will thus bail out the algorithm early when <a href=#concept-upgrade-an-element id=upgrades:concept-upgrade-an-element>upgrade an element</a> is invoked
      with "<code>b</code>" a second time.</p>

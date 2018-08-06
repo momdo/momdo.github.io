@@ -169,7 +169,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>11 July 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
    
    
 
@@ -567,17 +567,11 @@
       <p>Otherwise:</p>
 
       <ol><li>
-        <p>Call the JavaScript <a href=https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm id=navigating-across-documents:js-initializehostdefinedrealm data-x-internal=js-initializehostdefinedrealm>InitializeHostDefinedRealm()</a> abstract operation
-        with the following customizations:</p>
+        <p>Let <var>realm execution context</var> be the result of <a id=navigating-across-documents:creating-a-new-javascript-realm href=webappapis.html#creating-a-new-javascript-realm>creating a new JavaScript
+        realm</a> with the following customizations:</p>
 
-        <ul><li><p>For the global object, create a new <code id=navigating-across-documents:window-2><a href=window-object.html#window>Window</a></code> object.</li><li><p>For the global <b>this</b> value, use <var>browsingContext</var>'s
+        <ul><li><p>For the global object, create a new <code id=navigating-across-documents:window-2><a href=window-object.html#window>Window</a></code> object.</li><li><p>For the global <b>this</b> binding, use <var>browsingContext</var>'s
          <code id=navigating-across-documents:windowproxy><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ul>
-       </li><li>
-        <p>Let <var>realm execution context</var> be the <a id=navigating-across-documents:running-javascript-execution-context href=https://tc39.github.io/ecma262/#running-execution-context data-x-internal=running-javascript-execution-context>running JavaScript execution
-        context</a>.</p>
-
-        <p class=note>This is the <a id=navigating-across-documents:javascript-execution-context href=https://tc39.github.io/ecma262/#sec-execution-contexts data-x-internal=javascript-execution-context>JavaScript execution context</a> created in the previous
-        step.</p>
        </li><li><p><a id=navigating-across-documents:set-up-a-window-environment-settings-object href=window-object.html#set-up-a-window-environment-settings-object>Set up a window environment settings object</a> with <var>realm execution
        context</var> and <var>reservedEnvironment</var>, if present.</li></ol>
      </li><li><p>Set the <code id=navigating-across-documents:document-10><a href=dom.html#document>Document</a></code>'s <a href=dom.html#concept-document-https-state id=navigating-across-documents:concept-document-https-state>HTTPS
@@ -610,19 +604,19 @@
          despite being <a id=navigating-across-documents:same-origin-domain-2 href=origin.html#same-origin-domain>same origin-domain</a> at the time the child document tries to use
 	 it. At the time the child document is initialized, only the parent document has set <code id=navigating-across-documents:dom-document-domain-3><a href=origin.html#dom-document-domain>document.domain</a></code>, and the child document has not.</p>
 
-         <pre>&lt;!-- https://foo.example.com/a.html --&gt;
-&lt;!doctype html&gt;
-&lt;script&gt;
- document.domain = 'example.com';
-&lt;/script&gt;
-&lt;iframe src=b.html&gt;&lt;/iframe&gt;</pre>
+         <pre><code class='html'><c- c>&lt;!-- https://foo.example.com/a.html --&gt;</c->
+<c- cp>&lt;!doctype html&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ document<c- p>.</c->domain <c- o>=</c-> <c- t>&amp;apos;example.com&amp;apos;</c-><c- p>;</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>b.html</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c-></code></pre>
 
-      <pre>&lt;!-- https://bar.example.com/b.html --&gt;
-&lt;!doctype html&gt;
-&lt;script&gt;
- document.domain = 'example.com'; // This happens after the document is initialized
- new PaymentRequest(…); // Not allowed to use
-&lt;/script&gt;</pre>
+      <pre><code class='html'><c- c>&lt;!-- https://bar.example.com/b.html --&gt;</c->
+<c- cp>&lt;!doctype html&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ document<c- p>.</c->domain <c- o>=</c-> <c- t>&amp;apos;example.com&amp;apos;</c-><c- p>;</c-> <c- c1>// This happens after the document is initialized</c->
+<c- c1></c-> <c- k>new</c-> PaymentRequest<c- p>(</c->…<c- p>);</c-> <c- c1>// Not allowed to use</c->
+<c- c1></c-><c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
        </div>
 
        <div class=example>
@@ -632,19 +626,19 @@
 	 the documents have set <code id=navigating-across-documents:dom-document-domain-4><a href=origin.html#dom-document-domain>document.domain</a></code> yet so
 	 <a id=navigating-across-documents:same-origin-domain-4 href=origin.html#same-origin-domain>same origin-domain</a> falls back to a normal <a id=navigating-across-documents:same-origin-7 href=origin.html#same-origin>same origin</a> check.</p>
 
-         <pre>&lt;!-- https://example.com/a.html --&gt;
-&lt;!doctype html&gt;
-&lt;iframe src=b.html&gt;&lt;/iframe&gt;
-&lt;!-- The child document is now initialized, before the script below is run. --&gt;
-&lt;script&gt;
- document.domain = 'example.com';
-&lt;/script&gt;</pre>
+         <pre><code class='html'><c- c>&lt;!-- https://example.com/a.html --&gt;</c->
+<c- cp>&lt;!doctype html&gt;</c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>b.html</c-><c- p>&gt;&lt;/</c-><c- f>iframe</c-><c- p>&gt;</c->
+<c- c>&lt;!-- The child document is now initialized, before the script below is run. --&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ document<c- p>.</c->domain <c- o>=</c-> <c- t>&amp;apos;example.com&amp;apos;</c-><c- p>;</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
-         <pre>&lt;!-- https://example.com/b.html --&gt;
-&lt;!doctype html&gt;
-&lt;script&gt;
- new PaymentRequest(…); // Allowed to use
-&lt;/script&gt;</pre>
+         <pre><code class='html'><c- c>&lt;!-- https://example.com/b.html --&gt;</c->
+<c- cp>&lt;!doctype html&gt;</c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
+ <c- k>new</c-> PaymentRequest<c- p>(</c->…<c- p>);</c-> <c- c1>// Allowed to use</c->
+<c- c1></c-><c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
        </div>
      </li><li>
       <p>If <var>response</var> has a `<code id=navigating-across-documents:refresh><a href=iana.html#refresh>Refresh</a></code>` header, then:</p>
@@ -1265,15 +1259,15 @@
 
   <h5 id=the-popstateevent-interface><span class=secno>7.8.10.2</span> The <code id=the-popstateevent-interface:popstateevent><a href=#popstateevent>PopStateEvent</a></code> interface<a href=#the-popstateevent-interface class=self-link></a></h5>
 
-  <pre class=idl>[Exposed=Window,
- Constructor(DOMString type, optional <a href=#popstateeventinit id=the-popstateevent-interface:popstateeventinit>PopStateEventInit</a> eventInitDict)]
-interface <dfn id=popstateevent>PopStateEvent</dfn> : <a id=the-popstateevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
-  readonly attribute any <a href=#dom-popstateevent-state id=the-popstateevent-interface:dom-popstateevent-state>state</a>;
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->,
+ <c- g>Constructor</c->(<c- b>DOMString</c-> <c- g>type</c->, <c- b>optional</c-> <a href='#popstateeventinit' id='the-popstateevent-interface:popstateeventinit'><c- n>PopStateEventInit</c-></a> <c- g>eventInitDict</c->)]
+<c- b>interface</c-> <dfn id='popstateevent'><c- g>PopStateEvent</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='the-popstateevent-interface:event'><c- n>Event</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>any</c-> <a href='#dom-popstateevent-state' id='the-popstateevent-interface:dom-popstateevent-state'><c- g>state</c-></a>;
 };
 
-dictionary <dfn id=popstateeventinit>PopStateEventInit</dfn> : <a id=the-popstateevent-interface:eventinit href=https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
-  any state = null;
-};</pre>
+<c- b>dictionary</c-> <dfn id='popstateeventinit'><c- g>PopStateEventInit</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit' data-x-internal='eventinit' id='the-popstateevent-interface:eventinit'><c- n>EventInit</c-></a> {
+  <c- b>any</c-> <c- g>state</c-> = <c- b>null</c->;
+};</code></pre>
 
   <dl class=domintro><dt><var>event</var> . <code id=dom-popstateevent-state-dev><a href=#dom-popstateevent-state>state</a></code><dd>
 
@@ -1292,17 +1286,17 @@ dictionary <dfn id=popstateeventinit>PopStateEventInit</dfn> : <a id=the-popstat
 
   <h5 id=the-hashchangeevent-interface><span class=secno>7.8.10.3</span> The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hashchange<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=hashchange">caniuse.com</a></div>
 
-  <pre class=idl>[Exposed=Window,
- Constructor(DOMString type, optional <a href=#hashchangeeventinit id=the-hashchangeevent-interface:hashchangeeventinit>HashChangeEventInit</a> eventInitDict)]
-interface <dfn id=hashchangeevent>HashChangeEvent</dfn> : <a id=the-hashchangeevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
-  readonly attribute USVString <a href=#dom-hashchangeevent-oldurl id=the-hashchangeevent-interface:dom-hashchangeevent-oldurl>oldURL</a>;
-  readonly attribute USVString <a href=#dom-hashchangeevent-newurl id=the-hashchangeevent-interface:dom-hashchangeevent-newurl>newURL</a>;
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->,
+ <c- g>Constructor</c->(<c- b>DOMString</c-> <c- g>type</c->, <c- b>optional</c-> <a href='#hashchangeeventinit' id='the-hashchangeevent-interface:hashchangeeventinit'><c- n>HashChangeEventInit</c-></a> <c- g>eventInitDict</c->)]
+<c- b>interface</c-> <dfn id='hashchangeevent'><c- g>HashChangeEvent</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='the-hashchangeevent-interface:event'><c- n>Event</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <a href='#dom-hashchangeevent-oldurl' id='the-hashchangeevent-interface:dom-hashchangeevent-oldurl'><c- g>oldURL</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>USVString</c-> <a href='#dom-hashchangeevent-newurl' id='the-hashchangeevent-interface:dom-hashchangeevent-newurl'><c- g>newURL</c-></a>;
 };
 
-dictionary <dfn id=hashchangeeventinit>HashChangeEventInit</dfn> : <a id=the-hashchangeevent-interface:eventinit href=https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
-  USVString oldURL = "";
-  USVString newURL = "";
-};</pre>
+<c- b>dictionary</c-> <dfn id='hashchangeeventinit'><c- g>HashChangeEventInit</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit' data-x-internal='eventinit' id='the-hashchangeevent-interface:eventinit'><c- n>EventInit</c-></a> {
+  <c- b>USVString</c-> <c- g>oldURL</c-> = "";
+  <c- b>USVString</c-> <c- g>newURL</c-> = "";
+};</code></pre>
 
   <dl class=domintro><dt><var>event</var> . <code id=dom-hashchangeevent-oldurl-dev><a href=#dom-hashchangeevent-oldurl>oldURL</a></code><dd>
 
@@ -1329,15 +1323,15 @@ dictionary <dfn id=hashchangeeventinit>HashChangeEventInit</dfn> : <a id=the-has
 
   <h5 id=the-pagetransitionevent-interface><span class=secno>7.8.10.4</span> The <code id=the-pagetransitionevent-interface:pagetransitionevent><a href=#pagetransitionevent>PageTransitionEvent</a></code> interface<a href=#the-pagetransitionevent-interface class=self-link></a></h5>
 
-  <pre class=idl>[Exposed=Window,
- Constructor(DOMString type, optional <a href=#pagetransitioneventinit id=the-pagetransitionevent-interface:pagetransitioneventinit>PageTransitionEventInit</a> eventInitDict)]
-interface <dfn id=pagetransitionevent>PageTransitionEvent</dfn> : <a id=the-pagetransitionevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
-  readonly attribute boolean <a href=#dom-pagetransitionevent-persisted id=the-pagetransitionevent-interface:dom-pagetransitionevent-persisted>persisted</a>;
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->,
+ <c- g>Constructor</c->(<c- b>DOMString</c-> <c- g>type</c->, <c- b>optional</c-> <a href='#pagetransitioneventinit' id='the-pagetransitionevent-interface:pagetransitioneventinit'><c- n>PageTransitionEventInit</c-></a> <c- g>eventInitDict</c->)]
+<c- b>interface</c-> <dfn id='pagetransitionevent'><c- g>PageTransitionEvent</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='the-pagetransitionevent-interface:event'><c- n>Event</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>boolean</c-> <a href='#dom-pagetransitionevent-persisted' id='the-pagetransitionevent-interface:dom-pagetransitionevent-persisted'><c- g>persisted</c-></a>;
 };
 
-dictionary <dfn id=pagetransitioneventinit>PageTransitionEventInit</dfn> : <a id=the-pagetransitionevent-interface:eventinit href=https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
-  boolean persisted = false;
-};</pre>
+<c- b>dictionary</c-> <dfn id='pagetransitioneventinit'><c- g>PageTransitionEventInit</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#dictdef-eventinit' data-x-internal='eventinit' id='the-pagetransitionevent-interface:eventinit'><c- n>EventInit</c-></a> {
+  <c- b>boolean</c-> <c- g>persisted</c-> = <c- b>false</c->;
+};</code></pre>
 
   <dl class=domintro><dt><var>event</var> . <code id=dom-pagetransitionevent-persisted-dev><a href=#dom-pagetransitionevent-persisted>persisted</a></code><dd>
 
@@ -1496,10 +1490,10 @@ dictionary <dfn id=pagetransitioneventinit>PageTransitionEventInit</dfn> : <a id
 
   <h5 id=the-beforeunloadevent-interface><span class=secno>7.8.11.1</span> The <code id=the-beforeunloadevent-interface:beforeunloadevent><a href=#beforeunloadevent>BeforeUnloadEvent</a></code> interface<a href=#the-beforeunloadevent-interface class=self-link></a></h5>
 
-  <pre class=idl>[Exposed=Window]
-interface <dfn id=beforeunloadevent>BeforeUnloadEvent</dfn> : <a id=the-beforeunloadevent-interface:event href=https://triple-underscore.github.io/DOM4-ja.html#interface-event data-x-internal=event>Event</a> {
-  attribute DOMString <a href=#dom-beforeunloadevent-returnvalue id=the-beforeunloadevent-interface:dom-beforeunloadevent-returnvalue>returnValue</a>;
-};</pre>
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->]
+<c- b>interface</c-> <dfn id='beforeunloadevent'><c- g>BeforeUnloadEvent</c-></dfn> : <a href='https://triple-underscore.github.io/DOM4-ja.html#interface-event' data-x-internal='event' id='the-beforeunloadevent-interface:event'><c- n>Event</c-></a> {
+  <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-beforeunloadevent-returnvalue' id='the-beforeunloadevent-interface:dom-beforeunloadevent-returnvalue'><c- g>returnValue</c-></a>;
+};</code></pre>
 
   <p class=note><code id=the-beforeunloadevent-interface:beforeunloadevent-2><a href=#beforeunloadevent>BeforeUnloadEvent</a></code>固有の初期化メソッドは存在しない。</p>
 
