@@ -49,9 +49,7 @@
    }
   </style>
 <style>
-   [hidden] { display: none; }
-
-   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+   .bad, .bad *:not(.X\58X) { color: gray; }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -169,7 +167,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>19 September 2018</span></h2></hgroup>
    
    
 
@@ -317,9 +315,9 @@
        <a id=navigating-across-documents:active-document-9 href=browsers.html#active-document>active document</a> of <var>browsingContext</var>.</li><li><p>Let <var>base URL</var> be <var>settings object</var>'s <a id=navigating-across-documents:api-base-url href=webappapis.html#api-base-url>API base
        URL</a>.</li><li><p>Let <var>script</var> be the result of <a id=navigating-across-documents:creating-a-classic-script href=webappapis.html#creating-a-classic-script>creating a classic script</a> given
        <var>script source</var>, <var>settings</var>, <var>base URL</var>, and the <a id=navigating-across-documents:default-classic-script-fetch-options href=webappapis.html#default-classic-script-fetch-options>default
-       classic script fetch options</a>.</li><li><p>Let <var>result</var> be the result of <a href=webappapis.html#run-a-classic-script id=navigating-across-documents:run-a-classic-script>running the
-       classic script</a> <var>script</var>. If evaluation was unsuccessful, let
-       <var>result</var> be undefined instead. (The result will also be undefined if <a href=webappapis.html#concept-bc-noscript id=navigating-across-documents:concept-bc-noscript>scripting is disabled</a>.)</li><li><p>Let <var>response</var> be null.</li><li>
+       classic script fetch options</a>.</li><li><p>Let <var>evaluationStatus</var> be the result of <a href=webappapis.html#run-a-classic-script id=navigating-across-documents:run-a-classic-script>running the classic script</a> <var>script</var>.</li><li><p>Let <var>result</var> be undefined if <var>evaluationStatus</var> is an
+       <a id=navigating-across-documents:abrupt-completion href=https://tc39.github.io/ecma262/#sec-completion-record-specification-type data-x-internal=abrupt-completion>abrupt completion</a> or <var>evaluationStatus</var>.[[Value]] is
+       empty, or <var>evaluationStatus</var>.[[Value]] otherwise.</li><li><p>Let <var>response</var> be null.</li><li>
 
         <p><i>Process result</i>: If <a href=https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values id=navigating-across-documents:js-type data-x-internal=js-type>Type</a>(<var>result</var>) is not
         String, then set <var>response</var> to a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=navigating-across-documents:concept-response-2 data-x-internal=concept-response>response</a> whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=navigating-across-documents:concept-response-status data-x-internal=concept-response-status>status</a> is <code>204</code>.</p>
@@ -333,9 +331,6 @@
         <p class=warning>The exact conversion between the JavaScript string <var>result</var> and
         the bytes that comprise a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-body id=navigating-across-documents:concept-response-body-2 data-x-internal=concept-response-body>response body</a> is
         not yet specified, pending further investigation into user agent behavior. See <a href=https://github.com/whatwg/html/issues/1129>issue #1129</a>.</p>
-
-        <p>When it comes time to <a href="#set-the-document's-address" id="navigating-across-documents:set-the-document's-address">set the document's address</a>, use <var>address</var> as
-        the <a href=#override-url id=navigating-across-documents:override-url>override URL</a>.</p>
        </li><li><p>Run <a href=#process-a-navigate-response id=navigating-across-documents:process-a-navigate-response-2>process a navigate response</a> with <var>resource</var>,
        <var>response</var>, <var>navigationType</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-7>source browsing context</a>, and
        <var>browsingContext</var>, and then return.</li></ol>
@@ -379,7 +374,7 @@
 
      <dt>If <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-5 data-x-internal=concept-request>request</a> whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-6 data-x-internal=concept-request-url>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-2 data-x-internal=concept-url-scheme>scheme</a>
      is a <a id=navigating-across-documents:fetch-scheme href=https://fetch.spec.whatwg.org/#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a><dd><p>Run <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch>process a navigate fetch</a> given <var>resource</var>, the <a href=#source-browsing-context id=navigating-across-documents:source-browsing-context-8>source
-     browsing context</a>, and <var>browsing context</var>, and <var>navigationType</var>.<dt>Otherwise, <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-6 data-x-internal=concept-request>request</a> whose
+     browsing context</a>, and <var>browsingContext</var>, and <var>navigationType</var>.<dt>Otherwise, <var>resource</var> is a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-6 data-x-internal=concept-request>request</a> whose
      <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-7 data-x-internal=concept-request-url>url</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-3 data-x-internal=concept-url-scheme>scheme</a>
      is neither "<code id=navigating-across-documents:javascript-protocol-3><a href=#javascript-protocol>javascript</a></code>" nor a <a id=navigating-across-documents:fetch-scheme-2 href=https://fetch.spec.whatwg.org/#fetch-scheme data-x-internal=fetch-scheme>fetch
      scheme</a><dd><p>Run <a href=#process-a-navigate-url-scheme id=navigating-across-documents:process-a-navigate-url-scheme>process a navigate URL scheme</a> given <var>resource</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-8 data-x-internal=concept-request-url>url</a> and <var>browsingContext</var>.</dl>
@@ -393,7 +388,7 @@
    <var>sourceBrowsingContext</var>'s <a id=navigating-across-documents:active-document-10 href=browsers.html#active-document>active document</a>'s <a id=navigating-across-documents:relevant-settings-object-2 href=webappapis.html#relevant-settings-object>relevant settings
    object</a>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination id=navigating-across-documents:concept-request-destination data-x-internal=concept-request-destination>destination</a> to "<code>document</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-mode id=navigating-across-documents:concept-request-mode data-x-internal=concept-request-mode>mode</a> to "<code>navigate</code>", <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode id=navigating-across-documents:concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials
    mode</a> to "<code>include</code>", <a id=navigating-across-documents:use-url-credentials-flag href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-use-url-credentials-flag data-x-internal=use-url-credentials-flag>use-URL-credentials flag</a>, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-redirect-mode id=navigating-across-documents:concept-request-redirect-mode data-x-internal=concept-request-redirect-mode>redirect mode</a> to "<code>manual</code>",
-   and <a href=https://fetch.spec.whatwg.org/#concept-request-target-client-id id=navigating-across-documents:concept-request-target-client-id data-x-internal=concept-request-target-client-id>target client id</a> to
+   and <a href=https://fetch.spec.whatwg.org/#concept-request-replaces-client-id id=navigating-across-documents:concept-request-replaces-client-id data-x-internal=concept-request-replaces-client-id>replaces client id</a> to
    <var>browsingContext</var>'s <a id=navigating-across-documents:active-document-11 href=browsers.html#active-document>active document</a>'s <a id=navigating-across-documents:relevant-settings-object-3 href=webappapis.html#relevant-settings-object>relevant settings
    object</a>'s <a href=webappapis.html#concept-environment-id id=navigating-across-documents:concept-environment-id>id</a>.</li><li><p>If <var>browsingContext</var> is a <a id=navigating-across-documents:child-browsing-context href=browsers.html#child-browsing-context>child browsing context</a> and the
    <a id=navigating-across-documents:browsing-context-container href=browsers.html#browsing-context-container>browsing context container</a> of <var>browsingContext</var> has a <a id=navigating-across-documents:browsing-context-scope-origin href=browsers.html#browsing-context-scope-origin>browsing
@@ -544,26 +539,19 @@
     application), or one for which the user agent has dedicated processing rules, or one for which
     the user agent has a dedicated handler.</p>
 
-    <p><dfn id="set-the-document's-address">Setting the document's address</dfn>: If there is no
-    <dfn id=override-url>override URL</dfn>, then any <code id=navigating-across-documents:document-4><a href=dom.html#document>Document</a></code> created by these steps must have its
-    <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-4" data-x-internal="the-document's-address">URL</a> set to the <a id=navigating-across-documents:url-7 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that was
-    originally to be fetched, ignoring any other data that was used to obtain the resource. However,
-    if there <em>is</em> an <a href=#override-url id=navigating-across-documents:override-url-2>override URL</a>, then any <code id=navigating-across-documents:document-5><a href=dom.html#document>Document</a></code> created by
-    these steps must have its <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-5" data-x-internal="the-document's-address">URL</a> set to that
-    <a id=navigating-across-documents:url-8 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> instead.</p>
-
-    <p class=note>An <a href=#override-url id=navigating-across-documents:override-url-3>override URL</a> is set when <a href=#javascript-protocol id=navigating-across-documents:javascript-protocol-4>dereferencing a <code>javascript:</code> URL</a> and when
-    performing <a id=navigating-across-documents:an-overridden-reload href=dom.html#an-overridden-reload>an overridden reload</a>.</p>
+    <p><dfn id="set-the-document's-address">Setting the document's address</dfn>: Any
+    <code id=navigating-across-documents:document-4><a href=dom.html#document>Document</a></code> created by these steps must have its <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-4" data-x-internal="the-document's-address">URL</a> set to the <a id=navigating-across-documents:url-7 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that was originally to be
+    fetched, ignoring any other data that was used to obtain the resource.</p>
 
     <p><dfn id=initialise-the-document-object data-export="">Initializing a new <code>Document</code> object</dfn>: when a
-    <code id=navigating-across-documents:document-6><a href=dom.html#document>Document</a></code> is created as part of the above steps, the user agent will be required to
+    <code id=navigating-across-documents:document-5><a href=dom.html#document>Document</a></code> is created as part of the above steps, the user agent will be required to
     additionally run the following algorithm after creating the new object:</p>
 
     <ol><li><p>If <var>browsingContext</var>'s only entry in its <a id=navigating-across-documents:session-history href=history.html#session-history>session history</a> is the
-     <code id=navigating-across-documents:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=navigating-across-documents:document-7><a href=dom.html#document>Document</a></code> that was added when <var>browsingContext</var>
+     <code id=navigating-across-documents:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=navigating-across-documents:document-6><a href=dom.html#document>Document</a></code> that was added when <var>browsingContext</var>
      was <a href=browsers.html#creating-a-new-browsing-context id=navigating-across-documents:creating-a-new-browsing-context>created</a>, and navigation is occurring
-     with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled-3>replacement enabled</a>, and that <code id=navigating-across-documents:document-8><a href=dom.html#document>Document</a></code> has the <a id=navigating-across-documents:same-origin-5 href=origin.html#same-origin>same
-     origin</a> as the new <code id=navigating-across-documents:document-9><a href=dom.html#document>Document</a></code>, then do nothing.</li><li>
+     with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled-3>replacement enabled</a>, and that <code id=navigating-across-documents:document-7><a href=dom.html#document>Document</a></code> has the <a id=navigating-across-documents:same-origin-5 href=origin.html#same-origin>same
+     origin</a> as the new <code id=navigating-across-documents:document-8><a href=dom.html#document>Document</a></code>, then do nothing.</li><li>
       <p>Otherwise:</p>
 
       <ol><li>
@@ -574,12 +562,12 @@
          <code id=navigating-across-documents:windowproxy><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ul>
        </li><li><p><a id=navigating-across-documents:set-up-a-window-environment-settings-object href=window-object.html#set-up-a-window-environment-settings-object>Set up a window environment settings object</a> with <var>realm execution
        context</var> and <var>reservedEnvironment</var>, if present.</li></ol>
-     </li><li><p>Set the <code id=navigating-across-documents:document-10><a href=dom.html#document>Document</a></code>'s <a href=dom.html#concept-document-https-state id=navigating-across-documents:concept-document-https-state>HTTPS
+     </li><li><p>Set the <code id=navigating-across-documents:document-9><a href=dom.html#document>Document</a></code>'s <a href=dom.html#concept-document-https-state id=navigating-across-documents:concept-document-https-state>HTTPS
      state</a> to the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-https-state id=navigating-across-documents:concept-response-https-state-2 data-x-internal=concept-response-https-state>HTTPS state</a> of
-     <var>response</var>.</li><li><p>Set the <code id=navigating-across-documents:document-11><a href=dom.html#document>Document</a></code>'s <a href=dom.html#concept-document-referrer-policy id=navigating-across-documents:concept-document-referrer-policy>referrer
+     <var>response</var>.</li><li><p>Set the <code id=navigating-across-documents:document-10><a href=dom.html#document>Document</a></code>'s <a href=dom.html#concept-document-referrer-policy id=navigating-across-documents:concept-document-referrer-policy>referrer
      policy</a> to the result of <a href=https://w3c.github.io/webappsec-referrer-policy/#parse-referrer-policy-from-header id=navigating-across-documents:parse-referrer-policy-header data-x-internal=parse-referrer-policy-header>parsing the
      `<code>Referrer-Policy</code>` header</a> of <var>response</var>. <a href=references.html#refsREFERRERPOLICY>[REFERRERPOLICY]</a></li><li><p>Execute the <a id="navigating-across-documents:initialize-a-document's-csp-list" href=https://triple-underscore.github.io/CSP3-ja.html#initialize-document-csp data-x-internal="initialize-a-document's-csp-list">Initialize a <code>Document</code>'s CSP list</a>
-     algorithm on the <code id=navigating-across-documents:document-12><a href=dom.html#document>Document</a></code> object and the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=navigating-across-documents:concept-response-5 data-x-internal=concept-response>response</a> used to generate the document. <a href=references.html#refsCSP>[CSP]</a></p>
+     algorithm on the <code id=navigating-across-documents:document-11><a href=dom.html#document>Document</a></code> object and the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=navigating-across-documents:concept-response-5 data-x-internal=concept-response>response</a> used to generate the document. <a href=references.html#refsCSP>[CSP]</a></p>
 
      </li><li>
       <p>If <var>request</var> is non-null, then set <a id="navigating-across-documents:the-document's-referrer" href="dom.html#the-document's-referrer">the document's referrer</a> to the
@@ -588,12 +576,12 @@
 
       <p class=note>Per the WHATWG Fetch standard a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-10 data-x-internal=concept-request>request</a>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-referrer id=navigating-across-documents:concept-request-referrer-3 data-x-internal=concept-request-referrer>referrer</a> will be either a <a id=navigating-across-documents:url-record-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url-record>URL record</a> or
       "<code>no-referrer</code>" at this point.</p>
-     </li><li><p><a id=navigating-across-documents:implement-the-sandboxing href=origin.html#implement-the-sandboxing>Implement the sandboxing</a> for the <code id=navigating-across-documents:document-13><a href=dom.html#document>Document</a></code>.</li><li>
+     </li><li><p><a id=navigating-across-documents:implement-the-sandboxing href=origin.html#implement-the-sandboxing>Implement the sandboxing</a> for the <code id=navigating-across-documents:document-12><a href=dom.html#document>Document</a></code>.</li><li>
        <p>Execute the <a id=navigating-across-documents:initialize-document’s-feature-policy-from-response href=https://wicg.github.io/feature-policy/#initialize-from-response data-x-internal=initialize-document’s-feature-policy-from-response>Initialize document’s Feature Policy from response</a>
-       algorithm on the <code id=navigating-across-documents:document-14><a href=dom.html#document>Document</a></code> object and the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=navigating-across-documents:concept-response-6 data-x-internal=concept-response>response</a> used to generate the document.  <a href=references.html#refsFEATUREPOLICY>[FEATUREPOLICY]</a></p>
+       algorithm on the <code id=navigating-across-documents:document-13><a href=dom.html#document>Document</a></code> object and the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response id=navigating-across-documents:concept-response-6 data-x-internal=concept-response>response</a> used to generate the document.  <a href=references.html#refsFEATUREPOLICY>[FEATUREPOLICY]</a></p>
 
        <p class=note>The <a id=navigating-across-documents:initialize-document’s-feature-policy-from-response-2 href=https://wicg.github.io/feature-policy/#initialize-from-response data-x-internal=initialize-document’s-feature-policy-from-response>Initialize document’s Feature Policy from response</a> algorithm
-       makes use of the <code id=navigating-across-documents:document-15><a href=dom.html#document>Document</a></code>'s <a id=navigating-across-documents:concept-origin-4 href=origin.html#concept-origin>origin</a>. If <code id=navigating-across-documents:dom-document-domain><a href=origin.html#dom-document-domain>document.domain</a></code> has been used for the <a id=navigating-across-documents:browsing-context-container-2 href=browsers.html#browsing-context-container>browsing
+       makes use of the <code id=navigating-across-documents:document-14><a href=dom.html#document>Document</a></code>'s <a id=navigating-across-documents:concept-origin-4 href=origin.html#concept-origin>origin</a>. If <code id=navigating-across-documents:dom-document-domain><a href=origin.html#dom-document-domain>document.domain</a></code> has been used for the <a id=navigating-across-documents:browsing-context-container-2 href=browsers.html#browsing-context-container>browsing
        context container</a>'s <a id=navigating-across-documents:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, then its <a id=navigating-across-documents:concept-origin-5 href=origin.html#concept-origin>origin</a> cannot be
        <a id=navigating-across-documents:same-origin-domain href=origin.html#same-origin-domain>same origin-domain</a> with <var>document</var>'s <a id=navigating-across-documents:concept-origin-6 href=origin.html#concept-origin>origin</a>, because these
        steps run when <var>document</var> is initialized, so it cannot itself yet have used <code id=navigating-across-documents:dom-document-domain-2><a href=origin.html#dom-document-domain>document.domain</a></code>. Note that this means that Feature Policy
@@ -615,8 +603,8 @@
 <c- cp>&lt;!doctype html&gt;</c->
 <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
  document<c- p>.</c->domain <c- o>=</c-> <c- t>&amp;apos;example.com&amp;apos;</c-><c- p>;</c-> <c- c1>// This happens after the document is initialized</c->
-<c- c1></c-> <c- k>new</c-> PaymentRequest<c- p>(</c->…<c- p>);</c-> <c- c1>// Not allowed to use</c->
-<c- c1></c-><c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
+ <c- k>new</c-> PaymentRequest<c- p>(</c->…<c- p>);</c-> <c- c1>// Not allowed to use</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
        </div>
 
        <div class=example>
@@ -638,13 +626,13 @@
 <c- cp>&lt;!doctype html&gt;</c->
 <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
  <c- k>new</c-> PaymentRequest<c- p>(</c->…<c- p>);</c-> <c- c1>// Allowed to use</c->
-<c- c1></c-><c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
+<c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
        </div>
      </li><li>
       <p>If <var>response</var> has a `<code id=navigating-across-documents:refresh><a href=iana.html#refresh>Refresh</a></code>` header, then:</p>
 
-      <ol><li><p class=XXX><a href=https://github.com/whatwg/html/issues/2900>Multiple `<code>Refresh</code>` headers</a>.</li><li><p>Let <var>value</var> be the value of the header with each byte mapped to a code point
-       of equal value.</li><li><p>Run the <a id=navigating-across-documents:shared-declarative-refresh-steps href=semantics.html#shared-declarative-refresh-steps>shared declarative refresh steps</a> with the <code id=navigating-across-documents:document-16><a href=dom.html#document>Document</a></code>
+      <ol><li><p class=XXX><a href=https://github.com/whatwg/html/issues/2900>Multiple `<code>Refresh</code>` headers</a>.</li><li><p>Let <var>value</var> be the <a href=https://infra.spec.whatwg.org/#isomorphic-decode id=navigating-across-documents:isomorphic-decode data-x-internal=isomorphic-decode>isomorphic decoding</a>
+       of the value of the header.</li><li><p>Run the <a id=navigating-across-documents:shared-declarative-refresh-steps href=semantics.html#shared-declarative-refresh-steps>shared declarative refresh steps</a> with the <code id=navigating-across-documents:document-15><a href=dom.html#document>Document</a></code>
        and <var>value</var>.</li></ol>
      </li></ol>
    </li><li id=navigate-non-Document><p><i>Non-document content</i>: If, given <var>type</var>, the new
@@ -655,7 +643,7 @@
 
   </li></ol>
 
-  <p>To <dfn id=process-a-navigate-url-scheme>process a navigate URL scheme</dfn>, given a <a id=navigating-across-documents:url-9 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> <var>url</var> and
+  <p>To <dfn id=process-a-navigate-url-scheme>process a navigate URL scheme</dfn>, given a <a id=navigating-across-documents:url-8 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> <var>url</var> and
   <a id=navigating-across-documents:browsing-context-8 href=browsers.html#browsing-context>browsing context</a> <var>browsingContext</var>, run these steps:</p>
 
   <ol><li><p>If <var>url</var> is to be handled using a mechanism that does not affect
@@ -686,13 +674,13 @@
 
   <p>Some of the sections below, to which the above algorithm defers in certain cases, require the
   user agent to <dfn id=update-the-session-history-with-the-new-page>update the session history with the new page</dfn>. When a user agent is
-  required to do this, it must <a id=navigating-across-documents:queue-a-task-2 href=webappapis.html#queue-a-task>queue a task</a> (associated with the <code id=navigating-across-documents:document-17><a href=dom.html#document>Document</a></code>
+  required to do this, it must <a id=navigating-across-documents:queue-a-task-2 href=webappapis.html#queue-a-task>queue a task</a> (associated with the <code id=navigating-across-documents:document-16><a href=dom.html#document>Document</a></code>
   object of the <a id=navigating-across-documents:current-entry href=history.html#current-entry>current entry</a>, not the new one) to run the following steps:</p>
 
   <ol><li>
 
-    <p><a href=#unload-a-document id=navigating-across-documents:unload-a-document-2>Unload</a> the <code id=navigating-across-documents:document-18><a href=dom.html#document>Document</a></code> object of the
-    <a id=navigating-across-documents:current-entry-2 href=history.html#current-entry>current entry</a>, with the <var>recycle</var> parameter set to false.</p>
+    <p><a href=#unload-a-document id=navigating-across-documents:unload-a-document-2>Unload</a> the <code id=navigating-across-documents:document-17><a href=dom.html#document>Document</a></code> object of the
+    <a id=navigating-across-documents:current-entry-2 href=history.html#current-entry>current entry</a>.</p>
 
     <p>If this instance of the <a href=#navigate id=navigating-across-documents:navigate-8>navigation</a> algorithm is canceled while
     this step is running the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-3>unload a document</a> algorithm, then the <a href=#unload-a-document id=navigating-across-documents:unload-a-document-4>unload a
@@ -704,13 +692,13 @@
 
     <dl><dt>If the navigation was initiated for <dfn id=entry-update>entry update</dfn> of an entry<dd>
 
-      <ol><li><p>Replace the <code id=navigating-across-documents:document-19><a href=dom.html#document>Document</a></code> of the entry being updated, and any other entries
-       that referenced the same document as that entry, with the new <code id=navigating-across-documents:document-20><a href=dom.html#document>Document</a></code>.</li><li><p><a href=#traverse-the-history id=navigating-across-documents:traverse-the-history>Traverse the history</a> to the new entry.</li></ol>
+      <ol><li><p>Replace the <code id=navigating-across-documents:document-18><a href=dom.html#document>Document</a></code> of the entry being updated, and any other entries
+       that referenced the same document as that entry, with the new <code id=navigating-across-documents:document-19><a href=dom.html#document>Document</a></code>.</li><li><p><a href=#traverse-the-history id=navigating-across-documents:traverse-the-history>Traverse the history</a> to the new entry.</li></ol>
 
-     <dt>If the navigation was initiated with a <a id=navigating-across-documents:url-10 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-equals id=navigating-across-documents:concept-url-equals-2 data-x-internal=concept-url-equals>equals</a> the <a id=navigating-across-documents:browsing-context-9 href=browsers.html#browsing-context>browsing context</a>'s <a id=navigating-across-documents:active-document-13 href=browsers.html#active-document>active
-     document</a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-6" data-x-internal="the-document's-address">URL</a><dd>
+     <dt>If the navigation was initiated with a <a id=navigating-across-documents:url-9 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-equals id=navigating-across-documents:concept-url-equals-2 data-x-internal=concept-url-equals>equals</a> the <a id=navigating-across-documents:browsing-context-9 href=browsers.html#browsing-context>browsing context</a>'s <a id=navigating-across-documents:active-document-13 href=browsers.html#active-document>active
+     document</a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-5" data-x-internal="the-document's-address">URL</a><dd>
       <ol><li><p>Replace the <a id=navigating-across-documents:current-entry-3 href=history.html#current-entry>current entry</a> with a new entry representing the new resource
-       and its <code id=navigating-across-documents:document-21><a href=dom.html#document>Document</a></code> object, related state, and the default <a id=navigating-across-documents:scroll-restoration-mode href=history.html#scroll-restoration-mode>scroll restoration
+       and its <code id=navigating-across-documents:document-20><a href=dom.html#document>Document</a></code> object, related state, and the default <a id=navigating-across-documents:scroll-restoration-mode href=history.html#scroll-restoration-mode>scroll restoration
        mode</a> of "<code id=navigating-across-documents:dom-scrollrestoration-auto><a href=history.html#dom-scrollrestoration-auto>auto</a></code>".</li><li><p><a href=#traverse-the-history id=navigating-across-documents:traverse-the-history-2>Traverse the history</a> to the new entry.</li></ol>
      <dt>そうでなければ<dd>
 
@@ -724,7 +712,7 @@
         user agent's user interface.</p>
 
        </li><li><p>Append a new entry at the end of the <code id=navigating-across-documents:history-3><a href=history.html#history-3>History</a></code> object representing the new
-       resource and its <code id=navigating-across-documents:document-22><a href=dom.html#document>Document</a></code> object, related state, and the default <a id=navigating-across-documents:scroll-restoration-mode-2 href=history.html#scroll-restoration-mode>scroll
+       resource and its <code id=navigating-across-documents:document-21><a href=dom.html#document>Document</a></code> object, related state, and the default <a id=navigating-across-documents:scroll-restoration-mode-2 href=history.html#scroll-restoration-mode>scroll
        restoration mode</a> of "<code id=navigating-across-documents:dom-scrollrestoration-auto-2><a href=history.html#dom-scrollrestoration-auto>auto</a></code>".</li><li><p><a href=#traverse-the-history id=navigating-across-documents:traverse-the-history-3>Traverse the history</a> to the new entry. If the navigation was initiated
        with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled-4>replacement enabled</a>, then the traversal must itself be initiated with
        <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled-5>replacement enabled</a>.</p>
@@ -735,9 +723,9 @@
 
    </li><li><p>The <a href=#navigate id=navigating-across-documents:navigate-10>navigation algorithm</a> has now <dfn id=concept-navigate-mature>matured</dfn>.</li><li><p><i>Fragment loop</i>: <a id=navigating-across-documents:spin-the-event-loop href=webappapis.html#spin-the-event-loop>Spin the event loop</a> for a user-agent-defined amount of
    time, as desired by the user agent implementer. (This is intended to allow the user agent to
-   optimize the user experience in the face of performance concerns.)</li><li><p>If the <code id=navigating-across-documents:document-23><a href=dom.html#document>Document</a></code> object has no parser, or its parser has <a href=parsing.html#stop-parsing id=navigating-across-documents:stop-parsing>stopped parsing</a>, or the user agent has reason to believe the user is no longer
+   optimize the user experience in the face of performance concerns.)</li><li><p>If the <code id=navigating-across-documents:document-22><a href=dom.html#document>Document</a></code> object has no parser, or its parser has <a href=parsing.html#stop-parsing id=navigating-across-documents:stop-parsing>stopped parsing</a>, or the user agent has reason to believe the user is no longer
    interested in scrolling to the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=navigating-across-documents:concept-url-fragment-2 data-x-internal=concept-url-fragment>fragment</a>, then
-   return.</li><li><p><a href=#scroll-to-the-fragment-identifier id=navigating-across-documents:scroll-to-the-fragment-identifier>Scroll to the fragment</a> given in the document's <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-7" data-x-internal="the-document's-address">URL</a>. If this fails to find <a href=#the-indicated-part-of-the-document id=navigating-across-documents:the-indicated-part-of-the-document>an indicated part of the document</a>, then return to the <i>fragment
+   return.</li><li><p><a href=#scroll-to-the-fragment-identifier id=navigating-across-documents:scroll-to-the-fragment-identifier>Scroll to the fragment</a> given in the document's <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-6" data-x-internal="the-document's-address">URL</a>. If this fails to find <a href=#the-indicated-part-of-the-document id=navigating-across-documents:the-indicated-part-of-the-document>an indicated part of the document</a>, then return to the <i>fragment
    loop</i> step.</li></ol>
 
   <p>The <a id=navigating-across-documents:task-source-2 href=webappapis.html#task-source>task source</a> for this <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-3>task</a> is the
@@ -775,7 +763,7 @@
 
 
 
-  <h4 id=read-xml><span class=secno>7.8.3</span> <dfn>Page load processing model for XML files</dfn><a href=#read-xml class=self-link></a></h4><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=17976" title="xml-stylesheet with type=text/xsl needs to be handled explicitly">17976</a></div>
+  <h4 id=read-xml><span class=secno>7.8.3</span> <dfn>Page load processing model for XML files</dfn><a href=#read-xml class=self-link></a></h4>
 
   <p>When faced with displaying an XML file inline, user agents must follow the requirements defined
   in the XML and Namespaces in XML recommendations, RFC 7303, DOM, and other relevant specifications
@@ -1183,8 +1171,8 @@
 
         <p class=note>This is specifically intended for use by the Page Visibility specification. <a href=references.html#refsPAGEVIS>[PAGEVIS]</a></p>
 
-       </li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=history-traversal:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=history-traversal:event-pageshow><a href=indices.html#event-pageshow>pageshow</a></code> at the <code id=history-traversal:document-16><a href=dom.html#document>Document</a></code> object's
-       <code id=history-traversal:window><a href=window-object.html#window>Window</a></code> object, using <code id=history-traversal:pagetransitionevent><a href=#pagetransitionevent>PageTransitionEvent</a></code>, with the <code id=history-traversal:dom-pagetransitionevent-persisted><a href=#dom-pagetransitionevent-persisted>persisted</a></code> attribute initialized to true,
+       </li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=history-traversal:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=history-traversal:event-pageshow><a href=indices.html#event-pageshow>pageshow</a></code> at the <code id=history-traversal:document-16><a href=dom.html#document>Document</a></code> object's <a id=history-traversal:concept-relevant-global href=webappapis.html#concept-relevant-global>relevant
+       global object</a>, using <code id=history-traversal:pagetransitionevent><a href=#pagetransitionevent>PageTransitionEvent</a></code>, with the <code id=history-traversal:dom-pagetransitionevent-persisted><a href=#dom-pagetransitionevent-persisted>persisted</a></code> attribute initialized to true,
        and <var>legacy target override flag</var> set.</li></ol>
 
       
@@ -1215,12 +1203,12 @@
 
     <ol><li><p>If <var>state changed</var> is true, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=history-traversal:concept-event-fire-2 data-x-internal=concept-event-fire>fire an
      event</a> named <code id=history-traversal:event-popstate><a href=indices.html#event-popstate>popstate</a></code> at the <code id=history-traversal:document-20><a href=dom.html#document>Document</a></code>
-     object's <code id=history-traversal:window-2><a href=window-object.html#window>Window</a></code> object, using <code id=history-traversal:popstateevent><a href=#popstateevent>PopStateEvent</a></code>, with the <code id=history-traversal:dom-popstateevent-state><a href=#dom-popstateevent-state>state</a></code> attribute initialized to
+     object's <a id=history-traversal:concept-relevant-global-2 href=webappapis.html#concept-relevant-global>relevant global object</a>, using <code id=history-traversal:popstateevent><a href=#popstateevent>PopStateEvent</a></code>, with the <code id=history-traversal:dom-popstateevent-state><a href=#dom-popstateevent-state>state</a></code> attribute initialized to
      <var>state</var>.</li><li><p>If <var>entry</var> is <a id=history-traversal:an-entry-with-persisted-user-state-3 href=history.html#an-entry-with-persisted-user-state>an entry with persisted user state</a>, then the user
      agent may <a href=#restore-persisted-user-state id=history-traversal:restore-persisted-user-state>restore persisted user state</a> and update aspects of the document and its
      rendering.</li><li><p>If <var>hash changed</var> is true, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=history-traversal:concept-event-fire-3 data-x-internal=concept-event-fire>fire an
      event</a> named <code id=history-traversal:event-hashchange><a href=indices.html#event-hashchange>hashchange</a></code> at the <a id=history-traversal:browsing-context-4 href=browsers.html#browsing-context>browsing
-     context</a>'s <code id=history-traversal:window-3><a href=window-object.html#window>Window</a></code> object, using <code id=history-traversal:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code>, with the
+     context</a>'s <code id=history-traversal:window><a href=window-object.html#window>Window</a></code> object, using <code id=history-traversal:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code>, with the
      <code id=history-traversal:dom-hashchangeevent-oldurl><a href=#dom-hashchangeevent-oldurl>oldURL</a></code> attribute initialized to <var>old
      URL</var> and the <code id=history-traversal:dom-hashchangeevent-newurl><a href=#dom-hashchangeevent-newurl>newURL</a></code> attribute
      initialized to <var>new URL</var>.</li></ol>
@@ -1284,7 +1272,7 @@
   
 
 
-  <h5 id=the-hashchangeevent-interface><span class=secno>7.8.10.3</span> The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hashchange<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=hashchange">caniuse.com</a></div>
+  <h5 id=the-hashchangeevent-interface><span class=secno>7.8.10.3</span> The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hashchange<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=hashchange">caniuse.com</a></div>
 
   <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->,
  <c- g>Constructor</c->(<c- b>DOMString</c-> <c- g>type</c->, <c- b>optional</c-> <a href='#hashchangeeventinit' id='the-hashchangeevent-interface:hashchangeeventinit'><c- n>HashChangeEventInit</c-></a> <c- g>eventInitDict</c->)]
@@ -1341,8 +1329,7 @@
 
     <p>最上でないページを含む可能性があるもの：</p>
 
-    <ul class=brief><li><code id=the-pagetransitionevent-interface:dom-document-open><a href=dynamic-markup-insertion.html#dom-document-open>document.open(<var>type</var>, <var>replace</var>)</a></code>
-     </li><li><code id=the-pagetransitionevent-interface:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code>イベントの待ち
+    <ul class=brief><li><code id=the-pagetransitionevent-interface:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code>イベントの待ち
      </li><li><code id=the-pagetransitionevent-interface:event-unload><a href=indices.html#event-unload>unload</a></code>イベントの待ち
      </li><li>最上でない<code id=the-pagetransitionevent-interface:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>を持っている
      </li><li>アクティブな<code id=the-pagetransitionevent-interface:websocket><a href=web-sockets.html#websocket>WebSocket</a></code>オブジェクト
@@ -1381,7 +1368,7 @@
    1.</li><li><p>Increase the <var>document</var>'s <a id=unloading-documents:ignore-opens-during-unload-counter href=dynamic-markup-insertion.html#ignore-opens-during-unload-counter>ignore-opens-during-unload counter</a> by
    1.</li><li><p>Let <var>event</var> be the result of <a id=unloading-documents:creating-an-event href=https://dom.spec.whatwg.org/#concept-event-create data-x-internal=creating-an-event>creating an event</a> using
    <code id=unloading-documents:beforeunloadevent><a href=#beforeunloadevent>BeforeUnloadEvent</a></code>.</li><li><p>Initialize <var>event</var>'s <code id=unloading-documents:dom-event-type><a data-x-internal=dom-event-type href=https://triple-underscore.github.io/DOM4-ja.html#dom-event-type>type</a></code> attribute to <code id=unloading-documents:event-beforeunload><a href=indices.html#event-beforeunload>beforeunload</a></code> and its <code id=unloading-documents:dom-event-cancelable><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute true.</li><li><p><i>Dispatch</i>: <a href=https://dom.spec.whatwg.org/#concept-event-dispatch id=unloading-documents:concept-event-dispatch data-x-internal=concept-event-dispatch>Dispatch</a> <var>event</var> at
-   <var>document</var>'s <code id=unloading-documents:window><a href=window-object.html#window>Window</a></code> object.</li><li><p>Decrease the <a id=unloading-documents:event-loop-3 href=webappapis.html#event-loop>event loop</a>'s <a href=#termination-nesting-level id=unloading-documents:termination-nesting-level-2>termination nesting level</a> by
+   <var>document</var>'s <a id=unloading-documents:concept-relevant-global href=webappapis.html#concept-relevant-global>relevant global object</a>.</li><li><p>Decrease the <a id=unloading-documents:event-loop-3 href=webappapis.html#event-loop>event loop</a>'s <a href=#termination-nesting-level id=unloading-documents:termination-nesting-level-2>termination nesting level</a> by
    1.</li><li><p>If any event listeners were triggered by the earlier <i>dispatch</i> step, then set
    <var>document</var>'s <i id=unloading-documents:concept-document-salvageable><a href=#concept-document-salvageable>salvageable</a></i> state to
    false.</li><li>
@@ -1421,18 +1408,14 @@
    1.</li></ol>
 
   <p>To <dfn id=unload-a-document data-lt="unload a document" data-export="">unload</dfn> a
-  <code id=unloading-documents:document-3><a href=dom.html#document>Document</a></code> <var>document</var>, given a boolean <var>recycle</var> and optionally a
-  <var>recursiveFlag</var>:</p>
-
-  <p class=note>The <var>recycle</var> argument indicates whether the <code id=unloading-documents:document-4><a href=dom.html#document>Document</a></code> object
-  is going to be reused; it is set by the <code id=unloading-documents:dom-document-open><a href=dynamic-markup-insertion.html#dom-document-open>document.open(<var>type</var>, <var>replace</var>)</a></code> method.</p>
+  <code id=unloading-documents:document-3><a href=dom.html#document>Document</a></code> <var>document</var>, optionally given a <var>recursiveFlag</var>:</p>
 
   <ol><li><p>Increase the <a id=unloading-documents:event-loop-4 href=webappapis.html#event-loop>event loop</a>'s <a href=#termination-nesting-level id=unloading-documents:termination-nesting-level-3>termination nesting level</a> by
    one.</li><li><p>Increase <var>document</var>'s <a id=unloading-documents:ignore-opens-during-unload-counter-3 href=dynamic-markup-insertion.html#ignore-opens-during-unload-counter>ignore-opens-during-unload counter</a> by
    one.</li><li><p>If <var>document</var>'s <a href=#page-showing id=unloading-documents:page-showing-2>page showing</a> flag is false, then jump to the
    step labeled <i>unload event</i> below (i.e. skip firing the <code id=unloading-documents:event-pagehide-3><a href=indices.html#event-pagehide>pagehide</a></code> event and don't rerun the <a href=#unloading-document-visibility-change-steps id=unloading-documents:unloading-document-visibility-change-steps>unloading document
-   visibility change steps</a>).</li><li><p>Set <var>document</var>'s <a href=#page-showing id=unloading-documents:page-showing-3>page showing</a> flag to false.</li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=unloading-documents:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=unloading-documents:event-pagehide-4><a href=indices.html#event-pagehide>pagehide</a></code> at <var>document</var>'s <code id=unloading-documents:window-2><a href=window-object.html#window>Window</a></code>
-   object, using <code id=unloading-documents:pagetransitionevent><a href=#pagetransitionevent>PageTransitionEvent</a></code>, with the <code id=unloading-documents:dom-pagetransitionevent-persisted><a href=#dom-pagetransitionevent-persisted>persisted</a></code> attribute initialized to true if
+   visibility change steps</a>).</li><li><p>Set <var>document</var>'s <a href=#page-showing id=unloading-documents:page-showing-3>page showing</a> flag to false.</li><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire id=unloading-documents:concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code id=unloading-documents:event-pagehide-4><a href=indices.html#event-pagehide>pagehide</a></code> at <var>document</var>'s <a id=unloading-documents:concept-relevant-global-2 href=webappapis.html#concept-relevant-global>relevant global
+   object</a>, using <code id=unloading-documents:pagetransitionevent><a href=#pagetransitionevent>PageTransitionEvent</a></code>, with the <code id=unloading-documents:dom-pagetransitionevent-persisted><a href=#dom-pagetransitionevent-persisted>persisted</a></code> attribute initialized to true if
    <var>document</var>'s <i id=unloading-documents:concept-document-salvageable-4><a href=#concept-document-salvageable>salvageable</a></i> state is
    true, and false otherwise, and <var>legacy target override flag</var> set.</li><li>
     <p>Run any <dfn id=unloading-document-visibility-change-steps>unloading document visibility change steps</dfn> for <var>document</var> that
@@ -1440,8 +1423,8 @@
 
     <p class=note>This is specifically intended for use by the Page Visibility specification. <a href=references.html#refsPAGEVIS>[PAGEVIS]</a></p>
    </li><li><p><i>Unload event</i>: If <var>document</var>'s <a href=#fired-unload id=unloading-documents:fired-unload>fired unload</a> flag is
-   false, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=unloading-documents:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named <code id=unloading-documents:event-unload><a href=indices.html#event-unload>unload</a></code> at <var>document</var>'s <code id=unloading-documents:window-3><a href=window-object.html#window>Window</a></code>
-   object, with <var>legacy target override flag</var> set.</li><li><p>Decrease the <a id=unloading-documents:event-loop-5 href=webappapis.html#event-loop>event loop</a>'s <a href=#termination-nesting-level id=unloading-documents:termination-nesting-level-4>termination nesting level</a> by
+   false, then <a href=https://dom.spec.whatwg.org/#concept-event-fire id=unloading-documents:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named <code id=unloading-documents:event-unload><a href=indices.html#event-unload>unload</a></code> at <var>document</var>'s <a id=unloading-documents:concept-relevant-global-3 href=webappapis.html#concept-relevant-global>relevant global object</a>,
+   with <var>legacy target override flag</var> set.</li><li><p>Decrease the <a id=unloading-documents:event-loop-5 href=webappapis.html#event-loop>event loop</a>'s <a href=#termination-nesting-level id=unloading-documents:termination-nesting-level-4>termination nesting level</a> by
    one.</li><li><p>If any event listeners were triggered by the earlier <i>unload event</i> step, then set
    <var>document</var>'s <i id=unloading-documents:concept-document-salvageable-5><a href=#concept-document-salvageable>salvageable</a></i> state
    to false and set <var>document</var>'s <a href=#fired-unload id=unloading-documents:fired-unload-2>fired unload</a> flag to true.</li><li><p>Run any <a href=#unloading-document-cleanup-steps id=unloading-documents:unloading-document-cleanup-steps>unloading document cleanup steps</a> for <var>document</var> that are
@@ -1453,35 +1436,31 @@
       <p>For each <var>browsingContext</var> in <var>descendants</var>:</p>
 
       <ol><li><p><a href=#unload-a-document id=unloading-documents:unload-a-document>Unload</a> the <a id=unloading-documents:active-document-3 href=browsers.html#active-document>active document</a> of
-       <var>browsingContext</var> with the <var>recycle</var> parameter set to false, and the
-       <var>recursiveFlag</var> set.</li><li><p>If the <i id=unloading-documents:concept-document-salvageable-6><a href=#concept-document-salvageable>salvageable</a></i> state of the
+       <var>browsingContext</var> with the <var>recursiveFlag</var> set.</li><li><p>If the <i id=unloading-documents:concept-document-salvageable-6><a href=#concept-document-salvageable>salvageable</a></i> state of the
        <a id=unloading-documents:active-document-4 href=browsers.html#active-document>active document</a> of <var>browsingContext</var> is false, then set the
        <i id=unloading-documents:concept-document-salvageable-7><a href=#concept-document-salvageable>salvageable</a></i> state of <var>document</var> to
        false also.</li></ol>
-     </li><li><p>If both <var>document</var>'s <i id=unloading-documents:concept-document-salvageable-8><a href=#concept-document-salvageable>salvageable</a></i> state and <var>recycle</var> are false,
-     then <a href=window-object.html#discard-a-document id=unloading-documents:discard-a-document>discard</a><var>document</var>.</li></ol>
+     </li><li><p>If <var>document</var>'s <i id=unloading-documents:concept-document-salvageable-8><a href=#concept-document-salvageable>salvageable</a></i> state
+     is false, then <a href=window-object.html#discard-a-document id=unloading-documents:discard-a-document>discard</a><var>document</var>.</li></ol>
    </li><li><p>Decrease <var>document</var>'s <a id=unloading-documents:ignore-opens-during-unload-counter-4 href=dynamic-markup-insertion.html#ignore-opens-during-unload-counter>ignore-opens-during-unload counter</a> by
    one.</li></ol>
 
   <p>This specification defines the following <dfn id=unloading-document-cleanup-steps data-export="">unloading document cleanup
-  steps</dfn>. Other specifications can define more.  Given a <code id=unloading-documents:document-5><a href=dom.html#document>Document</a></code> <var>document</var>:</p>
+  steps</dfn>. Other specifications can define more.  Given a <code id=unloading-documents:document-4><a href=dom.html#document>Document</a></code> <var>document</var>:</p>
 
-  <ol><li><p>Let <var>window</var> be <var>document</var>'s <code id=unloading-documents:window-4><a href=window-object.html#window>Window</a></code> object.</li><li>
-
-    <p>For each <code id=unloading-documents:websocket><a href=web-sockets.html#websocket>WebSocket</a></code> object <var>webSocket</var> whose <a href=webappapis.html#concept-relevant-global id=unloading-documents:concept-relevant-global>relevant global object</a> is equal to <var>window</var>,
-    <a id=unloading-documents:make-disappear href=web-sockets.html#make-disappear>make disappear</a> <var>webSocket</var>.</p>
+  <ol><li><p>Let <var>window</var> be <var>document</var>'s <a id=unloading-documents:concept-relevant-global-4 href=webappapis.html#concept-relevant-global>relevant global
+   object</a>.</li><li>
+    <p>For each <code id=unloading-documents:websocket><a href=web-sockets.html#websocket>WebSocket</a></code> object <var>webSocket</var> whose <a id=unloading-documents:concept-relevant-global-5 href=webappapis.html#concept-relevant-global>relevant global
+    object</a> is <var>window</var>, <a id=unloading-documents:make-disappear href=web-sockets.html#make-disappear>make disappear</a> <var>webSocket</var>.</p>
 
     <p>If this affected any <code id=unloading-documents:websocket-2><a href=web-sockets.html#websocket>WebSocket</a></code> objects, then set <var>document</var>'s <i id=unloading-documents:concept-document-salvageable-9><a href=#concept-document-salvageable>salvageable</a></i> state to false.</p>
-
    </li><li>
-
     <p>If <var>document</var>'s <i id=unloading-documents:concept-document-salvageable-10><a href=#concept-document-salvageable>salvageable</a></i>
     state is false, then:</p>
 
-    <ol><li><p>For each <code id=unloading-documents:eventsource><a href=server-sent-events.html#eventsource>EventSource</a></code> object <var>eventSource</var> whose <a href=webappapis.html#concept-relevant-global id=unloading-documents:concept-relevant-global-2>relevant global object</a> is equal to <var>window</var>,
-     <a href=server-sent-events.html#concept-eventsource-forcibly-close id=unloading-documents:concept-eventsource-forcibly-close>forcibly close</a>
+    <ol><li><p>For each <code id=unloading-documents:eventsource><a href=server-sent-events.html#eventsource>EventSource</a></code> object <var>eventSource</var> whose <a id=unloading-documents:concept-relevant-global-6 href=webappapis.html#concept-relevant-global>relevant
+     global object</a> is equal to <var>window</var>, <a href=server-sent-events.html#concept-eventsource-forcibly-close id=unloading-documents:concept-eventsource-forcibly-close>forcibly close</a>
      <var>eventSource</var>.</li><li><p>Empty <var>window</var>'s <a id=unloading-documents:list-of-active-timers href=timers-and-user-prompts.html#list-of-active-timers>list of active timers</a>.</li></ol>
-
    </li></ol>
 
   
@@ -1535,10 +1514,17 @@
   <p>User agents may allow users to explicitly invoke the <a href=#abort-a-document id=aborting-a-document-load:abort-a-document-2>abort a
   document</a> algorithm for a <code id=aborting-a-document-load:document-3><a href=dom.html#document>Document</a></code>. If the user does so, then, if that
   <code id=aborting-a-document-load:document-4><a href=dom.html#document>Document</a></code> is an <a id=aborting-a-document-load:active-document-2 href=browsers.html#active-document>active document</a>, the user agent should <a id=aborting-a-document-load:queue-a-task-3 href=webappapis.html#queue-a-task>queue a
-  task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=aborting-a-document-load:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=aborting-a-document-load:event-abort><a href=indices.html#event-abort>abort</a></code> at that <code id=aborting-a-document-load:document-5><a href=dom.html#document>Document</a></code>'s <code id=aborting-a-document-load:window><a href=window-object.html#window>Window</a></code> object
-  before invoking the <a href=#abort-a-document id=aborting-a-document-load:abort-a-document-3>abort</a> algorithm.</p>
+  task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=aborting-a-document-load:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=aborting-a-document-load:event-abort><a href=indices.html#event-abort>abort</a></code> at that <code id=aborting-a-document-load:document-5><a href=dom.html#document>Document</a></code> object's <a id=aborting-a-document-load:concept-relevant-global href=webappapis.html#concept-relevant-global>relevant global
+  object</a> before invoking the <a href=#abort-a-document id=aborting-a-document-load:abort-a-document-3>abort</a> algorithm.</p>
 
   
+
+  <p>To <dfn id=stop-document-loading>stop document loading</dfn> given a <code id=aborting-a-document-load:document-6><a href=dom.html#document>Document</a></code> object <var>document</var>,
+  run these steps:</p>
+
+  <ol><li><p>If <var>document</var> is not an <a id=aborting-a-document-load:active-document-3 href=browsers.html#active-document>active document</a>, then return.</li><li><p>Let <var>browsingContext</var> be <var>document</var>'s <a href=browsers.html#concept-document-bc id=aborting-a-document-load:concept-document-bc>browsing context</a>.</li><li><p>If there is an existing attempt to <a href=#navigate id=aborting-a-document-load:navigate>navigate</a> <var>browsingContext</var> and
+   that attempt is not currently running the <a href=#unload-a-document id=aborting-a-document-load:unload-a-document>unload a document</a> algorithm, then cancel
+   that <a href=#navigate id=aborting-a-document-load:navigate-2>navigation</a>.</li><li><p><a href=#abort-a-document id=aborting-a-document-load:abort-a-document-4>Abort</a> <var>document</var>.</li></ol>
 
   
 

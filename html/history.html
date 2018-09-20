@@ -49,9 +49,7 @@
    }
   </style>
 <style>
-   [hidden] { display: none; }
-
-   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+   .bad, .bad *:not(.X\58X) { color: gray; }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -169,7 +167,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>19 September 2018</span></h2></hgroup>
    
    
 
@@ -459,7 +457,8 @@
       the same <code id=the-history-interface:document-10><a href=dom.html#document>Document</a></code> as the <code id=the-history-interface:document-11><a href=dom.html#document>Document</a></code> of the <var>specified
       entry</var>, then run these substeps:</p>
 
-      <ol><li><p><var>specified browsing context</var>の<a id=the-history-interface:active-document-5 href=browsers.html#active-document>アクティブなドキュメント</a>を<a id=the-history-interface:prompt-to-unload-a-document href=browsing-the-web.html#prompt-to-unload-a-document>アンロードするように要求する</a>。If the user <a id=the-history-interface:refused-to-allow-the-document-to-be-unloaded href=browsing-the-web.html#refused-to-allow-the-document-to-be-unloaded>refused to allow the document to be unloaded</a>, then return.</li><li><p>falseに設定する<var>recycle</var>パラメーターをもつ<var>specified browsing context</var>の<a id=the-history-interface:active-document-6 href=browsers.html#active-document>アクティブなドキュメント</a>を<a href=browsing-the-web.html#unload-a-document id=the-history-interface:unload-a-document-2>アンロードする</a>。</li></ol>
+      <ol><li><p><var>specified browsing context</var>の<a id=the-history-interface:active-document-5 href=browsers.html#active-document>アクティブなドキュメント</a>を<a id=the-history-interface:prompt-to-unload-a-document href=browsing-the-web.html#prompt-to-unload-a-document>アンロードするように要求する</a>。If the user <a id=the-history-interface:refused-to-allow-the-document-to-be-unloaded href=browsing-the-web.html#refused-to-allow-the-document-to-be-unloaded>refused to allow the document to be unloaded</a>, then return.</li><li><p><a href=browsing-the-web.html#unload-a-document id=the-history-interface:unload-a-document-2>Unload</a> the <a id=the-history-interface:active-document-6 href=browsers.html#active-document>active document</a> of the
+       <var>specified browsing context</var>.</li></ol>
 
      </li><li><p><a id=the-history-interface:traverse-the-history-2 href=browsing-the-web.html#traverse-the-history>Traverse the history</a> of the <var>specified browsing context</var> to
      the <var>specified entry</var> with the <i id=the-history-interface:history-navigation-flag><a href=browsing-the-web.html#history-navigation-flag>history-navigation
@@ -475,77 +474,83 @@
 
   <hr id=history-1>
 
-  <p>The <dfn id=dom-history-pushstate><code>pushState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method adds a state object entry to
-  the history.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> history<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>11.5+</span></span><span class="android yes"><span>Android Browser</span> <span>4.2+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=history">caniuse.com</a></div>
+  <p>The <dfn id=url-and-history-update-steps>URL and history update steps</dfn>, given a <code id=the-history-interface:document-12><a href=dom.html#document>Document</a></code> object
+  <var>document</var>, a <a id=the-history-interface:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> <var>newURL</var>, an optional <a href=#serialized-state id=the-history-interface:serialized-state-2>serialized
+  state</a> <var>serializedData</var>, and an optional string <var>title</var>, optionally with a
+  <var>state push flag</var>, are:</p>
 
-  <p>The <dfn id=dom-history-replacestate><code>replaceState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method updates the state object,
-  title, and optionally the <a id=the-history-interface:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the <a href=#current-entry id=the-history-interface:current-entry-3>current entry</a> in the history.</p>
-
-  <p>When either of these methods is invoked, the user agent must run the following steps:</p>
-
-  <ol><li><p>Let <var>document</var> be the unique <code id=the-history-interface:document-12><a href=dom.html#document>Document</a></code> object this
-   <code id=the-history-interface:history-3-10><a href=#history-3>History</a></code> object is associated with.</li><li><p>If <var>document</var> is not <a id=the-history-interface:fully-active-8 href=browsers.html#fully-active>fully active</a>, throw a
-   <a id=the-history-interface:securityerror-7 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-7><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Optionally, return. (For example, the user agent might disallow calls to these
-   methods that are invoked on a timer, or from event listeners that are not triggered in response
-   to a clear user action, or that are invoked in rapid succession.)</li><li><p>Let <var>targetRealm</var> be this <code id=the-history-interface:history-3-11><a href=#history-3>History</a></code> object's <a href=webappapis.html#concept-relevant-realm id=the-history-interface:concept-relevant-realm>relevant Realm</a>.</li><li><p>Let <var>serializedData</var> be <a id=the-history-interface:structuredserializeforstorage href=structured-data.html#structuredserializeforstorage>StructuredSerializeForStorage</a>(<var>data</var>). 例外を再度投げる。</li><li>
-
-    <p>If the third argument is not null, run these substeps:</p>
-
-    <ol><li><a href=urls-and-fetching.html#parse-a-url id=the-history-interface:parse-a-url>Parse</a> the value of the third argument, relative to the
-     <a id=the-history-interface:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant settings object</a> of this <code id=the-history-interface:history-3-12><a href=#history-3>History</a></code> object.</li><li>If that fails, throw a <a id=the-history-interface:securityerror-8 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-8><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Let <var>new URL</var> be the <a id=the-history-interface:resulting-url-record href=urls-and-fetching.html#resulting-url-record>resulting URL record</a>.</li><li>Compare <var>new URL</var> to <var>document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-history-interface:the-document's-address" data-x-internal="the-document's-address">URL</a>. If any component of these two <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=the-history-interface:url-record data-x-internal=url-record>URL records</a> differ other than the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-path id=the-history-interface:concept-url-path data-x-internal=concept-url-path>path</a>,
-     <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-query id=the-history-interface:concept-url-query data-x-internal=concept-url-query>query</a>, and <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=the-history-interface:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a> components, then throw a
-     <a id=the-history-interface:securityerror-9 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-9><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li>If the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=the-history-interface:concept-url-origin data-x-internal=concept-url-origin>origin</a> of <var>new URL</var> is not
-     <a id=the-history-interface:same-origin href=origin.html#same-origin>same origin</a> with the <a id=the-history-interface:concept-origin href=origin.html#concept-origin>origin</a> of <var>document</var>, and either the
-     <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-path id=the-history-interface:concept-url-path-2 data-x-internal=concept-url-path>path</a> or <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-query id=the-history-interface:concept-url-query-2 data-x-internal=concept-url-query>query</a>
-     components of the two <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=the-history-interface:url-record-2 data-x-internal=url-record>URL records</a> compared in the previous
-     step differ, throw a <a id=the-history-interface:securityerror-10 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-10><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.(This prevents sandboxed content from spoofing other pages on the same origin.)  </li></ol>
-
-   </li><li><p>If the third argument is null, then let <var>new URL</var> be the <a id=the-history-interface:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>
-   of the <a href=#current-entry id=the-history-interface:current-entry-4>current entry</a>.</li><li>
-
-    <p>If the method invoked was the <code id=the-history-interface:dom-history-pushstate-2><a href=#dom-history-pushstate>pushState()</a></code>
-    method:</p>
+  <ol><li><p>Let <var>browsingContext</var> be <var>document</var>'s <a href=browsers.html#concept-document-bc id=the-history-interface:concept-document-bc-2>browsing context</a>.</li><li>
+    <p>If the <var>state push flag</var> is set, then:</p>
 
     <ol><li>
-
-      <p>Remove all the entries in the <a id=the-history-interface:browsing-context-6 href=browsers.html#browsing-context>browsing context</a>'s <a href=#session-history id=the-history-interface:session-history-9>session history</a>
-      after the <a href=#current-entry id=the-history-interface:current-entry-5>current entry</a>. If the <a href=#current-entry id=the-history-interface:current-entry-6>current entry</a> is the last entry in
-      the session history, then no entries are removed.</p>
+      <p>Remove all the entries in <var>browsingContext</var>'s <a href=#session-history id=the-history-interface:session-history-9>session history</a> after
+      the <a href=#current-entry id=the-history-interface:current-entry-3>current entry</a>. If the <a href=#current-entry id=the-history-interface:current-entry-4>current entry</a> is the last entry in the
+      session history, then no entries are removed.</p>
 
       <p class=note>This <a href=#history-notes>doesn't necessarily have to affect</a> the user
       agent's user interface.</p>
-
-     </li><li><p>Remove any <a href=webappapis.html#concept-task id=the-history-interface:concept-task-5>tasks</a> queued by the <a id=the-history-interface:history-traversal-task-source-2 href=webappapis.html#history-traversal-task-source>history traversal
-     task source</a> that are associated with any <code id=the-history-interface:document-13><a href=dom.html#document>Document</a></code> objects in the
-     <a id=the-history-interface:top-level-browsing-context-10 href=browsers.html#top-level-browsing-context>top-level browsing context</a>'s <a id=the-history-interface:document-family href=browsers.html#document-family>document family</a>.</li><li><p>If appropriate, update the <a href=#current-entry id=the-history-interface:current-entry-7>current entry</a> to reflect any state that the user
+     </li><li><p>Remove any <a href=webappapis.html#concept-task id=the-history-interface:concept-task-5>tasks</a> queued by the <a id=the-history-interface:history-traversal-task-source-2 href=webappapis.html#history-traversal-task-source>history
+     traversal task source</a> that are associated with any <code id=the-history-interface:document-13><a href=dom.html#document>Document</a></code> objects in the
+     <a id=the-history-interface:top-level-browsing-context-10 href=browsers.html#top-level-browsing-context>top-level browsing context</a>'s <a id=the-history-interface:document-family href=browsers.html#document-family>document family</a>.</li><li><p>If appropriate, update the <a href=#current-entry id=the-history-interface:current-entry-5>current entry</a> to reflect any state that the user
      agent wishes to persist. The entry is then said to be <a href=#an-entry-with-persisted-user-state id=the-history-interface:an-entry-with-persisted-user-state>an entry with persisted user
-     state</a>.</li><li><p>Add a <a href=#session-history-entry id=the-history-interface:session-history-entry>session history entry</a> entry to the session history, after the
-     <a href=#current-entry id=the-history-interface:current-entry-8>current entry</a>, with <var>serializedData</var> as the <a href=#serialized-state id=the-history-interface:serialized-state-2>serialized
-     state</a>, the given <var>title</var> as the title, <var>new URL</var> as the
-     <a id=the-history-interface:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the entry, and the <a href=#scroll-restoration-mode id=the-history-interface:scroll-restoration-mode-5>scroll restoration mode</a> of the current
-     entry in the <a href=#session-history id=the-history-interface:session-history-10>session history</a> as the scroll restoration mode.</li><li><p>Update the <a href=#current-entry id=the-history-interface:current-entry-9>current entry</a> to be this newly added entry.</li></ol>
+     state</a>.</li><li>
+      <p>Add a <a href=#session-history-entry id=the-history-interface:session-history-entry>session history entry</a> entry to the session history, after the
+      <a href=#current-entry id=the-history-interface:current-entry-6>current entry</a>, with</p>
 
-    <p>Otherwise, if the method invoked was the <code id=the-history-interface:dom-history-replacestate-2><a href=#dom-history-replacestate>replaceState()</a></code> method:</p>
+      <ul><li><p><var>newURL</var> as the <a id=the-history-interface:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>;</li><li><p>the <a href=#scroll-restoration-mode id=the-history-interface:scroll-restoration-mode-5>scroll restoration mode</a> of the current entry in the <a href=#session-history id=the-history-interface:session-history-10>session
+       history</a> as the scroll restoration mode;</li><li><p><var>serializedData</var> as the <a href=#serialized-state id=the-history-interface:serialized-state-3>serialized state</a>, if it is
+       given;</li><li><p><var>title</var> as the title, if it is given.</li></ul>
+     </li><li><p>Update the <a href=#current-entry id=the-history-interface:current-entry-7>current entry</a> to be this newly added entry.</li></ol>
+   </li><li>
+    <p>Otherwise, update the <a href=#current-entry id=the-history-interface:current-entry-8>current entry</a> in <var>browsingContext</var>'s
+    <a href=#session-history id=the-history-interface:session-history-11>session history</a> so that:</p>
 
-    <ol><li><p>Update the <a href=#current-entry id=the-history-interface:current-entry-10>current entry</a> in the session history so that
-     <var>serializedData</var> is the entry's new <a href=#serialized-state id=the-history-interface:serialized-state-3>serialized state</a>, the given
-     <var>title</var> is the new title, and <var>new URL</var> is the entry's new
-     <a id=the-history-interface:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>.</li></ol>
-
-   </li><li><p>If the <a href=#current-entry id=the-history-interface:current-entry-11>current entry</a> in the session history represents a non-GET request
-   (e.g. it was the result of a POST submission) then update it to instead represent a GET
-   request.</li><li>
-
-    <p>Set <var>document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-history-interface:the-document's-address-2" data-x-internal="the-document's-address">URL</a> to <var>new
-    URL</var>.</p>
+    <ul><li><p><var>newURL</var> is the entry's new <a id=the-history-interface:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>;</li><li><p><var>serializedData</var> is the entry's new <a href=#serialized-state id=the-history-interface:serialized-state-4>serialized state</a>, if it is
+     given; otherwise, the <a href=#current-entry id=the-history-interface:current-entry-9>current entry</a>'s current <a href=#serialized-state id=the-history-interface:serialized-state-5>serialized state</a> is
+     kept;</li><li><p><var>title</var> is the entry's new title, if it is given; otherwise, the entry does not
+     have a title;</li><li><p>it represents a GET request, if it currently represents a non-GET request (e.g. it was
+     the result of a POST submission).</li></ul>
+   </li><li>
+    <p>Set <var>document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-history-interface:the-document's-address" data-x-internal="the-document's-address">URL</a> to
+    <var>newURL</var>.</p>
 
     <p class=note>Since this is neither a <a href=browsing-the-web.html#navigate id=the-history-interface:navigate>navigation</a> of the
-    <a id=the-history-interface:browsing-context-7 href=browsers.html#browsing-context>browsing context</a> nor a <a href=browsing-the-web.html#traverse-the-history id=the-history-interface:traverse-the-history-3>history traversal</a>,
+    <a id=the-history-interface:browsing-context-6 href=browsers.html#browsing-context>browsing context</a> nor a <a href=browsing-the-web.html#traverse-the-history id=the-history-interface:traverse-the-history-3>history traversal</a>,
     it does not cause a <code id=the-history-interface:event-hashchange><a href=indices.html#event-hashchange>hashchange</a></code> event to be fired.</p>
+   </li></ol>
 
-   </li><li><p>Let <var>state</var> be <a id=the-history-interface:structureddeserialize href=structured-data.html#structureddeserialize>StructuredDeserialize</a>(<var>serializedData</var>,
+  <p>The <dfn id=dom-history-pushstate><code>pushState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method adds a state object entry to
+  the history.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> history<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>5.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>4+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>6+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="opera yes"><span>Opera</span> <span>11.5+</span></span><span class="android yes"><span>Android Browser</span> <span>4.2+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=history">caniuse.com</a></div>
+
+  <p>The <dfn id=dom-history-replacestate><code>replaceState(<var>data</var>, <var>title</var>, <var>url</var>)</code></dfn> method updates the state object,
+  title, and optionally the <a id=the-history-interface:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the <a href=#current-entry id=the-history-interface:current-entry-10>current entry</a> in the history.</p>
+
+  <p>When either of these methods is invoked, the user agent must run the following steps:</p>
+
+  <ol><li><p>Let <var>document</var> be the unique <code id=the-history-interface:document-14><a href=dom.html#document>Document</a></code> object this
+   <code id=the-history-interface:history-3-10><a href=#history-3>History</a></code> object is associated with.</li><li><p>If <var>document</var> is not <a id=the-history-interface:fully-active-8 href=browsers.html#fully-active>fully active</a>, throw a
+   <a id=the-history-interface:securityerror-7 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-7><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Optionally, return. (For example, the user agent might disallow calls to these
+   methods that are invoked on a timer, or from event listeners that are not triggered in response
+   to a clear user action, or that are invoked in rapid succession.)</li><li><p>Let <var>targetRealm</var> be this <code id=the-history-interface:history-3-11><a href=#history-3>History</a></code> object's <a href=webappapis.html#concept-relevant-realm id=the-history-interface:concept-relevant-realm>relevant Realm</a>.</li><li><p>Let <var>serializedData</var> be <a id=the-history-interface:structuredserializeforstorage href=structured-data.html#structuredserializeforstorage>StructuredSerializeForStorage</a>(<var>data</var>). 例外を再度投げる。</li><li><p>Let <var>newURL</var> be the <a id=the-history-interface:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> of the <a href=#current-entry id=the-history-interface:current-entry-11>current entry</a> in
+   <var>browsingContext</var>'s <a href=#session-history id=the-history-interface:session-history-12>session history</a>.</li><li>
+    <p>If <var>url</var> is not null, then:</p>
+
+    <ol><li><p><a href=urls-and-fetching.html#parse-a-url id=the-history-interface:parse-a-url>Parse</a> <var>url</var>, relative to the <a id=the-history-interface:relevant-settings-object href=webappapis.html#relevant-settings-object>relevant
+     settings object</a> of this <code id=the-history-interface:history-3-12><a href=#history-3>History</a></code> object.</li><li><p>If that fails, then throw a <a id=the-history-interface:securityerror-8 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
+     <code id=the-history-interface:domexception-8><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>Set <var>newURL</var> to the <a id=the-history-interface:resulting-url-record href=urls-and-fetching.html#resulting-url-record>resulting URL record</a>.</li><li><p>Compare <var>newURL</var> to <var>document</var>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-history-interface:the-document's-address-2" data-x-internal="the-document's-address">URL</a>. If any component of these two <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=the-history-interface:url-record data-x-internal=url-record>URL records</a> differ other than the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-path id=the-history-interface:concept-url-path data-x-internal=concept-url-path>path</a>,
+     <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-query id=the-history-interface:concept-url-query data-x-internal=concept-url-query>query</a>, and <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-fragment id=the-history-interface:concept-url-fragment data-x-internal=concept-url-fragment>fragment</a> components, then throw a
+     <a id=the-history-interface:securityerror-9 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-9><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>.</li><li><p>If the <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=the-history-interface:concept-url-origin data-x-internal=concept-url-origin>origin</a> of <var>newURL</var> is not
+     <a id=the-history-interface:same-origin href=origin.html#same-origin>same origin</a> with the <a id=the-history-interface:concept-origin href=origin.html#concept-origin>origin</a> of <var>document</var>, and either the
+     <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-path id=the-history-interface:concept-url-path-2 data-x-internal=concept-url-path>path</a> or <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-query id=the-history-interface:concept-url-query-2 data-x-internal=concept-url-query>query</a>
+     components of the two <a href=https://triple-underscore.github.io/URL-ja.html#concept-url id=the-history-interface:url-record-2 data-x-internal=url-record>URL records</a> compared in the previous
+     step differ, throw a <a id=the-history-interface:securityerror-10 href=https://triple-underscore.github.io/WebIDL-ja.html#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-history-interface:domexception-10><a data-x-internal=domexception href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException>DOMException</a></code>. (This
+     prevents sandboxed content from spoofing other pages on the same origin.)</li></ol>
+
+   </li><li><p>Run the <a href=#url-and-history-update-steps id=the-history-interface:url-and-history-update-steps>URL and history update steps</a> given <var>document</var>,
+   <var>newURL</var>, <var>serializedData</var>, and <var>title</var>, with the <var>state push
+   flag</var> set if the method invoked was the <code id=the-history-interface:dom-history-pushstate-2><a href=#dom-history-pushstate>pushState()</a></code> method.</li><li><p>Let <var>state</var> be <a id=the-history-interface:structureddeserialize href=structured-data.html#structureddeserialize>StructuredDeserialize</a>(<var>serializedData</var>,
    <var>targetRealm</var>). If this throws an exception, catch it, ignore the exception, and set
-   <var>state</var> to null.</li><li><p>Set <code id=the-history-interface:dom-history-state-2><a href=#dom-history-state>history.state</a></code> to <var>state</var>.</li><li><p>Set the <a href=#current-entry id=the-history-interface:current-entry-12>current entry</a>'s <code id=the-history-interface:document-14><a href=dom.html#document>Document</a></code> object's <a href=#latest-entry id=the-history-interface:latest-entry>latest
+   <var>state</var> to null.</li><li><p>Set <code id=the-history-interface:dom-history-state-2><a href=#dom-history-state>history.state</a></code> to <var>state</var>.</li><li><p>Set the <a href=#current-entry id=the-history-interface:current-entry-12>current entry</a>'s <code id=the-history-interface:document-15><a href=dom.html#document>Document</a></code> object's <a href=#latest-entry id=the-history-interface:latest-entry>latest
    entry</a> to the <a href=#current-entry id=the-history-interface:current-entry-13>current entry</a>.</li></ol>
 
   <p class=note>The <var>title</var> is purely advisory. User agents might use the title
@@ -553,7 +558,7 @@
 
   <p>User agents may limit the number of state objects added to the session history per page. If a
   page hits the UA-defined limit, user agents must remove the entry immediately after the first
-  entry for that <code id=the-history-interface:document-15><a href=dom.html#document>Document</a></code> object in the session history after having added the new
+  entry for that <code id=the-history-interface:document-16><a href=dom.html#document>Document</a></code> object in the session history after having added the new
   entry. (Thus the state history acts as a FIFO buffer for eviction, but as a LIFO buffer for
   navigation.)</p>
 
@@ -588,7 +593,7 @@
 <c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
 <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
  <c- a>var</c-> currentPage <c- o>=</c-> <c- mi>5</c-><c- p>;</c-> <c- c1>// prefilled by server</c->
-<c- c1></c-> <c- a>function</c-> go<c- p>(</c->d<c- p>)</c-> <c- p>{</c->
+ <c- a>function</c-> go<c- p>(</c->d<c- p>)</c-> <c- p>{</c->
    setupPage<c- p>(</c->currentPage <c- o>+</c-> d<c- p>);</c->
    history<c- p>.</c->pushState<c- p>(</c->currentPage<c- p>,</c-> document<c- p>.</c->title<c- p>,</c-> <c- t>&amp;apos;?x=&amp;apos;</c-> <c- o>+</c-> currentPage<c- p>);</c->
  <c- p>}</c->
@@ -736,9 +741,8 @@ State: <c- p>&lt;</c-><c- f>OUTPUT</c-> <c- e>NAME</c-><c- o>=</c-><c- s>I</c-><
   
 
   <p>The <code id=the-location-interface:document><a href=dom.html#document>Document</a></code> object's <dfn id=dom-document-location><code>location</code></dfn> attribute's getter must return this
-  <code id=the-location-interface:document-2><a href=dom.html#document>Document</a></code> object's <a href=webappapis.html#concept-relevant-global id=the-location-interface:concept-relevant-global>relevant global
-  object</a>'s <code id=the-location-interface:location-9><a href=#location>Location</a></code> object, if this <code id=the-location-interface:document-3><a href=dom.html#document>Document</a></code> object is <a id=the-location-interface:fully-active href=browsers.html#fully-active>fully
-  active</a>, and null otherwise.</p>
+  <code id=the-location-interface:document-2><a href=dom.html#document>Document</a></code> object's <a id=the-location-interface:concept-relevant-global href=webappapis.html#concept-relevant-global>relevant global object</a>'s <code id=the-location-interface:location-9><a href=#location>Location</a></code> object,
+  if this <code id=the-location-interface:document-3><a href=dom.html#document>Document</a></code> object is <a id=the-location-interface:fully-active href=browsers.html#fully-active>fully active</a>, and null otherwise.</p>
 
   <p>The <code id=the-location-interface:window-3><a href=window-object.html#window>Window</a></code> object's <dfn id=dom-location><code>location</code></dfn>
   attribute's getter must return this <code id=the-location-interface:window-4><a href=window-object.html#window>Window</a></code> object's <code id=the-location-interface:location-10><a href=#location>Location</a></code> object.</p>
@@ -1084,20 +1088,16 @@ State: <c- p>&lt;</c-><c- f>OUTPUT</c-> <c- e>NAME</c-><c- o>=</c-><c- s>I</c-><
    context</a><dd><p>Repaint the <a id=the-location-interface:browsing-context-7 href=browsers.html#browsing-context>browsing context</a> and return.<dt>If the <a id=the-location-interface:browsing-context-8 href=browsers.html#browsing-context>browsing context</a>'s <a id=the-location-interface:active-document-4 href=browsers.html#active-document>active document</a> is <a id=the-location-interface:an-iframe-srcdoc-document href=iframe-embed-object.html#an-iframe-srcdoc-document>an
    <code>iframe</code> <code>srcdoc</code> document</a><dd><p><a href=iframe-embed-object.html#process-the-iframe-attributes id=the-location-interface:process-the-iframe-attributes>Reprocess the <code>iframe</code>
    attributes</a> of the <a id=the-location-interface:browsing-context-9 href=browsers.html#browsing-context>browsing context</a>'s <a id=the-location-interface:browsing-context-container href=browsers.html#browsing-context-container>browsing context
-   container</a>.<dt>If the <a id=the-location-interface:browsing-context-10 href=browsers.html#browsing-context>browsing context</a>'s <a id=the-location-interface:active-document-5 href=browsers.html#active-document>active document</a> has its <a id=the-location-interface:reload-override-flag href=dom.html#reload-override-flag>reload
-   override flag</a> set<dd><p>Perform <a id=the-location-interface:an-overridden-reload href=dom.html#an-overridden-reload>an overridden reload</a>, with the <a id=the-location-interface:browsing-context-11 href=browsers.html#browsing-context>browsing context</a> being navigated as the <a id=the-location-interface:responsible-browsing-context-2 href=webappapis.html#responsible-browsing-context>responsible browsing context</a>. 例外を再度投げる。<dt>そうでなければ<dd><p><a id=the-location-interface:navigate-2 href=browsing-the-web.html#navigate>Navigate</a> the <a id=the-location-interface:browsing-context-12 href=browsers.html#browsing-context>browsing context</a> to this <code id=the-location-interface:location-68><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-22>relevant <code>Document</code></a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-location-interface:the-document's-address-4" data-x-internal="the-document's-address">URL</a> to perform an <a id=the-location-interface:entry-update href=browsing-the-web.html#entry-update>entry update</a> of the <a id=the-location-interface:browsing-context-13 href=browsers.html#browsing-context>browsing context</a>'s <a href=#current-entry id=the-location-interface:current-entry-2>current entry</a>, with the <var><a id=the-location-interface:exceptions-enabled-2 href=browsing-the-web.html#exceptions-enabled>exceptions enabled flag</a></var> set. The <a id=the-location-interface:source-browsing-context-2 href=browsing-the-web.html#source-browsing-context>source browsing context</a> must be the <a id=the-location-interface:browsing-context-14 href=browsers.html#browsing-context>browsing context</a> being navigated. This is a <a id=the-location-interface:reload-triggered-navigation href=browsing-the-web.html#reload-triggered-navigation>reload-triggered navigation</a>. 例外を再度投げる。</dl>
+   container</a>.<dt>そうでなければ<dd><p><a id=the-location-interface:navigate-2 href=browsing-the-web.html#navigate>Navigate</a> the <a id=the-location-interface:browsing-context-10 href=browsers.html#browsing-context>browsing context</a> to this <code id=the-location-interface:location-68><a href=#location>Location</a></code> object's <a href=#relevant-document id=the-location-interface:relevant-document-22>relevant <code>Document</code></a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="the-location-interface:the-document's-address-4" data-x-internal="the-document's-address">URL</a> to perform an <a id=the-location-interface:entry-update href=browsing-the-web.html#entry-update>entry update</a> of the <a id=the-location-interface:browsing-context-11 href=browsers.html#browsing-context>browsing context</a>'s <a href=#current-entry id=the-location-interface:current-entry-2>current entry</a>, with the <var><a id=the-location-interface:exceptions-enabled-2 href=browsing-the-web.html#exceptions-enabled>exceptions enabled flag</a></var> set. The <a id=the-location-interface:source-browsing-context-2 href=browsing-the-web.html#source-browsing-context>source browsing context</a> must be the <a id=the-location-interface:browsing-context-12 href=browsers.html#browsing-context>browsing context</a> being navigated. This is a <a id=the-location-interface:reload-triggered-navigation href=browsing-the-web.html#reload-triggered-navigation>reload-triggered navigation</a>. 例外を再度投げる。</dl>
 
-  <p>When a user requests that the <a id=the-location-interface:active-document-6 href=browsers.html#active-document>active document</a> of a <a id=the-location-interface:browsing-context-15 href=browsers.html#browsing-context>browsing context</a>
-  be reloaded through a user interface element, the user agent should <a id=the-location-interface:navigate-3 href=browsing-the-web.html#navigate>navigate</a> the <a id=the-location-interface:browsing-context-16 href=browsers.html#browsing-context>browsing context</a> to the same resource as that
-  <code id=the-location-interface:document-9><a href=dom.html#document>Document</a></code>, to perform an <a id=the-location-interface:entry-update-2 href=browsing-the-web.html#entry-update>entry update</a> of the <a id=the-location-interface:browsing-context-17 href=browsers.html#browsing-context>browsing
+  <p>When a user requests that the <a id=the-location-interface:active-document-5 href=browsers.html#active-document>active document</a> of a <a id=the-location-interface:browsing-context-13 href=browsers.html#browsing-context>browsing context</a>
+  be reloaded through a user interface element, the user agent should <a id=the-location-interface:navigate-3 href=browsing-the-web.html#navigate>navigate</a> the <a id=the-location-interface:browsing-context-14 href=browsers.html#browsing-context>browsing context</a> to the same resource as that
+  <code id=the-location-interface:document-9><a href=dom.html#document>Document</a></code>, to perform an <a id=the-location-interface:entry-update-2 href=browsing-the-web.html#entry-update>entry update</a> of the <a id=the-location-interface:browsing-context-15 href=browsers.html#browsing-context>browsing
   context</a>'s <a href=#current-entry id=the-location-interface:current-entry-3>current entry</a>. This is a <a id=the-location-interface:reload-triggered-navigation-2 href=browsing-the-web.html#reload-triggered-navigation>reload-triggered navigation</a>.
   In the case of non-idempotent methods (e.g. HTTP POST), the user agent should prompt the user to
   confirm the operation first, since otherwise transactions (e.g. purchases or database
   modifications) could be repeated. User agents may allow the user to explicitly override any caches
-  when reloading. If <a id=the-location-interface:browsing-context-18 href=browsers.html#browsing-context>browsing context</a>'s <a id=the-location-interface:active-document-7 href=browsers.html#active-document>active document</a>'s <a id=the-location-interface:reload-override-flag-2 href=dom.html#reload-override-flag>reload
-  override flag</a> is set, then the user agent may instead perform <a id=the-location-interface:an-overridden-reload-2 href=dom.html#an-overridden-reload>an overridden
-  reload</a> rather than the navigation described in this paragraph (with the <a id=the-location-interface:browsing-context-19 href=browsers.html#browsing-context>browsing
-  context</a> being reloaded as the <a id=the-location-interface:source-browsing-context-3 href=browsing-the-web.html#source-browsing-context>source browsing context</a>).</p>
+  when reloading.</p>
 
   <hr>
 

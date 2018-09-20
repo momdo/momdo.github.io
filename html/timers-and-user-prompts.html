@@ -49,9 +49,7 @@
    }
   </style>
 <style>
-   [hidden] { display: none; }
-
-   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+   .bad, .bad *:not(.X\58X) { color: gray; }
 
    .fingerprint { position: absolute; right: 0; z-index: 5; }
    @media (max-width: 767px) {
@@ -169,7 +167,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>2 August 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>19 September 2018</span></h2></hgroup>
    
    
 
@@ -395,17 +393,17 @@ setTimeout<c- p>({</c-> toString<c- o>:</c-> <c- a>function</c-> <c- p>()</c-> <
    <pre><code class='js'><c- a>function</c-> doExpensiveWork<c- p>()</c-> <c- p>{</c->
   <c- a>var</c-> done <c- o>=</c-> <c- kc>false</c-><c- p>;</c->
   <c- c1>// ...</c->
-<c- c1></c->  <c- c1>// this part of the function takes up to five milliseconds</c->
-<c- c1></c->  <c- c1>// set done to true if we&amp;apos;re done</c->
-<c- c1></c->  <c- c1>// ...</c->
-<c- c1></c->  <c- k>return</c-> done<c- p>;</c->
+  <c- c1>// this part of the function takes up to five milliseconds</c->
+  <c- c1>// set done to true if we&amp;apos;re done</c->
+  <c- c1>// ...</c->
+  <c- k>return</c-> done<c- p>;</c->
 <c- p>}</c->
 
 <c- a>function</c-> rescheduleWork<c- p>()</c-> <c- p>{</c->
   <c- a>var</c-> handle <c- o>=</c-> setTimeout<c- p>(</c->rescheduleWork<c- p>,</c-> <c- mi>0</c-><c- p>);</c-> <c- c1>// preschedule next iteration</c->
-<c- c1></c->  <c- k>if</c-> <c- p>(</c->doExpensiveWork<c- p>())</c->
+  <c- k>if</c-> <c- p>(</c->doExpensiveWork<c- p>())</c->
     clearTimeout<c- p>(</c->handle<c- p>);</c-> <c- c1>// clear the timeout if we don&amp;apos;t need it</c->
-<c- c1></c-><c- p>}</c->
+<c- p>}</c->
 
 <c- a>function</c-> scheduleWork<c- p>()</c-> <c- p>{</c->
   setTimeout<c- p>(</c->rescheduleWork<c- p>,</c-> <c- mi>0</c-><c- p>);</c->
@@ -434,9 +432,9 @@ scheduleWork<c- p>();</c-> <c- c1>// queues a task to do lots of work</c-></code
 
   <p>Authors ought to be aware that scheduling a lot of microtasks has the same performance
   downsides as running a lot of synchronous code. Both will prevent the browser from doing its own
-  work, such as rendering or scrolling. In many cases, <code id=microtask-queuing:dom-window-requestanimationframe><a href=imagebitmap-and-animations.html#dom-window-requestanimationframe>requestAnimationFrame()</a></code> or
+  work, such as rendering or scrolling. In many cases, <code id=microtask-queuing:dom-animationframeprovider-requestanimationframe><a href=imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe>requestAnimationFrame()</a></code> or
   <code id=microtask-queuing:requestidlecallback()><a data-x-internal=requestidlecallback() href=https://w3c.github.io/requestidlecallback/#the-requestidlecallback-method>requestIdleCallback()</a></code> is a better choice. In particular, if the goal is to run code
-  before the next rendering cycle, that is the purpose of <code id=microtask-queuing:dom-window-requestanimationframe-2><a href=imagebitmap-and-animations.html#dom-window-requestanimationframe>requestAnimationFrame()</a></code>.</p>
+  before the next rendering cycle, that is the purpose of <code id=microtask-queuing:dom-animationframeprovider-requestanimationframe-2><a href=imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe>requestAnimationFrame()</a></code>.</p>
 
   <p>As can be seen from the following examples, the best way of thinking about <code id=microtask-queuing:dom-queuemicrotask-2><a href=#dom-queuemicrotask>queueMicrotask()</a></code> is as a mechanism for rearranging synchronous
   code, effectively placing the queued code immediately after the current task's worth of non-queued
@@ -618,7 +616,7 @@ console<c- p>.</c->log<c- p>(</c-><c- u>"2"</c-><c- p>);</c-></code></pre>
   opportunity to <a id=printing:obtain-a-physical-form href=rendering.html#obtain-a-physical-form>obtain a physical form</a> (e.g. printed copy), or the representation of a
   physical form (e.g. PDF copy), of a document.</p>
 
-  <p>The <dfn id=printing-steps>printing steps</dfn> are as follows:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=27864" title='Printing steps should apply "img environment changed" algorithm before and after printing and wait u [...]'>27864</a></div>
+  <p>The <dfn id=printing-steps>printing steps</dfn> are as follows:</p>
 
   <ol><li>
 
@@ -641,7 +639,7 @@ console<c- p>.</c->log<c- p>(</c-><c- u>"2"</c-><c- p>);</c-></code></pre>
 
    </li><li>
 
-    <p>The user agent must <a href=https://dom.spec.whatwg.org/#concept-event-fire id=printing:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=printing:event-beforeprint-2><a href=indices.html#event-beforeprint>beforeprint</a></code> at the <code id=printing:window-2><a href=window-object.html#window>Window</a></code> object of the
+    <p>The user agent must <a href=https://dom.spec.whatwg.org/#concept-event-fire id=printing:concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code id=printing:event-beforeprint-2><a href=indices.html#event-beforeprint>beforeprint</a></code> at the <a id=printing:concept-relevant-global href=webappapis.html#concept-relevant-global>relevant global object</a> of the
     <code id=printing:document-4><a href=dom.html#document>Document</a></code> that is being printed, as well as any <a href=browsers.html#nested-browsing-context id=printing:nested-browsing-context>nested browsing contexts</a> in it.</p>
 
     <p class=example>The <code id=printing:event-beforeprint-3><a href=indices.html#event-beforeprint>beforeprint</a></code> event can be used to
@@ -658,7 +656,7 @@ console<c- p>.</c->log<c- p>(</c-><c- u>"2"</c-><c- p>);</c-></code></pre>
 
    </li><li>
 
-    <p>The user agent must <a href=https://dom.spec.whatwg.org/#concept-event-fire id=printing:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named <code id=printing:event-afterprint-2><a href=indices.html#event-afterprint>afterprint</a></code> at the <code id=printing:window-3><a href=window-object.html#window>Window</a></code> object of the
+    <p>The user agent must <a href=https://dom.spec.whatwg.org/#concept-event-fire id=printing:concept-event-fire-2 data-x-internal=concept-event-fire>fire an event</a> named <code id=printing:event-afterprint-2><a href=indices.html#event-afterprint>afterprint</a></code> at the <a id=printing:concept-relevant-global-2 href=webappapis.html#concept-relevant-global>relevant global object</a> of the
     <code id=printing:document-5><a href=dom.html#document>Document</a></code> that is being printed, as well as any <a href=browsers.html#nested-browsing-context id=printing:nested-browsing-context-2>nested browsing contexts</a> in it.</p>
 
     <p class=example>The <code id=printing:event-afterprint-3><a href=indices.html#event-afterprint>afterprint</a></code> event can be used to
