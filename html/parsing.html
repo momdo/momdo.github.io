@@ -261,7 +261,7 @@
 
    <pre><code class='html'>...
 <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
- document<c- p>.</c->write<c- p>(</c-><c- t>&amp;apos;&lt;p&gt;&amp;apos;</c-><c- p>);</c->
+ document<c- p>.</c->write<c- p>(</c-><c- t>'&lt;p&gt;'</c-><c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
 ...</code></pre>
 
@@ -595,7 +595,7 @@
 
        <p>As another example of this error, consider the following markup:</p>
 
-       <pre><code class='html'><c- p>&lt;</c-><c- f>div</c-> <c- e>id</c->&amp;apos;<c- e>bar</c->&amp;apos;<c- p>&gt;</c-></code></pre>
+       <pre><code class='html'><c- p>&lt;</c-><c- f>div</c-> <c- e>id</c->'<c- e>bar</c->'<c- p>&gt;</c-></code></pre>
 
        <p>Due to a forgotten U+003D (=) code point between an attribute name and value the parser
        treats this markup as a <code id=parse-errors:the-div-element-3><a href=grouping-content.html#the-div-element>div</a></code> element with the attribute "<code>id'bar'</code>" that has an empty value.</p>
@@ -616,7 +616,7 @@
       <div class=example>
        <p>For example, consider the following markup:</p>
 
-       <pre><code class='html'><c- p>&lt;</c-><c- f>div</c-> <c- e>foo</c-><c- o>=</c-><c- s>b&amp;apos;ar&amp;apos;</c-><c- p>&gt;</c-></code></pre>
+       <pre><code class='html'><c- p>&lt;</c-><c- f>div</c-> <c- e>foo</c-><c- o>=</c-><c- s>b'ar'</c-><c- p>&gt;</c-></code></pre>
 
        <p>Due to a misplaced U+0027 (') code point the parser sets the value of the "<code>foo</code>" attribute to "<code>b'ar'</code>".</p>
      </div>
@@ -3326,20 +3326,20 @@
    <table><thead><tr><th>Input  </th><th>Number of <code id=creating-and-inserting-nodes:text-6><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code> nodes
     
     <tbody></th></tr><tr><td><pre><code class='html'>A<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
-<c- a>var</c->&nbsp;script&nbsp;<c- o>=</c->&nbsp;document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;script&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
+<c- a>var</c->&nbsp;script&nbsp;<c- o>=</c->&nbsp;document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>'script'</c-><c- p>)[</c-><c- mi>0</c-><c- p>];</c->
 document<c- p>.</c->body<c- p>.</c->removeChild<c- p>(</c->script<c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->B</code></pre>
       </td><td>One <code id=creating-and-inserting-nodes:text-7><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code> node in the document, containing "AB".
      
      </td></tr><tr><td><pre><code class='html'>A<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
-<c- a>var</c->&nbsp;text&nbsp;<c- o>=</c->&nbsp;document<c- p>.</c->createTextNode<c- p>(</c-><c- t>&amp;apos;B&amp;apos;</c-><c- p>);</c->
+<c- a>var</c->&nbsp;text&nbsp;<c- o>=</c->&nbsp;document<c- p>.</c->createTextNode<c- p>(</c-><c- t>'B'</c-><c- p>);</c->
 document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->C</code></pre>
       </td><td>Three <code id=creating-and-inserting-nodes:text-8><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code> nodes; "A" before the script, the script's contents, and "BC" after the script (the parser appends to the <code id=creating-and-inserting-nodes:text-9><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code> node created by the script).
      
      </td></tr><tr><td><pre><code class='html'>A<c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
-<c- a>var</c->&nbsp;text&nbsp;<c- o>=</c->&nbsp;document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>&amp;apos;script&amp;apos;</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->firstChild<c- p>;</c->
-text<c- p>.</c->data&nbsp;<c- o>=</c->&nbsp;<c- t>&amp;apos;B&amp;apos;</c-><c- p>;</c->
+<c- a>var</c->&nbsp;text&nbsp;<c- o>=</c->&nbsp;document<c- p>.</c->getElementsByTagName<c- p>(</c-><c- t>'script'</c-><c- p>)[</c-><c- mi>0</c-><c- p>].</c->firstChild<c- p>;</c->
+text<c- p>.</c->data&nbsp;<c- o>=</c->&nbsp;<c- t>'B'</c-><c- p>;</c->
 document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->C</code></pre>
       </td><td>Two adjacent <code id=creating-and-inserting-nodes:text-10><a data-x-internal=text href=https://triple-underscore.github.io/DOM4-ja.html#interface-text>Text</a></code> nodes in the document, containing "A" and "BC".
@@ -6174,7 +6174,7 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 
   <pre><code class='html'><c- p>&lt;</c-><c- f>div</c-> <c- e>id</c-><c- o>=</c-><c- s>a</c-><c- p>&gt;</c->
  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
-  <c- a>var</c-> div <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;a&amp;apos;</c-><c- p>);</c->
+  <c- a>var</c-> div <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>'a'</c-><c- p>);</c->
   parent<c- p>.</c->document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->div<c- p>);</c->
  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->

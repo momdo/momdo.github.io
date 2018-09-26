@@ -271,8 +271,8 @@
    not other subresources.</p>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-> <c- e>src</c-><c- o>=</c-><c- s>"main.js"</c-> <c- e>referrerpolicy</c-><c- o>=</c-><c- s>"origin"</c-><c- p>&gt;</c->
-  fetch<c- p>(</c-><c- t>&amp;apos;/api/data&amp;apos;</c-><c- p>);</c->   <c- c1>// not fetched with &lt;script&gt;&amp;apos;s referrer policy</c->
-  <c- kr>import</c-><c- p>(</c-><c- t>&amp;apos;./utils.mjs&amp;apos;</c-><c- p>);</c-> <c- c1>// is fetched with &lt;script&gt;&amp;apos;s referrer policy ("origin" in this case)</c->
+  fetch<c- p>(</c-><c- t>'/api/data'</c-><c- p>);</c->   <c- c1>// not fetched with &lt;script&gt;'s referrer policy</c->
+  <c- kr>import</c-><c- p>(</c-><c- t>'./utils.mjs'</c-><c- p>);</c-> <c- c1>// is fetched with &lt;script&gt;'s referrer policy ("origin" in this case)</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
   </div>
 
@@ -906,9 +906,9 @@ o<c- p>............</c->A<c- p>....</c->e
 
   <pre><code class='abnf'><c- nc>script</c->        <c- o>=</c-> <c- nc>outer</c-> <c- o>*</c-><c- p>(</c-> <c- nc>comment-open</c-> <c- nc>inner</c-> <c- nc>comment-close</c-> <c- nc>outer</c-> <c- p>)</c->
 
-<c- nc>outer</c->         <c- o>=</c-> &lt; <c- nc>any</c-> <c- nc>string</c-> <c- nc>that</c-> <c- nc>doesn</c->&amp;apos;t <c- nc>contain</c-> a <c- nc>substring</c-> <c- nc>that</c-> <c- nc>matches</c-> <c- nc>not-in-outer</c-> &gt;
+<c- nc>outer</c->         <c- o>=</c-> &lt; <c- nc>any</c-> <c- nc>string</c-> <c- nc>that</c-> <c- nc>doesn</c->'t <c- nc>contain</c-> a <c- nc>substring</c-> <c- nc>that</c-> <c- nc>matches</c-> <c- nc>not-in-outer</c-> &gt;
 <c- nc>not-in-outer</c->  <c- o>=</c-> <c- nc>comment-open</c->
-<c- nc>inner</c->         <c- o>=</c-> &lt; <c- nc>any</c-> <c- nc>string</c-> <c- nc>that</c-> <c- nc>doesn</c->&amp;apos;t <c- nc>contain</c-> a <c- nc>substring</c-> <c- nc>that</c-> <c- nc>matches</c-> <c- nc>not-in-inner</c-> &gt;
+<c- nc>inner</c->         <c- o>=</c-> &lt; <c- nc>any</c-> <c- nc>string</c-> <c- nc>that</c-> <c- nc>doesn</c->'t <c- nc>contain</c-> a <c- nc>substring</c-> <c- nc>that</c-> <c- nc>matches</c-> <c- nc>not-in-inner</c-> &gt;
 <c- nc>not-in-inner</c->  <c- o>=</c-> <c- nc>comment-close</c-> <c- o>/</c-> <c- nc>script-open</c->
 
 <c- nc>comment-open</c->  <c- o>=</c-> <c- l>"&lt;!--"</c->
@@ -941,20 +941,20 @@ t             <c- o>=/</c-> <c- l>%x0074</c-> <c- c1>; U+0074 LATIN SMALL LETTER
 
    <p>以下のスクリプトは、この問題を示している。このように、文字列が含まれているスクリプトがあるとする：</p>
 
-   <pre><code class='js'><c- a>var</c-> example <c- o>=</c-> <c- t>&amp;apos;Consider this string: &lt;!-- &lt;script&gt;&amp;apos;</c-><c- p>;</c->
+   <pre><code class='js'><c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script&gt;'</c-><c- p>;</c->
 console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
 
    <p>これが<code id=restrictions-for-contents-of-script-elements:the-script-element-4><a href=#the-script-element>script</a></code>ブロックで直接この文字列を入れていた場合、上記の制限に違反しない。</p>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
-  <c- a>var</c-> example <c- o>=</c-> <c- t>&amp;apos;Consider this string: &lt;!-- &lt;script&gt;&amp;apos;</c-><c- p>;</c->
+  <c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script&gt;'</c-><c- p>;</c->
   console<c- p>.</c->log<c- p>(</c->example<c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
    <p>しかし、より大きな問題かつ、スクリプトがそれらの制限に違反しない理由は、実際にスクリプトが奇妙に解析されるだろうということである。<em>上記のスクリプトブロックは終了していない</em>。それは、実際には依然として<code id=restrictions-for-contents-of-script-elements:the-script-element-5><a href=#the-script-element>script</a></code>ブロックの一部であるこのスニペットにおいて"<code>&lt;/script&gt;</code>"終了タグのように見えるものである。（スクリプトが終了していないため）スクリプトは実行しない。スクリプトが何らかの形で実行した場合、以下のようにマークアップが見えた場合、（ここで強調される）スクリプトが妥当なJavaScriptでないので、スクリプトは失敗するだろう：</p>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c-><mark>
-  <c- a>var</c-> example <c- o>=</c-> <c- t>&amp;apos;Consider this string: &lt;!-- &lt;script&gt;&amp;apos;</c-><c- p>;</c->
+  <c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script&gt;'</c-><c- p>;</c->
   console<c- p>.</c->log<c- p>(</c->example<c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
 <c- c>&lt;!-- despite appearances, this is actually part of the script still! --&gt;</c->
@@ -968,7 +968,7 @@ console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c-><mark>
   <c- c1>// Note: `\s` is an escape sequence for `s`.</c->
-  <c- a>var</c-> example <c- o>=</c-> <c- t>&amp;apos;Consider this string: &lt;\!-- &lt;\script&gt;&amp;apos;</c-><c- p>;</c->
+  <c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;\!-- &lt;\script&gt;'</c-><c- p>;</c->
   console<c- p>.</c->log<c- p>(</c->example<c- p>);</c->
 </mark><c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
 <c- c>&lt;!-- this is just a comment between script blocks --&gt;</c->
@@ -1110,14 +1110,14 @@ console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
   <c- p>&lt;</c-><c- f>input</c-> <c- e>id</c-><c- o>=</c-><c- s>"x"</c-> <c- e>name</c-><c- o>=</c-><c- s>"x"</c-> <c- e>type</c-><c- o>=</c-><c- s>"number"</c-><c- p>&gt;</c->
  <c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
-  <c- a>var</c-> x <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;x&amp;apos;</c-><c- p>);</c->
-  <c- a>var</c-> output <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;p&amp;apos;</c-><c- p>);</c->
-  output<c- p>.</c->textContent <c- o>=</c-> <c- t>&amp;apos;Type a number; it will be squared right then!&amp;apos;</c-><c- p>;</c->
+  <c- a>var</c-> x <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>'x'</c-><c- p>);</c->
+  <c- a>var</c-> output <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>'p'</c-><c- p>);</c->
+  output<c- p>.</c->textContent <c- o>=</c-> <c- t>'Type a number; it will be squared right then!'</c-><c- p>;</c->
   x<c- p>.</c->form<c- p>.</c->appendChild<c- p>(</c->output<c- p>);</c->
   x<c- p>.</c->form<c- p>.</c->onsubmit <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c-> <c- k>return</c-> <c- kc>false</c-><c- p>;</c-> <c- p>}</c->
   x<c- p>.</c->oninput <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
     <c- a>var</c-> v <c- o>=</c-> x<c- p>.</c->valueAsNumber<c- p>;</c->
-    output<c- p>.</c->textContent <c- o>=</c-> v <c- o>+</c-> <c- t>&amp;apos; squared is &amp;apos;</c-> <c- o>+</c-> v <c- o>*</c-> v<c- p>;</c->
+    output<c- p>.</c->textContent <c- o>=</c-> v <c- o>+</c-> <c- t>' squared is '</c-> <c- o>+</c-> v <c- o>*</c-> v<c- p>;</c->
   <c- p>};</c->
  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
  <c- p>&lt;</c-><c- f>noscript</c-><c- p>&gt;</c->
@@ -1136,16 +1136,16 @@ console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
  <c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;</c->
  <strong><c- p>&lt;</c-><c- f>input</c-> <c- e>id</c-><c- o>=</c-><c- s>"submit"</c-> <c- e>type</c-><c- o>=</c-><c- s>submit</c-> <c- e>value</c-><c- o>=</c-><c- s>"Calculate Square"</c-><c- p>&gt;</c-></strong>
  <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
-  <c- a>var</c-> x <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;x&amp;apos;</c-><c- p>);</c->
-  <c- a>var</c-> output <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>&amp;apos;p&amp;apos;</c-><c- p>);</c->
-  output<c- p>.</c->textContent <c- o>=</c-> <c- t>&amp;apos;Type a number; it will be squared right then!&amp;apos;</c-><c- p>;</c->
+  <c- a>var</c-> x <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>'x'</c-><c- p>);</c->
+  <c- a>var</c-> output <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- t>'p'</c-><c- p>);</c->
+  output<c- p>.</c->textContent <c- o>=</c-> <c- t>'Type a number; it will be squared right then!'</c-><c- p>;</c->
   x<c- p>.</c->form<c- p>.</c->appendChild<c- p>(</c->output<c- p>);</c->
   x<c- p>.</c->form<c- p>.</c->onsubmit <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c-> <c- k>return</c-> <c- kc>false</c-><c- p>;</c-> <c- p>}</c->
   x<c- p>.</c->oninput <c- o>=</c-> <c- a>function</c-> <c- p>()</c-> <c- p>{</c->
     <c- a>var</c-> v <c- o>=</c-> x<c- p>.</c->valueAsNumber<c- p>;</c->
-    output<c- p>.</c->textContent <c- o>=</c-> v <c- o>+</c-> <c- t>&amp;apos; squared is &amp;apos;</c-> <c- o>+</c-> v <c- o>*</c-> v<c- p>;</c->
+    output<c- p>.</c->textContent <c- o>=</c-> v <c- o>+</c-> <c- t>' squared is '</c-> <c- o>+</c-> v <c- o>*</c-> v<c- p>;</c->
   <c- p>};</c->
-<strong>  <c- a>var</c-> submit <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;submit&amp;apos;</c-><c- p>);</c->
+<strong>  <c- a>var</c-> submit <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>'submit'</c-><c- p>);</c->
   submit<c- p>.</c->parentNode<c- p>.</c->removeChild<c- p>(</c->submit<c- p>);</c-></strong>
  <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
 <c- p>&lt;/</c-><c- f>form</c-><c- p>&gt;</c-></code></pre>
@@ -1187,7 +1187,7 @@ console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
   <c- p>&lt;</c-><c- f>template</c-> <c- e>id</c-><c- o>=</c-><c- s>"template"</c-><c- p>&gt;&lt;</c-><c- f>p</c-><c- p>&gt;</c->Smile!<c- p>&lt;/</c-><c- f>p</c-><c- p>&gt;&lt;/</c-><c- f>template</c-><c- p>&gt;</c->
   <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
    <c- a>let</c-> num <c- o>=</c-> <c- mi>3</c-><c- p>;</c->
-   <c- kr>const</c-> fragment <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>&amp;apos;template&amp;apos;</c-><c- p>).</c->content<c- p>.</c->cloneNode<c- p>(</c-><c- kc>true</c-><c- p>);</c->
+   <c- kr>const</c-> fragment <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c-><c- t>'template'</c-><c- p>).</c->content<c- p>.</c->cloneNode<c- p>(</c-><c- kc>true</c-><c- p>);</c->
    <c- k>while</c-> <c- p>(</c->num<c- o>--</c-> <c- o>&gt;</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
      fragment<c- p>.</c->firstChild<c- p>.</c->before<c- p>(</c->fragment<c- p>.</c->firstChild<c- p>.</c->cloneNode<c- p>(</c-><c- kc>true</c-><c- p>));</c->
      fragment<c- p>.</c->firstChild<c- p>.</c->textContent <c- o>+=</c-> fragment<c- p>.</c->lastChild<c- p>.</c->textContent<c- p>;</c->
@@ -1289,13 +1289,13 @@ console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
    <p>この例において、スクリプトは、手動でマークアップから構造を生成する代わりに要素構造を提供するために<code id=the-template-element:the-template-element-22><a href=#the-template-element>template</a></code>を使用して、データ構造からデータをもつテーブル4列に投入する。</p>
 
    <pre><code class='html'><c- cp>&lt;!DOCTYPE html&gt;</c->
-<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>&amp;apos;en&amp;apos;</c-><c- p>&gt;</c->
+<c- p>&lt;</c-><c- f>html</c-> <c- e>lang</c-><c- o>=</c-><c- s>'en'</c-><c- p>&gt;</c->
 <c- p>&lt;</c-><c- f>title</c-><c- p>&gt;</c->Cat data<c- p>&lt;/</c-><c- f>title</c-><c- p>&gt;</c->
 <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
  <c- c1>// Data is hard-coded here, but could come from the server</c->
  <c- a>var</c-> data <c- o>=</c-> <c- p>[</c->
-   <c- p>{</c-> name<c- o>:</c-> <c- t>&amp;apos;Pillar&amp;apos;</c-><c- p>,</c-> color<c- o>:</c-> <c- t>&amp;apos;Ticked Tabby&amp;apos;</c-><c- p>,</c-> sex<c- o>:</c-> <c- t>&amp;apos;Female (neutered)&amp;apos;</c-><c- p>,</c-> legs<c- o>:</c-> <c- mi>3</c-> <c- p>},</c->
-   <c- p>{</c-> name<c- o>:</c-> <c- t>&amp;apos;Hedral&amp;apos;</c-><c- p>,</c-> color<c- o>:</c-> <c- t>&amp;apos;Tuxedo&amp;apos;</c-><c- p>,</c-> sex<c- o>:</c-> <c- t>&amp;apos;Male (neutered)&amp;apos;</c-><c- p>,</c-> legs<c- o>:</c-> <c- mi>4</c-> <c- p>},</c->
+   <c- p>{</c-> name<c- o>:</c-> <c- t>'Pillar'</c-><c- p>,</c-> color<c- o>:</c-> <c- t>'Ticked Tabby'</c-><c- p>,</c-> sex<c- o>:</c-> <c- t>'Female (neutered)'</c-><c- p>,</c-> legs<c- o>:</c-> <c- mi>3</c-> <c- p>},</c->
+   <c- p>{</c-> name<c- o>:</c-> <c- t>'Hedral'</c-><c- p>,</c-> color<c- o>:</c-> <c- t>'Tuxedo'</c-><c- p>,</c-> sex<c- o>:</c-> <c- t>'Male (neutered)'</c-><c- p>,</c-> legs<c- o>:</c-> <c- mi>4</c-> <c- p>},</c->
  <c- p>];</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c->
 <c- p>&lt;</c-><c- f>table</c-><c- p>&gt;</c->
@@ -1308,11 +1308,11 @@ console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
   <c- p>&lt;/</c-><c- f>template</c-><c- p>&gt;</c->
 <c- p>&lt;/</c-><c- f>table</c-><c- p>&gt;</c->
 <c- p>&lt;</c-><c- f>script</c-><c- p>&gt;</c->
- <c- a>var</c-> template <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- t>&amp;apos;#row&amp;apos;</c-><c- p>);</c->
+ <c- a>var</c-> template <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- t>'#row'</c-><c- p>);</c->
  <c- k>for</c-> <c- p>(</c-><c- a>var</c-> i <c- o>=</c-> <c- mi>0</c-><c- p>;</c-> i <c- o>&lt;</c-> data<c- p>.</c->length<c- p>;</c-> i <c- o>+=</c-> <c- mi>1</c-><c- p>)</c-> <c- p>{</c->
    <c- a>var</c-> cat <c- o>=</c-> data<c- p>[</c->i<c- p>];</c->
    <c- a>var</c-> clone <c- o>=</c-> template<c- p>.</c->content<c- p>.</c->cloneNode<c- p>(</c-><c- kc>true</c-><c- p>);</c->
-   <c- a>var</c-> cells <c- o>=</c-> clone<c- p>.</c->querySelectorAll<c- p>(</c-><c- t>&amp;apos;td&amp;apos;</c-><c- p>);</c->
+   <c- a>var</c-> cells <c- o>=</c-> clone<c- p>.</c->querySelectorAll<c- p>(</c-><c- t>'td'</c-><c- p>);</c->
    cells<c- p>[</c-><c- mi>0</c-><c- p>].</c->textContent <c- o>=</c-> cat<c- p>.</c->name<c- p>;</c->
    cells<c- p>[</c-><c- mi>1</c-><c- p>].</c->textContent <c- o>=</c-> cat<c- p>.</c->color<c- p>;</c->
    cells<c- p>[</c-><c- mi>2</c-><c- p>].</c->textContent <c- o>=</c-> cat<c- p>.</c->sex<c- p>;</c->
