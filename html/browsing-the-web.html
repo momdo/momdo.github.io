@@ -167,7 +167,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>19 September 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>8 October 2018</span></h2></hgroup>
    
    
 
@@ -393,52 +393,63 @@
    object</a>'s <a href=webappapis.html#concept-environment-id id=navigating-across-documents:concept-environment-id>id</a>.</li><li><p>If <var>browsingContext</var> is a <a id=navigating-across-documents:child-browsing-context href=browsers.html#child-browsing-context>child browsing context</a> and the
    <a id=navigating-across-documents:browsing-context-container href=browsers.html#browsing-context-container>browsing context container</a> of <var>browsingContext</var> has a <a id=navigating-across-documents:browsing-context-scope-origin href=browsers.html#browsing-context-scope-origin>browsing
    context scope origin</a>, then set <var>request</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-origin id=navigating-across-documents:concept-request-origin data-x-internal=concept-request-origin>origin</a> to that <a id=navigating-across-documents:browsing-context-scope-origin-2 href=browsers.html#browsing-context-scope-origin>browsing context scope
-   origin</a>.</li><li>
-    <p>Create a new <a id=navigating-across-documents:environment href=webappapis.html#environment>environment</a> <var>reservedEnvironment</var>, and set its <a href=webappapis.html#concept-environment-id id=navigating-across-documents:concept-environment-id-2>id</a> to a new unique opaque string, its <a href=webappapis.html#concept-environment-creation-url id=navigating-across-documents:concept-environment-creation-url>creation URL</a> to <var>request</var>'s
-    <a id=navigating-across-documents:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>url</a>, and its <a href=webappapis.html#concept-environment-target-browsing-context id=navigating-across-documents:concept-environment-target-browsing-context>target
-    browsing context</a> to <var>browsingContext</var>.</p>
+   origin</a>.</li><li><p>Let <var>done</var> be false and <var>reservedEnvironment</var> be null.</li><li>
+    <p>While <var>done</var> is false:</p>
 
-    <p class=note>The created environment's <a href=webappapis.html#concept-environment-active-service-worker id=navigating-across-documents:concept-environment-active-service-worker>active service worker</a> is set in the
-    <a href=https://w3c.github.io/ServiceWorker/#on-fetch-request-algorithm id=navigating-across-documents:on-fetch-request-algorithm data-x-internal=on-fetch-request-algorithm>handle fetch</a> algorithm during the fetch if its
-    <a href=webappapis.html#concept-environment-creation-url id=navigating-across-documents:concept-environment-creation-url-2>creation URL</a> matches a service worker
-    registration. <a href=references.html#refsSW>[SW]</a></p>
-   </li><li><p>Set <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-reserved-client id=navigating-across-documents:concept-request-reserved-client data-x-internal=concept-request-reserved-client>reserved
-   client</a> to <var>reservedEnvironment</var>.</li><li>
-    <p>If the <a id=navigating-across-documents:should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy-2 href=https://triple-underscore.github.io/CSP3-ja.html#should-block-navigation-request data-x-internal=should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy>Should navigation request of type from source in target be blocked by Content
-    Security Policy?</a> algorithm returns "<code>Blocked</code>" when executed upon
-    <var>request</var>, <var>navigationType</var>, <var>sourceBrowsingContext</var>, and
-    <var>browsingContext</var>, then set <var>response</var> to a network error.
-    <a href=references.html#refsCSP>[CSP]</a></p>
+    <ol><li><p>Let <var>currentURL</var> be <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url data-x-internal=concept-response-location-url>location URL</a>, if <var>response</var> is not null,
+     and <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-current-url id=navigating-across-documents:concept-request-current-url data-x-internal=concept-request-current-url>current URL</a>
+     otherwise.</li><li>
+      <p>If <var>reservedEnvironment</var> is not null and <var>currentURL</var>'s
+      <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=navigating-across-documents:concept-url-origin data-x-internal=concept-url-origin>origin</a> is not the <a href=origin.html#same-origin id=navigating-across-documents:same-origin-3>same</a> as <var>reservedEnvironment</var>'s <a href=webappapis.html#concept-environment-creation-url id=navigating-across-documents:concept-environment-creation-url>creation URL</a>'s <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-origin id=navigating-across-documents:concept-url-origin-2 data-x-internal=concept-url-origin>origin</a>, then:</p>
 
-    <p>Otherwise:</p>
+      <ol><li><p>Run the <a id=navigating-across-documents:environment-discarding-steps href=webappapis.html#environment-discarding-steps>environment discarding steps</a> for
+       <var>reservedEnvironment</var>.</li><li><p>Set <var>reservedEnvironment</var> to null.</li></ol>
+     </li><li><p>If <var>reservedEnvironment</var> is null, then set <var>reservedEnvironment</var> to a
+     new <a id=navigating-across-documents:environment href=webappapis.html#environment>environment</a> whose <a href=webappapis.html#concept-environment-id id=navigating-across-documents:concept-environment-id-2>id</a> is a
+     unique opaque string and <a href=webappapis.html#concept-environment-target-browsing-context id=navigating-across-documents:concept-environment-target-browsing-context>target browsing context</a> is
+     <var>browsingContext</var>.</li><li>
+      <p>Set <var>reservedEnvironment</var>'s <a href=webappapis.html#concept-environment-creation-url id=navigating-across-documents:concept-environment-creation-url-2>creation URL</a> to <var>currentURL</var>.</p>
 
-    <ol><li><p><a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=navigating-across-documents:concept-fetch-2 data-x-internal=concept-fetch>Fetch</a> <var>request</var>.</li><li><p>Wait for the <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-2>task</a> on the <a id=navigating-across-documents:networking-task-source href=webappapis.html#networking-task-source>networking task
-     source</a> to <a id=navigating-across-documents:process-response href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> and set <var>response</var> to the
-     result.</li></ol>
-   </li><li id=navigate-redirect-step>
-    <p>If <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url data-x-internal=concept-response-location-url>location URL</a>
-    and it is either failure or a <a id=navigating-across-documents:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is an <a id=navigating-across-documents:http(s)-scheme href=https://fetch.spec.whatwg.org/#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, then set
-    <var>response</var> to the result of performing <a id=navigating-across-documents:http-redirect-fetch href=https://triple-underscore.github.io/Fetch-ja.html#concept-http-redirect-fetch data-x-internal=http-redirect-fetch>HTTP-redirect fetch</a> using
-    <var>request</var> and <var>response</var> and then run this step again.</p>
+      <p class=note>The created environment's <a href=webappapis.html#concept-environment-active-service-worker id=navigating-across-documents:concept-environment-active-service-worker>active service worker</a> is set in the
+      <a href=https://w3c.github.io/ServiceWorker/#on-fetch-request-algorithm id=navigating-across-documents:on-fetch-request-algorithm data-x-internal=on-fetch-request-algorithm>Handle Fetch</a> algorithm during the fetch if
+      the request URL matches a service worker registration. <a href=references.html#refsSW>[SW]</a></p>
+     </li><li><p>Set <var>request</var>'s <a href=https://fetch.spec.whatwg.org/#concept-request-reserved-client id=navigating-across-documents:concept-request-reserved-client data-x-internal=concept-request-reserved-client>reserved
+     client</a> to <var>reservedEnvironment</var>.</li><li><p>If the <a id=navigating-across-documents:should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy-2 href=https://triple-underscore.github.io/CSP3-ja.html#should-block-navigation-request data-x-internal=should-navigation-request-of-type-from-source-in-target-be-blocked-by-content-security-policy>Should navigation request of type from source in target be blocked by
+     Content Security Policy?</a> algorithm returns "<code>Blocked</code>" when
+     executed upon <var>request</var>, <var>navigationType</var>, <var>sourceBrowsingContext</var>,
+     and <var>browsingContext</var>, then set <var>response</var> to a <a id=navigating-across-documents:network-error href=https://triple-underscore.github.io/Fetch-ja.html#concept-network-error data-x-internal=network-error>network error</a>
+     and set <var>done</var> to true. <a href=references.html#refsCSP>[CSP]</a></li><li>
+      <p>Otherwise:</p>
 
-    <p class=note>Navigation handles redirects manually as navigation is the only place in the web
-    platform that cares for redirects to <code id=navigating-across-documents:mailto-protocol><a data-x-internal=mailto-protocol href=https://tools.ietf.org/html/rfc6068#section-2>mailto:</a></code> URLs and
-    such.</p>
-   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-2 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-5 data-x-internal=concept-url-scheme>scheme</a> is "<code>blob</code>", "<code>file</code>", "<code>filesystem</code>", or "<code>javascript</code>", then set <var>response</var> to a network error.</li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-3 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-6 data-x-internal=concept-url-scheme>scheme</a> is a <a id=navigating-across-documents:fetch-scheme-3 href=https://fetch.spec.whatwg.org/#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a>, then run
+      <ol><li><p>If <var>response</var> is null, <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-fetch id=navigating-across-documents:concept-fetch-2 data-x-internal=concept-fetch>fetch</a> <var>request</var>.</li><li><p>Otherwise, perform <a id=navigating-across-documents:http-redirect-fetch href=https://triple-underscore.github.io/Fetch-ja.html#concept-http-redirect-fetch data-x-internal=http-redirect-fetch>HTTP-redirect fetch</a> using
+       <var>request</var> and <var>response</var>.</li><li><p>Wait for the <a href=webappapis.html#concept-task id=navigating-across-documents:concept-task-2>task</a> on the <a id=navigating-across-documents:networking-task-source href=webappapis.html#networking-task-source>networking task
+       source</a> to <a id=navigating-across-documents:process-response href=https://triple-underscore.github.io/Fetch-ja.html#process-response data-x-internal=process-response>process response</a> and set <var>response</var> to the
+       result.</li><li>
+        <p>If <var>response</var> does not have a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-2 data-x-internal=concept-response-location-url>location URL</a> or the <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-3 data-x-internal=concept-response-location-url>location URL</a> is not a <a id=navigating-across-documents:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose
+        <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-4 data-x-internal=concept-url-scheme>scheme</a> is an <a id=navigating-across-documents:http(s)-scheme href=https://fetch.spec.whatwg.org/#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>,
+        then set <var>done</var> to true.</p>
+
+        <p class=note>Navigation handles redirects manually as navigation is the only place in
+        the web platform that cares for redirects to <code id=navigating-across-documents:mailto-protocol><a data-x-internal=mailto-protocol href=https://tools.ietf.org/html/rfc6068#section-2>mailto:</a></code>
+        URLs and such.</p>
+       </li></ol>
+     </li></ol>
+   </li><li><p>If <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-4 data-x-internal=concept-response-location-url>location URL</a>
+   is failure, then set <var>response</var> to a <a id=navigating-across-documents:network-error-2 href=https://triple-underscore.github.io/Fetch-ja.html#concept-network-error data-x-internal=network-error>network error</a>.</li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-5 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-3 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-5 data-x-internal=concept-url-scheme>scheme</a> is "<code>blob</code>", "<code>file</code>", "<code>filesystem</code>", or "<code>javascript</code>", then set <var>response</var> to a network error.</li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-6 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-4 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> whose <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-scheme id=navigating-across-documents:concept-url-scheme-6 data-x-internal=concept-url-scheme>scheme</a> is a <a id=navigating-across-documents:fetch-scheme-3 href=https://fetch.spec.whatwg.org/#fetch-scheme data-x-internal=fetch-scheme>fetch scheme</a>, then run
    <a href=#process-a-navigate-fetch id=navigating-across-documents:process-a-navigate-fetch-2>process a navigate fetch</a> with a new <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request id=navigating-across-documents:concept-request-8 data-x-internal=concept-request>request</a>
-   whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-9 data-x-internal=concept-request-url>url</a> is <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-4 data-x-internal=concept-response-location-url>location URL</a>, <var>sourceBrowsingContext</var>,
+   whose <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-request-url id=navigating-across-documents:concept-request-url-9 data-x-internal=concept-request-url>url</a> is <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-7 data-x-internal=concept-response-location-url>location URL</a>, <var>sourceBrowsingContext</var>,
    <var>browsingContext</var>, and <var>navigationType</var>.
 
    
 
-   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-5 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-6 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, run the
-   <a href=#process-a-navigate-url-scheme id=navigating-across-documents:process-a-navigate-url-scheme-2>process a navigate URL scheme</a> given <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-6 data-x-internal=concept-response-location-url>location URL</a> and
+   </li><li><p>Otherwise, if <var>response</var> has a <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-8 data-x-internal=concept-response-location-url>location URL</a> that is a <a id=navigating-across-documents:url-5 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>, run the
+   <a href=#process-a-navigate-url-scheme id=navigating-across-documents:process-a-navigate-url-scheme-2>process a navigate URL scheme</a> given <var>response</var>'s <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-location-url id=navigating-across-documents:concept-response-location-url-9 data-x-internal=concept-response-location-url>location URL</a> and
    <var>browsingContext</var>.</li><li>
 
     <p><strong>Fallback in prefer-online mode</strong>: If <var>response</var> was not fetched from
     an <a id=navigating-across-documents:application-cache-2 href=offline.html#application-cache>application cache</a>, and was to be fetched using `<code>GET</code>`, and
     there are <a href=offline.html#relevant-application-cache id=navigating-across-documents:relevant-application-cache-2>relevant application caches</a> that are
-    identified by a URL with the <a id=navigating-across-documents:same-origin-3 href=origin.html#same-origin>same origin</a> as the URL in question, and that have this
+    identified by a URL with the <a id=navigating-across-documents:same-origin-4 href=origin.html#same-origin>same origin</a> as the URL in question, and that have this
     URL as one of their entries, excluding entries marked as <a href=offline.html#concept-appcache-foreign id=navigating-across-documents:concept-appcache-foreign-2>foreign</a>, and whose <a href=offline.html#concept-appcache-mode id=navigating-across-documents:concept-appcache-mode-2>mode</a> is <a href=offline.html#concept-appcache-mode-prefer-online id=navigating-across-documents:concept-appcache-mode-prefer-online>prefer-online</a>, and the user didn't cancel
     the navigation attempt during the earlier step, and <var>response</var> is either a network
     error or its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=navigating-across-documents:concept-response-status-2 data-x-internal=concept-response-status>status</a> is not an <a id=navigating-across-documents:ok-status href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok
@@ -461,7 +472,7 @@
     of one or more <a href=offline.html#relevant-application-cache id=navigating-across-documents:relevant-application-cache-3>relevant application caches</a>, and
     the <a href=offline.html#concept-appcache-selection id=navigating-across-documents:concept-appcache-selection-3>most appropriate application cache</a> of those
     that match does not have an entry in its <a href=offline.html#concept-appcache-onlinesafelist id=navigating-across-documents:concept-appcache-onlinesafelist>online
-    safelist</a> that has the <a id=navigating-across-documents:same-origin-4 href=origin.html#same-origin>same origin</a> as <var>response</var>'s URL and that is a
+    safelist</a> that has the <a id=navigating-across-documents:same-origin-5 href=origin.html#same-origin>same origin</a> as <var>response</var>'s URL and that is a
     <a id=navigating-across-documents:prefix-match href=infrastructure.html#prefix-match>prefix match</a> for <var>response</var>'s URL, and the user didn't cancel the
     navigation attempt during the earlier step, and <var>response</var> is either a network error or
     its <a href=https://triple-underscore.github.io/Fetch-ja.html#concept-response-status id=navigating-across-documents:concept-response-status-3 data-x-internal=concept-response-status>status</a> is not an <a id=navigating-across-documents:ok-status-2 href=https://triple-underscore.github.io/Fetch-ja.html#ok-status data-x-internal=ok-status>ok status</a>,
@@ -492,7 +503,7 @@
   <ol><li>
     <p>If any of the following are true, then <a href=#read-ua-inline id=navigating-across-documents:read-ua-inline>display the inline
     content with an appropriate error shown to the user</a>, with the newly created
-    <code id=navigating-across-documents:document-3><a href=dom.html#document>Document</a></code> object's <a id=navigating-across-documents:concept-origin-3 href=origin.html#concept-origin>origin</a> set to a new <a href=origin.html#concept-origin-opaque id=navigating-across-documents:concept-origin-opaque>opaque origin</a>, run the <a href=webappapis.html#environment-discarding-steps id=navigating-across-documents:environment-discarding-steps>environment discarding steps</a> for <var>reservedEnvironment</var>, and
+    <code id=navigating-across-documents:document-3><a href=dom.html#document>Document</a></code> object's <a id=navigating-across-documents:concept-origin-3 href=origin.html#concept-origin>origin</a> set to a new <a href=origin.html#concept-origin-opaque id=navigating-across-documents:concept-origin-opaque>opaque origin</a>, run the <a href=webappapis.html#environment-discarding-steps id=navigating-across-documents:environment-discarding-steps-2>environment discarding steps</a> for <var>reservedEnvironment</var>, and
     return.</p>
 
     <ul><li><p><var>response</var> is a network error.</li><li><p class=XXX>TODO: Define <code>X-Frame-Options</code>
@@ -540,7 +551,7 @@
     the user agent has a dedicated handler.</p>
 
     <p><dfn id="set-the-document's-address">Setting the document's address</dfn>: Any
-    <code id=navigating-across-documents:document-4><a href=dom.html#document>Document</a></code> created by these steps must have its <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-4" data-x-internal="the-document's-address">URL</a> set to the <a id=navigating-across-documents:url-7 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that was originally to be
+    <code id=navigating-across-documents:document-4><a href=dom.html#document>Document</a></code> created by these steps must have its <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-4" data-x-internal="the-document's-address">URL</a> set to the <a id=navigating-across-documents:url-6 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that was originally to be
     fetched, ignoring any other data that was used to obtain the resource.</p>
 
     <p><dfn id=initialise-the-document-object data-export="">Initializing a new <code>Document</code> object</dfn>: when a
@@ -550,7 +561,7 @@
     <ol><li><p>If <var>browsingContext</var>'s only entry in its <a id=navigating-across-documents:session-history href=history.html#session-history>session history</a> is the
      <code id=navigating-across-documents:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code id=navigating-across-documents:document-6><a href=dom.html#document>Document</a></code> that was added when <var>browsingContext</var>
      was <a href=browsers.html#creating-a-new-browsing-context id=navigating-across-documents:creating-a-new-browsing-context>created</a>, and navigation is occurring
-     with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled-3>replacement enabled</a>, and that <code id=navigating-across-documents:document-7><a href=dom.html#document>Document</a></code> has the <a id=navigating-across-documents:same-origin-5 href=origin.html#same-origin>same
+     with <a href=#replacement-enabled id=navigating-across-documents:replacement-enabled-3>replacement enabled</a>, and that <code id=navigating-across-documents:document-7><a href=dom.html#document>Document</a></code> has the <a id=navigating-across-documents:same-origin-6 href=origin.html#same-origin>same
      origin</a> as the new <code id=navigating-across-documents:document-8><a href=dom.html#document>Document</a></code>, then do nothing.</li><li>
       <p>Otherwise:</p>
 
@@ -585,7 +596,7 @@
        context container</a>'s <a id=navigating-across-documents:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>, then its <a id=navigating-across-documents:concept-origin-5 href=origin.html#concept-origin>origin</a> cannot be
        <a id=navigating-across-documents:same-origin-domain href=origin.html#same-origin-domain>same origin-domain</a> with <var>document</var>'s <a id=navigating-across-documents:concept-origin-6 href=origin.html#concept-origin>origin</a>, because these
        steps run when <var>document</var> is initialized, so it cannot itself yet have used <code id=navigating-across-documents:dom-document-domain-2><a href=origin.html#dom-document-domain>document.domain</a></code>. Note that this means that Feature Policy
-       checks are less permissive compared to doing a <a id=navigating-across-documents:same-origin-6 href=origin.html#same-origin>same origin</a> check instead.</p>
+       checks are less permissive compared to doing a <a id=navigating-across-documents:same-origin-7 href=origin.html#same-origin>same origin</a> check instead.</p>
 
        <div class=example>
          <p>In this example, the child document is not allowed to use <code id=navigating-across-documents:paymentrequest><a data-x-internal=paymentrequest href=https://w3c.github.io/payment-request/#dom-paymentrequest>PaymentRequest</a></code>,
@@ -612,7 +623,7 @@
 	 <code id=navigating-across-documents:paymentrequest-2><a data-x-internal=paymentrequest href=https://w3c.github.io/payment-request/#dom-paymentrequest>PaymentRequest</a></code>, despite not being <a id=navigating-across-documents:same-origin-domain-3 href=origin.html#same-origin-domain>same origin-domain</a> at the time
 	 the child document tries to use it. At the time the child document is initialized, none of
 	 the documents have set <code id=navigating-across-documents:dom-document-domain-4><a href=origin.html#dom-document-domain>document.domain</a></code> yet so
-	 <a id=navigating-across-documents:same-origin-domain-4 href=origin.html#same-origin-domain>same origin-domain</a> falls back to a normal <a id=navigating-across-documents:same-origin-7 href=origin.html#same-origin>same origin</a> check.</p>
+	 <a id=navigating-across-documents:same-origin-domain-4 href=origin.html#same-origin-domain>same origin-domain</a> falls back to a normal <a id=navigating-across-documents:same-origin-8 href=origin.html#same-origin>same origin</a> check.</p>
 
          <pre><code class='html'><c- c>&lt;!-- https://example.com/a.html --&gt;</c->
 <c- cp>&lt;!doctype html&gt;</c->
@@ -643,7 +654,7 @@
 
   </li></ol>
 
-  <p>To <dfn id=process-a-navigate-url-scheme>process a navigate URL scheme</dfn>, given a <a id=navigating-across-documents:url-8 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> <var>url</var> and
+  <p>To <dfn id=process-a-navigate-url-scheme>process a navigate URL scheme</dfn>, given a <a id=navigating-across-documents:url-7 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> <var>url</var> and
   <a id=navigating-across-documents:browsing-context-8 href=browsers.html#browsing-context>browsing context</a> <var>browsingContext</var>, run these steps:</p>
 
   <ol><li><p>If <var>url</var> is to be handled using a mechanism that does not affect
@@ -695,7 +706,7 @@
       <ol><li><p>Replace the <code id=navigating-across-documents:document-18><a href=dom.html#document>Document</a></code> of the entry being updated, and any other entries
        that referenced the same document as that entry, with the new <code id=navigating-across-documents:document-19><a href=dom.html#document>Document</a></code>.</li><li><p><a href=#traverse-the-history id=navigating-across-documents:traverse-the-history>Traverse the history</a> to the new entry.</li></ol>
 
-     <dt>If the navigation was initiated with a <a id=navigating-across-documents:url-9 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-equals id=navigating-across-documents:concept-url-equals-2 data-x-internal=concept-url-equals>equals</a> the <a id=navigating-across-documents:browsing-context-9 href=browsers.html#browsing-context>browsing context</a>'s <a id=navigating-across-documents:active-document-13 href=browsers.html#active-document>active
+     <dt>If the navigation was initiated with a <a id=navigating-across-documents:url-8 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a> that <a href=https://triple-underscore.github.io/URL-ja.html#concept-url-equals id=navigating-across-documents:concept-url-equals-2 data-x-internal=concept-url-equals>equals</a> the <a id=navigating-across-documents:browsing-context-9 href=browsers.html#browsing-context>browsing context</a>'s <a id=navigating-across-documents:active-document-13 href=browsers.html#active-document>active
      document</a>'s <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="navigating-across-documents:the-document's-address-5" data-x-internal="the-document's-address">URL</a><dd>
       <ol><li><p>Replace the <a id=navigating-across-documents:current-entry-3 href=history.html#current-entry>current entry</a> with a new entry representing the new resource
        and its <code id=navigating-across-documents:document-20><a href=dom.html#document>Document</a></code> object, related state, and the default <a id=navigating-across-documents:scroll-restoration-mode href=history.html#scroll-restoration-mode>scroll restoration
@@ -1272,7 +1283,7 @@
   
 
 
-  <h5 id=the-hashchangeevent-interface><span class=secno>7.8.10.3</span> The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hashchange<span class="and_chr yes"><span>Chrome for Android</span> <span>67+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=hashchange">caniuse.com</a></div>
+  <h5 id=the-hashchangeevent-interface><span class=secno>7.8.10.3</span> The <code id=the-hashchangeevent-interface:hashchangeevent><a href=#hashchangeevent>HashChangeEvent</a></code> interface<a href=#the-hashchangeevent-interface class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> hashchange<span class="and_chr yes"><span>Chrome for Android</span> <span>69+</span></span><span class="chrome yes"><span>Chrome</span> <span>5+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>4.0+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.6+</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>5+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.2+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=hashchange">caniuse.com</a></div>
 
   <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->,
  <c- g>Constructor</c->(<c- b>DOMString</c-> <c- g>type</c->, <c- b>optional</c-> <a href='#hashchangeeventinit' id='the-hashchangeevent-interface:hashchangeeventinit'><c- n>HashChangeEventInit</c-></a> <c- g>eventInitDict</c->)]
