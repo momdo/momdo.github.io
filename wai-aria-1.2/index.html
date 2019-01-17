@@ -12181,69 +12181,66 @@ h6>a.self-link::before {
 	<h2 id="x9-handling-author-errors"><span class="secno">9. </span>著者エラーを処理する<a class="self-link" aria-label="§" href="#document-handling_author-errors"></a></h2>
 	<section id="document-handling_author-errors_roles">
 		<h3 id="x9-1-roles"><span class="secno">9.1</span> ロール<a class="self-link" aria-label="§" href="#document-handling_author-errors_roles"></a></h3>
-		<p>User agents are expected to perform validation of <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> <a href="#dfn-role" class="internalDFN" data-link-type="dfn">roles</a>.</p>
-		<p>As stated in the <a href="#role_definitions">Definition of Roles</a> section, it is considered an authoring error to use <a href="#abstract_roles">abstract roles</a> in content. User agents <em class="rfc2119" title="MUST NOT">MUST NOT</em> map abstract roles via the standard role mechanism of the accessibility <abbr title="application programming interface">API</abbr>.</p>
-		<p>If the <code>role</code> attribute contains no tokens matching the name of a non-abstract <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> role, the user agent <em class="rfc2119" title="MUST">MUST</em> treat the element as if no <a href="#dfn-role" class="internalDFN" data-link-type="dfn">role</a> had been provided. For example, <code>&lt;table&nbsp;role="foo"&gt;</code> should be exposed in the same way as <code>&lt;table&gt;</code> and <code>&lt;input&nbsp;type="text"&nbsp;role="structure"&gt;</code> in the same way as <code>&lt;input&nbsp;type="text"&gt;</code>.</p>
+		<p>ユーザーエージェントは<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr><a href="#dfn-role" class="internalDFN" data-link-type="dfn">ロール</a>の検証を実行することが期待される。</p>
+		<p><a href="#role_definitions">ロールの定義</a>の節で述べたように、コンテンツで<a href="#abstract_roles">抽象ロール</a>を使用することはオーサリングエラーと見なされる。ユーザーエージェントは、アクセシビリティ<abbr title="application programming interface">API</abbr>の標準的なロールメカニズムを介して抽象ロールをマッピング<em class="rfc2119" title="MUST NOT">してはならない</em>。</p>
+		<p><code>role</code>属性が非抽象<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>ロールの名前に一致するトークンを含まない場合、ユーザーエージェントはあたかも<a href="#dfn-role" class="internalDFN" data-link-type="dfn">ロール</a>が提供されなかったかのように要素を扱わ<em class="rfc2119" title="MUST">なければならない</em>。たとえば、<code>&lt;table&nbsp;role="foo"&gt;</code>は<code>&lt;table&gt;</code>と同じ方法で、<code>&lt;input&nbsp;type="text"&nbsp;role="structure"&gt;</code>は<code>&lt;input&nbsp;type="text"&gt;</code>と同じ方法で公開すべきである。</p>
 	</section>
 	<section id="document-handling_author-errors_states-properties">
 		<h3 id="x9-2-states-and-properties"><span class="secno">9.2</span> ステートおよびプロパティ<a class="self-link" aria-label="§" href="#document-handling_author-errors_states-properties"></a></h3>
-			<p>In general, <a href="#dfn-user-agent" class="internalDFN" data-link-type="dfn">user agents</a> do not do much validation of <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> <a class="termref internalDFN" href="#dfn-property" data-link-type="dfn">properties</a>. User agents <em class="rfc2119" title="MAY">MAY</em> do some minor validation on request, such as making sure <a data-lt="valid idref" href="#dfn-valid-idref" class="internalDFN" data-link-type="dfn">valid IDs</a> are specified for <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> relations, and enforcing things like <a href="#aria-posinset" class="property-reference"><code>aria-posinset</code></a> being within 1 and <a href="#aria-setsize" class="property-reference"><code>aria-setsize</code></a>, inclusive. User agents are not  responsible for logical validation, such as the following:</p>
+			<p>一般に、<a href="#dfn-user-agent" class="internalDFN" data-link-type="dfn">ユーザーエージェント</a>は<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr><a class="termref internalDFN" href="#dfn-property" data-link-type="dfn">プロパティ</a>の検証をあまり行わない。ユーザーエージェントは、<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>リレーションに対して<a data-lt="valid idref" href="#dfn-valid-idref" class="internalDFN" data-link-type="dfn">妥当ななID</a>が指定されていることを確認したり、<a href="#aria-posinset" class="property-reference"><code>aria-posinset</code></a>が1と<a href="#aria-setsize" class="property-reference"><code>aria-setsize</code></a>の範囲内にあるようなものを強制したりするなど、要求に応じていくつかの小さな検証を行っても<em class="rfc2119" title="MAY">よい</em>。ユーザーエージェントは、次のような論理的な検証には責任を負わない：</p>
 				<ol>
-					<li>Circular references created by relations, such as specifying that two <a href="#dfn-element" class="internalDFN" data-link-type="dfn">elements</a> own each other.  </li>
-					<li>Correct usage with regard to <abbr title="Document Object Model">DOM</abbr> tree structure, such as an <a href="#aria-activedescendant" class="property-reference"><code>aria-activedescendant</code></a> being a <abbr title="Document Object Model">DOM</abbr>-descendant of the element with the  relation.</li>
-					<li>Elements with <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> <a href="#dfn-role" class="internalDFN" data-link-type="dfn">roles</a> correctly implement the  behavior of the specified role. For example, user agents do not verify that an element with a role of <a href="#checkbox" class="role-reference"><code>checkbox</code></a> actually behaves like a checkbox.</li>
-					<li>Elements that do not correctly observe required child / parent role relationships or that appear elsewhere than in their required parent.</li>
-					<li>Determining whether <code>aria-activedescendant</code> actually points to a descendant or another owned element.</li>
-					<li>Determining implicit values of <code>aria-setsize</code> and <code>aria-posinset</code> when they are specified on some but not all the elements of the set.</li>
+					<li>2つの<a href="#dfn-element" class="internalDFN" data-link-type="dfn">要素</a>が互いに所有していることを指定するなどの、関係によって作成された循環参照。 </li>
+					<li>リレーションを持つ要素の<abbr title="Document Object Model">DOM</abbr>子孫である<a href="#aria-activedescendant" class="property-reference"><code>aria-activedescendant</code></a>など、<abbr title="Document Object Model">DOM</abbr>ツリー構造に関する正しい使い方。</li>
+					<li><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr><a href="#dfn-role" class="internalDFN" data-link-type="dfn">ロール</a>をもつ要素は、指定されたロールの振る舞いを正しく実装する。たとえば、ユーザーエージェントは、<a href="#checkbox" class="role-reference"><code>checkbox</code></a>のロールをもつ要素が実際にチェックボックスのように振る舞うことを検証しない。</li>
+					<li>必要な子と親のロールの関係を正しく遵守しない要素、または必要な親以外の場所にある要素。</li>
+					<li><code>aria-activedescendant</code>が実際に子孫を指しているか、別の所有要素を指しているのかどうかを判断する。</li>
+					<li><code>aria-setsize</code>および<code>aria-posinset</code>の暗黙的な値を、セットのすべての要素ではなく一部の要素で指定されているときに指定する。</li>
 				</ol>
-			<p>If the author specifies a non-numeric value for a decimal or integer value type, the user agent <em class="rfc2119" title="SHOULD">SHOULD</em> do the following:</p>
+			<p>著者が10進数または整数値型に非数値を指定した場合、ユーザーエージェントは以下を実行<em class="rfc2119" title="SHOULD">すべき</em>である：</p>
 				<ul>
-				<li>When asked for the string version of the property, return the string if specified by the author.</li>
-				<li>When asked for the numeric version:
-					
+				<li>プロパティの文字列バージョンを求められたとき、著者によって指定される場合に文字列を返す。</li>
+				<li>数値バージョンを求められたとき：
 					<ul>
-					<li>Follow the guidance in the <a href="#authorErrorDefaultValuesTable">Fallback values for missing required attributes</a> table below, if applicable.  </li>
-					<li>Otherwise, return a fallback value of 0.0 for decimal value types and 0 for integer value types.  </li>
+					<li>該当する場合、下記表の<a href="#authorErrorDefaultValuesTable">必須属性の欠落に関するフォールバック値</a>のガイダンスに従う。 </li>
+					<li>そうでなければ、10進数値型の場合は0.0、整数値型の場合は0のフォールバック値を返す。 </li>
 					</ul>
 				</li>
 				</ul>
-			<p>If a <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> property contains an unknown or disallowed value, the user agent <em class="rfc2119" title="SHOULD">SHOULD</em> expose to platform <a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">accessibility <abbr title="Application Programing Interfaces">APIs</abbr></a> as follows:</p>
+			<p><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>プロパティが未知または許可されていない値を含む場合、ユーザーエージェントは次のようにプラットフォーム<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">アクセシビリティ<abbr title="Application Programing Interfaces">API</abbr></a>に公開<em class="rfc2119" title="SHOULD">すべきである</em>：</p>
 			<ul>
-				<li>When exposing as a platform accessibility <abbr title="application programming interface">API</abbr> attribute, expose the unknown value — do not vet it against possible values.  </li>
-				<li>  When exposing as a platform <abbr title="application programming interface">API</abbr> Boolean state:
-				
+				<li>プラットフォームアクセシビリティ<abbr title="application programming interface">API</abbr>属性として公開する場合、未知の値を公開する。可能な値に対して調査しない。 </li>
+				<li> プラットフォーム<abbr title="application programming interface">API</abbr>真偽状態として公開する場合：
 				<ul>
-					<li>For values of "" (empty string),  "undefined" or no <a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">attribute</a> present:
-					
+					<li>""（空文字列）、"undefined"、または<a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>が存在しない値の場合：
 					<ul>
-						<li>Follow the guidance in the <a href="#authorErrorDefaultValuesTable">Fallback values for missing required attributes</a> table below, if applicable.  </li>
-						<li>Otherwise, treat as false.  </li>
+						<li>該当する場合、下記表の<a href="#authorErrorDefaultValuesTable">必須属性の欠落に関するフォールバック値</a>のガイダンスに従う。 </li>
+						<li>そうでなければ、偽として扱う。 </li>
 					</ul>
 					</li>
-					<li>Treat any other value as true.</li>
+					<li>その他の値はすべてtrueとして扱う。</li>
 				</ul>
 				</li>
-				<li>Otherwise, ignore the value and treat the property as not present.</li>
+				<li>そうでなければ、値を無視してプロパティを存在しないものとして扱う。</li>
 			</ul>
-			<div class="note" id="issue-container-generatedID-60"><div role="heading" class="note-title marker" id="h-note-62" aria-level="4"><span>注</span></div><p class="">In <abbr title="User Interface Automation">UIA</abbr>, the user agent might leave the corresponding property set to "unsupported."</p></div>
-			<p>User agents <em class="rfc2119" title="MUST NOT">MUST NOT</em> expose <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> attributes that reference unresolved IDs. たとえば：</p>
+			<div class="note" id="issue-container-generatedID-60"><div role="heading" class="note-title marker" id="h-note-62" aria-level="4"><span>注</span></div><p class=""><abbr title="User Interface Automation">UIA</abbr>において、ユーザーエージェントは対応するプロパティを"unsupported"に設定したままにするかもしれない。</p></div>
+			<p>ユーザーエージェントは、未解決のIDを参照する<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>属性を公開<em class="rfc2119" title="MUST NOT">してはならない</em>。たとえば：</p>
 			<ul>
-				<li>When the state or property has only one ID reference that cannot be resolved, treat as if the state or property is not present.</li>
-				<li>When the state or property has a list of ID references, ignore any that can't be resolved. If none in the list can be resolved, treat as if the state or property is not present.</li>
+				<li>ステートまたはプロパティが解決できないID参照を1つしか持たない場合、あたかもステートまたはプロパティが存在しないものかのように扱う。</li>
+				<li>ステートまたはプロパティがID参照のリストを持つ場合、解決できないものはすべて無視する。リスト内で何も解決できない場合、あたかもステートまたはプロパティが存在しないかのように扱う。</li>
 			</ul>
-			<p>User Agents <em class="rfc2119" title="MUST NOT">MUST NOT</em> expose <a href="#aria-roledescription" class="property-reference"><code>aria-roledescription</code></a> when:  </p>
+			<p>ユーザーエージェントは、次の場合に<a href="#aria-roledescription" class="property-reference"><code>aria-roledescription</code></a>を公開<em class="rfc2119" title="MUST NOT">してはならない</em>： </p>
 				<ul>
-					<li>The element it is applied to has an invalid <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> role, or</li>
-					<li>The element does not have an implicit <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> role</li>
+					<li>適用先の要素が無効な<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>ロールを持っている、または</li>
+					<li>要素が暗黙の<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>ロールを持たない</li>
 				</ul>
-			<p>If a required <abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> attribute for a given role is missing, user agents <em class="rfc2119" title="SHOULD">SHOULD</em> process the attribute as if the values given in the following table were provided.</p>
+			<p>与えられたロールに必要な<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>属性が欠落している場合、ユーザーエージェントは、あたかも次の表に与えられた値が提供されていたかのようにその属性を処理<em class="rfc2119" title="SHOULD">すべきである</em>。</p>
 			<table id="authorErrorDefaultValuesTable">
-			<caption>Fallback values for missing required attributes</caption>
+			<caption>欠落している要求される属性のフォールバック値</caption>
 					<thead>
 						<tr>
-							<th><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> role</th>
-							<th>Required Attribute</th>
-							<th>Fallback value</th>
+							<th><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>ロール</th>
+							<th>要求される属性</th>
+							<th>フォールバック値</th>
 						</tr>
 					</thead>
 			<tbody>
@@ -12297,7 +12294,7 @@ h6>a.self-link::before {
 				<tr>
 					<td><a href="#scrollbar" class="role-reference"><code>scrollbar</code></a></td>
 					<td><a href="#aria-controls" class="property-reference"><code>aria-controls</code></a></td>
-					<td>no mapping</td>
+					<td>マッピングなし</td>
 				</tr>
 				<tr>
 					<td><a href="#scrollbar" class="role-reference"><code>scrollbar</code></a></td>
@@ -12337,12 +12334,12 @@ h6>a.self-link::before {
 				<tr>
 					<td><a href="#spinbutton" class="role-reference"><code>spinbutton</code></a></td>
 					<td><a href="#aria-valuemax" class="property-reference"><code>aria-valuemax</code></a></td>
-					<td>A value indicating that the <code>spinbutton</code> has no upper bound (<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">accessibility <abbr title="application programming interface">API</abbr></a> dependent).</td>
+					<td><code>spinbutton</code>に上限がないことを示す値（<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">アクセシビリティ<abbr title="application programming interface">API</abbr></a>に依存）。</td>
 				</tr>
 				<tr>
 					<td><a href="#spinbutton" class="role-reference"><code>spinbutton</code></a></td>
 					<td><a href="#aria-valuemin" class="property-reference"><code>aria-valuemin</code></a></td>
-					<td>A value indicating that the <code>spinbutton</code> has no lower bound (<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">accessibility <abbr title="application programming interface">API</abbr></a> dependent).</td>
+					<td><code>spinbutton</code>に下限がないことを示す値（<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">アクセシビリティ<abbr title="application programming interface">API</abbr></a>に依存）。</td>
 				</tr>
 				<tr>
 					<td><a href="#spinbutton" class="role-reference"><code>spinbutton</code></a></td>
@@ -12357,7 +12354,7 @@ h6>a.self-link::before {
 	<h2 id="x10-idl-interface"><span class="secno">10. </span>IDLインターフェイス<a class="self-link" aria-label="§" href="#idl-interface"></a></h2>
 	<p>適合ユーザーエージェントは、次のIDLインターフェイスを実装<em class="rfc2119" title="MUST">しなければならない</em>。</p>
 	<section id="AccessibilityRole" class="normative" data-dfn-for="AccessibilityRole" data-link-for="AccessibilityRole">
-		<h3 id="x10-1-interface-mixin-accessibilityrole"><span class="secno">10.1 </span>Interface Mixin <dfn data-dfn-for="" data-dfn-type="dfn" id="dom-accessibilityrole" data-idl="interface mixin" data-title="AccessibilityRole"><code>AccessibilityRole</code></dfn><a class="self-link" aria-label="§" href="#AccessibilityRole"></a></h3>
+		<h3 id="x10-1-interface-mixin-accessibilityrole"><span class="secno">10.1 </span>インターフェイスミックスイン<dfn data-dfn-for="" data-dfn-type="dfn" id="dom-accessibilityrole" data-idl="interface mixin" data-title="AccessibilityRole"><code>AccessibilityRole</code></dfn><a class="self-link" aria-label="§" href="#AccessibilityRole"></a></h3>
 		<div><pre class="def idl"><span data-idl="" class="idlInterface mixin" id="idl-def-accessibilityrole" data-title="AccessibilityRole">interface mixin <span class="idlID"><a data-link-for="" data-lt="" href="#dom-accessibilityrole" class="internalDFN" data-link-type="dfn"><code>AccessibilityRole</code></a></span> {<span data-idl="" class="idlAttribute" id="idl-def-accessibilityrole-role" data-title="role" data-dfn-for="accessibilityrole">
 	attribute<span class="idlType"> <a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>?</span> <span class="idlName"><a data-link-for="accessibilityrole" data-lt="accessibilityrole.role|role" href="#dom-accessibilityrole-role" class="internalDFN" data-link-type="dfn"><code>role</code></a></span>;</span>
 };</span><span class="idlIncludes">
@@ -12366,7 +12363,7 @@ h6>a.self-link::before {
 	</section>
 
 	<section id="AriaAttributes" class="normative" data-dfn-for="AriaAttributes" data-link-for="AriaAttributes">
-		<h3 id="x10-2-interface-mixin-ariaattributes"><span class="secno">10.2 </span>Interface Mixin <dfn data-dfn-for="" data-dfn-type="dfn" id="dom-ariaattributes" data-idl="interface mixin" data-title="AriaAttributes"><code>AriaAttributes</code></dfn><a class="self-link" aria-label="§" href="#AriaAttributes"></a></h3>
+		<h3 id="x10-2-interface-mixin-ariaattributes"><span class="secno">10.2 </span>インターフェイスミックスイン<dfn data-dfn-for="" data-dfn-type="dfn" id="dom-ariaattributes" data-idl="interface mixin" data-title="AriaAttributes"><code>AriaAttributes</code></dfn><a class="self-link" aria-label="§" href="#AriaAttributes"></a></h3>
 		<div><pre class="def idl"><span data-idl="" class="idlInterface mixin" id="idl-def-ariaattributes" data-title="AriaAttributes">interface mixin <span class="idlID"><a data-link-for="" data-lt="" href="#dom-ariaattributes" class="internalDFN" data-link-type="dfn"><code>AriaAttributes</code></a></span> {<span data-idl="" class="idlAttribute" id="idl-def-ariaattributes-ariaactivedescendant" data-title="ariaActiveDescendant" data-dfn-for="ariaattributes">
 	attribute<span class="idlType"> <a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>?</span> <span class="idlName"><a data-link-for="ariaattributes" data-lt="ariaattributes.ariaactivedescendant|ariaactivedescendant" href="#dom-ariaattributes-ariaactivedescendant" class="internalDFN" data-link-type="dfn"><code>ariaActiveDescendant</code></a></span>;</span><span data-idl="" class="idlAttribute" id="idl-def-ariaattributes-ariaatomic" data-title="ariaAtomic" data-dfn-for="ariaattributes">
 	attribute<span class="idlType"> <a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>?</span> <span class="idlName"><a data-link-for="ariaattributes" data-lt="ariaattributes.ariaatomic|ariaatomic" href="#dom-ariaattributes-ariaatomic" class="internalDFN" data-link-type="dfn"><code>ariaAtomic</code></a></span>;</span><span data-idl="" class="idlAttribute" id="idl-def-ariaattributes-ariaautocomplete" data-title="ariaAutoComplete" data-dfn-for="ariaattributes">
