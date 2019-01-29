@@ -13,7 +13,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>14 November 2018</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>29 January 2019</span></h2></hgroup>
    
 
    <div id=search>
@@ -36,7 +36,8 @@
 
   
 
-  <nav><a href=dnd.html>← 6.7 ドラッグアンドドロップ</a> — <a href=./>目次</a> — <a href=window-object.html>7.3 Windowオブジェクト →</a></nav><ol class=toc><li><a href=browsers.html#browsers><span class=secno>7</span> ウェブページの読み込み</a><ol><li><a href=browsers.html#windows><span class=secno>7.1</span> ブラウジングコンテキスト</a><ol><li><a href=browsers.html#nested-browsing-contexts><span class=secno>7.1.1</span> ネストされたブラウジングコンテキスト</a><ol><li><a href=browsers.html#navigating-nested-browsing-contexts-in-the-dom><span class=secno>7.1.1.1</span> DOM内でネストされたブラウジングコンテキストを操作する</a></li></ol></li><li><a href=browsers.html#auxiliary-browsing-contexts><span class=secno>7.1.2</span> 補助ブラウジングコンテキスト</a><ol><li><a href=browsers.html#navigating-auxiliary-browsing-contexts-in-the-dom><span class=secno>7.1.2.1</span> DOM内の補助ブラウジングコンテキストを操作する</a></li></ol></li><li><a href=browsers.html#browsing-context-names><span class=secno>7.1.3</span> ブラウジングコンテキスト名</a></li></ol></li></ol></li></ol><h2 id=browsers><span class=secno>7</span> ウェブページの読み込み<a href=#browsers class=self-link></a></h2>
+  <nav><a href=dnd.html>← 6.7 ドラッグアンドドロップ</a> — <a href=./>目次</a> — <a href=window-object.html>7.3 Windowオブジェクト →</a></nav><ol class=toc><li><a href=browsers.html#browsers><span class=secno>7</span> ウェブページの読み込み</a><ol><li><a href=browsers.html#windows><span class=secno>7.1</span> ブラウジングコンテキスト</a><ol><li><a href=browsers.html#creating-browsing-contexts><span class=secno>7.1.1</span> Creating browsing contexts</a></li><li><a href=browsers.html#nested-browsing-contexts><span class=secno>7.1.2</span> Related browsing contexts</a><ol><li><a href=browsers.html#navigating-nested-browsing-contexts-in-the-dom><span class=secno>7.1.2.1</span> Navigating related browsing contexts in
+  the DOM</a></li></ol></li><li><a href=browsers.html#browsing-context-names><span class=secno>7.1.3</span> ブラウジングコンテキスト名</a></li></ol></li></ol></li></ol><h2 id=browsers><span class=secno>7</span> ウェブページの読み込み<a href=#browsers class=self-link></a></h2>
 
   
 
@@ -50,13 +51,22 @@
 
   <p><a href=#browsing-context id=windows:browsing-context-2>ブラウジングコンテキスト</a>は、対応する<code>WindowProxy</code>オブジェクトを持つ。</p>
 
-  <p><a href=#browsing-context id=windows:browsing-context-3>ブラウジングコンテキスト</a>は、<a href=#browsing-context id=windows:browsing-context-4>ブラウジングコンテキスト</a>が提示されていた、している、またはするだろう<code>Document</code>オブジェクトを一覧表示する<a id=windows:session-history href=history.html#session-history>セッション履歴</a>を持つ。<a href=#browsing-context id=windows:browsing-context-5>ブラウジングコンテキスト</a>の<dfn id=active-document data-export="">アクティブ文書</dfn>は、その<code>WindowProxy</code>オブジェクトの<span>[[Window]]</span>内部スロット値に<span>関連付けられた<code>Document</code></span>である。<dfn data-export="" data-lt="browsing context" id=concept-document-bc data-dfn-for=Document><code>Document</code>のブラウジングコンテキスト</dfn>は、ブラウジングコンテキストが存在しかつ<span>破棄</span>されてない場合に、<a id=windows:session-history-2 href=history.html#session-history>セッション履歴</a>が<code>Document</code>を含む<a href=#browsing-context id=windows:browsing-context-6>ブラウジングコンテキスト</a>である。</p>
+  <p>A <a href=#browsing-context id=windows:browsing-context-3>browsing context</a> has an <dfn id=opener-browsing-context data-export="">opener browsing context</dfn>, which
+  is null or a <a href=#browsing-context id=windows:browsing-context-4>browsing context</a>. It is initially null.</p>
 
-  <p class=note>一般に、<code>Document</code>オブジェクトが<a href=#concept-document-bc id=windows:concept-document-bc>ブラウジングコンテキスト</a>を持つ限りは、<code>Window</code>オブジェクトから<code>Document</code>オブジェクトへの1対1のマッピングが存在する。There is one exceptions. A <code>Window</code> can be reused for the presentation of a second <code>Document</code> in the same <a href=#browsing-context id=windows:browsing-context-7>browsing context</a>, such that the mapping is then 1-to-2. <span>交換が有効になっている</span>、<a href=#browsing-context id=windows:browsing-context-8>ブラウジングコンテキスト</a>が初期<code id=windows:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code>Document</code>から別のものに<span>ナビゲート</span>したとき、これは起こる。
+  <p>A <a href=#browsing-context id=windows:browsing-context-5>browsing context</a> has a <dfn id=disowned-its-opener>disowned</dfn> boolean. 最初はfalseである。</p>
+
+  <p><a href=#browsing-context id=windows:browsing-context-6>ブラウジングコンテキスト</a>は、<a href=#browsing-context id=windows:browsing-context-7>ブラウジングコンテキスト</a>が提示されていた、している、またはするだろう<code>Document</code>オブジェクトを一覧表示する<a id=windows:session-history href=history.html#session-history>セッション履歴</a>を持つ。<a href=#browsing-context id=windows:browsing-context-8>ブラウジングコンテキスト</a>の<dfn id=active-document data-export="">アクティブ文書</dfn>は、その<code>WindowProxy</code>オブジェクトの<span>[[Window]]</span>内部スロット値に<span>関連付けられた<code>Document</code></span>である。<dfn data-export="" data-lt="browsing context" id=concept-document-bc data-dfn-for=Document><code>Document</code>のブラウジングコンテキスト</dfn>は、ブラウジングコンテキストが存在しかつ<span>破棄</span>されてない場合に、<a id=windows:session-history-2 href=history.html#session-history>セッション履歴</a>が<code>Document</code>を含む<a href=#browsing-context id=windows:browsing-context-9>ブラウジングコンテキスト</a>である。</p>
+
+  <p class=note>一般に、<code>Document</code>オブジェクトが<a href=#concept-document-bc id=windows:concept-document-bc>ブラウジングコンテキスト</a>を持つ限りは、<code>Window</code>オブジェクトから<code>Document</code>オブジェクトへの1対1のマッピングが存在する。There is one exception. A <code>Window</code> can be reused for the presentation of a second <code>Document</code> in the same <a href=#browsing-context id=windows:browsing-context-10>browsing context</a>, such that the mapping is then 1-to-2. <span>交換が有効になっている</span>、<a href=#browsing-context id=windows:browsing-context-11>ブラウジングコンテキスト</a>が初期<code id=windows:about:blank><a href=infrastructure.html#about:blank>about:blank</a></code> <code>Document</code>から別のものに<span>ナビゲート</span>したとき、これは起こる。
 
   <p class=note><code>Document</code>は、関連付けられた<a href=#concept-document-bc id=windows:concept-document-bc-2>ブラウジングコンテキスト</a>を必ずしも持たない。具体的には、データマイニングツールはブラウジングコンテキストをインスタンス化できないだろう。<code id=windows:dom-domimplementation-createdocument><a data-x-internal=dom-domimplementation-createdocument href=https://triple-underscore.github.io/DOM4-ja.htmlcreatedocument>createDocument()</a></code>のようなAPIを使用して作成される<code>Document</code>は、<a href=#concept-document-bc id=windows:concept-document-bc-3>ブラウジングコンテキスト</a>を持たない。<a href=infrastructure.html#remove-an-element-from-a-document id=windows:remove-an-element-from-a-document>文書から削除</a>されて以来、<code id=windows:the-iframe-element-2><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>要素で当初は作成された<code>Document</code>は、そのブラウジングコンテキストが<span>破棄された</span>ので、関連付けられたブラウジングコンテキストを持たない。</p>
 
-  <p>To <dfn id=set-the-active-document>set the active document</dfn> of a <a href=#browsing-context id=windows:browsing-context-9>browsing context</a>
+
+
+  <h4 id=creating-browsing-contexts><span class=secno>7.1.1</span> Creating browsing contexts<a href=#creating-browsing-contexts class=self-link></a></h4>
+
+  <p>To <dfn id=set-the-active-document>set the active document</dfn> of a <a href=#browsing-context id=creating-browsing-contexts:browsing-context>browsing context</a>
   <var>browsingContext</var> to a <code>Document</code> object <var>document</var>, run these
   steps:</p>
 
@@ -71,16 +81,15 @@
 
   <hr>
 
-  <p><a href=#browsing-context id=windows:browsing-context-10>ブラウジングコンテキスト</a>は、その作成に関与する<a href=#browsing-context id=windows:browsing-context-11>ブラウジングコンテキスト</a>、<dfn id=creator-browsing-context data-export="">クリエイターブラウジングコンテキスト</dfn>を持つことができる。<a href=#browsing-context id=windows:browsing-context-12>ブラウジングコンテキスト</a>が<a href=#parent-browsing-context id=windows:parent-browsing-context>親ブラウジングコンテキスト</a>を持つ場合、それは、その<a href=#creator-browsing-context id=windows:creator-browsing-context>クリエイターブラウジングコンテキスト</a>である。そうでなければ、<a href=#browsing-context id=windows:browsing-context-13>ブラウジングコンテキスト</a>が<a href=#opener-browsing-context id=windows:opener-browsing-context>オープナーブラウジングコンテキスト</a>を持つ場合、<em>それ</em>がその<a href=#creator-browsing-context id=windows:creator-browsing-context-2>クリエイターブラウジングコンテキスト</a>である。そうでなければ、<a href=#browsing-context id=windows:browsing-context-14>ブラウジングコンテキスト</a>は<a href=#creator-browsing-context id=windows:creator-browsing-context-3>作成者ブラウジングコンテキスト</a>を持たない。</p>
-
-  <p><a href=#browsing-context id=windows:browsing-context-15>ブラウジングコンテキスト</a> <var>context</var>が<a href=#creator-browsing-context id=windows:creator-browsing-context-4>クリエイターブラウジングコンテキスト</a> <var>creator</var>を持つ場合、次のプロパティも持つ。続くもので、<var>context</var>の作成時で<var>creator document</var>に<var>creator</var>の<a href=#active-document id=windows:active-document>アクティブな文書</a>にする：</p>
-
-  <dl><dt><dfn id=creator-origin>クリエイター生成元</dfn><dd><var>creator document</var>の<a id=windows:concept-origin href=origin.html#concept-origin>生成元</a><dt><dfn id=creator-url>クリエイターURL</dfn><dd><var>creator document</var>の<a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="windows:the-document's-address" data-x-internal="the-document's-address">URL</a><dt><dfn id=creator-base-url>クリエイターベースURL</dfn><dd><var>creator document</var>の<a href=urls-and-fetching.html#document-base-url id=windows:document-base-url>ベースURL</a><dt><dfn id=creator-referrer-policy>クリエイターリファラーポリシー</dfn><dd><var>creator document</var>の<a href=dom.html#concept-document-referrer-policy id=windows:concept-document-referrer-policy>リファラーポリシー</a></dl>
+  <p>A <a href=#browsing-context id=creating-browsing-contexts:browsing-context-2>browsing context</a> has an associated <dfn id=creator-origin>creator origin</dfn> (null or returns an
+  <a id=creating-browsing-contexts:concept-origin href=origin.html#concept-origin>origin</a>), <dfn id=creator-url>creator URL</dfn> (null or returns a <a id=creating-browsing-contexts:url href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>), <dfn id=creator-base-url>creator
+  base URL</dfn> (null or returns a <a id=creating-browsing-contexts:url-2 href=https://triple-underscore.github.io/URL-ja.html#concept-url data-x-internal=url>URL</a>), and <dfn id=creator-referrer-policy>creator referrer policy</dfn> (null
+  or returns a <a id=creating-browsing-contexts:referrer-policy href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>referrer policy</a>). These are all initially null.</p>
 
   
 
 
-  <h4 id=nested-browsing-contexts><span class=secno>7.1.1</span> ネストされたブラウジングコンテキスト<a href=#nested-browsing-contexts class=self-link></a></h4>
+  <h4 id=nested-browsing-contexts><span class=secno>7.1.2</span> Related browsing contexts<a href=#nested-browsing-contexts class=self-link></a></h4>
 
   <p>特定の要素（たとえば、<code id=nested-browsing-contexts:the-iframe-element><a href=iframe-embed-object.html#the-iframe-element>iframe</a></code>要素）は、<a href=#browsing-context id=nested-browsing-contexts:browsing-context>ブラウジングコンテキスト</a>をさらにインスタンス化できる。この要素は、<dfn id=browsing-context-container data-lt="browsing context container" data-export="">ブラウジングコンテキストコンテナ</dfn>と呼ばれる。</p>
 
@@ -98,9 +107,12 @@
 
   <p><a href=#browsing-context id=nested-browsing-contexts:browsing-context-10>ブラウジングコンテキスト</a><var>A</var>が<var>A</var>の<a href=#child-browsing-context id=nested-browsing-contexts:child-browsing-context-3>子ブラウジングコンテキスト</a>であり、かつ<var>B</var>の<a href=#ancestor-browsing-context id=nested-browsing-contexts:ancestor-browsing-context>祖先</a>自身であるブラウジングコンテキスト<var>A'</var>が存在する場合、またはブラウジングコンテキスト<var>A</var>が<var>B</var>の<a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-2>親ブラウジングコンテキスト</a>である場合、ブラウジングコンテキスト<var>B</var>の<dfn id=ancestor-browsing-context data-lt="ancestor browsing context" data-export="">祖先</dfn>であると言われる。</p>
 
-  <p><a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-3>ネストされたブラウジングコンテキスト</a>でない<a href=#browsing-context id=nested-browsing-contexts:browsing-context-11>ブラウジングコンテキスト</a>は、<a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-3>親ブラウジングコンテキスト</a>を持たず、<a href=#ancestor-browsing-context id=nested-browsing-contexts:ancestor-browsing-context-2>祖先ブラウジングコンテキスト</a>であるすべてのブラウジングコンテキストの<dfn id=top-level-browsing-context data-export="">最上位ブラウジングコンテキスト</dfn>となる。</p>
+  <p>A <a href=#browsing-context id=nested-browsing-contexts:browsing-context-11>browsing context</a> that has no <a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-3>parent browsing context</a> is the <dfn id=top-level-browsing-context data-export="">top-level browsing context</dfn> for itself and all of the browsing contexts for
+  which it is an <a href=#ancestor-browsing-context id=nested-browsing-contexts:ancestor-browsing-context-2>ancestor browsing context</a>.</p>
 
-  <p><a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-4>ネストされたブラウジングコンテキスト</a>である<a href=#browsing-context id=nested-browsing-contexts:browsing-context-12>ブラウジングコンテキスト</a>に対する<a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-4>親ブラウジングコンテキスト</a>の推移的クロージャは、<a href=#ancestor-browsing-context id=nested-browsing-contexts:ancestor-browsing-context-3>祖先ブラウジングコンテキスト</a>をのリストを与える。</p>
+  <p>要素を通じてネストせずに<a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context>トップレベルブラウジングコンテキスト</a>に関連する新しいブラウジングコンテキストを作成することが可能である。このようなブラウジングコンテキストは、<dfn id=auxiliary-browsing-context data-lt="auxiliary browsing context" data-export="">補助ブラウジングコンテキスト</dfn>と呼ばれる。補助ブラウジングコンテキストは常に<a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context-2>トップレベルブラウジングコンテキスト</a>である。</p>
+
+  <p><a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-3>ネストされたブラウジングコンテキスト</a>である<a href=#browsing-context id=nested-browsing-contexts:browsing-context-12>ブラウジングコンテキスト</a>に対する<a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-4>親ブラウジングコンテキスト</a>の推移的クロージャは、<a href=#ancestor-browsing-context id=nested-browsing-contexts:ancestor-browsing-context-3>祖先ブラウジングコンテキスト</a>をのリストを与える。</p>
 
   <p><code>Document</code> <var>d</var>の<dfn id=list-of-the-descendant-browsing-contexts>子孫ブラウジングコンテキストのリスト</dfn>は、以下のアルゴリズムによって返される（順序の）リストである：</p>
 
@@ -117,8 +129,8 @@
   <p>A <code>Document</code> is said to be <dfn data-dfn-for=Document id=fully-active data-export="">fully
   active</dfn> when it has a <a href=#concept-document-bc id=nested-browsing-contexts:concept-document-bc-2>browsing context</a> and it is
   the <a href=#active-document id=nested-browsing-contexts:active-document-2>active document</a> of that <a href=#browsing-context id=nested-browsing-contexts:browsing-context-14>browsing context</a>, and either its browsing
-  context is a <a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context>top-level browsing context</a>, or it has a <a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-5>parent browsing
-  context</a> and the <code>Document</code> <a href=#browsing-context-nested-through id=nested-browsing-contexts:browsing-context-nested-through-2>through which</a> it is <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-5>nested</a> is itself
+  context is a <a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context-3>top-level browsing context</a>, or it has a <a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-5>parent browsing
+  context</a> and the <code>Document</code> <a href=#browsing-context-nested-through id=nested-browsing-contexts:browsing-context-nested-through-2>through which</a> it is <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-4>nested</a> is itself
   <a href=#fully-active id=nested-browsing-contexts:fully-active>fully active</a>.</p>
 
   <p>Because they are associated with an element, <a href=#child-browsing-context id=nested-browsing-contexts:child-browsing-context-7>child
@@ -163,7 +175,7 @@
    <p>For more explorations of the complexities involved here, especially as it impacts <a href=history.html#history>the session history</a>, see <cite>A Model of Navigation History</cite>. <a href=references.html#refsNAVMODEL>[NAVMODEL]</a></p>
   </div>
 
-  <p>A <a href=#browsing-context id=nested-browsing-contexts:browsing-context-15>browsing context</a> that is a <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-6>nested browsing context</a> can be put into
+  <p>A <a href=#browsing-context id=nested-browsing-contexts:browsing-context-15>browsing context</a> that is a <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-5>nested browsing context</a> can be put into
   a <dfn id=delaying-load-events-mode>delaying <code>load</code> events mode</dfn>. This is used when it is
   <span>navigated</span>, to <span>delay the load event</span> of its
   <a href=#browsing-context-container id=nested-browsing-contexts:browsing-context-container-6>browsing context container</a> before the new <code>Document</code> is created.</p>
@@ -180,72 +192,30 @@
   <p>The <dfn id=concept-bcc-content-document>content document</dfn> of a <a href=#browsing-context-container id=nested-browsing-contexts:browsing-context-container-7>browsing
   context container</a> <var>container</var> is the result of the following algorithm:</p>
 
-  <ol><li><p>If <var>container</var>'s <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-7>nested browsing context</a> is null, then return
-   null.</li><li><p>Let <var>context</var> be <var>container</var>'s <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-8>nested browsing
+  <ol><li><p>If <var>container</var>'s <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-6>nested browsing context</a> is null, then return
+   null.</li><li><p>Let <var>context</var> be <var>container</var>'s <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-7>nested browsing
    context</a>.</li><li><p>Let <var>document</var> be <var>context</var>'s <a href=#active-document id=nested-browsing-contexts:active-document-10>active document</a>.</li><li><p>If <var>document</var>'s <a id=nested-browsing-contexts:concept-origin href=origin.html#concept-origin>origin</a> and the <span>origin</span> specified by the <span>current settings
    object</span> are not <span>same origin-domain</span>, then return null.</li><li><p>Return <var>document</var>.</li></ol>
 
 
-  <h5 id=navigating-nested-browsing-contexts-in-the-dom><span class=secno>7.1.1.1</span> DOM内でネストされたブラウジングコンテキストを操作する<a href=#navigating-nested-browsing-contexts-in-the-dom class=self-link></a></h5>
+  <h5 id=navigating-nested-browsing-contexts-in-the-dom><span class=secno>7.1.2.1</span> Navigating related browsing contexts in
+  the DOM<a href=#navigating-nested-browsing-contexts-in-the-dom class=self-link></a></h5>
 
   <aside class="mdn before"><input onclick=toggleStatus(this) value=⋰ type=button><div><b>MDN</b> <details><summary><a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/top title="Returns a reference to the topmost window in the window hierarchy.">Window/top</a></summary><p class=mdnsupport><span class="chrome yes"><span>Chrome</span><span>Yes</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="edge yes"><span>Edge</span><span>Yes</span></span><span class="edge_mobile yes"><span>Edge Mobile</span><span>Yes</span></span><span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="firefox_android unknown"><span>Firefox Android</span><span>?</span></span><span class="ie yes"><span>Internet Explorer</span><span>Yes</span></span><span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span></details></div><div><b>MDN</b> <details><summary><a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/frameElement title="Returns the element (such as iframe or object) in which the window is embedded, or null if the element is either top-level or is embedded into a document with a different script origin; that is, in cross-origin situations.">Window/frameElement</a></summary><p class=mdnsupport><span class="chrome yes"><span>Chrome</span><span>Yes</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="edge yes"><span>Edge</span><span>Yes</span></span><span class="edge_mobile yes"><span>Edge Mobile</span><span>Yes</span></span><span class="firefox yes"><span>Firefox</span><span>1+</span></span><span class="firefox_android yes"><span>Firefox Android</span><span>Yes</span></span><span class="ie yes"><span>Internet Explorer</span><span>Yes</span></span><span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span></details></div></aside><dl class=domintro><dt><var>window</var> . <code id=dom-top>top</code><dd>
-
     <p><a href=#top-level-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:top-level-browsing-context>トップレベルブラウジングコンテキスト</a>の<code>WindowProxy</code>を返す。</p>
+   <dt><var>window</var> . <code id=dom-opener>opener</code> [ = <var>value</var> ]<dd>
+    <p>Returns the <code>WindowProxy</code> for the <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context>opener browsing context</a>.</p>
 
+    <p>Returns null if there isn't one or if it has been set to null.</p>
+
+    <p>Can be set to null.</p>
    <dt><var>window</var> . <code id=dom-parent>parent</code><dd>
-
     <p><a href=#parent-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:parent-browsing-context>親ブラウジングコンテキスト</a>に対する<code>WindowProxy</code>を返す。</p>
-
    <dt><var>window</var> . <code id=dom-frameelement>frameElement</code><dd>
-
     <p><a href=#browsing-context-container id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-container>ブラウジングコンテキストコンテナ</a>の<code id=navigating-nested-browsing-contexts-in-the-dom:element><a data-x-internal=element href=https://triple-underscore.github.io/DOM4-ja.html#interface-element>Element</a></code>を返す。</p>
 
     <p>存在しない場合、クロスオリジンの状況でnullを返す。</p>
-
    </dl>
-
-  
-
-
-
-  <h4 id=auxiliary-browsing-contexts><span class=secno>7.1.2</span> 補助ブラウジングコンテキスト<a href=#auxiliary-browsing-contexts class=self-link></a></h4>
-
-  <p>要素を通じてネストせずに<a href=#top-level-browsing-context id=auxiliary-browsing-contexts:top-level-browsing-context>トップレベルブラウジングコンテキスト</a>に関連する新しいブラウジングコンテキストを作成することが可能である。このようなブラウジングコンテキストは、<dfn id=auxiliary-browsing-context data-lt="auxiliary browsing context" data-export="">補助ブラウジングコンテキスト</dfn>と呼ばれる。補助ブラウジングコンテキストは常に<a href=#top-level-browsing-context id=auxiliary-browsing-contexts:top-level-browsing-context-2 data-lt="top-level browsing context" data-export="">トップレベルブラウジングコンテキスト</a>である。</p>
-
-  <p><a href=#auxiliary-browsing-context id=auxiliary-browsing-contexts:auxiliary-browsing-context>補助ブラウジングコンテキスト</a>は、<a href=#auxiliary-browsing-context id=auxiliary-browsing-contexts:auxiliary-browsing-context-2>補助ブラウジングコンテキスト</a>から作成された<a href=#browsing-context id=auxiliary-browsing-contexts:browsing-context>ブラウジングコンテキスト</a>である、<dfn id=opener-browsing-context data-export="">オープナーブラウジングコンテキスト</dfn>を持つ。</p>
-
-
-  <h5 id=navigating-auxiliary-browsing-contexts-in-the-dom><span class=secno>7.1.2.1</span> DOM内の補助ブラウジングコンテキストを操作する<a href=#navigating-auxiliary-browsing-contexts-in-the-dom class=self-link></a></h5>
-
-  <p>An <a href=#auxiliary-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:auxiliary-browsing-context>auxiliary browsing context</a> can be <dfn id=disowned-its-opener>disowned</dfn>.</p>
-
-  <p>The <dfn id=dom-opener><code>opener</code></dfn> attribute's getter must run these
-  steps:</p>
-
-  <ol><li><p>If the current <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context>browsing context</a> is <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener>disowned</a>, then return
-   null.</li><li><p>If the current <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-2>browsing context</a> has no <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context>opener browsing context</a>,
-   then return null.</li><li><p>Return the current <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-3>browsing context</a>'s <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-2>opener browsing context</a>'s
-   <code>WindowProxy</code> object.</li></ol>
-
-  <p>The <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener><a href=#dom-opener>opener</a></code> attribute's setter, must run these steps:</p>
-
-  <ol><li><p>If the given value is null, then <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-2>disown</a> the current
-   <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-4>browsing context</a> and return.</li><li><p>Perform <a id=navigating-auxiliary-browsing-contexts-in-the-dom:ordinarydefineownproperty href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty data-x-internal=ordinarydefineownproperty>OrdinaryDefineOwnProperty</a>(this <code>Window</code> object, "<code>opener</code>", { [[Value]]: the given value, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: true }). 例外を再度投げる。</li></ol>
-
-  <div class=note>
-   <p>If a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-5>browsing context</a> is <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-3>disowned</a>, its <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener-2><a href=#dom-opener>window.opener</a></code> attribute is null. That prevents scripts in the
-   <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-6>browsing context</a> from changing any properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-3>opener browsing
-   context</a>'s <code>Window</code> object (i.e., the <code>Window</code> object from which the
-   <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-7>browsing context</a> was created).</p>
-
-   <p>Otherwise, if a <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-8>browsing context</a> is not <a href=#disowned-its-opener id=navigating-auxiliary-browsing-contexts-in-the-dom:disowned-its-opener-4>disowned</a>, then scripts in
-   that <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-9>browsing context</a> can use <code id=navigating-auxiliary-browsing-contexts-in-the-dom:dom-opener-3><a href=#dom-opener>window.opener</a></code> to
-   change properties of its <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-4>opener browsing context</a>'s <code>Window</code> object. For
-   example, a script running in the <a href=#browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:browsing-context-10>browsing context</a> can change the value of <code>window.opener.location</code>, causing the <a href=#opener-browsing-context id=navigating-auxiliary-browsing-contexts-in-the-dom:opener-browsing-context-5>opener browsing context</a> to
-   navigate to a completely different document.</p>
-  </div>
-
-
 
   
 

@@ -125,7 +125,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>14 November 2018</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>29 January 2019</span></h2></hgroup>
    
    
 
@@ -1448,11 +1448,9 @@
   reasons, replaced with a U+FFFD REPLACEMENT CHARACTER. This handling is, by necessity, spread
   across both the tokenization stage and the tree construction stage.</p>
 
-  <p>U+000D CARRIAGE RETURN (CR) characters and U+000A LINE FEED (LF) characters are treated
-  specially. Any LF character that immediately follows a CR character must be ignored, and all CR
-  characters must then be converted to LF characters. Thus, newlines in HTML DOMs are represented by
-  LF characters, and there are never any CR characters in the input to the <a href=#tokenization id=preprocessing-the-input-stream:tokenization>tokenization</a>
-  stage.</p>
+  <p>Before the <a href=#tokenization id=preprocessing-the-input-stream:tokenization>tokenization</a> stage, the input stream must be preprocessed by <a href=https://infra.spec.whatwg.org/#normalize-newlines id=preprocessing-the-input-stream:normalize-newlines data-x-internal=normalize-newlines>normalizing newlines</a>. Thus, newlines in HTML DOMs are
+  represented by U+000A LF characters, and there are never any U+000D CR characters in the input to
+  the <a href=#tokenization id=preprocessing-the-input-stream:tokenization-2>tokenization</a> stage.</p>
 
   <p>The <dfn id=next-input-character>next input character</dfn> is the first character in the <a href=#input-stream id=preprocessing-the-input-stream:input-stream>input stream</a>
   that has not yet been <dfn>consumed</dfn> or explicitly ignored by the requirements in
@@ -1523,10 +1521,9 @@
   means the UA must follow these steps:</p>
 
   <ol><li><p>Let <var>last</var> be false.</li><li><p>Let <var>node</var> be the last node in the <a href=#stack-of-open-elements id=the-insertion-mode:stack-of-open-elements>stack of open
-   elements</a>.</li><li><p><i>Loop</i>: If <var>node</var> is the first node in the stack of open elements,
-   then set <var>last</var> to true, and, if the parser was originally created as part of
-   the <a href=#html-fragment-parsing-algorithm id=the-insertion-mode:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a> (<a href=#fragment-case id=the-insertion-mode:fragment-case>fragment case</a>), set <var>node</var> to the <var id=the-insertion-mode:concept-frag-parse-context><a href=#concept-frag-parse-context>context</a></var>
-   element passed to that algorithm.</li><li>
+   elements</a>.</li><li><p><i>Loop</i>: If <var>node</var> is the first node in the stack of open elements, then set
+   <var>last</var> to true, and, if the parser was created as part of the <a href=#html-fragment-parsing-algorithm id=the-insertion-mode:html-fragment-parsing-algorithm>HTML fragment
+   parsing algorithm</a> (<a href=#fragment-case id=the-insertion-mode:fragment-case>fragment case</a>), set <var>node</var> to the <var id=the-insertion-mode:concept-frag-parse-context><a href=#concept-frag-parse-context>context</a></var> element passed to that algorithm.</li><li>
 
     <p>If <var>node</var> is a <code id=the-insertion-mode:the-select-element><a href=form-elements.html#the-select-element>select</a></code> element, run these substeps:</p>
 
@@ -1594,8 +1591,8 @@
   elements</a>.</p>
 
   <p>The <dfn id=adjusted-current-node>adjusted current node</dfn> is the <i id=the-stack-of-open-elements:concept-frag-parse-context><a href=#concept-frag-parse-context>context</a></i>
-  element if the parser was created by the <a href=#html-fragment-parsing-algorithm id=the-stack-of-open-elements:html-fragment-parsing-algorithm-2>HTML fragment parsing algorithm</a> and the
-  <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-3>stack of open elements</a> has only one element in it (<a href=#fragment-case id=the-stack-of-open-elements:fragment-case-3>fragment case</a>);
+  element if the parser was created as part of the <a href=#html-fragment-parsing-algorithm id=the-stack-of-open-elements:html-fragment-parsing-algorithm-2>HTML fragment parsing algorithm</a> and
+  the <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-3>stack of open elements</a> has only one element in it (<a href=#fragment-case id=the-stack-of-open-elements:fragment-case-3>fragment case</a>);
   otherwise, the <a href=#adjusted-current-node id=the-stack-of-open-elements:adjusted-current-node>adjusted current node</a> is the <a href=#current-node id=the-stack-of-open-elements:current-node>current node</a>.</p>
 
   <p>Elements in the <a href=#stack-of-open-elements id=the-stack-of-open-elements:stack-of-open-elements-4>stack of open elements</a> fall into the following categories:</p>
@@ -1773,9 +1770,9 @@
   was enabled</a> for the <code id=other-parsing-state-flags:document><a href=dom.html#document>Document</a></code> with which the parser is associated when the
   parser was created, and "disabled" otherwise.</p>
 
-  <p class=note>The <a href=#scripting-flag id=other-parsing-state-flags:scripting-flag>scripting flag</a> can be enabled even when the parser was originally
-  created for the <a href=#html-fragment-parsing-algorithm id=other-parsing-state-flags:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>, even though <code id=other-parsing-state-flags:the-script-element><a href=scripting.html#the-script-element>script</a></code>
-  elements don't execute in that case.</p>
+  <p class=note>The <a href=#scripting-flag id=other-parsing-state-flags:scripting-flag>scripting flag</a> can be enabled even when the parser was created as
+  part of the <a href=#html-fragment-parsing-algorithm id=other-parsing-state-flags:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>, even though <code id=other-parsing-state-flags:the-script-element><a href=scripting.html#the-script-element>script</a></code> elements
+  don't execute in that case.</p>
 
   <p>The <dfn id=frameset-ok-flag>frameset-ok flag</dfn> is set to "ok" when the parser is created. It is set to "not
   ok" after certain tokens are seen.</p>
@@ -3074,15 +3071,15 @@
 
   <ol><li><p>Let <var>document</var> be <var>intended parent</var>'s <a id=creating-and-inserting-nodes:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>.</li><li><p>Let <var>local name</var> be the tag name of the token.</li><li><p>Let <var>is</var> be the value of the "<code id=creating-and-inserting-nodes:attr-is><a href=custom-elements.html#attr-is>is</a></code>" attribute in the
    given token, if such an attribute exists, or null otherwise.</li><li><p>Let <var>definition</var> be the result of <a href=custom-elements.html#look-up-a-custom-element-definition id=creating-and-inserting-nodes:look-up-a-custom-element-definition>looking up a custom element definition</a> given <var>document</var>, <var>given
-   namespace</var>, <var>local name</var>, and <var>is</var>.</li><li><p>If <var>definition</var> is non-null and the parser was not originally created for the
+   namespace</var>, <var>local name</var>, and <var>is</var>.</li><li><p>If <var>definition</var> is non-null and the parser was not created as part of the
    <a href=#html-fragment-parsing-algorithm id=creating-and-inserting-nodes:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>, then let <var>will execute script</var> be true.
    Otherwise, let it be false.</li><li>
     <p>If <var>will execute script</var> is true, then:</p>
 
     <ol><li><p>Increment <var>document</var>'s <a id=creating-and-inserting-nodes:throw-on-dynamic-markup-insertion-counter href=dynamic-markup-insertion.html#throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion
      counter</a>.</li><li><p>If the <a id=creating-and-inserting-nodes:javascript-execution-context-stack href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a> is empty, then <a id=creating-and-inserting-nodes:perform-a-microtask-checkpoint href=webappapis.html#perform-a-microtask-checkpoint>perform a
-     microtask checkpoint</a>.</li><li><p>Push a new <a id=creating-and-inserting-nodes:element-queue href=custom-elements.html#element-queue>element queue</a> onto the <a id=creating-and-inserting-nodes:custom-element-reactions-stack href=custom-elements.html#custom-element-reactions-stack>custom element reactions
-     stack</a>.</li></ol>
+     microtask checkpoint</a>.</li><li><p>Push a new <a id=creating-and-inserting-nodes:element-queue href=custom-elements.html#element-queue>element queue</a> onto <var>document</var>'s <a id=creating-and-inserting-nodes:relevant-agent href=webappapis.html#relevant-agent>relevant
+     agent</a>'s <a id=creating-and-inserting-nodes:custom-element-reactions-stack href=custom-elements.html#custom-element-reactions-stack>custom element reactions stack</a>.</li></ol>
    </li><li>
     <p>Let <var>element</var> be the result of <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-create-element id=creating-and-inserting-nodes:create-an-element data-x-internal=create-an-element>creating an
     element</a> given <var>document</var>, <var>localName</var>, <var>given
@@ -3106,9 +3103,9 @@
    </li><li>
     <p>If <var>will execute script</var> is true, then:</p>
 
-    <ol><li><p>Let <var>queue</var> be the result of popping the <a id=creating-and-inserting-nodes:current-element-queue href=custom-elements.html#current-element-queue>current element queue</a>
-     from the <a id=creating-and-inserting-nodes:custom-element-reactions-stack-2 href=custom-elements.html#custom-element-reactions-stack>custom element reactions stack</a>. (This will be the same <a id=creating-and-inserting-nodes:element-queue-2 href=custom-elements.html#element-queue>element
-     queue</a> as was pushed above.)</li><li><p><a id=creating-and-inserting-nodes:invoke-custom-element-reactions href=custom-elements.html#invoke-custom-element-reactions>Invoke custom element reactions</a> in <var>queue</var>.</li><li><p>Decrement <var>document</var>'s <a id=creating-and-inserting-nodes:throw-on-dynamic-markup-insertion-counter-3 href=dynamic-markup-insertion.html#throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion
+    <ol><li><p>Let <var>queue</var> be the result of popping from <var>document</var>'s <a id=creating-and-inserting-nodes:relevant-agent-2 href=webappapis.html#relevant-agent>relevant
+     agent</a>'s <a id=creating-and-inserting-nodes:custom-element-reactions-stack-2 href=custom-elements.html#custom-element-reactions-stack>custom element reactions stack</a>. (This will be the same
+     <a id=creating-and-inserting-nodes:element-queue-2 href=custom-elements.html#element-queue>element queue</a> as was pushed above.)</li><li><p><a id=creating-and-inserting-nodes:invoke-custom-element-reactions href=custom-elements.html#invoke-custom-element-reactions>Invoke custom element reactions</a> in <var>queue</var>.</li><li><p>Decrement <var>document</var>'s <a id=creating-and-inserting-nodes:throw-on-dynamic-markup-insertion-counter-3 href=dynamic-markup-insertion.html#throw-on-dynamic-markup-insertion-counter>throw-on-dynamic-markup-insertion
      counter</a>.</li></ol>
    </li><li><p>If <var>element</var> has an <code>xmlns</code> attribute <em>in the <a id=creating-and-inserting-nodes:xmlns-namespace href=https://triple-underscore.github.io/infra-ja.html#xmlns-namespace data-x-internal=xmlns-namespace>XMLNS
    namespace</a></em> whose value is not exactly the same as the element's namespace, that is a
@@ -3136,9 +3133,12 @@
     <p>If it is possible to insert <var>element</var> at the <var>adjusted insertion location</var>,
     then:</p>
 
-    <ol><li><p>Push a new <a id=creating-and-inserting-nodes:element-queue-3 href=custom-elements.html#element-queue>element queue</a> onto the <a id=creating-and-inserting-nodes:custom-element-reactions-stack-3 href=custom-elements.html#custom-element-reactions-stack>custom element reactions
-     stack</a>.</li><li><p>Insert <var>element</var> at the <var>adjusted insertion location</var>.</li><li><p>Pop the <a id=creating-and-inserting-nodes:element-queue-4 href=custom-elements.html#element-queue>element queue</a> from the <a id=creating-and-inserting-nodes:custom-element-reactions-stack-4 href=custom-elements.html#custom-element-reactions-stack>custom element reactions stack</a>,
-     and <a id=creating-and-inserting-nodes:invoke-custom-element-reactions-2 href=custom-elements.html#invoke-custom-element-reactions>invoke custom element reactions</a> in that queue.</li></ol>
+    <ol><li><p>If the parser was not created as part of the <a href=#html-fragment-parsing-algorithm id=creating-and-inserting-nodes:html-fragment-parsing-algorithm-2>HTML fragment parsing
+     algorithm</a>, then push a new <a id=creating-and-inserting-nodes:element-queue-3 href=custom-elements.html#element-queue>element queue</a> onto <var>element</var>'s
+     <a id=creating-and-inserting-nodes:relevant-agent-3 href=webappapis.html#relevant-agent>relevant agent</a>'s <a id=creating-and-inserting-nodes:custom-element-reactions-stack-3 href=custom-elements.html#custom-element-reactions-stack>custom element reactions stack</a>.</li><li><p>Insert <var>element</var> at the <var>adjusted insertion location</var>.</li><li><p>If the parser was not created as part of the <a href=#html-fragment-parsing-algorithm id=creating-and-inserting-nodes:html-fragment-parsing-algorithm-3>HTML fragment parsing
+     algorithm</a>, then pop the <a id=creating-and-inserting-nodes:element-queue-4 href=custom-elements.html#element-queue>element queue</a> from <var>element</var>'s
+     <a id=creating-and-inserting-nodes:relevant-agent-4 href=webappapis.html#relevant-agent>relevant agent</a>'s <a id=creating-and-inserting-nodes:custom-element-reactions-stack-4 href=custom-elements.html#custom-element-reactions-stack>custom element reactions stack</a>, and <a id=creating-and-inserting-nodes:invoke-custom-element-reactions-2 href=custom-elements.html#invoke-custom-element-reactions>invoke
+     custom element reactions</a> in that queue.</li></ol>
 
     <p class=note>If the <var>adjusted insertion location</var> cannot accept more
     elements, e.g. because it's a <code id=creating-and-inserting-nodes:document><a href=dom.html#document>Document</a></code> that already has an element child, then
@@ -3629,9 +3629,9 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
       instead of blowing the document away, as would happen in most other cases. It also prevents
       the script from executing until the end tag is seen.</p>
 
-     </li><li><p>If the parser was originally created for the <a href=#html-fragment-parsing-algorithm id=parsing-main-inhead:html-fragment-parsing-algorithm>HTML fragment parsing
-     algorithm</a>, then mark the <code id=parsing-main-inhead:the-script-element><a href=scripting.html#the-script-element>script</a></code> element as <a id=parsing-main-inhead:already-started href=scripting.html#already-started>"already started"</a>.
-     (<a href=#fragment-case id=parsing-main-inhead:fragment-case>fragment case</a>)</li><li id=document-written-scripts-intervention><p>If the parser was invoked via the <code id=parsing-main-inhead:dom-document-write-2><a href=dynamic-markup-insertion.html#dom-document-write>document.write()</a></code> or <code id=parsing-main-inhead:dom-document-writeln><a href=dynamic-markup-insertion.html#dom-document-writeln>document.writeln()</a></code> methods, then optionally mark the
+     </li><li><p>If the parser was created as part of the <a href=#html-fragment-parsing-algorithm id=parsing-main-inhead:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>,
+     then mark the <code id=parsing-main-inhead:the-script-element><a href=scripting.html#the-script-element>script</a></code> element as <a id=parsing-main-inhead:already-started href=scripting.html#already-started>"already started"</a>. (<a href=#fragment-case id=parsing-main-inhead:fragment-case>fragment
+     case</a>)</li><li id=document-written-scripts-intervention><p>If the parser was invoked via the <code id=parsing-main-inhead:dom-document-write-2><a href=dynamic-markup-insertion.html#dom-document-write>document.write()</a></code> or <code id=parsing-main-inhead:dom-document-writeln><a href=dynamic-markup-insertion.html#dom-document-writeln>document.writeln()</a></code> methods, then optionally mark the
      <code id=parsing-main-inhead:the-script-element-2><a href=scripting.html#the-script-element>script</a></code> element as <a id=parsing-main-inhead:already-started-2 href=scripting.html#already-started>"already started"</a>. (For example, the user agent
      might use this clause to prevent execution of <a href=origin.html#concept-origin id=parsing-main-inhead:concept-origin>cross-origin</a> scripts
      inserted via <code id=parsing-main-inhead:dom-document-write-3><a href=dynamic-markup-insertion.html#dom-document-write>document.write()</a></code> under slow network
@@ -5481,9 +5481,8 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 
    <dt>An end tag whose tag name is "html"<dd>
 
-    <p>If the parser was originally created as part of the <a href=#html-fragment-parsing-algorithm id=parsing-main-afterbody:html-fragment-parsing-algorithm>HTML fragment parsing
-    algorithm</a>, this is a <a href=#parse-errors id=parsing-main-afterbody:parse-errors-2>parse error</a>; ignore the token. (<a href=#fragment-case id=parsing-main-afterbody:fragment-case>fragment
-    case</a>)</p>
+    <p>If the parser was created as part of the <a href=#html-fragment-parsing-algorithm id=parsing-main-afterbody:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>, this
+    is a <a href=#parse-errors id=parsing-main-afterbody:parse-errors-2>parse error</a>; ignore the token. (<a href=#fragment-case id=parsing-main-afterbody:fragment-case>fragment case</a>)</p>
 
     <p>Otherwise, switch the <a href=#insertion-mode id=parsing-main-afterbody:insertion-mode-4>insertion mode</a> to "<a href=#the-after-after-body-insertion-mode id=parsing-main-afterbody:the-after-after-body-insertion-mode>after after body</a>".</p>
 
@@ -5522,8 +5521,8 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
     <p>Otherwise, pop the <a href=#current-node id=parsing-main-inframeset:current-node-2>current node</a> from the <a href=#stack-of-open-elements id=parsing-main-inframeset:stack-of-open-elements>stack of open
     elements</a>.</p>
 
-    <p>If the parser was <em>not</em> originally created as part of the <a href=#html-fragment-parsing-algorithm id=parsing-main-inframeset:html-fragment-parsing-algorithm>HTML fragment parsing
-    algorithm</a> (<a href=#fragment-case id=parsing-main-inframeset:fragment-case-2>fragment case</a>), and the <a href=#current-node id=parsing-main-inframeset:current-node-3>current node</a> is no longer a
+    <p>If the parser was not created as part of the <a href=#html-fragment-parsing-algorithm id=parsing-main-inframeset:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>
+    (<a href=#fragment-case id=parsing-main-inframeset:fragment-case-2>fragment case</a>), and the <a href=#current-node id=parsing-main-inframeset:current-node-3>current node</a> is no longer a
     <code id=parsing-main-inframeset:frameset><a href=obsolete.html#frameset>frameset</a></code> element, then switch the <a href=#insertion-mode id=parsing-main-inframeset:insertion-mode-3>insertion mode</a> to "<a href=#parsing-main-afterframeset id=parsing-main-inframeset:parsing-main-afterframeset>after frameset</a>".</p>
 
    <dt>A start tag whose tag name is "frame"<dd>
@@ -5667,8 +5666,8 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 
     
 
-    <p>If the parser was originally created for the <a href=#html-fragment-parsing-algorithm id=parsing-main-inforeign:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>,
-    then act as described in the "any other start tag" entry below. (<a href=#fragment-case id=parsing-main-inforeign:fragment-case>fragment case</a>)</p>
+    <p>If the parser was created as part of the <a href=#html-fragment-parsing-algorithm id=parsing-main-inforeign:html-fragment-parsing-algorithm>HTML fragment parsing algorithm</a>, then
+    act as described in the "any other start tag" entry below. (<a href=#fragment-case id=parsing-main-inforeign:fragment-case>fragment case</a>)</p>
 
     <p>Otherwise:</p>
 
@@ -5808,7 +5807,7 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
   <h4 id=the-end><span class=secno>12.2.7</span> The end<a href=#the-end class=self-link></a></h4>
 
   <p>Once the user agent <dfn id=stop-parsing>stops parsing</dfn> the document, the user agent
-  must run the following steps:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> domcontentloaded<span class="and_chr yes"><span>Chrome for Android</span> <span>69+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=domcontentloaded">caniuse.com</a></div>
+  must run the following steps:<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> domcontentloaded<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>9+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>9+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=domcontentloaded">caniuse.com</a></div>
 
   <ol><li><p>Set the <a id=the-end:current-document-readiness href=dom.html#current-document-readiness>current document readiness</a> to "<code>interactive</code>"
     and the <a href=#insertion-point id=the-end:insertion-point>insertion point</a> to
@@ -6226,6 +6225,10 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 
   <h3 id=serialising-html-fragments><span class=secno>12.3</span> Serializing HTML fragments<a href=#serialising-html-fragments class=self-link></a></h3>
 
+  <p>For the purposes of the following algorithm, an element <dfn id=serializes-as-void>serializes as void</dfn> if its
+  element type is one of the <a id=serialising-html-fragments:void-elements href=syntax.html#void-elements>void elements</a>, or is <code id=serialising-html-fragments:basefont><a href=obsolete.html#basefont>basefont</a></code>,
+  <code id=serialising-html-fragments:bgsound><a href=obsolete.html#bgsound>bgsound</a></code>, <code id=serialising-html-fragments:frame><a href=obsolete.html#frame>frame</a></code>, or <code id=serialising-html-fragments:keygen><a href=obsolete.html#keygen>keygen</a></code>.</p>
+
   <p>The following steps form the <dfn data-export="" id=html-fragment-serialisation-algorithm>HTML fragment serialization algorithm</dfn>. The algorithm takes as input a DOM
   <code id=serialising-html-fragments:element><a data-x-internal=element href=https://triple-underscore.github.io/DOM4-ja.html#interface-element>Element</a></code>, <code id=serialising-html-fragments:document><a href=dom.html#document>Document</a></code>, or <code id=serialising-html-fragments:documentfragment><a data-x-internal=documentfragment href=https://triple-underscore.github.io/DOM4-ja.html#interface-documentfragment>DocumentFragment</a></code> referred to as
   <var>the node</var>, and returns a string.</p>
@@ -6233,7 +6236,8 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
   <p class=note>This algorithm serializes the <em>children</em> of the node being serialized, not
   the node itself.</p>
 
-  <ol><li><p>Let <var>s</var> be a string, and initialize it to the empty string.</li><li><p>If <var>the node</var> is a <code id=serialising-html-fragments:the-template-element><a href=scripting.html#the-template-element>template</a></code> element, then let <var>the node</var> instead be the <code id=serialising-html-fragments:the-template-element-2><a href=scripting.html#the-template-element>template</a></code> element's <a id=serialising-html-fragments:template-contents href=scripting.html#template-contents>template
+  <ol><li><p>If <var>the node</var> <a href=#serializes-as-void id=serialising-html-fragments:serializes-as-void>serializes as void</a>, then return the empty
+   string.</li><li><p>Let <var>s</var> be a string, and initialize it to the empty string.</li><li><p>If <var>the node</var> is a <code id=serialising-html-fragments:the-template-element><a href=scripting.html#the-template-element>template</a></code> element, then let <var>the node</var> instead be the <code id=serialising-html-fragments:the-template-element-2><a href=scripting.html#the-template-element>template</a></code> element's <a id=serialising-html-fragments:template-contents href=scripting.html#template-contents>template
    contents</a> (a <code id=serialising-html-fragments:documentfragment-2><a data-x-internal=documentfragment href=https://triple-underscore.github.io/DOM4-ja.html#interface-documentfragment>DocumentFragment</a></code> node).</li><li>
 
     <p>For each child node of <var>the node</var>, in <a id=serialising-html-fragments:tree-order href=https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order data-x-internal=tree-order>tree order</a>, run the
@@ -6289,14 +6293,8 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 
         <p>Append a U+003E GREATER-THAN SIGN character (&gt;).</p>
 
-        <p>If <var>current node</var> is an <code id=serialising-html-fragments:the-area-element><a href=image-maps.html#the-area-element>area</a></code>, <code id=serialising-html-fragments:the-base-element><a href=semantics.html#the-base-element>base</a></code>,
-        <code id=serialising-html-fragments:basefont><a href=obsolete.html#basefont>basefont</a></code>, <code id=serialising-html-fragments:bgsound><a href=obsolete.html#bgsound>bgsound</a></code>, <code id=serialising-html-fragments:the-br-element><a href=text-level-semantics.html#the-br-element>br</a></code>, <code id=serialising-html-fragments:the-col-element><a href=tables.html#the-col-element>col</a></code>,
-        <code id=serialising-html-fragments:the-embed-element><a href=iframe-embed-object.html#the-embed-element>embed</a></code>, <code id=serialising-html-fragments:frame><a href=obsolete.html#frame>frame</a></code>, <code id=serialising-html-fragments:the-hr-element><a href=grouping-content.html#the-hr-element>hr</a></code>, <code id=serialising-html-fragments:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>,
-        <code id=serialising-html-fragments:the-input-element><a href=input.html#the-input-element>input</a></code>, <code id=serialising-html-fragments:keygen><a href=obsolete.html#keygen>keygen</a></code>, <code id=serialising-html-fragments:the-link-element><a href=semantics.html#the-link-element>link</a></code>, <code id=serialising-html-fragments:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code>,
-        <code id=serialising-html-fragments:the-param-element><a href=iframe-embed-object.html#the-param-element>param</a></code>, <code id=serialising-html-fragments:the-source-element><a href=embedded-content.html#the-source-element>source</a></code>, <code id=serialising-html-fragments:the-track-element><a href=media.html#the-track-element>track</a></code> or <code id=serialising-html-fragments:the-wbr-element><a href=text-level-semantics.html#the-wbr-element>wbr</a></code> element,
-        then continue on to the next child node at this point.</p>
-        
-        
+        <p>If <var>current node</var> <a href=#serializes-as-void id=serialising-html-fragments:serializes-as-void-2>serializes as void</a>, then continue on to the next
+        child node at this point.</p>
 
         <p>Append the value of running the <a href=#html-fragment-serialisation-algorithm id=serialising-html-fragments:html-fragment-serialisation-algorithm>HTML fragment serialization algorithm</a> on the
         <var>current node</var> element (thus recursing into this algorithm for that
@@ -6341,7 +6339,7 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 
      </li></ol>
 
-   </li><li><p>The result of the algorithm is the string <var>s</var>.</li></ol>
+   </li><li><p>Return <var>s</var>.</li></ol>
 
   <p class=warning>It is possible that the output of this algorithm, if parsed with an <a href=#html-parser id=serialising-html-fragments:html-parser-3>HTML
   parser</a>, will not return the original tree structure. Tree structures that do not roundtrip
@@ -6378,16 +6376,16 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->text<c- p>);</c->
 
    <p>This will be parsed into:</p>
 
-   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element><a href=sections.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">outer</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-div-element><a href=grouping-content.html#the-div-element>div</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element-2><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute-2 class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">inner</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-input-element-2><a href=input.html#the-input-element>input</a></code></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
+   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element><a href=sections.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">outer</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-div-element><a href=grouping-content.html#the-div-element>div</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element-2><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute-2 class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">inner</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-input-element><a href=input.html#the-input-element>input</a></code></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
 
-   <p>The <code id=serialising-html-fragments:the-input-element-3><a href=input.html#the-input-element>input</a></code> element will be associated with the inner <code id=serialising-html-fragments:the-form-element-3><a href=forms.html#the-form-element>form</a></code> element.
+   <p>The <code id=serialising-html-fragments:the-input-element-2><a href=input.html#the-input-element>input</a></code> element will be associated with the inner <code id=serialising-html-fragments:the-form-element-3><a href=forms.html#the-form-element>form</a></code> element.
    Now, if this tree structure is serialized and reparsed, the <code>&lt;form
-   id="inner"&gt;</code> start tag will be ignored, and so the <code id=serialising-html-fragments:the-input-element-4><a href=input.html#the-input-element>input</a></code> element will be
+   id="inner"&gt;</code> start tag will be ignored, and so the <code id=serialising-html-fragments:the-input-element-3><a href=input.html#the-input-element>input</a></code> element will be
    associated with the outer <code id=serialising-html-fragments:the-form-element-4><a href=forms.html#the-form-element>form</a></code> element instead.</p>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>html</c-><c- p>&gt;&lt;</c-><c- f>head</c-><c- p>&gt;&lt;/</c-><c- f>head</c-><c- p>&gt;&lt;</c-><c- f>body</c-><c- p>&gt;&lt;</c-><c- f>form</c-> <c- e>id</c-><c- o>=</c-><c- s>"outer"</c-><c- p>&gt;&lt;</c-><c- f>div</c-><c- p>&gt;</c-><mark><c- p>&lt;</c-><c- f>form</c-> <c- e>id</c-><c- o>=</c-><c- s>"inner"</c-><c- p>&gt;</c-></mark><c- p>&lt;</c-><c- f>input</c-><c- p>&gt;&lt;/</c-><c- f>form</c-><c- p>&gt;&lt;/</c-><c- f>div</c-><c- p>&gt;&lt;/</c-><c- f>form</c-><c- p>&gt;&lt;/</c-><c- f>body</c-><c- p>&gt;&lt;/</c-><c- f>html</c-><c- p>&gt;</c-></code></pre>
 
-   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element-2><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element-2><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element-2><a href=sections.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element-5><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute-3 class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">outer</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-div-element-2><a href=grouping-content.html#the-div-element>div</a></code><ul><li class=t1><code id=serialising-html-fragments:the-input-element-5><a href=input.html#the-input-element>input</a></code></li></ul></li></ul></li></ul></li></ul></li></ul>
+   <ul class=domTree><li class=t1><code id=serialising-html-fragments:the-html-element-2><a href=semantics.html#the-html-element>html</a></code><ul><li class=t1><code id=serialising-html-fragments:the-head-element-2><a href=semantics.html#the-head-element>head</a></code></li><li class=t1><code id=serialising-html-fragments:the-body-element-2><a href=sections.html#the-body-element>body</a></code><ul><li class=t1><code id=serialising-html-fragments:the-form-element-5><a href=forms.html#the-form-element>form</a></code> <span class=t2><code id=serialising-html-fragments:the-id-attribute-3 class="attribute name"><a href=dom.html#the-id-attribute>id</a></code>="<code class="attribute value">outer</code>"</span><ul><li class=t1><code id=serialising-html-fragments:the-div-element-2><a href=grouping-content.html#the-div-element>div</a></code><ul><li class=t1><code id=serialising-html-fragments:the-input-element-4><a href=input.html#the-input-element>input</a></code></li></ul></li></ul></li></ul></li></ul></li></ul>
 
   </div>
 
