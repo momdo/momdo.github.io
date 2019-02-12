@@ -125,7 +125,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>29 January 2019</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>12 February 2019</span></h2></hgroup>
    
    
 
@@ -307,8 +307,8 @@
     <a href=#responsible-document id=definitions-2:responsible-document-2>responsible document</a> is used to set the <a href=https://triple-underscore.github.io/DOM4-ja.html#concept-document-url id="definitions-2:the-document's-address-3" data-x-internal="the-document's-address">URL</a> of the <code id=definitions-2:document-2><a href=dom.html#document>Document</a></code> after it has been reset
     using <code id=definitions-2:dom-document-open><a href=dynamic-markup-insertion.html#dom-document-open>document.open()</a></code>.</p>
 
-    <p>If the <a href=#responsible-event-loop id=definitions-2:responsible-event-loop>responsible event loop</a> is not a <a id=definitions-2:browsing-context-4 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=definitions-2:event-loop-2>event loop</a>,
-    then the <a href=#environment-settings-object id=definitions-2:environment-settings-object-6>environment settings object</a> has no <a href=#responsible-document id=definitions-2:responsible-document-3>responsible document</a>.</p>
+    <p>If the <a href=#responsible-event-loop id=definitions-2:responsible-event-loop>responsible event loop</a> is not a <a href=#window-event-loop id=definitions-2:window-event-loop>window event loop</a>, then the
+    <a href=#environment-settings-object id=definitions-2:environment-settings-object-6>environment settings object</a> has no <a href=#responsible-document id=definitions-2:responsible-document-3>responsible document</a>.</p>
 
    <dt>An <dfn data-dfn-for="environment settings object" id=api-url-character-encoding data-export="">API URL character encoding</dfn><dd>
 
@@ -1409,19 +1409,17 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
     </div>
 
     <div class=example>
-     <p><var>active script</var> can be null if the user clicks on the following button, before any
-     script ever accesses the button's <code>onclick</code> property:</p>
+     <p><var>active script</var> can be null if the user clicks on the following button:</p>
 
      <pre><code class='html'><c- p>&lt;</c-><c- f>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"Promise.resolve('import(`./example.mjs`)').then(eval)"</c-><c- p>&gt;</c->Click me<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c-></code></pre>
 
      <p>In this case, the JavaScript function for the <a href=#event-handlers id=enqueuejob(queuename,-job,-arguments):event-handlers>event
-     handler</a> will be created by the <a href=#getting-the-current-value-of-the-event-handler id=enqueuejob(queuename,-job,-arguments):getting-the-current-value-of-the-event-handler>get the current value of the event handler</a> algorithm as a direct result of user
-     action, with no script on the stack (i.e., no <a href=#active-script id=enqueuejob(queuename,-job,-arguments):active-script-4>active script</a>). Thus, when the
-     promise machinery calls <a href=#enqueuejob(queuename,-job,-arguments) id=enqueuejob(queuename,-job,-arguments):enqueuejob(queuename,-job,-arguments)>EnqueueJob</a>, there will be no <a href=#active-script id=enqueuejob(queuename,-job,-arguments):active-script-5>active script</a> to
-     pass along.</p>
+     handler</a> will be created by the <a href=#getting-the-current-value-of-the-event-handler id=enqueuejob(queuename,-job,-arguments):getting-the-current-value-of-the-event-handler>get the current value of the event handler</a> algorithm, which creates a function
+     with null [[ScriptOrModule]] value. Thus, when the promise machinery calls
+     <a href=#enqueuejob(queuename,-job,-arguments) id=enqueuejob(queuename,-job,-arguments):enqueuejob(queuename,-job,-arguments)>EnqueueJob</a>, there will be no <a href=#active-script id=enqueuejob(queuename,-job,-arguments):active-script-4>active script</a> to pass along.</p>
 
      <p>As a consequence, this means that when the <code id=enqueuejob(queuename,-job,-arguments):import()-3><a data-x-internal=import() href=https://tc39.github.io/proposal-dynamic-import/#sec-import-calls>import()</a></code> expression is evaluated,
-     there will still be no <a href=#active-script id=enqueuejob(queuename,-job,-arguments):active-script-6>active script</a>. Fortunately that is handled by our
+     there will still be no <a href=#active-script id=enqueuejob(queuename,-job,-arguments):active-script-5>active script</a>. Fortunately that is handled by our
      implementations of <a href=#hostresolveimportedmodule(referencingscriptormodule,-specifier) id=enqueuejob(queuename,-job,-arguments):hostresolveimportedmodule(referencingscriptormodule,-specifier)>HostResolveImportedModule</a> and
      <a href=#hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability) id=enqueuejob(queuename,-job,-arguments):hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability)>HostImportModuleDynamically</a>, by falling back to using the <a href=#current-settings-object id=enqueuejob(queuename,-job,-arguments):current-settings-object>current settings
      object</a>'s <a href=#api-base-url id=enqueuejob(queuename,-job,-arguments):api-base-url>API base URL</a>.</p>
@@ -1445,7 +1443,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
       <p>If <var>script execution context</var> is not null, then <a href=https://triple-underscore.github.io/infra-ja.html#stack-push id=enqueuejob(queuename,-job,-arguments):stack-push data-x-internal=stack-push>push</a> <var>script execution context</var> onto the <a id=enqueuejob(queuename,-job,-arguments):javascript-execution-context-stack href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution
       context stack</a>.</p>
 
-      <p class=note>As explained above, this affects the <a href=#active-script id=enqueuejob(queuename,-job,-arguments):active-script-7>active script</a> while the job
+      <p class=note>As explained above, this affects the <a href=#active-script id=enqueuejob(queuename,-job,-arguments):active-script-6>active script</a> while the job
       runs.</p>
      </li><li><p>Let <var>result</var> be the result of performing the abstract operation specified by
      <var>job</var>, using the elements of <var>arguments</var> as its arguments.</li><li><p>If <var>script execution context</var> is not null, then <a href=https://triple-underscore.github.io/infra-ja.html#stack-pop id=enqueuejob(queuename,-job,-arguments):stack-pop data-x-internal=stack-pop>pop</a> <var>script execution context</var> from the <a id=enqueuejob(queuename,-job,-arguments):javascript-execution-context-stack-2 href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context
@@ -1571,15 +1569,16 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
      object</a>.</li><li><p>Set <var>base URL</var> to <var>referencing script</var>'s <a href=#concept-script-base-url id=hostresolveimportedmodule(referencingscriptormodule,-specifier):concept-script-base-url>base URL</a>.</li></ol>
 
     <div class=example>
-     <p><var>referencingScriptOrModule</var> is not usually null. One case where it <em>can</em> be
-     null is if the user clicks the control in the following example:</p>
+     <p><var>referencingScriptOrModule</var> is not usually null, but will be so for event handlers
+     per the <a href=#getting-the-current-value-of-the-event-handler id=hostresolveimportedmodule(referencingscriptormodule,-specifier):getting-the-current-value-of-the-event-handler>get the current value of
+     the event handler</a> algorithm. For example, given:</p>
 
      <pre><code class='html'><c- p>&lt;</c-><c- f>button</c-> <c- e>onclick</c-><c- o>=</c-><c- s>"import('./foo.mjs')"</c-><c- p>&gt;</c->Click me<c- p>&lt;/</c-><c- f>button</c-><c- p>&gt;</c-></code></pre>
 
-     <p>In this case, at the time the <code id=hostresolveimportedmodule(referencingscriptormodule,-specifier):import()><a data-x-internal=import() href=https://tc39.github.io/proposal-dynamic-import/#sec-import-calls>import()</a></code> expression runs,
-     <a id=hostresolveimportedmodule(referencingscriptormodule,-specifier):getactivescriptormodule href=https://tc39.github.io/ecma262/#sec-getactivescriptormodule data-x-internal=getactivescriptormodule>GetActiveScriptOrModule</a> will return null, which will be passed to this abstract
-     operation when <a href=https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule id=hostresolveimportedmodule(referencingscriptormodule,-specifier):js-hostresolveimportedmodule-2 data-x-internal=js-hostresolveimportedmodule>HostResolveImportedModule</a> is
-     called by <a id=hostresolveimportedmodule(referencingscriptormodule,-specifier):finishdynamicimport href=https://tc39.github.io/proposal-dynamic-import/#sec-finishdynamicimport data-x-internal=finishdynamicimport>FinishDynamicImport</a>.</p>
+     <p>If a <code id=hostresolveimportedmodule(referencingscriptormodule,-specifier):event-click class=no-backref><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> event occurs, then at the
+     time the <code id=hostresolveimportedmodule(referencingscriptormodule,-specifier):import()><a data-x-internal=import() href=https://tc39.github.io/proposal-dynamic-import/#sec-import-calls>import()</a></code> expression runs, <a id=hostresolveimportedmodule(referencingscriptormodule,-specifier):getactivescriptormodule href=https://tc39.github.io/ecma262/#sec-getactivescriptormodule data-x-internal=getactivescriptormodule>GetActiveScriptOrModule</a> will
+     return null, which will be passed to this abstract operation when <a href=https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule id=hostresolveimportedmodule(referencingscriptormodule,-specifier):js-hostresolveimportedmodule-2 data-x-internal=js-hostresolveimportedmodule>HostResolveImportedModule</a> is called by
+     <a id=hostresolveimportedmodule(referencingscriptormodule,-specifier):finishdynamicimport href=https://tc39.github.io/proposal-dynamic-import/#sec-finishdynamicimport data-x-internal=finishdynamicimport>FinishDynamicImport</a>.</p>
     </div>
    </li><li><p>Let <var>moduleMap</var> be <var>settings object</var>'s <a href=#concept-settings-object-module-map id=hostresolveimportedmodule(referencingscriptormodule,-specifier):concept-settings-object-module-map>module map</a>.</li><li><p>Let <var>url</var> be the result of <a href=#resolve-a-module-specifier id=hostresolveimportedmodule(referencingscriptormodule,-specifier):resolve-a-module-specifier>resolving a
    module specifier</a> given <var>base URL</var> and <var>specifier</var>.</li><li><p>Assert: <var>url</var> is never failure, because <a href=#resolve-a-module-specifier id=hostresolveimportedmodule(referencingscriptormodule,-specifier):resolve-a-module-specifier-2>resolving a module specifier</a> must have been previously successful with these
@@ -1645,7 +1644,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   <p>JavaScript defines the concept of an <a id=integration-with-the-javascript-agent-formalism:agent href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>. This section gives the mapping of that
   language-level concept on to the web platform.</p>
 
-  <p class=XXX>JavaScript is expected to define <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-2 data-x-internal=agent>agents</a> in more detail; in particular that they hold a set of <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm>realms</a>: <a href=https://github.com/tc39/ecma262/issues/882>tc39/ecma262 issue #882</a>.</p>
+  <p class=XXX>JavaScript is expected to define <a href=https://tc39.github.io/ecma262/#sec-agents id=integration-with-the-javascript-agent-formalism:agent-2 data-x-internal=agent>agents</a> in more detail; in particular that they hold a set of <a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm>realms</a>: <a href=https://github.com/tc39/ecma262/issues/1357>tc39/ecma262 issue #1357</a>.</p>
 
   <p class=note>Conceptually, the <a id=integration-with-the-javascript-agent-formalism:agent-3 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> concept is an architecture-independent,
   idealized "thread" in which JavaScript code runs. Such code can involve multiple globals/<a href=#concept-global-object-realm id=integration-with-the-javascript-agent-formalism:concept-global-object-realm-2>realms</a> that can synchronously access each other, and
@@ -1844,7 +1843,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   <h5 id=unhandled-promise-rejections><span class=secno>8.1.3.12</span> Unhandled promise rejections<a href=#unhandled-promise-rejections class=self-link></a></h5>
 
   <p>In addition to synchronous <a href=#runtime-script-errors>runtime script errors</a>, scripts
-  may experience asynchronous promise rejections, tracked via the <code id=unhandled-promise-rejections:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> and <code id=unhandled-promise-rejections:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> events.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> unhandledrejection<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>11.3+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>11+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>5+</span></span><span class="android yes"><span>Android Browser</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=unhandledrejection">caniuse.com</a></div>
+  may experience asynchronous promise rejections, tracked via the <code id=unhandled-promise-rejections:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> and <code id=unhandled-promise-rejections:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> events.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> unhandledrejection<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>11.3+</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>11+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>5.0+</span></span><span class="android yes"><span>Android Browser</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=unhandledrejection">caniuse.com</a></div>
 
   
 
@@ -1949,31 +1948,32 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
 
   <p>To coordinate events, user interaction, scripts, rendering, networking, and so forth, user
   agents must use <dfn id=event-loop data-lt="event loop" data-export="">event loops</dfn> as
-  described in this section. There are two kinds of event loops: those for <a href=browsers.html#browsing-context id=definitions-3:browsing-context>browsing contexts</a>, and those for <a href=workers.html#workers>workers</a>.</p>
+  described in this section. Each <a id=definitions-3:agent href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> has an associated <a href=#event-loop id=definitions-3:event-loop>event loop</a>.</p>
 
-  <p>There must be at least one <a id=definitions-3:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=definitions-3:event-loop>event loop</a> per user
-  agent, and at most one per <a id=definitions-3:unit-of-related-similar-origin-browsing-contexts href=browsers.html#unit-of-related-similar-origin-browsing-contexts>unit of related similar-origin browsing contexts</a>.</p>
+  <p class=note>In the future, this standard hopes to define exactly when <a href=#event-loop id=definitions-3:event-loop-2>event loops</a> can be created or reused.</p>
 
-  <p class=note>When there is more than one <a href=#event-loop id=definitions-3:event-loop-2>event loop</a> for a <a id=definitions-3:unit-of-related-browsing-contexts href=browsers.html#unit-of-related-browsing-contexts>unit of related
-  browsing contexts</a>, complications arise when a <a id=definitions-3:browsing-context-3 href=browsers.html#browsing-context>browsing context</a> in that group
-  is <a href=browsing-the-web.html#navigate id=definitions-3:navigate>navigated</a> such that it switches from one <a id=definitions-3:unit-of-related-similar-origin-browsing-contexts-2 href=browsers.html#unit-of-related-similar-origin-browsing-contexts>unit of related
-  similar-origin browsing contexts</a> to another. This specification does not currently describe
-  how to handle these complications.</p>
+  <p>A <dfn id=window-event-loop>window event loop</dfn> is the <a href=#event-loop id=definitions-3:event-loop-3>event loop</a> used by <a href=#similar-origin-window-agent id=definitions-3:similar-origin-window-agent>similar-origin window agents</a>. User agents may share an
+  <a href=#event-loop id=definitions-3:event-loop-4>event loop</a> across <a href=#similar-origin-window-agent id=definitions-3:similar-origin-window-agent-2>similar-origin window
+  agents</a>.</p>
+  
 
-  <p>A <a id=definitions-3:browsing-context-4 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=definitions-3:event-loop-3>event loop</a> always has at least one <a id=definitions-3:browsing-context-5 href=browsers.html#browsing-context>browsing
-  context</a>. If such an <a href=#event-loop id=definitions-3:event-loop-4>event loop</a>'s <a href=browsers.html#browsing-context id=definitions-3:browsing-context-6>browsing
-  contexts</a> all go away, then the <a href=#event-loop id=definitions-3:event-loop-5>event loop</a> goes away as well. A <a id=definitions-3:browsing-context-7 href=browsers.html#browsing-context>browsing
-  context</a> always has an <a href=#event-loop id=definitions-3:event-loop-6>event loop</a> coordinating its activities.</p>
+  <p class=note>This specification does not currently describe how to handle the complications
+  arising from <a href=browsing-the-web.html#navigate id=definitions-3:navigate>navigating</a> between <a href=#similar-origin-window-agent id=definitions-3:similar-origin-window-agent-3>similar-origin window agents</a>. E.g., when a <a id=definitions-3:browsing-context href=browsers.html#browsing-context>browsing context</a> <a href=browsing-the-web.html#navigate id=definitions-3:navigate-2>navigates</a> from <code>https://example.com/</code> to <code>https://shop.example/</code>.</p>
 
-  <p><a href=workers.html#worker-event-loop>Worker event loops</a> are simpler: each worker has one
-  <a href=#event-loop id=definitions-3:event-loop-7>event loop</a>, and the <a href=workers.html#run-a-worker id=definitions-3:run-a-worker>worker processing model</a>
-  manages the <a href=#event-loop id=definitions-3:event-loop-8>event loop</a>'s lifetime.</p>
+  <p>A <dfn id=worker-event-loop-2>worker event loop</dfn> is the <a href=#event-loop id=definitions-3:event-loop-5>event loop</a> used by <a href=#dedicated-worker-agent id=definitions-3:dedicated-worker-agent>dedicated worker agents</a>, <a href=#shared-worker-agent id=definitions-3:shared-worker-agent>shared worker
+  agents</a>, and <a href=#service-worker-agent id=definitions-3:service-worker-agent>service worker agents</a>. There must be
+  one <a href=#worker-event-loop-2 id=definitions-3:worker-event-loop-2>worker event loop</a> per such <a id=definitions-3:agent-2 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>.</p>
+
+  <p>A <dfn id=worklet-event-loop>worklet event loop</dfn> is the <a href=#event-loop id=definitions-3:event-loop-6>event loop</a> used by <a href=#worklet-agent id=definitions-3:worklet-agent>worklet agents</a>.</p>
+
+  <p class=XXX>As detailed in <a href=https://github.com/whatwg/html/issues/4213>issue #4213</a> the situation for worklets is
+  more complicated.</p>
 
   
 
   <hr>
 
-  <p>An <a href=#event-loop id=definitions-3:event-loop-9>event loop</a> has one or more <dfn id=task-queue>task queues</dfn>. A
+  <p>An <a href=#event-loop id=definitions-3:event-loop-7>event loop</a> has one or more <dfn id=task-queue>task queues</dfn>. A
   <a href=#task-queue id=definitions-3:task-queue>task queue</a> is an ordered list of <dfn id=concept-task data-lt=task data-export="">tasks</dfn>, which are algorithms that are responsible for such work as:</p>
 
   <dl><dt> イベント<dd>
@@ -1992,23 +1992,24 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
 
   </dl>
 
-  <p>Each <a href=#concept-task id=definitions-3:concept-task>task</a> in a <a id=definitions-3:browsing-context-8 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=definitions-3:event-loop-10>event
-  loop</a> is associated with a <code id=definitions-3:document><a href=dom.html#document>Document</a></code>; if the task was queued in the context of
-  an element, then it is the element's <a id=definitions-3:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>; if the task was queued in the context
-  of a <a id=definitions-3:browsing-context-9 href=browsers.html#browsing-context>browsing context</a>, then it is the <a id=definitions-3:browsing-context-10 href=browsers.html#browsing-context>browsing context</a>'s <a id=definitions-3:active-document href=browsers.html#active-document>active
-  document</a> at the time the task was queued; if the task was queued by or for a <a href=#concept-script id=definitions-3:concept-script>script</a> then the document is the <a href=#responsible-document id=definitions-3:responsible-document>responsible document</a>
+  <p>Each <a href=#concept-task id=definitions-3:concept-task>task</a> in a <a href=#window-event-loop id=definitions-3:window-event-loop>window event loop</a> is associated
+  with a <code id=definitions-3:document><a href=dom.html#document>Document</a></code>; if the task was queued in the context of an element, then it is the
+  element's <a id=definitions-3:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>; if the task was queued in the context of a <a id=definitions-3:browsing-context-2 href=browsers.html#browsing-context>browsing
+  context</a>, then it is the <a id=definitions-3:browsing-context-3 href=browsers.html#browsing-context>browsing context</a>'s <a id=definitions-3:active-document href=browsers.html#active-document>active document</a> at the
+  time the task was queued; if the task was queued by or for a <a href=#concept-script id=definitions-3:concept-script>script</a> then the document is the <a href=#responsible-document id=definitions-3:responsible-document>responsible document</a>
   specified by the script's <a href=#settings-object id=definitions-3:settings-object>settings object</a>.</p>
 
-  <p>A <a href=#concept-task id=definitions-3:concept-task-2>task</a> is intended for a specific <a href=#event-loop id=definitions-3:event-loop-11>event loop</a>:
-  the <a href=#event-loop id=definitions-3:event-loop-12>event loop</a> that is handling <a href=#concept-task id=definitions-3:concept-task-3>tasks</a> for the
+  <p>A <a href=#concept-task id=definitions-3:concept-task-2>task</a> is intended for a specific <a href=#event-loop id=definitions-3:event-loop-8>event loop</a>:
+  the <a href=#event-loop id=definitions-3:event-loop-9>event loop</a> that is handling <a href=#concept-task id=definitions-3:concept-task-3>tasks</a> for the
   <a href=#concept-task id=definitions-3:concept-task-4>task</a>'s associated <code id=definitions-3:document-2><a href=dom.html#document>Document</a></code> or <a href=workers.html#workers>worker</a>.</p>
+  
 
   <p>When a user agent is to <dfn id=queue-a-task data-export="">queue a task</dfn>, it must add the given task to
-  one of the <a href=#task-queue id=definitions-3:task-queue-3>task queues</a> of the relevant <a href=#event-loop id=definitions-3:event-loop-13>event
+  one of the <a href=#task-queue id=definitions-3:task-queue-3>task queues</a> of the relevant <a href=#event-loop id=definitions-3:event-loop-10>event
   loop</a>.</p>
 
   <p>Each <a href=#concept-task id=definitions-3:concept-task-5>task</a> is defined as coming from a specific <dfn id=task-source data-export="">task source</dfn>. All the tasks from one particular <a href=#task-source id=definitions-3:task-source>task source</a> and
-  destined to a particular <a href=#event-loop id=definitions-3:event-loop-14>event loop</a> (e.g. the callbacks generated by timers of a
+  destined to a particular <a href=#event-loop id=definitions-3:event-loop-11>event loop</a> (e.g., the callbacks generated by timers of a
   <code id=definitions-3:document-3><a href=dom.html#document>Document</a></code>, the events fired for mouse movements over that <code id=definitions-3:document-4><a href=dom.html#document>Document</a></code>, the
   tasks queued for the parser of that <code id=definitions-3:document-5><a href=dom.html#document>Document</a></code>) must always be added to the same
   <a href=#task-queue id=definitions-3:task-queue-4>task queue</a>, but <a href=#concept-task id=definitions-3:concept-task-6>tasks</a> from different <a href=#task-source id=definitions-3:task-source-2>task sources</a> may be placed in different <a href=#task-queue id=definitions-3:task-queue-5>task
@@ -2023,12 +2024,12 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   <p>Each <a href=#concept-task id=definitions-3:concept-task-7>task</a> gets an associated <dfn id=script-evaluation-environment-settings-object-set data-export="">script
   evaluation environment settings object set</dfn>, which is initially empty.</p>
 
-  <p>Each <a href=#event-loop id=definitions-3:event-loop-15>event loop</a> has a <dfn id=currently-running-task>currently running task</dfn>. Initially, this is null.
-  It is used to handle reentrancy. Each <a href=#event-loop id=definitions-3:event-loop-16>event loop</a> also has a <dfn id=performing-a-microtask-checkpoint>performing a
+  <p>Each <a href=#event-loop id=definitions-3:event-loop-12>event loop</a> has a <dfn id=currently-running-task>currently running task</dfn>. Initially, this is null.
+  It is used to handle reentrancy. Each <a href=#event-loop id=definitions-3:event-loop-13>event loop</a> also has a <dfn id=performing-a-microtask-checkpoint>performing a
   microtask checkpoint</dfn> flag, which must initially be false. It is used to prevent reentrant
   invocation of the <a href=#perform-a-microtask-checkpoint id=definitions-3:perform-a-microtask-checkpoint>perform a microtask checkpoint</a> algorithm.</p>
 
-  <p>Each <a href=#event-loop id=definitions-3:event-loop-17>event loop</a> also has associated values <dfn id=event-loop-begin data-export="">event loop
+  <p>Each <a href=#event-loop id=definitions-3:event-loop-14>event loop</a> also has associated values <dfn id=event-loop-begin data-export="">event loop
   begin</dfn> and <dfn id=event-loop-end data-export="">event loop end</dfn>, which are initially unset.
 
   
@@ -2041,9 +2042,9 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
 
   <ol><li id=step1><p>Let <var>oldestTask</var> be the oldest <a href=#concept-task id=event-loop-processing-model:concept-task>task</a>
    on one of the <a href=#event-loop id=event-loop-processing-model:event-loop-2>event loop</a>'s <a href=#task-queue id=event-loop-processing-model:task-queue>task queues</a>, if any,
-   ignoring, in the case of a <a id=event-loop-processing-model:browsing-context href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-3>event loop</a>, tasks whose
-   associated <code id=event-loop-processing-model:document><a href=dom.html#document>Document</a></code>s are not <a id=event-loop-processing-model:fully-active href=browsers.html#fully-active>fully active</a>. The user agent may pick any
-   <a href=#task-queue id=event-loop-processing-model:task-queue-2>task queue</a>. If there is no task to select, then jump to the <i>microtasks</i> step
+   ignoring, in the case of a <a href=#window-event-loop id=event-loop-processing-model:window-event-loop>window event loop</a>, tasks whose associated
+   <code id=event-loop-processing-model:document><a href=dom.html#document>Document</a></code>s are not <a id=event-loop-processing-model:fully-active href=browsers.html#fully-active>fully active</a>. The user agent may pick any <a href=#task-queue id=event-loop-processing-model:task-queue-2>task
+   queue</a>. If there is no task to select, then jump to the <i>microtasks</i> step
    below.</li><li>
     <p>Report the duration of time during which the user agent does not execute this loop by
     performing the following steps:</p>
@@ -2051,11 +2052,11 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
     <ol><li><p>Set <a href=#event-loop-begin id=event-loop-processing-model:event-loop-begin>event loop begin</a> to the <a id=event-loop-processing-model:current-high-resolution-time href=https://w3c.github.io/hr-time/#dfn-current-high-resolution-time data-x-internal=current-high-resolution-time>current high resolution
      time</a>.</li><li><p>If <a href=#event-loop-end id=event-loop-processing-model:event-loop-end>event loop end</a> is set, then let <var>top-level browsing contexts</var>
      be the set of all <a href=browsers.html#top-level-browsing-context id=event-loop-processing-model:top-level-browsing-context>top-level browsing contexts</a>
-     of all <code id=event-loop-processing-model:document-2><a href=dom.html#document>Document</a></code> objects associated with the <a href=#event-loop id=event-loop-processing-model:event-loop-4>event loop</a>. <a id=event-loop-processing-model:report-long-tasks href=https://w3c.github.io/longtasks/#report-long-tasks data-x-internal=report-long-tasks>Report
+     of all <code id=event-loop-processing-model:document-2><a href=dom.html#document>Document</a></code> objects associated with the <a href=#event-loop id=event-loop-processing-model:event-loop-3>event loop</a>. <a id=event-loop-processing-model:report-long-tasks href=https://w3c.github.io/longtasks/#report-long-tasks data-x-internal=report-long-tasks>Report
      long tasks</a>, passing in <a href=#event-loop-end id=event-loop-processing-model:event-loop-end-2>event loop end</a>, <a href=#event-loop-begin id=event-loop-processing-model:event-loop-begin-2>event loop begin</a>, and
      <var>top-level browsing contexts</var>.</li></ol>
-  </li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-5>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task>currently running task</a> to
-   <var>oldestTask</var>.</li><li><p>Run <var>oldestTask</var>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-6>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-2>currently running task</a> back to
+  </li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-4>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task>currently running task</a> to
+   <var>oldestTask</var>.</li><li><p>Run <var>oldestTask</var>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-5>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-2>currently running task</a> back to
    null.</li><li><p>Remove <var>oldestTask</var> from its <a href=#task-queue id=event-loop-processing-model:task-queue-3>task queue</a>.</li><li><p><i>Microtasks</i>: <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint>Perform a microtask checkpoint</a>.</li><li><p>Let <var>now</var> be the <a id=event-loop-processing-model:current-high-resolution-time-2 href=https://w3c.github.io/hr-time/#dfn-current-high-resolution-time data-x-internal=current-high-resolution-time>current high resolution time</a>. <a href=references.html#refsHRT>[HRT]</a></li><li>
     <p>Report the <a href=#concept-task id=event-loop-processing-model:concept-task-2>task</a>'s duration by performing the following
     steps:</p>
@@ -2066,12 +2067,12 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
      meaning the beginning of the task), <var>now</var> (the end time of the task),
      <var>top-level browsing contexts</var>, and <var>oldestTask</var>.</li></ol>
    </li><li>
-    <p><dfn id=update-the-rendering data-export="">Update the rendering</dfn>: If this <a href=#event-loop id=event-loop-processing-model:event-loop-7>event loop</a> is a
-    <a id=event-loop-processing-model:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-8>event loop</a> (as opposed to a <a href=workers.html#workers>worker</a> <a href=#event-loop id=event-loop-processing-model:event-loop-9>event loop</a>), then run the following substeps.</p>
+    <p><dfn id=update-the-rendering data-export="">Update the rendering</dfn>: if this is a <a href=#window-event-loop id=event-loop-processing-model:window-event-loop-2>window event loop</a>,
+    then:</p>
 
     <ol><li>
       <p>Let <var>docs</var> be the list of <code id=event-loop-processing-model:document-3><a href=dom.html#document>Document</a></code> objects associated with the
-      <a href=#event-loop id=event-loop-processing-model:event-loop-10>event loop</a> in question, sorted arbitrarily except that the following conditions
+      <a href=#event-loop id=event-loop-processing-model:event-loop-6>event loop</a> in question, sorted arbitrarily except that the following conditions
       must be met:</p>
 
       <ul><li><p>Any <code id=event-loop-processing-model:document-4><a href=dom.html#document>Document</a></code> <var>B</var> that is <a href=browsers.html#browsing-context-nested-through id=event-loop-processing-model:browsing-context-nested-through>nested through</a> a <code id=event-loop-processing-model:document-5><a href=dom.html#document>Document</a></code> <var>A</var> must be listed after
@@ -2083,18 +2084,18 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
       <p>In the steps below that iterate over <var>docs</var>, each <code id=event-loop-processing-model:document-7><a href=dom.html#document>Document</a></code> must be
       processed in the order it is found in the list.</p>
      </li><li>
-      <p><i>Rendering opportunites</i>: If there are <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context-3>browsing
+      <p><i>Rendering opportunites</i>: If there are <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context>browsing
       contexts</a> <var>browsingContexts</var> that do not have a <a href=#rendering-opportunity id=event-loop-processing-model:rendering-opportunity>rendering
       opportunity</a>, then remove from <var>docs</var> all <code id=event-loop-processing-model:document-8><a href=dom.html#document>Document</a></code> objects whose
       <a href=browsers.html#concept-document-bc id=event-loop-processing-model:concept-document-bc-2>browsing context</a> is in
       <var>browsingContexts</var>.</p>
 
-      <p>A <a id=event-loop-processing-model:browsing-context-4 href=browsers.html#browsing-context>browsing context</a> has a <dfn id=rendering-opportunity>rendering opportunity</dfn> if the user agent is
-      currently able to present the contents of the <a id=event-loop-processing-model:browsing-context-5 href=browsers.html#browsing-context>browsing context</a> to the user,
+      <p>A <a id=event-loop-processing-model:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> has a <dfn id=rendering-opportunity>rendering opportunity</dfn> if the user agent is
+      currently able to present the contents of the <a id=event-loop-processing-model:browsing-context-3 href=browsers.html#browsing-context>browsing context</a> to the user,
       accounting for hardware refresh rate constraints and user agent throttling for performance
       reasons, but considering content presentable even if it's outside the viewport.</p>
 
-      <p><a id=event-loop-processing-model:browsing-context-6 href=browsers.html#browsing-context>Browsing context</a> <a href=#rendering-opportunity id=event-loop-processing-model:rendering-opportunity-2>rendering
+      <p><a id=event-loop-processing-model:browsing-context-4 href=browsers.html#browsing-context>Browsing context</a> <a href=#rendering-opportunity id=event-loop-processing-model:rendering-opportunity-2>rendering
       opportunities</a> are determined based on hardware constraints such as display refresh
       rates and other factors such as page performance or whether the page is in the background.
       Rendering opportunities typically occur at regular intervals.</p>
@@ -2102,19 +2103,19 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
       <p class=note>This specification does not mandate any particular model for selecting
       rendering opportunities. But for example, if the browser is attempting to achieve a 60Hz
       refresh rate, then rendering opportunities occur at a maximum of every 60th of a second (about
-      16.7ms). If the browser finds that a <a id=event-loop-processing-model:browsing-context-7 href=browsers.html#browsing-context>browsing context</a> is not able to sustain this
+      16.7ms). If the browser finds that a <a id=event-loop-processing-model:browsing-context-5 href=browsers.html#browsing-context>browsing context</a> is not able to sustain this
       rate, it might drop to a more sustainable 30 rendering opportunities per second for that
-      <a id=event-loop-processing-model:browsing-context-8 href=browsers.html#browsing-context>browsing context</a>, rather than occasionally dropping frames. Similarly, if a
-      <a id=event-loop-processing-model:browsing-context-9 href=browsers.html#browsing-context>browsing context</a> is not visible, the user agent might decide to drop that page to
+      <a id=event-loop-processing-model:browsing-context-6 href=browsers.html#browsing-context>browsing context</a>, rather than occasionally dropping frames. Similarly, if a
+      <a id=event-loop-processing-model:browsing-context-7 href=browsers.html#browsing-context>browsing context</a> is not visible, the user agent might decide to drop that page to
       a much slower 4 rendering opportunities per second, or even less.</p>
-     </li><li><p><i>Unnecessary rendering</i>: If there are <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context-10>browsing
+     </li><li><p><i>Unnecessary rendering</i>: If there are <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context-8>browsing
      contexts</a> <var>browsingContexts</var> for which the user agent believes updating the
      rendering would have no visible effect and which possess no <code id=event-loop-processing-model:document-9><a href=dom.html#document>Document</a></code> objects with
      a non-empty <a id=event-loop-processing-model:list-of-animation-frame-callbacks href=imagebitmap-and-animations.html#list-of-animation-frame-callbacks>map of animation frame callbacks</a>, then remove from <var>docs</var>
      all <code id=event-loop-processing-model:document-10><a href=dom.html#document>Document</a></code> objects whose <a href=browsers.html#concept-document-bc id=event-loop-processing-model:concept-document-bc-3>browsing
      context</a> is in <var>browsingContexts</var>. Invoke the <a id=event-loop-processing-model:mark-paint-timing href=https://w3c.github.io/paint-timing/#mark-paint-timing data-x-internal=mark-paint-timing>mark paint timing</a>
      algorithm for each <code id=event-loop-processing-model:document-11><a href=dom.html#document>Document</a></code> object removed.</li><li>
-      <p>If there are <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context-11>browsing contexts</a>
+      <p>If there are <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context-9>browsing contexts</a>
       <var>browsingContexts</var> for which the user agent believes it's preferrable to skip
       updating the rendering for other reasons, then remove from <var>docs</var> all
       <code id=event-loop-processing-model:document-12><a href=dom.html#document>Document</a></code> objects whose <a href=browsers.html#concept-document-bc id=event-loop-processing-model:concept-document-bc-4>browsing context</a>
@@ -2151,12 +2152,20 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
      <var>now</var> as the timestamp. <a href=references.html#refsINTERSECTIONOBSERVER>[INTERSECTIONOBSERVER]</a></li><li><p>Invoke the <a id=event-loop-processing-model:mark-paint-timing-2 href=https://w3c.github.io/paint-timing/#mark-paint-timing data-x-internal=mark-paint-timing>mark paint timing</a> algorithm for each <code id=event-loop-processing-model:document-27><a href=dom.html#document>Document</a></code>
      object in <var>docs</var>.</li><li><p>For each <a id=event-loop-processing-model:fully-active-9 href=browsers.html#fully-active>fully active</a> <code id=event-loop-processing-model:document-28><a href=dom.html#document>Document</a></code> in <var>docs</var>, update the
      rendering or user interface of that <code id=event-loop-processing-model:document-29><a href=dom.html#document>Document</a></code> and its <a href=browsers.html#concept-document-bc id=event-loop-processing-model:concept-document-bc-5>browsing context</a> to reflect the current state.</li></ol>
-   </li><li><p>If this is a <a id=event-loop-processing-model:browsing-context-12 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-11>event loop</a> (as opposed to a <a href=workers.html#workers>worker</a> <a href=#event-loop id=event-loop-processing-model:event-loop-12>event loop</a>), and there are no <a href=#concept-task id=event-loop-processing-model:concept-task-4>tasks</a> in the <a href=#event-loop id=event-loop-processing-model:event-loop-13>event loop</a>'s <a href=#task-queue id=event-loop-processing-model:task-queue-4>task queues</a> which are associated with a <code id=event-loop-processing-model:document-30><a href=dom.html#document>Document</a></code> that is
-   <a id=event-loop-processing-model:fully-active-10 href=browsers.html#fully-active>fully active</a>, and the <a href=#event-loop id=event-loop-processing-model:event-loop-14>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue>microtask queue</a> is
-   empty, and none of the <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context-13>browsing contexts</a> have a
-   <a href=#rendering-opportunity id=event-loop-processing-model:rendering-opportunity-4>rendering opportunity</a>, then for each <a id=event-loop-processing-model:browsing-context-14 href=browsers.html#browsing-context>browsing context</a>, run the steps in
-   the <a id=event-loop-processing-model:start-an-idle-period-algorithm href=https://w3c.github.io/requestidlecallback/#start-an-idle-period-algorithm data-x-internal=start-an-idle-period-algorithm>start an idle period algorithm</a>, passing the <code id=event-loop-processing-model:window><a href=window-object.html#window>Window</a></code> associated with
-   that <a id=event-loop-processing-model:browsing-context-15 href=browsers.html#browsing-context>browsing context</a>. <a href=references.html#refsREQUESTIDLECALLBACK>[REQUESTIDLECALLBACK]</a></li><li>
+   </li><li>
+    <p>If all of the following are true
+
+    
+
+    <ul class=brief><li>this is a <a href=#window-event-loop id=event-loop-processing-model:window-event-loop-3>window event loop</a></li><li>there are no <a href=#concept-task id=event-loop-processing-model:concept-task-4>tasks</a> in the <a href=#event-loop id=event-loop-processing-model:event-loop-7>event loop</a>'s
+     <a href=#task-queue id=event-loop-processing-model:task-queue-4>task queues</a> which are associated with a <code id=event-loop-processing-model:document-30><a href=dom.html#document>Document</a></code>
+     that is <a id=event-loop-processing-model:fully-active-10 href=browsers.html#fully-active>fully active</a></li><li>the <a href=#event-loop id=event-loop-processing-model:event-loop-8>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue>microtask queue</a> is empty</li><li>none of the <a href=browsers.html#browsing-context id=event-loop-processing-model:browsing-context-10>browsing contexts</a> have a
+     <a href=#rendering-opportunity id=event-loop-processing-model:rendering-opportunity-4>rendering opportunity</a></li></ul>
+
+    <p>then for each <a id=event-loop-processing-model:browsing-context-11 href=browsers.html#browsing-context>browsing context</a>, run the steps in the <a id=event-loop-processing-model:start-an-idle-period-algorithm href=https://w3c.github.io/requestidlecallback/#start-an-idle-period-algorithm data-x-internal=start-an-idle-period-algorithm>start an idle period
+    algorithm</a>, passing the <code id=event-loop-processing-model:window><a href=window-object.html#window>Window</a></code> associated with that <a id=event-loop-processing-model:browsing-context-12 href=browsers.html#browsing-context>browsing
+    context</a>. <a href=references.html#refsREQUESTIDLECALLBACK>[REQUESTIDLECALLBACK]</a></p>
+   </li><li>
     <p>Report the duration of the <a href=#update-the-rendering id=event-loop-processing-model:update-the-rendering>update the rendering</a> step by performing the
     following steps:</p>
 
@@ -2166,32 +2175,32 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
      beginning of the <a href=#update-the-rendering id=event-loop-processing-model:update-the-rendering-2>update the rendering</a> step), <var>rendering end time</var>, and
      <var>top-level browsing contexts</var>.</li></ol>
    </li><li>
-    <p>If this is a <a href=workers.html#workers>worker</a> <a href=#event-loop id=event-loop-processing-model:event-loop-15>event loop</a> (i.e., one running for
-    a <code id=event-loop-processing-model:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code>):</p>
+    <p>If this is a <a href=#worker-event-loop-2 id=event-loop-processing-model:worker-event-loop-2>worker event loop</a>, then:</p>
 
     <ol><li>
-      <p>If this is a <a href=imagebitmap-and-animations.html#concept-animationframeprovider-supported id=event-loop-processing-model:concept-animationframeprovider-supported>supported</a>
+      <p>If this <a href=#event-loop id=event-loop-processing-model:event-loop-9>event loop</a>'s <a id=event-loop-processing-model:agent href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>'s single <a href=https://tc39.github.io/ecma262/#sec-code-realms id=event-loop-processing-model:javascript-realm data-x-internal=javascript-realm>realm</a>'s <a href=#concept-realm-global id=event-loop-processing-model:concept-realm-global>global object</a> is a <a href=imagebitmap-and-animations.html#concept-animationframeprovider-supported id=event-loop-processing-model:concept-animationframeprovider-supported>supported</a>
       <code id=event-loop-processing-model:dedicatedworkerglobalscope><a href=workers.html#dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</a></code> and the user agent believes that it would benefit from
       having its rendering updated at this time, then:</p>
+      
 
       <ol><li><p>Let <var>now</var> be the <a id=event-loop-processing-model:current-high-resolution-time-4 href=https://w3c.github.io/hr-time/#dfn-current-high-resolution-time data-x-internal=current-high-resolution-time>current high resolution time</a>. <a href=references.html#refsHRT>[HRT]</a></li><li><p><a id=event-loop-processing-model:run-the-animation-frame-callbacks-3 href=imagebitmap-and-animations.html#run-the-animation-frame-callbacks>Run the animation frame callbacks</a> for that
        <code id=event-loop-processing-model:dedicatedworkerglobalscope-2><a href=workers.html#dedicatedworkerglobalscope>DedicatedWorkerGlobalScope</a></code>, passing in <var>now</var> as the
        timestamp.</li><li><p>Update the rendering of that dedicated worker to reflect the current state.</li></ol>
 
       <p class=note>Similar to the notes for <a href=#update-the-rendering id=event-loop-processing-model:update-the-rendering-3>updating the
-      rendering</a> in a <a id=event-loop-processing-model:browsing-context-16 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loop-processing-model:event-loop-16>event loop</a>, a user agent can
-      determine the rate of rendering in the dedicated worker.</p>
-     </li><li><p>If there are no <a href=#concept-task id=event-loop-processing-model:concept-task-5>tasks</a> in the <a href=#event-loop id=event-loop-processing-model:event-loop-17>event
+      rendering</a> in a <a href=#window-event-loop id=event-loop-processing-model:window-event-loop-4>window event loop</a>, a user agent can determine the rate of
+      rendering in the dedicated worker.</p>
+     </li><li><p>If there are no <a href=#concept-task id=event-loop-processing-model:concept-task-5>tasks</a> in the <a href=#event-loop id=event-loop-processing-model:event-loop-10>event
      loop</a>'s <a href=#task-queue id=event-loop-processing-model:task-queue-5>task queues</a> and the
-     <code id=event-loop-processing-model:workerglobalscope-2><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> object's <a href=workers.html#dom-workerglobalscope-closing id=event-loop-processing-model:dom-workerglobalscope-closing>closing</a> flag is true, then destroy the
-     <a href=#event-loop id=event-loop-processing-model:event-loop-18>event loop</a>, aborting these steps, resuming the <a id=event-loop-processing-model:run-a-worker href=workers.html#run-a-worker>run a worker</a> steps
+     <code id=event-loop-processing-model:workerglobalscope><a href=workers.html#workerglobalscope>WorkerGlobalScope</a></code> object's <a href=workers.html#dom-workerglobalscope-closing id=event-loop-processing-model:dom-workerglobalscope-closing>closing</a> flag is true, then destroy the
+     <a href=#event-loop id=event-loop-processing-model:event-loop-11>event loop</a>, aborting these steps, resuming the <a id=event-loop-processing-model:run-a-worker href=workers.html#run-a-worker>run a worker</a> steps
      described in the <a href=workers.html#workers>Web workers</a> section below.</li></ol>
    </li><li><p>Set <a href=#event-loop-end id=event-loop-processing-model:event-loop-end-3>event loop end</a> to be the <a id=event-loop-processing-model:current-high-resolution-time-5 href=https://w3c.github.io/hr-time/#dfn-current-high-resolution-time data-x-internal=current-high-resolution-time>current high resolution
    time</a>.</li></ol>
 
   <hr>
 
-  <p>Each <a href=#event-loop id=event-loop-processing-model:event-loop-19>event loop</a> has a <dfn id=microtask-queue>microtask queue</dfn>. A <dfn id=microtask data-export="">microtask</dfn> is a <a href=#concept-task id=event-loop-processing-model:concept-task-6>task</a> that is originally to
+  <p>Each <a href=#event-loop id=event-loop-processing-model:event-loop-12>event loop</a> has a <dfn id=microtask-queue>microtask queue</dfn>. A <dfn id=microtask data-export="">microtask</dfn> is a <a href=#concept-task id=event-loop-processing-model:concept-task-6>task</a> that is originally to
   be queued on the <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-2>microtask queue</a> rather than a <a href=#task-queue id=event-loop-processing-model:task-queue-6>task queue</a>. There are two
   kinds of <a href=#microtask id=event-loop-processing-model:microtask>microtasks</a>: <dfn id=solitary-callback-microtask data-lt="solitary callback microtask" data-export="">solitary callback
   microtasks</dfn>, and <dfn id=compound-microtask data-lt="compound microtask" data-export="">compound microtasks</dfn>.</p>
@@ -2202,7 +2211,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   loop</a>.</p>
 
   <p>When an algorithm requires a <a href=#microtask id=event-loop-processing-model:microtask-2>microtask</a> to be <dfn id=queue-a-microtask data-lt="queue a microtask" data-export="">queued</dfn>, it must be appended to the
-  relevant <a href=#event-loop id=event-loop-processing-model:event-loop-20>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-3>microtask queue</a>; the <a href=#task-source id=event-loop-processing-model:task-source>task source</a> of
+  relevant <a href=#event-loop id=event-loop-processing-model:event-loop-13>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-3>microtask queue</a>; the <a href=#task-source id=event-loop-processing-model:task-source>task source</a> of
   such a <a href=#microtask id=event-loop-processing-model:microtask-3>microtask</a> is the <dfn id=microtask-task-source>microtask task source</dfn>.</p>
 
   <p class=note>It is possible for a <a href=#microtask id=event-loop-processing-model:microtask-4>microtask</a> to be moved to a regular <a href=#task-queue id=event-loop-processing-model:task-queue-7>task
@@ -2216,10 +2225,10 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   following steps:</p>
 
   <ol><li><p>Set the <a href=#performing-a-microtask-checkpoint id=event-loop-processing-model:performing-a-microtask-checkpoint-2>performing a microtask checkpoint</a> flag to true.</li><li>
-    <p>While the <a href=#event-loop id=event-loop-processing-model:event-loop-21>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-4>microtask queue</a> is not empty:</p>
+    <p>While the <a href=#event-loop id=event-loop-processing-model:event-loop-14>event loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-4>microtask queue</a> is not empty:</p>
 
-    <ol><li><p>Let <var>oldestMicrotask</var> be the oldest <a href=#microtask id=event-loop-processing-model:microtask-6>microtask</a> on the <a href=#event-loop id=event-loop-processing-model:event-loop-22>event
-     loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-5>microtask queue</a>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-23>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-3>currently running task</a> to
+    <ol><li><p>Let <var>oldestMicrotask</var> be the oldest <a href=#microtask id=event-loop-processing-model:microtask-6>microtask</a> on the <a href=#event-loop id=event-loop-processing-model:event-loop-15>event
+     loop</a>'s <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-5>microtask queue</a>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-16>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-3>currently running task</a> to
      <var>oldestMicrotask</var>.</li><li>
       <p>Run <var>oldestMicrotask</var>.</p>
 
@@ -2227,21 +2236,21 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
       <a href=#clean-up-after-running-script id=event-loop-processing-model:clean-up-after-running-script>clean up after running script</a> steps, which call this <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint-3>perform a microtask
       checkpoint</a> algorithm again, which is why we use the <a href=#performing-a-microtask-checkpoint id=event-loop-processing-model:performing-a-microtask-checkpoint-3>performing a microtask
       checkpoint</a> flag to avoid reentrancy.</p>
-     </li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-24>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-4>currently running task</a> back to
+     </li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-17>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-4>currently running task</a> back to
      null.</li><li><p>Remove <var>oldestMicrotask</var> from the <a href=#microtask-queue id=event-loop-processing-model:microtask-queue-6>microtask queue</a>.</li></ol>
    </li><li><p>For each <a href=#environment-settings-object id=event-loop-processing-model:environment-settings-object-2>environment settings object</a> whose <a href=#responsible-event-loop id=event-loop-processing-model:responsible-event-loop>responsible event
-   loop</a> is this <a href=#event-loop id=event-loop-processing-model:event-loop-25>event loop</a>, <a href=#notify-about-rejected-promises id=event-loop-processing-model:notify-about-rejected-promises>notify about rejected promises</a> on that
+   loop</a> is this <a href=#event-loop id=event-loop-processing-model:event-loop-18>event loop</a>, <a href=#notify-about-rejected-promises id=event-loop-processing-model:notify-about-rejected-promises>notify about rejected promises</a> on that
    <a href=#environment-settings-object id=event-loop-processing-model:environment-settings-object-3>environment settings object</a>.</li><li><p><a id=event-loop-processing-model:cleanup-indexed-database-transactions href=https://w3c.github.io/IndexedDB/#cleanup-indexed-database-transactions data-x-internal=cleanup-indexed-database-transactions>Cleanup Indexed Database transactions</a>.</li><li><p>Set the <a href=#performing-a-microtask-checkpoint id=event-loop-processing-model:performing-a-microtask-checkpoint-4>performing a microtask checkpoint</a> flag to false.</li></ol>
 
   <p>If, while a <a href=#compound-microtask id=event-loop-processing-model:compound-microtask-2>compound microtask</a> is running, the user agent is required to
   <dfn id=execute-a-compound-microtask-subtask data-export="">execute a compound microtask subtask</dfn> to run a series of steps, the user
   agent must run the following steps:</p>
 
-  <ol><li><p>Let <var>parent</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-26>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-5>currently running
+  <ol><li><p>Let <var>parent</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-19>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-5>currently running
    task</a> (the currently running <a href=#compound-microtask id=event-loop-processing-model:compound-microtask-3>compound microtask</a>).</li><li><p>Let <var>subtask</var> be a new <a href=#concept-task id=event-loop-processing-model:concept-task-7>task</a> that
    consists of running the given series of steps. The <a href=#task-source id=event-loop-processing-model:task-source-4>task source</a> of such a
    <a href=#microtask id=event-loop-processing-model:microtask-7>microtask</a> is the <a href=#microtask-task-source id=event-loop-processing-model:microtask-task-source-2>microtask task source</a>. This is a <dfn id=compound-microtask-subtask>compound
-   microtask subtask</dfn>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-27>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-6>currently running task</a> to <var>subtask</var>.</li><li><p>Run <var>subtask</var>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-28>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-7>currently running task</a> back to <var>parent</var>.</li></ol>
+   microtask subtask</dfn>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-20>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-6>currently running task</a> to <var>subtask</var>.</li><li><p>Run <var>subtask</var>.</li><li><p>Set the <a href=#event-loop id=event-loop-processing-model:event-loop-21>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-7>currently running task</a> back to <var>parent</var>.</li></ol>
 
   <hr>
 
@@ -2262,7 +2271,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
 
   <ol><li>
 
-    <p>Let <var>task</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-29>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-8>currently running
+    <p>Let <var>task</var> be the <a href=#event-loop id=event-loop-processing-model:event-loop-22>event loop</a>'s <a href=#currently-running-task id=event-loop-processing-model:currently-running-task-8>currently running
     task</a>.</p>
 
     <p class=note>This might be a <a href=#microtask id=event-loop-processing-model:microtask-8>microtask</a>, in which case it is a <a href=#solitary-callback-microtask id=event-loop-processing-model:solitary-callback-microtask-2>solitary
@@ -2277,7 +2286,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
     <p>Stop <var>task</var>, allowing whatever algorithm that invoked it to resume, but
     continue these steps <a id=event-loop-processing-model:in-parallel-3 href=infrastructure.html#in-parallel>in parallel</a>.</p>
 
-    <p class=note>This causes one of the following algorithms to continue: the <a href=#event-loop id=event-loop-processing-model:event-loop-30>event
+    <p class=note>This causes one of the following algorithms to continue: the <a href=#event-loop id=event-loop-processing-model:event-loop-23>event
     loop</a>'s main set of steps, the <a href=#perform-a-microtask-checkpoint id=event-loop-processing-model:perform-a-microtask-checkpoint-5>perform a microtask checkpoint</a> algorithm, or
     the <a href=#execute-a-compound-microtask-subtask id=event-loop-processing-model:execute-a-compound-microtask-subtask-2>execute a compound microtask subtask</a> algorithm.</p>
 
@@ -2292,15 +2301,15 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   <dfn id=pause>pause</dfn> while running a <a href=#concept-task id=event-loop-processing-model:concept-task-9>task</a> until a condition <var>goal</var> is met. This means running the following steps:</p>
 
   <ol><li><p>If necessary, update the rendering or user interface of any <code id=event-loop-processing-model:document-32><a href=dom.html#document>Document</a></code> or
-   <a id=event-loop-processing-model:browsing-context-17 href=browsers.html#browsing-context>browsing context</a> to reflect the current state.</li><li><p>Wait until the condition <var>goal</var> is met. While a user agent has a paused
-   <a href=#concept-task id=event-loop-processing-model:concept-task-10>task</a>, the corresponding <a href=#event-loop id=event-loop-processing-model:event-loop-31>event loop</a> must not run
+   <a id=event-loop-processing-model:browsing-context-13 href=browsers.html#browsing-context>browsing context</a> to reflect the current state.</li><li><p>Wait until the condition <var>goal</var> is met. While a user agent has a paused
+   <a href=#concept-task id=event-loop-processing-model:concept-task-10>task</a>, the corresponding <a href=#event-loop id=event-loop-processing-model:event-loop-24>event loop</a> must not run
    further <a href=#concept-task id=event-loop-processing-model:concept-task-11>tasks</a>, and any script in the currently running <a href=#concept-task id=event-loop-processing-model:concept-task-12>task</a> must block. User agents should remain responsive to user input
-   while paused, however, albeit in a reduced capacity since the <a href=#event-loop id=event-loop-processing-model:event-loop-32>event loop</a> will not be
+   while paused, however, albeit in a reduced capacity since the <a href=#event-loop id=event-loop-processing-model:event-loop-25>event loop</a> will not be
    doing anything.</li></ol>
 
   <div class=warning>
    <p><a href=#pause id=event-loop-processing-model:pause>Pausing</a> is highly detrimental to the user experience, especially
-   in scenarios where a single <a href=#event-loop id=event-loop-processing-model:event-loop-33>event loop</a> is shared among multiple documents. User
+   in scenarios where a single <a href=#event-loop id=event-loop-processing-model:event-loop-26>event loop</a> is shared among multiple documents. User
    agents are encouraged to experiment with alternatives to <a href=#pause id=event-loop-processing-model:pause-2>pausing</a>,
    such as <a href=#spin-the-event-loop id=event-loop-processing-model:spin-the-event-loop-3>spinning the event loop</a> or even simply
    proceeding without any kind of suspended execution at all, insofar as it is possible to do so
@@ -2308,7 +2317,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
    a less-drastic alternative is discovered to be web-compatible.</p>
 
    <p>In the interim, implementers should be aware that the variety of alternatives that user agents
-   might experiment with can change subtle aspects of <a href=#event-loop id=event-loop-processing-model:event-loop-34>event loop</a> behavior, including
+   might experiment with can change subtle aspects of <a href=#event-loop id=event-loop-processing-model:event-loop-27>event loop</a> behavior, including
    <a href=#concept-task id=event-loop-processing-model:concept-task-13>task</a> and <a href=#microtask id=event-loop-processing-model:microtask-10>microtask</a> timing. Implementations should
    continue experimenting even if doing so causes them to violate the exact semantics implied by the
    <a href=#pause id=event-loop-processing-model:pause-3>pause</a> operation.</p>
@@ -2925,7 +2934,28 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
        <dt><var>Strict</var><dd>The value of <var>strict</var>.</dl>
 
      </li><li><p>Remove <var>settings object</var>'s <a href=#realm-execution-context id=event-handler-attributes:realm-execution-context-2>realm execution context</a> from the
-     <a id=event-handler-attributes:javascript-execution-context-stack-2 href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a>.</li><li><p>Set <var>eventHandler</var>'s <a href=#event-handler-value id=event-handler-attributes:event-handler-value-12>value</a> to the
+     <a id=event-handler-attributes:javascript-execution-context-stack-2 href=https://tc39.github.io/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a>.</li><li>
+      <p>Set <var>function</var>.[[ScriptOrModule]] to null.</p>
+
+      <div class=note>
+       <p>This is done because the default behavior, of associating the created function
+       with the nearest <a href=#concept-script id=event-handler-attributes:concept-script-2>script</a> on the stack, can lead to
+       path-dependent results. For example, an event handler which is first invoked by user
+       interaction would end up with null [[ScriptOrModule]] (since then this algorithm would be
+       first invoked when the <a href=#active-script id=event-handler-attributes:active-script>active script</a> is null), whereas one that is first invoked
+       by dispatching an event from script would have its [[ScriptOrModule]] set to that script.</p>
+
+       <p>Instead, we just always set [[ScriptOrModule]] to null. This is more intuitive anyway; the
+       idea that the first script which dispatches an event is somehow responsible for the event
+       handler code is dubious.</p>
+
+       <p>In practice, this only affects the resolution of relative URLs via <code id=event-handler-attributes:import()><a data-x-internal=import() href=https://tc39.github.io/proposal-dynamic-import/#sec-import-calls>import()</a></code>,
+       which consult the <a href=#concept-script-base-url id=event-handler-attributes:concept-script-base-url>base URL</a> of the associated
+       script. Nulling out [[ScriptOrModule]] means that <a href=#hostresolveimportedmodule(referencingscriptormodule,-specifier) id=event-handler-attributes:hostresolveimportedmodule(referencingscriptormodule,-specifier)>HostResolveImportedModule</a> and
+       <a href=#hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability) id=event-handler-attributes:hostimportmoduledynamically(referencingscriptormodule,-specifier,-promisecapability)>HostImportModuleDynamically</a> will fall back to the <a href=#current-settings-object id=event-handler-attributes:current-settings-object>current settings
+       object</a>'s <a href=#api-base-url id=event-handler-attributes:api-base-url>API base URL</a>.</p>
+      </div>
+     </li><li><p>Set <var>eventHandler</var>'s <a href=#event-handler-value id=event-handler-attributes:event-handler-value-12>value</a> to the
      result of creating a Web IDL <code id=event-handler-attributes:eventhandler-3><a href=#eventhandler>EventHandler</a></code> callback function object whose object
      reference is <var>function</var> and whose <a id=event-handler-attributes:callback-context-2 href=https://triple-underscore.github.io/WebIDL-ja.html#dfn-callback-context data-x-internal=callback-context>callback context</a> is <var>settings
      object</var>.</li></ol>
@@ -3271,7 +3301,7 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->frame<c- p>)</c-></co
   object's <a href=#relevant-settings-object id=windoworworkerglobalscope-mixin:relevant-settings-object>relevant settings object</a>'s <a href=#concept-settings-object-origin id=windoworworkerglobalscope-mixin:concept-settings-object-origin>origin</a>, <a href=origin.html#ascii-serialisation-of-an-origin id=windoworworkerglobalscope-mixin:ascii-serialisation-of-an-origin>serialized</a>.</p>
 
 
-  <h3 id=atob><span class=secno>8.3</span> Base64ユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob><span class=secno>8.3</span> Base64ユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>

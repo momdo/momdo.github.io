@@ -13,7 +13,7 @@
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
    
-   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>29 January 2019</span></h2></hgroup>
+   <hgroup><h1><a rel=home href=/dev/>HTML: The Living Standard</a></h1><h2 id=dev-edition-h2 class="no-num no-toc">Developer's Edition — Last Updated <span class=pubdate>12 February 2019</span></h2></hgroup>
    
 
    <div id=search>
@@ -142,7 +142,7 @@
   <h5 id=unhandled-promise-rejections><span class=secno>8.1.1.3</span> Unhandled promise rejections<a href=#unhandled-promise-rejections class=self-link></a></h5>
 
   <p>In addition to synchronous <a href=#runtime-script-errors>runtime script errors</a>, scripts
-  may experience asynchronous promise rejections, tracked via the <code id=unhandled-promise-rejections:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> and <code id=unhandled-promise-rejections:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> events.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> unhandledrejection<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>11.3+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>11+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>5+</span></span><span class="android yes"><span>Android Browser</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=unhandledrejection">caniuse.com</a></div>
+  may experience asynchronous promise rejections, tracked via the <code id=unhandled-promise-rejections:event-unhandledrejection><a href=indices.html#event-unhandledrejection>unhandledrejection</a></code> and <code id=unhandled-promise-rejections:event-rejectionhandled><a href=indices.html#event-rejectionhandled>rejectionhandled</a></code> events.<div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> unhandledrejection<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>49+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>11.3+</span></span><span class="firefox no"><span>Firefox</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="safari yes"><span>Safari</span> <span>11+</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>36+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>5.0+</span></span><span class="android yes"><span>Android Browser</span> <span>67+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=unhandledrejection">caniuse.com</a></div>
 
   
 
@@ -152,25 +152,26 @@
 
   <p>To coordinate events, user interaction, scripts, rendering, networking, and so forth, user
   agents must use <dfn id=event-loop data-lt="event loop" data-export="">event loops</dfn> as
-  described in this section. There are two kinds of event loops: those for <a href=browsers.html#browsing-context id=event-loops:browsing-context>browsing contexts</a>, and those for <a href=workers.html#workers>workers</a>.</p>
+  described in this section. Each <a id=event-loops:agent href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a> has an associated <a href=#event-loop id=event-loops:event-loop>event loop</a>.</p>
 
-  <p>There must be at least one <a id=event-loops:browsing-context-2 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loops:event-loop>event loop</a> per user
-  agent, and at most one per <span>unit of related similar-origin browsing contexts</span>.</p>
+  <p class=note>In the future, this standard hopes to define exactly when <a href=#event-loop id=event-loops:event-loop-2>event loops</a> can be created or reused.</p>
 
-  <p class=note>When there is more than one <a href=#event-loop id=event-loops:event-loop-2>event loop</a> for a <span>unit of related
-  browsing contexts</span>, complications arise when a <a id=event-loops:browsing-context-3 href=browsers.html#browsing-context>browsing context</a> in that group
-  is <span>navigated</span> such that it switches from one <span>unit of related
-  similar-origin browsing contexts</span> to another. This specification does not currently describe
-  how to handle these complications.</p>
+  <p>A <dfn id=window-event-loop>window event loop</dfn> is the <a href=#event-loop id=event-loops:event-loop-3>event loop</a> used by <span>similar-origin window agents</span>. User agents may share an
+  <a href=#event-loop id=event-loops:event-loop-4>event loop</a> across <span>similar-origin window
+  agents</span>.</p>
+  
 
-  <p>A <a id=event-loops:browsing-context-4 href=browsers.html#browsing-context>browsing context</a> <a href=#event-loop id=event-loops:event-loop-3>event loop</a> always has at least one <a id=event-loops:browsing-context-5 href=browsers.html#browsing-context>browsing
-  context</a>. If such an <a href=#event-loop id=event-loops:event-loop-4>event loop</a>'s <a href=browsers.html#browsing-context id=event-loops:browsing-context-6>browsing
-  contexts</a> all go away, then the <a href=#event-loop id=event-loops:event-loop-5>event loop</a> goes away as well. A <a id=event-loops:browsing-context-7 href=browsers.html#browsing-context>browsing
-  context</a> always has an <a href=#event-loop id=event-loops:event-loop-6>event loop</a> coordinating its activities.</p>
+  <p class=note>This specification does not currently describe how to handle the complications
+  arising from <span>navigating</span> between <span>similar-origin window agents</span>. E.g., when a <a id=event-loops:browsing-context href=browsers.html#browsing-context>browsing context</a> <span>navigates</span> from <code>https://example.com/</code> to <code>https://shop.example/</code>.</p>
 
-  <p><a href=workers.html#worker-event-loop>Worker event loops</a> are simpler: each worker has one
-  <a href=#event-loop id=event-loops:event-loop-7>event loop</a>, and the <span>worker processing model</span>
-  manages the <a href=#event-loop id=event-loops:event-loop-8>event loop</a>'s lifetime.</p>
+  <p>A <dfn id=worker-event-loop-2>worker event loop</dfn> is the <a href=#event-loop id=event-loops:event-loop-5>event loop</a> used by <span>dedicated worker agents</span>, <span>shared worker
+  agents</span>, and <span>service worker agents</span>. There must be
+  one <a href=#worker-event-loop-2 id=event-loops:worker-event-loop-2>worker event loop</a> per such <a id=event-loops:agent-2 href=https://tc39.github.io/ecma262/#sec-agents data-x-internal=agent>agent</a>.</p>
+
+  <p>A <dfn id=worklet-event-loop>worklet event loop</dfn> is the <a href=#event-loop id=event-loops:event-loop-6>event loop</a> used by <span>worklet agents</span>.</p>
+
+  <p class=XXX>As detailed in <a href=https://github.com/whatwg/html/issues/4213>issue #4213</a> the situation for worklets is
+  more complicated.</p>
 
   
 
@@ -493,7 +494,7 @@ document<c- p>.</c->body<c- p>.</c->appendChild<c- p>(</c->frame<c- p>)</c-></co
   object's <span>relevant settings object</span>'s <span>origin</span>, <span>serialized</span>.</p>
 
 
-  <h3 id=atob><span class=secno>8.3</span> Base64ユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
+  <h3 id=atob><span class=secno>8.3</span> Base64ユーティリティーメソッド<a href=#atob class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> atob-btoa<span class="and_chr yes"><span>Chrome for Android</span> <span>71+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="firefox yes"><span>Firefox</span> <span>2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11.8+</span></span><span class="ie yes"><span>IE</span> <span>10+</span></span><span class="safari yes"><span>Safari</span> <span>3.1+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="op_mini yes"><span>Opera Mini</span> <span>all+</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><p class=caniuse>Source: <a href="https://caniuse.com/#feat=atob-btoa">caniuse.com</a></div>
 
   <p>The <code id=atob:dom-atob><a href=#dom-atob>atob()</a></code> and <code id=atob:dom-btoa><a href=#dom-btoa>btoa()</a></code> methods
   allow developers to transform content to and from the base64 encoding.</p>
