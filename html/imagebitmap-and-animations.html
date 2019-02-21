@@ -125,7 +125,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>14 February 2019</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>19 February 2019</span></h2></hgroup>
    
    
 
@@ -602,12 +602,18 @@ loadMySprites<c- p>().</c->then<c- p>(</c->runDemo<c- p>);</c-></code></pre>
   <p>To <dfn id=run-the-animation-frame-callbacks>run the animation frame callbacks</dfn> for a <a href=#concept-animationframeprovider-target-object id=animation-frames:concept-animationframeprovider-target-object-4>target object</a> <var>target</var> with
   a timestamp <var>now</var>:</p>
 
-  <ol><li><p>Let <var>callbacks</var> be a clone of <var>target</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-3>map of animation frame
-   callbacks</a>.</li><li><p>Set <var>target</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-4>map of animation frame callbacks</a> to a new empty
-   <a id=animation-frames:ordered-map-2 href=https://triple-underscore.github.io/infra-ja.html#ordered-map data-x-internal=ordered-map>ordered map</a>.</li><li><p><a href=https://infra.spec.whatwg.org/#map-iterate id=animation-frames:map-iterate data-x-internal=map-iterate>For each</a> <var>handle</var> → <var>callback</var> of
-   <var>callbacks</var>, <a href=https://heycam.github.io/webidl/#invoke-a-callback-function id=animation-frames:es-invoking-callback-functions data-x-internal=es-invoking-callback-functions>invoke</a>
-   <var>callback</var>, passing <var>now</var> as the only argument, and if an exception is thrown,
-   <a id=animation-frames:report-the-exception href=webappapis.html#report-the-exception>report the exception</a>.</li></ol>
+  <ol><li><p>Let <var>callbacks</var> be <var>target</var>'s <a href=#list-of-animation-frame-callbacks id=animation-frames:list-of-animation-frame-callbacks-3>map of animation frame
+   callbacks</a>.</li><li><p>Let <var>callbackHandles</var> be the result of <a href=https://infra.spec.whatwg.org/#map-getting-the-keys id=animation-frames:map-get-the-keys data-x-internal=map-get-the-keys>getting
+   the keys</a> of <var>callbacks</var>.</li><li>
+    <p><a href=https://triple-underscore.github.io/infra-ja.html#list-iterate id=animation-frames:list-iterate data-x-internal=list-iterate>For each</a> <var>handle</var> in
+    <var>callbackHandles</var>, if <var>handle</var> <a href=https://triple-underscore.github.io/infra-ja.html#map-exists id=animation-frames:map-exists data-x-internal=map-exists>exists</a> in
+    <var>callbacks</var>:</p>
+
+    <ol><li><p>Let <var>callback</var> be <var>callbacks</var>[<var>handle</var>].</li><li><p><a href=https://infra.spec.whatwg.org/#map-remove id=animation-frames:map-remove-2 data-x-internal=map-remove>Remove</a>
+     <var>callbacks</var>[<var>handle</var>].</li><li><p><a href=https://heycam.github.io/webidl/#invoke-a-callback-function id=animation-frames:es-invoking-callback-functions data-x-internal=es-invoking-callback-functions>Invoke</a> <var>callback</var>, passing
+     <var>now</var> as the only argument, and if an exception is thrown,
+     <a id=animation-frames:report-the-exception href=webappapis.html#report-the-exception>report the exception</a>.</li></ol>
+   </li></ol>
 
   <div class=example>
    <p>Inside workers, <code id=animation-frames:dom-animationframeprovider-requestanimationframe-2><a href=#dom-animationframeprovider-requestanimationframe>requestAnimationFrame()</a></code> can be
