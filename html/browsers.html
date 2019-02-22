@@ -125,7 +125,7 @@
   <script data-file-issue-url=https://github.com/whatwg/html/issues/new async="" src=https://resources.whatwg.org/file-issue.js></script>
   <header id=head class="head with-buttons">
    <a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a>
-   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>19 February 2019</span></h2></hgroup>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>22 February 2019</span></h2></hgroup>
    
    
 
@@ -234,28 +234,31 @@
   <p>To <dfn id=creating-a-new-top-level-browsing-context>create a new top-level browsing
   context</dfn>:</p>
 
-  <ol><li><p>Return the result of <a href=#creating-a-new-browsing-context id=creating-browsing-contexts:creating-a-new-browsing-context>creating a new browsing context</a> with null.</li></ol>
+  <ol><li><p>Let <var>group</var> be the result of <a href=#creating-a-new-browsing-context-group id=creating-browsing-contexts:creating-a-new-browsing-context-group>creating a new browsing context
+   group</a>.</li><li><p>Return <var>group</var>'s <a href=#browsing-context-set id=creating-browsing-contexts:browsing-context-set>browsing context set</a>[0].</li></ol>
 
   <p class=note>This creates a <a href=#top-level-browsing-context id=creating-browsing-contexts:top-level-browsing-context>top-level browsing context</a>.</p>
 
   <p>To <dfn id=creating-a-new-auxiliary-browsing-context>create a new auxiliary browsing
   context</dfn>, given a <a href=#browsing-context id=creating-browsing-contexts:browsing-context-4>browsing context</a> <var>opener</var>:</p>
 
-  <ol><li><p>Let <var>browsingContext</var> be the result of <a href=#creating-a-new-browsing-context id=creating-browsing-contexts:creating-a-new-browsing-context-2>creating a new browsing
-   context</a> with <var>opener</var>'s <a href=#active-document id=creating-browsing-contexts:active-document>active document</a>.</li><li><p>Set <var>browsingContext</var>'s <a href=#opener-browsing-context id=creating-browsing-contexts:opener-browsing-context>opener browsing context</a> to
+  <ol><li><p>Let <var>browsingContext</var> be the result of <a href=#creating-a-new-browsing-context id=creating-browsing-contexts:creating-a-new-browsing-context>creating a new browsing
+   context</a> with <var>opener</var>'s <a href=#active-document id=creating-browsing-contexts:active-document>active document</a>.</li><li><p>Assert: <var>opener</var>'s <a href=#top-level-browsing-context id=creating-browsing-contexts:top-level-browsing-context-2>top-level browsing context</a>'s <a href=#tlbc-group id=creating-browsing-contexts:tlbc-group>group</a> is non-null, as <a href=browsing-the-web.html#navigate id=creating-browsing-contexts:navigate>navigating</a> invokes this
+   directly.</li><li><p><a href=#bcg-append id=creating-browsing-contexts:bcg-append>Append</a> <var>browsingContext</var> to <var>opener</var>'s
+   <a href=#top-level-browsing-context id=creating-browsing-contexts:top-level-browsing-context-3>top-level browsing context</a>'s <a href=#tlbc-group id=creating-browsing-contexts:tlbc-group-2>group</a>.</li><li><p>Set <var>browsingContext</var>'s <a href=#opener-browsing-context id=creating-browsing-contexts:opener-browsing-context>opener browsing context</a> to
    <var>opener</var>.</li><li><p>Assert: <var>browsingContext</var>'s <a href=#creator-origin id=creating-browsing-contexts:creator-origin-3>creator origin</a> is non-null.</li><li id=copy-session-storage><p>If <var>browsingContext</var>'s <a href=#creator-origin id=creating-browsing-contexts:creator-origin-4>creator origin</a> is
    <a id=creating-browsing-contexts:same-origin href=origin.html#same-origin>same origin</a> with <var>browsingContext</var>'s <a href=#active-document id=creating-browsing-contexts:active-document-2>active document</a>'s
    <a id=creating-browsing-contexts:concept-origin-5 href=origin.html#concept-origin>origin</a>, then copy the <code id=creating-browsing-contexts:dom-sessionstorage><a href=webstorage.html#dom-sessionstorage>sessionStorage</a></code>
    storage area of <var>opener</var> into <var>browsingContext</var>'s set of session storage areas.
    These areas must be considered separate, not affecting each other in any way.</li><li><p>Return <var>browsingContext</var>.</li></ol>
 
-  <p class=note>This creates a <a href=#top-level-browsing-context id=creating-browsing-contexts:top-level-browsing-context-2>top-level browsing context</a> that is also an
+  <p class=note>This creates a <a href=#top-level-browsing-context id=creating-browsing-contexts:top-level-browsing-context-4>top-level browsing context</a> that is also an
   <a href=#auxiliary-browsing-context id=creating-browsing-contexts:auxiliary-browsing-context>auxiliary browsing context</a>.</p>
 
   <p>To <dfn id=creating-a-new-nested-browsing-context>create a new nested browsing context</dfn>,
   given an element <var>element</var>:</p>
 
-  <ol><li><p>Let <var>browsingContext</var> be the result of <a href=#creating-a-new-browsing-context id=creating-browsing-contexts:creating-a-new-browsing-context-3>creating a new browsing
+  <ol><li><p>Let <var>browsingContext</var> be the result of <a href=#creating-a-new-browsing-context id=creating-browsing-contexts:creating-a-new-browsing-context-2>creating a new browsing
    context</a> with <var>element</var>'s <a id=creating-browsing-contexts:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>.</li><li><p>Set <var>element</var>'s <a href=#nested-browsing-context id=creating-browsing-contexts:nested-browsing-context>nested browsing context</a> to
    <var>browsingContext</var>.</li><li><p>If <var>element</var> has a <code>name</code> attribute, then set
    <var>browsingContext</var>'s <a href=#browsing-context-name id=creating-browsing-contexts:browsing-context-name>name</a> to the value of
@@ -285,7 +288,9 @@
   <p>A <a href=#browsing-context id=nested-browsing-contexts:browsing-context-11>browsing context</a> that has no <a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-3>parent browsing context</a> is the <dfn id=top-level-browsing-context data-export="">top-level browsing context</dfn> for itself and all of the browsing contexts for
   which it is an <a href=#ancestor-browsing-context id=nested-browsing-contexts:ancestor-browsing-context-2>ancestor browsing context</a>.</p>
 
-  <p>要素を通じてネストせずに<a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context>トップレベルブラウジングコンテキスト</a>に関連する新しいブラウジングコンテキストを作成することが可能である。このようなブラウジングコンテキストは、<dfn id=auxiliary-browsing-context data-lt="auxiliary browsing context" data-export="">補助ブラウジングコンテキスト</dfn>と呼ばれる。補助ブラウジングコンテキストは常に<a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context-2>トップレベルブラウジングコンテキスト</a>である。</p>
+  <p>A <a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context>top-level browsing context</a> has an associated <dfn id=tlbc-group>group</dfn> (null or a <a href=#browsing-context-group id=nested-browsing-contexts:browsing-context-group>browsing context group</a>). It is initially null.</p>
+
+  <p>要素を通じてネストせずに<a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context-2>トップレベルブラウジングコンテキスト</a>に関連する新しいブラウジングコンテキストを作成することが可能である。このようなブラウジングコンテキストは、<dfn id=auxiliary-browsing-context data-lt="auxiliary browsing context" data-export="">補助ブラウジングコンテキスト</dfn>と呼ばれる。補助ブラウジングコンテキストは常に<a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context-3>トップレベルブラウジングコンテキスト</a>である。</p>
 
   <p><a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-3>ネストされたブラウジングコンテキスト</a>である<a href=#browsing-context id=nested-browsing-contexts:browsing-context-12>ブラウジングコンテキスト</a>に対する<a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-4>親ブラウジングコンテキスト</a>の推移的クロージャは、<a href=#ancestor-browsing-context id=nested-browsing-contexts:ancestor-browsing-context-3>祖先ブラウジングコンテキスト</a>をのリストを与える。</p>
 
@@ -303,7 +308,7 @@
 
   <p>A <code id=nested-browsing-contexts:document-2><a href=dom.html#document>Document</a></code> is said to be <dfn data-dfn-for=Document id=fully-active data-export="">fully
   active</dfn> when its <a href=#concept-document-bc id=nested-browsing-contexts:concept-document-bc-2>browsing context</a> is non-null and
-  it is the <a href=#active-document id=nested-browsing-contexts:active-document-2>active document</a> of that <a href=#browsing-context id=nested-browsing-contexts:browsing-context-14>browsing context</a>, and either its <a href=#concept-document-bc id=nested-browsing-contexts:concept-document-bc-3>browsing context</a> is a <a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context-3>top-level browsing context</a>,
+  it is the <a href=#active-document id=nested-browsing-contexts:active-document-2>active document</a> of that <a href=#browsing-context id=nested-browsing-contexts:browsing-context-14>browsing context</a>, and either its <a href=#concept-document-bc id=nested-browsing-contexts:concept-document-bc-3>browsing context</a> is a <a href=#top-level-browsing-context id=nested-browsing-contexts:top-level-browsing-context-4>top-level browsing context</a>,
   or it has a <a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-5>parent browsing context</a> and the <code id=nested-browsing-contexts:document-3><a href=dom.html#document>Document</a></code> <a href=#browsing-context-nested-through id=nested-browsing-contexts:browsing-context-nested-through-2>through which</a> it is <a href=#nested-browsing-context id=nested-browsing-contexts:nested-browsing-context-4>nested</a> is itself <a href=#fully-active id=nested-browsing-contexts:fully-active>fully active</a>.</p>
 
   <p>Because they are associated with an element, <a href=#child-browsing-context id=nested-browsing-contexts:child-browsing-context-7>child browsing contexts</a> are always tied to a specific <code id=nested-browsing-contexts:document-4><a href=dom.html#document>Document</a></code> in their <a href=#parent-browsing-context id=nested-browsing-contexts:parent-browsing-context-6>parent browsing context</a>. ユーザーエージェントは、ユーザーにがいない自身が<a href=#fully-active id=nested-browsing-contexts:fully-active-2>完全にアクティブ</a>でない<code id=nested-browsing-contexts:document-5><a href=dom.html#document>Document</a></code>にある要素の<a href=#child-browsing-context id=nested-browsing-contexts:child-browsing-context-8>子ブラウジングコンテキスト</a>と対話することを許可してはならない。</p>
@@ -383,66 +388,52 @@
 
   
 
-  <aside class="mdn before"><input onclick=toggleStatus(this) value=⋰ type=button><div><b>MDN</b> <details><summary><a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/top title="Returns a reference to the topmost window in the window hierarchy.">Window/top</a></summary><p class=mdnsupport><span class="chrome yes"><span>Chrome</span><span>Yes</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="edge yes"><span>Edge</span><span>Yes</span></span><span class="edge_mobile yes"><span>Edge Mobile</span><span>Yes</span></span><span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="firefox_android unknown"><span>Firefox Android</span><span>?</span></span><span class="ie yes"><span>Internet Explorer</span><span>Yes</span></span><span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span></details></div></aside><p>The <dfn id=dom-top><code>top</code></dfn> IDL attribute, on getting, must run the
-  following algorithm:</p>
+  <aside class="mdn before"><input onclick=toggleStatus(this) value=⋰ type=button><div><b>MDN</b> <details><summary><a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/top title="Returns a reference to the topmost window in the window hierarchy.">Window/top</a></summary><p class=mdnsupport><span class="chrome yes"><span>Chrome</span><span>Yes</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="edge yes"><span>Edge</span><span>Yes</span></span><span class="edge_mobile yes"><span>Edge Mobile</span><span>Yes</span></span><span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="firefox_android unknown"><span>Firefox Android</span><span>?</span></span><span class="ie yes"><span>Internet Explorer</span><span>Yes</span></span><span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span></details></div></aside><p>The <dfn id=dom-top><code>top</code></dfn> attribute's getter must run these steps:</p>
 
-  <ol><li><p>Let <var>windowProxy</var> be this <code id=navigating-nested-browsing-contexts-in-the-dom:window><a href=window-object.html#window>Window</a></code> object's <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-4><a href=window-object.html#windowproxy>WindowProxy</a></code>
-   object.</li><li><p>If there is no <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context>browsing context</a> with <var>windowProxy</var> as its
-   <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-5><a href=window-object.html#windowproxy>WindowProxy</a></code> object, then return null.</p>
-
-   </li><li><p>Let <var>context</var> be that <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-2>browsing context</a>.</li><li><p>If <var>context</var> is a <a href=#top-level-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:top-level-browsing-context-2>top-level browsing context</a>, then return
-   <var>context</var>'s <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-6><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li><li><p>Otherwise, <var>context</var> must have a <a href=#top-level-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:top-level-browsing-context-3>top-level browsing context</a> (i.e. an
-   <a href=#ancestor-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:ancestor-browsing-context>ancestor browsing context</a> with no <a href=#parent-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:parent-browsing-context-2>parent browsing context</a>). Return that
-   <a href=#top-level-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:top-level-browsing-context-4>top-level browsing context</a>'s <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-7><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ol>
+  <ol><li><p>If this <code id=navigating-nested-browsing-contexts-in-the-dom:window><a href=window-object.html#window>Window</a></code> object's <a href=window-object.html#window-bc id=navigating-nested-browsing-contexts-in-the-dom:window-bc>browsing context</a> is
+   null, then return null.</li><li><p>Return this <code id=navigating-nested-browsing-contexts-in-the-dom:window-2><a href=window-object.html#window>Window</a></code> object's <a href=window-object.html#window-bc id=navigating-nested-browsing-contexts-in-the-dom:window-bc-2>browsing
+   context</a>'s <a href=#top-level-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:top-level-browsing-context-2>top-level browsing context</a>'s <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-4><a href=window-object.html#windowproxy>WindowProxy</a></code>
+   object.</li></ol>
 
   <p>The <dfn id=dom-opener><code>opener</code></dfn> attribute's getter must run these
   steps:</p>
 
-  <ol><li><p>If the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-3>browsing context</a>'s <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener>disowned</a> is true, then return
-   null.</li><li><p>If the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-4>browsing context</a>'s <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-2>opener browsing context</a> is
-   null, then return null.</li><li><p>Return the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-5>browsing context</a>'s <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-3>opener browsing context</a>'s
-   <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-8><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ol>
+  <ol><li><p>If the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context>browsing context</a>'s <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener>disowned</a> is true, then return
+   null.</li><li><p>If the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-2>browsing context</a>'s <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-2>opener browsing context</a> is
+   null, then return null.</li><li><p>Return the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-3>browsing context</a>'s <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-3>opener browsing context</a>'s
+   <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-5><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ol>
 
-  <p>The <code id=navigating-nested-browsing-contexts-in-the-dom:dom-opener><a href=#dom-opener>opener</a></code> attribute's setter, must run these steps:</p>
+  <p>The <code id=navigating-nested-browsing-contexts-in-the-dom:dom-opener><a href=#dom-opener>opener</a></code> attribute's setter must run these steps:</p>
 
-  <ol><li><p>If the given value is null, then set the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-6>browsing context</a>'s
-   <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener-2>disowned</a> to true and return.</li><li><p>Return ? <a id=navigating-nested-browsing-contexts-in-the-dom:ordinarydefineownproperty href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty data-x-internal=ordinarydefineownproperty>OrdinaryDefineOwnProperty</a>(this <code id=navigating-nested-browsing-contexts-in-the-dom:window-2><a href=window-object.html#window>Window</a></code> object, "<code>opener</code>", { [[Value]]: the given value, [[Writable]]: true, [[Enumerable]]: true,
+  <ol><li><p>If the given value is null, then set the current <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-4>browsing context</a>'s
+   <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener-2>disowned</a> to true and return.</li><li><p>Return ? <a id=navigating-nested-browsing-contexts-in-the-dom:ordinarydefineownproperty href=https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty data-x-internal=ordinarydefineownproperty>OrdinaryDefineOwnProperty</a>(this <code id=navigating-nested-browsing-contexts-in-the-dom:window-3><a href=window-object.html#window>Window</a></code> object, "<code>opener</code>", { [[Value]]: the given value, [[Writable]]: true, [[Enumerable]]: true,
    [[Configurable]]: true }).</li></ol>
 
   <div class=note>
-   <p>If a <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-7>browsing context</a>'s <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener-3>disowned</a> is true, its <code id=navigating-nested-browsing-contexts-in-the-dom:dom-opener-2><a href=#dom-opener>window.opener</a></code> attribute is null. That prevents scripts in the
-   <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-8>browsing context</a> from changing any properties of its <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-4>opener browsing
-   context</a>'s <code id=navigating-nested-browsing-contexts-in-the-dom:window-3><a href=window-object.html#window>Window</a></code> object (i.e., the <code id=navigating-nested-browsing-contexts-in-the-dom:window-4><a href=window-object.html#window>Window</a></code> object from which the
-   <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-9>browsing context</a> was created).</p>
+   <p>If a <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-5>browsing context</a>'s <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener-3>disowned</a> is true, its <code id=navigating-nested-browsing-contexts-in-the-dom:dom-opener-2><a href=#dom-opener>window.opener</a></code> attribute is null. That prevents scripts in the
+   <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-6>browsing context</a> from changing any properties of its <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-4>opener browsing
+   context</a>'s <code id=navigating-nested-browsing-contexts-in-the-dom:window-4><a href=window-object.html#window>Window</a></code> object (i.e., the <code id=navigating-nested-browsing-contexts-in-the-dom:window-5><a href=window-object.html#window>Window</a></code> object from which the
+   <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-7>browsing context</a> was created).</p>
 
-   <p>Otherwise, if a <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-10>browsing context</a>'s <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener-4>disowned</a> is false, then scripts
-   in that <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-11>browsing context</a> can use <code id=navigating-nested-browsing-contexts-in-the-dom:dom-opener-3><a href=#dom-opener>window.opener</a></code> to
-   change properties of its <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-5>opener browsing context</a>'s <code id=navigating-nested-browsing-contexts-in-the-dom:window-5><a href=window-object.html#window>Window</a></code> object. For
-   example, a script running in the <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-12>browsing context</a> can change the value of <code>window.opener.location</code>, causing the <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-6>opener browsing context</a> to
+   <p>Otherwise, if a <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-8>browsing context</a>'s <a href=#disowned-its-opener id=navigating-nested-browsing-contexts-in-the-dom:disowned-its-opener-4>disowned</a> is false, then scripts
+   in that <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-9>browsing context</a> can use <code id=navigating-nested-browsing-contexts-in-the-dom:dom-opener-3><a href=#dom-opener>window.opener</a></code> to
+   change properties of its <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-5>opener browsing context</a>'s <code id=navigating-nested-browsing-contexts-in-the-dom:window-6><a href=window-object.html#window>Window</a></code> object. For
+   example, a script running in the <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-10>browsing context</a> can change the value of <code>window.opener.location</code>, causing the <a href=#opener-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:opener-browsing-context-6>opener browsing context</a> to
    navigate to a completely different document.</p>
   </div>
 
-  <p>The <dfn id=dom-parent><code>parent</code></dfn> IDL attribute, on getting, must run the
-  following algorithm:</p>
+  <p>The <dfn id=dom-parent><code>parent</code></dfn> attribute's getter must run these
+  steps:</p>
 
-  <ol><li><p>Let <var>windowProxy</var> be this <code id=navigating-nested-browsing-contexts-in-the-dom:window-6><a href=window-object.html#window>Window</a></code> object's <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-9><a href=window-object.html#windowproxy>WindowProxy</a></code>
-   object.</li><li><p>If there is no <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-13>browsing context</a> with <var>windowProxy</var> as its
-   <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-10><a href=window-object.html#windowproxy>WindowProxy</a></code> object, then return null.</p>
+  <ol><li><p>Let <var>current</var> be this <code id=navigating-nested-browsing-contexts-in-the-dom:window-7><a href=window-object.html#window>Window</a></code> object's <a href=window-object.html#window-bc id=navigating-nested-browsing-contexts-in-the-dom:window-bc-3>browsing context</a>.</li><li><p>If <var>current</var> is null, then return null.</li><li><p>If <var>current</var> is a <a href=#child-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:child-browsing-context>child browsing context</a> of another <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-11>browsing
+   context</a> <var>parent</var>, then return <var>parent</var>'s <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-6><a href=window-object.html#windowproxy>WindowProxy</a></code>
+   object.</li><li><p>Assert: <var>current</var> is a <a href=#top-level-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:top-level-browsing-context-3>top-level browsing context</a>.</li><li><p>Return <var>current</var>'s <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-7><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ol>
 
-   </li><li><p>Let <var>context</var> be that <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-14>browsing context</a>.</li><li><p>If <var>context</var> is a <a href=#child-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:child-browsing-context>child browsing context</a> of another <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-15>browsing
-   context</a> <var>parent</var>, then return <var>parent</var>'s <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-11><a href=window-object.html#windowproxy>WindowProxy</a></code>
-   object.</li><li><p>Otherwise, <var>context</var> must be a <a href=#top-level-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:top-level-browsing-context-5>top-level browsing context</a>. Return
-   <var>context</var>'s <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-12><a href=window-object.html#windowproxy>WindowProxy</a></code> object.</li></ol>
+  <aside class="mdn before"><input onclick=toggleStatus(this) value=⋰ type=button><div><b>MDN</b> <details><summary><a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/frameElement title="Returns the element (such as iframe or object) in which the window is embedded, or null if the element is either top-level or is embedded into a document with a different script origin; that is, in cross-origin situations.">Window/frameElement</a></summary><p class=mdnsupport><span class="chrome yes"><span>Chrome</span><span>Yes</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="edge yes"><span>Edge</span><span>Yes</span></span><span class="edge_mobile yes"><span>Edge Mobile</span><span>Yes</span></span><span class="firefox yes"><span>Firefox</span><span>1+</span></span><span class="firefox_android yes"><span>Firefox Android</span><span>Yes</span></span><span class="ie yes"><span>Internet Explorer</span><span>Yes</span></span><span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span></details></div></aside><p>The <dfn id=dom-frameelement><code>frameElement</code></dfn> attribute's getter must run
+  these steps:</p>
 
-  <aside class="mdn before"><input onclick=toggleStatus(this) value=⋰ type=button><div><b>MDN</b> <details><summary><a href=https://developer.mozilla.org/en-US/docs/Web/API/Window/frameElement title="Returns the element (such as iframe or object) in which the window is embedded, or null if the element is either top-level or is embedded into a document with a different script origin; that is, in cross-origin situations.">Window/frameElement</a></summary><p class=mdnsupport><span class="chrome yes"><span>Chrome</span><span>Yes</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="edge yes"><span>Edge</span><span>Yes</span></span><span class="edge_mobile yes"><span>Edge Mobile</span><span>Yes</span></span><span class="firefox yes"><span>Firefox</span><span>1+</span></span><span class="firefox_android yes"><span>Firefox Android</span><span>Yes</span></span><span class="ie yes"><span>Internet Explorer</span><span>Yes</span></span><span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span></details></div></aside><p>The <dfn id=dom-frameelement><code>frameElement</code></dfn> IDL attribute, on getting,
-  must run the following algorithm:</p>
-
-  <ol><li><p>Let <var>windowProxy</var> be this <code id=navigating-nested-browsing-contexts-in-the-dom:window-7><a href=window-object.html#window>Window</a></code> object's <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-13><a href=window-object.html#windowproxy>WindowProxy</a></code>
-   object.</li><li><p>If there is no <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-16>browsing context</a> with <var>windowProxy</var> as its
-   <code id=navigating-nested-browsing-contexts-in-the-dom:windowproxy-14><a href=window-object.html#windowproxy>WindowProxy</a></code> object, then return null.</p>
-
-   </li><li><p>Let <var>context</var> be that <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-17>browsing context</a>.</li><li><p>If <var>context</var> is not a <a href=#nested-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:nested-browsing-context>nested browsing context</a>, then return
-   null.</li><li><p>Let <var>container</var> be <var>context</var>'s <a href=#browsing-context-container id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-container-2>browsing context
+  <ol><li><p>Let <var>current</var> be this <code id=navigating-nested-browsing-contexts-in-the-dom:window-8><a href=window-object.html#window>Window</a></code> object's <a href=window-object.html#window-bc id=navigating-nested-browsing-contexts-in-the-dom:window-bc-4>browsing context</a>.</li><li><p>If <var>current</var> is null, then return null.</li><li><p>If <var>current</var> is not a <a href=#child-browsing-context id=navigating-nested-browsing-contexts-in-the-dom:child-browsing-context-2>child browsing context</a>, then return
+   null.</li><li><p>Let <var>container</var> be <var>current</var>'s <a href=#browsing-context-container id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-container-2>browsing context
    container</a>.</li><li><p>If <var>container</var>'s <a id=navigating-nested-browsing-contexts-in-the-dom:node-document href=https://triple-underscore.github.io/DOM4-ja.html#concept-node-document data-x-internal=node-document>node document</a>'s <a id=navigating-nested-browsing-contexts-in-the-dom:concept-origin href=origin.html#concept-origin>origin</a> is not
    <a id=navigating-nested-browsing-contexts-in-the-dom:same-origin-domain href=origin.html#same-origin-domain>same origin-domain</a> with the <a id=navigating-nested-browsing-contexts-in-the-dom:current-settings-object href=webappapis.html#current-settings-object>current settings object</a>'s <a href=webappapis.html#concept-settings-object-origin id=navigating-nested-browsing-contexts-in-the-dom:concept-settings-object-origin>origin</a>, then return null.</li><li><p>Return <var>container</var>.</li></ol>
 
@@ -463,7 +454,7 @@ console<c- p>.</c->assert<c- p>(</c->iframeWindow<c- p>.</c->parent <c- o>===</c
 console<c- p>.</c->assert<c- p>(</c->iframeWindow<c- p>.</c->frameElement <c- o>===</c-> <c- kc>null</c-><c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>&gt;</c-></code></pre>
 
-   <p>Here the <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-18>browsing context</a> corresponding to <code>iframeWindow</code>
+   <p>Here the <a href=#browsing-context id=navigating-nested-browsing-contexts-in-the-dom:browsing-context-12>browsing context</a> corresponding to <code>iframeWindow</code>
    was <a href=window-object.html#a-browsing-context-is-discarded id=navigating-nested-browsing-contexts-in-the-dom:a-browsing-context-is-discarded>discarded</a> when <code>element</code> was removed from the document.</p>
   </div>
 
@@ -531,23 +522,43 @@ console<c- p>.</c->assert<c- p>(</c->iframeWindow<c- p>.</c->frameElement <c- o>
 
   <h4 id=groupings-of-browsing-contexts><span class=secno>7.1.4</span> Groupings of browsing contexts<a href=#groupings-of-browsing-contexts class=self-link></a></h4>
 
-  <p>Each <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context>browsing context</a> is defined as having a list of one or more <dfn id=directly-reachable-browsing-contexts>directly
-  reachable browsing contexts</dfn>. These are:</p>
+  <p>A user agent holds a <dfn id=browsing-context-group-set>browsing context group set</dfn> (a <a id=groupings-of-browsing-contexts:set href=https://triple-underscore.github.io/infra-ja.html#ordered-set data-x-internal=set>set</a> of <a href=#browsing-context-group id=groupings-of-browsing-contexts:browsing-context-group>browsing context groups</a>).</p>
 
-  <ul><li>The <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context-2>browsing context</a> itself.</li><li>All the <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context-3>browsing context</a>'s <a href=#child-browsing-context id=groupings-of-browsing-contexts:child-browsing-context>child browsing
-   contexts</a>.</li><li>The <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context-4>browsing context</a>'s <a href=#parent-browsing-context id=groupings-of-browsing-contexts:parent-browsing-context>parent browsing context</a>.</li><li>All the <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context-5>browsing contexts</a> that have the <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context-6>browsing
-   context</a> as their <a href=#opener-browsing-context id=groupings-of-browsing-contexts:opener-browsing-context>opener browsing context</a>.</li><li>The <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context-7>browsing context</a>'s <a href=#opener-browsing-context id=groupings-of-browsing-contexts:opener-browsing-context-2>opener browsing context</a>.</li></ul>
+  <p>A <dfn id=browsing-context-group>browsing context group</dfn> holds a <dfn id=browsing-context-set>browsing context set</dfn> (a <a id=groupings-of-browsing-contexts:set-2 href=https://triple-underscore.github.io/infra-ja.html#ordered-set data-x-internal=set>set</a>
+  of <a href=#top-level-browsing-context id=groupings-of-browsing-contexts:top-level-browsing-context>top-level browsing contexts</a>).</p>
 
-  <p>The transitive closure of all the <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context-8>browsing contexts</a> that
-  are <a href=#directly-reachable-browsing-contexts id=groupings-of-browsing-contexts:directly-reachable-browsing-contexts>directly reachable browsing contexts</a> forms a <dfn id=unit-of-related-browsing-contexts>unit of related browsing
-  contexts</dfn>.</p>
+  <p>To <dfn id=creating-a-new-browsing-context-group>create a new browsing context
+  group</dfn>, run these steps:</p>
 
-  <p>Each <a href=#unit-of-related-browsing-contexts id=groupings-of-browsing-contexts:unit-of-related-browsing-contexts>unit of related browsing contexts</a> is then further divided into the smallest
-  number of groups such that every member of each group has an <a href=#active-document id=groupings-of-browsing-contexts:active-document>active document</a> with an
-  <a id=groupings-of-browsing-contexts:concept-origin href=origin.html#concept-origin>origin</a> that, through appropriate manipulation of the <code id=groupings-of-browsing-contexts:dom-document-domain><a href=origin.html#dom-document-domain>document.domain</a></code> attribute, could be made to be <a id=groupings-of-browsing-contexts:same-origin-domain href=origin.html#same-origin-domain>same
-  origin-domain</a> with other members of the group, but could not be made the same as members of
-  any other group. Each such group is a <dfn id=unit-of-related-similar-origin-browsing-contexts data-export="">unit of related similar-origin browsing
-  contexts</dfn>.</p>
+  <ol><li><p>Let <var>group</var> be a new <a href=#browsing-context-group id=groupings-of-browsing-contexts:browsing-context-group-2>browsing context group</a>.</li><li><p><a href=https://triple-underscore.github.io/infra-ja.html#set-append id=groupings-of-browsing-contexts:set-append data-x-internal=set-append>Append</a> <var>group</var> to the user agent's
+   <a href=#browsing-context-group-set id=groupings-of-browsing-contexts:browsing-context-group-set>browsing context group set</a>.</li><li><p><a href=#bcg-append id=groupings-of-browsing-contexts:bcg-append>Append</a> the result of <a href=#creating-a-new-browsing-context id=groupings-of-browsing-contexts:creating-a-new-browsing-context>creating a new browsing
+   context</a> with null to <var>group</var>.</li><li><p>Return <var>group</var>.</li></ol>
+
+  <p>To <dfn id=bcg-append>append</dfn> a <a href=#top-level-browsing-context id=groupings-of-browsing-contexts:top-level-browsing-context-2>top-level browsing context</a>
+  <var>browsingContext</var> to a <a href=#browsing-context-group id=groupings-of-browsing-contexts:browsing-context-group-3>browsing context group</a> <var>group</var>, run these
+  steps:</p>
+
+  <ol><li><p><a href=https://triple-underscore.github.io/infra-ja.html#set-append id=groupings-of-browsing-contexts:set-append-2 data-x-internal=set-append>Append</a> <var>browsingContext</var> to <var>group</var>'s
+   <a href=#browsing-context-set id=groupings-of-browsing-contexts:browsing-context-set>browsing context set</a>.</li><li><p>Set <var>browsingContext</var>'s <a href=#tlbc-group id=groupings-of-browsing-contexts:tlbc-group>group</a> to
+   <var>group</var>.</li></ol>
+
+  <p>To <dfn id=bcg-remove>remove</dfn> a <a href=#top-level-browsing-context id=groupings-of-browsing-contexts:top-level-browsing-context-3>top-level browsing context</a>
+  <var>browsingContext</var>, run these steps:</p>
+
+  <ol><li><p>Assert: <var>browsingContext</var>'s <a href=#tlbc-group id=groupings-of-browsing-contexts:tlbc-group-2>group</a> is non-null,
+   because a <a href=#browsing-context id=groupings-of-browsing-contexts:browsing-context>browsing context</a> only gets <a href=window-object.html#a-browsing-context-is-discarded id=groupings-of-browsing-contexts:a-browsing-context-is-discarded>discarded</a> once.</li><li><p>Let <var>group</var> be <var>browsingContext</var>'s <a href=#tlbc-group id=groupings-of-browsing-contexts:tlbc-group-3>group</a>.</li><li><p>Set <var>browsingContext</var>'s <a href=#tlbc-group id=groupings-of-browsing-contexts:tlbc-group-4>group</a> to null.</li><li><p><a href=https://triple-underscore.github.io/infra-ja.html#list-remove id=groupings-of-browsing-contexts:list-remove data-x-internal=list-remove>Remove</a> <var>browsingContext</var> from
+   <var>group</var>'s <a href=#browsing-context-set id=groupings-of-browsing-contexts:browsing-context-set-2>browsing context set</a>.</li><li><p>If <var>group</var>'s <a href=#browsing-context-set id=groupings-of-browsing-contexts:browsing-context-set-3>browsing context set</a> <a href=https://triple-underscore.github.io/infra-ja.html#list-empty id=groupings-of-browsing-contexts:list-is-empty data-x-internal=list-is-empty>is
+   empty</a>, then <a href=https://triple-underscore.github.io/infra-ja.html#list-remove id=groupings-of-browsing-contexts:list-remove-2 data-x-internal=list-remove>remove</a> <var>group</var> from the user
+   agent's <a href=#browsing-context-group-set id=groupings-of-browsing-contexts:browsing-context-group-set-2>browsing context group set</a>.</li></ol>
+
+  <p class=note><a href=#bcg-append id=groupings-of-browsing-contexts:bcg-append-2>Append</a> and <a href=#bcg-remove id=groupings-of-browsing-contexts:bcg-remove>remove</a> are primitive operations that help define the lifetime of a <a href=#browsing-context-group id=groupings-of-browsing-contexts:browsing-context-group-4>browsing
+  context group</a>. They are called from <a href=#creating-a-new-browsing-context-group id=groupings-of-browsing-contexts:creating-a-new-browsing-context-group>creating a new browsing context group</a>,
+  <a href=#creating-a-new-auxiliary-browsing-context id=groupings-of-browsing-contexts:creating-a-new-auxiliary-browsing-context>creating a new auxiliary browsing context</a>, and <a href=window-object.html#a-browsing-context-is-discarded id=groupings-of-browsing-contexts:a-browsing-context-is-discarded-2>discarding a browsing context</a>.</p>
+
+  <hr>
+
+  <p class=note>The HTML Standard used to define "<span id=unit-of-related-browsing-contexts>unit of related browsing contexts</span>" and "<span id=unit-of-related-similar-origin-browsing-contexts>unit of related similar-origin browsing
+  contexts</span>". These have been removed as they were not adequate.</p>
 
   
 
@@ -756,7 +767,7 @@ console<c- p>.</c->assert<c- p>(</c->iframeWindow<c- p>.</c->frameElement <c- o>
     <var>chosen</var> to one in some arbitrary consistent manner, such as the most recently opened,
     most recently focused, or more closely related.</p>
 
-    <p class=XXX>This will be made more precise in <a href=https://github.com/whatwg/html/issues/1440>issue #1440</a>.</p>
+    <p class=XXX>This will be made more precise in <a href=https://github.com/whatwg/html/issues/313>issue #313</a>.</p>
    </li><li>
     <p>Otherwise, a new browsing context is being requested, and what happens depends on the user
     agent's configuration and abilities — it is determined by the rules given for the first
