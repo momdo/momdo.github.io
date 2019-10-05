@@ -1,0 +1,1143 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta name="generator" content="ReSpec 23.7.4"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><script src="trans-refs.js" async></script><style>/* --- EXAMPLES --- */
+span.example-title {
+    text-transform: none;
+}
+aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+div.illegal-example { color: red }
+div.illegal-example p { color: black }
+aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;
+}
+
+aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+}
+aside.example div.example span.example-title {
+    color: #999;
+}
+</style>
+<title>Accessible Name and Description Computation 1.1 日本語訳</title>
+
+
+
+
+<link href="css/common.css" rel="stylesheet" type="text/css">
+
+
+<style id="respec-mainstyle">/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* Override code highlighter background */
+.hljs {
+  background: transparent !important;
+}
+
+/* --- INLINES --- */
+h1 abbr,
+h2 abbr,
+h3 abbr,
+h4 abbr,
+h5 abbr,
+h6 abbr,
+a abbr {
+  border: none;
+}
+
+dfn {
+  font-weight: bold;
+}
+
+a.internalDFN {
+  color: inherit;
+  border-bottom: 1px solid #99c;
+  text-decoration: none;
+}
+
+a.externalDFN {
+  color: inherit;
+  border-bottom: 1px dotted #ccc;
+  text-decoration: none;
+}
+
+a.bibref {
+  text-decoration: none;
+}
+
+#references :target {
+  background: #eaf3ff;
+}
+
+cite .bibref {
+  font-style: normal;
+}
+
+code {
+  color: #c83500;
+}
+
+th code {
+  color: inherit;
+}
+
+/* --- TOC --- */
+
+.toc a,
+.tof a {
+  text-decoration: none;
+}
+
+a .secno,
+a .figno {
+  color: #000;
+}
+
+ul.tof,
+ol.tof {
+  list-style: none outside none;
+}
+
+.caption {
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+/* --- TABLE --- */
+
+table.simple {
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-bottom: 3px solid #005a9c;
+}
+
+.simple th {
+  background: #005a9c;
+  color: #fff;
+  padding: 3px 5px;
+  text-align: left;
+}
+
+.simple th[scope="row"] {
+  background: inherit;
+  color: inherit;
+  border-top: 1px solid #ddd;
+}
+
+.simple td {
+  padding: 3px 10px;
+  border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+  background: #f0f6ff;
+}
+
+/* --- DL --- */
+
+.section dd>p:first-child {
+  margin-top: 0;
+}
+
+.section dd>p:last-child {
+  margin-bottom: 0;
+}
+
+.section dd {
+  margin-bottom: 1em;
+}
+
+.section dl.attrs dd,
+.section dl.eldef dd {
+  margin-bottom: 0;
+}
+
+#issue-summary>ul,
+.respec-dfn-list {
+  column-count: 2;
+}
+
+#issue-summary li,
+.respec-dfn-list li {
+  list-style: none;
+}
+
+details.respec-tests-details {
+  margin-left: 1em;
+  display: inline-block;
+  vertical-align: top;
+}
+
+details.respec-tests-details>* {
+  padding-right: 2em;
+}
+
+details.respec-tests-details[open] {
+  z-index: 999999;
+  position: absolute;
+  border: thin solid #cad3e2;
+  border-radius: 0.3em;
+  background-color: white;
+  padding-bottom: 0.5em;
+}
+
+details.respec-tests-details[open]>summary {
+  border-bottom: thin solid #cad3e2;
+  padding-left: 1em;
+  margin-bottom: 1em;
+  line-height: 2em;
+}
+
+details.respec-tests-details>ul {
+  width: 100%;
+  margin-top: -0.3em;
+}
+
+details.respec-tests-details>li {
+  padding-left: 1em;
+}
+
+a[href].self-link:hover {
+  opacity: 1;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  position: relative;
+}
+
+aside.example .marker > a.self-link {
+  color: inherit;
+}
+
+h2>a.self-link,
+h3>a.self-link,
+h4>a.self-link,
+h5>a.self-link,
+h6>a.self-link {
+  border: none;
+  color: inherit;
+  font-size: 83%;
+  height: 2em;
+  left: -1.6em;
+  opacity: .5;
+  position: absolute;
+  text-align: center;
+  text-decoration: none;
+  top: 0;
+  transition: opacity .2s;
+  width: 2em;
+}
+
+h2>a.self-link::before,
+h3>a.self-link::before,
+h4>a.self-link::before,
+h5>a.self-link::before,
+h6>a.self-link::before {
+  content: "§";
+  display: block;
+}
+
+@media (max-width: 767px) {
+  dd {
+    margin-left: 0;
+  }
+
+  /* Don't position self-link in headings off-screen */
+  h2>a.self-link,
+  h3>a.self-link,
+  h4>a.self-link,
+  h5>a.self-link,
+  h6>a.self-link {
+    left: auto;
+    top: auto;
+  }
+}
+
+@media print {
+  .removeOnSave {
+    display: none;
+  }
+}
+</style><style>/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-REC"><link rel="canonical" href="https://www.w3.org/TR/accname-1.1/"><script id="initialUserConfig" type="application/json">{
+  "useExperimentalStyles": true,
+  "includePermalinks": true,
+  "lint": true,
+  "specStatus": "REC",
+  "publishDate": "2018-12-18",
+  "diffTool": "http://www.aptest.com/standards/htmldiff/htmldiff.pl",
+  "shortName": "accname-1.1",
+  "copyrightStart": "2014",
+  "license": "document",
+  "previousPublishDate": "2018-10-18",
+  "previousMaturity": "PR",
+  "errata": "https://www.w3.org/WAI/ARIA/1.1/errata/accname",
+  "implementationReportURI": "https://w3c.github.io/test-results/accname/",
+  "prevRecURI": "https://www.w3.org/TR/wai-aria-implementation-1.0/",
+  "previousDiffURI": "https://www.w3.org/TR/2014/REC-wai-aria-implementation-20140320/",
+  "edDraftURI": "https://w3c.github.io/accname/",
+  "editors": [
+    {
+      "name": "Joanmarie Diggs",
+      "company": "Igalia, S.L.",
+      "companyURL": "https://www.igalia.com/",
+      "w3cid": 68182
+    },
+    {
+      "name": "Bryan Garaventa",
+      "company": "Level Access",
+      "companyURL": "https://www.levelaccess.com/",
+      "w3cid": 67215
+    },
+    {
+      "name": "Michael Cooper",
+      "company": "W3C",
+      "companyURL": "https://www.w3.org/",
+      "w3cid": 34017
+    }
+  ],
+  "formerEditors": [
+    {
+      "name": "Richard Schwerdtfeger",
+      "company": "Knowbility",
+      "companyURL": "https://knowbility.org/",
+      "w3cid": 2460,
+      "note": "Editor until October 2017"
+    },
+    {
+      "name": "Joseph Scheuhammer",
+      "company": "Inclusive Design Research Centre, OCAD University",
+      "companyURL": "https://idrc.ocadu.ca/",
+      "w3cid": 42279,
+      "note": "Editor until May 2017"
+    },
+    {
+      "name": "James Craig",
+      "company": "Apple Inc.",
+      "companyURL": "https://www.apple.com/accessibility/",
+      "w3cid": 42459,
+      "note": "Editor until May 2016"
+    },
+    {
+      "name": "Andi Snow-Weaver",
+      "company": "IBM",
+      "companyURL": "https://www.ibm.com/",
+      "w3cid": 35445,
+      "note": "Editor until December 2012"
+    },
+    {
+      "name": "Aaron Leventhal",
+      "company": "IBM",
+      "companyURL": "https://www.ibm.com/",
+      "w3cid": 34329,
+      "note": "Editor until January 2009"
+    }
+  ],
+  "wg": "Accessible Rich Internet Applications Working Group",
+  "wgURI": "https://www.w3.org/WAI/ARIA/",
+  "wgPublicList": "public-aria",
+  "wgPatentURI": "https://www.w3.org/2004/01/pp-impl/83726/status",
+  "tocIntroductory": true,
+  "ariaSpecURLs": {
+    "ED": "https://w3c.github.io/aria/",
+    "WD": "https://www.w3.org/TR/wai-aria-1.1/",
+    "FPWD": "https://www.w3.org/TR/wai-aria-1.1/",
+    "REC": "https://www.w3.org/TR/wai-aria/"
+  },
+  "coreMappingURLs": {
+    "ED": "https://w3c.github.io/core-aam/",
+    "WD": "https://www.w3.org/TR/core-aam-1.1/",
+    "FPWD": "https://www.w3.org/TR/core-aam-1.1/",
+    "REC": "https://www.w3.org/TR/core-aam-1.1/"
+  },
+  "localBiblio": {
+    "ACCNAME-AAM": {
+      "aliasOf": "ACCNAME-AAM-1.1"
+    },
+    "ARIA-PRACTICES": {
+      "aliasOf": "WAI-ARIA-PRACTICES-1.1"
+    },
+    "CORE-AAM": {
+      "aliasOf": "CORE-AAM-1.1"
+    },
+    "DPUB-ARIA": {
+      "aliasOf": "DPUB-ARIA-1.0"
+    },
+    "GRAPHICS-ARIA": {
+      "aliasOf": "GRAPHICS-ARIA-1.0"
+    },
+    "GRAPHICS-AAM": {
+      "aliasOf": "GRAPHICS-AAM-1.0"
+    },
+    "EPUB-Content": {
+      "href": "http://www.idpf.org/epub/31/spec/epub-contentdocs.html",
+      "title": "EPUB Content Documents 3.1",
+      "publisher": "IDPF"
+    },
+    "HTML-AAM": {
+      "aliasOf": "HTML-AAM-1.0"
+    },
+    "SVG-AAM": {
+      "aliasOf": "SVG-AAM-1.0"
+    },
+    "SVG1": {
+      "aliasOf": "SVG"
+    },
+    "WAI-ARIA": {
+      "aliasOf": "WAI-ARIA-1.1"
+    }
+  },
+  "preProcess": [
+    null
+  ],
+  "publishISODate": "2018-12-18T00:00:00.000Z",
+  "generatedSubtitle": "Recommendation 18 December 2018"
+}</script><meta name="description" content="This document describes how user agents determine the names and descriptions of accessible objects from web content languages. This information is in turn exposed through accessibility APIs so that assistive technologies can identify these objects and present their names or descriptions to users. Documenting the algorithm through which names and descriptions are to be determined promotes interoperable exposure of these properties among different accessibility APIs and helps to ensure that this information appears in a manner consistent with author intent."></head>
+<body class="h-entry">
+<aside style="border-radius: 20px; border: solid lightpink 3px;padding: 1em; padding-bottom:0; margin-bottom: 1em;">
+<p>この文書は「<a href="https://www.w3.org/TR/2018/REC-accname-1.1-20181218/" style="float:none;">Accessible Name and Description Computation 1.1</a>（W3C Recommendation<time>2018-12-18</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳に誤りがありえます。</p>
+<p>訳者への連絡先、他の仕様の翻訳等については、<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照ください。</p>
+</aside>
+<div class="head"><a href="https://www.w3.org/" class="logo"> <img alt="W3C" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72" height="48"> </a><h1 id="title" class="title p-name">Accessible Name and Description Computation 1.1 日本語訳</h1>
+      
+      <h2><abbr title="World Wide Web Consortium">W3C</abbr> Recommendation<time class="dt-published" datetime="2018-12-18">18 December 2018</time>
+      </h2>
+      <dl>
+        <dt>This version:</dt><dd><a class="u-url" href="https://www.w3.org/TR/2018/REC-accname-1.1-20181218/">https://www.w3.org/TR/2018/REC-accname-1.1-20181218/</a></dd><dt>Latest published version:</dt><dd><a href="https://www.w3.org/TR/accname-1.1/">https://www.w3.org/TR/accname-1.1/</a></dd>
+        <dt>Latest editor&#39;s draft:</dt><dd><a href="https://w3c.github.io/accname/">https://w3c.github.io/accname/</a></dd>
+        
+        <dt>Implementation report:</dt><dd><a href="https://w3c.github.io/test-results/accname/">https://w3c.github.io/test-results/accname/</a></dd>
+        
+        
+        <dt>Previous version:</dt><dd><a href="https://www.w3.org/TR/2018/PR-accname-1.1-20181018/">https://www.w3.org/TR/2018/PR-accname-1.1-20181018/</a></dd>
+        <dt>Previous Recommendation:</dt><dd><a href="https://www.w3.org/TR/wai-aria-implementation-1.0/">https://www.w3.org/TR/wai-aria-implementation-1.0/</a></dd>
+        <dt>Editors:</dt>
+        <dd class="p-author h-card vcard" data-editor-id="68182"><span class="p-name fn">Joanmarie Diggs</span> (<a class="p-org org h-org h-card" href="https://www.igalia.com/">Igalia, S.L.</a>)</dd><dd class="p-author h-card vcard" data-editor-id="67215"><span class="p-name fn">Bryan Garaventa</span> (<a class="p-org org h-org h-card" href="https://www.levelaccess.com/">Level Access</a>)</dd><dd class="p-author h-card vcard" data-editor-id="34017"><span class="p-name fn">Michael Cooper</span> (<a class="p-org org h-org h-card" href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a>)</dd>
+        <dt>Former editors:</dt><dd class="p-author h-card vcard" data-editor-id="2460"><span class="p-name fn">Richard Schwerdtfeger</span> (<a class="p-org org h-org h-card" href="https://knowbility.org/">Knowbility</a>) (Editor until October 2017)</dd><dd class="p-author h-card vcard" data-editor-id="42279"><span class="p-name fn">Joseph Scheuhammer</span> (<a class="p-org org h-org h-card" href="https://idrc.ocadu.ca/">Inclusive Design Research Centre, OCAD University</a>) (Editor until May 2017)</dd><dd class="p-author h-card vcard" data-editor-id="42459"><span class="p-name fn">James Craig</span> (<a class="p-org org h-org h-card" href="https://www.apple.com/accessibility/">Apple Inc.</a>) (Editor until May 2016)</dd><dd class="p-author h-card vcard" data-editor-id="35445"><span class="p-name fn">Andi Snow-Weaver</span> (<a class="p-org org h-org h-card" href="https://www.ibm.com/">IBM</a>) (Editor until December 2012)</dd><dd class="p-author h-card vcard" data-editor-id="34329"><span class="p-name fn">Aaron Leventhal</span> (<a class="p-org org h-org h-card" href="https://www.ibm.com/">IBM</a>) (Editor until January 2009)</dd>
+        
+        
+      </dl>
+      <p>出版以来の報告されたエラーや問題に対する<a href="https://www.w3.org/WAI/ARIA/1.1/errata/accname"><strong>エラッタ</strong></a>を確認されたい。</p>
+      <p><a href="http://www.w3.org/2003/03/Translations/byTechnology?technology=accname-1.1"><strong>翻訳</strong></a>も参照のこと【訳注：これは日本語非公式訳です】。</p>
+      
+      <p class="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014-2018 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). <abbr title="World Wide Web Consortium">W3C</abbr> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a rel="license" href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+      <hr title="Separator for header">
+    </div>
+<section id="abstract" class="introductory"><!--OddPage--><h2>概要</h2>
+	<p>この文書は、<a class="termref internalDFN" href="#dfn-user-agent" data-link-type="dfn">ユーザーエージェント</a>がウェブコンテンツ言語から<a class="termref internalDFN" href="#dfn-accessible-object" data-link-type="dfn">アクセシブルオブジェクト</a>の<a class="termref internalDFN" data-lt="accessible name" href="#dfn-accessible-name" data-link-type="dfn">名前</a>および<a class="termref internalDFN" data-lt="accessible description" href="#dfn-accessible-description" data-link-type="dfn">説明</a>をどのように決定するのかを説明する。この情報は<a class="termref internalDFN" href="#dfn-accessibility-api" data-link-type="dfn">アクセシビリティ<abbr title="Application Programming Interfaces">API</abbr></a>を通じて公開されるため、<a class="termref internalDFN" href="#dfn-assistive-technology" data-link-type="dfn">支援技術</a>はこのオブジェクトを識別し、その名前または説明をユーザーに提示することができる。名前および説明を決定するためのアルゴリズムを文書化することは、異なるアクセシビリティ<abbr title="Application Programming Interfaces">API</abbr>間でこれらのプロパティの相互運用可能な公開を促進し、この情報が著者の意図と一致する方法で表示されるように保証することを促す。</p>
+	<p>アクセシブルな名前および説明の計算仕様は、複数のコンテンツ技術に適用されるサポートを定義する。これには、汎用の<cite><a href="https://www.w3.org/TR/wai-aria-1.1/"><abbr title="Accessible Rich Internet Applications">WAI-ARIA</abbr></a></cite> [<cite><a class="bibref" href="#bib-wai-aria">WAI-ARIA</a></cite>]<a class="termref internalDFN" href="#dfn-role" data-link-type="dfn">ロール</a>、<a class="termref internalDFN" href="#dfn-state" data-link-type="dfn">ステート</a>、および<a class="termref internalDFN" href="#dfn-property" data-link-type="dfn">プロパティ</a>だけでなく、個々のコンテンツ言語に固有の機能によって提供されるアクセシブルな名前および説明も含まれる。</p>
+	<p>この文書は、<a href="https://www.w3.org/TR/wai-aria-implementation/"><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> 1.0 User Agent Implementation Guide</a> [<cite><a class="bibref" href="#bib-wai-aria-implementation">WAI-ARIA-IMPLEMENTATION</a></cite>] <abbr title="World Wide Web Consortium">W3C</abbr>勧告のアクセシブルな名前および説明のガイダンスに取って代わる。この文書は、<a href="https://www.w3.org/WAI/intro/aria.php"><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> Overview</a>で説明されている<abbr title="Accessible Rich Internet Applications">WAI-ARIA</abbr>スイートの一部と位置付けられている。</p>
+</section>
+<section id="sotd" class="introductory"><!--OddPage--><h2>この文書の位置付け</h2><p><em>この節は、公開時点におけるこの文書のステータスについて説明する。他の文書がこの文書に取って代わるかもしれない。<abbr title="World Wide Web Consortium">W3C</abbr>が現在公開しているリストとテクニカルレポートの最新版は、<a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/で見つけることができる。</em></p><p>この文書は、<a href="https://www.w3.org/WAI/ARIA/">Accessible Rich Internet Applications Working Group</a>によるAccessible Name and Description Computation (Accname) 1.1の <a href="https://www.w3.org/2018/Process-20180201/#RecsW3C"><abbr title="World Wide Web Consortium">W3C</abbr> Recommendation</a>である。Working Groupは、仕様が実装可能であることを実証するために <a href="https://w3c.github.io/test-results/accname/">Accname 1.1実装レポート</a>を作成した。<a href="#changelog">Accname 1.1への変更点の履歴</a>は付録で利用可能である。</p><p>この文書にコメントするには、<a href="https://github.com/w3c/accname/issues/new"><abbr title="World Wide Web Consortium">W3C</abbr> accna GitHubリポジトリーに提出する</a>。これを実行できない場合、<a href="mailto:public-aria@w3.org?subject=Comment%20on%20Accname%201.1">public-aria@w3.org</a>（<a href="http://lists.w3.org/Archives/Public/public-aria/">コメントアーカイブ</a>）にメールを送信する。Accname 1.1勧告に寄せられたコメントは、この仕様のバージョンに変更をもたらすことはできないが、エラッタまたはAccnameの将来のバージョンで対処することができる。ワーキンググループは、コメントに正式な回答をすることはないが、ワーキンググループによって行われる将来の仕事は、この文書で寄せられたコメントに対処することができる。技術の進行中の更新は、<a href="https://w3c.github.io/accname/">公開エディターズドラフト</a>で見ることができる。</p><p>この文書は、Recommendationとして<a href="https://www.w3.org/WAI/ARIA/">Accessible Rich Internet Applications Working Group</a>によって発行された。</p><p>Working Groupの<a href="https://w3c.github.io/test-results/accname/">実装レポート</a>を参照されたい。</p><p>この文書は、<abbr title="World Wide Web Consortium">W3C</abbr>のメンバー、ソフトウェア開発者、および他の<abbr title="World Wide Web Consortium">W3C</abbr>グループや利害関係者によって検討され、<abbr title="World Wide Web Consortium">W3C</abbr>勧告としてディレクターによって承認されている。これは安定した文書であり、規範的仕様として使用されてもよく、他の文書から引用してもよい。勧告の作成における<abbr title="World Wide Web Consortium">W3C</abbr>の役割は、仕様に注意を引き付け、広範な開発を促進することである。これはウェブの機能と相互運用性を強化する。</p><p>この文書は<a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシー</a>の下で活動するグループによって作成された。<abbr title="World Wide Web Consortium">W3C</abbr>は、グループの成果物に関する<a rel="disclosure" href="https://www.w3.org/2004/01/pp-impl/83726/status">あらゆる開示特許の公開リスト</a>を管理する。ここには、特許開示にあたっての指示も含まれている。特許について十分に知識のある人物が、仕様に<a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a>が認められると判断した場合は、<a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシーの第6章</a>に従い情報を開示する必要がある。</p><p>この文書は、<a id="w3c_process_revision" href="https://www.w3.org/2018/Process-20180201/">2018年2月1日の<abbr title="World Wide Web Consortium">W3C</abbr>プロセス文書</a>によって管理される。</p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">目次</h2><ol class="toc"><li class="tocline"><a href="#abstract" class="tocxref">概要</a></li><li class="tocline"><a href="#sotd" class="tocxref">この文書の位置付け</a></li><li class="tocline"><a href="#intro" class="tocxref"><span class="secno">1. </span>導入</a></li><li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">2. </span>適合性</a><ol class="toc"><li class="tocline"><a href="#rfc-2119-keywords" class="tocxref"><span class="secno">2.1</span> RFC 2119キーワード</a></li><li class="tocline"><a href="#normative-and-informative-sections" class="tocxref"><span class="secno">2.2</span> 規範的および参考情報の章</a></li></ol></li><li class="tocline"><a href="#glossary" class="tocxref"><span class="secno">3. </span>重要な用語</a></li><li class="tocline"><a href="#mapping_additional_nd" class="tocxref"><span class="secno">4. </span>名前と説明</a><ol class="toc"><li class="tocline"><a href="#mapping_additional_nd_name" class="tocxref"><span class="secno">4.1</span> 名前計算</a></li><li class="tocline"><a href="#mapping_additional_nd_description" class="tocxref"><span class="secno">4.2</span> 説明計算</a></li><li class="tocline"><a href="#mapping_additional_nd_te" class="tocxref"><span class="secno">4.3</span> アクセシブルな名前および説明計算</a><ol class="toc"><li class="tocline"><a href="#terminology" class="tocxref"><span class="secno">4.3.1</span> 用語</a></li></ol></li></ol></li><li class="tocline"><a href="#accessible-name-and-description-mapping" class="tocxref"><span class="secno">5. </span>アクセシブルな名前および説明のマッピング</a></li><li class="tocline"><a href="#appendices" class="tocxref"><span class="secno">6. </span>付録</a><ol class="toc"><li class="tocline"><a href="#changelog" class="tocxref"><span class="secno">6.1</span> 変更ログ</a><ol class="toc"><li class="tocline"><a href="#substantive-changes-since-the-last-public-working-draft" class="tocxref"><span class="secno">6.1.1</span> <span class="formerLink">直前の公開ワーキングドラフト</span>からの実質的な変更点</a></li><li class="tocline"><a href="#other-substantive-changes-since-the-wai-aria-1-0-user-agent-implementation-guide-recommendation" class="tocxref"><span class="secno">6.1.2</span> <span class="formerLink"><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> 1.0 User Agent Implementation Guide勧告</span>からの他の実質的な変更点</a></li></ol></li><li class="tocline"><a href="#acknowledgements" class="tocxref"><span class="secno">6.2</span> 謝辞</a><ol class="toc"><li class="tocline"><a href="#ack_group" class="tocxref"><span class="secno">6.2.1</span> 発行時点のARIA WGでアクティブな参加者</a></li><li class="tocline"><a href="#ack_others" class="tocxref"><span class="secno">6.2.2</span> その他のARIAの貢献者、コメンター、および以前にアクティブな参加者</a></li><li class="tocline"><a href="#ack_funders" class="tocxref"><span class="secno">6.2.3</span> 資金提供者の権利</a></li></ol></li></ol></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span> 参考文献</a><ol class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1</span> 標準情報</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">A.2 </span>参考文献</a></li></ol></li></ol></nav>
+<section id="intro" class="informative">
+	<!--OddPage--><h2 id="x1-introduction"><span class="secno">1. </span> 導入<a class="self-link" aria-label="§" href="#intro"></a></h2><p><em>この章は非規範的である。</em></p>
+      <p><a class="termref internalDFN" href="#dfn-user-agent" data-link-type="dfn">ユーザーエージェント</a>は<abbr title="Document Object Model">DOM</abbr> [<cite><a class="bibref" href="#bib-dom">DOM</a></cite>]から情報を取得し、<a class="termref internalDFN" href="#dfn-accessible-object" data-link-type="dfn">アクセシブルなオブジェクト</a>で構成される<a class="termref internalDFN" href="#dfn-accessibility-tree" data-link-type="dfn">アクセシビリティツリー</a>と呼ばれる並列構造を作成する。アクセシブルなオブジェクトは、その<a class="termref internalDFN" href="#dfn-role" data-link-type="dfn">ロール</a>、<a class="termref internalDFN" href="#dfn-state" data-link-type="dfn">ステート</a>、および<a class="termref internalDFN" href="#dfn-property" data-link-type="dfn">プロパティ</a>に関する情報を提供する。一例は、ロールが<code>menuitem</code>であり、現在<code>haspopup</code>プロパティを持つ<code>enabled</code>状態にあり、それがサブメニューにつながることを示す、アクセしぶるなオブジェクトである。</p>
+      <p>この文書で説明されるアクセシブルなオブジェクトの2つのプロパティは、その<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>および<a class="termref internalDFN" href="#dfn-accessible-description" data-link-type="dfn">アクセシブルな説明</a>である。名前は、オブジェクトの目的に関する情報を提供する短いラベルである。メニュー項目のアクセシブルな名前の例は<code>New</code>であり、メニュー項目が新しい文書、ウィンドウなどを作成するために提供することを意味する。</p>
+      <p>説明は、アクセシブルなオブジェクトの性質をさらに明確にする短い説明である。名前が十分である場合に説明を提供する必要は必ずしもないが、ユーザーがオブジェクトの使用法をよりよく理解するのに役立つ。</p>
+      <p><a class="termref internalDFN" href="#dfn-accessibility-api" data-link-type="dfn">アクセシビリティ<abbr title="Application Programming Interfaces">API</abbr></a>は現在、アクセシブルな名前および説明のためのフラットな非構造化文字列をサポートしている。名前/説明の計算結果は、フラットな文字列である。</p>      
+      <p>用語&quot;アクセシブルな名前&quot;および&quot;アクセシブルな説明&quot;は、それらが<a class="termref internalDFN" href="#dfn-accessibility-api" data-link-type="dfn">アクセシビリティ<abbr title="Application Programming Interfaces">API</abbr></a>によって公開されている<a class="termref internalDFN" href="#dfn-accessible-object" data-link-type="dfn">アクセシブルなオブジェクト</a>のプロパティであることを強調するために使用されている。しかし、それらは、以後単に&quot;名前&quot;および&quot;説明&quot;とたびたび呼ばれる。</p>
+</section>
+<section id="conformance"><!--OddPage--><h2 id="x2-conformance"><span class="secno">2. </span> 適合性<a class="self-link" aria-label="§" href="#conformance"></a></h2><p>非規範的とマークとしてマークされる章と同様に、この仕様のすべてのオーサリングガイドライン、図、例、およびノートは非規範的である。この仕様における他のすべては規範的である。</p><p id="respecRFC2119">キーワードは、[<cite><a class="bibref" href="#bib-rfc2119">RFC2119</a></cite>]で示されるとおりに解釈され<em class="rfc2119">なければならない</em>。</p>
+<section id="rfc-2119-keywords">
+<h3 id="x2-1-rfc-2119-keywords"><span class="secno"><a class="self-link" aria-label="§" href="#rfc-2119-keywords">2.1 </a>RFC 2119キーワード</span></h3>
+<p>RFC 2119のキーワードは、（原文で）大文字で整形されかつ<code>class=&quot;rfc2119&quot;</code>をもつ<code>strong</code>要素で包まれる。上に示したキーワードが使用されるが、この形式を共有しない場合キーワードは、RFC 2119の意味で形式的な情報を伝達せず、単なる説明、すなわち、参考情報である。可能な限り、そのような用途は、この使用において回避される。</p>
+</section>
+<section id="normative-and-informative-sections">
+<h3 id="x2-2-normative-and-informative-sections"><span class="secno">2.2 </span>規範的および参考情報の章<a class="self-link" aria-label="§" href="#normative-and-informative-sections"></a></h3>
+<p>ある章<a class="termref internalDFN" href="#dfn-normative" data-link-type="dfn">規範的</a>または<a class="termref internalDFN" href="#dfn-informative" data-link-type="dfn">非規範的</a>（参考情報である）であるかかどうかの指示は、節を含む章全体に適用される。</p>
+<p>参考情報の章は、この仕様を理解するのに有益な情報を提供する。そのような章は、推奨されるプラクティスの例を含むかもしれないが、この仕様に準拠するためにそのような推奨に従うことを必要としない。</p>
+</section>
+</section>
+<section id="glossary">
+  <!--OddPage--><h2 id="x3-important-terms"><span class="secno">3. </span>重要な用語<a class="self-link" aria-label="§" href="#glossary"></a></h2>
+  <div data-oninclude="restrictReferences"><p>一部の用語は適当な位置に定義されるが、以下の定義は、この文書全体で使用される。</p>
+<dl class="termlist">
+    <dt><dfn data-lt="accessibility api|accessibility apis" id="dfn-accessibility-api" data-dfn-type="dfn">アクセシビリティ<abbr title="Application Programming Interface">API</abbr></dfn></dt>
+    <dd>
+      <p>オペレーティングシステムおよびその他のプラットフォームは、<a href="#dfn-assistive-technology" class="internalDFN" data-link-type="dfn">支援技術</a>に<a class="termref internalDFN" data-lt="object" href="#dfn-object" data-link-type="dfn">オブジェクト</a>および<a class="termref internalDFN" data-lt="event" href="#dfn-event" data-link-type="dfn">イベント</a>に関する情報を公開する一連のインターフェイスを提供する。支援技術は、情報を取得し、それらの<a class="termref internalDFN" data-lt="widget" href="#dfn-widget" data-link-type="dfn">ウィジェット</a>と対話するためにこれらのインターフェイスを使用する。アクセシビリティ<abbr title="Application Programming Interfaces">API</abbr>の例は、<a href="https://msdn.microsoft.com/en-us/library/ms697270(VS.85).aspx">Microsoft Active Accessibility</a> [<cite><a class="bibref" href="#bib-msaa">MSAA</a></cite>]、<a href="https://msdn.microsoft.com/en-us/library/ee684013%28VS.85%29.aspx">Microsoft User Interface Automation</a> [<cite><a class="bibref" href="#bib-ui-automation">UI-AUTOMATION</a></cite>]、<abbr title="Microsoft Active Accessibility">MSAA</abbr> with <cite><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd561898(v=vs.85).aspx"><abbr title="User Interface Automation">UIA</abbr> Express</a></cite> [<cite><a class="bibref" href="#bib-uia-express">UIA-EXPRESS</a></cite>]、<a href="https://developer.apple.com/documentation/appkit/accessibility/nsaccessibility">Mac <abbr title="OS Ten">OS X</abbr> Accessibility Protocol</a> [<cite><a class="bibref" href="#bib-axapi">AXAPI</a></cite>]、<cite><a href="https://developer.gnome.org/atk/unstable/">Linux/Unix Accessibility Toolkit</a></cite> [<cite><a class="bibref" href="#bib-atk">ATK</a></cite>]および<cite><a href="https://developer.gnome.org/libatspi/stable/">Assistive Technology Service Provider Interface</a></cite> [<cite><a class="bibref" href="#bib-at-spi">AT-SPI</a></cite>]、ならびに<a href="https://wiki.linuxfoundation.org/accessibility/iaccessible2/start">IAccessible2</a> [<cite><a class="bibref" href="#bib-iaccessible2">IAccessible2</a></cite>]である。</p>
+    </dd>
+    
+    
+    <dt><dfn id="dfn-accessibility-tree" data-dfn-type="dfn">アクセシビリティツリー</dfn></dt>
+    <dd>
+      <p>ユーザーインターフェイス（<abbr title="user interface">UI</abbr>）の構造を表す<a class="termref internalDFN" data-lt="accessible object" href="#dfn-accessible-object" data-link-type="dfn">アクセシブルなオブジェクト</a>のツリー。アクセシビリティツリーの各ノードは、<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">アクセシビリティ<abbr title="Application Programming Interface">API</abbr></a>を介して公開されるような<abbr title="user interface">UI</abbr>における要素を表す。例えば、プッシュボタン、チェックボックス、またはコンテナなど。</p>
+    </dd>
+    <dt><dfn id="dfn-accessible-description" data-dfn-type="dfn">アクセシブルな説明</dfn></dt>
+    <dd>
+      <p>アクセシブルな説明は、インターフェイス要素に関連する、<a href="#dfn-accessible-name" class="internalDFN" data-link-type="dfn">アクセシブルな名前</a>を補完する追加情報を提供する。アクセシブルな説明は、視覚的に知覚されるかもしれないし、されないかもしれない。</p>
+    </dd>
+	<dt><dfn data-lt="accessible name|accessible names" id="dfn-accessible-name" data-dfn-type="dfn">アクセシブルな名前</dfn></dt>
+    <dd>
+      <p>アクセシブルな名前は、ユーザーインターフェイス要素の名前である。各プラットフォームの<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">アクセシビリティ<abbr title="application programming interface">API</abbr></a>は、アクセシブルな名前プロパティを提供する。アクセシブルな名前の値は、可視（たとえば、ボタンの可視テキスト）またはユーザーインターフェイス要素の不可視（たとえば、アイコンを説明する代替テキスト）プロパティから得られるかもしれない。関連する<a href="#dfn-accessible-description" class="internalDFN" data-link-type="dfn">アクセシブルな記述</a>を参照のこと。</p>
+      <p>アクセシブルな名前プロパティに対する簡単な用法は、&quot;OK&quot;ボタンによって説明することができる。テキスト&quot;OK&quot;は、アクセシブルな名前である。ボタンがフォーカスを受け取る場合、支援技術は、アクセシブル名前をもつプラットフォームのロールの説明を連結できる。たとえば、スクリーンリーダーは、&quot;押しボタンOK&quot;または&quot;OKボタン&quot;を話すことができる。連結の順序および役割の説明の詳細（たとえば&quot;ボタン&quot;、&quot;押しボタン&quot;、&quot;クリック可能ボタン&quot;）は、プラットフォーム<a class="termref internalDFN" data-lt="accessibility api" href="#dfn-accessibility-api" data-link-type="dfn">アクセシビリティ<abbr title="Application Programming Interface">API</abbr></a>または<a href="#dfn-assistive-technology" class="internalDFN" data-link-type="dfn">支援技術</a>によって決定される。</p>
+    </dd>
+	<dt><dfn data-lt="accessible object|accessible objects" id="dfn-accessible-object" data-dfn-type="dfn">アクセシブルなオブジェクト</dfn></dt>
+    <dd>
+      <p><a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">アクセシビリティ<abbr title="application programming interface">API</abbr></a>の<a href="#dfn-accessibility-tree" class="internalDFN" data-link-type="dfn">アクセシビリティツリー</a>における<a href="#dfn-node" class="internalDFN" data-link-type="dfn">ノード</a>。アクセシビリティオブジェクトは、<a href="#dfn-assistive-technology" class="internalDFN" data-link-type="dfn">支援技術</a>による用途に対する、さまざまな<a class="termref internalDFN" data-lt="state" href="#dfn-state" data-link-type="dfn">ステート</a>、<a class="termref internalDFN" data-lt="property" href="#dfn-property" data-link-type="dfn">プロパティ</a>および<a class="termref internalDFN" data-lt="event" href="#dfn-event" data-link-type="dfn">イベント</a>を公開する。一般にマークアップ言語（<abbr title="Hypertext Markup Language">HTML</abbr>や<abbr title="Scalable Vector Graphics">SVG</abbr>など）のコンテキストにおいて、特に<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>において、マークアップ<a class="termref internalDFN" data-lt="element" href="#dfn-element" data-link-type="dfn">要素</a>およびその<a class="termref internalDFN" data-lt="attribute" href="#dfn-attribute" data-link-type="dfn">属性</a>は、アクセシブルなオブジェクトとして表される。</p>
+    </dd>
+    
+    
+    <dt><dfn data-lt="assistive technology|assistive technologies" id="dfn-assistive-technology" data-dfn-type="dfn">支援技術</dfn></dt>
+    <dd><p>ハードウェアおよび/またはソフトウェアは：</p>
+			<ul>
+				<li>ウェブコンテンツを取得してレンダリングするための<a href="#dfn-user-agent" class="internalDFN" data-link-type="dfn">ユーザーエージェント</a>によって提供されるサービスに依存する</li>
+				<li><abbr title="Application Programming Interfaces">API</abbr>の使用を通してユーザーエージェントまたはウェブコンテンツ自体と連動し、</li>
+				<li>障害者によってウェブコンテンツとのユーザーの対話を容易にするためにユーザーエージェントによって提供されるものを超えたサービスを提供する</li>
+			</ul>
+      <p>この定義は他の文書で使用したものと異なるかもしれない。</p>
+    <p>この文書のコンテキストにおいて重要である支援技術の例としては次のものを含む：</p>
+    <ul>
+      <li>拡大してかつレンダリングされたテキストと画像の視覚的な読みやすさを改善するために使用されるスクリーン拡大鏡。</li>
+      <li>合成音声または点字ディスプレイを通して情報を伝達するために最も頻繁に使用されるスクリーンリーダー。</li>
+      <li>合成音声にテキストを変換するために使用される音声変換ソフトウェア。</li>
+      <li>音声制御とディクテーションを可能にするために使用される音声認識ソフトウェア。</li>
+      <li>キーボードをシミュレートするために使用される、（ヘッドポインタ、オンスクリーンキーボード、単一のスイッチ、息操作デバイスを含む）代替入力技術。</li>
+      <li>マウスポインタおよびクリックをシミュレートするために使用される代替ポインティングデバイス。</li>
+    </ul>
+    </dd>
+    <dt><dfn data-lt="attribute|attributes" id="dfn-attribute" data-dfn-type="dfn">属性</dfn></dt>
+    <dd>
+      <p>この仕様において、属性は、マークアップ言語における属性として使用される。属性は、要素によって表される<a class="termref" href="#dfn-object">オブジェクト</a>の<a class="termref" href="#dfn-state">ステート</a>および<a class="termref" href="#dfn-property">プロパティ</a>に関する情報を提供するために<a class="termref" href="#dfn-element">要素</a>に追加される構造的特徴である。</p>
+    </dd>
+	<dt><dfn data-lt="class|classes" id="dfn-class" data-dfn-type="dfn">クラス</dfn></dt>
+	<dd>
+		<p>類似の特性を共有する一連のインスタンス<a class="termref" href="#dfn-object">オブジェクト</a>。</p>
+	</dd>
+    <dt><dfn data-lt="element|elements|element's" id="dfn-element" data-dfn-type="dfn">要素</dfn></dt>
+    <dd>
+      <p>この仕様において、要素は、マークアップ言語における要素として使用される。要素は、<a class="termref internalDFN" data-lt="object" href="#dfn-object" data-link-type="dfn">オブジェクト</a>に対するデータプロファイルを含むマークアップ言語における構成要素である。</p>
+    </dd>
+    <dt><dfn data-lt="event|events" id="dfn-event" data-dfn-type="dfn">イベント</dfn></dt>
+    <dd>
+      <p>コンピュータシステムにおける他のオブジェクトに<a href="#dfn-object" class="internalDFN" data-link-type="dfn">オブジェクト</a>の<a href="#dfn-state" class="internalDFN" data-link-type="dfn">ステート</a>で個別の変化を通信するために使用されるプログラムのメッセージ。ウェブページへのユーザー入力は、相互作用を記述する抽象イベントを介して一般的に媒介され、ドキュメントオブジェクトのステートの変化の通知を提供することができる。一部のプログラミング言語において、イベントは、通知としてより一般的には知られる。</p>
+    </dd>
+    <dt><dfn id="dfn-hidden" data-dfn-type="dfn">非表示</dfn></dt>
+    <dd>
+        <p><a href="#dfn-element" class="internalDFN" data-link-type="dfn">要素</a>が<em>すべての</em>ユーザーに可視、<a href="#dfn-perceivable" class="internalDFN" data-link-type="dfn">知覚可能</a>またはインタラクティブでないことを示す。要素またはいずれかのその祖先要素がレンダリングされないか明示的に隠される場合、要素は<em>非表示</em>と考えられる。</p>
+    </dd>
+    <dt><dfn data-lt="informative|non-normative" id="dfn-informative" data-dfn-type="dfn">参考情報</dfn></dt>
+    <dd>
+      <p>情報目的で提供されかつ適合のために必須でないコンテンツ。適合するために必要なコンテンツは、<a href="#dfn-normative" class="internalDFN" data-link-type="dfn">規範的</a>と呼ばれる。</p>
+    </dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt><dfn id="dfn-node" data-dfn-type="dfn">ノード</dfn></dt>
+    <dd>
+      <p><abbr title="Document Object Model">DOM</abbr>ツリーまたは<a class="termref internalDFN" href="#dfn-accessibility-tree" data-link-type="dfn">アクセシビリティツリー</a>における<a class="termref internalDFN" href="#dfn-object" data-link-type="dfn">オブジェクト</a>の基本型。<abbr title="Document Object Model">DOM</abbr>ノードは、他の型の中で、<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>または<a class="termref internalDFN" data-lt="Text node" href="#dfn-text-node" data-link-type="dfn">テキストノード</a>としてさらに指定される。<a class="termref internalDFN" href="#dfn-accessibility-tree" data-link-type="dfn">アクセシビリティツリー</a>のノードは、<a class="termref internalDFN" data-lt="accessible object" href="#dfn-accessible-object" data-link-type="dfn">アクセシブルなオブジェクト</a>である。</p>
+    </dd>
+    <dt><dfn id="dfn-normative" data-dfn-type="dfn">規範的</dfn></dt>
+    <dd>
+      <p>適合のために要求されるもの。対照的に、<a href="#dfn-informative" class="internalDFN" data-link-type="dfn">参考情報</a>または&quot;非規範&quot;として識別されるコンテンツは、適合のために必須でない。</p>
+    </dd>
+    <dt><dfn data-lt="object|objects" id="dfn-object" data-dfn-type="dfn">オブジェクト</dfn></dt>
+    <dd>
+      <p>ユーザーインターフェイスのコンテキストで、1つ以上の<a class="termref internalDFN" data-lt="element" href="#dfn-element" data-link-type="dfn">要素</a>によってマークアップ言語で表現され、<a class="termref internalDFN" data-lt="user agent" href="#dfn-user-agent" data-link-type="dfn">ユーザーエージェント</a>によってレンダリングされる、知覚的ユーザーエクスペリエンスの項目。</p>プログラミングのコンテキストで、1つ以上の<a class="termref internalDFN" data-lt="class" href="#dfn-class" data-link-type="dfn">クラス</a>および同様のオブジェクトの一般的な特性を定義するインターフェイスのインスタンス。<a href="#dfn-accessibility-api" class="internalDFN" data-link-type="dfn">アクセシビリティ<abbr title="Application Programming Interfaces">API</abbr></a>におけるオブジェクトは、1つ以上の<abbr title="Document Object Model">DOM</abbr>オブジェクトを表すことができる。<a class="termref internalDFN" data-lt="accessibility api" href="#dfn-accessibility-api" data-link-type="dfn">アクセシビリティ<abbr title="Application Programming Interfaces">API</abbr></a>は、<abbr title="Document Object Model">DOM</abbr>インターフェイスと区別されるインターフェイスを定義している。</dd>
+    <dt><dfn id="dfn-perceivable" data-dfn-type="dfn">知覚可能</dfn></dt>
+    <dd>
+      <p>ユーザーが感じることができる方法でユーザーに提示可能なもの。この文書における参照は<cite><a href="https://www.w3.org/TR/WCAG21/#perceivable"><abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.1原則1：コンテンツは知覚可能でなければならない</a></cite>に関連する。[<cite><a class="bibref" href="#bib-wcag21">WCAG20</a></cite>]</p>
+    </dd>
+    <dt><dfn data-lt="property|properties" id="dfn-property" data-dfn-type="dfn">プロパティ</dfn></dt>
+    <dd>
+      <p>指定されたオブジェクトの性質に不可欠である、または<a class="termref internalDFN" data-lt="attribute" href="#dfn-attribute" data-link-type="dfn">オブジェクト</a>に関連付けられたデータ値を表す<a href="#dfn-object" class="internalDFN" data-link-type="dfn">属性</a>。プロパティの変化は、オブジェクトの意味または見栄えに著しい影響を与えるかもしれない。特定のプロパティ（たとえば、<a href="https://www.w3.org/TR/wai-aria-1.1/#aria-multiline" class="property-reference"><code>aria-multiline</code></a>）は、<a class="termref" href="#dfn-state">ステート</a>を変更する可能性がより低いが、変更差分の周期は原則でないことに注意する。<a href="https://www.w3.org/TR/wai-aria-1.1/#aria-activedescendant" class="property-reference"><code>aria-activedescendant</code></a>、<a href="https://www.w3.org/TR/wai-aria-1.1/#aria-valuenow" class="property-reference"><code>aria-valuenow</code></a>、および<a href="https://www.w3.org/TR/wai-aria-1.1/#aria-valuetext" class="property-reference"><code>aria-valuetext</code></a>のような少数のプロパティは、頻繁に変更することが期待される。<a href="https://www.w3.org/TR/wai-aria-1.1/#statevsprop">ステート対プロパティの明確化</a>を参照のこと。</p>
+    </dd>
+    
+    
+    <dt><dfn data-lt="role|roles" id="dfn-role" data-dfn-type="dfn">ロール</dfn></dt>
+    <dd>
+      <p>種類の主な指標。<!-- (removing, vague) The object's role is the class of <a class="termref" data-lt="object">objects</a> of which it is a member. -->この<a class="termref internalDFN" data-lt="semantics" href="#dfn-semantics" data-link-type="dfn">セマンティック</a>な関連付けはツールが存在してもよく、その種類の他のオブジェクトに関するユーザーの期待と一致する方法でオブジェクトとの相互作用をサポートしてもよい。</p>
+    </dd>
+    <dt><dfn data-lt="semantics|semantic|semantically" id="dfn-semantics" data-dfn-type="dfn">セマンティックス</dfn></dt>
+    <dd>
+      <p>コンピューターが<a class="termref internalDFN" data-lt="element" href="#dfn-element" data-link-type="dfn">要素</a>および<a class="termref internalDFN" data-lt="attribute" href="#dfn-attribute" data-link-type="dfn">属性</a>などの<a href="#dfn-object" class="internalDFN" data-link-type="dfn">オブジェクト</a>の表現を処理し、かつさまざまな人間がオブジェクトの一貫した理解を相互に達成するような方法でオブジェクトを確実に表現できるような方法で定義される、人間によって理解されるようなものの意味。</p>
+    </dd>
+    <dt><dfn data-lt="state|states" id="dfn-state" data-dfn-type="dfn">ステート</dfn></dt>
+    <dd>
+      <p>ステートは、ユーザーのふるまいまたは自動化プロセスに応じて変更することができる<a href="#dfn-object" class="internalDFN" data-link-type="dfn">オブジェクト</a>の特性を表現する動的な<a class="termref" href="#dfn-property">プロパティ</a>である。ステートは、オブジェクトの本質的な性質に影響を与えないが、オブジェクトまたはユーザーインタラクションの可能性に関連したデータを表す。<a href="https://www.w3.org/TR/wai-aria-1.1/#statevsprop">プロパティに対するステートの明確化</a>を参照のこと。</p>
+    </dd>
+    
+    
+    
+    
+    
+    
+    <dt><dfn id="dfn-text-node" data-dfn-type="dfn">テキストノード</dfn></dt>
+    <dd>
+      <p><a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>または<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>のテキストコンテンツを表す<abbr title="Document Object Model">DOM</abbr><a class="termref internalDFN" data-lt="node" href="#dfn-node" data-link-type="dfn">ノード</a>の型。テキストノードは子ノードを持たない。</p>
+    </dd>
+    <dt><dfn id="dfn-tooltip-attribute" data-dfn-type="dfn">ツールチップ属性</dfn></dt>
+    <dd>
+      <p>デスクトップユーザーエージェントのマウスホバーに応答してなど、ユーザーエージェントにツールチップの生成をもたらすホスト言語の属性。</p>
+    </dd>
+    
+    
+    <dt><dfn data-lt="user agent|user agents" id="dfn-user-agent" data-dfn-type="dfn">ユーザーエージェント</dfn></dt>
+    <dd>
+      <p>ウェブコンテンツとのエンドユーザーのやりとりを引き出し、レンダリングしかつ容易にする任意のソフトウェア。この定義は他の文書で使用したものと異なるかもしれない。</p>
+    </dd>
+    
+    
+    <dt><dfn data-lt="widget|widgets" id="dfn-widget" data-dfn-type="dfn">ウィジェット</dfn></dt>
+    <dd>
+      <p>ユーザーが対話することができる個別のユーザーインターフェイス<a class="termref" href="#dfn-object">オブジェクト</a>。ウィジェットは、1つの値または操作（たとえば、ボックスやメニュー項目をチェックする）を持つ単純なオブジェクトから、多数の管理されたサブオブジェクト（たとえば、ツリーやグリッド）を含む複雑なオブジェクト​へと多岐にわたる。</p>
+    </dd>
+  </dl>
+</div>
+</section>
+<section id="mapping_additional_nd" class="normative">
+  <!--OddPage--><h2 id="x4-name-and-description"><span class="secno">4. </span>名前と説明<a class="self-link" aria-label="§" href="#mapping_additional_nd"></a></h2>
+  <p>名前および説明計算の出発点は<abbr title="Document Object Model">DOM</abbr><a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>である。その出力はフラットであり、とても単純な1つの単語となりうる構造化されていない文字列、すなわちスペースで区切られたトークンの文字列である。例としては、<code>Save</code>と<code>Reload from disk</code>がある。</p>
+  <p>重要な因子は<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>の<a class="termref internalDFN" href="#dfn-role" data-link-type="dfn">ロール</a>である。これは、どのコンテンツが名前文字列に寄与するかを決定する。ロールは<code>nameFrom</code> <abbr title="Resource Description Framework">RDF</abbr>プロパティを持ち、次の2つの値を取りうる：</p>
+  <dl class="runin">
+    <dt>著者</dt>
+    <dd>名前は、<code>aria-label</code>および<code>aria-labelledby</code><a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>などの明示的なマークアップ機能、または<abbr title="Hypertext Markup Language">HTML</abbr>の<code>alt</code>もしくは<code>title</code><a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>、<abbr title="Scalable Vector Graphics">SVG</abbr>の<code>desc</code><a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>などのホスト言語のラベル付けメカニズムで著者によって提供される値から生成される。</dd>
+    <dt>コンテンツ</dt>
+    <dd>名前は、<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>に関連付けられる<a class="termref internalDFN" data-lt="text node" href="#dfn-text-node" data-link-type="dfn">テキストノード</a>から生成される。これは、一部の<a class="termref internalDFN" href="#dfn-role" data-link-type="dfn">ロール</a>の&quot;著者&quot;に加えて、許可されてもよいが、&quot;コンテンツ&quot;は、より高い優先順位の&quot;著者&quot;機能が提供されない場合にのみ、使用される。優先順位は<a href="#mapping_additional_nd_te">アクセシブルな名前および説明計算</a>アルゴリズムによって定義される。</dd>
+  </dl>
+  <p><cite><a class="specref" href="https://www.w3.org/TR/wai-aria/#">Accessible Rich Internet Applications (<abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr>) 1.1</a></cite> [<cite><a class="bibref" href="#bib-wai-aria">WAI-ARIA</a></cite>]仕様は、<a class="specref" href="https://www.w3.org/TR/wai-aria/#namefromauthor">著者由来の名前</a>および<a class="specref" href="https://www.w3.org/TR/wai-aria/#namefromcontent">コンテンツ由来</a>の名前をサポートするロールのリストを提供している。</p>
+  <section id="mapping_additional_nd_name">
+    <h3 id="x4-1-name-computation"><span class="secno">4.1</span> 名前計算<a class="self-link" aria-label="§" href="#mapping_additional_nd_name"></a></h3>
+    <p><a class="termref internalDFN" href="#dfn-user-agent" data-link-type="dfn">ユーザーエージェント</a>は、下記の<a href="#mapping_additional_nd_te">アクセシブルな名前および説明の計算</a>の節で概説される規則を使用して、<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>を計算し<em class="rfc2119" title="MUST">なければならない</em>。</p>
+  </section>
+  <section id="mapping_additional_nd_description">
+    <h3 id="x4-2-description-computation"><span class="secno">4.2</span> 説明計算<a class="self-link" aria-label="§" href="#mapping_additional_nd_description"></a></h3>
+    <p><a class="property-reference" href="https://www.w3.org/TR/wai-aria/#aria-describedby"><code>aria-describedby</code></a>が存在する場合、<a class="termref internalDFN" href="#dfn-user-agent" data-link-type="dfn">ユーザエージェント</a>は、現在の要素の<code>aria-describeby</code>属性によって参照される要素のテキストによる代替を連結することによってアクセシブルな説明を計算し<em class="rfc2119" title="MUST">なければならない</em>。参照される要素のテキストによる代替は、<a href="#mapping_additional_nd_te">アクセシブルな名前および説明の計算</a>の節で概説される複数の方法を使用して計算される。</p>
+  </section>
+  <section id="mapping_additional_nd_te">
+    <h3 id="x4-3-accessible-name-and-description-computation"><span class="secno">4.3</span> アクセシブルな名前および説明計算<a class="self-link" aria-label="§" href="#mapping_additional_nd_te"></a></h3>
+    <p>アクセシブルな名前および説明の計算は、<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>と<a class="termref internalDFN" href="#dfn-accessible-description" data-link-type="dfn">アクセシブルな説明</a>の両方を生成するために使用される。複数の異なる種類の<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>、<a class="termref internalDFN" data-lt="node" href="#dfn-node" data-link-type="dfn">ノード</a>、およびマークアップの組み合わせに対して提供される異なる規則が存在する。適切な場合、テキストによる代替は、<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>内に含まれるすべての関連コンテンツから構築される。これは、テキスト自身が参照する自身の子またはノードからテキストを検索するための規則の完全なセットを使用して、再帰的なステップ2Bおよび2Fを経て達成される。</p>
+    <p>計算の目的は、スペースで区切られたテキストトークンのフラットな文字列の形式で、代替プレゼンテーション用の<a class="termref internalDFN" href="#dfn-perceivable" data-link-type="dfn">知覚可能な</a>ラベルまたは説明を作成することである。</p>
+    <section id="terminology">
+      <h4 id="x4-3-1-terminology"><span class="secno">4.3.1 </span>用語<a class="self-link" aria-label="§" href="#terminology"></a></h4>
+    	<dl>
+        <dt>ルートノード（Root node）</dt>
+        <dd>テキストによる代替が検索される<abbr title="Document Object Model">DOM</abbr><a class="termref internalDFN" href="#dfn-node" data-link-type="dfn">ノード</a>または<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>。</dd>
+        <dt>カレントノード（Current node）</dt>
+        <dd><code>root node</code>のテキスト同等物を計算するために現に横断した<abbr title="Document Object Model">DOM</abbr><a class="termref internalDFN" href="#dfn-node" data-link-type="dfn">ノード</a>。最初は、<code>current node</code>が<code>root node</code>であるが、後の段階では、<code>root node</code>の子孫か、別の参照されるノードのいずれかになる。</dd>
+        <dt>フラットな文字列（Flat string）</dt>
+        <dd>すべてのキャリッジリターン、改行、タブ、およびフォームフィードが単一のスペースに置き換えられ、かつ複数のスペースが単一のスペースにまとめられる文字の文字列。この文字列は文字データのみを含む。マークアップは含まれない。</dd> 
+        <dt>総累積テキスト（Total accumulated text）</dt>
+        <dd>これまでに計算されたテキスト同等物。ただし、<code>current node</code>を含めない。</dd>
+        <dt>累積テキスト（Accumulated text）</dt>
+        <dd>下記のステップまたはステップのシーケンスで累積されたテキスト。これは、下記のステップの一時的なストレージである。</dd>
+        <dt>結果（Result）</dt>
+        <dd>テキスト同等物は、次に説明するいずれかの手順で計算される。</dd>
+        <dt>スペースなしで結果をXに追加する（Append the result, without a space, to X）</dt>
+        <dd>
+          <ul>
+            <li>Xが空の場合、<code>result</code>をXにコピーする。</li>
+            <li>Xが空でない場合、<code>result</code>をXの末尾にコピーする。</li>
+          </ul>
+        </dd>
+        <dt>スペース付きで結果をXに追加する（Append the result, with a space, to X）</dt>
+        <dd>
+          <ul>
+            <li>Xが空の場合、<code>result</code>をXにコピーする。</li>
+            <li>Xが空でない場合、Xの末尾にスペースを追加してから、そのスペースの後へ<code>result</code>をXにコピーする。</li>
+          </ul>
+        </dd>
+        <dt>スペースなしで結果をXの先頭に追加する（Prepend result, without a space, to X）</dt>
+        <dd>
+          <ul>
+            <li>Xが空の場合、<code>result</code>をXにコピーする。</li>
+            <li>Xが空でない場合、<code>result</code>をXの先頭にコピーする。</li>
+          </ul>
+        </dd>
+        <dt>スペース付きで結果をXの先頭に追加する（Prepend the result, with a space, to X）</dt>
+        <dd>
+          <ul>
+            <li>Xが空の場合、<code>result</code>をXにコピーする。</li>
+            <li>Xが空でない場合、<code>result</code>をXの先頭にコピーし、そのコピーの後にスペースを追加する。</li>
+          </ul>
+        </dd>
+      </dl>
+    </section>
+      <p>与えられた要素に対するテキストによる代替は、次のように計算される：</p>
+      <ol>
+        <li id="step1">初期化する：<code>root node</code>を与えられた要素に、<code>current node</code>を<code>root node</code>に、そして<code>total accumulated text</code>を空文字列（&quot;&quot;）に設定する。</li>
+        <li id="step2"><code>current node</code>のテキストによる代替を計算する：<ol>
+            <li id="step2A"><code>current node</code>が<a class="termref internalDFN" href="#dfn-hidden" data-link-type="dfn">非表示</a>であり、<strong>かつ</strong><code>aria-labelledby</code>または<code>aria-describeby</code>によって直接参照され<strong>ない</strong>場合、もしくはネイティヴホスト言語のテキストによる代替<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>（<abbr title="Hypertext Markup Language">HTML</abbr>の<code>label</code>など）または<a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>によって直接参照されない場合、空文字列を返す。<div><details>
+                <summary>コメント：</summary>
+                <p>デフォルトでは、<a class="termref internalDFN" href="#dfn-assistive-technology" data-link-type="dfn">支援技術</a>は非表示情報を中継しないが、著者はそれを明示的に上書きし、<code>aria-labelledby</code>または<code>aria-describeby</code>を使用することによって、<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>または<a class="termref internalDFN" href="#dfn-accessible-description" data-link-type="dfn">アクセシブルな説明</a>の一部として非表示テキストを含めることができる。</p>
+              </details></div>
+            </li>
+            <li id="step2B">そうでなければ：<ul>
+                <li><a class="termref internalDFN" data-lt="accessible name" href="#dfn-accessible-name" data-link-type="dfn">名前</a>を計算して、<code>current node</code>が少なくとも1つの妥当なIDREFを含む<code>aria-labelledby</code><a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>を持ち、かつ<code>current node</code>がまだ<code>aria-labelledby</code>トラバーサルの一部でない場合、そのIDREFを発生順に処理する：</li>
+                <li>または、<a class="termref internalDFN" data-lt="accessible description" href="#dfn-accessible-description" data-link-type="dfn">説明</a>を計算して、<code>current node</code>が少なくとも1つの妥当なIDREFを含む<code>aria-describedby</code><a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>を持ち、かつ<code>current node</code>がまだ<code>aria-describedby</code>トラバーサルの一部でない場合、そのIDREFを発生順に処理する：<ol>
+                    <li id="step2B.i"><code>accumulated text</code>を空文字列に設定する。</li>
+                    <li id="step2B.ii">IDREFごとに：<ol>
+                        <li id="step2B.ii.a"><code>current node</code>をIDREFによって参照されるノードに設定する。</li>
+                        <li id="step2B.ii.b">ステップ2から始めて、<code>current node</code>のテキストによる代替を計算する。<code>result</code>結果をそのテキストによる代替に設定する。 </li>
+                        <li id="step2B.ii.c">スペース付きで<code>result</code>を<code>accumulated text</code>に追加する。</li>
+                      </ol>
+                    </li>
+                    <li id="step2B.iii"><code>accumulated text</code>を返す。</li>
+                  </ol>
+                </li>
+              </ul>
+              <div><details>
+                <summary>例：</summary>
+                <p>次の例は、「…かつ<code>current node</code>がまだ<code>aria-labelledby</code>トラバーサルの一部でない…」という句の意味を示している。</p>
+                <ul>
+                  <li><code>element1</code>の<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>は&quot;hello&quot;である。これは、その<code>aria-labelledby</code>の最初のトラバースであり、<code>element3</code>につながるためである。</li>
+                  <li><code>element2</code>は<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>を持たない。計算は、<code>element1</code>につながる<code>aria-labelledby</code>の最初のトラバースを含むが、<code>element1</code>の<code>aria-labelledby</code>はその後は続かない。</li>
+                </ul>
+                <div class="example" id="ex-1-example-1-element1-id-el1-aria-labelledby-el3-element2-id-el2-aria-labelledby-el1-element3-id-el3-hello-element3">
+          <div class="marker"><a class="self-link" href="#ex-1-example-1-element1-id-el1-aria-labelledby-el3-element2-id-el2-aria-labelledby-el1-element3-id-el3-hello-element3">例1</a></div>
+          <pre class="highlight hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">element1</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;el1&quot;</span> <span class="hljs-attr">aria-labelledby</span>=<span class="hljs-string">&quot;el3&quot;</span> /></span>
+<span class="hljs-tag">&lt;<span class="hljs-name">element2</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;el2&quot;</span> <span class="hljs-attr">aria-labelledby</span>=<span class="hljs-string">&quot;el1&quot;</span> /></span>
+<span class="hljs-tag">&lt;<span class="hljs-name">element3</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;el3&quot;</span>></span> hello <span class="hljs-tag">&lt;/<span class="hljs-name">element3</span>></span></pre>
+        </div>
+              </details></div>
+            </li>
+            <li id="step2C">そうでなければ、<a class="termref internalDFN" data-lt="accessible name" href="#dfn-accessible-name" data-link-type="dfn">名前</a>を計算する場合、および<code>current node</code>が空文字列でなく、空白を除去したときに空文字列でもない<code>aria-label</code><a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>を持つ場合：<ul>
+                <li><code>current node</code>のトラバースが再帰によるものであり、<strong>かつ</strong><code>current node</code>がステップ2Eで定義されている埋め込みコントロールである場合、<code>aria-label</code>を無視してルール2Eにスキップする。</li>
+                <li>そうでなければ、<code>aria-label</code>の値を返す。</li>
+              </ul>
+              <div><details>
+                <summary>例：</summary>
+                  <p>次の例は、<a class="termref internalDFN" href="#dfn-node" data-link-type="dfn">ノード</a>が自分自身を参照する<code>aria-labelledby</code>を持つときの、<code>aria-labelledby</code>と<code>aria-label</code>の相互作用を示している。<code>&lt;span role=&quot;button&quot;></code>要素は、それぞれ&quot;Delete Documentation.pdf&quot;と&quot;Delete HolidayLetter.pdf&quot;という<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>を持つ。</p>
+                  <div class="example" id="ex-2-example-2-h1-files-h1-ul-li-a-id-file_row1-href-files-documentation-pdf-documentation-pdf-a-span-role-button-tabindex-0-id-del_row1-aria-label-delete-aria-labelledby-del_row1-file_row1-span-li-li-a-id-file_row2-href-files-holidayletter-pdf-holidayletter-pdf-a-span-role-button-tabindex-0-id-del_row2-aria-label-delete-aria-labelledby-del_row2-file_row2-span-li-ul">
+          <div class="marker"><a class="self-link" href="#ex-2-example-2-h1-files-h1-ul-li-a-id-file_row1-href-files-documentation-pdf-documentation-pdf-a-span-role-button-tabindex-0-id-del_row1-aria-label-delete-aria-labelledby-del_row1-file_row1-span-li-li-a-id-file_row2-href-files-holidayletter-pdf-holidayletter-pdf-a-span-role-button-tabindex-0-id-del_row2-aria-label-delete-aria-labelledby-del_row2-file_row2-span-li-ul">例2</a></div>
+          <pre class="highlight hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>></span>Files<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>></span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ul</span>></span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;file_row1&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;./files/Documentation.pdf&quot;</span>></span>Documentation.pdf<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>></span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">tabindex</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;del_row1&quot;</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Delete&quot;</span> <span class="hljs-attr">aria-labelledby</span>=<span class="hljs-string">&quot;del_row1 file_row1&quot;</span>></span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>></span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;file_row2&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;./files/HolidayLetter.pdf&quot;</span>></span>HolidayLetter.pdf<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>></span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">tabindex</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;del_row2&quot;</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">&quot;Delete&quot;</span> <span class="hljs-attr">aria-labelledby</span>=<span class="hljs-string">&quot;del_row2 file_row2&quot;</span>></span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>></span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>></span></pre>
+        </div>
+                </details></div>
+            </li>
+            <li id="step2D">そうでなければ、<code>current node</code>のネイティヴマークアップがテキストによる代替を定義する<a class="termref internalDFN" href="#dfn-attribute" data-link-type="dfn">属性</a>（<code>title</code>など）または<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>（<abbr title="Hypertext Markup Language">HTML</abbr> <code>label</code>など）を提供する場合、要素がプレゼンテーションとしてマークされない限り（<code>role=&quot;presentation&quot;</code>または<code>role=&quot;none&quot;</code>）、ホスト言語によって定義された<code>flat string</code>の形式でその代替を返す。 <div><details>
+                <summary>コメント：</summary>
+                <p>たとえば、<abbr title="Hypertext Markup Language">HTML</abbr>において、<code>img</code>要素の<code>alt</code>属性はテキストによる代替文字列を定義し、<code>label</code>要素は参照されるフォーム要素のテキストを提供する。<abbr title="SVG2">SVG2</abbr>において、<code>desc</code>要素および<code>title</code>要素は、それらの親要素の説明を提供する。</p>
+              </details></div>
+            </li>
+            <li id="step2E">そうでなければ、埋め込みコントロールの値を調整できる場所で、<code>current node</code>が別の<a class="termref internalDFN" href="#dfn-widget" data-link-type="dfn">widget</a>のラベル内に埋め込みコントロール（<abbr title="Hypertext Markup Language">HTML</abbr>の<code>label</code>要素、または<code>aria-labelledby</code>によって直接参照される要素など）である場合、次の方法でテキストによる代替の一部として埋め込みコントロールを含める：<ul>
+                <li>埋め込みコントロールがロール<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#textbox">textbox</a>を持つ場合、その値を返す。</li>
+                <li>埋め込みコントロールがロールメニュー<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#button">button</a>を持つ場合、ボタンのテキストによる代替を返す。</li>
+                <li>埋め込みコントロールがロール<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#combobox">combobox</a>または<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#listbox">listbox</a>を持つ場合、選択した<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#option">option</a>のテキストによる代替を返す。</li>
+                <li>埋め込みコントロールがロール<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#range">range</a>を持つ場合（<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#spinbutton">spinbutton</a>や<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#slider">slider</a>など）：<ul>
+                    <li><code>aria-valuetext</code>プロパティが存在する場合、その値を返す。</li>
+                    <li>そうでなければ、<code>aria-valuenow</code>プロパティが存在する場合、その値を返す。</li>
+                    <li>そうでなければ、ホスト言語属性によって指定される値を使用する。</li>
+                  </ul>
+                </li>
+              </ul>
+              <div><details>
+                <summary>例：</summary>
+                <p>テキスト入力フィールドを含む<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#checkbox">チェックボックス</a>ラベルについて考えてみよう：&quot;Flash the screen [input] times&quot;。ユーザーが埋め込み<a class="role-reference" href="https://www.w3.org/TR/wai-aria/#textbox">テキストボックス</a>に&quot;5&quot;を入力した場合、完全なラベルは&quot;Flash the screen 5 times&quot;となる。</p>
+                <div class="example" id="ex-3-example-3-div-role-checkbox-aria-checked-false-flash-the-screen-span-role-textbox-aria-multiline-false-5-span-times-div">
+          <div class="marker"><a class="self-link" href="#ex-3-example-3-div-role-checkbox-aria-checked-false-flash-the-screen-span-role-textbox-aria-multiline-false-5-span-times-div">例3</a></div>
+          <pre class="highlight hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">aria-checked</span>=<span class="hljs-string">&quot;false&quot;</span>></span>Flash the screen <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;textbox&quot;</span> <span class="hljs-attr">aria-multiline</span>=<span class="hljs-string">&quot;false&quot;</span>></span> 5 <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>></span> times<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>></span></pre>
+        </div>
+              </details></div>
+              </li>
+            <li id="step2F">そうでなければ、<code>current node</code>の<a class="termref internalDFN" href="#dfn-role" data-link-type="dfn">ロール</a>が<a class="specref" href="https://www.w3.org/TR/wai-aria/#namefromcontent">コンテンツ由来の名前</a>を許可する場合、または<code>current node</code>が<code>aria-labelledby</code>もしくは<code>aria-describeby</code>によって参照される、もしくはネイティヴホスト言語のテキストによる代替<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>（<abbr title="Hypertext Markup Language">HTML</abbr>の<code>ラベル</code>など）である場合、またはネイティヴホスト言語のテキストによる代替<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>である場合：<ol>
+                <li id="step2F.i"><code>accumulated text</code>を空文字列に設定する。</li>
+                <li id="step2F.ii"><code>current node</code>に関連付けられている<abbr title="Cascading Style Sheets">CSS</abbr>で生成されたテキストコンテンツを確認し、それを<code>accumulated text</code>に含める。<abbr title="Cascading Style Sheets">CSS</abbr> <a href="https://www.w3.org/TR/CSS2/generate.html#before-after-content"><code>:before</code>および<code>:after</code></a>擬似要素[<cite><a class="bibref" href="#bib-css2">CSS2</a></cite>]は、コンテンツモデルを持つ<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>にテキストコンテンツを提供することができる。<ul>
+                        <li><code>:before</code>擬似要素の場合、<a class="termref internalDFN" href="#dfn-user-agent" data-link-type="dfn">ユーザーエージェント</a>は、スペースなしで<abbr title="Cascading Style Sheets">CSS</abbr>テキストコンテンツを<code>current node</code>のテキストコンテンツの先頭に追加し<em class="rfc2119" title="MUST">なければならない</em>。</li>
+                        <li><code>:after</code>擬似要素の場合、<a class="termref internalDFN" href="#dfn-user-agent" data-link-type="dfn">ユーザーエージェント</a>は、スペースなしで<abbr title="Cascading Style Sheets">CSS</abbr>テキストコンテンツを<code>current node</code>のテキストコンテンツに追加し<em class="rfc2119" title="MUST">なければならない</em>。</li>
+                      </ul>
+                </li>
+                <li id="step2F.iii"><code>current node</code>のそれぞれの子ノードに対して：<ol>
+                    <li id="step2F.iii.a"><code>current node</code>を子ノードに設定する。</li>
+                    <li id="step2F.iii.b">ステップ2から始めて、<code>current node</code>のテキストによる代替を計算する。<code>result</code>結果をそのテキストによる代替に設定する。 </li>
+                    <li id="step2F.iii.c"><code>result</code>を<code>accumulated text</code>に追加する。</li>
+                  </ol>
+                </li>
+                <li id="step2F.iv"><code>accumulated text</code>を返す。</li>
+              </ol>
+              <p><strong>重要</strong>：サブツリーの各<a class="termref internalDFN" href="#dfn-node" data-link-type="dfn">node</a>は一度だけ調べられる。テキストが子孫から収集されたが、いくつかの子孫ノードで別のIDREFによって参照される場合、その2回目以降の参照は行われない。これは、無限ループを避けるために行われる。</p>
+              <div><details>
+                <summary>コメント：</summary>
+                <p>このステップは子ノード自体にも適用でき、これは計算が再帰的であり、かつ<code>current node</code>のサブツリー内のすべての要素から収集されるテキストをもたらすことを意味する。しかし、任意の与えられたの子孫<a class="termref internalDFN" href="#dfn-node" data-link-type="dfn">node</a>のテキストによる代替は、上記のステップBからDで説明したより高い先行するマークアップに由来することがある。ここで&quot;Namefrom: author&quot;属性は、サブツリー全体のテキストによる代替を提供する。</p>
+              </details></div>
+            </li>
+            <li id="step2G">そうでなければ、<code>current node</code>が<a class="termref internalDFN" href="#dfn-text-node" data-link-type="dfn">テキストノード</a>である場合、そのテキストのコンテンツを返す。</li>
+            <li id="step2H">そうでなければ、<code>current node</code>が<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>または<a class="termref internalDFN" href="#dfn-accessible-description" data-link-type="dfn">アクセシブルな説明</a>が計算されている要素の子孫であり、かつ子孫を含む場合、2F.iに進む。</li>
+            <li id="step2I">そうでなければ、<code>current node</code>が<a class="termref internalDFN" href="#dfn-tooltip-attribute" data-link-type="dfn">ツールチップ属性</a>を持つ場合、その値を返す。<div><details>
+                <summary>コメント：</summary>
+                <p>ツールチップ属性は、サブツリーのコンテンツを含めて他に何も結果を提供できない場合にのみ、使用される。</p>
+              </details></div>
+            </li>
+          </ol>
+          <p>スペース付きで上記の各ステップの<code>result</code>を<code>total accumulated text</code>に追加する。</p>
+        </li>
+      </ol>
+      <p>すべてのステップが完了した後、<code>total accumulated text</code>は、計算を開始した<a class="termref internalDFN" href="#dfn-element" data-link-type="dfn">要素</a>の<a class="termref internalDFN" href="#dfn-accessible-name" data-link-type="dfn">アクセシブルな名前</a>または<a class="termref internalDFN" href="#dfn-accessible-description" data-link-type="dfn">アクセシブルな説明</a>として使用される。</p>
+    </section>
+  </section>
+  <section id="accessible-name-and-description-mapping">
+    <!--OddPage--><h2 id="x5-accessible-name-and-description-mapping"><span class="secno">5. </span>アクセシブルな名前および説明のマッピング<a class="self-link" aria-label="§" href="#accessible-name-and-description-mapping"></a></h2>
+    <p>labelled-by/label-forおよびdescribed-by/description-forなどの関係を含む、名前および説明のアクセシビリティ<abbr title="Application Programming Interface">API</abbr>マッピングに関する情報は、<a href="https://www.w3.org/TR/core-aam-1.1/" class="core-mapping">Core Accessibility <abbr title="Application Programming Interface">API</abbr> Mappings</a> specification [<cite><a class="bibref" href="#bib-core-aam-1.1">CORE-AAM-1.1</a></cite>]に記載されている。<a class="core-mapping" href="https://www.w3.org/TR/core-aam-1.1/#ariaLabel"><code>aria-label</code></a>、<a class="core-mapping" href="https://www.w3.org/TR/core-aam-1.1/#ariaLabelledBy"><code>aria-labelledby</code></a>、および<a class="core-mapping" href="https://www.w3.org/TR/core-aam-1.1/#ariaDescribedBy"><code>aria-describedby</code></a>のマッピングテーブルエントリーを参照のこと。</p>
+  </section>
+<section id="appendices">
+  <!--OddPage--><h2 id="x6-appendices"><span class="secno">6. </span> 付録<a class="self-link" aria-label="§" href="#appendices"></a></h2>
+	<section class="appendix" id="changelog">
+		<h3 id="x6-1-change-log"><span class="secno">6.1</span> 変更ログ<a class="self-link" aria-label="§" href="#changelog"></a></h3>
+		<section id="substantive-changes-since-the-last-public-working-draft">
+			<h4 id="x6-1-1-substantive-changes-since-the-last-public-working-draft"><span class="secno">6.1.1</span> <a href="https://www.w3.org/TR/2014/WD-accname-aam-1.1-20141211/">直前の公開ワーキングドラフト</a>からの実質的な変更点<a class="self-link" aria-label="§" href="#substantive-changes-since-the-last-public-working-draft"></a></h4>
+			<ul>
+                                <li>10-April-2018: Treat listbox in the same fashion as combobox in step 2E, i.e. returning the text alternative of the chosen option.</li>
+                                <li>5-March-2018: Remove mapping table content as it is redundant to what is in Core AAM.</li>
+                                <li>9-August-2017: Added interim step to be able to process recursions of elements who are descendants of an element whose name/description is being computed</li>
+				<li>27-July-2017: Modify step 2F to handle elements that are descendants of text alternative elements in host languages.</li>
+				<li>08-June-2017: Remove list style information from the accessible name computation.</li>
+				<!-- EdNote: After each WD publish, move contents of this list into the next one below.  -->
+			</ul>
+		</section>
+		<section id="other-substantive-changes-since-the-wai-aria-1-0-user-agent-implementation-guide-recommendation">
+			<h4 id="x6-1-2-other-substantive-changes-since-the-wai-aria-1-0-user-agent-implementation-guide-recommendation"><span class="secno">C.1</span> <a href="https://www.w3.org/TR/2014/REC-wai-aria-implementation-20140320/"><abbr title="Accessible Rich Internet Application">WAI-ARIA</abbr> 1.0 User Agent Implementation Guide勧告</a>からの他の実質的な変更点<a class="self-link" aria-label="§" href="#other-substantive-changes-since-the-wai-aria-1-0-user-agent-implementation-guide-recommendation"></a></h4>
+			<ul>
+				<li>04-Apr-2016: Added new <abbr title="User Interface Automation">UIA</abbr> FullDescription property for accessible description mapping.</li>
+				<li>05-Nov-2015: Removed all <abbr title="Microsoft Active Accessibility">MSAA</abbr>+<abbr title="User Interface Automation">UIA</abbr> Express mappings.</li>
+				<li>10-Jun-2015: Moved special case of unlabeled <code>&lt;img></code> to <abbr title="Hypertext Markup Language">HTML</abbr>-AAM.</li>
+				<li>05-Jan-2015: Glossary entry for &quot;value&quot; removed; removed links to that entry.</li>
+				<!-- EdNote: After each WD publish, move previous list into this one. -->
+			</ul>
+		</section>
+	</section>  <section class="appendix informative section" id="acknowledgements">
+	<h3 id="x6-2-acknowledgments"><span class="secno">6.2</span> 謝辞<a class="self-link" aria-label="§" href="#acknowledgements"></a></h3><p><em>この章は非規範的である。</em></p>
+	<p>次の人は、この文書の開発に貢献した。</p>
+	<section class="section" id="ack_group">
+		<h4 id="x6-2-1-participants-active-in-the-aria-wg-at-the-time-of-publication"><span class="secno">6.2.1</span> 発行時点のARIA WGでアクティブな参加者<a class="self-link" aria-label="§" href="#ack_group"></a></h4>
+		<ul>
+			<li>Ann Abbott (Invited Expert)</li>
+			<li>Irfan Ali (Educational Testing Service)</li>
+			<li>Amelia Bellamy-Royds (Invited Expert)</li>
+			<li>Michiel Bijl (Invited Expert)</li>
+			<li>David Bolter (Mozilla Foundation)</li>
+			<li>Bogdan Brinza (Microsoft Corporation)</li>
+			<li>Shari Butler (Pearson plc)</li>
+			<li>Thaddeus Cambron (Invited Expert)</li>
+			<li>Michael Cooper (<abbr title="World Wide Web Consortium">W3C</abbr> Staff)</li>
+			<li>James Craig (Apple Inc.)</li>
+			<li>Joanmarie Diggs (Igalia)</li>
+			<li>John Foliot (Deque Systems, Inc.)</li>
+			<li>Bryan Garaventa (SSB BART Group)</li>
+			<li>Matt Garrish (DAISY Consortium)</li>
+			<li>Becky Gibson (Invited Expert)</li>
+			<li>Glen Gordon (The Paciello Group, LLC)</li>
+			<li>Jon Gunderson (University of Illinois at Urbana-Champaign)</li>
+			<li>Matthew King (Facebook)</li>
+			<li>JaEun Jemma Ku (University of Illinois at Urbana-Champaign)</li>
+			<li>Charles LaPierre (Benetech)</li>
+			<li>Aaron Leventhal (Google, Inc.)</li>
+			<li>Dominic Mazzoni (Google, Inc.)</li>
+			<li>Shane McCarron (Invited Expert, Aptest)</li>
+			<li>Jan McSorley (Pearson plc)</li>
+			<li>James Nurthen (Oracle Corporation)</li>
+			<li>Ian Pouncey (The Paciello Group, LLC)</li>
+			<li>Ruoxi Ran (<abbr title="World Wide Web Consortium">W3C</abbr> Staff)</li>
+			<li>Janina Sajka (Invited Expert, The Linux Foundation)</li>
+			<li>Stefan Schnabel (SAP SE)</li>
+			<li>Lisa Seeman-Kestenbaum (Invited Expert)</li>
+			<li>Tzviya Siegman (Wiley)</li>
+			<li>Alexander Surkov (Mozilla Foundation)</li>
+			<li>Job van Achterberg (Invited Expert)</li>
+			<li>Evan Yamanishi (W. W. Norton)</li>
+			<li>Jason White (Educational Testing Service)</li>
+		</ul>
+  </section>
+	<section class="section" id="ack_others">
+		<h4 id="x6-2-2-other-aria-contributors-commenters-and-previously-active-participants"><span class="secno">6.2.2</span> その他のARIAの貢献者、コメンター、および以前にアクティブな参加者<a class="self-link" aria-label="§" href="#ack_others"></a></h4>
+		<ul>
+			<li>Shadi Abou-Zahra (<abbr title="World Wide Web Consortium">W3C</abbr>)</li>
+			<li>Jim Allan (TSB)</li>
+			<li>Jonny Axelsson (Opera Software)</li>
+			<li>David Baron (Mozilla Foundation)</li>
+			<li>Art Barstow (Nokia Corporation)</li>
+			<li>Simon Bates</li>
+			<li>Christy Blew (University of Illinois at Urbana-Champaign)</li>
+			<li>Chris Blouch (AOL)</li>
+			<li>Judy Brewer (<abbr title="World Wide Web Consortium">W3C</abbr>/<abbr title="Massachusetts Institute of Technology">MIT</abbr>)</li>
+			<li>Mark Birbeck (Sidewinder Labs)</li>
+			<li>Sally Cain (Royal National Institute of Blind People (RNIB))</li>
+			<li>Gerardo Capiel (Benetech)</li>
+			<li>Ben Caldwell (Trace)</li>
+			<li>Sofia Celic-Li</li>
+			<li>Jaesik Chang (Samsung Electronics Co., Ltd.)</li>
+			<li>Alex Qiang Chen (University of Manchester)</li>
+			<li>Charles Chen (Google, Inc.)</li>
+			<li>Christian Cohrs</li>
+			<li>Deborah Dahl</li>
+			<li>Erik Dahlström (Opera Software)</li>
+			<li>Dimitar Denev (Frauenhofer Gesellschaft)</li>
+			<li>Micah Dubinko (Invited Expert)</li>
+			<li>Mandana Eibegger</li>
+			<li>Beth Epperson (Websense)</li>
+			<li>Fred Esch (IBM Corporation)</li>
+			<li>Donald Evans (AOL)</li>
+			<li>Steve Faulkner (The Paciello Group, LLC)</li>
+			<li>Chris Fleizach (Apple Inc.)</li>
+			<li>Kelly Ford (Microsoft Corporation)</li>
+			<li>Geoff Freed (Invited Expert, NCAM)</li>
+			<li>Christopher Gallelo (Microsoft Corporation)</li>
+			<li>Billy Gregory (The Paciello Group, LLC)</li>
+			<li>Karl Groves (The Paciello Group, LLC)</li>
+			<li>Birkir Gunnarsson (Deque Systems, Inc.)</li>
+			<li>Kentarou Fukuda (IBM Corporation)</li>
+			<li>Bryan Garaventa</li>
+			<li>Guido Geloso</li>
+			<li>Ali Ghassemi</li>
+			<!--<li>Becky Gibson (IBM)</li>-->
+			<li>Alfred S. Gilman</li>
+			<li>Andres Gonzalez (Adobe Systems Inc.)</li>
+			<li>Scott González (JQuery Foundation)</li>
+			<li>James Graham</li>
+			<li>Georgios Grigoriadis (SAP AG)</li>
+			<li>Jeff Grimes (Oracle)</li>
+			<li>Loretta Guarino Reid (Google, Inc.)</li>
+			<li>Markus Gylling (DAISY Consortium)</li>
+			<li>Markku Hakkinen (Educational Testing Service)</li>
+			<li>Katie Haritos-Shea (Knowbility)</li>
+			<li>Barbara Hartel</li>
+			<li>James Hawkins (Google, Inc.)</li>
+			<li>Benjamin Hawkes-Lewis</li>
+			<li>Sean Hayes (Microsoft Corporation)</li>
+			<li>Mona Heath (University of Illinois at Urbana-Champaign)</li>
+			<li>Jan Heck</li>
+			<li>Shawn Henry</li>
+			<li>Tina Homboe</li>
+			<li>Nicholas Hoyt</li>
+			<li>John Hrvatin (Microsoft Corporation)</li>
+			<li>Takahiro Inada</li>
+			<li>Masayasu Ishikawa (<abbr title="World Wide Web Consortium">W3C</abbr>)</li>
+			<li>Jim Jewitt</li>
+			<li>Kenny Johar (Microsoft Corporation)</li>
+			<li>Shilpi Kapoor (BarrierBreak Technologies)</li>
+			<li>Masahiko Kaneko (Microsoft Corporation)</li>
+			<li>Marjolein Katsma</li>
+			<li>Susann Keohane (IBM Corporation)</li>
+			<li>George Kerscher (International Digital Publishing Forum)</li>
+			<li>Jason Kiss (Department of Internal Affairs, New Zealand Government)</li>
+			<li>Todd Kloots</li>
+			<li>Jamie Knight (British Broadcasting Corporation)</li>
+			<li>Johannes Koch</li>
+			<li>Gerard K. Cohen</li>
+			<li>Sam Kuper</li>
+			<li>Earl Johnson (Sun)</li>
+			<li>Jael Kurz</li>
+			<li>Rajesh Lal (Nokia Corporation)</li>
+			<li>Diego La Monica (International Webmasters Association / <abbr title="Hypertext Markup Language">HTML</abbr> Writers Guild (IWA-HWG))</li>
+			<!--<li>Aaron Leventhal (IBM Corporation)</li>-->
+			<li>Gez Lemon (International Webmasters Association / <abbr title="Hypertext Markup Language">HTML</abbr> Writers Guild (IWA-HWG))</li>
+			<li>Alex Li (SAP)</li>
+			<li>Chris Lilley</li>
+			<li>Thomas Logan (HiSoftware Inc.)</li>
+			<li>Brian Loh</li>
+			<li>William Loughborough (Invited Expert)</li>
+			<li>Linda Mao (Microsoft)</li>
+			<li>David MacDonald (Invited Expert, CanAdapt Solutions Inc.)</li>
+			<li>Carolyn MacLeod</li>
+			<li>Anders Markussen (Opera Software)</li>
+			<li>Krzysztof Maczyński</li>
+			<li>Matthew May (Adobe Systems Inc.)</li>
+			<li>Mark McCarthy</li>
+			<li>Charles McCathie Nevile (Yandex)</li>
+			<li>Heather Migliorisi (Invited Expert)</li>
+			<li>Mary Jo Mueller (IBM Corporation)</li>
+			<li>Alexandre Morgaut (4D)</li>
+			<li>Ann Navarro (Invited Expert)</li>
+			<li>Joshue O Connor (Invited Expert, CFIT)</li>
+			<li>Artur Ortega (Microsoft Corporation)</li>
+			<li>Sailesh Panchang (Deque)</li>
+			<li>Lisa Pappas (Society for Technical Communication (STC))</li>
+			<li>Marta Pawlowlska (Samsung Electronics Co., Ltd.)</li>
+			<li>Dave Pawson (RNIB)</li>
+			<li>Steven Pemberton (CWI Amsterdam)</li>
+			<li>Simon Pieters (Opera Software)</li>
+			<li>Jean-Bernard Piot (4D)</li>
+			<li>David Poehlman, Simon Pieters (Opera Software)</li>
+			<li>Sarah Pulis (Media Access Australia)</li>
+			<li>T.V. Raman (Google, Inc.)</li>
+			<li>Jan Richards</li>
+			<li>Gregory Rosmaita (Invited Expert)</li>
+			<li>Tony Ross (Microsoft Corporation)</li>
+			<li>Alex Russell (Dojo Foundation) (</li>
+			<li>Mark Sadecki (Invited Expert)</li>
+			<li>Mario Sánchez Prada (Samsung Electronics Co., Ltd. and Gnome Foundation)</li>
+			<li>Martin Schaus (SAP AG)</li>
+			<li>Doug Schepers (<abbr title="World Wide Web Consortium">W3C</abbr>)</li>
+			<li>Cynthia Shelly (Microsoft Corporation)</li>
+			<li>Joseph Scheuhammer (Invited Expert, Inclusive Design Research Centre, OCAD University)</li>
+			<li>Matthias Schmitt</li>
+			<li>Richard Schwerdtfeger (IBM, Knowbility)</li>
+			<li>Marc Silbey (Microsoft Corporation)</li>
+			<li>Leif Halvard Sili</li>
+			<li>Henri Sivonen (Mozilla)</li>
+			<li>Michael Smith (<abbr title="World Wide Web Consortium">W3C</abbr>)</li>
+			<li>Andi Snow-Weaver (IBM Corporation)</li>
+			<li>Ville Skyttä</li>
+			<li>Henny Swan (BBC)</li>
+			<li>Neil Soiffer (Design Science)</li>
+			<li>Vitaly Sourikov</li>
+			<li>Mike Squillace (IBM)</li>
+			<li>Maciej Stachowiak (Apple Inc.)</li>
+			<li>Christophe Strobbe</li>
+			<li>Suzanne Taylor (Pearson plc)</li>
+			<li>Terrill Thompson</li>
+			<li>David Todd</li>
+			<li>Gregg Vanderheiden (Invited Expert, Trace)</li>
+			<li>Anne van Kesteren</li>
+			<li>Léonie Watson (The Paciello Group, LLC)</li>
+			<li>Wen He (Tencent)</li>
+			<li>Wu Wei (<abbr title="World Wide Web Consortium">W3C</abbr> / RITT)</li>
+			<li>Ryan Williams (Oracle)</li>
+			<li>Tom Wlodkowski</li>
+			<li>Sam White (Apple Inc.)</li>
+			<li>Marco Zehe (Mozilla Foundation)</li>
+			<li>Gottfried Zimmermann (Invited Expert, Access Technologies Group)</li>
+		</ul>
+	</section>
+	<section class="section" id="ack_funders">
+		<h4 id="x6-2-3-enabling-funders"><span class="secno">6.2.3</span> 資金提供者の権利<a class="self-link" aria-label="§" href="#ack_funders"></a></h4>
+		<p> この出版物は、契約番号ED-OSE-10-C-0067のもとで米国教育省・障害者リハビリテーション研究所（NIDILRR）の政府資金によって一部賄われている。この出版物の内容は、必ずしも米国教育省の見解や政策を反映するものではなく、また商品名、商用製品、組織の言及は米国政府による支持を意味するものではない。</p>
+	</section>
+</section>
+
+</section>
+
+
+<section id="references" class="appendix">
+      <!--OddPage--><h2 id="a-references"><span class="secno">A. </span> 参考文献<a class="self-link" aria-label="§" href="#references"></a></h2>
+      
+    <section id="normative-references">
+        <h3 id="a-1-normative-references"><span class="secno">A.1 </span> 標準情報<a class="self-link" aria-label="§" href="#normative-references"></a></h3>
+      <dl class="bibliography">
+        <dt id="bib-at-spi">[AT-SPI]</dt><dd><a href="https://developer.gnome.org/libatspi/stable/"><cite>Assistive Technology Service Provider Interface</cite></a>. The GNOME Project. URL: <a href="https://developer.gnome.org/libatspi/stable/">https://developer.gnome.org/libatspi/stable/</a></dd><dt id="bib-atk">[ATK]</dt><dd><a href="https://developer.gnome.org/atk/stable/"><cite>ATK - Accessibility Toolkit</cite></a>. The GNOME Project. URL: <a href="https://developer.gnome.org/atk/stable/">https://developer.gnome.org/atk/stable/</a></dd><dt id="bib-axapi">[AXAPI]</dt><dd><a href="https://developer.apple.com/documentation/appkit/nsaccessibility"><cite>The NSAccessibility Protocol for macOS</cite></a>. Apple, Inc. URL: <a href="https://developer.apple.com/documentation/appkit/nsaccessibility">https://developer.apple.com/documentation/appkit/nsaccessibility</a></dd><dt id="bib-core-aam-1.1">[CORE-AAM-1.1]</dt><dd><a href="https://www.w3.org/TR/core-aam-1.1/"><cite>Core Accessibility API Mappings 1.1</cite></a>. Joanmarie Diggs; Joseph Scheuhammer; Richard Schwerdtfeger; Michael Cooper; Andi Snow-Weaver; Aaron Leventhal. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://www.w3.org/TR/core-aam-1.1/">https://www.w3.org/TR/core-aam-1.1/</a></dd><dt id="bib-css2">[CSS2]</dt><dd><a href="https://www.w3.org/TR/CSS2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. Bert Bos; Tantek Çelik; Ian Hickson; Håkon Wium Lie et al. W3C. 7 June 2011. W3C Recommendation. URL: <a href="https://www.w3.org/TR/CSS2/">https://www.w3.org/TR/CSS2/</a></dd><dt id="bib-iaccessible2">[IAccessible2]</dt><dd><a href="https://www.linuxfoundation.org/collaborate/workgroups/accessibility/iaccessible2"><cite>IAccessible2</cite></a>. Linux Foundation. URL: <a href="https://www.linuxfoundation.org/collaborate/workgroups/accessibility/iaccessible2">https://www.linuxfoundation.org/collaborate/workgroups/accessibility/iaccessible2</a></dd><dt id="bib-msaa">[MSAA]</dt><dd><a href="https://msdn.microsoft.com/en-us/library/ms697707.aspx"><cite>Microsoft Active Accessibility (MSAA) 2.0</cite></a>. Microsoft Corporation. URL: <a href="https://msdn.microsoft.com/en-us/library/ms697707.aspx">https://msdn.microsoft.com/en-us/library/ms697707.aspx</a></dd><dt id="bib-rfc2119">[RFC2119]</dt><dd><a href="https://tools.ietf.org/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner. IETF. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a></dd><dt id="bib-ui-automation">[UI-AUTOMATION]</dt><dd><a href="https://msdn.microsoft.com/en-us/library/ee684009%28v=vs.85%29.aspx"><cite>UI Automation</cite></a>. Microsoft Corporation. URL: <a href="https://msdn.microsoft.com/en-us/library/ee684009%28v=vs.85%29.aspx">https://msdn.microsoft.com/en-us/library/ee684009%28v=vs.85%29.aspx</a></dd><dt id="bib-uia-express">[UIA-EXPRESS]</dt><dd><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd561898%28v=vs.85%29.aspx"><cite>The IAccessibleEx Interface</cite></a>. Microsoft Corporation. URL: <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd561898%28v=vs.85%29.aspx">https://msdn.microsoft.com/en-us/library/windows/desktop/dd561898%28v=vs.85%29.aspx</a></dd><dt id="bib-wai-aria">[WAI-ARIA]</dt><dd><a href="https://www.w3.org/TR/wai-aria-1.1/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.1</cite></a>. Joanmarie Diggs; Shane McCarron; Michael Cooper; Richard Schwerdtfeger; James Craig. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://www.w3.org/TR/wai-aria-1.1/">https://www.w3.org/TR/wai-aria-1.1/</a></dd><dt id="bib-wai-aria-implementation">[WAI-ARIA-IMPLEMENTATION]</dt><dd><a href="https://www.w3.org/TR/wai-aria-implementation/"><cite>WAI-ARIA 1.0 User Agent Implementation Guide</cite></a>. Joseph Scheuhammer; Michael Cooper. W3C. 20 March 2014. W3C Recommendation. URL: <a href="https://www.w3.org/TR/wai-aria-implementation/">https://www.w3.org/TR/wai-aria-implementation/</a></dd><dt id="bib-wcag21">[WCAG21]</dt><dd><a href="https://www.w3.org/TR/WCAG21/"><cite>Web Content Accessibility Guidelines (WCAG) 2.1</cite></a>. Andrew Kirkpatrick; Joshue O Connor; Alastair Campbell; Michael Cooper. W3C. 5 June 2018. W3C Recommendation. URL: <a href="https://www.w3.org/TR/WCAG21/">https://www.w3.org/TR/WCAG21/</a></dd>
+      </dl></section><section id="informative-references">
+        <h3 id="a-2-informative-references"><span class="secno">A.2 </span>参考文献<a class="self-link" aria-label="§" href="#informative-references"></a></h3>
+      <dl class="bibliography">
+        <dt id="bib-dom">[DOM]</dt><dd><a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Anne van Kesteren. WHATWG. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a></dd>
+      </dl></section></section><p role="navigation" id="back-to-top"><a href="#title"><abbr title="Back to Top">↑</abbr></a></p><script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script></body></html>
