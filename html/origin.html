@@ -119,7 +119,7 @@
   <script async="" crossorigin="" src="https://html.spec.whatwg.org/html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">11 November 2019</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">22 November 2019</span></h2></hgroup>
    
    
 
@@ -198,6 +198,28 @@
    <li><p>Return false.</ol>
 
   <div class="example"><table><tr><th><var>A</var><th><var>B</var><th><a href="#same-origin" id="origin:same-origin-2">same origin</a><th><a href="#same-origin-domain" id="origin:same-origin-domain">same origin-domain</a><tr><td>("<code>https</code>", "<code>example.org</code>", null, null)<td>("<code>https</code>", "<code>example.org</code>", null, null)<td>✅<td>✅<tr><td>("<code>https</code>", "<code>example.org</code>", 314, null)<td>("<code>https</code>", "<code>example.org</code>", 420, null)<td>❌<td>❌<tr><td>("<code>https</code>", "<code>example.org</code>", 314, "<code>example.org</code>")<td>("<code>https</code>", "<code>example.org</code>", 420, "<code>example.org</code>")<td>❌<td>✅<tr><td>("<code>https</code>", "<code>example.org</code>", null, null)<td>("<code>https</code>", "<code>example.org</code>", null, "<code>example.org</code>")<td>✅<td>❌<tr><td>("<code>https</code>", "<code>example.org</code>", null, "<code>example.org</code>")<td>("<code>http</code>", "<code>example.org</code>", null, "<code>example.org</code>")<td>❌<td>❌</table>
+  </div>
+
+  <p>Two <a href="#concept-origin" id="origin:concept-origin-12">origins</a>, <var>A</var> and <var>B</var>, are said to be <dfn id="schemelessly-same-site" data-export="">schemelessly same site</dfn> if the following algorithm returns true:</p>
+
+  <ol><li><p>If <var>A</var> and <var>B</var> are the same <a href="#concept-origin-opaque" id="origin:concept-origin-opaque-7">opaque origin</a>, then return true.<li><p>If <var>A</var> and <var>B</var> are both <a href="#concept-origin-tuple" id="origin:concept-origin-tuple-5">tuple origins</a>, then:</p>
+
+    <ol><li><p>Let <var>hostA</var> be <var>A</var>'s <a href="#concept-origin-host" id="origin:concept-origin-host-4">host</a>, and let <var>hostB</var> be <var>B</var>'s <a href="#concept-origin-host" id="origin:concept-origin-host-5">host</a>.<li><p>If <var>hostA</var> <a href="https://triple-underscore.github.io/URL-ja.html#concept-host-equals" id="origin:host-equals" data-x-internal="host-equals">equal</a> <var>hostB</var>, and <var>hostA</var>'s <a id="origin:registrable-domain" href="https://url.spec.whatwg.org/#host-registrable-domain" data-x-internal="registrable-domain">registrable domain</a> is non-null, then return true.<li><p>If <var>hostA</var>'s <a id="origin:registrable-domain-2" href="https://url.spec.whatwg.org/#host-registrable-domain" data-x-internal="registrable-domain">registrable domain</a> equals <var>hostB</var>'s <a id="origin:registrable-domain-3" href="https://url.spec.whatwg.org/#host-registrable-domain" data-x-internal="registrable-domain">registrable domain</a> and is non-null, then return true.</ol>
+   <li><p>Return false.</ol>
+
+  <p>Two <a href="#concept-origin" id="origin:concept-origin-13">origins</a>, <var>A</var> and <var>B</var>, are said to be <dfn id="same-site" data-export="">same site</dfn> if both of the following statements are true:</p>
+
+  <ul><li><p><var>A</var> and <var>B</var> are <a href="#schemelessly-same-site" id="origin:schemelessly-same-site">schemelessly same site</a><li><p><var>A</var> and <var>B</var> are either both <a href="#concept-origin-opaque" id="origin:concept-origin-opaque-8">opaque origins</a>, or both <a href="#concept-origin-tuple" id="origin:concept-origin-tuple-6">tuple origins</a> with the same <a href="#concept-origin-scheme" id="origin:concept-origin-scheme-4">scheme</a></ul>
+
+  <p class="note">Unlike the <a href="#same-origin" id="origin:same-origin-3">same origin</a> and <a href="#same-origin-domain" id="origin:same-origin-domain-2">same origin-domain</a> concepts, for <a href="#schemelessly-same-site" id="origin:schemelessly-same-site-2">schemelessly same site</a> and <a href="#same-site" id="origin:same-site">same site</a>, the <a href="#concept-origin-port" id="origin:concept-origin-port-4">port</a> and <a href="#concept-origin-domain" id="origin:concept-origin-domain-6">domain</a> components are ignored.</p>
+
+  <p class="warning">For the reasons <a href="https://url.spec.whatwg.org/#warning-avoid-psl">explained in <cite>URL</cite></a>, the <a href="#same-site" id="origin:same-site-2">same site</a> and <a href="#schemelessly-same-site" id="origin:schemelessly-same-site-3">schemelessly same site</a> concepts should be avoided when possible, in favor of <a href="#same-origin" id="origin:same-origin-4">same origin</a> checks.</p>
+
+  <div id="example-same-site" class="example"><p>Assuming that <code>suffix.example</code> is a <a id="origin:public-suffix" href="https://url.spec.whatwg.org/#host-public-suffix" data-x-internal="public-suffix">public suffix</a> and that <code>example.com</code> is not:</p>
+
+   <table><tr><th><var>A</var><th><var>B</var><th><a href="#schemelessly-same-site" id="origin:schemelessly-same-site-4">schemelessly same site</a><th><a href="#same-site" id="origin:same-site-3">same site</a><tr><td>("<code>https</code>", "<code>example.com</code>")<td>("<code>https</code>", "<code>sub.example.com</code>")<td>✅<td>✅<tr><td>("<code>https</code>", "<code>example.com</code>")<td>("<code>https</code>", "<code>sub.other.example.com</code>")<td>✅<td>✅<tr><td>("<code>https</code>", "<code>example.com</code>")<td>("<code>http</code>", "<code>non-secure.example.com</code>")<td>✅<td>❌<tr><td>("<code>https</code>", "<code>r.suffix.example</code>")<td>("<code>https</code>", "<code>sub.r.suffix.example</code>")<td>✅<td>✅<tr><td>("<code>https</code>", "<code>r.suffix.example</code>")<td>("<code>https</code>", "<code>sub.other.r.suffix.example</code>")<td>✅<td>✅<tr><td>("<code>https</code>", "<code>r.suffix.example</code>")<td>("<code>https</code>", "<code>other.suffix.example</code>")<td>❌<td>❌<tr><td>("<code>https</code>", "<code>r.suffix.example</code>")<td>("<code>https</code>", "<code>suffix.example</code>")<td>❌<td>❌<tr><td>("<code>https</code>", "<code>suffix.example</code>")<td>("<code>https</code>", "<code>suffix.example</code>")<td>❌<td>❌</table>
+
+   <p>(Here we have omitted the <a href="#concept-origin-port" id="origin:concept-origin-port-5">port</a> and <a href="#concept-origin-domain" id="origin:concept-origin-domain-7">domain</a> components since they are not considered.)</p>
   </div>
 
   
