@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Developer's Edition — Last Updated <span class="pubdate">22 January 2020</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Developer's Edition — Last Updated <span class="pubdate">29 January 2020</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -31,7 +31,7 @@
 
   
 
-  <nav><a href="webappapis.html">← 8 ウェブアプリケーションAPI</a> – <a href="./">目次</a> – <a href="timers-and-user-prompts.html">8.5 タイマー →</a></nav><ol class="toc"><li><ol><li><a href="dynamic-markup-insertion.html#dynamic-markup-insertion"><span class="secno">8.4</span> 動的マークアップの挿入</a><ol><li><a href="dynamic-markup-insertion.html#opening-the-input-stream"><span class="secno">8.4.1</span> 入力ストリームを開く</a><li><a href="dynamic-markup-insertion.html#closing-the-input-stream"><span class="secno">8.4.2</span> 入力ストリームを閉じる</a><li><a href="dynamic-markup-insertion.html#document.write()"><span class="secno">8.4.3</span> <code>document.write()</code></a><li><a href="dynamic-markup-insertion.html#document.writeln()"><span class="secno">8.4.4</span> <code>document.writeln()</code></a></ol></ol></ol><h3 id="dynamic-markup-insertion"><span class="secno">8.4</span> <dfn>動的マークアップの挿入</dfn><a href="#dynamic-markup-insertion" class="self-link"></a></h3>
+  <nav><a href="webappapis.html">← 8 Web application APIs</a> — <a href="./">Table of Contents</a> — <a href="timers-and-user-prompts.html">8.6 Timers →</a></nav><ol class="toc"><li><ol><li><a href="dynamic-markup-insertion.html#dynamic-markup-insertion"><span class="secno">8.4</span> 動的マークアップの挿入</a><ol><li><a href="dynamic-markup-insertion.html#opening-the-input-stream"><span class="secno">8.4.1</span> 入力ストリームを開く</a><li><a href="dynamic-markup-insertion.html#closing-the-input-stream"><span class="secno">8.4.2</span> 入力ストリームを閉じる</a><li><a href="dynamic-markup-insertion.html#document.write()"><span class="secno">8.4.3</span> <code>document.write()</code></a><li><a href="dynamic-markup-insertion.html#document.writeln()"><span class="secno">8.4.4</span> <code>document.writeln()</code></a></ol><li><a href="dynamic-markup-insertion.html#dom-parsing-and-serialization"><span class="secno">8.5</span> DOM parsing</a></ol></ol><h3 id="dynamic-markup-insertion"><span class="secno">8.4</span> <dfn>動的マークアップの挿入</dfn><a href="#dynamic-markup-insertion" class="self-link"></a></h3>
 
   <p class="note">APIs for dynamically inserting markup into the document interact with the parser, and thus their behavior varies depending on whether they are used with <a id="dynamic-markup-insertion:html-documents" href="https://triple-underscore.github.io/DOM4-ja.html#html-document" data-x-internal="html-documents">HTML documents</a> (and the <span>HTML parser</span>) or <a id="dynamic-markup-insertion:xml-documents" href="https://triple-underscore.github.io/DOM4-ja.html#xml-document" data-x-internal="xml-documents">XML documents</a> (and the <span>XML parser</span>).</p>
 
@@ -98,5 +98,26 @@
   
 
 
+  
+  <h3 id="dom-parsing-and-serialization"><span class="secno">8.5</span> DOM parsing<a href="#dom-parsing-and-serialization" class="self-link"></a></h3>
 
-  <nav><a href="webappapis.html">← 8 ウェブアプリケーションAPI</a> – <a href="./">目次</a> – <a href="timers-and-user-prompts.html">8.5 タイマー →</a></nav>
+  <p>The <code>DOMParser</code> interface allows authors to create new <code>Document</code> objects by parsing strings, as either HTML or XML.</p>
+
+  <dl class="domintro"><dt><var>parser</var> = new <code id="dom-domparser-constructor">DOMParser</code>()<dd><p>Constructs a new <code>DOMParser</code> object.</p>
+   <dt><var>document</var> = <var>parser</var> . <code id="dom-domparser-parsefromstring">parseFromString</code>( <var>string</var>, <var>type</var> )<dd><p>Parses <var>string</var> using either the HTML or XML parser, according to <var>type</var>, and returns the resulting <code>Document</code>. <var>type</var> can be "<code>text/html</code>" (which will invoke the HTML parser), or any of "<code id="dom-parsing-and-serialization:text/xml"><a href="indices.html#text/xml">text/xml</a></code>", "<code id="dom-parsing-and-serialization:application/xml"><a href="indices.html#application/xml">application/xml</a></code>", "<code>application/xhtml+xml</code>", or "<code id="dom-parsing-and-serialization:image/svg+xml"><a href="indices.html#image/svg+xml">image/svg+xml</a></code>" (which will invoke the XML parser).</p>
+
+    <p>For the XML parser, if <var>string</var> can be parsed, then the returned <code>Document</code> will contain elements describing the resulting error.</p>
+
+    <p>Note that <code id="dom-parsing-and-serialization:the-script-element"><a href="scripting.html#the-script-element">script</a></code> elements are not evaluated during parsing, and the resulting document's <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-encoding" id="dom-parsing-and-serialization:document's-character-encoding" data-x-internal="document's-character-encoding">encoding</a> will always be <span>UTF-8</span>.</p>
+
+    <p>Values other than the above for <var>type</var> will cause a <code id="dom-parsing-and-serialization:typeerror"><a data-x-internal="typeerror" href="https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-typeerror">TypeError</a></code> exception to be thrown.</p>
+   </dl>
+
+  <p class="note">The design of <code>DOMParser</code>, as a class that needs to be constructed and then have its <code id="dom-parsing-and-serialization:dom-domparser-parsefromstring"><a href="#dom-domparser-parsefromstring">parseFromString()</a></code> method called, is an unfortunate historical artifact. If we were designing this functionality today it would be a standalone function.</p>
+
+  
+
+  
+
+
+  <nav><a href="webappapis.html">← 8 Web application APIs</a> — <a href="./">Table of Contents</a> — <a href="timers-and-user-prompts.html">8.6 Timers →</a></nav>
