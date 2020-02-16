@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><script src="trans-refs.js" async></script><meta name="generator" content="ReSpec 24.35.2"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><style>/* --- EXAMPLES --- */
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="generator" content="ReSpec 25.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><style>/* --- EXAMPLES --- */
 span.example-title {
     text-transform: none;
 }
@@ -78,6 +78,7 @@ input.task-list-item-checkbox {
   position: relative;
   bottom: 2px;
   border: none;
+  display: inline-block;
 }
 
 .issue a.respec-label-dark {
@@ -89,14 +90,78 @@ input.task-list-item-checkbox {
   color: #000;
   background-color: #fff;
 }
+</style><style>/* dfn popup panel that list all local references to a dfn */
+dfn {
+  cursor: pointer;
+}
+
+.dfn-panel {
+  position: absolute;
+  left: var(--left); /* set via JS */
+  top: var(--top); /* set via JS */
+  z-index: 35;
+  height: auto;
+  width: max-content;
+  max-width: 300px;
+  max-height: 500px;
+  overflow: auto;
+  padding: 0.5em 0.75em;
+  font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+  background: #dddddd;
+  color: black;
+  border: outset 0.2em;
+}
+
+.dfn-panel * {
+  margin: 0;
+}
+
+.dfn-panel > b {
+  display: block;
+}
+
+.dfn-panel ul a[href] {
+  color: black;
+}
+
+.dfn-panel a:not(:hover) {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.dfn-panel a[href]:hover {
+  border-bottom-width: 1px;
+}
+
+.dfn-panel > b + b {
+  margin-top: 0.25em;
+}
+
+.dfn-panel ul {
+  padding: 0;
+}
+
+.dfn-panel li {
+  list-style: inside;
+}
+
+.dfn-panel.docked {
+  display: inline-block;
+  position: fixed;
+  left: 0.5em;
+  top: unset;
+  bottom: 2em;
+  margin: 0 auto;
+  /* 0.75em from padding (x2), 0.5em from left position, 0.2em border (x2) */
+  max-width: calc(100vw - 0.75em * 2 - 0.5em - 0.2em * 2);
+  max-height: 30vh;
+}
 </style>
     
     <title>ARIA in HTML 日本語訳</title>
     <style id="respec-mainstyle">/*****************************************************************
- * ReSpec 3 CSS
- * Robin Berjon - http://berjon.com/
+ * ReSpec specific CSS
  *****************************************************************/
-
 @keyframes pop {
   0% {
     transform: scale(1, 1);
@@ -384,95 +449,85 @@ h6 > a.self-link::before {
     
     <link rel="stylesheet" href="https://www.w3.org/TR/html-aria/makeup.css">
   <link rel="canonical" href="https://www.w3.org/TR/html-aria/"><style>/*
-
-github.com style (c) Vasily Polovnyov <vast@whiteants.net>
-
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
 */
 
 .hljs {
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  color: #333;
-  background: #f8f8f8;
+  color: #383a42;
+  background: #fafafa;
 }
 
 .hljs-comment,
 .hljs-quote {
-  color: #998;
+  color: #717277;
   font-style: italic;
 }
 
+.hljs-doctag,
 .hljs-keyword,
-.hljs-selector-tag,
-.hljs-subst {
-  color: #333;
-  font-weight: bold;
+.hljs-formula {
+  color: #a626a4;
 }
 
-.hljs-number,
-.hljs-literal,
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag .hljs-attr {
-  color: #008080;
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
 }
 
 .hljs-string,
-.hljs-doctag {
-  color: #d14;
-}
-
-.hljs-title,
-.hljs-section,
-.hljs-selector-id {
-  color: #900;
-  font-weight: bold;
-}
-
-.hljs-subst {
-  font-weight: normal;
-}
-
-.hljs-type,
-.hljs-class .hljs-title {
-  color: #458;
-  font-weight: bold;
-}
-
-.hljs-tag,
-.hljs-name,
-.hljs-attribute {
-  color: #000080;
-  font-weight: normal;
-}
-
 .hljs-regexp,
-.hljs-link {
-  color: #009926;
-}
-
-.hljs-symbol,
-.hljs-bullet {
-  color: #990073;
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #42803C;
 }
 
 .hljs-built_in,
-.hljs-builtin-name {
-  color: #0086b3;
+.hljs-class .hljs-title {
+  color: #c18401;
 }
 
-.hljs-meta {
-  color: #999;
-  font-weight: bold;
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
 }
 
-.hljs-deletion {
-  background: #fdd;
-}
-
-.hljs-addition {
-  background: #dfd;
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
 }
 
 .hljs-emphasis {
@@ -481,6 +536,10 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 
 .hljs-strong {
   font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
 }
 </style><style>var {
   position: relative;
@@ -554,25 +613,24 @@ var[data-type]:hover::before {
   "wgPublicList": "public-html",
   "wgURI": "https://www.w3.org/2019/webapps/",
   "xref": true,
-  "publishDate": "2019-12-06",
-  "previousPublishDate": "2019-12-03",
-  "publishISODate": "2019-12-06T00:00:00.000Z",
-  "generatedSubtitle": "Working Draft 06 December 2019"
+  "publishDate": "2020-02-15",
+  "previousPublishDate": "2020-02-03",
+  "publishISODate": "2020-02-15T00:00:00.000Z",
+  "generatedSubtitle": "Working Draft 15 February 2020"
 }</script><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-WD"></head>
   <body data-cite="HTML" class="h-entry">
-<aside style="border-radius: 20px; border: solid lightpink 3px; padding:0 1em; margin-top: 1em; margin-bottom:2em;"> <p>この文書は、「<a href="https://www.w3.org/TR/2019/WD-html-aria-20191206/">ARIA in HTML</a>（Working Draft <time>2019-12-06</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳に誤りがありえます。</p> <p>訳者への連絡先、他の仕様の翻訳等については、<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照ください。</p>
-</aside>
-<div class="head"><a class="logo" href="https://www.w3.org/"><img alt="W3C" width="72" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C"></a><h1 id="title" class="title p-name">ARIA in HTML 日本語訳</h1>
+ <aside style="border-radius: 20px; border: solid lightpink 3px; padding:0 1em; margin-top: 1em; margin-bottom:2em;"> <p>この文書は、「<a href="https://www.w3.org/TR/2019/WD-html-aria-20200215/">ARIA in HTML</a>（Working Draft <time>2020-02-15</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳に誤りがありえます。</p> <p>訳者への連絡先、他の仕様の翻訳等については、<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照ください。</p><script src="trans-refs.js" async></script>
+</aside>     
+      <div class="head"><a class="logo" href="https://www.w3.org/"><img alt="W3C" width="72" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C"></a><h1 id="title" class="title p-name">ARIA in HTML 日本語訳</h1>
       
-      <h2>W3C Working Draft <time class="dt-published" datetime="2019-12-06">06 December 2019</time></h2>
+      <h2>W3C Working Draft <time class="dt-published" datetime="2020-02-15">15 February 2020</time></h2>
       <dl>
-        <dt>This version:</dt><dd><a class="u-url" href="https://www.w3.org/TR/2019/WD-html-aria-20191206/">https://www.w3.org/TR/2019/WD-html-aria-20191206/</a></dd><dt>Latest published version:</dt><dd><a href="https://www.w3.org/TR/html-aria/">https://www.w3.org/TR/html-aria/</a></dd>
+        <dt>This version:</dt><dd><a class="u-url" href="https://www.w3.org/TR/2020/WD-html-aria-20200215/">https://www.w3.org/TR/2020/WD-html-aria-20200215/</a></dd><dt>Latest published version:</dt><dd><a href="https://www.w3.org/TR/html-aria/">https://www.w3.org/TR/html-aria/</a></dd>
         <dt>Latest editor's draft:</dt><dd><a href="https://w3c.github.io/html-aria/">https://w3c.github.io/html-aria/</a></dd>
         
         
         
-        
-        <dt>Previous version:</dt><dd><a href="https://www.w3.org/TR/2019/WD-html-aria-20191203/">https://www.w3.org/TR/2019/WD-html-aria-20191203/</a></dd>
+        <dt>Previous version:</dt><dd><a href="https://www.w3.org/TR/2020/WD-html-aria-20200203/">https://www.w3.org/TR/2020/WD-html-aria-20200203/</a></dd>
         
         <dt>Editors:</dt>
         <dd class="p-author h-card vcard" data-editor-id="35007"><a class="u-url url p-name fn" href="https://www.paciellogroup.com">Steve Faulkner</a> (<a class="p-org org h-org h-card" href="https://www.paciellogroup.com">The Paciello Group</a>)</dd><dd class="p-author h-card vcard" data-editor-id="103856"><a class="u-url url p-name fn" href="https://www.paciellogroup.com">Scott O'Hara</a> (<a class="p-org org h-org h-card" href="https://www.paciellogroup.com">The Paciello Group</a>)</dd>
@@ -583,25 +641,25 @@ var[data-type]:hover::before {
       
       
       
-      <p class="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a rel="license" href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a> rules apply.</p>
+      <p class="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2020 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a rel="license" href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">permissive document license</a> rules apply.</p>
       <hr title="Separator for header">
     </div>
-    <section id="abstract" class="introductory"><h2>概要</h2>この仕様は、[<cite><a class="bibref" href="#bib-html" title="HTML Standard" data-link-type="biblio">HTML</a></cite>]要素の<cite><a href="https://momdo.github.io/wai-aria-1.1/">Accessible Rich Internet Applications (WAI-ARIA) 1.1</a></cite>および<cite><a href="https://www.w3.org/TR/dpub-aria-1.0/">Digital Publishing WAI-ARIA Module 1.0</a></cite>属性の使用に対するウェブ開発者の規則（著者適合性要件）を定義する。また、適合チェックツールに対する要件も定義する。</section>
+    <section id="abstract" class="introductory"><h2>概要</h2>この仕様は、[<cite><a class="bibref" data-link-type="biblio" href="#bib-html" title="HTML Standard">HTML</a></cite>]要素の<cite><a href="https://momdo.github.io/wai-aria-1.1/">Accessible Rich Internet Applications (WAI-ARIA) 1.1</a></cite>および<cite><a href="https://www.w3.org/TR/dpub-aria-1.0/">Digital Publishing WAI-ARIA Module 1.0</a></cite>属性の使用に対するウェブ開発者の規則（著者適合性要件）を定義する。また、適合チェックツールに対する要件も定義する。</section>
     <section id="sotd" class="introductory"><h2>この文書の位置付け</h2><p><em>この節は、公開時点におけるこの文書のステータスについて説明する。他の文書がこの文書に取って代わるかもしれない。<abbr title="World Wide Web Consortium">W3C</abbr>が現在公開しているリストとテクニカルレポートの最新版は、<a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/で見つけることができる。</em></p>
-      <p><abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLは、[<cite><a class="bibref" href="#bib-html" title="HTML Standard" data-link-type="biblio">HTML</a></cite>]仕様のモジュールである。この仕様モジュールが参照するが明示的に定義されない、すべてのHTML機能、適合性要件、または用語は、[<cite><a class="bibref" href="#bib-html" title="HTML Standard" data-link-type="biblio">HTML</a></cite>]仕様で定義される。</p>
+      <p><abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLは、[<cite><a class="bibref" data-link-type="biblio" href="#bib-html" title="HTML Standard">HTML</a></cite>]仕様のモジュールである。この仕様モジュールが参照するが明示的に定義されない、すべてのHTML機能、適合性要件、または用語は、[<cite><a class="bibref" data-link-type="biblio" href="#bib-html" title="HTML Standard">HTML</a></cite>]仕様で定義される。</p>
       <p class="advisement">この文書は草案であり、コンテンツは予告なし変更されることがある。</p>
-    <p>この文書は、Working Draftとして<a href="https://www.w3.org/2019/webapps/">Web Applications Working Group</a>によって発行された。この文書は、<abbr title="World Wide Web Consortium">W3C</abbr>勧告になることを意図する。</p><p><a href="https://github.com/w3c/html-aria/issues/">GitHub Issues</a>はこの仕様の議論のために優先される。また、メーリングリストにコメントを送ることもできる。<a href="mailto:public-html@w3.org">public-html@w3.org</a>（<a href="https://lists.w3.org/Archives/Public/public-html/">アーカイブ</a>）に送信されたい。</p><p>Working Draftでの公開は<abbr title="World Wide Web Consortium">W3C</abbr>メンバーの支持を意味するものではない。この文書は草案であり、いつでも更新、他の文書による置き換えや廃止扱いにされうる。進行中の作業以外のものとしてこの文書を引用することは不適切である。</p><p>この文書は<a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシー</a>の下で活動するグループによって作成された。<abbr title="World Wide Web Consortium">W3C</abbr>は、グループの成果物に関する<a rel="disclosure" href="https://www.w3.org/2004/01/pp-impl/114929/status">あらゆる開示特許の公開リスト</a>を管理する。ここには、特許開示にあたっての指示も含まれている。特許について十分に知識のある人物が、仕様に<a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a>が認められると判断した場合は、<a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシーの第6章</a>に従い情報を開示する必要がある。</p><p>この文書は、<a id="w3c_process_revision" href="https://www.w3.org/2019/Process-20190301/">2019年3月1日の<abbr title="World Wide Web Consortium">W3C</abbr>プロセス文書</a>によって管理される。</p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">目次</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#web-developer-requirements-for-use-of-aria-in-html"><bdi class="secno">1. </bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対するウェブ開発者の要件</a></li><li class="tocline"><a class="tocxref" href="#document-conformance-requirements-for-use-of-aria-attributes-in-html"><bdi class="secno">2. </bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対する文書適合性要件</a></li><li class="tocline"><a class="tocxref" href="#case-requirements-for-aria-role-state-and-property-attributes"><bdi class="secno">3. </bdi><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティ属性の活字ケース要件</a></li><li class="tocline"><a class="tocxref" href="#allowed-aria-roles-states-and-properties"><bdi class="secno">4. </bdi> 許可される<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティ</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">5. </bdi>適合</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">A. </bdi> 参考文献</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">A.1</bdi> 標準情報</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">A.2 </bdi> 参考文献</a></li></ol></li></ol></nav>
+    <p>この文書は、Working Draftとして<a href="https://www.w3.org/2019/webapps/">Web Applications Working Group</a>によって発行された。この文書は、<abbr title="World Wide Web Consortium">W3C</abbr>勧告になることを意図する。</p><p><a href="https://github.com/w3c/html-aria/issues/">GitHub Issues</a>はこの仕様の議論のために優先される。また、メーリングリストにコメントを送ることもできる。<a href="mailto:public-html@w3.org">public-html@w3.org</a>（<a href="https://lists.w3.org/Archives/Public/public-html/">アーカイブ</a>）に送信されたい。</p><p>Working Draftでの公開は<abbr title="World Wide Web Consortium">W3C</abbr>メンバーの支持を意味するものではない。この文書は草案であり、いつでも更新、他の文書による置き換えや廃止扱いにされうる。進行中の作業以外のものとしてこの文書を引用することは不適切である。</p><p>この文書は<a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシー</a>の下で活動するグループによって作成された。<abbr title="World Wide Web Consortium">W3C</abbr>は、グループの成果物に関する<a rel="disclosure" href="https://www.w3.org/2004/01/pp-impl/114929/status">あらゆる開示特許の公開リスト</a>を管理する。ここには、特許開示にあたっての指示も含まれている。特許について十分に知識のある人物が、仕様に<a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a>が認められると判断した場合は、<a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシーの第6章</a>に従い情報を開示する必要がある。</p><p>この文書は、<a id="w3c_process_revision" href="https://www.w3.org/2019/Process-20190301/">2019年3月1日の<abbr title="World Wide Web Consortium">W3C</abbr>プロセス文書</a>によって管理される。</p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">目次</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#rules-wd"><bdi class="secno">1. </bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対するウェブ開発者の要件</a></li><li class="tocline"><a class="tocxref" href="#docconformance"><bdi class="secno">2. </bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対する文書適合性要件</a></li><li class="tocline"><a class="tocxref" href="#case-sensitivity"><bdi class="secno">3. </bdi><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティ属性の活字ケース要件</a></li><li class="tocline"><a class="tocxref" href="#allowed-aria-roles-states-and-properties"><bdi class="secno">4. </bdi> 許可される<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティ</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">5. </bdi>適合</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">A. </bdi> 参考文献</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">A.1</bdi> 標準情報</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">A.2 </bdi> 参考文献</a></li></ol></li></ol></nav>
     <section id="web-developer-requirements-for-use-of-aria-in-html">
-      <h2 id="rules-wd"><bdi class="secno">1. </bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対するウェブ開発者の要件<a class="self-link" aria-label="§" href="#web-developer-requirements-for-use-of-aria-in-html"></a></h2>
-      <p>著者は、<dfn data-dfn-type="dfn" id="dfn-strong-native-semantics"><a href="https://momdo.github.io/wai-aria-1.1/#host_general_conflict">強いネイティヴセマンティックス</a></dfn>と衝突するまたは与えられるHTML要素の<dfn data-dfn-type="dfn" id="dfn-implicit-aria-semantics"><a href="https://momdo.github.io/wai-aria-1.1/#implicit_semantics">暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス</a></dfn>と等価である場合を除いた、[<cite><a class="bibref" href="#bib-wai-aria-1.1" title="Accessible Rich Internet Applications (WAI-ARIA) 1.1" data-link-type="biblio">wai-aria-1.1</a></cite>]で説明される要求にしたがって、<a href="https://momdo.github.io/html/dom.html#elements">HTML要素</a>の<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および<code>aria-*</code>属性を使用<em class="rfc2119" title="MAY">してもよい</em>。この制約は、開発者が文書の実際のUIを表すことのない無意味なユーザーインターフェイス情報（UI）を支援技術製品に報告させることから防ぐことを意図する。</p>
+      <h2 id="rules-wd"><bdi class="secno">1. </bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対するウェブ開発者の要件<a class="self-link" aria-label="§" href="#rules-wd"></a></h2>
+      <p>著者は、<dfn data-dfn-type="dfn" id="dfn-strong-native-semantics"><a href="https://momdo.github.io/wai-aria-1.1/#host_general_conflict">強いネイティヴセマンティックス</a></dfn>と衝突するまたは与えられるHTML要素の<dfn data-dfn-type="dfn" id="dfn-implicit-aria-semantics"><a href="https://momdo.github.io/wai-aria-1.1/#implicit_semantics">暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス</a></dfn>と等価である場合を除いた、[<cite><a class="bibref" data-link-type="biblio" href="#bib-wai-aria-1.1" title="Accessible Rich Internet Applications (WAI-ARIA) 1.1">wai-aria-1.1</a></cite>]で説明される要求にしたがって、<a href="https://momdo.github.io/html/dom.html#elements">HTML要素</a>の<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および<code>aria-*</code>属性を使用<em class="rfc2119" title="MAY">してもよい</em>。この制約は、開発者が文書の実際のUIを表すことのない無意味なユーザーインターフェイス情報（UI）を支援技術製品に報告させることから防ぐことを意図する。</p>
       <p>ウェブ開発者は、<a href="#docconformance" class="sec-ref">§ <bdi class="secno">2. </bdi>HTMLにおける<abbr title="Accessible Rich Internet Applications">ARIA</abbr>属性の使用に対する文書適合性</a>の表に示されるセマンティックスと矛盾する方法で<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および<code>aria-*</code>属性を使用<em class="rfc2119" title="MUST NOT">してはならない</em>。ウェブ開発者は、表に定義される<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス</a>と一致する値に<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および<code>aria-*</code>属性を設定<em class="rfc2119" title="SHOULD NOT">すべきでない</em>。</p>
       <aside class="example" id="example-1"><div class="marker"><a class="self-link" href="#example-1">例<bdi> 1</bdi></a></div>次は、<code>button</code>要素で<code>role=heading</code>を使用する。<code>button</code>要素はheadingロールと衝突するデフォルト特性を持つため、これは許可されない。<pre class="HTML" aria-busy="false"><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"heading"</span>></span>search<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>></span></code></pre>
       </aside>
     </section>
     <section id="document-conformance-requirements-for-use-of-aria-attributes-in-html">
-      <h2 id="docconformance"><bdi class="secno">2</bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対する文書適合性要件<a class="self-link" aria-label="§" href="#document-conformance-requirements-for-use-of-aria-attributes-in-html"></a></h2>
-      <p>次の表は、HTML文書で<abbr title="Accessible Rich Internet Applications">ARIA</abbr>マークアップを使用するための要素ごとの文書適合基準要件を規定し、HTML Accessibility <abbr title="Application Programing Interfaces">API</abbr> Mappings 1.0 [<cite><a class="bibref" href="#bib-html-aam-1.0" title="HTML Accessibility API Mappings 1.0" data-link-type="biblio">html-aam-1.0</a></cite>]仕様で定義される<a href="https://momdo.github.io/html/dom.html#elements">HTML要素</a>に適用される<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス</a>について説明する。</p>
-      <p>1列目のセルでそれぞれの言語機能（要素または属性）は同じ行の2列目のセルで与えられる<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス（ロール、ステート、およびプロパティ）を意味する。3列目のセルは、使用<em class="rfc2119" title="MAY">してもよい</em><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロールの値とaria-*属性を定義する。3列目のセルに<dfn data-dfn-type="dfn" id="dfn-any-role"><strong>任意の</strong><code>role</code></dfn>という用語が含まれる場合、<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙的な<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクス</a><code>role</code>の値とは別の<code>role</code>の値を使用<em class="rfc2119" title="MAY">してもよい</em>ことを示す。3列目のセルに <dfn data-dfn-type="dfn" id="dfn-no-role"><strong><code>ロール</code>なし</strong></dfn>という用語が含まれている場合、著者はHTML要素の暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクスまたはネイティヴセマンティクスを上書き<em class="rfc2119" title="MUST NOT">してはならない</em>ことを示す。</p>
+      <h2 id="docconformance"><bdi class="secno">2</bdi> <abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLの使用に対する文書適合性要件<a class="self-link" aria-label="§" href="#docconformance"></a></h2>
+      <p>次の表は、HTML文書で<abbr title="Accessible Rich Internet Applications">ARIA</abbr>マークアップを使用するための要素ごとの文書適合基準要件を規定し、HTML Accessibility <abbr title="Application Programing Interfaces">API</abbr> Mappings 1.0 [<cite><a class="bibref" data-link-type="biblio" href="#bib-html-aam-1.0" title="HTML Accessibility API Mappings 1.0">html-aam-1.0</a></cite>]仕様で定義される<a href="https://momdo.github.io/html/dom.html#elements">HTML要素</a>に適用される<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス</a>について説明する。</p>
+      <p>1列目のセルでそれぞれの言語機能（要素または属性）は同じ行の2列目のセルで与えられる<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス（ロール、ステート、およびプロパティ）を意味する。3列目のセルは、使用<em class="rfc2119" title="MAY">してもよい</em><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロールの値とaria-*属性を定義する。3列目のセルに<dfn data-dfn-type="dfn" id="dfn-any-role"><strong>任意の</strong><code>role</code></dfn>という用語が含まれる場合、<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙的な<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクス</a><code>role</code>の値とは別の<code>role</code>の値を使用<em class="rfc2119" title="MAY">してもよい</em>ことを示す。3列目のセルに <dfn data-dfn-type="dfn" id="dfn-no-role"><strong><code>role</code>なし</strong></dfn>という用語が含まれている場合、著者はHTML要素の暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクスまたはネイティヴセマンティクスを上書き<em class="rfc2119" title="MUST NOT">してはならない</em>ことを示す。</p>
 
       <div class="note" role="note" id="aria-usage-note"><div role="heading" class="note-title marker" id="h-note" aria-level="3"><span>Note</span></div><p class=""><span>暗黙の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティックス</span>と一致する<abbr title="Accessible Rich Internet Applications">ARIA</abbr> <code>role</code>および/または<code>aria-*</code>属性の設定は不要であり、かつこのプロパティが既にブラウザーで設定されるので<em class="rfc2119" title="NOT RECOMMENDED">推奨されない</em>。</p></div>
 
@@ -680,7 +738,7 @@ var[data-type]:hover::before {
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<a href="#index-aria-application"><code>application</code></a>ロールに受け入れ可能なすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
-          <tr id="autonomous-custom-element" tabindex="-1">
+          <tr id="el-autonomous-custom-element" tabindex="-1">
             <td><a data-cite-path="custom-elements.html" data-type="dfn" href="https://momdo.github.io/html/custom-elements.html#autonomous-custom-element">自律カスタム要素</a></td>
             <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
             <td><p><a href="#dfn-any-role" class="internalDFN" data-link-type="dfn"><strong>すべての</strong><code>role</code></a></p>
@@ -858,13 +916,6 @@ var[data-type]:hover::before {
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
-          <tr id="el-figcaption" tabindex="-1">
-            <td><code><a data-xref-type="element" data-cite-path="grouping-content.html" data-type="element" href="https://momdo.github.io/html/grouping-content.html#the-figcaption-element">figcaption</a></code></td>
-            <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
-            <td><p>ロール：<a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a>または<a href="#index-aria-none"><code>none</code></a></p>
-              <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
-            </td>
-          </tr>
           <tr id="el-fieldset" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="form-elements.html" data-type="element" href="https://momdo.github.io/html/form-elements.html#the-fieldset-element">fieldset</a></code></td>
             <td><code>role=<a href="#index-aria-group">group</a></code></td>
@@ -872,16 +923,24 @@ var[data-type]:hover::before {
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
+          <tr id="el-figcaption" tabindex="-1">
+            <td><code><a data-xref-type="element" data-cite-path="grouping-content.html" data-type="element" href="https://momdo.github.io/html/grouping-content.html#the-figcaption-element">figcaption</a></code></td>
+            <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
+            <td><p>ロール：<a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a>または<a href="#index-aria-none"><code>none</code></a></p>
+              <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
+            </td>
+          </tr>
           <tr id="el-figure" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="grouping-content.html" data-type="element" href="https://momdo.github.io/html/grouping-content.html#the-figure-element">figure</a></code></td>
             <td><code>role=<a href="#index-aria-figure">figure</a></code></td>
-            <td><p>ロール：<a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-none"><code>none</code></a>または<a href="#index-aria-presentation"><code>presentation</code></a></p>
+            <td><p><code>figure</code>が<code>figcaption</code>子孫を持たない場合：<br>ロール：<a href="#dfn-any-role" class="internalDFN" data-link-type="dfn"><strong>任意の</strong><code>role</code></a></p>
+              <p><code>figure</code>が<code>figcaption</code>子孫を持つ場合：<br>ロール：<strong class="nosupport"><code>role</code>なし</strong>。</p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
           <tr id="el-footer" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="sections.html" data-type="element" href="https://momdo.github.io/html/sections.html#the-footer-element">footer</a></code></td>
-            <td><code>article</code>, <code>aside</code>, <code>main</code>, <code>nav</code>もしくは<code>section</code>要素の子孫でない、または<code>role=article</code>, <code>complementary</code>, <code>main</code>, <code>navigation</code>もしくは<code>region</code>をもつ要素でない場合、<code>role=<a href="#index-aria-contentinfo">contentinfo</a></code>、それ以外の場合は<a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
+            <td><code>article</code>, <code>aside</code>, <code>main</code>, <code>nav</code>もしくは<code>section</code>要素の子孫でない、または<code>role=article</code>, <code>complementary</code>, <code>main</code>, <code>navigation</code>もしくは<code>region</code>をもつ要素でない場合、<code>role=<a href="#index-aria-contentinfo">contentinfo</a></code>。そうでなければ、<a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a>。</td>
             <td><p>ロール：<a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-none"><code>none</code></a>または<a href="#index-aria-presentation"><code>presentation</code></a></p>
               <p>DPubロール：<a href="https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote"><code>doc-footnote</code></a></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および許可される受け入れ可能なすべての<code>aria-*</code>属性</p>
@@ -894,10 +953,17 @@ var[data-type]:hover::before {
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
+          <tr id="el-form-associated-custom-element" tabindex="-1">
+            <td><a data-cite-path="custom-elements.html" data-type="dfn" href="https://momdo.github.io/html/custom-elements.html#form-associated-custom-element">フォーム関連カスタム要素</a></td>
+            <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
+            <td><p>ロール：<a href="#index-aria-application"><code>application</code></a>, <a href="#index-aria-button"><code>button</code></a>, <a href="#index-aria-checkbox"><code>checkbox</code></a>, <a href="#index-aria-combobox"><code>combobox</code></a>, <a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-listbox"><code>listbox</code></a>, <a href="#index-aria-progressbar"><code>progressbar</code></a>, <a href="#index-aria-radio"><code>radio</code></a>, <a href="#index-aria-radiogroup"><code>radiogroup</code></a>, <a href="#index-aria-searchbox"><code>searchbox</code></a>, <a href="#index-aria-slider"><code>slider</code></a>, <a href="#index-aria-spinbutton"><code>spinbutton</code></a>, <a href="#index-aria-switch"><code>switch</code></a>または<a href="#index-aria-textbox"><code>textbox</code></a>。</p>
+              <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
+            </td>
+          </tr>
           <tr id="el-h1-h6" tabindex="-1">
-            <td><a href="https://momdo.github.io/html/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements"><code>h1 to h6</code></a></td>
+            <td><a href="https://momdo.github.io/html/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements"><code>h1 ‐ h6</code></a></td>
             <td><code>aria-level</code> = 正の整数をもつ、<code>role=<a href="#index-aria-heading">heading</a></code></td>
-            <td><p>ロール：<a href="#index-aria-none"><code>none</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a> or <a href="#index-aria-tab"><code>tab</code></a>.</p>
+            <td><p>ロール：<a href="#index-aria-none"><code>none</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a>または<a href="#index-aria-tab"><code>tab</code></a>.</p>
               <p>DPubロール：<a href="https://www.w3.org/TR/dpub-aria-1.0/#doc-subtitle"><code>doc-subtitle</code></a></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
@@ -909,7 +975,7 @@ var[data-type]:hover::before {
           </tr>
           <tr id="el-header" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="sections.html" data-type="element" href="https://momdo.github.io/html/sections.html#the-header-element">header</a></code></td>
-            <td><code>article</code>, <code>aside</code>, <code>main</code>, <code>nav</code>もしくは<code>section</code>要素の子孫でない、または<code>role=article</code>, <code>complementary</code>, <code>main</code>, <code>navigation</code>もしくは<code>region</code>をもつ要素でない場合、<code>role=<a href="#index-aria-banner">banner</a></code>、それ以外の場合は<a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
+            <td><code>article</code>, <code>aside</code>, <code>main</code>, <code>nav</code>もしくは<code>section</code>要素の子孫でない、または<code>role=article</code>, <code>complementary</code>, <code>main</code>, <code>navigation</code>もしくは<code>region</code>をもつ要素でない場合、<code>role=<a href="#index-aria-banner">banner</a></code>。そうでなければ、<a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a>。</td>
             <td><p>ロール：<a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-none"><code>none</code></a>または<a href="#index-aria-presentation"><code>presentation</code></a></p>
               <p>DPubロール：<a href="https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote"><code>doc-footnote</code></a></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
@@ -945,29 +1011,29 @@ var[data-type]:hover::before {
           <tr id="el-iframe" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="iframe-embed-object.html" data-type="element" href="https://momdo.github.io/html/iframe-embed-object.html#the-iframe-element">iframe</a></code></td>
             <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
-            <td><p>ロール：<a href="#index-aria-application"><code>application</code></a>, <a href="#index-aria-document"><code>document</code></a>, <a href="#index-aria-img"><code>img</code></a>, <a href="#index-aria-none"><code>none</code></a>, または<a href="#index-aria-presentation"><code>presentation</code></a>.</p>
+            <td><p>ロール：<a href="#index-aria-application"><code>application</code></a>, <a href="#index-aria-document"><code>document</code></a>, <a href="#index-aria-img"><code>img</code></a>, <a href="#index-aria-none"><code>none</code></a>または<a href="#index-aria-presentation"><code>presentation</code></a>。</p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
           <tr id="el-img" tabindex="-1">
-            <td><code><a data-cite-path="embedded-content.html" data-type="element" href="https://momdo.github.io/html/embedded-content.html#the-img-element">img</a> with <a href="https://momdo.github.io/html/embedded-content.html#attr-img-alt">alt</a>="some text"</code></td>
+            <td><code><a href="https://momdo.github.io/html/embedded-content.html#attr-img-alt">alt</a>="テキスト"</code>をもつ<code><a data-cite-path="embedded-content.html" data-type="element" href="https://momdo.github.io/html/embedded-content.html#the-img-element">img</a></code></td>
             <td><code>role=<a href="#index-aria-img">img</a></code></td>
-            <td><p><a href="#index-aria-none"><code>none</code></a>または<a href="#index-aria-presentation"><code>presentation</code></a>を除く<a href="#dfn-any-role" class="internalDFN" data-link-type="dfn"><strong>すべての</strong><code>ロール</code></a>。</p>
+            <td><p>ロール：<a href="#index-aria-button"><code>button</code></a>, <a href="#index-aria-checkbox"><code>checkbox</code></a>, <a href="#index-aria-link"><code>link</code></a>, <a href="#index-aria-menuitem"><code>menuitem</code></a>, <a href="#index-aria-menuitemcheckbox"><code>menuitemcheckbox</code></a>, <a href="#index-aria-menuitemradio"><code>menuitemradio</code></a>, <a href="#index-aria-option"><code>option</code></a>, <a href="#index-aria-progressbar"><code>progressbar</code></a>, <a href="#index-aria-scrollbar"><code>scrollbar</code></a>, <a href="#index-aria-separator"><code>separator</code></a>, <a href="#index-aria-slider"><code>slider</code></a>, <a href="#index-aria-switch"><code>switch</code></a>, <a href="#index-aria-tab"><code>tab</code></a>または<a href="#index-aria-treeitem"><code>treeitem</code></a></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
           <tr id="el-img-empty-alt" tabindex="-1">
-            <td><code><a data-cite-path="embedded-content.html" data-type="element" href="https://momdo.github.io/html/embedded-content.html#the-img-element">img</a> with <a href="https://momdo.github.io/html/embedded-content.html#attr-img-alt">alt</a>=""</code></td>
+            <td><code><a href="https://momdo.github.io/html/embedded-content.html#attr-img-alt">alt</a>=""</code>をもつ<code><a data-cite-path="embedded-content.html" data-type="element" href="https://momdo.github.io/html/embedded-content.html#the-img-element">img</a></code></td>
             <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
             <td><p>ロール：<a href="#index-aria-none"><code>group</code></a>または<a href="#index-aria-presentation"><code>presentation</code></a></p>
               <p><code>aria-hidden</code>以外の<strong class="nosupport"><code>aria-*</code>属性</strong>ではない</p>
             </td>
           </tr>
           <tr id="el-img-no-alt" tabindex="-1">
-            <td><code><a data-cite-path="embedded-content.html" data-type="element" href="https://momdo.github.io/html/embedded-content.html#the-img-element">img</a> with no <a href="https://momdo.github.io/html/images.html#unknown-images">alt</a>=""</code></td>
+            <td><code><a href="https://momdo.github.io/html/images.html#unknown-images">alt</a></code>属性をもたない<code><a data-cite-path="embedded-content.html" data-type="element" href="https://momdo.github.io/html/embedded-content.html#the-img-element">img</a></code></td>
             <td><code>role=<a href="#index-aria-img">img</a></code></td>
-            <td><p><a href="#dfn-any-role" class="internalDFN" data-link-type="dfn"><strong>すべての</strong><code>role</code></a></p>
-              <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
+            <td><p>他の方法でアクセシブルな名前を定義される著者に提供されない場合：<strong class="nosupport"><code>role</code>なし</strong>かつ<code>aria-hidden</code>以外の<strong><code>aria-*</code>属性なし</strong>。</p>
+              <p>そうでなければ、<code>img</code>が著者に定義されたアクセシブルな名前を持つ場合、<a href="#el-img"><code>img alt="テキスト"</code></a>を参照。</p>
             </td>
           </tr>
           <tr id="el-input-button" tabindex="-1">
@@ -1201,9 +1267,9 @@ var[data-type]:hover::before {
           </tr>
           <tr id="el-menu" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="grouping-content.html" data-type="element" href="https://momdo.github.io/html/grouping-content.html#menus">menu</a></code></td>
-            <td><code>role=<a href="#index-aria-list">list</a></code></td>
-            <td><p><strong>注</strong> 一部のユーザーエージェントは、リストマーカーが削除された場合、リストの<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙的な<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクス</a>を抑制する。必要に応じて、著者はロールを元に戻すために<code>role=list</code>を使用することができる。</p>
-              <p>ロール：<a href="#index-aria-directory"><code>directory</code></a>, <a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-listbox"><code>listbox</code></a>, <a href="#index-aria-menu"><code>menu</code></a>, <a href="#index-aria-menubar"><code>menubar</code></a>, <a href="#index-aria-radiogroup"><code>radiogroup</code></a>, <a href="#index-aria-tablist"><code>tablist</code></a>, <a href="#index-aria-toolbar"><code>toolbar</code></a>, <a href="#index-aria-tree"><code>tree</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a>または<a href="#index-aria-none"><code>none</code></a>。</p>
+            <td><code>role=<a href="#index-aria-list">list</a></code><p><strong>注</strong> 一部のユーザーエージェントは、リストマーカーが削除された場合、リストの<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙的な<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクス</a>を抑制する。必要に応じて、著者はロールを元に戻すために<code>role=list</code>を使用することができる。</p>
+            </td>
+            <td><p>ロール：<a href="#index-aria-directory"><code>directory</code></a>, <a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-listbox"><code>listbox</code></a>, <a href="#index-aria-menu"><code>menu</code></a>, <a href="#index-aria-menubar"><code>menubar</code></a>, <a href="#index-aria-none"><code>none</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a>, <a href="#index-aria-radiogroup"><code>radiogroup</code></a>, <a href="#index-aria-tablist"><code>tablist</code></a>, <a href="#index-aria-toolbar"><code>toolbar</code></a>または<a href="#index-aria-tree"><code>tree</code></a></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
@@ -1234,7 +1300,7 @@ var[data-type]:hover::before {
           <tr id="el-object" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="iframe-embed-object.html" data-type="element" href="https://momdo.github.io/html/iframe-embed-object.html#the-object-element">object</a></code></td>
             <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
-            <td><p>ロール：<a href="#index-aria-application"><code>application</code>, <a href="#index-aria-document">document</a>, </a>または<code><a href="#index-aria-img">img</a></code></p>
+            <td><p>ロール：<a href="#index-aria-application"><code>application</code></a>, <a href="#index-aria-document"><code>document</code></a>または<a href="#index-aria-img"><code>img</code></a>。</p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
@@ -1406,7 +1472,7 @@ var[data-type]:hover::before {
           <tr id="el-svg" tabindex="-1">
             <td><a href="https://momdo.github.io/html/embedded-content-other.html#svg-0"><code>SVG</code></a></td>
             <td><a href="#dfn-no-corresponding-role" class="internalDFN" data-link-type="dfn">対応するロールなし</a></td>
-            <td><p>ロール：g1><code>application</code></a>, <a href="#index-aria-document"><code>document</code></a>または<a href="#index-aria-img"><code>img</code></a></p>
+            <td><p>ロール：<a href="#index-aria-application"><code>application</code></a>, <a href="#index-aria-document"><code>document</code></a>または<a href="#index-aria-img"><code>img</code></a></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
@@ -1420,7 +1486,7 @@ var[data-type]:hover::before {
           <tr id="el-summary" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="interactive-elements.html" data-type="element" href="https://momdo.github.io/html/interactive-elements.html#the-summary-element">summary</a></code></td>
             <td><code>role=<a href="#index-aria-button">button</a></code></td>
-            <td><p>ロール：親（<code>details</code>）要素の<a href="https://momdo.github.io/html/interactive-elements.html#attr-details-open"><code>open</code></a>属性が存在する場合は<code>aria-expanded=true</code>をもつ<code>button</code>、そうでなければ<code>aria-expanded=false</code>。</p>
+            <td><p><strong class="nosupport"><code>role</code>なし</strong></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>および<code>button</code>ロールに受け入れ可能なすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
@@ -1520,9 +1586,9 @@ var[data-type]:hover::before {
           </tr>
           <tr id="el-ul" tabindex="-1">
             <td><code><a data-xref-type="element" data-cite-path="grouping-content.html" data-type="element" href="https://momdo.github.io/html/grouping-content.html#the-ul-element">ul</a></code></td>
-            <td><code>role=<a href="#index-aria-list">list</a></code></td>
-            <td><p><strong>注</strong> 一部のユーザーエージェントは、リストマーカーが削除された場合、リストの<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙的な<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクス</a>を抑制する。必要に応じて、著者はロールを元に戻すために<code>role=list</code>を使用することができる。</p>
-              <p>ロール：<a href="#index-aria-directory"><code>directory</code></a>, <a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-listbox"><code>listbox</code></a>, <a href="#index-aria-menu"><code>menu</code></a>, <a href="#index-aria-menubar"><code>menubar</code></a>, <a href="#index-aria-none"><code>none</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a>, <a href="#index-aria-radiogroup"><code>radiogroup</code></a>, <a href="#index-aria-tablist"><code>tablist</code></a>, <a href="#index-aria-toolbar"><code>toolbar</code></a>または<a href="#index-aria-tree"><code>tree</code></a></p>
+            <td><code>role=<a href="#index-aria-list">list</a></code><p><strong>注</strong> 一部のユーザーエージェントは、リストマーカーが削除された場合、リストの<a href="#dfn-implicit-aria-semantics" class="internalDFN" data-link-type="dfn">暗黙的な<abbr title="Accessible Rich Internet Applications">ARIA</abbr>セマンティクス</a>を抑制する。必要に応じて、著者はロールを元に戻すために<code>role=list</code>を使用することができる。</p>
+            </td>
+            <td><p>ロール：<a href="#index-aria-directory"><code>directory</code></a>, <a href="#index-aria-group"><code>group</code></a>, <a href="#index-aria-listbox"><code>listbox</code></a>, <a href="#index-aria-menu"><code>menu</code></a>, <a href="#index-aria-menubar"><code>menubar</code></a>, <a href="#index-aria-none"><code>none</code></a>, <a href="#index-aria-presentation"><code>presentation</code></a>, <a href="#index-aria-radiogroup"><code>radiogroup</code></a>, <a href="#index-aria-tablist"><code>tablist</code></a>, <a href="#index-aria-toolbar"><code>toolbar</code></a>または<a href="#index-aria-tree"><code>tree</code></a></p>
               <p><a href="#index-aria-global">グローバル<code>aria-*</code>属性</a>ならびに許可されるロールおよび暗黙のロール（もしあれば）に適用されるすべての<code>aria-*</code>属性</p>
             </td>
           </tr>
@@ -1623,7 +1689,7 @@ var[data-type]:hover::before {
       </aside>
     </section>
     <section id="case-requirements-for-aria-role-state-and-property-attributes">
-      <h2 id="case-sensitivity"><bdi class="secno">3. </bdi><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティ属性の活字ケース要件<a class="self-link" aria-label="§" href="#case-requirements-for-aria-role-state-and-property-attributes"></a></h2>
+      <h2 id="case-sensitivity"><bdi class="secno">3. </bdi><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティ属性の活字ケース要件<a class="self-link" aria-label="§" href="#case-sensitivity"></a></h2>
       <p>著者は、すべての<code>role</code>トークン値、および値が<a href="https://momdo.github.io/wai-aria-1.1/#propcharacteristic_value">トークンとして定義される</a>ステートまたはプロパティ属性（<code>aria-*</code>）に<a href="https://momdo.github.io/html/infrastructure.html#lowercase-ascii-letters">小文字のASCII文字</a>を使用<em class="rfc2119" title="MUST">しなければならない</em>。</p>
       <aside class="example" id="example-3"><div class="marker"><a class="self-link" href="#example-3">例<bdi> 3</bdi></a></div>
         <p><strong>正しい（適合する）例：</strong></p>
@@ -1642,7 +1708,7 @@ var[data-type]:hover::before {
     <section id="allowed-aria-roles-states-and-properties">
       <h2 id="x4-allowed-aria-roles-states-and-properties"><bdi class="secno">4. </bdi> 許可される<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティ<a class="self-link" aria-label="§" href="#allowed-aria-roles-states-and-properties"></a></h2>
       <p><a href="#aria-table"><abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステート、およびプロパティ</a>の表の1～4列目は、HTMLでの使用が許可される<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステート、およびプロパティに関する有益な<em>（非規範的な）</em>参照を提供する。すべての<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティは<cite><a href="https://momdo.github.io/wai-aria-1.1/">Accessible Rich Internet Applications (WAI-ARIA) 1.1</a></cite>仕様で規範的に定義されている。表における<abbr title="Accessible Rich Internet Applications">ARIA</abbr>ロール、ステートおよびプロパティへのリンクは、規範<cite><a href="https://momdo.github.io/wai-aria-1.1/">Accessible Rich Internet Applications (WAI-ARIA) 1.1</a></cite>定義を参照する。</p>
-      <p><a href="#aria-table"><abbr title="Accessible Rich Internet Applications">ARIA</abbr> ロール、ステート、およびプロパティ</a>の表の5列目は、HTML要素で使用されるときに各<code>role</code>のカテゴリー（[<cite><a class="bibref" href="#bib-html" title="HTML Standard" data-link-type="biblio">HTML</a></cite>]仕様で定義される）の<a href="https://momdo.github.io/html/dom.html#kinds-of-content">コンテンツの種類</a>に対する拡張を定義する。6列目は、特定の<a href="#implicit">暗黙的</a>または明示的な<code>role</code>値をもつ要素の子孫となるHTML要素を定義する。</p>
+      <p><a href="#aria-table"><abbr title="Accessible Rich Internet Applications">ARIA</abbr> ロール、ステート、およびプロパティ</a>の表の5列目は、HTML要素で使用されるときに各<code>role</code>のカテゴリー（[<cite><a class="bibref" data-link-type="biblio" href="#bib-html" title="HTML Standard">HTML</a></cite>]仕様で定義される）の<a href="https://momdo.github.io/html/dom.html#kinds-of-content">コンテンツの種類</a>に対する拡張を定義する。6列目は、特定の<a href="#implicit">暗黙的</a>または明示的な<code>role</code>値をもつ要素の子孫となるHTML要素を定義する。</p>
       <p>たとえば、<code>role=button</code>をもつ要素はインタラクティブコンテンツであるため、<a href="https://momdo.github.io/html/dom.html#interactive-content-2">インタラクティコンテンツ</a>の子孫を含むことはできない。<code>button</code>要素は暗黙的な<code>role=button</code>を持つため、インタラクティブコンテンツカテゴリー（3列目に記載）にあるロール値を持つ要素を含むことはできない。</p>
       <div class="example" id="bad-descendants"><strong>適合しない子孫の例</strong><pre aria-busy="false"><code class="hljs xml"><span class="hljs-comment">&lt;!-- conformance checkers will report an error --></span>
 
@@ -2550,7 +2616,7 @@ var[data-type]:hover::before {
         </tbody>
       </table>
     </section>
-    <section id="conformance"><h2 id="x5-conformance"><bdi class="secno">5. </bdi>適合<a class="self-link" aria-label="§" href="#conformance"></a></h2><p>非規範的とマークされたセクションだけでなく、この仕様のすべてのオーサリングガイドライン、ダイアグラム、例、および注も非規範的である。この仕様におけるその他すべては規範的である。</p><p>この文書におけるキーワード<em class="rfc2119">MAY</em>、<em class="rfc2119">MUST</em>、<em class="rfc2119">MUST NOT</em>、<em class="rfc2119">NOT RECOMMENDED</em>および<em class="rfc2119">SHOULD NOT</em>は、ここに示すように、すべて大文字で表記される場合に限り、<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> [<cite><a class="bibref" href="#bib-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels" data-link-type="biblio">RFC2119</a></cite>] [<cite><a class="bibref" href="#bib-rfc8174" title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words" data-link-type="biblio">RFC8174</a></cite>]で記述されるように解釈される。</p>
+    <section id="conformance"><h2 id="x5-conformance"><bdi class="secno">5. </bdi>適合<a class="self-link" aria-label="§" href="#conformance"></a></h2><p>非規範的とマークされたセクションだけでなく、この仕様のすべてのオーサリングガイドライン、ダイアグラム、例、および注も非規範的である。この仕様におけるその他すべては規範的である。</p><p>この文書におけるキーワード<em class="rfc2119">MAY</em>、<em class="rfc2119">MUST</em>、<em class="rfc2119">MUST NOT</em>、<em class="rfc2119">NOT RECOMMENDED</em>および<em class="rfc2119">SHOULD NOT</em>は、ここに示すように、すべて大文字で表記される場合に限り、<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a></cite>] [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8174" title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words">RFC8174</a></cite>]で記述されるように解釈される。</p>
       <p><abbr title="Accessible Rich Internet Applications">ARIA</abbr> in HTMLのチェックに対するサポートを主張する適合チェッカーは、この仕様で定義されるようにHTML要素の<abbr title="Accessible Rich Internet Applications">ARIA</abbr>の<code>role</code>および<code>aria-*</code>属性の使用のための文書適合性要件に対するチェックを実装<em class="rfc2119" title="MUST">しなければならない</em>。　</p>
       <p>文書は、（もしあれば）3列目でその要素に記載されるような対応するロール値以外、使用<em class="rfc2119" title="SHOULD NOT">すべきでない</em>2列目に示したもの以外、<a href="#docconformance" class="sec-ref">§ <bdi class="secno">2. </bdi> HTMLテーブルにおける<abbr title="Accessible Rich Internet Applications">ARIA</abbr>属性の使用に対する文書の適合性要件</a>における要素をもつ任意の<code>role</code>値を使用<em class="rfc2119" title="MUST NOT">してはならない</em>。</p>
     </section>
@@ -2558,15 +2624,12 @@ var[data-type]:hover::before {
     
   
 
-<section id="references" class="appendix">
-      <h2 id="a-references"><bdi class="secno">A. </bdi> 参考文献<a class="self-link" aria-label="§" href="#references"></a></h2>
-      
-    <section id="normative-references">
+<section id="references" class="appendix"><h2 id="a-references"><bdi class="secno">A. </bdi> 参考文献<a class="self-link" aria-label="§" href="#references"></a></h2><section id="normative-references">
         <h3 id="a-1-normative-references"><bdi class="secno">A.1 </bdi> 標準情報<a class="self-link" aria-label="§" href="#normative-references"></a></h3>
       <dl class="bibliography">
-        <dt id="bib-dpub-aria-1.0">[dpub-aria-1.0]</dt><dd><a href="https://www.w3.org/TR/dpub-aria-1.0/"><cite>Digital Publishing WAI-ARIA Module 1.0</cite></a>. Matt Garrish; Tzviya Siegman; Markus Gylling; Shane McCarron. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://www.w3.org/TR/dpub-aria-1.0/">https://www.w3.org/TR/dpub-aria-1.0/</a></dd><dt id="bib-html">[HTML]</dt><dd><a href="https://momdo.github.io/html/"><cite>HTML Standard</cite></a>. Anne van Kesteren; Domenic Denicola; Ian Hickson; Philip Jägenstedt; Simon Pieters. WHATWG. Living Standard. URL: <a href="https://momdo.github.io/html/">https://html.spec.whatwg.org/multipage/</a></dd><dt id="bib-html-aam-1.0">[html-aam-1.0]</dt><dd><a href="https://www.w3.org/TR/html-aam-1.0/"><cite>HTML Accessibility API Mappings 1.0</cite></a>. Steve Faulkner; Alexander Surkov; Scott O'Hara; Bogdan Brinza; Jason Kiss; Cynthia Shelly. W3C. 12 November 2019. W3C Working Draft. URL: <a href="https://www.w3.org/TR/html-aam-1.0/">https://www.w3.org/TR/html-aam-1.0/</a></dd><dt id="bib-rfc2119">[RFC2119]</dt><dd><a href="https://tools.ietf.org/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner. IETF. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a></dd><dt id="bib-rfc8174">[RFC8174]</dt><dd><a href="https://tools.ietf.org/html/rfc8174"><cite>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</cite></a>. B. Leiba. IETF. May 2017. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc8174">https://tools.ietf.org/html/rfc8174</a></dd><dt id="bib-wai-aria-1.1">[wai-aria-1.1]</dt><dd><a href="https://momdo.github.io/wai-aria-1.1/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.1</cite></a>. Joanmarie Diggs; Shane McCarron; Michael Cooper; Richard Schwerdtfeger; James Craig. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://momdo.github.io/wai-aria-1.1/">https://www.w3.org/TR/wai-aria-1.1/</a></dd>
+        <dt id="bib-dpub-aria-1.0">[dpub-aria-1.0]</dt><dd><a href="https://www.w3.org/TR/dpub-aria-1.0/"><cite>Digital Publishing WAI-ARIA Module 1.0</cite></a>. Matt Garrish; Tzviya Siegman; Markus Gylling; Shane McCarron. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://www.w3.org/TR/dpub-aria-1.0/">https://www.w3.org/TR/dpub-aria-1.0/</a></dd><dt id="bib-html">[HTML]</dt><dd><a href="https://momdo.github.io/html/"><cite>HTML Standard</cite></a>. Anne van Kesteren; Domenic Denicola; Ian Hickson; Philip Jägenstedt; Simon Pieters. WHATWG. Living Standard. URL: <a href="https://momdo.github.io/html/">https://html.spec.whatwg.org/multipage/</a></dd><dt id="bib-html-aam-1.0">[html-aam-1.0]</dt><dd><a href="https://www.w3.org/TR/html-aam-1.0/"><cite>HTML Accessibility API Mappings 1.0</cite></a>. Steve Faulkner; Alexander Surkov; Scott O'Hara; Bogdan Brinza; Jason Kiss; Cynthia Shelly. W3C. 17 December 2019. W3C Working Draft. URL: <a href="https://www.w3.org/TR/html-aam-1.0/">https://www.w3.org/TR/html-aam-1.0/</a></dd><dt id="bib-rfc2119">[RFC2119]</dt><dd><a href="https://tools.ietf.org/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner. IETF. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a></dd><dt id="bib-rfc8174">[RFC8174]</dt><dd><a href="https://tools.ietf.org/html/rfc8174"><cite>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</cite></a>. B. Leiba. IETF. May 2017. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc8174">https://tools.ietf.org/html/rfc8174</a></dd><dt id="bib-wai-aria-1.1">[wai-aria-1.1]</dt><dd><a href="https://momdo.github.io/wai-aria-1.1/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.1</cite></a>. Joanmarie Diggs; Shane McCarron; Michael Cooper; Richard Schwerdtfeger; James Craig. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://momdo.github.io/wai-aria-1.1/">https://www.w3.org/TR/wai-aria-1.1/</a></dd>
       </dl></section><section id="informative-references">
         <h3 id="a-2-informative-references"><bdi class="secno">A.2</bdi> 参考文献<a class="self-link" aria-label="§" href="#informative-references"></a></h3>
       <dl class="bibliography">
-        <dt id="bib-using-aria">[using-aria]</dt><dd><a href="https://www.w3.org/TR/using-aria/"><cite>Using ARIA</cite></a>. Steve Faulkner; David MacDonald. W3C. 27 September 2018. W3C Working Draft. URL: <a href="https://www.w3.org/TR/using-aria/">https://www.w3.org/TR/using-aria/</a></dd><dt id="bib-wai-aria-practices-1.2">[wai-aria-practices-1.2]</dt><dd><a href="https://www.w3.org/TR/wai-aria-practices-1.2/"><cite>WAI-ARIA Authoring Practices 1.2</cite></a>. Matthew King; James Nurthen; Zoë Bijl; Michael Cooper; Joseph Scheuhammer; Lisa Pappas; Richard Schwerdtfeger. W3C. 18 December 2018. W3C Working Draft. URL: <a href="https://www.w3.org/TR/wai-aria-practices-1.2/">https://www.w3.org/TR/wai-aria-practices-1.2/</a></dd>
+        <dt id="bib-using-aria">[using-aria]</dt><dd><a href="https://www.w3.org/TR/using-aria/"><cite>Using ARIA</cite></a>. Steve Faulkner; David MacDonald. W3C. 27 September 2018. W3C Working Draft. URL: <a href="https://www.w3.org/TR/using-aria/">https://www.w3.org/TR/using-aria/</a></dd><dt id="bib-wai-aria-practices-1.2">[wai-aria-practices-1.2]</dt><dd><a href="https://www.w3.org/TR/wai-aria-practices-1.2/"><cite>WAI-ARIA Authoring Practices 1.2</cite></a>. Matthew King; JaEun Ku; James Nurthen; Zoë Bijl; Michael Cooper; Joseph Scheuhammer; Lisa Pappas; Richard Schwerdtfeger. W3C. 18 December 2019. W3C Working Draft. URL: <a href="https://www.w3.org/TR/wai-aria-practices-1.2/">https://www.w3.org/TR/wai-aria-practices-1.2/</a></dd>
       </dl></section></section><p role="navigation" id="back-to-top"><a href="#title"><abbr title="Back to Top">↑</abbr></a></p><script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script></body></html>
