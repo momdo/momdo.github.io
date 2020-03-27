@@ -115,24 +115,18 @@
 
   
 
-  <h4 id="event-loops"><span class="secno">8.1.2</span> Event loops<a href="#event-loops" class="self-link"></a></h4> 
+  <h4 id="event-loops"><span class="secno">8.1.2</span> Event loops<a href="#event-loops" class="self-link"></a></h4>
 
   
 
-  <p>To coordinate events, user interaction, scripts, rendering, networking, and so forth, user agents must use <dfn id="event-loop" data-lt="event loop" data-export="">event loops</dfn> as described in this section. Each <a id="event-loops:agent" href="https://tc39.es/ecma262/#sec-agents" data-x-internal="agent">agent</a> has an associated <a href="#event-loop" id="event-loops:event-loop">event loop</a>.</p>
+  <p>To coordinate events, user interaction, scripts, rendering, networking, and so forth, user agents must use <dfn id="event-loop" data-lt="event loop" data-export="">event loops</dfn> as described in this section. Each <a id="event-loops:agent" href="https://tc39.es/ecma262/#sec-agents" data-x-internal="agent">agent</a> has an associated <a href="#event-loop" id="event-loops:event-loop">event loop</a>, which is unique to that agent.</p>
 
-  <p class="note">In the future, this standard hopes to define exactly when <a href="#event-loop" id="event-loops:event-loop-2">event loops</a> can be created or reused.</p>
+  <p>The <a href="#event-loop" id="event-loops:event-loop-2">event loop</a> of a <span>similar-origin window agent</span> is known as a <dfn id="window-event-loop">window event loop</dfn>. The <a href="#event-loop" id="event-loops:event-loop-3">event loop</a> of a <span>dedicated worker agent</span>, <span>shared worker agent</span>, or <span>service worker agent</span> is known as a <dfn id="worker-event-loop-2">worker event loop</dfn>. And the <a href="#event-loop" id="event-loops:event-loop-4">event loop</a> of a <span>worklet agent</span> is known as a <dfn id="worklet-event-loop">worklet event loop</dfn>.</p>
 
-  <p>A <dfn id="window-event-loop">window event loop</dfn> is the <a href="#event-loop" id="event-loops:event-loop-3">event loop</a> used by <span>similar-origin window agents</span>. User agents may share an <a href="#event-loop" id="event-loops:event-loop-4">event loop</a> across <span>similar-origin window agents</span>.</p>
-  
+  <div class="note"><p><a href="#event-loop" id="event-loops:event-loop-5">Event loops</a> do not necessarily correspond to implementation threads. For example, multiple <a href="#window-event-loop" id="event-loops:window-event-loop">window event loops</a> could be cooperatively scheduled in a single thread.</p>
 
-  <p class="note">This specification does not currently describe how to handle the complications arising from <span>navigating</span> between <span>similar-origin window agents</span>. E.g., when a <a id="event-loops:browsing-context" href="browsers.html#browsing-context">browsing context</a> <span>navigates</span> from <code>https://example.com/</code> to <code>https://shop.example/</code>.</p>
-
-  <p>A <dfn id="worker-event-loop-2">worker event loop</dfn> is the <a href="#event-loop" id="event-loops:event-loop-5">event loop</a> used by <span>dedicated worker agents</span>, <span>shared worker agents</span>, and <span>service worker agents</span>. There must be one <a href="#worker-event-loop-2" id="event-loops:worker-event-loop-2">worker event loop</a> per such <a id="event-loops:agent-2" href="https://tc39.es/ecma262/#sec-agents" data-x-internal="agent">agent</a>.</p>
-
-  <p>A <dfn id="worklet-event-loop">worklet event loop</dfn> is the <a href="#event-loop" id="event-loops:event-loop-6">event loop</a> used by <span>worklet agents</span>.</p>
-
-  <p class="XXX">As detailed in <a href="https://github.com/whatwg/html/issues/4213">issue #4213</a> the situation for worklets is more complicated.</p>
+   <p>However, for the various worker <a href="https://tc39.es/ecma262/#sec-agents" id="event-loops:agent-2" data-x-internal="agent">agents</a> that are allocated with [[CanBlock]] set to true, the JavaScript specification does place requirements on them regarding <a id="event-loops:forward-progress" href="https://tc39.es/ecma262/#sec-forward-progress" data-x-internal="forward-progress">forward progress</a>, which effectively amount to requiring dedicated per-agent threads in those cases.</p>
+  </div>
 
   
 
