@@ -117,7 +117,7 @@
   <script async="" crossorigin="" src="https://html.spec.whatwg.org/html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">2 April 2020</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">7 April 2020</span></h2></hgroup>
    
    
 
@@ -287,21 +287,12 @@
      <li><p>Otherwise, if <var>value</var> is a <a id="structuredserializeinternal:platform-object-4" href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-platform-object" data-x-internal="platform-object">platform object</a> that is a <a href="#serializable-objects" id="structuredserializeinternal:serializable-objects-2">serializable object</a>, then perform the <a href="#serialization-steps" id="structuredserializeinternal:serialization-steps">serialization steps</a> for <var>value</var>'s <a id="structuredserializeinternal:primary-interface-2" href="https://heycam.github.io/webidl/#dfn-primary-interface" data-x-internal="primary-interface">primary interface</a>, given <var>value</var>, <var>serialized</var>, and <var>forStorage</var>.</p>
 
       <p>The <a href="#serialization-steps" id="structuredserializeinternal:serialization-steps-2">serialization steps</a> may need to perform a <dfn id="sub-serialization" data-export="">sub-serialization</dfn>. This is an operation which takes as input a value <var>subValue</var>, and returns <a href="#structuredserializeinternal" id="structuredserializeinternal:structuredserializeinternal-6">StructuredSerializeInternal</a>(<var>subValue</var>, <var>forStorage</var>, <var>memory</var>). (In other words, a <a href="#sub-serialization" id="structuredserializeinternal:sub-serialization">sub-serialization</a> is a specialization of <a href="#structuredserializeinternal" id="structuredserializeinternal:structuredserializeinternal-7">StructuredSerializeInternal</a> to be consistent within this invocation.)</p>
-     <li><p>Otherwise:<ol><li><p>Let <var>enumerableKeys</var> be a new empty <a href="https://tc39.es/ecma262/#sec-list-and-record-specification-type" id="structuredserializeinternal:js-list-7" data-x-internal="js-list">List</a>.<li><p>For each <var>key</var> in ! <var>value</var>.[[OwnPropertyKeys]]():</p>
+     <li><p>Otherwise, for each <var>key</var> in ! <a id="structuredserializeinternal:enumerableownpropertynames" href="https://tc39.es/ecma262/#sec-enumerableownpropertynames" data-x-internal="enumerableownpropertynames">EnumerableOwnPropertyNames</a>(<var>value</var>, <var>key</var>):</p>
 
-        <ol><li><p>If <a href="https://tc39.es/ecma262/#sec-ecmascript-data-types-and-values" id="structuredserializeinternal:js-type-3" data-x-internal="js-type">Type</a>(<var>key</var>) is String, then:</p>
+      <ol><li><p>If ! <a id="structuredserializeinternal:hasownproperty" href="https://tc39.es/ecma262/#sec-hasownproperty" data-x-internal="hasownproperty">HasOwnProperty</a>(<var>value</var>, <var>key</var>) is true, then:</p>
 
-          <ol><li><p>Let <var>valueDesc</var> be ! <var>value</var>.[[GetOwnProperty]](<var>key</var>).<li><p>If <var>valueDesc</var>.[[Enumerable]] is true, then <a href="https://infra.spec.whatwg.org/#list-append" id="structuredserializeinternal:list-append-5" data-x-internal="list-append">append</a> <var>key</var> to <var>enumerableKeys</var>.</ol>
-         </ol>
-       <li><p>For each <var>key</var> in <var>enumerableKeys</var>:</p>
-
-        <ol><li><p>If ! <a id="structuredserializeinternal:hasownproperty" href="https://tc39.es/ecma262/#sec-hasownproperty" data-x-internal="hasownproperty">HasOwnProperty</a>(<var>value</var>, <var>key</var>) is true, then:</p>
-
-          <ol><li><p>Let <var>inputValue</var> be ? <var>value</var>.[[Get]](<var>key</var>, <var>value</var>).<li><p>Let <var>outputValue</var> be ? <a href="#structuredserializeinternal" id="structuredserializeinternal:structuredserializeinternal-8">StructuredSerializeInternal</a>(<var>inputValue</var>, <var>forStorage</var>, <var>memory</var>).<li><p><a href="https://infra.spec.whatwg.org/#list-append" id="structuredserializeinternal:list-append-6" data-x-internal="list-append">Append</a> { [[Key]]: <var>key</var>, [[Value]]: <var>outputValue</var> } to <var>serialized</var>.[[Properties]].</ol>
-         </ol>
+        <ol><li><p>Let <var>inputValue</var> be ? <var>value</var>.[[Get]](<var>key</var>, <var>value</var>).<li><p>Let <var>outputValue</var> be ? <a href="#structuredserializeinternal" id="structuredserializeinternal:structuredserializeinternal-8">StructuredSerializeInternal</a>(<var>inputValue</var>, <var>forStorage</var>, <var>memory</var>).<li><p><a href="https://infra.spec.whatwg.org/#list-append" id="structuredserializeinternal:list-append-5" data-x-internal="list-append">Append</a> { [[Key]]: <var>key</var>, [[Value]]: <var>outputValue</var> } to <var>serialized</var>.[[Properties]].</ol>
        </ol>
-
-      <p class="note">The key collection performed above is very similar to the JavaScript specification's <a id="structuredserializeinternal:enumerableownproperties" href="https://tc39.es/ecma262/#sec-enumerableownproperties" data-x-internal="enumerableownproperties">EnumerableOwnProperties</a> operation, but crucially it uses the deterministic ordering provided by the [[OwnPropertyKeys]] internal method, instead of reordering the keys in an unspecified manner as <a id="structuredserializeinternal:enumerableownproperties-2" href="https://tc39.es/ecma262/#sec-enumerableownproperties" data-x-internal="enumerableownproperties">EnumerableOwnProperties</a> does. <a href="references.html#refsJAVASCRIPT">[JAVASCRIPT]</a></p>
      </ol>
    <li><p>Return <var>serialized</var>.</ol>
 
