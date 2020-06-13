@@ -18,9 +18,9 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-"wai-aria": 'https://momdo.github.io/wai-aria/',
+html: 'https://momdo.github.io/html/',
 "wai-aria-1.1": 'https://momdo.github.io/wai-aria-1.1/',
-RFC2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
+rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
           'http://www.studyinghttp.net/rfc_ja/rfc2119',
           'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
           'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
