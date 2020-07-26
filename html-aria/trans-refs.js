@@ -18,7 +18,8 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-html: 'https://momdo.github.io/html/',
+html: ['https://momdo.github.io/html/',
+'https://triple-underscore.github.io/index.html#spec-list-html'],
 "wai-aria-1.1": 'https://momdo.github.io/wai-aria-1.1/',
 rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
           'http://www.studyinghttp.net/rfc_ja/rfc2119',
@@ -26,6 +27,7 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
           'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
           'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
+rfc8174: 'http://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
 	};
 
 	(function(){
