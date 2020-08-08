@@ -18,25 +18,28 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
+"css3-selectors": 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-selectors/',
+dom: 'https://triple-underscore.github.io/DOM4-ja.html',
+html5: 'http://momdo.github.io/html5/Overview.html',
+MathML3: ['http://takamu.sakura.ne.jp/mathml3-ja/index.html',
+'http://washitake.com/MathML/ver3/'],
+"owl-features": 'http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rec-owl-features-20040210.html',
+"rdf-concepts": 'http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/rdf-concepts.html',
+"rdf-schema": 'http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/REC-rdf-schema-20140225.html',
+RFC3986: 'https://triple-underscore.github.io/rfc-others/RFC3986-ja.html',
+SVG2: 'https://triple-underscore.github.io/svg-misc-ja.html',
+"wai-aria-1.0": 'http://momdo.github.io/wai-aria/',
+"wai-aria-practices-1.1": 'https://waic.jp/docs/2019/NOTE-wai-aria-practices-1.1-20190207/',
+WCAG20: 'http://waic.jp/docs/WCAG20/Overview.html',
+xhtml11: ['http://msugai.fc2web.com/web/W3C/XHTML11/xhtml11.html',
+    'http://www.doraneko.org/webauth/xhtml11/20010531/Overview.html'],
+"xml-names": 'https://triple-underscore.github.io/xml-names-ja.html',
 RFC2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
     'http://www.studyinghttp.net/rfc_ja/rfc2119',
     'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
     'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
     'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
-"WAI-ARIA-10": 'http://momdo.github.io/wai-aria/',
-"CSS3-SELECTORS": 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-selectors/',
-HTML5: 'http://momdo.github.io/html5/Overview.html',
-"OWL-FEATURES": 'http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rec-owl-features-20040210.html',
-"RDF-CONCEPTS": 'http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/rdf-concepts.html',
-"RDF-SCHEMA": 'http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/REC-rdf-schema-20140225.html',
-RFC3986: 'http://www.eonet.ne.jp/~h-hash/rfc_ja/rfc3986.ja.html',
-//svg: 'http://www.hcn.zaq.ne.jp/___/SVG11-2nd/',
-WCAG20: 'http://waic.jp/docs/WCAG20/Overview.html',
-XHTML11: ['http://msugai.fc2web.com/web/W3C/XHTML11/xhtml11.html',
-    'http://www.doraneko.org/webauth/xhtml11/20010531/Overview.html',
-],
-"XML-NAMES": 'http://www.hcn.zaq.ne.jp/___/XML/Namespaces-ja.html',
 
 	};
 
