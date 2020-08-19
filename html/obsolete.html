@@ -7,10 +7,10 @@
    }
   </script><body>
   
-  <script async="" crossorigin="" src="/html-dfn.js"></script>
+  <script async="" crossorigin="" src="./html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">17 August 2020</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">18 August 2020</span></h2></hgroup>
    
    
 
@@ -129,8 +129,8 @@
   <c- b>attribute</c-> <a id='the-marquee-element:eventhandler-2' href='webappapis.html#eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-marquee-onfinish' id='the-marquee-element:handler-marquee-onfinish'><c- g>onfinish</c-></a>;
   <c- b>attribute</c-> <a id='the-marquee-element:eventhandler-3' href='webappapis.html#eventhandler'><c- n>EventHandler</c-></a> <a href='#handler-marquee-onstart' id='the-marquee-element:handler-marquee-onstart'><c- g>onstart</c-></a>;
 
-  <c- b>void</c-> <a href='#dom-marquee-start' id='the-marquee-element:dom-marquee-start'><c- g>start</c-></a>();
-  <c- b>void</c-> <a href='#dom-marquee-stop' id='the-marquee-element:dom-marquee-stop'><c- g>stop</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-marquee-start' id='the-marquee-element:dom-marquee-start'><c- g>start</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-marquee-stop' id='the-marquee-element:dom-marquee-stop'><c- g>stop</c-></a>();
 };</code></pre>
 
   <p>A <code id="the-marquee-element:the-marquee-element-3"><a href="#the-marquee-element">marquee</a></code> element can be <dfn id="concept-marquee-on">turned on</dfn> or <dfn id="concept-marquee-off">turned off</dfn>. When it is created, it is <a href="#concept-marquee-on" id="the-marquee-element:concept-marquee-on">turned on</a>.</p>
@@ -241,32 +241,21 @@
 
   <p>When a <code id="frames:frame-2"><a href="#frame">frame</a></code> element <var>element</var> is created as an <a href="#active-frame-element" id="frames:active-frame-element">active <code>frame</code> element</a>, or becomes an <a href="#active-frame-element" id="frames:active-frame-element-2">active <code>frame</code> element</a> after not having been one, the user agent must run these steps:</p>
 
-  <ol><li><p><a id="frames:creating-a-new-nested-browsing-context" href="browsers.html#creating-a-new-nested-browsing-context">Create a new nested browsing context</a> for <var>element</var>.<li><p><a href="#process-the-frame-attributes" id="frames:process-the-frame-attributes">Process the <code>frame</code> attributes</a> for the first time.</ol>
+  <ol><li><p><a id="frames:creating-a-new-nested-browsing-context" href="browsers.html#creating-a-new-nested-browsing-context">Create a new nested browsing context</a> for <var>element</var>.<li><p><a href="#process-the-frame-attributes" id="frames:process-the-frame-attributes">Process the <code>frame</code> attributes</a> for <var>element</var>, with <var id="frames:process-frame-initial-insertion"><a href="#process-frame-initial-insertion">initialInsertion</a></var> set to true.</ol>
 
   <p>When a <code id="frames:frame-3"><a href="#frame">frame</a></code> element stops being an <a href="#active-frame-element" id="frames:active-frame-element-3">active <code>frame</code> element</a>, the user agent must <a href="window-object.html#a-browsing-context-is-discarded" id="frames:a-browsing-context-is-discarded">discard</a> the element's <a id="frames:nested-browsing-context-2" href="browsers.html#nested-browsing-context">nested browsing context</a>, and then set the element's <a id="frames:nested-browsing-context-3" href="browsers.html#nested-browsing-context">nested browsing context</a> to null.</p>
 
   <p>Whenever a <code id="frames:frame-4"><a href="#frame">frame</a></code> element with a non-null <a id="frames:nested-browsing-context-4" href="browsers.html#nested-browsing-context">nested browsing context</a> has its <code>src</code> attribute set, changed, or removed, the user agent must <a href="#process-the-frame-attributes" id="frames:process-the-frame-attributes-2">process the <code>frame</code> attributes</a>.</p> 
 
-  <p>When the user agent is to <dfn id="process-the-frame-attributes">process the <code>frame</code> attributes</dfn>, it must run the first appropriate steps from the following list:</p>
+  <p>To <dfn id="process-the-frame-attributes">process the <code>frame</code> attributes</dfn> for an element <var>element</var>, with an optional boolean <dfn id="process-frame-initial-insertion"><var>initialInsertion</var></dfn>:</p>
 
-  <dl class="switch"><dt>If the element has no <code>src</code> attribute specified, and the user agent is processing the <code id="frames:frame-5"><a href="#frame">frame</a></code>'s attributes for the first time<dd><p><a id="frames:queue-an-element-task" href="webappapis.html#queue-an-element-task">Queue an element task</a> on the <a id="frames:dom-manipulation-task-source" href="webappapis.html#dom-manipulation-task-source">DOM manipulation task source</a> given the <code id="frames:frame-6"><a href="#frame">frame</a></code> element to <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-event-fire" id="frames:concept-event-fire" data-x-internal="concept-event-fire">fire an event</a> named <code id="frames:event-load"><a href="indices.html#event-load">load</a></code> at the <code id="frames:frame-7"><a href="#frame">frame</a></code> element.<dt>そうでなければ<dd><p>Run the <a id="frames:otherwise-steps-for-iframe-or-frame-elements" href="iframe-embed-object.html#otherwise-steps-for-iframe-or-frame-elements">otherwise steps for <code>iframe</code> or <code>frame</code> elements</a>.</dl>
+  <ol><li><p>If <var>initialInsertion</var> is true, then do nothing.<li><p>Otherwise, run the <a id="frames:otherwise-steps-for-iframe-or-frame-elements" href="iframe-embed-object.html#otherwise-steps-for-iframe-or-frame-elements">otherwise steps for <code>iframe</code> or <code>frame</code> elements</a> given <var>element</var>.</ol>
 
-  <p>Any <a href="browsing-the-web.html#navigate" id="frames:navigate">navigation</a> required of the user agent in the <a href="#process-the-frame-attributes" id="frames:process-the-frame-attributes-3">process the <code>frame</code> attributes</a> algorithm must use the <code id="frames:frame-8"><a href="#frame">frame</a></code> element's <a id="frames:node-document" href="https://triple-underscore.github.io/DOM4-ja.html#concept-node-document" data-x-internal="node-document">node document</a>'s <a id="frames:browsing-context" href="browsers.html#browsing-context">browsing context</a> as the <a id="frames:source-browsing-context" href="browsing-the-web.html#source-browsing-context">source browsing context</a>.</p>
-
-  <p>Furthermore, if the <a id="frames:active-document" href="browsers.html#active-document">active document</a> of the element's <a id="frames:nested-browsing-context-5" href="browsers.html#nested-browsing-context">nested browsing context</a> before such a <a href="browsing-the-web.html#navigate" id="frames:navigate-2">navigation</a> was not <a id="frames:completely-loaded" href="parsing.html#completely-loaded">completely loaded</a> at the time of the new <a href="browsing-the-web.html#navigate" id="frames:navigate-3">navigation</a>, then the <a href="browsing-the-web.html#navigate" id="frames:navigate-4">navigation</a> must be completed with <a id="frames:replacement-enabled" href="browsing-the-web.html#replacement-enabled">replacement enabled</a>.</p>
-
-  <p>Similarly, if the element's <a id="frames:nested-browsing-context-6" href="browsers.html#nested-browsing-context">nested browsing context</a>'s <a id="frames:session-history" href="history.html#session-history">session history</a> contained only one <code id="frames:document"><a href="dom.html#document">Document</a></code> when the <a href="#process-the-frame-attributes" id="frames:process-the-frame-attributes-4">process the <code>frame</code> attributes</a> algorithm was invoked, and that was the <code id="frames:about:blank"><a href="infrastructure.html#about:blank">about:blank</a></code> <code id="frames:document-2"><a href="dom.html#document">Document</a></code> created when its <a id="frames:nested-browsing-context-7" href="browsers.html#nested-browsing-context">nested browsing context</a> was created, then any <a href="browsing-the-web.html#navigate" id="frames:navigate-5">navigation</a> required of the user agent in that algorithm must be completed with <a id="frames:replacement-enabled-2" href="browsing-the-web.html#replacement-enabled">replacement enabled</a>.</p>
-  
+  <p>The <code id="frames:frame-5"><a href="#frame">frame</a></code> element <a id="frames:potentially-delays-the-load-event" href="iframe-embed-object.html#potentially-delays-the-load-event">potentially delays the load event</a>.</p>
 
   
 
-  <p>When a <code id="frames:document-3"><a href="dom.html#document">Document</a></code> in a <code id="frames:frame-9"><a href="#frame">frame</a></code> is marked as <a id="frames:completely-loaded-2" href="parsing.html#completely-loaded">completely loaded</a>, the user agent must <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-event-fire" id="frames:concept-event-fire-2" data-x-internal="concept-event-fire">fire an event</a> named <code id="frames:event-load-2"><a href="indices.html#event-load">load</a></code> at the <code id="frames:frame-10"><a href="#frame">frame</a></code> element.</p>
-
-  <p>The <code id="frames:frame-11"><a href="#frame">frame</a></code> element <a id="frames:potentially-delays-the-load-event" href="iframe-embed-object.html#potentially-delays-the-load-event">potentially delays the load event</a>.</p>
-
-  
-
-  <p>The <code id="frames:frame-12"><a href="#frame">frame</a></code> element must implement the <code id="frames:htmlframeelement"><a href="#htmlframeelement">HTMLFrameElement</a></code> interface.</p>
+  <p>The <code id="frames:frame-6"><a href="#frame">frame</a></code> element must implement the <code id="frames:htmlframeelement"><a href="#htmlframeelement">HTMLFrameElement</a></code> interface.</p>
 
   <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->]
 <c- b>interface</c-> <dfn id='htmlframeelement'><c- g>HTMLFrameElement</c-></dfn> : <a id='frames:htmlelement-2' href='dom.html#htmlelement'><c- n>HTMLElement</c-></a> {
@@ -278,28 +267,28 @@
   [<a id='frames:cereactions-6' href='custom-elements.html#cereactions'><c- g>CEReactions</c-></a>] <c- b>attribute</c-> <c- b>DOMString</c-> <a href='#dom-frame-frameborder' id='frames:dom-frame-frameborder'><c- g>frameBorder</c-></a>;
   [<a id='frames:cereactions-7' href='custom-elements.html#cereactions'><c- g>CEReactions</c-></a>] <c- b>attribute</c-> <c- b>USVString</c-> <a href='#dom-frame-longdesc' id='frames:dom-frame-longdesc'><c- g>longDesc</c-></a>;
   [<a id='frames:cereactions-8' href='custom-elements.html#cereactions'><c- g>CEReactions</c-></a>] <c- b>attribute</c-> <c- b>boolean</c-> <a href='#dom-frame-noresize' id='frames:dom-frame-noresize'><c- g>noResize</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a id='frames:document-4' href='dom.html#document'><c- n>Document</c-></a>? <a href='#dom-frame-contentdocument' id='frames:dom-frame-contentdocument'><c- g>contentDocument</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a id='frames:document' href='dom.html#document'><c- n>Document</c-></a>? <a href='#dom-frame-contentdocument' id='frames:dom-frame-contentdocument'><c- g>contentDocument</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a id='frames:windowproxy' href='window-object.html#windowproxy'><c- n>WindowProxy</c-></a>? <a href='#dom-frame-contentwindow' id='frames:dom-frame-contentwindow'><c- g>contentWindow</c-></a>;
 
   [<a id='frames:cereactions-9' href='custom-elements.html#cereactions'><c- g>CEReactions</c-></a>] <c- b>attribute</c-> [<a id='frames:legacynulltoemptystring' href='https://triple-underscore.github.io/WebIDL-ja.html#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'><c- g>LegacyNullToEmptyString</c-></a>] <c- b>DOMString</c-> <a href='#dom-frame-marginheight' id='frames:dom-frame-marginheight'><c- g>marginHeight</c-></a>;
   [<a id='frames:cereactions-10' href='custom-elements.html#cereactions'><c- g>CEReactions</c-></a>] <c- b>attribute</c-> [<a id='frames:legacynulltoemptystring-2' href='https://triple-underscore.github.io/WebIDL-ja.html#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'><c- g>LegacyNullToEmptyString</c-></a>] <c- b>DOMString</c-> <a href='#dom-frame-marginwidth' id='frames:dom-frame-marginwidth'><c- g>marginWidth</c-></a>;
 };</code></pre>
 
-  <p>The <dfn id="dom-frame-name"><code>name</code></dfn>, <dfn id="dom-frame-scrolling"><code>scrolling</code></dfn>, and <dfn id="dom-frame-src"><code>src</code></dfn> IDL attributes of the <code id="frames:frame-13"><a href="#frame">frame</a></code> element must <a id="frames:reflect-2" href="common-dom-interfaces.html#reflect">reflect</a> the respective content attributes of the same name. For the purposes of reflection, the <code id="frames:frame-14"><a href="#frame">frame</a></code> element's <code>src</code> content attribute is defined as containing a <a id="frames:url" href="https://triple-underscore.github.io/URL-ja.html#concept-url" data-x-internal="url">URL</a>.</p>
+  <p>The <dfn id="dom-frame-name"><code>name</code></dfn>, <dfn id="dom-frame-scrolling"><code>scrolling</code></dfn>, and <dfn id="dom-frame-src"><code>src</code></dfn> IDL attributes of the <code id="frames:frame-7"><a href="#frame">frame</a></code> element must <a id="frames:reflect-2" href="common-dom-interfaces.html#reflect">reflect</a> the respective content attributes of the same name. For the purposes of reflection, the <code id="frames:frame-8"><a href="#frame">frame</a></code> element's <code>src</code> content attribute is defined as containing a <a id="frames:url" href="https://triple-underscore.github.io/URL-ja.html#concept-url" data-x-internal="url">URL</a>.</p>
 
-  <p>The <dfn id="dom-frame-frameborder"><code>frameBorder</code></dfn> IDL attribute of the <code id="frames:frame-15"><a href="#frame">frame</a></code> element must <a id="frames:reflect-3" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>frameborder</code> content attribute.</p>
+  <p>The <dfn id="dom-frame-frameborder"><code>frameBorder</code></dfn> IDL attribute of the <code id="frames:frame-9"><a href="#frame">frame</a></code> element must <a id="frames:reflect-3" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>frameborder</code> content attribute.</p>
 
-  <p>The <dfn id="dom-frame-longdesc"><code>longDesc</code></dfn> IDL attribute of the <code id="frames:frame-16"><a href="#frame">frame</a></code> element must <a id="frames:reflect-4" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>longdesc</code> content attribute, which for the purposes of reflection is defined as containing a <a id="frames:url-2" href="https://triple-underscore.github.io/URL-ja.html#concept-url" data-x-internal="url">URL</a>.</p>
+  <p>The <dfn id="dom-frame-longdesc"><code>longDesc</code></dfn> IDL attribute of the <code id="frames:frame-10"><a href="#frame">frame</a></code> element must <a id="frames:reflect-4" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>longdesc</code> content attribute, which for the purposes of reflection is defined as containing a <a id="frames:url-2" href="https://triple-underscore.github.io/URL-ja.html#concept-url" data-x-internal="url">URL</a>.</p>
 
-  <p>The <dfn id="dom-frame-noresize"><code>noResize</code></dfn> IDL attribute of the <code id="frames:frame-17"><a href="#frame">frame</a></code> element must <a id="frames:reflect-5" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>noresize</code> content attribute.</p>
+  <p>The <dfn id="dom-frame-noresize"><code>noResize</code></dfn> IDL attribute of the <code id="frames:frame-11"><a href="#frame">frame</a></code> element must <a id="frames:reflect-5" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>noresize</code> content attribute.</p>
 
-  <p>The <dfn id="dom-frame-contentdocument"><code>contentDocument</code></dfn> IDL attribute, on getting, must return the <code id="frames:frame-18"><a href="#frame">frame</a></code> element's <a href="browsers.html#concept-bcc-content-document" id="frames:concept-bcc-content-document">content document</a>.</p>
+  <p>The <dfn id="dom-frame-contentdocument"><code>contentDocument</code></dfn> IDL attribute, on getting, must return the <code id="frames:frame-12"><a href="#frame">frame</a></code> element's <a href="browsers.html#concept-bcc-content-document" id="frames:concept-bcc-content-document">content document</a>.</p>
 
-  <p>The <dfn id="dom-frame-contentwindow"><code>contentWindow</code></dfn> IDL attribute must return the <code id="frames:windowproxy-2"><a href="window-object.html#windowproxy">WindowProxy</a></code> object of the <code id="frames:frame-19"><a href="#frame">frame</a></code> element's <a id="frames:nested-browsing-context-8" href="browsers.html#nested-browsing-context">nested browsing context</a>, if the element's <a id="frames:nested-browsing-context-9" href="browsers.html#nested-browsing-context">nested browsing context</a> is non-null, or return null otherwise.</p>
+  <p>The <dfn id="dom-frame-contentwindow"><code>contentWindow</code></dfn> IDL attribute must return the <code id="frames:windowproxy-2"><a href="window-object.html#windowproxy">WindowProxy</a></code> object of the <code id="frames:frame-13"><a href="#frame">frame</a></code> element's <a id="frames:nested-browsing-context-5" href="browsers.html#nested-browsing-context">nested browsing context</a>, if the element's <a id="frames:nested-browsing-context-6" href="browsers.html#nested-browsing-context">nested browsing context</a> is non-null, or return null otherwise.</p>
 
-  <p>The <dfn id="dom-frame-marginheight"><code>marginHeight</code></dfn> IDL attribute of the <code id="frames:frame-20"><a href="#frame">frame</a></code> element must <a id="frames:reflect-6" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>marginheight</code> content attribute.</p>
+  <p>The <dfn id="dom-frame-marginheight"><code>marginHeight</code></dfn> IDL attribute of the <code id="frames:frame-14"><a href="#frame">frame</a></code> element must <a id="frames:reflect-6" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>marginheight</code> content attribute.</p>
 
-  <p>The <dfn id="dom-frame-marginwidth"><code>marginWidth</code></dfn> IDL attribute of the <code id="frames:frame-21"><a href="#frame">frame</a></code> element must <a id="frames:reflect-7" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>marginwidth</code> content attribute.</p>
+  <p>The <dfn id="dom-frame-marginwidth"><code>marginWidth</code></dfn> IDL attribute of the <code id="frames:frame-15"><a href="#frame">frame</a></code> element must <a id="frames:reflect-7" href="common-dom-interfaces.html#reflect">reflect</a> the element's <code>marginwidth</code> content attribute.</p>
 
 
 
@@ -783,9 +772,9 @@
   [<c- g>SameObject</c->] <c- b>readonly</c-> <c- b>attribute</c-> <a id='other-elements,-attributes-and-apis:htmlcollection' href='https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection' data-x-internal='htmlcollection'><c- n>HTMLCollection</c-></a> <a href='#dom-document-anchors' id='other-elements,-attributes-and-apis:dom-document-anchors'><c- g>anchors</c-></a>;
   [<c- g>SameObject</c->] <c- b>readonly</c-> <c- b>attribute</c-> <a id='other-elements,-attributes-and-apis:htmlcollection-2' href='https://triple-underscore.github.io/DOM4-ja.html#interface-htmlcollection' data-x-internal='htmlcollection'><c- n>HTMLCollection</c-></a> <a href='#dom-document-applets' id='other-elements,-attributes-and-apis:dom-document-applets'><c- g>applets</c-></a>;
 
-  <c- b>void</c-> <a href='#dom-document-clear' id='other-elements,-attributes-and-apis:dom-document-clear'><c- g>clear</c-></a>();
-  <c- b>void</c-> <a href='#dom-document-captureevents' id='other-elements,-attributes-and-apis:dom-document-captureevents'><c- g>captureEvents</c-></a>();
-  <c- b>void</c-> <a href='#dom-document-releaseevents' id='other-elements,-attributes-and-apis:dom-document-releaseevents'><c- g>releaseEvents</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-document-clear' id='other-elements,-attributes-and-apis:dom-document-clear'><c- g>clear</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-document-captureevents' id='other-elements,-attributes-and-apis:dom-document-captureevents'><c- g>captureEvents</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-document-releaseevents' id='other-elements,-attributes-and-apis:dom-document-releaseevents'><c- g>releaseEvents</c-></a>();
 
   [<c- g>SameObject</c->] <c- b>readonly</c-> <c- b>attribute</c-> <a id='other-elements,-attributes-and-apis:htmlallcollection' href='common-dom-interfaces.html#htmlallcollection'><c- n>HTMLAllCollection</c-></a> <a href='#dom-document-all' id='other-elements,-attributes-and-apis:dom-document-all'><c- g>all</c-></a>;
 };</code></pre>
@@ -809,8 +798,8 @@
   <hr>
 
   <pre><code class='idl'><c- b>partial</c-> <c- b>interface</c-> <a id='Window-partial' href='window-object.html#window'><c- g>Window</c-></a> {
-  <c- b>void</c-> <a href='#dom-window-captureevents' id='other-elements,-attributes-and-apis:dom-window-captureevents'><c- g>captureEvents</c-></a>();
-  <c- b>void</c-> <a href='#dom-window-releaseevents' id='other-elements,-attributes-and-apis:dom-window-releaseevents'><c- g>releaseEvents</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-window-captureevents' id='other-elements,-attributes-and-apis:dom-window-captureevents'><c- g>captureEvents</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-window-releaseevents' id='other-elements,-attributes-and-apis:dom-window-releaseevents'><c- g>releaseEvents</c-></a>();
 
   [<c- g>Replaceable</c->, <c- g>SameObject</c->] <c- b>readonly</c-> <c- b>attribute</c-> <a href='#external' id='other-elements,-attributes-and-apis:external'><c- n>External</c-></a> <a href='#dom-external' id='other-elements,-attributes-and-apis:dom-external'><c- g>external</c-></a>;
 };</code></pre>
@@ -821,8 +810,8 @@
 
   <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->]
 <c- b>interface</c-> <dfn id='external'><c- g>External</c-></dfn> {
-  <c- b>void</c-> <a href='#dom-external-addsearchprovider' id='other-elements,-attributes-and-apis:dom-external-addsearchprovider'><c- g>AddSearchProvider</c-></a>();
-  <c- b>void</c-> <a href='#dom-external-issearchproviderinstalled' id='other-elements,-attributes-and-apis:dom-external-issearchproviderinstalled'><c- g>IsSearchProviderInstalled</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-external-addsearchprovider' id='other-elements,-attributes-and-apis:dom-external-addsearchprovider'><c- g>AddSearchProvider</c-></a>();
+  <c- n>undefined</c-> <a href='#dom-external-issearchproviderinstalled' id='other-elements,-attributes-and-apis:dom-external-issearchproviderinstalled'><c- g>IsSearchProviderInstalled</c-></a>();
 };</code></pre>
 
   <p>The <dfn id="dom-external-addsearchprovider"><code>AddSearchProvider()</code></dfn> and <dfn id="dom-external-issearchproviderinstalled"><code>IsSearchProviderInstalled()</code></dfn> methods must do nothing.</p>
