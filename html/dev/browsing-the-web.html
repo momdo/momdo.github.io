@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Developer's Edition — Last Updated <span class="pubdate">10 September 2020</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Developer's Edition — Last Updated <span class="pubdate">16 September 2020</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -99,26 +99,26 @@
 
   <h4 id="the-x-frame-options-header"><span class="secno">7.8.3</span> `<code>X-Frame-Options</code>`ヘッダー<a href="#the-x-frame-options-header" class="self-link"></a></h4>
 
-  <p>`<code>X-Frame-Options</code>` HTTP レスポンスヘッダーは、<a id="the-x-frame-options-header:child-browsing-context" href="browsers.html#child-browsing-context">子ブラウジングコンテキスト</a>内で<code>Document</code>をロードしてもよいかどうか、およびどのようにロードするかを制御するためのレガシーな方法である。It is obsoleted by the <code id="the-x-frame-options-header:frame-ancestors-directive"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code> CSP directive, which provides more granular control over the same situations. It was originally defined in <cite>HTTP Header Field X-Frame-Options</cite>, but the definition here supersedes that document. <a href="references.html#refsCSP">[CSP]</a> <a href="references.html#refsRFC7034">[RFC7034]</a><p class="note">In particular, <cite>HTTP Header Field X-Frame-Options</cite> specified an `<code>ALLOW-FROM</code>` variant of the header, but that is not to be implemented.</p>
+  <p>`<code>X-Frame-Options</code>` HTTP レスポンスヘッダーは、<a id="the-x-frame-options-header:child-browsing-context" href="browsers.html#child-browsing-context">子ブラウジングコンテキスト</a>内で<code>Document</code>をロードしてもよいかどうか、およびどのようにロードするかを制御するためのレガシーな方法である。それは同じ状況をより細かく制御できる<code id="the-x-frame-options-header:frame-ancestors-directive"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code> CSPディレクティブによって廃止された。 もともとは<cite>HTTPヘッダーフィールドX-Frame-Options</cite>で定義されていたが、ここでの定義はその文書に取って代わる。<a href="references.html#refsCSP">[CSP]</a> <a href="references.html#refsRFC7034">[RFC7034]</a><p class="note">特に、<cite>HTTPヘッダーフィールドX-Frame-Options</cite>はヘッダーの`<code>ALLOW-FROM</code>`バリアントを指定したが、これは実装されない。</p>
 
-  <p class="note">If both a CSP <code id="the-x-frame-options-header:frame-ancestors-directive-2"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code> directive and an `<code>X-Frame-Options</code>` header are used in the same <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="the-x-frame-options-header:concept-response" data-x-internal="concept-response">response</a>, then `<code>X-Frame-Options</code>` is ignored.</p>
+  <p class="note"><code id="the-x-frame-options-header:frame-ancestors-directive-2"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code>ディレクティブと`<code>X-Frame-Options</code>`ヘッダーの両方が同じ<a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="the-x-frame-options-header:concept-response" data-x-internal="concept-response">レスポンス</a>で使用される場合、`<code>X-Frame-Options</code>`は無視される。</p>
 
-  <p>For web developers and conformance checkers, its value <a href="https://fetch.spec.whatwg.org/#abnf" id="the-x-frame-options-header:header-abnf" data-x-internal="header-abnf">ABNF</a> is:</p>
+  <p>ウェブ開発者および適合性チェッカーにとって、その値の<a href="https://fetch.spec.whatwg.org/#abnf" id="the-x-frame-options-header:header-abnf" data-x-internal="header-abnf">ABNF</a>は次のとおりである：</p>
 
   <pre><code class='abnf'><c- nc>X-Frame-Options</c-> <c- o>=</c-> <c- l>"DENY"</c-> <c- o>/</c-> <c- l>"SAMEORIGIN"</c-></code></pre>
 
   
 
-  <div class="example"><p>The following table illustrates the processing of various values for the header, including non-conformant ones:</p>
+  <div class="example"><p>次の表は、非準拠の値を含む、ヘッダーのさまざまな値の処理を示す：</p>
 
-   <table class="data"><thead><tr><th>`<code>X-Frame-Options</code>`<th>Valid<th>Result<tbody><tr><td>`<code>DENY</code>`<td>✅<td>embedding disallowed<tr><td>`<code>SAMEORIGIN</code>`<td>✅<td>same-origin embedding allowed<tr><td>`<code>INVALID</code>`<td>❌<td>embedding allowed<tr><td>`<code>ALLOWALL</code>`<td>❌<td>embedding allowed<tr><td>`<code>ALLOW-FROM=https://example.com/</code>`<td>❌<td>embedding allowed (from anywhere)</table>
+   <table class="data"><thead><tr><th>`<code>X-Frame-Options</code>`<th>妥当<th>結果<tbody><tr><td>`<code>DENY</code>`<td>✅<td>埋め込みを禁止<tr><td>`<code>SAMEORIGIN</code>`<td>✅<td>同一生成元の埋め込みを許可<tr><td>`<code>INVALID</code>`<td>❌<td>埋め込みを許可<tr><td>`<code>ALLOWALL</code>`<td>❌<td>埋め込みを許可<tr><td>`<code>ALLOW-FROM=https://example.com/</code>`<td>❌<td>埋め込みを許可（どこからでも）</table>
   </div>
 
-  <div class="example"><p>The following table illustrates how various non-conformant cases involving multiple values are processed:</p>
+  <div class="example"><p>次の表は、複数の値が関係するさまざまな非準拠のケースがどのように処理されるかを示す：</p>
 
-   <table class="data"><thead><tr><th>`<code>X-Frame-Options</code>`<th>Result<tbody><tr><td>`<code>SAMEORIGIN, SAMEORIGIN</code>`<td>same-origin embedding allowed<tr><td>`<code>SAMEORIGIN, DENY</code>`<td>embedding disallowed<tr><td>`<code>SAMEORIGIN,</code>`<td>embedding disallowed<tr><td>`<code>SAMEORIGIN, ALLOWALL</code>`<td>embedding disallowed<tr><td>`<code>SAMEORIGIN, INVALID</code>`<td>embedding disallowed<tr><td>`<code>ALLOWALL, INVALID</code>`<td>embedding disallowed<tr><td>`<code>ALLOWALL,</code>`<td>embedding disallowed<tr><td>`<code>INVALID, INVALID</code>`<td>embedding allowed</table>
+   <table class="data"><thead><tr><th>`<code>X-Frame-Options</code>`<th>結果<tbody><tr><td>`<code>SAMEORIGIN, SAMEORIGIN</code>`<td>同一生成元の埋め込みを許可<tr><td>`<code>SAMEORIGIN, DENY</code>`<td>埋め込みを禁止<tr><td>`<code>SAMEORIGIN,</code>`<td>埋め込みを禁止<tr><td>`<code>SAMEORIGIN, ALLOWALL</code>`<td>埋め込みを禁止<tr><td>`<code>SAMEORIGIN, INVALID</code>`<td>埋め込みを禁止<tr><td>`<code>ALLOWALL, INVALID</code>`<td>埋め込みを禁止<tr><td>`<code>ALLOWALL,</code>`<td>埋め込みを禁止<tr><td>`<code>INVALID, INVALID</code>`<td>埋め込みを許可</table>
 
-   <p>The same results are obtained whether the values are delivered in a single header whose value is comma-delimited, or in multiple headers.</p>
+   <p>値がカンマ区切りの単一ヘッダーで配信されるか、複数のヘッダーで配信されるかにかかわらず、同じ結果が得られる。</p>
   </div>
 
 
