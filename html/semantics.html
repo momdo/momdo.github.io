@@ -10,7 +10,7 @@
   <script async="" crossorigin="" src="./html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">23 September 2020</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">28 September 2020</span></h2></hgroup>
    
    
 
@@ -669,6 +669,34 @@ gave me some of the songs they wrote. I love sharing my music.<c- p>&lt;/</c-><c
     
 
     <p>UIのテーマカラーを使用する場合、ユーザーエージェントは、問題のUIにテーマカラーより適切にするために実装固有の方法でテーマカラーを調整してもよい。たとえば、ユーザーエージェントが背景としてテーマカラーを使用しその上に白いテキストを表示しようとする場合、適切なコントラストを確保するために、UIの一部でテーマカラーのより暗い異なる色を使用するかもしれない。</p>
+   <dt><dfn id="meta-color-scheme"><code>color-scheme</code></dfn><dd><p>To aid user agents in rendering the page background with the desired color scheme immediately (rather than waiting for all CSS in the page to load), a <a id="standard-metadata-names:'color-scheme'" href="https://drafts.csswg.org/css-color-adjust/#color-scheme-prop" data-x-internal="'color-scheme'">'color-scheme'</a> value can be provided in a <code id="standard-metadata-names:the-meta-element-16"><a href="#the-meta-element">meta</a></code> element.</p>
+
+    <p>The value must be a string that matches the syntax for the CSS <a id="standard-metadata-names:'color-scheme'-2" href="https://drafts.csswg.org/css-color-adjust/#color-scheme-prop" data-x-internal="'color-scheme'">'color-scheme'</a> property value, and will be cascaded with the color-scheme declarations for the document root element as described below.</p>
+
+    <p>There must not be more than one <code id="standard-metadata-names:the-meta-element-17"><a href="#the-meta-element">meta</a></code> element with its <code id="standard-metadata-names:attr-meta-name-13"><a href="#attr-meta-name">name</a></code> attribute value set to an <a id="standard-metadata-names:ascii-case-insensitive-10" href="https://triple-underscore.github.io/infra-ja.html#ascii-case-insensitive" data-x-internal="ascii-case-insensitive">ASCII case-insensitive</a> match for <code id="standard-metadata-names:meta-color-scheme"><a href="#meta-color-scheme">color-scheme</a></code> per document.</p>
+
+    <div class="example"><p>The following declaration indicates that the page is aware of and can handle a color scheme with dark background colors and light foreground colors:</p>
+
+     <pre><code class='html'><c- p>&lt;</c-><c- f>meta</c-> <c- e>name</c-><c- o>=</c-><c- s>"color-scheme"</c-> <c- e>content</c-><c- o>=</c-><c- s>"dark"</c-><c- p>></c-></code></pre>
+    </div>
+
+    
+
+     <p>To obtain a page's color-scheme, user agents must run the following steps:</p>
+
+     <ol><li><p>Let <var>candidate elements</var> be the list of all <code id="standard-metadata-names:the-meta-element-18"><a href="#the-meta-element">meta</a></code> elements that meet the following criteria, in <a id="standard-metadata-names:tree-order-4" href="https://triple-underscore.github.io/DOM4-ja.html#concept-tree-order" data-x-internal="tree-order">tree order</a>:</p>
+
+       <ul class="brief"><li>The element is <a id="standard-metadata-names:in-a-document-tree-3" href="https://triple-underscore.github.io/DOM4-ja.html#in-a-document" data-x-internal="in-a-document-tree">in a document tree</a><li>The element has a <code id="standard-metadata-names:attr-meta-name-14"><a href="#attr-meta-name">name</a></code> attribute, whose value is an <a id="standard-metadata-names:ascii-case-insensitive-11" href="https://triple-underscore.github.io/infra-ja.html#ascii-case-insensitive" data-x-internal="ascii-case-insensitive">ASCII case-insensitive</a> match for <code id="standard-metadata-names:meta-color-scheme-2"><a href="#meta-color-scheme">color-scheme</a></code><li>The element has a <code id="standard-metadata-names:attr-meta-content-9"><a href="#attr-meta-content">content</a></code> attribute</ul>
+      <li><p>For each <var>element</var> in <var>candidate elements</var>:</p>
+
+       <ol><li>Let <var>parsed</var> be the result of <a href="https://drafts.csswg.org/css-syntax/#parse-a-list-of-component-values" id="standard-metadata-names:parse-a-list-of-component-values" data-x-internal="parse-a-list-of-component-values">parsing a list of component values</a> given the value of <var>element</var>'s <code id="standard-metadata-names:attr-meta-content-10"><a href="#attr-meta-content">content</a></code> attribute.<li>If <var>parsed</var> is a valid CSS <a id="standard-metadata-names:'color-scheme'-3" href="https://drafts.csswg.org/css-color-adjust/#color-scheme-prop" data-x-internal="'color-scheme'">'color-scheme'</a> property value, then treat that value as a declaration of the CSS <a id="standard-metadata-names:'color-scheme'-4" href="https://drafts.csswg.org/css-color-adjust/#color-scheme-prop" data-x-internal="'color-scheme'">'color-scheme'</a> property on <var>element</var>'s <a id="standard-metadata-names:root" href="https://triple-underscore.github.io/DOM4-ja.html#concept-tree-root" data-x-internal="root">root</a>, cascaded as a <a href="rendering.html#presentational-hints" id="standard-metadata-names:presentational-hints">presentational hint</a>, and return.</ol>
+      </ol>
+
+     <p>If any <code id="standard-metadata-names:the-meta-element-19"><a href="#the-meta-element">meta</a></code> elements are <a href="infrastructure.html#insert-an-element-into-a-document" id="standard-metadata-names:insert-an-element-into-a-document-3">inserted into the document</a> or <a href="infrastructure.html#remove-an-element-from-a-document" id="standard-metadata-names:remove-an-element-from-a-document-3">removed from the document</a>, or existing <code id="standard-metadata-names:the-meta-element-20"><a href="#the-meta-element">meta</a></code> elements have their <code id="standard-metadata-names:attr-meta-name-15"><a href="#attr-meta-name">name</a></code> or <code id="standard-metadata-names:attr-meta-content-11"><a href="#attr-meta-content">content</a></code> attributes changed, user agents must re-run the above algorithm.</p>
+
+    
+
+    <p class="note">Because these rules check successive elements until they find a match, an author can provide multiple such values to handle fallback for legacy user agents. Opposite to how CSS fallback works for properties, the multiple meta elements needs to be arranged with the legacy values after the newer values.</p>
    </dl>
 
 
