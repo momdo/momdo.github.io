@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja" typeof="bibo:Document " about="" property="dcterms:language" content="en">
+<html lang="ja" typeof="bibo:Document " about="" property="dcterms:language" content="ja">
   <head>
     <meta charset="utf-8" />
     <title>HTML5: 有用な代替テキストを提供するためのテクニック</title>
 
-    <link href="https://www.w3.org/StyleSheets/TR/W3C-WG-NOTE" rel="stylesheet">
+    <link href="https://www.w3.org/StyleSheets/TR/W3C-RNOTE" rel="stylesheet">
   </head>
   <body id="respecDocument" role="document" class="h-entry"><div id="respecHeader" role="contentinfo" class="head">
   <aside class="notice" style="border-radius: 20px; border: solid lightpink 3px; padding:0 1em;">
@@ -13,7 +13,7 @@
 この文書は「<a href="http://www.w3.org/TR/2015/NOTE-html-alt-techniques-20150521/">HTML5: Techniques for providing useful text alternatives</a>（Working Group Note <time>2014-05-22</time>）」の日本語訳です。正規の仕様はW3Cにある英語版です。また、翻訳に誤りがありえます。
 
 </p>
-<p>原文にあるとおり、この文書は単独の技術文書としての役割を終えました。古い文書ですが、<a href="http://momdo.github.io/html5/embedded-content-0.html#alt">HTML5仕様の該当箇所</a>が参考になるかと思われます。</p>
+<p>本文にあるとおり、この文書は単独の技術文書としての役割を終えました。<a href="https://momdo.github.io/html/images.html#alt">HTML Standardの該当箇所</a>が後続となります。</p>
 </aside>
       <p>
 	<a href="http://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a>
@@ -68,4 +68,63 @@
     <p>この文書は、<a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">2014年8月1日のW3Cプロセス文書</a>によって管理されます。</p>
 
     </section>
+<script src="https://www.w3.org/scripts/TR/fixup.js"></script>
+<script>
+var ESCAPEKEY = 27;
+/* Deprecation warning */
+document.body.classList.add("outdated-spec");
+var node = document.createElement("p");
+node.classList.add("outdated-warning");
+node.tabIndex = -1;
+node.setAttribute("role", "dialog");
+node.setAttribute("aria-modal", "true");
+node.setAttribute("aria-labelledby", "outdatedWarning");
+
+var frag = document.createDocumentFragment();
+var heading = document.createElement("strong");
+heading.id = "outdatedWarning";
+heading.innerHTML = "Retired NOTE";
+frag.appendChild(heading);
+
+var warning = document.createElement("span");
+warning.innerText = "HTML Working Groupはこの文書の作業を中止しました。";
+frag.appendChild(warning);
+
+var button = document.createElement("button");
+var handler = makeClickHandler(node);
+button.addEventListener("click", handler);
+button.innerHTML = "&#9662; 折りたたむ";
+frag.appendChild(button);
+node.appendChild(frag);
+
+function makeClickHandler(node) {
+  var isOpen = true;
+  return function collapseWarning(event) {
+    var button = event.target;
+    isOpen = !isOpen;
+    node.classList.toggle("outdated-collapsed");
+    document.body.classList.toggle("outdated-spec");
+    button.innerText = (isOpen) ? '\u25BE 折りたたむ' : '\u25B4 展開する';
+  }
+}
+
+document.body.appendChild(node);
+
+button.focus();
+window.onkeydown = function (event) {
+  var isCollapsed = node.classList.contains("outdated-collapsed");
+  if (event.keyCode === ESCAPEKEY && !isCollapsed) {
+    button.click();
+  }
+}
+
+document.addEventListener("focus", function(event) {
+  var isCollapsed = node.classList.contains("outdated-collapsed");
+  var containsTarget = node.contains(event.target);
+  if (!isCollapsed && !containsTarget) {
+    event.stopPropagation();
+    node.focus();
+  }
+}, true); // use capture to enable event delegation as focus doesn't bubble up
+</script>
 </body></html>
