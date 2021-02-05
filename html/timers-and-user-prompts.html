@@ -10,7 +10,7 @@
   <script async="" crossorigin="" src="./html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">28 January 2021</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">4 February 2021</span></h2></hgroup>
    
    
 
@@ -138,11 +138,11 @@ scheduleWork<c- p>();</c-> <c- c1>// queues a task to do lots of work</c-></code
 
   <p><dfn id="dom-queuemicrotask"><code>queueMicrotask(<var>callback</var>)</code></dfn>メソッドは、<var>callback</var>を<a href="https://triple-underscore.github.io/WebIDL-ja.html#invoke-a-callback-function" id="microtask-queuing:es-invoking-callback-functions" data-x-internal="es-invoking-callback-functions">呼び出す</a>ために<a id="microtask-queuing:queue-a-microtask-2" href="webappapis.html#queue-a-microtask">マイクロタスクをキューに入れ</a>、かつ<var>callback</var>が例外を投げた場合は<a id="microtask-queuing:report-the-exception" href="webappapis.html#report-the-exception">例外を報告</a>しなければならない。</p>
 
-  <p><code id="microtask-queuing:dom-queuemicrotask"><a href="#dom-queuemicrotask">queueMicrotask()</a></code>メソッドは、著者が<a id="microtask-queuing:microtask-queue" href="webappapis.html#microtask-queue">マイクロタスクキュー</a>でコールバックをスケジュールすることを可能にする。これは、現在実行中の<a href="webappapis.html#concept-task" id="microtask-queuing:concept-task">タスク</a>が完了まで実行され、<a id="microtask-queuing:javascript-execution-context-stack" href="https://tc39.es/ecma262/#execution-context-stack" data-x-internal="javascript-execution-context-stack">JavaScript実行コンテキストスタック</a>が空になった後にコードの実行を可能にするが、たとえば<code id="microtask-queuing:dom-settimeout"><a href="#dom-settimeout">setTimeout(<var>f</var>, 0)</a></code>を使用する場合のように、<a id="microtask-queuing:event-loop" href="webappapis.html#event-loop">イベントループ</a>に制御を戻すことはない。</p>
+  <p><code id="microtask-queuing:dom-queuemicrotask"><a href="#dom-queuemicrotask">queueMicrotask()</a></code>メソッドは、著者が<a id="microtask-queuing:microtask-queue" href="webappapis.html#microtask-queue">マイクロタスクキュー</a>でコールバックをスケジュールすることを可能にする。This allows their code to run once the <a id="microtask-queuing:javascript-execution-context-stack" href="https://tc39.es/ecma262/#execution-context-stack" data-x-internal="javascript-execution-context-stack">JavaScript execution context stack</a> is next empty, which happens once all currently executing synchronous JavaScript has run to completion. This doesn't yield control back to the <a id="microtask-queuing:event-loop" href="webappapis.html#event-loop">event loop</a>, as would be the case when using, for example, <code id="microtask-queuing:dom-settimeout"><a href="#dom-settimeout">setTimeout(<var>f</var>, 0)</a></code>.</p>
 
-  <p>著者は、大量のマイクロタスクをスケジュールすることが、大量の同期コードを実行するのと同じパフォーマンスの低下があることに注意する必要がある。 どちらも、ブラウザーがレンダリングやスクロールなどの独自の作業を実行を妨げることになる。多くの場合、<code id="microtask-queuing:dom-animationframeprovider-requestanimationframe"><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code>または<code id="microtask-queuing:requestidlecallback()"><a data-x-internal="requestidlecallback()" href="https://triple-underscore.github.io/requestidlecallback-ja.html#the-requestidlecallback-method">requestIdleCallback()</a></code>の方がよい選択である。 特に、次のレンダリングサイクルの前にコードを実行することが目標である場合、それは<code id="microtask-queuing:dom-animationframeprovider-requestanimationframe-2"><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code>の目的である。</p>
+  <p>著者は、大量のマイクロタスクをスケジュールすることが、大量の同期コードを実行するのと同じパフォーマンスの低下があることに注意する必要がある。 Both will prevent the browser from doing its own work, such as rendering. 多くの場合、<code id="microtask-queuing:dom-animationframeprovider-requestanimationframe"><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code>または<code id="microtask-queuing:requestidlecallback()"><a data-x-internal="requestidlecallback()" href="https://triple-underscore.github.io/requestidlecallback-ja.html#the-requestidlecallback-method">requestIdleCallback()</a></code>の方がよい選択である。 特に、次のレンダリングサイクルの前にコードを実行することが目標である場合、それは<code id="microtask-queuing:dom-animationframeprovider-requestanimationframe-2"><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code>の目的である。</p>
 
-  <p>次の例からわかるように、<code id="microtask-queuing:dom-queuemicrotask-2"><a href="#dom-queuemicrotask">queueMicrotask()</a></code>について考える最良の方法は、同期コードを再配置するためのメカニズムとして、現在のタスクに相当するキューに入れられていないJavaScriptの直後にキューに入れられたコードを効果的に配置することである。</p>
+  <p>As can be seen from the following examples, the best way of thinking about <code id="microtask-queuing:dom-queuemicrotask-2"><a href="#dom-queuemicrotask">queueMicrotask()</a></code> is as a mechanism for rearranging synchronous code, effectively placing the queued code immediately after the currently executing synchronous JavaScript has run to completion.</p>
 
   <div class="example"><p><code id="microtask-queuing:dom-queuemicrotask-3"><a href="#dom-queuemicrotask">queueMicrotask()</a></code> 使用する最も一般的な理由は、情報が同期的に利用できる場合でも、過度の遅延を発生させることなく、一貫した順序を作成することである。</p>
 
@@ -187,7 +187,7 @@ console<c- p>.</c->log<c- p>(</c-><c- u>"2"</c-><c- p>);</c-></code></pre>
   <c- p>}</c->
 <c- p>};</c-></code></pre>
 
-   <p>キューに入れられたコードを現在実行中のタスクの後に原則的に再配置することによって、これは、要素の状態の一貫した順序付けおよび更新を保証する。</p>
+   <p>By essentially rearranging the queued code to be after the <a id="microtask-queuing:javascript-execution-context-stack-2" href="https://tc39.es/ecma262/#execution-context-stack" data-x-internal="javascript-execution-context-stack">JavaScript execution context stack</a> empties, this ensures a consistent ordering and update of the element's state.</p>
   </div>
 
   <div class="example"><p><code id="microtask-queuing:dom-queuemicrotask-5"><a href="#dom-queuemicrotask">queueMicrotask()</a></code>のもう1つの興味深い使用法は、 複数の呼び出し元による作業の調整されていない"バッチ処理"を可能にすることである。たとえば、できるだけ早くどこかにデータを送信したいが、簡単に回避できる場合は、 複数のネットワークリクエストを行いたくないライブラリ関数について考えてみる。このバランスをとる1つの方法は次のようになる：</p>
@@ -207,7 +207,7 @@ console<c- p>.</c->log<c- p>(</c-><c- u>"2"</c-><c- p>);</c-></code></pre>
   <c- p>}</c->
 <c- p>}</c-></code></pre>
 
-   <p>このアーキテクチャでは、イベントループの同じターン内で<code>sendData()</code>を呼び出す複数の後続の呼び出しは、1つの<code id="microtask-queuing:fetch()"><a data-x-internal="fetch()" href="https://triple-underscore.github.io/Fetch-ja.html#dom-global-fetch">fetch()</a></code>呼び出しにまとめられるが、イベントループのタスクがフェッチを先取りすることはない（代わりに同様のコードで発生した場合のように<code id="microtask-queuing:dom-settimeout-2"><a href="#dom-settimeout">setTimeout()</a></code>を使用する）。</p>
+   <p>With this architecture, multiple subsequent calls to <code>sendData()</code> within the currently executing synchronous JavaScript will be batched together into one <code id="microtask-queuing:fetch()"><a data-x-internal="fetch()" href="https://triple-underscore.github.io/Fetch-ja.html#dom-global-fetch">fetch()</a></code> call, but with no intervening event loop tasks preempting the fetch (as would have happened with similar code that instead used <code id="microtask-queuing:dom-settimeout-2"><a href="#dom-settimeout">setTimeout()</a></code>).</p>
   </div>
 
 
