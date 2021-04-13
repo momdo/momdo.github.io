@@ -1,0 +1,372 @@
+<!DOCTYPE html><html class="split" lang="ja"><script src="https://html.spec.whatwg.org/link-fixup.js" defer=""></script><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"><title>HTML Standard 日本語訳</title><meta content="#3c790a" name="theme-color"><link rel="stylesheet" href="https://resources.whatwg.org/spec.css" crossorigin=""><link rel="stylesheet" href="https://resources.whatwg.org/standard.css" crossorigin=""><link rel="stylesheet" href="https://resources.whatwg.org/standard-shared-with-dev.css" crossorigin=""><link rel="icon" href="https://resources.whatwg.org/logo.svg" crossorigin=""><link rel="stylesheet" href="https://html.spec.whatwg.org/styles.css" crossorigin=""><script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+   function setLinkFragment(link) {
+     link.hash = location.hash;
+   }
+  </script><body>
+  
+  <script async="" crossorigin="" src="./html-dfn.js"></script>
+  <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
+  
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">12 April 2021</span></h2></hgroup>
+   
+   
+
+   
+  </header>
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href="workers.html">← 10 Web workers</a> — <a href="./">目次</a> — <a href="webstorage.html">12 Web storage →</a></nav><ol class="toc"><li id="toc-worklets"><a href="worklets.html#worklets"><span class="secno">11</span> Worklets</a><ol><li><a href="worklets.html#worklets-intro"><span class="secno">11.1</span> Introduction</a><ol><li><a href="worklets.html#worklets-motivations"><span class="secno">11.1.1</span> Motivations</a><li><a href="worklets.html#worklets-idempotent"><span class="secno">11.1.2</span> Code idempotence</a><li><a href="worklets.html#worklets-speculative"><span class="secno">11.1.3</span> Speculative evaluation</a></ol><li><a href="worklets.html#worklets-examples"><span class="secno">11.2</span> Examples</a><ol><li><a href="worklets.html#worklets-examples-loading"><span class="secno">11.2.1</span> Loading scripts</a><li><a href="worklets.html#worklets-example-registering"><span class="secno">11.2.2</span> Registering a class and invoking its methods</a></ol><li><a href="worklets.html#worklets-infrastructure"><span class="secno">11.3</span> Infrastructure</a><ol><li><a href="worklets.html#worklets-global"><span class="secno">11.3.1</span> The global scope</a><ol><li><a href="worklets.html#worklet-agents-and-event-loops"><span class="secno">11.3.1.1</span> Agents and event loops</a><li><a href="worklets.html#worklets-creation-termination"><span class="secno">11.3.1.2</span> Creation and termination</a><li><a href="worklets.html#script-settings-for-worklets"><span class="secno">11.3.1.3</span> Script settings for worklets</a></ol><li><a href="worklets.html#worklets-worklet"><span class="secno">11.3.2</span> The <code>Worklet</code> class</a><li><a href="worklets.html#worklets-lifetime"><span class="secno">11.3.3</span> The worklet's lifetime</a></ol></ol></ol><h2 id="worklets"><span class="secno">11</span> Worklets<a href="#worklets" class="self-link"></a></h2>
+
+  <h3 id="worklets-intro"><span class="secno">11.1</span> Introduction<a href="#worklets-intro" class="self-link"></a></h3>
+
+  <p><i>この節は非規範的である。</i></p>
+
+  <p>Worklets are a piece of specification infrastructure which can be used for running scripts independent of the main JavaScript execution environment, while not requiring any particular implementation model.</p>
+
+  <p>The worklet infrastructure specified here cannot be used directly by web developers. Instead, other specifications build upon it to create directly-usable worklet types, specialized for running in particular parts of the browser implementation pipeline.</p>
+
+  <h4 id="worklets-motivations"><span class="secno">11.1.1</span> Motivations<a href="#worklets-motivations" class="self-link"></a></h4>
+
+  <p><i>この節は非規範的である。</i></p>
+
+  <p>Allowing extension points to rendering, or other sensitive parts of the implementation pipeline such as audio output, is difficult. If extension points were done with full access to the APIs available on <code id="worklets-motivations:window"><a href="window-object.html#window">Window</a></code>, engines would need to abandon previously-held assumptions for what could happen in the middle of those phases. For example, during the layout phase, rendering engines assume that no DOM will be modified.</p>
+
+  <p>Additionally, defining extension points in the <code id="worklets-motivations:window-2"><a href="window-object.html#window">Window</a></code> environment would restrict user agents to performing work in the same thread as the <code id="worklets-motivations:window-3"><a href="window-object.html#window">Window</a></code> object. (Unless implementations added complex, high-overhead infrastructure to allow thread-safe APIs, as well as thread-joining guarantees.)</p>
+
+  <p>Worklets are designed to allow extension points, while keeping guarantees that user agents currently rely on. This is done through new global environments, based on subclasses of <code id="worklets-motivations:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>.</p>
+
+  <p>Worklets are similar to web workers. However, they:</p>
+
+  <ul><li><p>Are thread-agnostic. That is, they are not designed to run on a dedicated separate thread, like each worker is. Implementations can run worklets wherever they choose (including on the main thread).<li><p>Are able to have multiple duplicate instances of the global scope created, for the purpose of parallelism.<li><p>Do not use an event-based API. Instead, classes are registered on the global scope, whose methods are invoked by the user agent.<li><p>Have a reduced API surface on the global scope.<li><p>Have a lifetime for their <a id="worklets-motivations:global-object" href="webappapis.html#global-object">global object</a> which is defined by other specifications, often in an <a id="worklets-motivations:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> manner.</ul>
+
+  <p>As worklets have relatively high overhead, they are best used sparingly. Due to this, a given <code id="worklets-motivations:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code> is expected to be shared between multiple separate scripts. (This is similar to how a single <code id="worklets-motivations:window-4"><a href="window-object.html#window">Window</a></code> is shared between multiple separate scripts.)</p>
+
+  <p>Worklets are a general technology that serve different use cases. Some worklets, such as those defined in <cite>CSS Painting API</cite>, provide extension points intended for stateless, idempotent, and short-running computations, which have special considerations as described in the next couple of sections. Others, such as those defined in <cite>Web Audio API</cite>, are used for stateful, long-running operations. <a href="references.html#refsCSSPAINT">[CSSPAINT]</a> <a href="references.html#refsWEBAUDIO">[WEBAUDIO]</a></p>
+
+  <h4 id="worklets-idempotent"><span class="secno">11.1.2</span> Code idempotence<a href="#worklets-idempotent" class="self-link"></a></h4>
+
+  <p>Some specifications which use worklets are intended to allow user agents to parallelize work over multiple threads, or to move work between threads as required. In these specifications, user agents might invoke methods on a web-developer-provided class in an <a id="worklets-idempotent:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> order.</p>
+
+  <p>As a result of this, to prevent interoperability issues, authors who register classes on such <code id="worklets-idempotent:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s should make their code idempotent. That is, a method or set of methods on the class should produce the same output given a particular input.</p>
+
+  <p>This specification uses the following techniques in order to encourage authors to write code in an idempotent way:</p>
+
+  <ul><li><p>No reference to the global object is available (i.e., there is no counterpart to <code id="worklets-idempotent:dom-workerglobalscope-self"><a href="workers.html#dom-workerglobalscope-self">self</a></code> on <code id="worklets-idempotent:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>.</p>
+
+    <p class="XXX">Although this was the intention when worklets were first specified, the introduction of <code>globalThis</code> has made it no longer true. See <a href="https://github.com/whatwg/html/issues/6059">issue #6059</a> for more discussion.</p>
+   <li><p>Code is loaded as a <a id="worklets-idempotent:module-script" href="webappapis.html#module-script">module script</a>, which results in the code being executed in strict mode and with no shared <code>this</code> referencing the global proxy.</ul>
+
+  <p>Together, these restrictions help prevent two different scripts from sharing state using properties of the <a id="worklets-idempotent:global-object" href="webappapis.html#global-object">global object</a>.</p>
+
+  <p>Additionally, specifications which use worklets and intend to allow <a id="worklets-idempotent:implementation-defined-2" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> behavior must obey the following:</p>
+
+  <ul><li><p>They must require user agents to always have at least two <code id="worklets-idempotent:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code> instances per <code id="worklets-idempotent:worklet"><a href="#worklet">Worklet</a></code>, and randomly assign a method or set of methods on a class to a particular <code id="worklets-idempotent:workletglobalscope-4"><a href="#workletglobalscope">WorkletGlobalScope</a></code> instance. These specifications may provide an opt-out under memory constraints.<li><p>These specifications must allow user agents to create and destroy instances of their <code id="worklets-idempotent:workletglobalscope-5"><a href="#workletglobalscope">WorkletGlobalScope</a></code> subclasses at any time.</ul>
+
+  <h4 id="worklets-speculative"><span class="secno">11.1.3</span> Speculative evaluation<a href="#worklets-speculative" class="self-link"></a></h4>
+
+  <p>Some specifications which use worklets can invoke methods on a web-developer-provided class based on the state of the user agent. To increase concurrency between threads, a user agent may invoke a method speculatively, based on potential future states.</p>
+
+  <p>In these specifications, user agents might invoke such methods at any time, and with any arguments, not just ones corresponding to the current state of the user agent. The results of such speculative evaluations are not displayed immediately, but can be cached for use if the user agent state matches the speculated state. This can increase the concurrency between the user agent and worklet threads.</p>
+
+  <p>As a result of this, to prevent interoperability risks between user agents, authors who register classes on such <code id="worklets-speculative:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s should make their code stateless. That is, the only effect of invoking a method should be its result, and not any side effects such as updating mutable state.</p>
+
+  <p>The same techniques which encourage <a href="#worklets-idempotent">code idempotence</a> also encourage authors to write stateless code.</p>
+
+  <div class="non-normative"><h3 id="worklets-examples"><span class="secno">11.2</span> Examples<a href="#worklets-examples" class="self-link"></a></h3>
+
+  <p><i>この節は非規範的である。</i></p>
+
+  <p>For these examples, we'll use a fake worklet. The <code id="worklets-examples:window"><a href="window-object.html#window">Window</a></code> object provides two <code id="worklets-examples:worklet"><a href="#worklet">Worklet</a></code> instances, which each run code in their own collection of <code id="worklets-examples:fakeworkletglobalscope"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>s:<pre class="extract"><code class='idl'><c- b>partial</c-> <c- b>interface</c-> <a id='worklets-examples:window-2' href='window-object.html#window'><c- g>Window</c-></a> {
+  [<c- g>SameObject</c->, <c- g>SecureContext</c->] <c- b>readonly</c-> <c- b>attribute</c-> <a href='#worklet' id='worklets-examples:worklet-2'><c- n>Worklet</c-></a> <a href='#fakeworklet1' id='worklets-examples:fakeworklet1'><c- g>fakeWorklet1</c-></a>;
+  [<c- g>SameObject</c->, <c- g>SecureContext</c->] <c- b>readonly</c-> <c- b>attribute</c-> <a href='#worklet' id='worklets-examples:worklet-3'><c- n>Worklet</c-></a> <a href='#fakeworklet2' id='worklets-examples:fakeworklet2'><c- g>fakeWorklet2</c-></a>;
+};</code></pre>
+
+  
+
+  <p>Each <code id="worklets-examples:window-3"><a href="window-object.html#window">Window</a></code> has two <code id="worklets-examples:worklet-4"><a href="#worklet">Worklet</a></code> instances, <dfn id="fake-worklet-1">fake worklet 1</dfn> and <dfn id="fake-worklet-2">fake worklet 2</dfn>. Both of these have their <a href="#worklet-global-scope-type" id="worklets-examples:worklet-global-scope-type">worklet global scope type</a> set to <code id="worklets-examples:fakeworkletglobalscope-2"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>, and their <a href="#worklet-destination-type" id="worklets-examples:worklet-destination-type">worklet destination type</a> set to "<code>fakeworklet</code>". User agents should create at least two <code id="worklets-examples:fakeworkletglobalscope-3"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code> instances per worklet.</p>
+
+  <p class="note">"<code>fakeworklet</code>" is not actually a valid <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination" id="worklets-examples:concept-request-destination" data-x-internal="concept-request-destination">destination</a> per <cite>Fetch</cite>. But this illustrates how real worklets would generally have their own worklet-type-specific destination. <a href="references.html#refsFETCH">[FETCH]</a></p>
+
+  
+
+  <p>The <dfn id="fakeworklet1" data-noexport=""><code>fakeWorklet1</code></dfn> getter steps are to return <a id="worklets-examples:this" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#fake-worklet-1" id="worklets-examples:fake-worklet-1">fake worklet 1</a>.</p>
+
+  <p>The <dfn id="fakeworklet2" data-noexport=""><code>fakeWorklet2</code></dfn> getter steps are to return <a id="worklets-examples:this-2" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#fake-worklet-2" id="worklets-examples:fake-worklet-2">fake worklet 2</a>.</p>
+
+  
+
+  <hr>
+
+  <pre class="extract"><code class='idl'>[<c- g>Global</c->=(<c- n>Worklet</c->,<c- n>FakeWorklet</c->),
+ <c- g>Exposed</c->=<c- n>FakeWorklet</c->,
+ <c- g>SecureContext</c->]
+<c- b>interface</c-> <dfn id="fakeworkletglobalscope" data-dfn-type="interface" data-noexport><c- g>FakeWorkletGlobalScope</c-></dfn> : <a href='#workletglobalscope' id='worklets-examples:workletglobalscope'><c- n>WorkletGlobalScope</c-></a> {
+  <c- b>undefined</c-> <a href='#dom-fakeworkletglobalscope-registerfake' id='worklets-examples:dom-fakeworkletglobalscope-registerfake'><c- g>registerFake</c-></a>(<c- b>DOMString</c-> <c- g>type</c->, <a href='https://triple-underscore.github.io/WebIDL-ja.html#common-Function' id='worklets-examples:idl-function' data-x-internal='idl-function'><c- n>Function</c-></a> <c- g>classConstructor</c->);
+};</code></pre>
+
+  
+
+  
+
+  
+
+  <p>Each <code id="worklets-examples:fakeworkletglobalscope-4"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code> has a <dfn id="registered-class-constructors-map">registered class constructors map</dfn>, which is an <a id="worklets-examples:ordered-map" href="https://triple-underscore.github.io/infra-ja.html#ordered-map" data-x-internal="ordered-map">ordered map</a>, initially empty.</p>
+
+  <p>The <dfn id="dom-fakeworkletglobalscope-registerfake" data-noexport=""><code>registerFake(<var>type</var>, <var>classConstructor</var>)</code></dfn> method steps are to set <a id="worklets-examples:this-3" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#registered-class-constructors-map" id="worklets-examples:registered-class-constructors-map">registered class constructors map</a>[<var>type</var>] to <var>classConstructor</var>.</p>
+
+  
+
+  <h4 id="worklets-examples-loading"><span class="secno">11.2.1</span> Loading scripts<a href="#worklets-examples-loading" class="self-link"></a></h4>
+
+  <p><i>この節は非規範的である。</i></p>
+
+  <p>To load scripts into <a href="#fake-worklet-1" id="worklets-examples-loading:fake-worklet-1">fake worklet 1</a>, a web developer would write:</p>
+
+  <pre><code class='js'>window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- t>'script1.mjs'</c-><c- p>);</c->
+window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- t>'script2.mjs'</c-><c- p>);</c-></code></pre>
+
+  <p>Note that which script finishes fetching and runs first is dependent on network timing: it could be either <code>script1.mjs</code> or <code>script2.mjs</code>. This generally won't matter for well-written scripts intended to be loaded in worklets, if they follow the suggestions about preparing for <a href="#worklets-speculative">speculative evaluation</a>.</p>
+
+  <p>If a web developer wants to perform a task only after the scripts have successfully run and loaded into some worklets, they could write:</p>
+
+  <pre><code class='js'>Promise<c- p>.</c->all<c- p>([</c->
+    window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- t>'script1.mjs'</c-><c- p>),</c->
+    window<c- p>.</c->fakeWorklet2<c- p>.</c->addModule<c- p>(</c-><c- t>'script2.mjs'</c-><c- p>)</c->
+<c- p>]).</c->then<c- p>(()</c-> <c- p>=></c-> <c- p>{</c->
+    <c- c1>// Do something which relies on those scripts being loaded.</c->
+<c- p>});</c-></code></pre>
+
+  <hr>
+
+  <p>Another important point about script-loading is that loaded scripts can be run in multiple <code id="worklets-examples-loading:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s per <code id="worklets-examples-loading:worklet"><a href="#worklet">Worklet</a></code>, as discussed in the section on <a href="#worklets-idempotent">code idempotence</a>. In particular, the specification above for <a href="#fake-worklet-1" id="worklets-examples-loading:fake-worklet-1-2">fake worklet 1</a> and <a href="#fake-worklet-2" id="worklets-examples-loading:fake-worklet-2">fake worklet 2</a> require this. So, consider a scenario such as the following:</p>
+
+  <pre><code class='js'><c- c1>// script.mjs</c->
+console<c- p>.</c->log<c- p>(</c-><c- u>"Hello from a FakeWorkletGlobalScope!"</c-><c- p>);</c-></code></pre>
+
+  <pre><code class='js'><c- c1>// app.mjs</c->
+window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- u>"script.mjs"</c-><c- p>);</c-></code></pre>
+
+  <p>This could result in output such as the following from a user agent's console:</p>
+
+  <pre><code>[fakeWorklet1#1] Hello from a FakeWorkletGlobalScope!
+[fakeWorklet1#4] Hello from a FakeWorkletGlobalScope!
+[fakeWorklet1#2] Hello from a FakeWorkletGlobalScope!
+[fakeWorklet1#3] Hello from a FakeWorkletGlobalScope!</code></pre>
+
+  <p>If the user agent at some point decided to kill and restart the third instance of <code id="worklets-examples-loading:fakeworkletglobalscope"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>, the console would again print <code>[fakeWorklet1#3] Hello from a FakeWorkletGlobalScope!</code> when this occurs.</p>
+
+  <h4 id="worklets-example-registering"><span class="secno">11.2.2</span> Registering a class and invoking its methods<a href="#worklets-example-registering" class="self-link"></a></h4>
+
+  <p><i>この節は非規範的である。</i></p>
+
+  <p>Let's say that one of the intended usages of our fake worklet by web developers is to allow them to customize the highly-complex process of boolean negation. They might register their customization as follows:</p>
+
+  <pre><code class='js'><c- c1>// script.mjs</c->
+registerFake<c- p>(</c-><c- t>'negation-processor'</c-><c- p>,</c-> <c- kr>class</c-> <c- p>{</c->
+  process<c- p>(</c->arg<c- p>)</c-> <c- p>{</c->
+    <c- k>return</c-> <c- o>!</c->arg<c- p>;</c->
+  <c- p>}</c->
+<c- p>});</c-></code></pre>
+
+  <pre><code class='js'><c- c1>// app.mjs</c->
+window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- u>"script.mjs"</c-><c- p>);</c-></code></pre>
+
+  <p>To make use of such registered classes, the specification for fake worklets could define a <dfn id="fakeworkletglobalscope-process">find the opposite of true</dfn> algorithm, given a <code id="worklets-example-registering:worklet"><a href="#worklet">Worklet</a></code> <var>worklet</var>:</p>
+
+  
+
+  <ol><li><p>Optionally, <a href="#create-a-worklet-global-scope" id="worklets-example-registering:create-a-worklet-global-scope">create a worklet global scope</a> for <var>worklet</var>.<li><p>Let <var>workletGlobalScope</var> be one of <var>worklet</var>'s <a href="#concept-worklet-global-scopes" id="worklets-example-registering:concept-worklet-global-scopes">global scopes</a>, chosen in an <a id="worklets-example-registering:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> manner.<li><p>Let <var>classConstructor</var> be <var>workletGlobalScope</var>'s <a href="#registered-class-constructors-map" id="worklets-example-registering:registered-class-constructors-map">registered class constructors map</a>["<code>negation-processor</code>"].<li><p>Let <var>classInstance</var> be the result of <a href="https://triple-underscore.github.io/WebIDL-ja.html#construct-a-callback-function" id="worklets-example-registering:es-constructing-callback-functions" data-x-internal="es-constructing-callback-functions">constructing</a> <var>classConstructor</var>, with no arguments.<li><p>Let <var>function</var> be <a href="https://tc39.es/ecma262/#sec-get-o-p" id="worklets-example-registering:js-get" data-x-internal="js-get">Get</a>(<var>classInstance</var>, "<code>process</code>"). 例外を再度投げる。</p>
+
+   <li><p>Let <var>callback</var> be the result of <a href="https://triple-underscore.github.io/WebIDL-ja.html#es-type-mapping" id="worklets-example-registering:concept-idl-convert" data-x-internal="concept-idl-convert">converting</a> <var>function</var> to a Web IDL <code id="worklets-example-registering:idl-function"><a data-x-internal="idl-function" href="https://triple-underscore.github.io/WebIDL-ja.html#common-Function">Function</a></code> instance.<li><p>Return the result of <a href="https://triple-underscore.github.io/WebIDL-ja.html#invoke-a-callback-function" id="worklets-example-registering:es-invoking-callback-functions" data-x-internal="es-invoking-callback-functions">invoking</a> <var>callback</var> with the arguments « true » and with <var>classInstance</var> as the <a href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-callback-this-value" id="worklets-example-registering:dfn-callback-this-value" data-x-internal="dfn-callback-this-value">callback this value</a>.</ol>
+
+  <p class="note">Another, perhaps better, specification architecture would be to extract the "<code>process</code>" property and convert it into a <code id="worklets-example-registering:idl-function-2"><a data-x-internal="idl-function" href="https://triple-underscore.github.io/WebIDL-ja.html#common-Function">Function</a></code> at registration time, as part of the <code id="worklets-example-registering:dom-fakeworkletglobalscope-registerfake"><a href="#dom-fakeworkletglobalscope-registerfake">registerFake()</a></code> method steps.</p>
+
+  
+
+  </div>
+
+  <h3 id="worklets-infrastructure"><span class="secno">11.3</span> Infrastructure<a href="#worklets-infrastructure" class="self-link"></a></h3>
+
+  <h4 id="worklets-global"><span class="secno">11.3.1</span> The global scope<a href="#worklets-global" class="self-link"></a></h4>
+
+  <p>Subclasses of <code id="workletglobalscope-dev"><a href="#workletglobalscope">WorkletGlobalScope</a></code> are used to create <a href="webappapis.html#global-object" id="worklets-global:global-object">global objects</a> wherein code loaded into a particular <code id="worklets-global:worklet"><a href="#worklet">Worklet</a></code> can execute.</p>
+
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Worklet</c->, <c- g>SecureContext</c->]
+<c- b>interface</c-> <dfn id='workletglobalscope' data-dfn-type='interface'><c- g>WorkletGlobalScope</c-></dfn> {};</code></pre>
+
+  <p class="note">Other specifications are intended to subclass <code id="worklets-global:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>, adding APIs to register a class, as well as other APIs specific for their worklet type.</p>
+
+  
+
+  <p>Each <code id="worklets-global:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code> has an associated <dfn id="concept-workletglobalscope-module-map">module map</dfn>. It is a <a id="worklets-global:module-map" href="webappapis.html#module-map">module map</a>, initially empty.</p>
+
+  
+
+  <h5 id="worklet-agents-and-event-loops"><span class="secno">11.3.1.1</span> Agents and event loops<a href="#worklet-agents-and-event-loops" class="self-link"></a></h5>
+
+  <p><i>この節は非規範的である。</i></p>
+
+  <p>Each <code id="worklet-agents-and-event-loops:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code> is contained in its own <a id="worklet-agents-and-event-loops:worklet-agent" href="webappapis.html#worklet-agent">worklet agent</a>, which has its corresponding <a href="webappapis.html#concept-agent-event-loop" id="worklet-agents-and-event-loops:concept-agent-event-loop">event loop</a>. However, in practice, implementation of these agents and event loops is expected to be different from most others.</p>
+
+  <p>A <a id="worklet-agents-and-event-loops:worklet-agent-2" href="webappapis.html#worklet-agent">worklet agent</a> exists for each <code id="worklet-agents-and-event-loops:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code> since, in theory, an implementation could use a separate thread for each <code id="worklet-agents-and-event-loops:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code> instance, and allowing this level of parallelism is best done using agents. However, because their [[CanBlock]] value is false, there is no requirement that agents and threads are one-to-one. This allows implementations the freedom to execute scripts loaded into a worklet on any thread, including one running code from other agents with [[CanBlock]] of false, such as the thread of a <a id="worklet-agents-and-event-loops:similar-origin-window-agent" href="webappapis.html#similar-origin-window-agent">similar-origin window agent</a> ("the main thread"). Contrast this with <a href="webappapis.html#dedicated-worker-agent" id="worklet-agents-and-event-loops:dedicated-worker-agent">dedicated worker agents</a>, whose true value for [[CanBlock]] effectively requires them to get a dedicated operating system thread.</p>
+
+  <p>Worklet <a href="webappapis.html#event-loop" id="worklet-agents-and-event-loops:event-loop">event loops</a> are also somewhat special. They are only used for <a href="webappapis.html#concept-task" id="worklet-agents-and-event-loops:concept-task">tasks</a> associated with <code id="worklet-agents-and-event-loops:dom-worklet-addmodule"><a href="#dom-worklet-addmodule">addModule()</a></code>, tasks wherein the user agent invokes author-defined methods, and <a href="webappapis.html#microtask" id="worklet-agents-and-event-loops:microtask">microtasks</a>. Thus, even though the <a href="webappapis.html#event-loop-processing-model">event loop processing model</a> specifies that all event loops run continuously, implementations can achieve observably-equivalent results using a simpler strategy, which just <a href="https://triple-underscore.github.io/WebIDL-ja.html#invoke-a-callback-function" id="worklet-agents-and-event-loops:es-invoking-callback-functions" data-x-internal="es-invoking-callback-functions">invokes</a> author-provided methods and then relies on that process to <a id="worklet-agents-and-event-loops:perform-a-microtask-checkpoint" href="webappapis.html#perform-a-microtask-checkpoint">perform a microtask checkpoint</a>.</p>
+
+  
+
+  <h5 id="worklets-creation-termination"><span class="secno">11.3.1.2</span> Creation and termination<a href="#worklets-creation-termination" class="self-link"></a></h5>
+
+  <p>To <dfn id="create-a-worklet-global-scope" data-export="">create a worklet global scope</dfn> for a <code id="worklets-creation-termination:worklet"><a href="#worklet">Worklet</a></code> <var>worklet</var>:</p>
+
+  <ol><li><p>Let <var>outsideSettings</var> be <var>worklet</var>'s <a id="worklets-creation-termination:relevant-settings-object" href="webappapis.html#relevant-settings-object">relevant settings object</a>.<li><p>Let <var>agent</var> be the result of <a href="webappapis.html#obtain-a-worklet-agent" id="worklets-creation-termination:obtain-a-worklet-agent">obtaining a worklet agent</a> given <var>outsideSettings</var>. Run the rest of these steps in that agent.<li><p>Let <var>realmExecutionContext</var> be the result of <a id="worklets-creation-termination:creating-a-new-javascript-realm" href="webappapis.html#creating-a-new-javascript-realm">creating a new JavaScript realm</a> given <var>agent</var> and the following customizations:</p>
+
+    <ul><li><p>For the global object, create a new object of the type given by <var>worklet</var>'s <a href="#worklet-global-scope-type" id="worklets-creation-termination:worklet-global-scope-type">worklet global scope type</a>.</ul>
+   <li><p>Let <var>workletGlobalScope</var> be the <a href="webappapis.html#concept-realm-global" id="worklets-creation-termination:concept-realm-global">global object</a> of <var>realmExecutionContext</var>'s Realm component.<li><p>Let <var>insideSettings</var> be the result of <a href="#set-up-a-worklet-environment-settings-object" id="worklets-creation-termination:set-up-a-worklet-environment-settings-object">setting up a worklet environment settings object</a> given <var>realmExecutionContext</var> and <var>outsideSettings</var>.<li><p><a id="worklets-creation-termination:initialize-a-global-object's-csp-list" href="https://triple-underscore.github.io/CSP3-ja.html#initialize-global-object-csp" data-x-internal="initialize-a-global-object's-csp-list">Initialize a global object's CSP list</a> given <var>workletGlobalScope</var>. <a href="references.html#refsCSP">[CSP]</a><li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-iterate" id="worklets-creation-termination:list-iterate" data-x-internal="list-iterate">For each</a> <var>moduleURL</var> of <var>worklet</var>'s <a href="#concept-worklet-added-modules-list" id="worklets-creation-termination:concept-worklet-added-modules-list">added modules list</a>:</p>
+
+    <ol><li><p><a id="worklets-creation-termination:fetch-a-worklet-script-graph" href="webappapis.html#fetch-a-worklet-script-graph">Fetch a worklet script graph</a> given <var>moduleURL</var>, <var>insideSettings</var>, <var>worklet</var>'s <a href="#worklet-destination-type" id="worklets-creation-termination:worklet-destination-type">worklet destination type</a>, <span class="XXX">what credentials mode?</span>, <var>insideSettings</var>, and <var>worklet</var>'s <a href="#concept-worklet-module-responses-map" id="worklets-creation-termination:concept-worklet-module-responses-map">module responses map</a>. Wait until the algorithm asynchronously completes with <var>script</var>.</p>
+
+      <p class="note">This will not actually perform a network request, as it will just reuse <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="worklets-creation-termination:concept-response" data-x-internal="concept-response">responses</a> from <var>worklet</var>'s <a href="#concept-worklet-module-responses-map" id="worklets-creation-termination:concept-worklet-module-responses-map-2">module responses map</a>. The main purpose of this step is to create a new <var>workletGlobalScope</var>-specific <a id="worklets-creation-termination:module-script" href="webappapis.html#module-script">module script</a> from the <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="worklets-creation-termination:concept-response-2" data-x-internal="concept-response">response</a>.</p>
+     <li><p>Assert: <var>script</var> is not null, since the fetch succeeded and the source text was successfully parsed when <var>worklet</var>'s <a href="#concept-worklet-module-responses-map" id="worklets-creation-termination:concept-worklet-module-responses-map-3">module responses map</a> was initially populated with <var>moduleURL</var>.<li><p><a id="worklets-creation-termination:run-a-module-script" href="webappapis.html#run-a-module-script">Run a module script</a> given <var>script</var>.</ol>
+   <li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="worklets-creation-termination:list-append" data-x-internal="list-append">Append</a> <var>workletGlobalScope</var> to <var>outsideSettings</var>'s <a href="webappapis.html#concept-settings-object-global" id="worklets-creation-termination:concept-settings-object-global">global object</a>'s <a href="window-object.html#concept-document-window" id="worklets-creation-termination:concept-document-window">associated <code>Document</code></a>'s <a href="#concept-document-worklet-global-scopes" id="worklets-creation-termination:concept-document-worklet-global-scopes">worklet global scopes</a>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="worklets-creation-termination:list-append-2" data-x-internal="list-append">Append</a> <var>workletGlobalScope</var> to <var>worklet</var>'s <a href="#concept-worklet-global-scopes" id="worklets-creation-termination:concept-worklet-global-scopes">global scopes</a>.<li><p>Run the <a id="worklets-creation-termination:responsible-event-loop" href="webappapis.html#responsible-event-loop">responsible event loop</a> specified by <var>insideSettings</var>.</ol>
+
+  <p>To <dfn id="terminate-a-worklet-global-scope" data-export="">terminate a worklet global scope</dfn> given a <code id="worklets-creation-termination:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code> <var>workletGlobalScope</var>:</p>
+
+  <ol><li><p>Let <var>eventLoop</var> be <var>workletGlobalScope</var>'s <a id="worklets-creation-termination:relevant-agent" href="webappapis.html#relevant-agent">relevant agent</a>'s <a href="webappapis.html#concept-agent-event-loop" id="worklets-creation-termination:concept-agent-event-loop">event loop</a>.<li><p>If there are any <a href="webappapis.html#concept-task" id="worklets-creation-termination:concept-task">tasks</a> queued in <var>eventLoop</var>'s <a href="webappapis.html#task-queue" id="worklets-creation-termination:task-queue">task queues</a>, discard them without processing them.<li><p>Wait for <var>eventLoop</var> to complete the <a id="worklets-creation-termination:currently-running-task" href="webappapis.html#currently-running-task">currently running task</a>.<li><p>If the previous step doesn't complete within an <a id="worklets-creation-termination:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> period of time, then <a href="webappapis.html#abort-a-running-script" id="worklets-creation-termination:abort-a-running-script">abort the script</a> currently running in the worklet.<li><p>Destroy <var>eventLoop</var>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-remove" id="worklets-creation-termination:list-remove" data-x-internal="list-remove">Remove</a> <var>workletGlobalScope</var> from the <a href="#concept-worklet-global-scopes" id="worklets-creation-termination:concept-worklet-global-scopes-2">global scopes</a> of the <code id="worklets-creation-termination:worklet-2"><a href="#worklet">Worklet</a></code> whose <a href="#concept-worklet-global-scopes" id="worklets-creation-termination:concept-worklet-global-scopes-3">global scopes</a> contains <var>workletGlobalScope</var>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-remove" id="worklets-creation-termination:list-remove-2" data-x-internal="list-remove">Remove</a> <var>workletGlobalScope</var> from the <a href="#concept-document-worklet-global-scopes" id="worklets-creation-termination:concept-document-worklet-global-scopes-2">worklet global scopes</a> of the <code id="worklets-creation-termination:document"><a href="dom.html#document">Document</a></code> whose <a href="#concept-document-worklet-global-scopes" id="worklets-creation-termination:concept-document-worklet-global-scopes-3">worklet global scopes</a> contains <var>workletGlobalScope</var>.</ol>
+
+  <h5 id="script-settings-for-worklets"><span class="secno">11.3.1.3</span> Script settings for worklets<a href="#script-settings-for-worklets" class="self-link"></a></h5>
+
+  <p>To <dfn id="set-up-a-worklet-environment-settings-object">set up a worklet environment settings object</dfn>, given a <a id="script-settings-for-worklets:javascript-execution-context" href="https://tc39.es/ecma262/#sec-execution-contexts" data-x-internal="javascript-execution-context">JavaScript execution context</a> <var>executionContext</var> and an <a id="script-settings-for-worklets:environment-settings-object" href="webappapis.html#environment-settings-object">environment settings object</a> <var>outsideSettings</var>:</p>
+
+  <ol><li><p>Let <var>origin</var> be a unique <a href="origin.html#concept-origin-opaque" id="script-settings-for-worklets:concept-origin-opaque">opaque origin</a>.<li><p>Let <var>inheritedAPIBaseURL</var> be <var>outsideSettings</var>'s <a id="script-settings-for-worklets:api-base-url" href="webappapis.html#api-base-url">API base URL</a>.<li><p>Let <var>inheritedReferrerPolicy</var> be <var>outsideSettings</var>'s <a href="webappapis.html#concept-settings-object-referrer-policy" id="script-settings-for-worklets:concept-settings-object-referrer-policy">referrer policy</a>.<li><p>Let <var>inheritedEmbedderPolicy</var> be <var>outsideSettings</var>'s <a href="webappapis.html#concept-settings-object-embedder-policy" id="script-settings-for-worklets:concept-settings-object-embedder-policy">embedder policy</a>.<li><p>Let <var>realm</var> be the value of <var>executionContext</var>'s Realm component.<li><p>Let <var>workletGlobalScope</var> be <var>realm</var>'s <a href="webappapis.html#concept-realm-global" id="script-settings-for-worklets:concept-realm-global">global object</a>.<li><p>Let <var>settingsObject</var> be a new <a id="script-settings-for-worklets:environment-settings-object-2" href="webappapis.html#environment-settings-object">environment settings object</a> whose algorithms are defined as follows:</p>
+
+    <dl><dt>The <a id="script-settings-for-worklets:realm-execution-context" href="webappapis.html#realm-execution-context">realm execution context</a><dd><p>Return <var>executionContext</var>.</p>
+     <dt>The <a href="webappapis.html#concept-settings-object-module-map" id="script-settings-for-worklets:concept-settings-object-module-map">module map</a><dd><p>Return <var>workletGlobalScope</var>'s <a href="#concept-workletglobalscope-module-map" id="script-settings-for-worklets:concept-workletglobalscope-module-map">module map</a>.</p>
+     <dt>The <a id="script-settings-for-worklets:responsible-document" href="webappapis.html#responsible-document">responsible document</a><dd><p>Not applicable (the <a id="script-settings-for-worklets:responsible-event-loop" href="webappapis.html#responsible-event-loop">responsible event loop</a> is not a <a id="script-settings-for-worklets:window-event-loop" href="webappapis.html#window-event-loop">window event loop</a>).<dt>The <a id="script-settings-for-worklets:api-url-character-encoding" href="webappapis.html#api-url-character-encoding">API URL character encoding</a><dd><p>Return <a id="script-settings-for-worklets:utf-8" href="https://triple-underscore.github.io/Encoding-ja.html#utf-8" data-x-internal="utf-8">UTF-8</a>.</p>
+     <dt>The <a id="script-settings-for-worklets:api-base-url-2" href="webappapis.html#api-base-url">API base URL</a><dd><p>Return <var>inheritedAPIBaseURL</var>.</p>
+
+      <p class="note">Unlike workers or other globals derived from a single resource, worklets have no primary resource; instead, multiple scripts, each with their own URL, are loaded into the global scope via <code id="script-settings-for-worklets:dom-worklet-addmodule"><a href="#dom-worklet-addmodule">worklet.addModule()</a></code>. So this <a id="script-settings-for-worklets:api-base-url-3" href="webappapis.html#api-base-url">API base URL</a> is rather unlike that of other globals. However, so far this doesn't matter, as no APIs available to worklet code make use of the <a id="script-settings-for-worklets:api-base-url-4" href="webappapis.html#api-base-url">API base URL</a>.</p>
+     <dt>The <a href="webappapis.html#concept-settings-object-origin" id="script-settings-for-worklets:concept-settings-object-origin">origin</a><dd><p>Return <var>origin</var>.</p>
+     <dt>The <a href="webappapis.html#concept-settings-object-referrer-policy" id="script-settings-for-worklets:concept-settings-object-referrer-policy-2">referrer policy</a><dd><p>Return <var>inheritedReferrerPolicy</var>.</p>
+     <dt>The <a href="webappapis.html#concept-settings-object-embedder-policy" id="script-settings-for-worklets:concept-settings-object-embedder-policy-2">embedder policy</a><dd><p>Return <var>inheritedEmbedderPolicy</var>.</p>
+     <dt>The <a href="webappapis.html#concept-settings-object-cross-origin-isolated-capability" id="script-settings-for-worklets:concept-settings-object-cross-origin-isolated-capability">cross-origin isolated capability</a><dd><p>Return <span class="XXX">TODO</span>.</dl>
+   <li><p>Set <var>settingsObject</var>'s <a href="webappapis.html#concept-environment-id" id="script-settings-for-worklets:concept-environment-id">id</a> to a new unique opaque string, <a href="webappapis.html#concept-environment-creation-url" id="script-settings-for-worklets:concept-environment-creation-url">creation URL</a> to <var>inheritedAPIBaseURL</var>, <a id="script-settings-for-worklets:concept-environment-top-level-creation-url" href="webappapis.html#concept-environment-top-level-creation-url">top-level creation URL</a> to null, <a id="script-settings-for-worklets:concept-environment-top-level-origin" href="webappapis.html#concept-environment-top-level-origin">top-level origin</a> to <var>outsideSettings</var>'s <a id="script-settings-for-worklets:concept-environment-top-level-origin-2" href="webappapis.html#concept-environment-top-level-origin">top-level origin</a>, <a href="webappapis.html#concept-environment-target-browsing-context" id="script-settings-for-worklets:concept-environment-target-browsing-context">target browsing context</a> to null, and <a href="webappapis.html#concept-environment-active-service-worker" id="script-settings-for-worklets:concept-environment-active-service-worker">active service worker</a> to null.<li><p>Set <var>realm</var>'s [[HostDefined]] field to <var>settingsObject</var>.<li><p>Return <var>settingsObject</var>.</ol>
+
+  
+
+  <h4 id="worklets-worklet"><span class="secno">11.3.2</span> The <code id="worklets-worklet:worklet"><a href="#worklet">Worklet</a></code> class<a href="#worklets-worklet" class="self-link"></a></h4><div class="mdn-anno wrapped"><button onclick="toggleStatus(this)" class="mdn-anno-btn"><span>MDN</span></button><div class="feature"><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Worklet" title="The Worklet interface is a lightweight version of Web Workers and gives developers access to low-level parts of the rendering pipeline. With Worklets, you can run JavaScript and WebAssembly code to do graphics rendering or audio processing where high performance is required.The Worklet interface is a lightweight version of Web Workers and gives developers access to low-level parts of the rendering pipeline.">Worklet</a><div class="support"><span class="firefox yes"><span>Firefox</span><span>76+</span></span><span class="safari no"><span>Safari</span><span>No</span></span><span class="chrome yes"><span>Chrome</span><span>65+</span></span><hr><span class="opera yes"><span>Opera</span><span>52+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span><hr><span class="edge no"><span>Edge (Legacy)</span><span>No</span></span><span class="ie no"><span>Internet Explorer</span><span>No</span></span><hr><span class="firefox_android yes"><span>Firefox Android</span><span>79+</span></span><span class="safari_ios no"><span>Safari iOS</span><span>No</span></span><span class="chrome_android yes"><span>Chrome Android</span><span>65+</span></span><span class="webview_android yes"><span>WebView Android</span><span>65+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>9.0+</span></span><span class="opera_android yes"><span>Opera Android</span><span>47+</span></span></div></div></div>
+
+  <p>The <code id="worklet-dev"><a href="#worklet">Worklet</a></code> class provides the capability to add module scripts into its associated <code id="worklets-worklet:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s. The user agent can then create classes registered on the <code id="worklets-worklet:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s and invoke their methods.</p>
+
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->, <c- g>SecureContext</c->]
+<c- b>interface</c-> <dfn id='worklet' data-dfn-type='interface'><c- g>Worklet</c-></dfn> {
+  [<c- g>NewObject</c->] <c- b>Promise</c->&lt;<c- b>undefined</c->> <a href='#dom-worklet-addmodule' id='worklets-worklet:dom-worklet-addmodule'><c- g>addModule</c-></a>(<c- b>USVString</c-> <c- g>moduleURL</c->, <c- b>optional</c-> <a href='#workletoptions' id='worklets-worklet:workletoptions'><c- n>WorkletOptions</c-></a> <c- g>options</c-> = {});
+};
+
+<c- b>dictionary</c-> <dfn id='workletoptions' data-dfn-type='dictionary'><c- g>WorkletOptions</c-></dfn> {
+  <a id='worklets-worklet:requestcredentials' href='https://triple-underscore.github.io/Fetch-ja.html#requestcredentials' data-x-internal='requestcredentials'><c- n>RequestCredentials</c-></a> <dfn data-dfn-for='WorkletOptions' id='dom-workletoptions-credentials' data-dfn-type='dict-member'><c- g>credentials</c-></dfn> = "same-origin";
+};</code></pre>
+
+  <p>Specifications that create <code id="worklets-worklet:worklet-2"><a href="#worklet">Worklet</a></code> instances must specify the following for a given instance:</p>
+
+  <ul><li><p>its <dfn id="worklet-global-scope-type" data-export="">worklet global scope type</dfn>, which must be a Web IDL type that <a href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-inherit" id="worklets-worklet:inherit" data-x-internal="inherit">inherits</a> from <code id="worklets-worklet:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code>; and<li><p>its <dfn id="worklet-destination-type" data-export="">worklet destination type</dfn>, which must be a <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination" id="worklets-worklet:concept-request-destination" data-x-internal="concept-request-destination">destination</a>, and is used when fetching scripts.</ul>
+
+  <dl class="domintro"><dt><code>await <var>worklet</var> . <a href="#dom-worklet-addmodule" id="dom-worklet-addmodule-dev">addModule</a>(<var>moduleURL</var>[, { <a href="#dom-workletoptions-credentials" id="worklets-worklet:dom-workletoptions-credentials">credentials</a> }])</code><dd><p>Loads and executes the <a id="worklets-worklet:module-script" href="webappapis.html#module-script">module script</a> given by <var>moduleURL</var> into all of <var>worklet</var>'s <a href="#concept-worklet-global-scopes" id="worklets-worklet:concept-worklet-global-scopes">global scopes</a>. It can also create additional global scopes as part of this process, depending on the worklet type. The returned promise will fulfill once the script has been successfully loaded and run in all global scopes.</p>
+
+    <p>The <code id="worklets-worklet:dom-workletoptions-credentials-2"><a href="#dom-workletoptions-credentials">credentials</a></code> option can be set to a <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode" id="worklets-worklet:concept-request-credentials-mode" data-x-internal="concept-request-credentials-mode">credentials mode</a> to modify the script-fetching process. It defaults to "<code>same-origin</code>".</p>
+
+    <p>Any failures in <a href="webappapis.html#fetch-a-worklet-script-graph" id="worklets-worklet:fetch-a-worklet-script-graph">fetching</a> the script or its dependencies will cause the returned promise to be rejected with an <a id="worklets-worklet:aborterror" href="https://triple-underscore.github.io/WebIDL-ja.html#aborterror" data-x-internal="aborterror">"<code>AbortError</code>"</a> <code id="worklets-worklet:domexception"><a data-x-internal="domexception" href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException">DOMException</a></code>. Any errors in parsing the script or its dependencies will cause the returned promise to be rejected with the exception generated during parsing.</p>
+   </dl>
+
+  
+
+  <p>A <code id="worklets-worklet:worklet-3"><a href="#worklet">Worklet</a></code> has a <a id="worklets-worklet:list" href="https://triple-underscore.github.io/infra-ja.html#list" data-x-internal="list">list</a> of <dfn data-dfn-for="Worklet" id="concept-worklet-global-scopes" data-export="">global scopes</dfn>, which contains instances of the <code id="worklets-worklet:worklet-4"><a href="#worklet">Worklet</a></code>'s <a href="#worklet-global-scope-type" id="worklets-worklet:worklet-global-scope-type">worklet global scope type</a>. It is initially empty.</p>
+
+  <p>A <code id="worklets-worklet:worklet-5"><a href="#worklet">Worklet</a></code> has an <dfn id="concept-worklet-added-modules-list">added modules list</dfn>, which is a <a id="worklets-worklet:list-2" href="https://triple-underscore.github.io/infra-ja.html#list" data-x-internal="list">list</a> of <a href="https://triple-underscore.github.io/URL-ja.html#concept-url" id="worklets-worklet:url" data-x-internal="url">URLs</a>, initially empty. Access to this list should be thread-safe.</p>
+
+  <p>A <code id="worklets-worklet:worklet-6"><a href="#worklet">Worklet</a></code> has a <dfn id="concept-worklet-module-responses-map">module responses map</dfn>, which is an <a id="worklets-worklet:ordered-map" href="https://triple-underscore.github.io/infra-ja.html#ordered-map" data-x-internal="ordered-map">ordered map</a> from <a href="https://triple-underscore.github.io/URL-ja.html#concept-url" id="worklets-worklet:url-2" data-x-internal="url">URLs</a> to <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="worklets-worklet:concept-response" data-x-internal="concept-response">responses</a>, initially empty. Access to this map should be thread-safe.</p>
+
+  <div class="note"><p>The <a href="#concept-worklet-added-modules-list" id="worklets-worklet:concept-worklet-added-modules-list">added modules list</a> and <a href="#concept-worklet-module-responses-map" id="worklets-worklet:concept-worklet-module-responses-map">module responses map</a> exist to ensure that <code id="worklets-worklet:workletglobalscope-4"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s created at different times get equivalent <a href="webappapis.html#module-script" id="worklets-worklet:module-script-2">module scripts</a> run in them, based on the same source text. This allows the creation of additional <code id="worklets-worklet:workletglobalscope-5"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s to be transparent to the author.</p>
+
+   <p>In practice, user agents are not expected to implement these data structures, and the algorithms that consult them, using thread-safe programming techniques. Instead, when <code id="worklets-worklet:dom-worklet-addmodule-2"><a href="#dom-worklet-addmodule">addModule()</a></code> is called, user agents can fetch the module graph on the main thread, and send the fetched source text (i.e., the important data contained in the <a href="#concept-worklet-module-responses-map" id="worklets-worklet:concept-worklet-module-responses-map-2">module responses map</a>) to each thread which has a <code id="worklets-worklet:workletglobalscope-6"><a href="#workletglobalscope">WorkletGlobalScope</a></code>.</p>
+
+   <p>Then, when a user agent <a href="#create-a-worklet-global-scope" id="worklets-worklet:create-a-worklet-global-scope">creates</a> a new <code id="worklets-worklet:workletglobalscope-7"><a href="#workletglobalscope">WorkletGlobalScope</a></code> for a given <code id="worklets-worklet:worklet-7"><a href="#worklet">Worklet</a></code>, it can simply send the map of fetched source text and the list of entry points from the main thread to the thread containing the new <code id="worklets-worklet:workletglobalscope-8"><a href="#workletglobalscope">WorkletGlobalScope</a></code>.</p>
+  </div>
+
+  <div class="mdn-anno wrapped before"><button onclick="toggleStatus(this)" class="mdn-anno-btn"><span>MDN</span></button><div class="feature"><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Worklet/addModule" title="The addModule() method of the Worklet interface loads the module in the given JavaScript file and adds it to the current Worklet.">Worklet/addModule</a><div class="support"><span class="firefox yes"><span>Firefox</span><span>76+</span></span><span class="safari no"><span>Safari</span><span>No</span></span><span class="chrome yes"><span>Chrome</span><span>65+</span></span><hr><span class="opera yes"><span>Opera</span><span>52+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span><hr><span class="edge no"><span>Edge (Legacy)</span><span>No</span></span><span class="ie no"><span>Internet Explorer</span><span>No</span></span><hr><span class="firefox_android yes"><span>Firefox Android</span><span>79+</span></span><span class="safari_ios no"><span>Safari iOS</span><span>No</span></span><span class="chrome_android yes"><span>Chrome Android</span><span>65+</span></span><span class="webview_android yes"><span>WebView Android</span><span>65+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>9.0+</span></span><span class="opera_android yes"><span>Opera Android</span><span>47+</span></span></div></div></div><p>The <dfn data-dfn-for="Worklet" id="dom-worklet-addmodule" data-dfn-type="method"><code>addModule(<var>moduleURL</var>, <var>options</var>)</code></dfn> method steps are:</p>
+
+  <ol><li><p>Let <var>outsideSettings</var> be the <a id="worklets-worklet:relevant-settings-object" href="webappapis.html#relevant-settings-object">relevant settings object</a> of <a id="worklets-worklet:this" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>.<li><p><a href="urls-and-fetching.html#parse-a-url" id="worklets-worklet:parse-a-url">Parse</a> <var>moduleURL</var> relative to <var>outsideSettings</var>.<li><p>If this fails, then return a promise rejected with a <a id="worklets-worklet:syntaxerror" href="https://triple-underscore.github.io/WebIDL-ja.html#syntaxerror" data-x-internal="syntaxerror">"<code>SyntaxError</code>"</a> <code id="worklets-worklet:domexception-2"><a data-x-internal="domexception" href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException">DOMException</a></code>.<li><p>Let <var>moduleURLRecord</var> be the <a id="worklets-worklet:resulting-url-record" href="urls-and-fetching.html#resulting-url-record">resulting URL record</a>.<li><p>Let <var>promise</var> be a new promise.<li><p>Run the following steps <a id="worklets-worklet:in-parallel" href="infrastructure.html#in-parallel">in parallel</a>:</p>
+
+    <ol><li><p>If <a id="worklets-worklet:this-2" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-worklet-global-scopes" id="worklets-worklet:concept-worklet-global-scopes-2">global scopes</a> <a href="https://triple-underscore.github.io/infra-ja.html#list-empty" id="worklets-worklet:list-is-empty" data-x-internal="list-is-empty">is empty</a>, then:</p>
+
+      <ol><li><p><a href="#create-a-worklet-global-scope" id="worklets-worklet:create-a-worklet-global-scope-2">Create a worklet global scope</a> given <a id="worklets-worklet:this-3" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>.<li><p>Optionally, <a href="#create-a-worklet-global-scope" id="worklets-worklet:create-a-worklet-global-scope-3">create</a> additional global scope instances given <a id="worklets-worklet:this-4" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>, depending on the specific worklet in question and its specification.<li><p>Wait for all steps of the <a href="#create-a-worklet-global-scope" id="worklets-worklet:create-a-worklet-global-scope-4">creation</a> process(es) — including those taking place within the <a href="webappapis.html#worklet-agent" id="worklets-worklet:worklet-agent">worklet agents</a> — to complete, before moving on.</ol>
+     <li><p>Let <var>pendingTasks</var> be <a id="worklets-worklet:this-5" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-worklet-global-scopes" id="worklets-worklet:concept-worklet-global-scopes-3">global scopes</a>'s <a href="https://triple-underscore.github.io/infra-ja.html#list-size" id="worklets-worklet:list-size" data-x-internal="list-size">size</a>.<li><p>Let <var>addedSuccessfully</var> be false.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-iterate" id="worklets-worklet:list-iterate" data-x-internal="list-iterate">For each</a> <var>workletGlobalScope</var> of <a id="worklets-worklet:this-6" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-worklet-global-scopes" id="worklets-worklet:concept-worklet-global-scopes-4">global scopes</a>, <a id="worklets-worklet:queue-a-global-task" href="webappapis.html#queue-a-global-task">queue a global task</a> on the <a id="worklets-worklet:networking-task-source" href="webappapis.html#networking-task-source">networking task source</a> given <var>workletGlobalScope</var> to perform the following steps:</p>
+
+      <ol><li><p><a id="worklets-worklet:fetch-a-worklet-script-graph-2" href="webappapis.html#fetch-a-worklet-script-graph">Fetch a worklet script graph</a> given <var>moduleURLRecord</var>, <var>outsideSettings</var>, <a id="worklets-worklet:this-7" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#worklet-destination-type" id="worklets-worklet:worklet-destination-type">worklet destination type</a>, <var>options</var>["<code id="worklets-worklet:dom-workletoptions-credentials-3"><a href="#dom-workletoptions-credentials">credentials</a></code>"], <var>workletGlobalScope</var>'s <a id="worklets-worklet:relevant-settings-object-2" href="webappapis.html#relevant-settings-object">relevant settings object</a>, and <a id="worklets-worklet:this-8" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-worklet-module-responses-map" id="worklets-worklet:concept-worklet-module-responses-map-3">module responses map</a>. Wait until the algorithm asynchronously completes with <var>script</var>.</p>
+
+        <p class="note">Only the first of these fetches will actually perform a network request; the ones for other <code id="worklets-worklet:workletglobalscope-9"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s will reuse reuse <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="worklets-worklet:concept-response-2" data-x-internal="concept-response">responses</a> from <a id="worklets-worklet:this-9" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-worklet-module-responses-map" id="worklets-worklet:concept-worklet-module-responses-map-4">module responses map</a>.</p>
+       <li><p>If <var>script</var> is null, then:</p>
+
+        <ol><li><p><a id="worklets-worklet:queue-a-global-task-2" href="webappapis.html#queue-a-global-task">Queue a global task</a> on the <a id="worklets-worklet:networking-task-source-2" href="webappapis.html#networking-task-source">networking task source</a> given <a id="worklets-worklet:this-10" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a id="worklets-worklet:concept-relevant-global" href="webappapis.html#concept-relevant-global">relevant global object</a> to perform the following steps:</p>
+
+          <ol><li><p>If <var>pendingTasks</var> is not −1, then:</p>
+
+            <ol><li><p>Set <var>pendingTasks</var> to −1.<li><p>Reject <var>promise</var> with an <a id="worklets-worklet:aborterror-2" href="https://triple-underscore.github.io/WebIDL-ja.html#aborterror" data-x-internal="aborterror">"<code>AbortError</code>"</a> <code id="worklets-worklet:domexception-3"><a data-x-internal="domexception" href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException">DOMException</a></code>.</ol>
+           </ol>
+         <li><p>Abort these steps.</ol>
+       <li><p>If <var>script</var>'s <a href="webappapis.html#concept-script-error-to-rethrow" id="worklets-worklet:concept-script-error-to-rethrow">error to rethrow</a> is not null, then:</p>
+
+        <ol><li><p><a id="worklets-worklet:queue-a-global-task-3" href="webappapis.html#queue-a-global-task">Queue a global task</a> on the <a id="worklets-worklet:networking-task-source-3" href="webappapis.html#networking-task-source">networking task source</a> given <a id="worklets-worklet:this-11" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a id="worklets-worklet:concept-relevant-global-2" href="webappapis.html#concept-relevant-global">relevant global object</a> to perform the following steps:</p>
+
+          <ol><li><p>If <var>pendingTasks</var> is not −1, then:</p>
+
+            <ol><li><p>Set <var>pendingTasks</var> to −1.<li><p>Reject <var>promise</var> with <var>script</var>'s <a href="webappapis.html#concept-script-error-to-rethrow" id="worklets-worklet:concept-script-error-to-rethrow-2">error to rethrow</a>.</ol>
+           </ol>
+         <li><p>Abort these steps.</ol>
+       <li><p>If <var>addedSuccessfully</var> is false, then:</p>
+
+        <ol><li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="worklets-worklet:list-append" data-x-internal="list-append">Append</a> <var>moduleURLRecord</var> to <a id="worklets-worklet:this-12" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-worklet-added-modules-list" id="worklets-worklet:concept-worklet-added-modules-list-2">added modules list</a>.<li><p>Set <var>addedSuccessfully</var> to true.</ol>
+       <li><p><a id="worklets-worklet:run-a-module-script" href="webappapis.html#run-a-module-script">Run a module script</a> given <var>script</var>.<li><p><a id="worklets-worklet:queue-a-global-task-4" href="webappapis.html#queue-a-global-task">Queue a global task</a> on the <a id="worklets-worklet:networking-task-source-4" href="webappapis.html#networking-task-source">networking task source</a> given <a id="worklets-worklet:this-13" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a id="worklets-worklet:concept-relevant-global-3" href="webappapis.html#concept-relevant-global">relevant global object</a> to perform the following steps:</p>
+
+        <ol><li><p>If <var>pendingTasks</var> is not −1, then:</p>
+
+          <ol><li><p>Set <var>pendingTasks</var> to <var>pendingTasks</var> − 1.<li><p>If <var>pendingTasks</var> is 0, then resolve <var>promise</var>.</ol>
+         </ol>
+       </ol>
+     </ol>
+   <li><p>Return <var>promise</var>.</ol>
+
+  
+
+  <h4 id="worklets-lifetime"><span class="secno">11.3.3</span> The worklet's lifetime<a href="#worklets-lifetime" class="self-link"></a></h4>
+
+  <p>The lifetime of a <code id="worklets-lifetime:worklet"><a href="#worklet">Worklet</a></code> has no special considerations; it is tied to the object it belongs to, such as the <code id="worklets-lifetime:window"><a href="window-object.html#window">Window</a></code>.</p>
+
+  
+
+  <p>Each <code id="worklets-lifetime:document"><a href="dom.html#document">Document</a></code> has a <dfn id="concept-document-worklet-global-scopes">worklet global scopes</dfn>, which is a <a id="worklets-lifetime:set" href="https://triple-underscore.github.io/infra-ja.html#ordered-set" data-x-internal="set">set</a> of <code id="worklets-lifetime:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s, initially empty.</p>
+
+  
+
+  <p>The lifetime of a <code id="worklets-lifetime:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code> is, at a minimum, tied to the <code id="worklets-lifetime:document-2"><a href="dom.html#document">Document</a></code> whose <a href="#concept-document-worklet-global-scopes" id="worklets-lifetime:concept-document-worklet-global-scopes">worklet global scopes</a> contain it. In particular, <a href="window-object.html#discard-a-document" id="worklets-lifetime:discard-a-document">discarding</a> the <code id="worklets-lifetime:document-3"><a href="dom.html#document">Document</a></code> will <a href="#terminate-a-worklet-global-scope" id="worklets-lifetime:terminate-a-worklet-global-scope">terminate</a> the corresponding <code id="worklets-lifetime:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code> and allow it to be garbage-collected.</p>
+
+  <p>Additionally, user agents may, at any time, <a href="#terminate-a-worklet-global-scope" id="worklets-lifetime:terminate-a-worklet-global-scope-2">terminate</a> a given <code id="worklets-lifetime:workletglobalscope-4"><a href="#workletglobalscope">WorkletGlobalScope</a></code>, unless the specification defining the corresponding worklet type says otherwise. For example, they might terminate them if the <a id="worklets-lifetime:worklet-agent" href="webappapis.html#worklet-agent">worklet agent</a>'s <a href="webappapis.html#concept-agent-event-loop" id="worklets-lifetime:concept-agent-event-loop">event loop</a> has no <a href="webappapis.html#concept-task" id="worklets-lifetime:concept-task">tasks</a> queued, or if the user agent has no pending operations planning to make use of the worklet, or if the user agent detects abnormal operations such as infinite loops or callbacks exceeding imposed time limits.</p>
+
+  <p>Finally, specifications for specific worklet types can give more specific details on when to <a href="#create-a-worklet-global-scope" id="worklets-lifetime:create-a-worklet-global-scope">create</a> <code id="worklets-lifetime:workletglobalscope-5"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s for a given worklet type. For example, they might create them during specific processes that call upon worklet code, as in the <a href="#worklets-example-registering">example</a>.</p>
+
+  <nav><a href="workers.html">← 10 Web workers</a> — <a href="./">目次</a> — <a href="webstorage.html">12 Web storage →</a></nav>
