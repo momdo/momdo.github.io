@@ -10,7 +10,7 @@
   <script async="" crossorigin="" src="./html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">27 April 2021</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">28 April 2021</span></h2></hgroup>
    
    
 
@@ -394,6 +394,7 @@
 <c- f>dd </c-><c- p>{</c-> <c- k>margin-inline-start</c-><c- p>:</c-> <c- m>40</c-><c- l>px</c-><c- p>;</c-> <c- p>}</c->
 <c- f>dir, menu, ol, ul </c-><c- p>{</c-> <c- k>padding-inline-start</c-><c- p>:</c-> <c- m>40</c-><c- l>px</c-><c- p>;</c-> <c- p>}</c->
 
+<c- f>ol, ul, menu </c-><c- p>{</c-> <c- k>counter-reset</c-><c- p>:</c-> list-item<c- p>;</c-> <c- p>}</c->
 <c- f>ol </c-><c- p>{</c-> <c- k>list-style-type</c-><c- p>:</c-> decimal<c- p>;</c-> <c- p>}</c->
 
 <c- f>dir, menu, ul </c-><c- p>{</c->
@@ -422,7 +423,22 @@
 
   <p>When rendering <code id="lists:the-li-element"><a href="grouping-content.html#the-li-element">li</a></code> elements, non-CSS user agents are expected to use the <a id="lists:ordinal-value" href="grouping-content.html#ordinal-value">ordinal value</a> of the <code id="lists:the-li-element-2"><a href="grouping-content.html#the-li-element">li</a></code> element to render the counter in the list item marker.</p>
 
-  <p id="css-list-rendering" class="critical">This specification does not yet define the CSS-specific rules for rendering <code id="lists:the-li-element-3"><a href="grouping-content.html#the-li-element">li</a></code> elements, because CSS doesn't yet provide sufficient hooks for this purpose.</p>
+  <p id="css-list-rendering">For CSS user agents, some aspects of rendering <a href="https://drafts.csswg.org/css-lists/#list-item" id="lists:css-list-item" data-x-internal="css-list-item">list items</a> are defined by the <cite>CSS Lists</cite> specification. Additionally, the following attribute mappings are expected to apply: <a href="references.html#refsCSSLISTS">[CSSLISTS]</a></p>
+
+  <p>When an <code id="lists:the-li-element-3"><a href="grouping-content.html#the-li-element">li</a></code> element has a <code id="lists:attr-li-value"><a href="grouping-content.html#attr-li-value">value</a></code> attribute, and parsing that attribute's value using the <a id="lists:rules-for-parsing-integers" href="common-microsyntaxes.html#rules-for-parsing-integers">rules for parsing integers</a> doesn't generate an error, the user agent is expected to use the parsed value <var>value</var> as a <a href="#presentational-hints" id="lists:presentational-hints-2">presentational hint</a> for the <a id="lists:'counter-set'" href="https://drafts.csswg.org/css-lists/#propdef-counter-set" data-x-internal="'counter-set'">'counter-set'</a> property of the form <code>list-item <var>value</var></code>.</p>
+
+  <p>When an <code id="lists:the-ol-element"><a href="grouping-content.html#the-ol-element">ol</a></code> element has a <code id="lists:attr-ol-start"><a href="grouping-content.html#attr-ol-start">start</a></code> attribute or a <code id="lists:attr-ol-reversed"><a href="grouping-content.html#attr-ol-reversed">reversed</a></code> attribute, or both, the user agent is expected to use the following steps to treat the attributes as a <a href="#presentational-hints" id="lists:presentational-hints-3">presentational hint</a> for the <a id="lists:'counter-reset'" href="https://drafts.csswg.org/css-lists/#propdef-counter-reset" data-x-internal="'counter-reset'">'counter-reset'</a> property:</p>
+
+  <ol><li><p>Let <var>value</var> be null.<li><p>If the element has a <code id="lists:attr-ol-start-2"><a href="grouping-content.html#attr-ol-start">start</a></code> attribute, then set <var>value</var> to the result of parsing the attribute's value using the <a id="lists:rules-for-parsing-integers-2" href="common-microsyntaxes.html#rules-for-parsing-integers">rules for parsing integers</a>.<li><p>If the element has a <code id="lists:attr-ol-reversed-2"><a href="grouping-content.html#attr-ol-reversed">reversed</a></code> attribute, then:</p>
+
+    <ol><li><p>If <var>value</var> is an integer, then increment <var>value</var> by 1 and return <code>reversed(list-item) <var>value</var></code>.<li><p>Otherwise, return <code>reversed(list-item)</code>.</p>
+
+      <p class="note">Either the <code id="lists:attr-ol-start-3"><a href="grouping-content.html#attr-ol-start">start</a></code> attribute was absent, or parsing its value resulted in an error.</p>
+     </ol>
+   <li><p>Otherwise:</p>
+
+    <ol><li><p>If <var>value</var> is an integer, then decrement <var>value</var> by 1 and return <code>list-item <var>value</var></code>.<li><p>Otherwise, there is no <a href="#presentational-hints" id="lists:presentational-hints-4">presentational hint</a>.</ol>
+   </ol>
 
 
   <h4 id="tables-2"><span class="secno">15.3.8</span> Tables<a href="#tables-2" class="self-link"></a></h4>
