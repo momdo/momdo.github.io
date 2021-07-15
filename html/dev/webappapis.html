@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Developer's Edition — Last Updated <span class="pubdate">13 July 2021</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Developer's Edition — Last Updated <span class="pubdate">14 July 2021</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -198,9 +198,9 @@
     <p>この構文は、<span>モジュールスクリプト</span>内でのみ使用できる。</p>
    </dl>
 
-  <p><span>モジュールマップ</span>は、インポートされたJavaScriptモジュールが<code>Document</code>または<a href="workers.html#workers">ワーカー</a>ごとに1回だけフェッチ、解析、および評価されることを保証するために使用される。</p>
+  <p><span>Module maps</span> are used to ensure that imported module scripts are only fetched, parsed, and evaluated once per <code>Document</code> or <a href="workers.html#workers">worker</a>.</p>
 
-  <div class="example"><p><span>モジュールマップ</span>はURLによって入力されるため、次のコードは3つの異なるURLをもたらすため、<span>モジュールマップ</span>に3つの個別エントリーを作成する：</p>
+  <div class="example"><p>Since <span>module maps</span> are keyed by (URL, module type), the following code will create three separate entries in the <span>module map</span>, since it results in three different (URL, module type) <a href="https://triple-underscore.github.io/infra-ja.html#tuple" id="integration-with-the-javascript-module-system:tuple" data-x-internal="tuple">tuples</a> (all with "<code>javascript</code>" type):</p>
 
    <pre><code class='js'><c- k>import</c-> <c- u>"https://example.com/module.mjs"</c-><c- p>;</c->
 <c- k>import</c-> <c- u>"https://example.com/module.mjs#map-buster"</c-><c- p>;</c->
@@ -218,6 +218,20 @@
    <p>そのため、この2番目の例では、1つのフェッチと1つのモジュール評価のみが発生する。</p>
 
    <p>この動作は、<a href="workers.html#sharedworker" id="integration-with-the-javascript-module-system:sharedworker">共有ワーカー</a>が解析された<span>コンストラクターURL</span>によって入力される方法と同じであることに注意する。</p>
+  </div>
+
+  <div class="example"><p>Since module type is also part of the <span>module map</span> key, the following code will create two separate entries in the <span>module map</span> (the type is "<code>javascript</code>" for the first, and "<code>css</code>" for the second):<pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>></c->
+  <c- k>import</c-> <c- u>"https://example.com/module"</c-><c- p>;</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>></c->
+  <c- k>import</c-> <c- u>"https://example.com/module"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"css"</c-> <c- p>};</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
+
+   <p>This can result in two separate fetches and two separate module evaluations being performed. This is a <a id="integration-with-the-javascript-module-system:willful-violation" href="introduction.html#willful-violation">willful violation</a> of a constraint recommended (but not required) by the import assertions specification stating that each call to <span>HostResolveImportedModule</span> with the same (<var>referencingScriptOrModule</var>, <var>moduleRequest</var>.[[Specifier]]) pair must return the same <a href="https://tc39.es/ecma262/#sec-source-text-module-records" id="integration-with-the-javascript-module-system:source-text-module-record" data-x-internal="source-text-module-record">Module Record</a>. <a href="references.html#refsJSIMPORTASSERTIONS">[JSIMPORTASSERTIONS]</a></p>
+
+   <p class="XXX">In practice, due to the as-yet-unspecified memory cache (see issue <a href="https://github.com/whatwg/html/issues/6110">#6110</a>) the resource may only be fetched once in WebKit and Blink-based browsers. Additionally, as long as all module types are mutually exclusive, the module type check in <span>fetch a single module script</span> will fail for at least one of the imports, so at most one module evaluation will occur.</p>
+
+   <p>The purpose of including the type in the <span>module map</span> key is so that an import with the wrong type assertion does not prevent a different import of the same specifier but with the correct type from succeeding.</p>
   </div>
 
   
