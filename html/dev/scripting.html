@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">28 July 2021</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">30 July 2021</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -65,6 +65,8 @@
   <p>インライン<code id="the-script-element:the-script-element-3"><a href="#the-script-element">script</a></code>要素、または外部スクリプトリソースのコンテンツは、それぞれ<span>クラシックスクリプト</span>および<span>JavaScriptモジュールスクリプト</span>に対するJavaScript仕様の<i id="the-script-element:js-prod-script-2"><a data-x-internal="js-prod-script" href="https://tc39.es/ecma262/#prod-Script">Script</a></i>または<i id="the-script-element:js-prod-module-2"><a data-x-internal="js-prod-module" href="https://tc39.es/ecma262/#prod-Module">Module</a></i>生成物の要件に適合しなければならない。<a href="references.html#refsJAVASCRIPT">[JAVASCRIPT]</a></p>
 
   <p>The contents of the external script resource for <span>CSS module scripts</span> must conform to the requirements of the CSS specification. <a href="references.html#refsCSS">[CSS]</a></p>
+
+  <p><span>JSONモジュールスクリプト</span>の外部スクリプトリソースのコンテンツは、JSON仕様<a href="references.html#refsJSON">[JSON]</a>の要件に準拠しなければならない。</p>
 
   <p><a href="#data-block" id="the-script-element:data-block-2">データブロック</a>を含めるために使用される場合、データは、インラインに埋め込まれなければならず、データの形式は、<code id="the-script-element:attr-script-type-6"><a href="#attr-script-type">type</a></code>属性を使用して指定しなければならず、かつ<code id="the-script-element:the-script-element-4"><a href="#the-script-element">script</a></code>要素のコンテンツは、使用される形式のために定義される要件に適合しなければならない。<code id="the-script-element:attr-script-src-7"><a href="#attr-script-src">src</a></code>、<code id="the-script-element:attr-script-async-4"><a href="#attr-script-async">async</a></code>、<code id="the-script-element:attr-script-nomodule-2"><a href="#attr-script-nomodule">nomodule</a></code>、<code id="the-script-element:attr-script-defer-4"><a href="#attr-script-defer">defer</a></code>、<code id="the-script-element:attr-script-crossorigin-2"><a href="#attr-script-crossorigin">crossorigin</a></code>、<code id="the-script-element:attr-script-integrity-2"><a href="#attr-script-integrity">integrity</a></code>および<code id="the-script-element:attr-script-referrerpolicy-2"><a href="#attr-script-referrerpolicy">referrerpolicy</a></code>属性を指定してはならない。</p>
 
@@ -214,7 +216,22 @@ o<c- p>............</c->A<c- p>....</c->e
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
 
    <p>JavaScriptモジュールスクリプトを使用して得られたいくつかの注目すべき機能は、他のJavaScriptモジュール、デフォルトでstrictモード、およびトップレベル宣言が<span>グローバルオブジェクト</span>に新しいプロパティを導入しない方法から関数をインポートする機能を含む。両方の文書の解析が完了し、およびその依存関係（<code>dom-utils.mjs</code>）がフェッチされかつ評価されるまで、この<code id="the-script-element:the-script-element-19"><a href="#the-script-element">script</a></code>要素が文書に表示されるかを問わず、評価されないことにも注意する。</p>
+  </div>
 
+  <div id="json-module-script-example" class="example"><p>The following sample shows how a <span>JSON module script</span> can be imported from inside a <span>JavaScript module script</span>:</p>
+
+   <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-> <c- e>type</c-><c- o>=</c-><c- s>"module"</c-><c- p>></c->
+ <c- k>import</c-> peopleInSpace from <c- u>"http://api.open-notify.org/astros.json"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"json"</c-> <c- p>};</c->
+
+ <c- a>const</c-> list <c- o>=</c-> document<c- p>.</c->querySelector<c- p>(</c-><c- u>"#people-in-space"</c-><c- p>);</c->
+ <c- k>for</c-> <c- p>(</c-><c- a>const</c-> <c- p>{</c-> craft<c- p>,</c-> name <c- p>}</c-> <c- k>of</c-> peopleInSpace<c- p>.</c->people<c- p>)</c-> <c- p>{</c->
+   <c- a>const</c-> li <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"li"</c-><c- p>);</c->
+   li<c- p>.</c->textContent <c- o>=</c-> <c- sb>`</c-><c- si>${</c->name<c- si>}</c-><c- sb> / </c-><c- si>${</c->craft<c- si>}</c-><c- sb>`</c-><c- p>;</c->
+   list<c- p>.</c->append<c- p>(</c->li<c- p>);</c->
+ <c- p>}</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
+
+   <p>MIME type checking for module scripts is strict. In order for the fetch of the <span>JSON module script</span> to succeed, the HTTP reponse must have a <a id="the-script-element:json-mime-type" href="https://triple-underscore.github.io/mimesniff-ja.html#json-mime-type" data-x-internal="json-mime-type">JSON MIME type</a>, for example <code>Content-Type: text/json</code>. On the other hand, if the <code>assert { type: "json" }</code> part of the statement is omitted, it is assumed that the intent is to import a <span>JavaScript module script</span>, and the fetch will fail if the HTTP response has a MIME type that is not a <a id="the-script-element:javascript-mime-type" href="https://triple-underscore.github.io/mimesniff-ja.html#javascript-mime-type" data-x-internal="javascript-mime-type">JavaScript MIME type</a>.</p>
   </div>
 
   
