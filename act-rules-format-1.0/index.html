@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="dc:language" content="en" lang="">
+    <style>
+        /* --- ISSUES/NOTES --- */
+
+        div.issue-title,
+        div.note-title,
+        div.ednote-title,
+        div.warning-title {
+            padding-right: 1em;
+            min-width: 7.5em;
+            color: #b9ab2d;
+        }
+
+        div.issue-title {
+            color: #e05252;
+        }
+
+        div.note-title,
+        div.ednote-title {
+            color: #2b2;
+        }
+
+        div.warning-title {
+            color: #f22;
+        }
+
+        div.issue-title span,
+        div.note-title span,
+        div.ednote-title span,
+        div.warning-title span {
+            text-transform: uppercase;
+        }
+
+        div.note,
+        div.issue,
+        div.ednote,
+        div.warning {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        .note>p:first-child,
+        .ednote>p:first-child,
+        .issue>p:first-child,
+        .warning>p:first-child {
+            margin-top: 0
+        }
+
+        .issue,
+        .note,
+        .ednote,
+        .warning {
+            padding: .5em;
+            border-left-width: .5em;
+            border-left-style: solid;
+        }
+
+        div.issue,
+        div.note,
+        div.ednote,
+        div.warning {
+            padding: 1em 1.2em 0.5em;
+            margin: 1em 0;
+            position: relative;
+            clear: both;
+        }
+
+        span.note,
+        span.ednote,
+        span.issue,
+        span.warning {
+            padding: .1em .5em .15em;
+        }
+
+        .issue {
+            border-color: #e05252;
+            background: #fbe9e9;
+        }
+
+        .note,
+        .ednote {
+            border-color: #52e052;
+            background: #e9fbe9;
+        }
+
+        .warning {
+            border-color: #f11;
+            border-width: .2em;
+            border-style: solid;
+            background: #fbe9e9;
+        }
+
+        .warning-title:before {
+            content: "⚠";
+            /*U+26A0 WARNING SIGN*/
+            font-size: 3em;
+            float: left;
+            height: 100%;
+            padding-right: .3em;
+            vertical-align: top;
+            margin-top: -0.5em;
+        }
+
+        li.task-list-item {
+            list-style: none;
+        }
+
+        input.task-list-item-checkbox {
+            margin: 0 0.35em 0.25em -1.6em;
+            vertical-align: middle;
+        }
+    </style>
+    <style>
+        /* --- PERMALINKS --- */
+
+        .permalink {
+            width: 1px;
+            height: 1px;
+            overflow: visible;
+            font-size: 10pt;
+            font-style: normal;
+            vertical-align: middle;
+            margin-left: 4px;
+            float: right;
+        }
+
+        .permalink a,
+        .permalink a:link,
+        .permalink a:visited,
+        .permalink a:hover,
+        .permalink a:focus,
+        .permalink a:active {
+            background: transparent !important;
+            text-decoration: none;
+            font-weight: bold;
+            color: #666 !important;
+        }
+
+        .permalink abbr {
+            border: 0;
+        }
+    </style>
+    <title>Accessibility Conformance Testing (ACT) Rules Format 1.0 日本語訳</title>
+    <style id="respec-mainstyle">
+        /*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+        /* Override code highlighter background */
+
+        .hljs {
+            background: transparent !important;
+        }
+        /* --- INLINES --- */
+
+        em.rfc2119 {
+            text-transform: lowercase;
+            font-style: normal;
+            color: #900;
+        }
+
+        h1 abbr,
+        h2 abbr,
+        h3 abbr,
+        h4 abbr,
+        h5 abbr,
+        h6 abbr,
+        a abbr {
+            border: none;
+        }
+
+        dfn {
+            font-weight: bold;
+        }
+
+        a.internalDFN {
+            color: inherit;
+            border-bottom: 1px solid #99c;
+            text-decoration: none;
+        }
+
+        a.externalDFN {
+            color: inherit;
+            border-bottom: 1px dotted #ccc;
+            text-decoration: none;
+        }
+
+        a.bibref {
+            text-decoration: none;
+        }
+
+        cite .bibref {
+            font-style: normal;
+        }
+
+        code {
+            color: #c83500;
+        }
+
+        th code {
+            color: inherit;
+        }
+        /* --- TOC --- */
+
+        .toc a,
+        .tof a {
+            text-decoration: none;
+        }
+
+        a .secno,
+        a .figno {
+            color: #000;
+        }
+
+        ul.tof,
+        ol.tof {
+            list-style: none outside none;
+        }
+
+        .caption {
+            margin-top: 0.5em;
+            font-style: italic;
+        }
+        /* --- TABLE --- */
+
+        table.simple {
+            border-spacing: 0;
+            border-collapse: collapse;
+            border-bottom: 3px solid #005a9c;
+        }
+
+        .simple th {
+            background: #005a9c;
+            color: #fff;
+            padding: 3px 5px;
+            text-align: left;
+        }
+
+        .simple th[scope="row"] {
+            background: inherit;
+            color: inherit;
+            border-top: 1px solid #ddd;
+        }
+
+        .simple td {
+            padding: 3px 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .simple tr:nth-child(even) {
+            background: #f0f6ff;
+        }
+        /* --- DL --- */
+
+        .section dd>p:first-child {
+            margin-top: 0;
+        }
+
+        .section dd>p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section dd {
+            margin-bottom: 1em;
+        }
+
+        .section dl.attrs dd,
+        .section dl.eldef dd {
+            margin-bottom: 0;
+        }
+
+        #issue-summary>ul,
+        .respec-dfn-list {
+            column-count: 2;
+        }
+
+        #issue-summary li,
+        .respec-dfn-list li {
+            list-style: none;
+        }
+
+        details.respec-tests-details {
+            margin-left: 1em;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        details.respec-tests-details>* {
+            padding-right: 2em;
+        }
+
+        details.respec-tests-details[open] {
+            z-index: 999999;
+            position: absolute;
+            border: thin solid #cad3e2;
+            border-radius: .3em;
+            background-color: white;
+            padding-bottom: .5em;
+        }
+
+        details.respec-tests-details[open]>summary {
+            border-bottom: thin solid #cad3e2;
+            padding-left: 1em;
+            margin-bottom: 1em;
+            line-height: 2em;
+        }
+
+        details.respec-tests-details>ul {
+            width: 100%;
+            margin-top: -0.3em;
+        }
+
+        details.respec-tests-details>li {
+            padding-left: 1em;
+        }
+
+        @media print {
+            .removeOnSave {
+                display: none;
+            }
+        }
+    </style>
+    <style>
+        /*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+        .hljs {
+            display: block;
+            overflow-x: auto;
+            padding: 0.5em;
+            color: #333;
+            background: #f8f8f8;
+        }
+
+        .hljs-comment,
+        .hljs-quote {
+            color: #998;
+            font-style: italic;
+        }
+
+        .hljs-keyword,
+        .hljs-selector-tag,
+        .hljs-subst {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .hljs-number,
+        .hljs-literal,
+        .hljs-variable,
+        .hljs-template-variable,
+        .hljs-tag .hljs-attr {
+            color: #008080;
+        }
+
+        .hljs-string,
+        .hljs-doctag {
+            color: #d14;
+        }
+
+        .hljs-title,
+        .hljs-section,
+        .hljs-selector-id {
+            color: #900;
+            font-weight: bold;
+        }
+
+        .hljs-subst {
+            font-weight: normal;
+        }
+
+        .hljs-type,
+        .hljs-class .hljs-title {
+            color: #458;
+            font-weight: bold;
+        }
+
+        .hljs-tag,
+        .hljs-name,
+        .hljs-attribute {
+            color: #000080;
+            font-weight: normal;
+        }
+
+        .hljs-regexp,
+        .hljs-link {
+            color: #009926;
+        }
+
+        .hljs-symbol,
+        .hljs-bullet {
+            color: #990073;
+        }
+
+        .hljs-built_in,
+        .hljs-builtin-name {
+            color: #0086b3;
+        }
+
+        .hljs-meta {
+            color: #999;
+            font-weight: bold;
+        }
+
+        .hljs-deletion {
+            background: #fdd;
+        }
+
+        .hljs-addition {
+            background: #dfd;
+        }
+
+        .hljs-emphasis {
+            font-style: italic;
+        }
+
+        .hljs-strong {
+            font-weight: bold;
+        }
+    </style>
+    <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2016/W3C-REC">
+    <link href="https://www.w3.org/TR/act-rules-format/" rel="canonical">
+  </head>
+  <body class="h-entry">
+    <aside class="notice" style="border-radius: 20px; border: solid lightpink 3px;padding:0 1em;margin-bottom:2em;padding:1em;">
+      <p>この文書は「<a href="https://www.w3.org/TR/2019/REC-act-rules-format-1.0-20191031/">Accessibility Conformance Testing (ACT) Rules Format 1.0</a>（W3C Recommendation <time>2019-10-31</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳による誤りが含まれます。</p>
+      <p>訳者への連絡先、他の仕様の翻訳等については、<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照ください。</p>
+      </aside><script src="./trans-refs.js" async></script>
+    <div class="head"><header>
+        <p data-fill-with="logo"><a href="https://www.w3.org/"><img alt="W3C"
+
+              src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" height="48"
+
+              width="72"></a></p>
+        <h1 class="p-name no-ref" id="title">Accessibility Conformance Testing (ACT) Rules Format 1.0 日本語訳</h1>
+        <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span
+
+            class="content"><abbr title="World Wide Web Consortium">W3C</abbr> Recommendation, <time
+
+              class="dt-updated" datetime="2019-10-31">31 October 2019</time></span></h2>
+      </header>
+      <div data-fill-with="spec-metadata"><dl>
+          <dt>This version:</dt>
+          <dd><a class="u-url" href="https://www.w3.org/TR/2019/REC-act-rules-format-1.0-20191031/">https://www.w3.org/TR/2019/REC-act-rules-format-1.0-20191031/</a></dd>
+          <dt>Latest published version:</dt>
+          <dd><a href="https://www.w3.org/TR/act-rules-format-1.0/">https://www.w3.org/TR/act-rules-format-1.0/</a></dd>
+          <dt>Highest version of ACT Rules Format:</dt>
+          <dd><a href="https://www.w3.org/TR/act-rules-format/">https://www.w3.org/TR/act-rules-format/</a></dd>
+          <dt>Latest editor's draft:</dt>
+          <dd><a href="https://w3c.github.io/wcag-act/act-rules-format.html">https://w3c.github.io/wcag-act/act-rules-format.html</a></dd>
+          <dt>Previous published version:</dt>
+          <dd><a rel="dcterms:replaces" href="https://www.w3.org/TR/2019/PR-act-rules-format-1.0-20190730/">https://www.w3.org/TR/2019/PR-act-rules-format-1.0-20190730/</a></dd>
+          <dt class="editor">Editors:</dt>
+          <dd class="editor p-author h-card vcard"><span class="p-name fn">Wilco Fiers</span> (<span
+
+              class="p-org org">Deque Systems</span>)</dd>
+          <dd class="editor p-author h-card vcard"><span class="p-name fn">Maureen Kraft</span> (<span
+
+              class="p-org org">IBM Corp.</span>)</dd>
+          <dd class="editor p-author h-card vcard"><span class="p-name fn">Mary Jo Mueller</span> (<span
+
+              class="p-org org">IBM Corp.</span>)</dd>
+          <dd class="editor p-author h-card vcard"><span class="p-name fn">Shadi Abou-Zahra</span> (<span
+
+              class="p-org org">W3C</span>)</dd>
+        </dl>
+        <p>Please check the <a href="https://www.w3.org/WAI/GL/task-forces/conformance-testing/errata"><strong>errata</strong></a> for any errors or issues reported since publication.</p>
+        <p class="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a
+
+            href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a
+
+            href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a
+
+            href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a
+
+            href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a
+
+            href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a
+
+            href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a
+
+            href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+      </div>
+      <hr title="Separator for header"> </div>
+    <div class="p-summary" data-fill-with="abstract"><h2 class="no-num no-toc no-ref heading settled" id="abstract"><span
+
+          class="content">概要</span></h2>
+      <p>Accessibility Conformance Testing (ACT) Rules Format 1.0は、アクセシビリティテストルールを記述するためのフォーマットを定義する。このテストルールは、自動テストツールと手動テスト方法の開発に使用することができる。これは、アクセシビリティテストに関与するすべての関係者が、堅牢で理解可能な方法でテスト手順を文書化して共有できるようにする共通の形式を提供する。これにより、アクセシビリティテストツールによって実装されるメソッドを含む、テストメソッドの透明性と調和を可能する。</p>
+    </div>
+    <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">この文書の位置付け</span></h2>
+    <div data-fill-with="status"><p><em>この節は、公開時点におけるこの文書のステータスについて説明する。他の文書がこの文書に取って代わるかもしれない。<abbr
+
+            title="World Wide Web Consortium">W3C</abbr>が現在公開しているリストとテクニカルレポートの最新版は、<a
+
+            href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/で見つけることができる。</em></p>
+      <p>この文書は、<a
+
+          href="https://www.w3.org/2019/Process-20190301/#rec-publication">W3C Recommendation</a>として<a href="https://www.w3.org/WAI/GL/">Accessibility Guidelines Working Group</a>によって発行された。前回の発行以降、変更はない。</p>
+      <p>ワーキンググループは、パブリックコメントを新しいイシューとして提出することを依頼する。個別のコメントごとに1つのイシューとなる。 ACT Rules Format 1.0勧告で受け取ったコメントは、このバージョンの仕様を変更することはできないが、エラッタまたは将来のバージョンで対処される可能性がある。コメントするには、<a
+
+          href="https://github.com/w3c/wcag-act/issues/new"><abbr
+
+            title="World Wide Web Consortium">W3C</abbr> ACT TF GitHubリポジトリにイシューを提出</a>されたい。問題を報告するためのGitHubアカウントを無料で作成できる。GitHubでイシューを提出できない場合は、<a
+
+          href="mailto:public-wcag-act-comments@w3.org?subject=ACT%20Framework%201.0%20public%20comment">public-wcag-act-comments@w3.org</a>（<a
+
+          href="https://lists.w3.org/Archives/Public/public-wcag-act-comments/">コメントアーカイブ</a>）にメールを送信されたい。文書の進行中の更新は、<a
+
+          href="https://github.com/w3c/wcag-act/">公開されている編集者草案</a>で表示できる。</p>
+      <p>この文書は、W3Cメンバー、ソフトウェア開発者、および他のW3Cグループと利害関係者によってレビューされており、W3C勧告としてディレクターによって承認されている。 これは安定した文書であり、参考資料として使用したり、別の文書から引用したりすることができる。勧告を作成する上でのW3Cの役割は、仕様に注意を引き、その広範な展開を促進することである。 これにより、ウェブの機能と相互運用性が強化される。</p>
+      <p>この文書は<a class="css"
+
+          data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy/"
+
+          id="sotd_patent"><abbr title="World Wide Web Consortium">W3C</abbr>特許ポリシー</a>の下で活動するグループによって作成された。<abbr
+
+          title="World Wide Web Consortium">W3C</abbr>は、グループの成果物に関する<a href="https://www.w3.org/2004/01/pp-impl/35422/status"
+
+          rel="disclosure">あらゆる開示特許の公開リスト</a>を管理する。ここには、特許開示にあたっての指示も含まれている。特許について十分に知識のある人物が、仕様に<a
+
+          href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a>が認められると判断した場合は、<a
+
+          href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure"><abbr
+
+            title="World Wide Web Consortium">W3C</abbr>特許ポリシーの第6章</a>に従い情報を開示する必要がある。</p>
+      <p>この文書は、<a href="https://www.w3.org/2019/Process-20190301/"
+
+          id="w3c_process_revision">2019年3月1日のW3Cプロセス文書</a>によって管理される。</p>
+    </div>
+    <div data-fill-with="at-risk"></div>
+    <nav data-fill-with="table-of-contents" id="toc">
+      <h2 class="no-num no-toc no-ref" id="contents">目次</h2>
+      <ol class="toc" role="directory">
+        <li><a href="#intro"><span class="secno">1</span> <span class="content">導入</span></a></li>
+        <li><a href="#scope"><span class="secno">2</span> <span class="content">範囲</span></a></li>
+        <li><a href="#rule-types"><span class="secno">3</span> <span class="content">ACTルールタイプ</span></a></li>
+        <li><a href="#act-rule-structure"><span class="secno">4</span> <span
+
+              class="content">ACTルール構造</span></a><ol class="toc">
+            <li><a href="#rule-identifier"><span class="secno">4.1</span> <span
+
+                  class="content">ルール識別子</span></a></li>
+            <li><a href="#rule-description"><span class="secno">4.2</span> <span
+
+                  class="content">ルール説明</span></a></li>
+            <li><a href="#rule-type"><span class="secno">4.3</span> <span
+
+                  class="content">ルールタイプ</span></a></li>
+            <li><a href="#accessibility-requirements-mapping"><span class="secno">4.4</span> <span
+
+                  class="content">アクセシビリティ要件のマッピング</span></a><ol class="toc">
+                <li><a href="#outcome-mapping"><span class="secno">4.4.1</span> <span
+
+                      class="content">結果のマッピング</span></a></li>
+                <li><a href="#mapping-outside-wcag"><span class="secno">4.4.2</span> <span
+
+                      class="content">WCAG外のマッピング</span></a></li>
+                <li><a href="#rules-without-accessibility-requirements"><span
+
+                      class="secno">4.4.3</span> <span class="content">アクセシビリティ要件のないルール</span></a></li>
+                <li><a href="#external-accessibility-requirements-mapping"><span
+
+                      class="secno">4.4.4</span> <span class="content">外部のアクセシビリティ要件のマッピング</span></a></li>
+              </ol>
+            </li>
+            <li><a href="#input"><span class="secno">4.5</span> <span
+
+                  class="content">ルール入力</span></a><ol class="toc">
+                <li><a href="#input-aspects"><span class="secno">4.5.1</span> <span
+
+                      class="content">入力アスペクト（アトミックルールのみ）</span></a></li>
+                <li><a href="#input-rules"><span class="secno">4.5.2</span> <span
+
+                      class="content">入力ルール（コンポジットルールのみ）</span></a></li>
+              </ol>
+            </li>
+            <li><a href="#applicability"><span class="secno">4.6</span> <span
+
+                  class="content">適用性</span></a><ol class="toc">
+                <li><a href="#applicability-atomic"><span class="secno">4.6.1</span> <span
+
+                      class="content">アトミックルールへの適用性</span></a></li>
+                <li><a href="#applicability-composite"><span class="secno">4.6.2</span> <span
+
+                      class="content">コンポジットルールへの適用性</span></a></li>
+              </ol>
+            </li>
+            <li><a href="#expectations"><span class="secno">4.7</span> <span
+
+                  class="content">期待</span></a><ol class="toc">
+                <li><a href="#expectations-atomic"><span class="secno">4.7.1</span> <span
+
+                      class="content">アトミックルールへの期待</span></a></li>
+                <li><a href="#expectations-composite"><span class="secno">4.7.2</span> <span
+
+                      class="content">コンポジットルールへの期待</span></a></li>
+              </ol>
+            </li>
+            <li><a href="#assumptions"><span class="secno">4.8</span> <span
+
+                  class="content">仮定</span></a></li>
+            <li><a href="#accessibility-support"><span class="secno">4.9</span> <span
+
+                  class="content">アクセシビリティサポート</span></a></li>
+            <li><a href="#test-cases"><span class="secno">4.10</span> <span
+
+                  class="content">テストケース</span></a></li>
+            <li><a href="#change-log"><span class="secno">4.11</span> <span
+
+                  class="content">変更点</span></a></li>
+            <li><a href="#glossary"><span class="secno">4.12</span> <span
+
+                  class="content">用語集</span></a></li>
+            <li><a href="#issues-list"><span class="secno">4.13</span> <span
+
+                  class="content">Issueリスト（オプション） </span></a></li>
+            <li><a href="#background"><span class="secno">4.14</span> <span
+
+                  class="content">背景（オプション）</span></a></li>
+            <li><a href="#acknowledgements"><span class="secno">4.15</span> <span
+
+                  class="content">謝辞（オプション）</span></a></li>
+          </ol>
+        </li>
+        <li><a href="#rule-accuracy"><span class="secno">5</span> <span
+
+              class="content">ルールの精度</span></a></li>
+        <li><a href="#harmonization"><span class="secno">6</span> <span
+
+              class="content">調和</span></a></li>
+        <li><a href="#definitions"><span class="secno">7</span> <span class="content">定義</span></a></li>
+        <li><a href="#appendix-data-example"><span class="secno"></span> <span
+
+              class="content">付録1：JSON-LDとEARLを使用したACTルールの結果の表現</span></a></li>
+        <li><a href="#Acknowledgments"><span class="secno"></span> <span
+
+              class="content">付録2：謝辞 </span></a><ol class="toc">
+            <li><a href="#participants"><span class="secno"></span> <span
+
+                  class="content">この文書の作成に積極的なAG WGの参加者</span></a></li>
+            <li><a href="#enabling-funders"><span class="secno"></span> <span
+
+                  class="content">資金提供者</span></a></li>
+          </ol>
+        </li>
+        <li><a href="#Change_History"><span class="secno"></span> <span
+
+              class="content">付録3：変更履歴</span></a></li>
+        <li><a href="#conformance"><span class="secno"></span> <span class="content">適合</span></a></li>
+        <li><a href="#references"><span class="secno"></span> <span class="content">参考文献</span></a><ol class="toc">
+            <li><a href="#normative"><span class="secno"></span> <span
+
+                  class="content">標準情報</span></a></li>
+            <li><a href="#informative"><span class="secno"></span> <span
+
+                  class="content">参考文献</span></a></li>
+          </ol>
+        </li>
+      </ol>
+    </nav>
+    <main>
+      <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span
+
+          class="content">導入</span><a class="self-link" href="#intro"></a></h2>
+      <p>現在、ユーザーが<a
+
+          href="https://www.w3.org/WAI/standards-guidelines/wcag/">Web Content Accessibility Guidelines</a> <a
+
+          data-link-type="biblio" href="#biblio-wcag">[WCAG]</a>などのアクセシビリティ標準に適合しているかどうかウェブコンテンツをテストするのに役立つ多くのテスト手順とツールが利用可能である。ウェブはサイズと複雑さの両方で発達するため、これらの手順とツールは、ウェブ上で利用可能なリソースのアクセシビリティを管理するために不可欠である。</p>
+      <p>このフォーマットは、WCAGおよびその他の<a
+
+          data-link-type="dfn" href="#accessibility-requirements-document"
+
+          id="ref-for-accessibility-requirements-document">アクセシビリティ要件文書</a>への適合をテストする方法の一貫した解釈を可能にし、アクセシビリティテストで一貫した結果を促進することを目的としている。ルールフォーマットは、手動のアクセシビリティテストと、アクセシビリティテストツールによって実行される自動テストの両方を記述するように設計されている。</p>
+      <p><a data-link-type="dfn" href="#accessibility-requirement"
+
+          id="ref-for-accessibility-requirement">アクセシビリティ要件</a>をテストする方法を文書化することは、再現可能なテスト結果とともに、透過的なアクセシビリティテストをもたらす。Accessibility Conformance Testing (ACT) Rules Formatは、アクセシビリティ適合性テストルール（ACTルール）として知られる、これらのテスト記述の要件を定義する。</p>
+      <p>ACTルールは、アクセシビリティ要件の特定の側面について特定の種類のコンテンツをテストする方法をわかりやすく説明したものである。 ACTルールは、どのようなコンテンツに適用されるのか、およびルールのすべての期待を満たすために適用可能な要素についてどの条件が当てはまるかを記述する。 WCAGのコンテキストでは、ACTルールは達成基準を満たすのための失敗をテストする。そのような失敗は、WCAGで文書化されている<a
+
+          href="https://waic.jp/docs/WCAG21/#wcag-2-layers-of-guidance">よくある失敗例</a>でしばしば説明される。 ACTルールはテストプロセス用に記述されるもので、通常、よくある失敗例よりも具体的である。</p>
+      <p>ACTルールフォーマットは、ACTルールと呼ばれるために各ルールに含める必要のある情報のタイプの要件とルール構造を定義する。ACTルールの構造は、<a
+
+          href="#act-rule-structure">ACTルールの構造</a>のセクションで定義される。各ACTルールは、テスト対象のコンテンツのタイプ、実行するテスト、および期待される結果のわかりやすい説明も含まれる。テスト結果が適合性に影響を与える場合、ルールはテストされる特定の要件を文書化する。テストの結果は、要件への適合または不適合を判断するために使用できる。テストケースはまた、ACTルールの一部として記述され、ルールの実装が期待される結果を正常に決定できることを検証する方法を提供する。</p>
+      <h2 class="heading settled" data-level="2" id="scope"><span class="secno">2. </span><span
+
+          class="content">範囲</span><a class="self-link" href="#scope"></a></h2>
+      <p>この仕様で定義されるACT Rules Formatは、<a
+
+          href="https://momdo.github.io/html/">Hypertext Markup Language</a> <a
+
+          data-link-type="biblio" href="#biblio-html">[HTML]</a>、<a href="https://momdo.github.io/css-2018/">Cascading Style Sheets</a> <a
+
+          data-link-type="biblio" href="#biblio-css-2018">[css-2018]</a>、<a
+
+          href="https://www.w3.org/WAI/standards-guidelines/aria/">Accessible Rich Internet Applications</a> <a
+
+          data-link-type="biblio" href="#biblio-wai-aria">[WAI-ARIA]</a>、<a
+
+          href="https://www.w3.org/TR/SVG/">Scalable Vector Graphics</a> <a
+
+          data-link-type="biblio" href="#biblio-svg2">[SVG2]</a>、<a href="https://imagedrive.github.io/Submission/epub32/epub-spec.html">EPUB 3</a>などのウェブ技術を使用して作成されたコンテンツのテストに使用できるルール用に設計されている。 ACTルールフォーマットは技術に依存しないように設計されており、他の技術のテストルールを記述するために使用できることも意味する。</p>
+      <p>ACTルールフォーマットは、Web Content Accessibility Guidelines <a
+
+          data-link-type="biblio" href="#biblio-wcag">[WCAG]</a>で定義される<a
+
+          data-link-type="dfn" href="#accessibility-requirement" id="ref-for-accessibility-requirement①">アクセシビリティ要件</a>のテスト専用のACT Rulesを記述するために使用でき、これはウェブコンテンツ用に特別に設計されている。ウェブ技術に適用可能なその他のアクセシビリティ要件も、ACTルールでテスト可能である。 たとえば、ACTルールを開発して、ウェブベースのユーザーエージェントの<a
+
+          href="https://www.w3.org/WAI/standards-guidelines/uaag/">User Agent Accessibility Guidelines</a> <a
+
+          data-link-type="biblio" href="#biblio-uaag20">[UAAG20]</a>への適合性をテストできる。ACTルールフォーマットは、他の種類のアクセシビリティ要件のテストを説明するのに常に適しているとは限らない。</p>
+      <h2 class="heading settled" data-level="3" id="rule-types"><span class="secno">3. </span><span
+
+          class="content">ACTルールタイプ</span><a class="self-link" href="#rule-types"></a></h2>
+      <p>アクセシビリティにおいて、同じ種類のコンテンツをアクセシブルにするためのさまざまな技術的解決策がしばしば存在する。たとえば、HTMLの<code>img</code>要素にアクセシブルな名前を付ける方法は複数ある。1つのルールで複数の解決策をテストできる。しかし、そのようなルールは非常に複雑になる傾向があり、理解と維持が困難になる。ACTルールフォーマットは、次の2種類のルールを提供することでこれを解決する：</p>
+      <ul>
+        <li data-md=""><p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+              id="atomic-rules">アトミックルール</dfn>は、特定の種類の解決策をテストする方法を説明する。これには、<a
+
+              data-link-type="dfn" href="#test-subject" id="ref-for-test-subject">テスト対象</a>のどの要素、ノード、またはその他の「パーツ」がテストされるか、およびそれらのテスト対象がルールに合格または失敗とみなされるときの正確な定義が含まれる。これらのルールは小さく、<em>アトミック</em>に保つ必要がある。これは、アトミックルールが単一の「条件」をテストし、他のルールの<a
+
+              data-link-type="dfn" href="#outcome" id="ref-for-outcome">結果</a>を使用せずにテストすることを意味する。</p>
+        </li>
+        <li data-md=""><p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+              id="composite-rules">コンポジットルール</dfn>は、複数の<a
+
+              data-link-type="dfn" href="#atomic-rules" id="ref-for-atomic-rules">アトミックルール</a>の<a
+
+              data-link-type="dfn" href="#outcome" id="ref-for-outcome①">結果</a>を組み合わせて、各<a
+
+              data-link-type="dfn" href="#test-target" id="ref-for-test-target">テスト目標</a>を単一の結果にする方法を説明する。コンポジットルールは複数の「条件」を含めることができ、それぞれが個別のアトミックルールでテストされる。コンポジットルールのロジックは、これらの条件を満たす条件のいずれか、またはそれらの組み合わせを使用して、単一の結果を決定する方法を記述する。</p>
+        </li>
+      </ul>
+      <p>コンポジットルールに他のコンポジットルールを含めることはできない。ネストされたコンポジットルールが必要になるときはいつでも、関連するすべてのアトミックルールを新しいコンポジットルールに直接組み合わせることができる。</p>
+      <aside class="example" id="example-73f36a1c"><a class="self-link"
+
+          href="#example-73f36a1c"></a><header>コンポジットルールで複数の入力ルールを使用する例：</header>
+        <blockquote>
+          <p>各HTML <code>video</code>要素は、次のルールの少なくとも1つからのすべての期待を満たす：</p>
+          <ul>
+            <li>video要素にはトランスクリプトがある</li>
+            <li>video要素には音声解説がある</li>
+            <li>video要素には説明トラックがある</li>
+          </ul>
+        </blockquote>
+      </aside>
+      <p>すべてのアトミックルールがコンポジットルールの一部である必要はない。コンポジットルールは、複数のアトミックルールの<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome②">結果</a>を組み合わせて、<a
+
+          data-link-type="dfn" href="#test-subject" id="ref-for-test-subject①">テスト対象</a>が<a
+
+          data-link-type="dfn" href="#accessibility-requirement" id="ref-for-accessibility-requirement②">アクセシビリティ要件</a>を満たしていないかどうかを判断する必要がある場合に使用される。</p>
+      <p>アトミックルールとコンポジットルールとの分離は、責任の分割を生み出す。アトミックルールは、ウェブコンテンツが特定の解決策で正しく実装されているかどうかをテストする。コンポジットルールは、他のアトミックルールからの<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome③">結果</a>の組み合わせが、部分的または全体的にアクセシビリティ要件を満たしているかどうかをテストできる。</p>
+      <h2 class="heading settled" data-level="4" id="act-rule-structure"><span
+
+          class="secno">4. </span><span class="content">ACTルール構造</span><a
+
+          class="self-link" href="#act-rule-structure"></a></h2>
+      <p>ACTルールは、少なくとも次の項目で構成され<em class="rfc2119">なければならない</em>： </p>
+      <ul>
+        <li data-md=""><p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+              id="descriptive-title">Descriptive Title</dfn></p>
+        </li>
+        <li data-md=""><p><a href="#rule-identifier">Rule Identifier</a></p>
+        </li>
+        <li data-md=""><p><a href="#rule-description">Rule Description</a></p>
+        </li>
+        <li data-md=""><p><a href="#rule-type">Rule Type</a></p>
+        </li>
+        <li data-md=""><p><a href="#accessibility-requirements-mapping">Accessibility Requirements Mapping</a></p>
+        </li>
+        <li data-md=""><p><a href="#input">Rule Input</a>, which is one of the following:</p>
+          <ul>
+            <li data-md=""><p><a href="#input-aspects">Input Aspects</a> (for atomic rules) OR</p>
+            </li>
+            <li data-md=""><p><a href="#input-rules">Input Rules</a> (for composite rules)</p>
+            </li>
+          </ul>
+        </li>
+        <li data-md=""><p><a href="#applicability">Applicability</a></p>
+        </li>
+        <li data-md=""><p><a href="#expectations">Expectations</a></p>
+        </li>
+        <li data-md=""><p><a href="#assumptions">Assumptions</a></p>
+        </li>
+        <li data-md=""><p><a href="#accessibility-support">Accessibility Support</a></p>
+        </li>
+        <li data-md=""><p><a href="#test-cases">Test Cases</a></p>
+        </li>
+        <li data-md=""><p><a href="#change-log">Change Log</a></p>
+        </li>
+        <li data-md=""><p><a href="#glossary">Glossary</a></p>
+        </li>
+      </ul>
+      <p>ACTルールはまた、以下を含んでもよい：</p>
+      <ul>
+        <li data-md=""><p><a href="#issues-list">Issues List</a> (optional)</p>
+        </li>
+        <li data-md=""><p><a href="#background">Background</a> (optional)</p>
+        </li>
+        <li data-md=""><p><a href="#acknowledgements">Acknowledgements</a> (optional)</p>
+        </li>
+      </ul>
+      <p>ACTルールフォーマットは、ACTルールを記述できるフォーマット（HTML、DOCX、PDFなど）を規定しない。しかし、ACTルールは、Web Content Accessibility Guidelines <a
+
+          data-link-type="biblio" href="#biblio-wcag">[WCAG]</a>または同等のアクセシビリティ標準に準拠した文書で作成し<em
+
+          class="rfc2119">なければならない</em>。これにより、障害を持つ人がACTルールにアクセスできるようになる。ACTルールの<a
+
+          href="#test-cases">テストケース</a>には、アクセシブルでないコンテンツを含めることが可能である。テストケースに<a
+
+          href="https://www.w3.org/TR/WCAG21/#cc5">WCAG 2.1セクション5.2.5非干渉</a>にリストされるアクセシビリティの問題が含まれる場合、ユーザーは事前にこれについて警告し<em
+
+          class="rfc2119">なければならない</em>。障害を持つ人をサポートすることに加えて、アクセシブルなフォーマットを使用することはまた、ACTルールの国際化も容易になる。 </p>
+      <h3 class="heading settled" data-level="4.1" id="rule-identifier"><span
+
+          class="secno">4.1. </span><span class="content">ルール識別子</span><a
+
+          class="self-link" href="#rule-identifier"></a></h3>
+      <p>ACTルールは識別子を持た<em class="rfc2119">なければならない</em>。ルールがルールセットの一部である場合、この識別子は一意で<em
+
+          class="rfc2119">なければならない</em>。識別子は、プレーンテキスト、URL、データベース識別子などの任意のテキストにすることができる。</p>
+      <aside class="example" id="example-8adf6793"><a class="self-link"
+
+          href="#example-8adf6793"></a><header>ファイル名としても使用される識別子の例。その識別子の例には、技術ディレクトリーが含まれ、その後に要素名または属性を含むハンドルが続く。</header>
+        <blockquote>
+          <ul>
+            <li>html+svg/video-alternative</li>
+            <li>html+svg/meta-no-refresh</li>
+            <li>html+svg/unique-id</li>
+          </ul>
+        </blockquote>
+      </aside>
+      <p>識別子に加えて、ACTルールの新しいリリースはそれぞれ、日付または数字のいずれかでバージョン管理をし<em
+
+          class="rfc2119">なければならない</em>。そのルールの以前のバージョンへの参照が利用可能で<em
+
+          class="rfc2119">なければならない</em>。 ルールの更新時に識別子を変更<em class="rfc2119">してはならない</em>。大幅な変更を行う場合は、新しい識別子で新しいルールを作成<em
+
+          class="rfc2119">すべきであり</em>、古いルールを廃止<em
+
+          class="rfc2119">すべきである</em>。</p>
+      <aside class="example" id="example-c6a27e25"><a class="self-link"
+
+          href="#example-c6a27e25"></a><header>ルールを更新する状況の例：</header>
+        <blockquote>
+          <p>ボタンに関するルールを更新する場合、リンク、メニュー項目、およびタブに関するルールも更新するため、ボタンルールは廃止される。代わりに、これらすべての要素に適用できる新しいルールが作成される。</p>
+        </blockquote>
+      </aside>
+      <h3 class="heading settled" data-level="4.2" id="rule-description"><span
+
+          class="secno">4.2. </span><span class="content">ルール説明</span><a
+
+          class="self-link" href="#rule-description"></a></h3>
+      <p>ACTルールは、ルールが何をするのかの簡単な説明を提供する平易な言葉による説明を持た<em class="rfc2119">なければならない</em>。</p>
+      <aside class="example" id="example-5275cb2a"><a class="self-link"
+
+          href="#example-5275cb2a"></a><header>ルール説明の例：</header>
+        <blockquote>
+          <p>このルールは、HTMLページがタイトルを持つことをチェックする</p>
+        </blockquote>
+      </aside>
+      <h3 class="heading settled" data-level="4.3" id="rule-type"><span
+
+          class="secno">4.3. </span><span class="content">ルールタイプ</span><a
+
+          class="self-link" href="#rule-type"></a></h3>
+      <p>ACTルールは、次のいずれかのルールタイプを持た<em class="rfc2119">なければならない</em>：</p>
+      <ul>
+        <li>アトミックルール</li>
+        <li>コンポジットルール</li>
+      </ul>
+      <p>ルールタイプの詳細な定義については、<a href="#rule-types">ルールタイプ</a>セクションを参照のこと。 </p>
+      <h3 class="heading settled" data-level="4.4" id="accessibility-requirements-mapping"><span
+
+          class="secno">4.4. </span><span class="content">アクセシビリティ要件のマッピング</span><a
+
+          class="self-link" href="#accessibility-requirements-mapping"></a></h3>
+      <p>ACTルールが1つ以上の<a
+
+          data-link-type="dfn" href="#accessibility-requirements-document"
+
+          id="ref-for-accessibility-requirements-document①">アクセシビリティ要件文書</a>への適合性をテストするように設計される場合、ルールは、ルールの<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome④">結果</a>の1つ以上が<code>失敗</code>したときに満たされない文書からのすべての<a data-link-type="dfn" href="#accessibility-requirement"
+
+          id="ref-for-accessibility-requirement③">アクセシビリティ要件</a>をリストし<em
+
+          class="rfc2119">なければならない</em>。たとえば、画像ボタンが代替テキストを持つかどうかをテストするWCAGのルールを設計する場合、ルールは達成基準1.1.1非テキストコンテンツ、および4.1.2名前 (name) ・役割 (role) 及び値 (value)にマッピングされる。そのACTルールは、アクセシビリティ要件のマッピングに両方の達成基準をリストする。</p>
+      <p>マッピングの各<a data-link-type="dfn" href="#accessibility-requirement"
+
+          id="ref-for-accessibility-requirement④">アクセシビリティ要件</a>は、次のものが含まれ<em
+
+          class="rfc2119">なければならない</em>：</p>
+      <ol>
+        <li data-md=""><p>アクセシビリティ要件の名前、タイトル、識別子、または要約のいずれか、および</p>
+        </li>
+        <li data-md=""><p><a data-link-type="dfn" href="#accessibility-requirements-document"
+
+              id="ref-for-accessibility-requirements-document②">アクセシビリティ要件文書</a>の名前、および</p>
+        </li>
+        <li data-md=""><p><a data-link-type="dfn" href="#accessibility-requirements-document"
+
+              id="ref-for-accessibility-requirements-document③">アクセシビリティ要件文書</a>が存在する場合、その文書へのリンクまたは参照、および</p>
+        </li>
+        <li data-md=""><p>アクセシビリティ要件が存在する場合、そのアクセシビリティ要件に関連する適合レベル。 </p>
+        </li>
+      </ol>
+      <h4 class="heading settled" data-level="4.4.1" id="outcome-mapping"><span
+
+          class="secno">4.4.1. </span><span class="content">結果のマッピング</span><a
+
+          class="self-link" href="#outcome-mapping"></a></h4>
+      <p>マッピングのアクセシビリティ要件ごとに、ACTルールは、その<a
+
+          data-link-type="dfn" href="#test-subject" id="ref-for-test-subject②">テスト対象</a>のアクセシビリティ要件を満たすためにルールの<a data-link-type="dfn"
+
+          href="#outcome" id="ref-for-outcome⑤">結果</a>が何を意味するかを示さ<em
+
+          class="rfc2119">なければならない</em>。テスト目標の1つ以上の結果が<code>failed</code>である場合、テスト対象のアクセシビリティ要件は<dfn
+
+          data-dfn-type="dfn" data-noexport="" id="not-satisfied">満たされない<a
+
+            class="self-link" href="#not-satisfied"></a></dfn>。すべての結果が<code>passed</code>または<code>inapplicable</code>である場合、アクセシビリティ要件が<dfn
+
+          data-dfn-type="dfn" data-noexport="" id="satisfied">満たされる<a
+
+            class="self-link" href="#satisfied"></a></dfn>か、<dfn data-dfn-type="dfn"
+
+          data-noexport="" id="further-testing-is-needed">さらにテストが必要になる<a
+
+            class="self-link" href="#further-testing-is-needed"></a></dfn>。 アクセシビリティ要件が<em>満たされる</em>かどうかを判断するために使用できるルールは、<dfn
+
+          data-dfn-type="dfn" data-noexport="" id="satisfying-tests">満足なテスト<a
+
+            class="self-link" href="#satisfying-tests"></a></dfn>と呼ばれる。</p>
+      <div class="note" role="note"><p><strong>注：</strong><a href="https://www.w3.org/WAI/standards-guidelines/wcag/">Web Content Accessibility Guidelines</a> <a
+
+            data-link-type="biblio" href="#biblio-wcag">[WCAG]</a>では、達成基準は<code>passed</code>、<code>failed</code>、または<code>inapplicable</code>とは評価されない。むしろ、達成基準は<em>満たされる</em>（または満されない）。（<a
+
+            href="https://waic.jp/docs/WCAG21/#dfn-satisfies">WCAG 2.1の定義：成功基準を満たす</a>を参照のこと。）達成基準が<em>満たされない</em>場合、<a
+
+            href="https://waic.jp/docs/WCAG21/#cc1">WCAG 2.1適合要件1</a>で説明されているように、ウェブページは適合する代替版がある場合にのみ適合できる。</p>
+      </div>
+      <aside class="example" id="example-cd520eaa"><a class="self-link"
+
+          href="#example-cd520eaa"></a><header>画像ボタンがアクセシブルな名前を持つかどうかをテストするルールのアクセシビリティ要件マッピングの例：</header>
+        <blockquote>
+          <ul>
+            <li><a href="https://waic.jp/docs/WCAG21/#non-text-content">達成基準1.1.1：非テキストコンテンツ</a><ul>
+                <li>WCAG 2.0およびWCAG 2.1レベルA以上への<strong>適合に必要</strong></li>
+                <li>結果のマッピング：<ul>
+                    <li>いずれかの<code>failed</code>の結果：満たされない</li>
+                    <li>すべて<code>passed</code>の結果：さらにテストが必要である</li>
+                    <li><code>inapplicable</code>の結果：さらにテストが必要である</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="https://waic.jp/docs/WCAG21/#name-role-value">達成基準4.1.2：名前 (name) ・役割 (role) 及び値 (value)</a><ul>
+                <li>WCAG 2.0およびWCAG 2.1レベルA以上への<strong>適合に必要</strong></li>
+                <li>結果のマッピング：<ul>
+                    <li>いずれかの<code>failed</code>の結果：満たされない</li>
+                    <li>すべて<code>passed</code>の結果：さらにテストが必要である</li>
+                    <li><code>inapplicable</code>の結果：さらにテストが必要である</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </blockquote>
+      </aside>
+      <h4 class="heading settled" data-level="4.4.2" id="mapping-outside-wcag"><span
+
+          class="secno">4.4.2. </span><span class="content">WCAG外のマッピング</span><a
+
+          class="self-link" href="#mapping-outside-wcag"></a></h4>
+      <p>ACTルールは、<a
+
+          href="https://momdo.github.io/html/">Hypertext Markup Language</a> <a
+
+          data-link-type="biblio" href="#biblio-html">[HTML]</a>のアクセシビリティ要件など、W3Cアクセシビリティ標準の一部ではないアクセシビリティ要件をテストしたり、<a
+
+          href="https://disic.github.io/rgaa_referentiel_en/criteria.html">RGAA 3 2016</a>のような方法でテストしたりするために使用することができる。ACTルールは、 マッピングする<a data-link-type="dfn"
+
+          href="#accessibility-requirement" id="ref-for-accessibility-requirement⑤">アクセシビリティ要件</a>が適合するために必須かどうかを、その<a
+
+          data-link-type="dfn" href="#accessibility-requirements-document"
+
+          id="ref-for-accessibility-requirements-document④">アクセシビリティ要件文書</a>で示さ<em
+
+          class="rfc2119">なければならない</em>。適合のために必須でないアクセシビリティ要件の例は、WCAGの十分な達成方法、すなわち要件とオプションの「ベストプラクティス」の両方を含む企業スタイルガイドである。必須のものとオプションのものの違いを明確にする必要がある。</p>
+      <aside class="example" id="example-fd451b99"><a class="self-link"
+
+          href="#example-fd451b99"></a><header>各<code>img</code>要素が<code>alt</code>属性を持つことをテストするルールのアクセシビリティ要件マッピングの例：</header>
+        <blockquote>
+          <ul>
+            <li><a href="https://waic.jp/docs/WCAG-TECHS/H37">達成方法集 H37: img 要素の alt 属性を使用する</a><ul>
+                <li>WCAG 2.0およびWCAG 2.1レベルA以上への適合に<strong>必須ではない</strong></li>
+                <li>結果のマッピング：<ul>
+                    <li>いずれかの<code>failed</code>の結果：満たされない</li>
+                    <li>すべて<code>passed</code>の結果：満たされる</li>
+                    <li><code>inapplicable</code>の結果：満たされる</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="https://disic.github.io/rgaa_referentiel_en/criteria.html#test-1-1-1">RGAA 3, Test 1.1.1: Does each image have a text alternative</a><ul>
+                <li> RGAA 3 level A以上への<strong>適合に必要</strong></li>
+                <li>結果のマッピング：<ul>
+                    <li>いずれかの<code>failed</code>の結果：満たされない</li>
+                    <li>すべて<code>passed</code>の結果：満たされる</li>
+                    <li><code>inapplicable</code>の結果：満たされる</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </blockquote>
+      </aside>
+      <h4 class="heading settled" data-level="4.4.3" id="rules-without-accessibility-requirements"><span
+
+          class="secno">4.4.3. </span><span class="content">アクセシビリティ要件のないルール</span><a
+
+          class="self-link" href="#rules-without-accessibility-requirements"></a></h4>
+      <p>ルールが<a data-link-type="dfn" href="#accessibility-requirement"
+
+          id="ref-for-accessibility-requirement⑥">アクセシビリティ要件</a>にマッッピングされない場合、アクセシビリティ要件のマッピングは、<a
+
+          data-link-type="dfn" href="#accessibility-requirements-document"
+
+          id="ref-for-accessibility-requirements-document⑤">アクセシビリティ要件文書</a>への適合に必要ないという説明のみが含まれる。これは、コンポジットルールで使用されるアトミックルールで一般的である。</p>
+      <aside class="example" id="example-707e7231"><a class="self-link"
+
+          href="#example-707e7231"></a><header><code>role=alert</code>が<a
+
+            href="https://waic.jp/docs/WCAG21/#status-messages">WCAG 2.1達成基準ステータスメッセージ</a>を満たすために使用されているかどうかをテストするルールの例：</header>
+        <blockquote>
+          <p>このルールは、どのレベルでもWCAG 2.1に適合するために<strong>必須ではない</strong>。</p>
+        </blockquote>
+      </aside>
+      <p><code>failed</code>の<a data-link-type="dfn" href="#outcome"
+
+          id="ref-for-outcome⑥">結果</a>を<a data-link-type="dfn"
+
+          href="#accessibility-requirement" id="ref-for-accessibility-requirement⑦">アクセシビリティ要件</a>にマッピングできない場合、アクセシビリティ要件のマッピングにアクセシビリティ要件があっては<em
+
+          class="rfc2119">ならない</em>。オプションの<a
+
+          href="#background">背景セクション</a>は、テーマに関連しているが、ルールが失敗テストではない場合、<a
+
+          data-link-type="dfn" href="#accessibility-requirements-document"
+
+          id="ref-for-accessibility-requirements-document⑥">アクセシビリティ要件文書</a>をリストするために使用できる。 </p>
+      <h4 class="heading settled" data-level="4.4.4" id="external-accessibility-requirements-mapping"><span
+
+          class="secno">4.4.4. </span><span class="content">外部のアクセシビリティ要件のマッピング</span><a
+
+          class="self-link" href="#external-accessibility-requirements-mapping"></a></h4>
+      <p>この節は<em>非規範的</em>である。</p>
+      <p>多くの場合、ルールは1つ、または場合によっては<a
+
+          data-link-type="dfn" href="#accessibility-requirements-document"
+
+          id="ref-for-accessibility-requirements-document⑦">アクセシビリティ要件文書</a>の小さなコレクション用に設計されているが、他のアクセシビリティ要件文書もそれら文書のACTルールにマッッピングされる可能性がある。たとえば、<a
+
+          href="https://www.w3.org/WAI/standards-guidelines/wcag/">Web Content Accessibility Guidelines</a> <a
+
+          data-link-type="biblio" href="#biblio-wcag">[WCAG]</a>のルールを作成できるが、その多くは企業の内部アクセシビリティポリシーにマッピングするかもしれない。  そのようなシナリオでは、外部のアクセシビリティ要件のマッピングを作成できる。 外部アクセシビリティ要件マッピングは、別のアクセシビリティ要件文書にマッピングを追加することにより、ACTルールのアクセシビリティ要件マッピングを修正する。 外部アクセシビリティ要件のマッピングは、マッピングを変更することのみを目的としたルールの重複を回避する。</p>
+      <h3 class="heading settled" data-level="4.5" id="input"><span class="secno">4.5. </span><span
+
+          class="content">ルール入力</span><a class="self-link" href="#input"></a></h3>
+      <p>ACTルールを使用してコンテンツを評価するためには、ルールに<a
+
+          data-link-type="dfn" href="#test-subject" id="ref-for-test-subject③">テスト対象</a>からの情報が必要である。 これはルールするための入力である。どのような入力が必要なのかを明示することで、テスターがルールを使用するためにどのような能力が必要かを理解できるようにする。<a
+
+          data-link-type="dfn" href="#atomic-rules" id="ref-for-atomic-rules①">アトミックルール</a>と<a
+
+          data-link-type="dfn" href="#composite-rules" id="ref-for-composite-rules">コンポジットルール</a>の入力は異なる。</p>
+      <ul>
+        <li data-md=""><p>アトミックルールは<a href="#input-aspects">入力アスペクト</a>を持つ</p>
+        </li>
+        <li data-md=""><p>コンポジットルールは<a href="#input-rules">入力ルール</a>を持つ</p>
+        </li>
+      </ul>
+      <h4 class="heading settled" data-level="4.5.1" id="input-aspects"><span
+
+          class="secno">4.5.1. </span><span class="content">入力アスペクト（アトミックルールのみ）</span><a
+
+          class="self-link" href="#input-aspects"></a></h4>
+      <p>入力アスペクトは、<a data-link-type="dfn"
+
+          href="#test-subject" id="ref-for-test-subject④">テスト対象</a>の明確な一部である。特定のコンテンツの一部分をエンドユーザーにレンダリングするのは、異なる技術を通常含んでおり、その一部またはすべてが<a
+
+          data-link-type="dfn" href="#atomic-rules" id="ref-for-atomic-rules②">アトミックルール</a>の入力として必要となる。たとえば、サーバーとクライアントとの間で交換される<a
+
+          href="https://triple-underscore.github.io/RFC7230-ja.html">Hypertext Transfer Protocol</a> <a
+
+          data-link-type="biblio" href="#biblio-http11">[http11]</a>メッセージを直接操作する必要があるルールもある一方で、ウェブブラウザーによって公開される<a
+
+          href="https://triple-underscore.github.io/DOM4-ja.html">Document Object Model</a> <a
+
+          data-link-type="biblio" href="#biblio-dom">[DOM]</a> ツリーを操作する必要があるルールもある。</p>
+      <p><a data-link-type="dfn" href="#atomic-rules" id="ref-for-atomic-rules③">アトミックルール</a>は、アトミックルールの<a
+
+          href="#applicability-atomic">適用可能性</a>と<a href="#expectations-atomic">期待</a>のための入力として使用されるアスペクトをリストし<em
+
+          class="rfc2119">なければならない</em>。ルールは、HTTPメッセージとDOMツリーの両方など、いくつかのアスペクトで同時に動作できる。</p>
+      <p>HTTPメッセージ、DOMツリー、CSSスタイリング<a
+
+          data-link-type="biblio" href="#biblio-css-2018">[css-2018]</a>など、一部の入力アスペクトは正式な仕様で明確に定義されている。これらについては、<a
+
+          href="https://www.w3.org/TR/act-rules-aspects/">Common Input Aspects note</a>の対応するセクションへの参照は、アスペクトの説明として十分である。明確に定義されていない入力アスペクトの場合、ACTルールは、問題のアスペクトの詳細な説明、または明確に定義された説明への参照のいずれかを含め<em
+
+          class="rfc2119">なければならない</em>。</p>
+      <aside class="example" id="example-43214b40"><a class="self-link"
+
+          href="#example-43214b40"></a><header>トランスクリプトが映像で利用可能かどうかをチェックするルールの入力アスペクトの例：</header>
+        <blockquote>
+          <ul>
+            <li>DOMツリー</li>
+            <li>CSSスタイリング</li>
+            <li>音声出力</li>
+            <li>視覚出力</li>
+          </ul>
+        </blockquote>
+      </aside>
+      <aside class="example" id="example-22444586"><a class="self-link"
+
+          href="#example-22444586"></a><header>「ここをクリック」や「詳細」などの（言語固有の）一般的なリンクテキストの使用をチェックするルールの入力アスペクトの例：</header>
+        <blockquote>
+          <ul>
+            <li>DOMツリー</li>
+            <li>CSSスタイリング</li>
+            <li>言語</li>
+          </ul>
+        </blockquote>
+      </aside>
+      <p>入力アスペクトが提供される方法は関係ない。たとえば、DOMツリーはHTMLとしてHTTPを通して提供したり、<a
+
+          href="https://imagedrive.github.io/Submission/epub32/epub-spec.html">EPUBパブリケーション</a>の複数のページとして扱ったり、<a
+
+          href="https://facebook.github.io/jsx/">JSXソースファイル</a>から推測したりすることができる。入力アスペクトとしてDOMツリーのみを持つすべてのルールは、これらの技術に適用できる。 </p>
+      <h4 class="heading settled" data-level="4.5.2" id="input-rules"><span
+
+          class="secno">4.5.2. </span><span class="content">入力ルール（コンポジットルールのみ）</span><a
+
+          class="self-link" href="#input-rules"></a></h4>
+      <p><a data-link-type="dfn" href="#composite-rules" id="ref-for-composite-rules①">コンポジットルール</a>は、<a
+
+          data-link-type="dfn" href="#atomic-rules" id="ref-for-atomic-rules④">アトミックルール</a>からの<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome⑦">結果</a>を使用し、それら結果にロジックを適用して、<a
+
+          data-link-type="dfn" href="#test-target" id="ref-for-test-target①">テスト目標</a>ごとに単一の結果を決定できるようにする。<a
+
+          href="#expectations-composite">期待</a>で使用されるすべてのアトミックルールの<a
+
+          href="#rule-identifier">識別子</a>および<a data-link-type="dfn"
+
+          href="#descriptive-title" id="ref-for-descriptive-title">説明的なタイトル</a>は、コンポジットルールにリストされ<em class="rfc2119">なければならない</em>。入力ルールは、<a
+
+          href="#input-aspects">入力アスペクト</a>がアトミックルールの入力を記述する方法と同様に、コンポジットルールの入力を記述する。 </p>
+      <h3 class="heading settled" data-level="4.6" id="applicability"><span
+
+          class="secno">4.6. </span><span class="content">適用性</span><a
+
+          class="self-link" href="#applicability"></a></h3>
+      <p>適用性は、<a data-link-type="dfn"
+
+          href="#test-subject" id="ref-for-test-subject⑤">テスト対象</a>のどの部分がテストされるかを説明する。</p>
+      <h4 class="heading settled" data-level="4.6.1" id="applicability-atomic"><span
+
+          class="secno">4.6.1. </span><span class="content">アトミックルールへの適用性</span><a
+
+          class="self-link" href="#applicability-atomic"></a></h4>
+      <p>適用性セクションは、<a data-link-type="dfn"
+
+          href="#atomic-rules" id="ref-for-atomic-rules⑤">アトミックルール</a>の必須部分である。ルールが適用される<a
+
+          data-link-type="dfn" href="#test-subject" id="ref-for-test-subject⑥">テスト対象</a>の部分の正確な説明が含まれ<em
+
+          class="rfc2119">なければならない</em>。たとえば、DOM <a
+
+          data-link-type="biblio" href="#biblio-dom">[DOM]</a>ツリーの特定のノード、またはHTML <a
+
+          data-link-type="biblio" href="#biblio-html">[HTML]</a>文書の誤って閉じられたタグ。これらは<a
+
+          data-link-type="dfn" href="#test-target" id="ref-for-test-target②">テスト目標</a>として知られている。適用性は、ルールでリストされた<a
+
+          href="#input-aspects">入力アスペクト</a>を通じて利用可能になった情報のみを使用し<em
+
+          class="rfc2119">なければならない</em>。他の情報を適用性に使用することはできない。適用性は、客観的、明確、およびわかりやすい言葉で説明し<em
+
+          class="rfc2119">なければならない</em>。</p>
+      <p>客観的な説明とは、特定の技術において、不確実性なしに解決できる説明である。HTMLの客観的プロパティの例は、タグ名、それらタグ名の計算されたロール、2つの要素間の距離などです。一方で主観的プロパティは、装飾、ナビゲーションメカニズム、事前に記録されたものなどの概念である。</p>
+      <p>見出しや画像などの概念でさえ誤解される可能性がある。これらの用語は、あいまいであるため、タグ名、セマンティックロール、またはウェブページ上の要素の目的を指すかもしれない。後者は客観的に定義することはほぼ不可能である。適用性に使用する場合、潜在的に曖昧な概念を客観的に定義し<em
+
+          class="rfc2119">なければならない</em>。定義は、ルールの<a
+
+          href="#glossary">用語集</a>に記載する、または使用するセクションで定義できる。</p>
+      <aside class="example" id="example-7b01134a"><a class="self-link"
+
+          href="#example-7b01134a"></a><header><a href="https://www.w3.org/WAI/WCAG21/quickref/#audio-control">WCAG 2.1達成基準1.4.2音声の制御</a>をテストするアトミックルールの適用性の例：z</header>
+        <blockquote>
+          <p><code>autoplay</code>属性をもつ各<code>video</code>または<code>audio</code>要素、およびウェブページのロード時に映像または音声を自動的に再生するために使用される各<code>オブジェクト</code>要素。</p>
+          <p>注：<code>document.readyState</code>が<code>complete</code>に設定される場合、ウェブページは「ロード済み」と見なされる。</p>
+        </blockquote>
+      </aside>
+      <aside class="example" id="example-5412edb8"><a class="self-link"
+
+          href="#example-5412edb8"></a><header>ページをテスト目標とするルールの適用性の例</header>
+        <blockquote>
+          <p>このルールは、文書要素が<code>html</code>要素であり、<code>html</code>要素がトップレベルコンテキストでレンダリングされるすべてのページに適用される（つまり、<code>html</code>要素は<code>iframe</code>や<code>object</code>要素などを通して別のページに埋め込まれない）。</p>
+        </blockquote>
+      </aside>
+      <aside class="example" id="example-2aec263c"><a class="self-link"
+
+          href="#example-2aec263c"></a><header>テスト目標としてDOM属性をもつルールの適用性の例</header>
+        <blockquote>
+          <p>このルールは、HTMLまたはSVG要素で指定されたすべての<code>role</code>属性に適用される。 </p>
+        </blockquote>
+      </aside>
+      <h4 class="heading settled" data-level="4.6.2" id="applicability-composite"><span
+
+          class="secno">4.6.2. </span><span class="content">コンポジットルールへの適用性</span><a
+
+          class="self-link" href="#applicability-composite"></a></h4>
+      <p>コンポジットルールの適用性は、<a
+
+          href="#input-rules">入力ルール</a>にリストされているルールからのすべての適用性定義の結合として定義される。ルールの著者は、コンポジットルールの適用性の説明を省略<em class="rfc2119">してもよい</em>。これは、組み合わせた適用性を平易な言葉で表現することが難しい場合に役立つ。 コンポジットルールに適用性が含まれる場合、そのコンポジットルールは<a
+
+          href="#input-rules">入力ルール</a>のすべての適用性の結合で<em
+
+          class="rfc2119">なければならない</em>。</p>
+      <p>コンポジットルールの入力ルールは、異なる適用性を持って<em class="rfc2119">もよい</em>ことに注意すること。このため、コンポジットルール内で適用可能なすべてのテスト目標がすべての入力ルールによってテストされるわけではない。</p>
+      <aside class="example" id="example-5ca938b6"><a class="self-link"
+
+          href="#example-5ca938b6"></a><header>コンポジットルールで入力ルールの適用性の結合の例：</header>
+        <blockquote>
+          <p><strong>入力の適用性：</strong></p>
+          <ul>
+            <li><strong>入力ルール1：</strong> <code>alt</code> 属性を<em>もつ</em>すべての<code>img</code> 要素</li>
+            <li><strong>入力ルール2：</strong> <code>alt</code> 属性を<em>もたない</em>すべての<code>img</code> 要素</li>
+          </ul>
+          <p><strong>組み合わせた適用性：:</strong></p>
+          <p>すべての<code>img</code>要素。</p>
+        </blockquote>
+      </aside>
+      <h3 class="heading settled" data-level="4.7" id="expectations"><span
+
+          class="secno">4.7. </span><span class="content">期待</span><a
+
+          class="self-link" href="#expectations"></a></h3>
+      <p>ACTルールは、1つ以上の期待が含まれ<em class="rfc2119">なければならない</em>。期待は、<a
+
+          href="#applicability">適用性</a>から導き出された<a
+
+          data-link-type="dfn" href="#test-target" id="ref-for-test-target③">テスト目標</a>の要件が何であるかを説明する。期待は、<a
+
+          data-link-type="dfn" href="#test-target" id="ref-for-test-target④">テスト目標</a>に関する主張である。テスト目標がすべての期待を満たす場合、そのテスト目標はルールに<code>passed</code>となる。テスト目標がすべての期待を満たさない場合、そのテスト目標はルールに<code>failed</code>となる。テスト目標がない場合、ルールの<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome⑧">結果</a>は<code>inapplicable</code>となる。</p>
+      <p>それぞれの期待は、明確で、あいまいでなく、そして平易な言葉で書かれ<em class="rfc2119">なければならない</em>。 </p>
+      <h4 class="heading settled" data-level="4.7.1" id="expectations-atomic"><span
+
+          class="secno">4.7.1. </span><span class="content">アトミックルールへの期待</span><a
+
+          class="self-link" href="#expectations-atomic"></a></h4>
+      <p><a data-link-type="dfn" href="#atomic-rules"
+
+          id="ref-for-atomic-rules⑥">アトミックルール</a>のすべての期待は、<a
+
+          data-link-type="dfn" href="#test-target" id="ref-for-test-target⑤">テスト目標</a>の単一の<code>passed</code>または<code>failed</code>の<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome⑨">結果</a>を決定するために使用されるロジックを説明し<em class="rfc2119">なければならない</em>。期待は、適用性、および同じルールの他の期待から、<a
+
+          href="#input-aspects">入力アスペクト</a>で利用可能な情報のみを使用し<em
+
+          class="rfc2119">なければならない</em>。他の情報は期待に使用できない。よって、たとえば期待は「期待1が真であり…」であるかもしれないが、「ルールXYZが合格であり…」となることはない。これにより、アトミックルールが確実にカプセル化される。</p>
+      <aside class="example" id="example-6e5a951f"><a class="self-link"
+
+          href="#example-6e5a951f"></a><header>HTML <code>input</code>要素のアクセシブルな名前をテストするルールの期待例：</header>
+        <blockquote>
+          <ol>
+            <li>各HTML <code>input</code>要素にはアクセシブルな名前がある（<a
+
+                href="https://www.w3.org/TR/accname-aam-1.1/#mapping_additional_nd_te">Accessible Name and Description: Computation and API Mappings 1.1</a>で説明される）。<a
+
+                data-link-type="biblio" href="#biblio-accname-aam-11">[accname-aam-1.1]</a></li>
+            <li>アクセシブルな名前は、各HTML <code>input</code>要素の目的を説明する。</li>
+          </ol>
+        </blockquote>
+      </aside>
+      <aside class="example" id="example-3722e455"><a class="self-link"
+
+          href="#example-3722e455"></a><header><code>role</code>属性が妥当かどうかをテストするルールの期待例：</header>
+        <blockquote>
+          <ol>
+            <li>各 <code>role</code>属性は、非抽象<a
+
+                href="https://momdo.github.io/wai-aria-1.1/">WAI-ARIA 1.1</a>ロールに対応する値を持つ。</li>
+          </ol>
+        </blockquote>
+      </aside>
+      <div class="note" role="note"><p><strong>注：</strong>場合によっては、より複雑な集計を含むルールが必要になることがある。たとえば、ウェブページ上のすべての画像のX％にテキストによる代替があると予想される。この場合、ページ自体がテスト目標となる必要がある。期待は「テスト目標（ページ）には、すべてのimg要素のX％のテキストによる代替がある」となるだろう。 そのようなルールの期待を計算するためのロジックは、このルールフォーマットの過度の複雑さを回避するために、実装に任される。</p>
+      </div>
+      <h4 class="heading settled" data-level="4.7.2" id="expectations-composite"><span
+
+          class="secno">4.7.2. </span><span class="content">コンポジットルールへの期待</span><a
+
+          class="self-link" href="#expectations-composite"></a></h4>
+      <p>すべての<a data-link-type="dfn" href="#composite-rules"
+
+          id="ref-for-composite-rules②">コンポジットルール</a>の期待は、<a
+
+          href="#input-rules">入力ルール</a>のルールの結果に基づいて、<a
+
+          data-link-type="dfn" href="#test-target" id="ref-for-test-target⑥">テスト目標</a>の単一の<code>passed</code>または<code>failed</code>の<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome①⓪">結果</a>を決定するために使用されるロジックを記述し<em class="rfc2119">なければならない</em>。コンポジットルールの期待は、<a href="#input-aspects">入力アスペクト</a>からの情報を使用<em
+
+          class="rfc2119">してはならない</em>。すべての入力ルールが適用できない場合、コンポジットルールの結果は<code>inapplicable</code>となる。</p>
+      <aside class="example" id="example-b02f1892"><a class="self-link"
+
+          href="#example-b02f1892"></a><header>コンポジットルールの期待例「ビデオ要素は音声解説またはメディアによる代替を持つ」（<a
+
+            href="https://www.w3.org/WAI/WCAG21/quickref/#audio-description-or-media-alternative-prerecorded">WCAG 2.1達成基準1.2.3音声解説、又はメディアに対する代替 (収録済)</a>）：</header>
+        <blockquote>
+          <p>各HTML <code>video</code>要素は、次のルールの少なくとも1つからのすべての期待を満たす：</p>
+          <ul>
+            <li>video要素にはトランスクリプトがある</li>
+            <li>video要素には音声解説がある</li>
+            <li>video要素には説明トラックがある</li>
+          </ul>
+        </blockquote>
+      </aside>
+      <aside class="example" id="example-b218f8a4"><a class="self-link"
+
+          href="#example-b218f8a4"></a><header>キーボードトラップを回避するメカニズムが利用可能かどうかをチェックするコンポジットルールに対する期待例。 標準メカニズム、または指示が利用可能であるメカニズムのいずれかを通して：</header>
+        <blockquote>
+          <p>フォーカス可能な要素ごとに、次のいずれかのルールの結果が<code>passed</code>である：</p>
+          <ul>
+            <li>標準のエスケープメカニズムをもつキーボードトラップ</li>
+            <li>エスケープ指令をもつキーボードトラップ </li>
+          </ul>
+        </blockquote>
+      </aside>
+      <h3 class="heading settled" data-level="4.8" id="assumptions"><span
+
+          class="secno">4.8. </span><span class="content">仮定</span><a
+
+          class="self-link" href="#assumptions"></a></h3>
+      <p>ACTルールは、評価、テスト環境、使用されている技術、またはテスト主題の対象に関するすべての既知の仮定、制限、または例外をリストし<em class="rfc2119">なければならない</em>。たとえば、CSSプロパティの検査に基づいて<a
+
+          href="https://www.w3.org/WAI/WCAG21/quickref/#contrast-minimum">WCAG 2.1達成基準1.4.3コントラスト(最低限)</a>を部分的にテストするルールは、CSSでスタイル設定可能なHTMLテキストコンテンツにのみ適用可能であり、ルールは文字画像をサポートしないと述べることができる。</p>
+      <p>アクセシビリティ要件を解釈できるもっともらしい方法が複数ある場合がある。たとえば、<a
+
+          href="https://www.w3.org/WAI/standards-guidelines/wcag/">Web Content Accessibility Guidelines</a> <a
+
+          data-link-type="biblio" href="#biblio-wcag">[WCAG]</a>において、絵文字が「テキスト」であるか「非テキストコンテンツ」であるかはすぐにはわからない。 解釈がどうであれ、これはルールに文書化され<em
+
+          class="rfc2119">なければならない</em>。</p>
+      <p>仮定はACTルールに含め<em class="rfc2119">なければならない</em>が、既知の仮定、制限、または例外がない場合は空に<em
+
+          class="rfc2119">なってもよい</em>。 </p>
+      <h3 class="heading settled" data-level="4.9" id="accessibility-support"><span
+
+          class="secno">4.9. </span><span class="content">アクセシビリティサポート</span><a
+
+          class="self-link" href="#accessibility-support"></a></h3>
+      <p>コンテンツは、さまざまな支援技術やユーザーエージェントによる特定のアクセシビリティ機能のサポートに依存するように設計さされうる。たとえば、特定の<a
+
+          href="https://momdo.github.io/wai-aria-1.1/">WAI-ARIA 1.1</a>機能を使用するコンテンツは、支援技術とユーザーエージェントによってサポートされるその機能に依存している。このコンテンツは、WAI-ARIAをサポートしない支援技術やユーザーエージェントでは機能しない。ウェブ技術の<a
+
+          href="https://waic.jp/docs/WCAG21/#dfn-accessibility-supported">アクセシビリティサポーテッド</a>の使用については、WCAGの定義を参照のこと。</p>
+      <p>ACTルールは、アクセシビリティサポートに関する既知の制限を含め<em class="rfc2119">なければならない</em>。</p>
+      <aside class="example" id="example-9e5ab5bd"><a class="self-link"
+
+          href="#example-9e5ab5bd"></a><header><code>aria-errormessage</code>が<a
+
+            href="https://waic.jp/docs/WCAG21/#status-messages">WCAG 2.1達成基準4.1.3ステータスメッセージ</a>を満たすために使用されているかどうかをチェックするルールの例：</header>
+        <blockquote>
+          <p><code>aria-errormessage</code>プロパティは、いくつかの主要なスクリーンリーダーでのサポートが制限されていることが知られている。 この方法は、サポートのために信頼することはできない。 ライブリージョンを使用するなどの代替手段は、フォールバックとして機能する可能性がある。（2019年1月）</p>
+        </blockquote>
+      </aside>
+      <p>アクセシビリティサポートのセクションはACTルールに含め<em class="rfc2119">なければならない</em>が、既知のアクセシビリティサポートの問題がない場合は空に<em
+
+          class="rfc2119">なってもよい</em>。</p>
+      <div class="note" role="note"><p><strong>注：</strong>Website Accessibility Conformance Evaluation Methodology (WCAG-EM)は、テストシナリオの<a
+
+            href="https://www.w3.org/TR/WCAG-EM/#step1c">アクセシビリティサポートベースライン</a>を定義するためのガイダンスを提供する。これは、ACTルールのユーザーが自分の状況に適したルールを選択するのに役立つ。 </p>
+      </div>
+      <h3 class="heading settled" data-level="4.10" id="test-cases"><span
+
+          class="secno">4.10. </span><span class="content">テストケース</span><a
+
+          class="self-link" href="#test-cases"></a></h3>
+      <p>テストケースは、ACTルールの実装を検証するために使用できるコンテンツ（のスニペット）である。各ルールは、<code>passed</code>、<code>failed</code>、および<code>inapplicable</code>の<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome①①">結果</a>の1つ以上のテストケースを持た<em
+
+          class="rfc2119">なければならない</em>。テストケースは、2つのデータ、ルールの各<a
+
+          href="#input-aspects">入力アスペクト</a>のスニペット、およびそのルールの期待される結果で構成される。テストケースは2つの機能を果たす。まず、ルールの結果が<code>passed</code>、<code>failed</code>、または<code>inapplicable</code>である場合に、読者が理解するためのシナリオ例としてである。また、アクセシビリティテストツールおよび方法論の開発者およびユーザーが、ルールが正しく実装されていることを検証するのにも役立つ。</p>
+      <aside class="example" id="example-09b9695b"><a class="self-link"
+
+          href="#example-09b9695b"></a><header><code>img</code>要素に代替テキストがあるかどうかをチェックするルールのHTMLテストケースの例：</header>
+        <blockquote>
+          <p><code>passed</code>結果の例：</p>
+          <pre class="language-html highlight"><c- p="">&lt;</c-><c- f="">img</c-> <c-
+
+e="">alt</c-><c- o="">=</c-><c- s="">"W3C Logo"</c-> <c- e="">src</c-><c-
+
+o="">=</c-><c- s="">"image/w3c.png"</c-><c- p="">></c->
+</pre>
+          <p><code>failed</code>結果の例：</p>
+          <pre class="language-html highlight"><c- p="">&lt;</c-><c- f="">img</c-> <c-
+
+e="">src</c-><c- o="">=</c-><c- s="">"image/w3c.png"</c-><c- p="">></c->
+</pre>
+          <p><code>inapplicable</code>結果の例：</p>
+          <pre class="language-html highlight"><c- p="">&lt;</c-><c- f="">input</c-> <c-
+
+e="">type</c-><c- o="">=</c-><c- s="">"image"</c-> <c- e="">alt</c-><c-
+
+o="">=</c-><c- s="">"W3C Logo"</c-> <c- e="">src</c-><c- o="">=</c-><c-
+
+s="">"image/w3c.png"</c-><c- p="">></c->
+</pre> </blockquote>
+      </aside>
+      <h3 class="heading settled" data-level="4.11" id="change-log"><span
+
+          class="secno">4.11. </span><span class="content">変更ログ</span><a
+
+          class="self-link" href="#change-log"></a></h3>
+      <p>ルールのユーザーはテスト結果の変更がテストの実行時に使用されるルールの変更によるものなのか、またはコンテンツ自体の変更によるものなのかを理解できるように、ACTルールの変更を追跡することが重要である。 評価の<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome①②">結果</a>を変更する可能性のあるACTルールへのすべての変更は、変更ログに記録され<em
+
+          class="rfc2119">なければならない</em>。 変更ログは、ルール文書自体の一部にするか、ルール文書から参照するかのいずれも可能である。 </p>
+      <h3 class="heading settled" data-level="4.12" id="glossary"><span
+
+          class="secno">4.12. </span><span class="content">用語集</span><a
+
+          class="self-link" href="#glossary"></a></h3>
+      <p>ACTルールは用語集のセクションを持た<em class="rfc2119">なければならない</em>。用語集は、<a data-link-type="dfn"
+
+          href="#outcome" id="ref-for-outcome①③">結果の定義</a>と、ルールの<a
+
+          href="#applicability">適用性</a>および<a href="#expectations">期待</a>のセクションで使用される定義を含ま<em
+
+          class="rfc2119">なければならない</em>。定義を変更するとルールが変更されるため、これらの定義をルールから独立して維持することはできない。共有の用語集をルールに使用する場合、定義の変更は、その定義を使用するすべてのルールの<a href="#change-log">変更ログ</a>に含め<em
+
+          class="rfc2119">なければならない</em>。</p>
+      <h3 class="heading settled" data-level="4.13" id="issues-list"><span
+
+          class="secno">4.13. </span><span class="content">Issueリスト（オプション） </span><a
+
+          class="self-link" href="#issues-list"></a></h3>
+      <p>ACTルールは、既知のissueの、リストまたはリストへの参照を含め<em class="rfc2119">てもよい</em>。issueリストは、ACTルールの<a
+
+          data-link-type="dfn" href="#outcome" id="ref-for-outcome①④">結果</a>が、<code>passed</code>または<code>inapplicable</code>であるはずの場所で<code>failed</code>場合、またはその逆の場合を記録するために使用される。これが発生する理由はいくつかある。詳細については、<a
+
+          href="#rule-accuracy">ルールの精度</a>を参照のこと。</p>
+      <p>issueリストには2つの目的がある。ACTルールのユーザーの場合、issueリストは、不正確な結果が発生した理由に関する洞察を提供し、そのルールの結果に対する信頼を提供する。ルールの設計者にとって、issueリストは、ルールの将来の更新を計画するのにも役立つ。ルールの新しいバージョンにて、解決された問題は変更ログに移動される。</p>
+      <h3 class="heading settled" data-level="4.14" id="background"><span
+
+          class="secno">4.14. </span><span class="content">背景（オプション）</span><a
+
+          class="self-link" href="#background"></a></h3>
+      <p>ACTルールは、ルール開発の背景に関する情報、または関連する資料への参照が含まれ<em class="rfc2119">てもよい</em>。背景情報はオプションであるが、ルールに含まれている場合はいつでも、関連する読みものとの関係を指定できる。<a
+
+          href="https://www.w3.org/WAI/standards-guidelines/wcag/">Web Content Accessibility Guidelines</a> <a
+
+          data-link-type="biblio" href="#biblio-wcag">[WCAG]</a>の達成基準のルールに関連する背景参照の例は、<a
+
+          href="https://waic.jp/docs/WCAG21/Understanding/">WCAG 2.1 解説書</a>、<a
+
+          href="https://waic.jp/docs/WCAG21/Techniques/">WCAG 2.1達成方法集</a>、または<a
+
+          href="https://momdo.github.io/wai-aria-1.1/">WAI-ARIA 1.1</a>、CSS <a
+
+          data-link-type="biblio" href="#biblio-css-2018">[css-2018]</a>、またはHTML <a
+
+          data-link-type="biblio" href="#biblio-html">[HTML]</a>仕様である。</p>
+      <h3 class="heading settled" data-level="4.15" id="acknowledgements"><span
+
+          class="secno">4.15. </span><span class="content">謝辞（オプション）</span><a
+
+          class="self-link" href="#acknowledgements"></a></h3>
+      <p>ACTルールには謝辞を含ん<em class="rfc2119">でもよい</em>。これには以下が含まれるが、これらに限定されない：</p>
+      <ul>
+        <li data-md=""><p>ルール著者のリスト</p>
+        </li>
+        <li data-md=""><p>ルールのレビューア/コントリビューターのリスト</p>
+        </li>
+        <li data-md=""><p>資金提供またはその他のサポート</p>
+        </li>
+      </ul>
+      <h2 class="heading settled" data-level="5" id="rule-accuracy"><span
+
+          class="secno">5. </span><span class="content">ルールの精度</span><a
+
+          class="self-link" href="#rule-accuracy"></a></h2>
+      <p>この節は<em>非規範的</em>である。</p>
+      <p><a href="#test-cases">テストケース</a>は、ACTルールが正しく実装されているかどうかを判断するために使用できるが、実装によって誤った結果が生成されないことを保証するものではない。 ACTルールを作成する場合、エッジケースが見落とされることはほぼ避けられない。技術は常に進化しており、コンテンツ著者は技術を使用するための新しい予期しない方法を常に考え付きます。不正確さの原因のいくつかの例は次のとおりである：</p>
+      <ul>
+        <li data-md=""><p>真実ではないことが判明したテスト対象についての<a href="#assumptions">仮定</a>がなされた</p>
+        </li>
+        <li data-md=""><p>技術が独特で予測が難しい方法で使用された</p>
+        </li>
+        <li data-md=""><p>技術に変化があるか、技術の側面が見落とされていた</p>
+        </li>
+        <li data-md=""><p>アクセシビリティ要件が正しく解釈されなかった</p>
+        </li>
+      </ul>
+      <p>不正確な結果を生み出す可能性のある不正確さには2つの種類がある。<strong>実装</strong>の不正確さはテストケースで対処できるが、<strong>ACTルール自体</strong>の不正確さは対処できない。結局のところ、ルールの不正確さは、ルールの著者が特定のエッジケースを認識していないことに起因する。</p>
+      <p>テスト結果がアクセシビリティ要件への不適合を誤って示している場合、これは偽陽性と呼ばれる。反対に、ルールが誤って適合性を示している場合、これは偽陰性である。偽陽性と偽陰性の割合は、アクセシビリティ監査の結果と比較することで計算できる。</p>
+      <ul>
+        <li data-md=""><p><strong>偽陽性</strong>：これは、ルールによって<code>failed</code>したが、<a
+
+              data-link-type="dfn" href="#accessibility-requirement" id="ref-for-accessibility-requirement⑧">アクセシビリティ要件</a>を満たしている<a
+
+              data-link-type="dfn" href="#test-target" id="ref-for-test-target⑦">テスト目標</a>の割合である。</p>
+        </li>
+        <li data-md=""><p><strong>偽陰性</strong>：これは、ルールに<code>passed</code>したが、<a
+
+              data-link-type="dfn" href="#accessibility-requirement" id="ref-for-accessibility-requirement⑨">アクセシビリティ要件</a>を満たしていない<a
+
+              data-link-type="dfn" href="#test-target" id="ref-for-test-target⑧">テスト目標</a>の割合である。</p>
+        </li>
+      </ul>
+      <p>ACTルールで偽陽性と偽陰性が発生する可能性が常に存在するということは、継続的なメンテナンスが必要になる可能性が高いことを意味する。ACTルールを維持するためのプロセスの設計は、ルール自体に限定されているACTルール形式の範囲外である。それでも、ルールの著者はルールを維持するためのプロセスを作成することを勧める。 </p>
+      <h2 class="heading settled" data-level="6" id="harmonization"><span
+
+          class="secno">6. </span><span class="content">調和</span><a
+
+          class="self-link" href="#harmonization"></a></h2>
+      <p>この節は<em>非規範的</em>である。</p>
+      <p>ACTルールフォーマットは調和を促進するように設計されているが、ACTルールフォーマットには、ルール著者がすでに確立されているACTルールと矛盾するルールを作成するのを防ぐ直接の要件は存在しない。ACTルールに特定の数の実装を持たせたり、特定のレベルの精度を持たせたりする必要もない。これにより、ルールセットごとに品質要件を変えることができ、時間の経過とともに開発することができる。</p>
+      <p>調和は、ルール実装者のグループがACTルールの有効性を集合的に受け入れるときに発生する。たとえば、アクセシビリティテストツールベンダーのコミュニティグループは、特定のACTルールのセットに調和していると宣言できる。そのようなグループは、ルールの受け入れ基準を設定し、ACTルールフォーマットを超える品質要件を持つことができる。</p>
+      <aside class="example" id="example-65a5c06a"><a class="self-link"
+
+          href="#example-65a5c06a"></a><header>EPUBルールに取り組んでいるグループの受け入れ基準の例：</header>
+        <blockquote>
+          <ul>
+            <li>ACT EPUBルールは、3つの組織のメンバーによって承認されたときに調和され、かつ</li>
+            <li>ACT EPUBルールは、2つの独立した実装がある場合に調和される</li>
+          </ul>
+        </blockquote>
+      </aside>
+      <p>そのようなプロセスの例は、<a href="https://w3c.github.io/wcag-act-rules/review-process.html">WCAG ACT Review Process</a>である。</p>
+      <h2 class="heading settled" data-level="7" id="definitions"><span
+
+          class="secno">7. </span><span class="content">定義</span><a
+
+          class="self-link" href="#definitions"></a></h2>
+      <dl>
+        <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+            id="accessibility-requirement">アクセシビリティ要件（Accessibility requirement）</dfn></dt>
+        <dt><br></dt>
+        <dd><p>要件は、標準に準拠するため、または契約、ポリシー、もしくは規制に準拠するために満たす必要のある条件である。アクセシビリティ要件は、ICT製品への障害を持つ人のアクセスを改善することを目的とした要件である。</p>
+          <p>アクセシビリティ要件の一般的な例は、WCAG達成基準である。WAI-ARIAやHTMLなど、アクセシビリティに関する推奨事項があるW3C標準を含む他の標準が存在する。アクセシビリティ要件は、会社のポリシー、地域の企画、または法律にもよく見られる。</p>
+        </dd>
+        <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+            id="accessibility-requirements-document">アクセシビリティ要件文書（Accessibility requirements document）</dfn></dt>
+        <dt><br></dt>
+        <dd><p><a
+
+              data-link-type="dfn" href="#accessibility-requirement" id="ref-for-accessibility-requirement①⓪">アクセシビリティ要件</a>を含む、標準、契約、ポリシー、規制などの文書。 たとえば、WCAG 2.1、WAI-ARIA 1.1、HTML 5.2、EPUB Accessibility 1.0、BBC HTML Accessibility Standards v2.0など。</p>
+        </dd>
+        <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+            id="outcome">結果（Outcome）</dfn></dt>
+        <dd><p><a
+
+              data-link-type="dfn" href="#test-subject" id="ref-for-test-subject⑦">テスト対象</a>またはその構成要素である<a
+
+              data-link-type="dfn" href="#test-target" id="ref-for-test-target⑨">テスト目標</a>の1つでACTルールを評価することから得られる結論。結果は、次の3つの種類のいずれかになる：</p>
+          <ul>
+            <li><strong>該当なし（Inapplicable）：</strong>テスト対象のどの部分も適合性に一致しない</li>
+            <li><strong>合格（Passed）：</strong><a data-link-type="dfn" href="#test-target"
+
+                id="ref-for-test-target①⓪">テスト目標</a>がすべての期待を満たしている</li>
+            <li><strong>失敗（Failed）：</strong><a data-link-type="dfn" href="#test-target"
+
+                id="ref-for-test-target①①">テスト目標</a>がすべての期待を満たしていない
+</li>
+          </ul>
+          <div class="note" role="note"><p><strong>注：</strong>ルールには、<a
+
+                data-link-type="dfn" href="#test-target" id="ref-for-test-target①②">テスト目標</a>ごとに1つの<code>passed</code>または<code>failed</code>の結果を持つ。テスト目標がない場合、ルールは1つの<code>inapplicable</code>の結果を持つ。これは、各<a
+
+                data-link-type="dfn" href="#test-subject" id="ref-for-test-subject⑧">テスト対象</a>が1つ以上の結果を持つことを意味する。</p>
+          </div>
+          <div class="note" role="note"><p><strong>注：</strong><a data-link-type="biblio"
+
+                href="#biblio-earl10-schema">[EARL10-Schema]</a>を使用する実装者は、<a
+
+                href="https://www.w3.org/TR/EARL10-Schema/#outcome">outcome property</a>を使用して結果を表現できる。<code>passed</code>、<code>failed</code> 、<code>inapplicable</code>に加えて、EARL1.0は<code>incomplete</code>結果も定義した。完全に適用したとき、これはACTルールの結果にはなりえないが、ルールが部分的にしか評価されないことがよくある。たとえば、適用性が自動化されているが、期待を手動で評価する必要がある場合である。このような「中間」の結果は、<code>incomplete</code>の結果で表現できる。</p>
+          </div>
+        </dd>
+        <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+            id="test-subject">テスト対象（Test Subject）</dfn></dt>
+        <dd><p>ACTルールで評価できるリソースまたはリソースのコレクション。</p>
+          <aside class="example" id="example-42b1dee1"><a class="self-link"
+
+              href="#example-42b1dee1"></a><header>テスト対象の例：</header>
+            <blockquote>
+              <ul>
+                <li>すべての埋め込みスクリプト、スタイル、画像を含むHTMLページ</li>
+                <li>EPUB出版物</li>
+                <li>ウェブコンポーネントファイル</li>
+              </ul>
+            </blockquote>
+          </aside>
+          <div class="note" role="note"><p><strong>注：</strong><a data-link-type="biblio"
+
+                href="#biblio-earl10-schema">[EARL10-Schema]</a>を使用する実装者は、 <a
+
+                href="https://www.w3.org/TR/EARL10-Schema/#subject">subject property</a>を使用してテスト対象を表現できる。</p>
+          </div>
+        </dd>
+        <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport=""
+
+            id="test-target">テスト目標（Test Target）</dfn></dt>
+        <dd><p><a
+
+              href="#applicability">適用性</a>によって定義される、<a data-link-type="dfn" href="#test-subject"
+
+              id="ref-for-test-subject⑨">テスト対象</a>の明確な部分。</p>
+          <aside class="example" id="example-cd7029f9"><a class="self-link"
+
+              href="#example-cd7029f9"></a><header>テスト目標の例：</header>
+            <blockquote>
+              <ul>
+                <li>HTMLページ内のノード</li>
+                <li>映像内の期間</li>
+                <li>テキスト文書内の文字の範囲</li>
+              </ul>
+            </blockquote>
+          </aside>
+          <div class="note" role="note"><p><strong>注：</strong><a data-link-type="biblio"
+
+                href="#biblio-earl10-schema">[EARL10-Schema]</a>を使用する実装者は、<a
+
+                href="https://www.w3.org/TR/EARL10-Schema/#pointer">pointer property</a>を使用してテスト目標を表現できる。 </p>
+          </div>
+        </dd>
+      </dl>
+      <h2 class="heading settled" id="appendix-data-example"><span class="content">付録1：JSON-LDとEARLを使用したACTルールの結果の表現</span><a
+
+          class="self-link" href="#appendix-data-example"></a></h2>
+      <p>この節は<em>非規範的</em>である。</p>
+      <p>このセクションでは、EARLとJSON-LDを使用してACTルールを実行した結果を表現する例を示す（<a
+
+          href="https://www.w3.org/WAI/standards-guidelines/earl/">Evaluation and Report Language</a>および<a
+
+          href="https://www.w3.org/TR/json-ld/">A JSON-based Serialization for Linked Data (JSON-LD)</a>を参照）。<a
+
+          href="https://github.com/w3c/earl">JSON-LD serialization of EARL</a> GitHubリポジトリーで、さらに多くの例と背景が提供されている。</p>
+      <p>このセクションの例は次のとおり：</p>
+      <ul>
+        <li data-md=""><p>例1：1つの<a class="property" data-link-type="propdesc">アサーション</a>からの最小限の結果</p>
+        </li>
+        <li data-md=""><p>例2：複数の<a class="property"
+
+              data-link-type="propdesc">アサーション</a>の結果</p>
+        </li>
+        <li data-md=""><p>例3：<a class="property" data-link-type="propdesc">要件</a>に基づく集計</p>
+        </li>
+        <li data-md=""><p>例4：「テスト対象」に基づく集計</p>
+        </li>
+        <li data-md=""><p>例5：このセクションの想定される<a class="property" data-link-type="propdesc">コンテキスト</a></p>
+        </li>
+      </ul>
+      <p><strong>例1：</strong>1つの<a class="property"
+
+          data-link-type="propdesc">アサーション</a>からの最小限の結果</p>
+      <pre class="language-javascript highlight"><c- p="">{</c->
+	<c- u="">"@context"</c-><c- o="">:</c-> <c- u="">"context.json"</c-><c-
+
+p="">,</c->
+	<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"Assertion"</c-><c- p="">,</c->
+	<c- u="">"assertedBy"</c-><c- o="">:</c-> <c- u="">"https://example.org/MyTool"</c-><c-
+
+p="">,</c->
+	<c- u="">"subject"</c-><c- o="">:</c-> <c- u="">"https://example.org/page1.html"</c-><c-
+
+p="">,</c->
+	<c- u="">"test"</c-><c- o="">:</c-> <c- u="">"ACT-CG:rules/23a2a8"</c-><c-
+
+p="">,</c->
+	<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:failed"</c-><c-
+
+p="">,</c->
+		<c- u="">"pointer"</c-><c- o="">:</c-> <c- u="">"html > body > h1:first-child"</c->
+	<c- p="">}</c->
+<c- p="">}</c->
+</pre>
+      <p><strong>例2：</strong>複数の<a class="property"
+
+          data-link-type="propdesc">アサーション</a>の結果</p>
+      <pre class="language-javascript highlight"><c- p="">{</c->
+	<c- u="">"@context"</c-><c- o="">:</c-> <c- u="">"context.json"</c-><c-
+
+p="">,</c->
+	<c- u="">"@graph"</c-><c- o="">:</c-> <c- p="">[{</c->
+		<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"Assertion"</c-><c- p="">,</c->
+		<c- u="">"assertedBy"</c-><c- o="">:</c-> <c- u="">"https://example.org/MyTool"</c-><c-
+
+p="">,</c->
+		<c- u="">"subject"</c-><c- o="">:</c-> <c- u="">"https://example.org/page1.html"</c-><c-
+
+p="">,</c->
+		<c- u="">"test"</c-><c- o="">:</c-> <c- u="">"ACT-CG:rules/23a2a8"</c-><c-
+
+p="">,</c->
+		<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+			<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:failed"</c-><c-
+
+p="">,</c->
+			<c- u="">"pointer"</c-><c- o="">:</c-> <c- u="">"html > body > h1:first-child"</c->
+		<c- p="">}</c->
+	<c- p="">},</c-> <c- p="">{</c->
+		<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"Assertion"</c-><c- p="">,</c->
+		<c- u="">"assertedBy"</c-><c- o="">:</c-> <c- u="">"https://example.org/AnotherTool"</c-><c-
+
+p="">,</c->
+		<c- u="">"subject"</c-><c- o="">:</c-> <c- u="">"https://example.org/page1.html"</c-><c-
+
+p="">,</c->
+		<c- u="">"test"</c-><c- o="">:</c-> <c- u="">"ACT-CG:rules/23a2a8"</c-><c-
+
+p="">,</c->
+		<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+			<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:passed"</c-><c-
+
+p="">,</c->
+			<c- u="">"pointer"</c-><c- o="">:</c-> <c- u="">"html > body > h1:nth-child(2)"</c->
+		<c- p="">}</c->
+	<c- p="">}]</c->
+<c- p="">}</c->
+</pre>
+      <p><strong>例3：</strong><a class="property"
+
+          data-link-type="propdesc">要件</a>に基づく集計（例たとばWCAG達成基準）</p>
+      <pre class="language-javascript highlight"><c- p="">{</c->
+	<c- u="">"@context"</c-><c- o="">:</c-> <c- u="">"context.json"</c-><c-
+
+p="">,</c->
+	<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"Assertion"</c-><c- p="">,</c->
+	<c- u="">"assertedBy"</c-><c- o="">:</c-> <c- u="">"https://example.org/MyTool"</c-><c-
+
+p="">,</c->
+	<c- u="">"subject"</c-><c- o="">:</c-> <c- u="">"https://example.org/page1.html"</c-><c-
+
+p="">,</c->
+	<c- u="">"test"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"earl:TestRequirement"</c-><c-
+
+p="">,</c->
+		<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"WCAG21:non-text-content"</c->
+	<c- p="">},</c->
+	<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:failed"</c-><c-
+
+p="">,</c->
+		<c- u="">"source"</c-><c- o="">:</c-> <c- p="">[{</c->
+			<c- u="">"test"</c-><c- o="">:</c-> <c- u="">"ACT-CG:rules/23a2a8"</c-><c-
+
+p="">,</c->
+			<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:failed"</c-><c-
+
+p="">,</c->
+				<c- u="">"pointer"</c-><c- o="">:</c-> <c- u="">"html > body > h1:first-child"</c->
+			<c- p="">}</c->
+		<c- p="">},</c-> <c- p="">{</c->
+			<c- u="">"test"</c-><c- o="">:</c-> <c- u="">"ACT-RULES-CG:rules/23a2a8"</c-><c-
+
+p="">,</c->
+			<c- u="">"result"</c-> <c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:passed"</c-><c-
+
+p="">,</c->
+				<c- u="">"pointer"</c-><c- o="">:</c-> <c- u="">"html > body > h1:nth-child(2)"</c->
+			<c- p="">}</c->
+		<c- p="">}]</c->
+	<c- p="">}</c->
+<c- p="">}</c->
+</pre>
+      <p><strong>例4：</strong>「テスト対象」に基づく集計（たとえばウェブサイト）</p>
+      <pre class="language-javascript highlight"><c- p="">{</c->
+	<c- u="">"@context"</c-><c- o="">:</c-> <c- u="">"context.json"</c-><c-
+
+p="">,</c->
+	<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"Assertion"</c-><c- p="">,</c->
+	<c- u="">"assertedBy"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"Organization"</c-><c- p="">,</c->
+		<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"_:myOrg"</c-><c- p="">,</c->
+		<c- u="">"title"</c-><c- o="">:</c-> <c- u="">"My Organization"</c-><c-
+
+p="">,</c->
+		<c- u="">"description"</c-> <c- o="">:</c-> <c- u="">"Accessibility testing service"</c-><c-
+
+p="">,</c->
+		<c- u="">"homepage"</c-> <c- o="">:</c-> <c- u="">"http://example.org/myOrg/"</c->
+	<c- p="">},</c->
+	<c- u="">"subject"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"@type"</c-><c- o="">:</c-> <c- p="">[</c-><c- u="">"WebSite"</c-><c-
+
+p="">,</c-> <c- u="">"TestSubject"</c-><c- p="">],</c->
+		<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"https://example.org/"</c->
+	<c- p="">},</c->
+	<c- u="">"test"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"earl:TestRequirement"</c-><c-
+
+p="">,</c->
+		<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"http://www.w3.org/WAI/WCAG2A-Conformance"</c->
+	<c- p="">},</c->
+	<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:failed"</c-><c-
+
+p="">,</c->
+		<c- u="">"source"</c-><c- o="">:</c-> <c- p="">[{</c->
+			<c- u="">"test"</c-><c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"earl:TestRequirement"</c-><c-
+
+p="">,</c->
+				<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"WCAG21:non-text-content"</c->
+			<c- p="">},</c->
+			<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:failed"</c-><c-
+
+p="">,</c->
+				<c- u="">"source"</c-><c- o="">:</c-> <c- p="">[</c-> … <c- p="">]</c->
+			<c- p="">}</c->
+		<c- p="">},</c-> <c- p="">{</c->
+			<c- u="">"test"</c-><c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"earl:TestRequirement"</c-><c-
+
+p="">,</c->
+				<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"WCAG21:audio-only-and-video-only-prerecorded"</c->
+			<c- p="">},</c->
+			<c- u="">"result"</c-><c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:passed"</c-><c-
+
+p="">,</c->
+				<c- u="">"source"</c-><c- o="">:</c-> <c- p="">[</c-> … <c- p="">]</c->
+			<c- p="">}</c->
+		<c- p="">},</c-> <c- p="">{</c->
+			<c- u="">"test"</c-><c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"earl:TestRequirement"</c-><c-
+
+p="">,</c->
+				<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"WCAG21:captions-prerecorded"</c->
+			<c- p="">},</c->
+			<c- u="">"result"</c-> <c- o="">:</c-> <c- p="">{</c->
+				<c- u="">"outcome"</c-><c- o="">:</c-> <c- u="">"earl:passed"</c-><c-
+
+p="">,</c->
+				<c- u="">"source"</c-><c- o="">:</c-> <c- p="">[</c-> … <c- p="">]</c->
+			<c- p="">}</c->
+		<c- p="">},</c-> … <c- p="">]</c->
+	<c- p="">}</c->
+<c- p="">}</c->
+</pre>
+      <p><strong>例5：</strong>このセクションの想定される<a class="property" data-link-type="propdesc">コンテキスト</a></p>
+      <pre class="language-javascript highlight"><c- p="">{</c->
+	<c- u="">"@vocab"</c-><c- o="">:</c-> <c- u="">"http://www.w3.org/ns/earl#"</c-><c-
+
+p="">,</c->
+
+	<c- u="">"cnt"</c-><c- o="">:</c-> <c- u="">"http://www.w3.org/2011/content#"</c-><c-
+
+p="">,</c->
+	<c- u="">"dct"</c-><c- o="">:</c-> <c- u="">"http://purl.org/dc/terms/"</c-><c-
+
+p="">,</c->
+	<c- u="">"earl"</c-><c- o="">:</c-> <c- u="">"http://www.w3.org/ns/earl#"</c-><c-
+
+p="">,</c->
+	<c- u="">"foaf"</c-><c- o="">:</c-> <c- u="">"http://xmlns.com/foaf/0.1/"</c-><c-
+
+p="">,</c->
+	<c- u="">"htp"</c-><c- o="">:</c-> <c- u="">"http://www.w3.org/2011/http#"</c-><c-
+
+p="">,</c->
+	<c- u="">"ptr"</c-><c- o="">:</c-> <c- u="">"https://www.w3.org/2009/pointers#"</c-><c-
+
+p="">,</c->
+	<c- u="">"schema"</c-><c- o="">:</c-> <c- u="">"http://schema.org/"</c-><c-
+
+p="">,</c->
+	<c- u="">"xsd"</c-><c- o="">:</c-> <c- u="">"https://www.w3.org/2001/XMLSchema#"</c-><c-
+
+p="">,</c->
+
+	<c- u="">"WCAG20"</c-><c- o="">:</c-> <c- u="">"https://www.w3.org/TR/WCAG20#"</c-><c-
+
+p="">,</c->
+	<c- u="">"WCAG21"</c-><c- o="">:</c-> <c- u="">"https://www.w3.org/TR/WCAG21#"</c-><c-
+
+p="">,</c->
+	<c- u="">"ACT-RULES-CG"</c-><c- o="">:</c-> <c- u="">"https://act-rules.github.io/"</c-><c-
+
+p="">,</c->
+
+	<c- u="">"WebSite"</c-><c- o="">:</c-> <c- u="">"schema:WebSite"</c-><c-
+
+p="">,</c->
+	<c- u="">"WebPage"</c-><c- o="">:</c-> <c- u="">"schema:WebPage"</c-><c-
+
+p="">,</c->
+
+	<c- u="">"title"</c-><c- o="">:</c-> <c- u="">"dct:title"</c-><c- p="">,</c->
+	<c- u="">"description"</c-><c- o="">:</c-> <c- u="">"dct:description"</c-><c-
+
+p="">,</c->
+	<c- u="">"date"</c-><c- o="">:</c-> <c- u="">"dct:date"</c-><c- p="">,</c->
+	<c- u="">"hasVersion"</c-><c- o="">:</c-> <c- u="">"dct:hasVesion"</c-><c-
+
+p="">,</c-> 
+	<c- u="">"isPartOf"</c-><c- o="">:</c-> <c- u="">"dct:isPartOf"</c-><c-
+
+p="">,</c-> 
+	<c- u="">"hasPart"</c-><c- o="">:</c-> <c- u="">"dct:hasPart"</c-><c- p="">,</c->
+	<c- u="">"source"</c-><c- o="">:</c-> <c- u="">"dct:source"</c-><c- p="">,</c->
+
+	<c- u="">"Agent"</c-><c- o="">:</c-> <c- u="">"foaf:Agent"</c-><c- p="">,</c->
+	<c- u="">"Person"</c-><c- o="">:</c-> <c- u="">"foaf:Person"</c-><c- p="">,</c->
+	<c- u="">"Organization"</c-><c- o="">:</c-> <c- u="">"foaf:Organization"</c-><c-
+
+p="">,</c->
+	<c- u="">"Group"</c-><c- o="">:</c-> <c- u="">"foaf:Group"</c-><c- p="">,</c->
+	<c- u="">"Document"</c-><c- o="">:</c-> <c- u="">"foaf:Document"</c-><c-
+
+p="">,</c->
+	<c- u="">"name"</c-><c- o="">:</c-> <c- u="">"foaf:name"</c-><c- p="">,</c->
+	<c- u="">"firstName"</c-><c- o="">:</c-> <c- u="">"foaf:firstName"</c-><c-
+
+p="">,</c->
+	<c- u="">"surname"</c-><c- o="">:</c-> <c- u="">"foaf:surname"</c-><c-
+
+p="">,</c->
+	<c- u="">"mbox"</c-><c- o="">:</c-> <c- u="">"foaf:mbox"</c-><c- p="">,</c->
+	<c- u="">"mbox_sha1sum"</c-><c- o="">:</c-> <c- u="">"foaf:mbox_sha1sum"</c-><c-
+
+p="">,</c->
+	<c- u="">"member"</c-><c- o="">:</c-> <c- u="">"foaf:member"</c-><c- p="">,</c->
+	<c- u="">"homepage"</c-><c- o="">:</c-> <c- u="">"foaf:homepage"</c-><c-
+
+p="">,</c->
+
+	<c- u="">"assertedBy"</c-><c- o="">:</c-> <c- p="">{</c-> <c- u="">"@type"</c-><c-
+
+o="">:</c-> <c- u="">"@id"</c-> <c- p="">},</c->
+	<c- u="">"subject"</c-><c- o="">:</c-> <c- p="">{</c-> <c- u="">"@type"</c-><c-
+
+o="">:</c-> <c- u="">"@id"</c-> <c- p="">},</c->
+	<c- u="">"test"</c-><c- o="">:</c-> <c- p="">{</c-> <c- u="">"@type"</c-><c-
+
+o="">:</c-> <c- u="">"@id"</c-> <c- p="">},</c->
+	<c- u="">"mode"</c-><c- o="">:</c-> <c- p="">{</c-> <c- u="">"@type"</c-><c-
+
+o="">:</c-> <c- u="">"@id"</c-> <c- p="">},</c->
+	<c- u="">"outcome"</c-><c- o="">:</c-> <c- p="">{</c-> <c- u="">"@type"</c-><c-
+
+o="">:</c-> <c- u="">"@id"</c-> <c- p="">},</c->
+	<c- u="">"pointer"</c-><c- o="">:</c-> <c- p="">{</c->
+		<c- u="">"@id"</c-><c- o="">:</c-> <c- u="">"earl:pointer"</c-><c- p="">,</c->
+		<c- u="">"@type"</c-><c- o="">:</c-> <c- u="">"ptr:CSSSelectorPointer"</c->
+	<c- p="">}</c->
+<c- p="">}</c->
+</pre>
+      <h2 class="heading settled" id="Acknowledgments"><span class="content">付録2：謝辞 </span><a
+
+          class="self-link" href="#Acknowledgments"></a></h2>
+      <p>この節は<em>非規範的</em>である。</p>
+      <h3 class="heading settled" id="participants"><span class="content">この文書の作成に積極的なAG WGの参加者</span><a
+
+          class="self-link" href="#participants"></a></h3>
+      <p>Shadi Abou-Zahra, Trevor Bostic, Romain Deltour, Kathy Eng, Wilco Fiers, Alistair Garrison, Kasper Isager, Maureen Kraft, Mary Jo Mueller, Jey Nandakumar, Charu Pandhi, Stein Erik Skotkjerra, Anne Thyme Nørregaard, Kathleen Wahlbin</p>
+      <h3 class="heading settled" id="enabling-funders"><span class="content">資金提供者</span><a
+
+          class="self-link" href="#enabling-funders"></a></h3>
+      <p>This publication has been developed with support from the <a href="https://www.w3.org/WAI/about/projects/wai-tools/">WAI-Tools Project</a>, co-funded by the European Commission (EC) under the Horizon 2020 Program (Grant Agreement 780057). The content of this publication does not necessarily reflect the views or policies of the European Commission (EC) or any of the European Union (EU) Member States.</p>
+      <h2 class="heading settled" id="Change_History"><span class="content">付録3：変更履歴 </span><a
+
+          class="self-link" href="#Change_History"></a></h2>
+      <p>この節は<em>非規範的</em>である。</p>
+      <p>No changes have been made since the previous <a href="https://www.w3.org/TR/2019/PR-act-rules-format-1.0-20190730/">Proposed Recommendation draft of 30 July 2019</a>.</p>
+    </main>
+    <div data-fill-with="conformance"><h2 class="no-ref no-num heading settled" id="conformance"><span class="content">適合</span><a
+
+          class="self-link" href="#conformance"></a></h2>
+      <p>適合要件は、説明的なアサーションとRFC2119の用語を組み合わせて表現される。 この文書の規範部分においてキーワード“MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, “OPTIONAL” は、RFC 2119で示されたとおりに解釈される。しかし、読みやすさのために、これらの単語はこの仕様において大文字のみで出現しない。</p>
+      <p>この仕様のすべてのテキストは、非規範的として明示的にマークされたセクション、例、および注記を除いて、規範的である。<a
+
+          data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
+      <p>この仕様の例は、「たとえば」という言葉で紹介されているか、次のように<code>class="example"</code>で規範的なテキストとは別に設定されている：</p>
+      <div class="example" id="example-example"><a class="self-link" href="#example-example"></a> これは有益な例の例である。</div>
+      <p>有益な注は「注」という単語で始まり、次のように<code>class="note"</code>で規範的なテキストとは別に設定されている：</p>
+      <p class="note" role="note">注：これは有益な注である。</p>
+    </div>
+    <script>
+(function() {
+	"use strict";
+	var collapseSidebarText = '<span aria-hidden="true">←</span> '
+													+ '<span>Collapse Sidebar</span>';
+	var expandSidebarText   = '<span aria-hidden="true">→</span> '
+													+ '<span>Pop Out Sidebar</span>';
+	var tocJumpText         = '<span aria-hidden="true">↑</span> '
+													+ '<span>Jump to Table of Contents</span>';
+
+	var sidebarMedia = window.matchMedia('screen and (min-width: 78em)');
+	var autoToggle   = function(e){ toggleSidebar(e.matches) };
+	if(sidebarMedia.addListener) {
+		sidebarMedia.addListener(autoToggle);
+	}
+
+	function toggleSidebar(on) {
+		if (on == undefined) {
+			on = !document.body.classList.contains('toc-sidebar');
+		}
+
+		/* Don’t scroll to compensate for the ToC if we’re above it already. */
+		var headY = 0;
+		var head = document.querySelector('.head');
+		if (head) {
+			// terrible approx of "top of ToC"
+			headY += head.offsetTop + head.offsetHeight;
+		}
+		var skipScroll = window.scrollY < headY;
+
+		var toggle = document.getElementById('toc-toggle');
+		var tocNav = document.getElementById('toc');
+		if (on) {
+			var tocHeight = tocNav.offsetHeight;
+			document.body.classList.add('toc-sidebar');
+			document.body.classList.remove('toc-inline');
+			toggle.innerHTML = collapseSidebarText;
+			if (!skipScroll) {
+				window.scrollBy(0, 0 - tocHeight);
+			}
+			tocNav.focus();
+			sidebarMedia.addListener(autoToggle); // auto-collapse when out of room
+		}
+		else {
+			document.body.classList.add('toc-inline');
+			document.body.classList.remove('toc-sidebar');
+			toggle.innerHTML = expandSidebarText;
+			if (!skipScroll) {
+				window.scrollBy(0, tocNav.offsetHeight);
+			}
+			if (toggle.matches(':hover')) {
+				/* Unfocus button when not using keyboard navigation,
+					because I don’t know where else to send the focus. */
+				toggle.blur();
+			}
+		}
+	}
+
+	function createSidebarToggle() {
+		/* Create the sidebar toggle in JS; it shouldn’t exist when JS is off. */
+		var toggle = document.createElement('a');
+			/* This should probably be a button, but appearance isn’t standards-track.*/
+		toggle.id = 'toc-toggle';
+		toggle.class = 'toc-toggle';
+		toggle.href = '#toc';
+		toggle.innerHTML = collapseSidebarText;
+
+		sidebarMedia.addListener(autoToggle);
+		var toggler = function(e) {
+			e.preventDefault();
+			sidebarMedia.removeListener(autoToggle); // persist explicit off states
+			toggleSidebar();
+			return false;
+		}
+		toggle.addEventListener('click', toggler, false);
+
+
+		/* Get <nav id=toc-nav>, or make it if we don’t have one. */
+		var tocNav = document.getElementById('toc-nav');
+		if (!tocNav) {
+			tocNav = document.createElement('p');
+			tocNav.id = 'toc-nav';
+			/* Prepend for better keyboard navigation */
+			document.body.insertBefore(tocNav, document.body.firstChild);
+		}
+		/* While we’re at it, make sure we have a Jump to Toc link. */
+		var tocJump = document.getElementById('toc-jump');
+		if (!tocJump) {
+			tocJump = document.createElement('a');
+			tocJump.id = 'toc-jump';
+			tocJump.href = '#toc';
+			tocJump.innerHTML = tocJumpText;
+			tocNav.appendChild(tocJump);
+		}
+
+		tocNav.appendChild(toggle);
+	}
+
+	var toc = document.getElementById('toc');
+	if (toc) {
+		createSidebarToggle();
+		toggleSidebar(sidebarMedia.matches);
+
+		/* If the sidebar has been manually opened and is currently overlaying the text
+			(window too small for the MQ to add the margin to body),
+			then auto-close the sidebar once you click on something in there. */
+		toc.addEventListener('click', function(e) {
+			if(e.target.tagName.toLowerCase() == "a" && document.body.classList.contains('toc-sidebar') && !sidebarMedia.matches) {
+				toggleSidebar(false);
+			}
+		}, false);
+	}
+	else {
+		console.warn("Can’t find Table of Contents. Please use <nav id='toc'> around the ToC.");
+	}
+
+	/* Wrap tables in case they overflow */
+	var tables = document.querySelectorAll(':not(.overlarge) > table.data, :not(.overlarge) > table.index');
+	var numTables = tables.length;
+	for (var i = 0; i < numTables; i++) {
+		var table = tables[i];
+		var wrapper = document.createElement('div');
+		wrapper.className = 'overlarge';
+		table.parentNode.insertBefore(wrapper, table);
+		wrapper.appendChild(table);
+	}
+
+})();
+</script> <h2 class="no-num no-ref heading settled" id="references"><span
+
+        class="content">参考文献</span><a class="self-link" href="#references"></a></h2>
+    <h3 class="no-num no-ref heading settled" id="normative"><span class="content">標準情報</span><a
+
+        class="self-link" href="#normative"></a></h3>
+    <dl>
+      <dt id="biblio-rfc2119">[RFC2119]</dt>
+      <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a
+
+          href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a></dd>
+    </dl>
+    <h3 class="no-num no-ref heading settled" id="informative"><span class="content">参考文献</span><a
+
+        class="self-link" href="#informative"></a></h3>
+    <dl>
+      <dt id="biblio-accname-aam-11">[ACCNAME-1.1]</dt>
+      <dd>Joanmarie Diggs; Bryan Garaventa; Michael Cooper. <a href="https://www.w3.org/TR/accname-1.1/">Accessible Name and Description Computation 1.1</a>. 18 December 2018. REC. URL: <a
+
+          href="https://www.w3.org/TR/accname-1.1/">https://www.w3.org/TR/accname-1.1/</a></dd>
+      <dt id="biblio-css-2018">[CSS-2018]</dt>
+      <dd>Tab Atkins Jr.; Elika Etemad; Florian Rivoal. <a href="https://www.w3.org/TR/css-2018/">CSS Snapshot 2018</a>. 22 January 2019. NOTE. URL: <a
+
+          href="https://www.w3.org/TR/css-2018/">https://www.w3.org/TR/css-2018/</a></dd>
+      <dt id="biblio-dom">[DOM]</dt>
+      <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a
+
+          href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a></dd>
+      <dt id="biblio-earl10-schema">[EARL10-Schema]</dt>
+      <dd>Shadi Abou-Zahra. <a href="https://www.w3.org/TR/EARL10-Schema/">Evaluation and Report Language (EARL) 1.0 Schema</a>. 2 February 2017. NOTE. URL: <a
+
+          href="https://www.w3.org/TR/EARL10-Schema/">https://www.w3.org/TR/EARL10-Schema/</a></dd>
+      <dt id="biblio-html">[HTML]</dt>
+      <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a
+
+          href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a></dd>
+      <dt id="biblio-http11">[HTTP11]</dt>
+      <dd>R. Fielding, Ed.; J. Reschke, Ed.. <a href="https://triple-underscore.github.io/RFC7230-ja.html">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a>. June 2014. Proposed Standard. URL: <a
+
+          href="https://triple-underscore.github.io/RFC7230-ja.html">https://tools.ietf.org/html/rfc7230</a></dd>
+      <dt id="biblio-svg2">[SVG2]</dt>
+      <dd>Amelia Bellamy-Royds; et al. <a href="https://www.w3.org/TR/SVG2/">Scalable Vector Graphics (SVG) 2</a>. 4 October 2018. CR. URL: <a
+
+          href="https://www.w3.org/TR/SVG2/">https://www.w3.org/TR/SVG2/</a></dd>
+      <dt id="biblio-uaag20">[UAAG20]</dt>
+      <dd>James Allan; et al. <a href="https://www.w3.org/TR/UAAG20/">User Agent Accessibility Guidelines (UAAG) 2.0</a>. 15 December 2015. NOTE. URL: <a
+
+          href="https://www.w3.org/TR/UAAG20/">https://www.w3.org/TR/UAAG20/</a></dd>
+      <dt id="biblio-wai-aria">[WAI-ARIA]</dt>
+      <dd>Joanmarie Doggs; et al. <a href="https://momdo.github.io/wai-aria-1.1/">Accessible Rich Internet Applications (WAI-ARIA) 1.1</a>. 14 December 2018. REC. URL: <a
+
+          href="https://momdo.github.io/wai-aria-1.1/">https://www.w3.org/TR/wai-aria/</a></dd>
+      <dt id="biblio-wcag">[WCAG]</dt>
+      <dd>Andrew Kirckpatrick; et al. <a href="https://www.w3.org/TR/WCAG/">Web Content Accessibility Guidelines 2.1</a>. 5 June 2018. REC. URL: <a
+
+          href="https://www.w3.org/TR/WCAG/">https://www.w3.org/TR/WCAG/</a></dd>
+    </dl>
+    <script>/* script-dfn-panel */
+
+document.body.addEventListener("click", function(e) {
+		var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+		// Find the dfn element or panel, if any, that was clicked on.
+		var el = e.target;
+		var target;
+		var hitALink = false;
+		while(el.parentElement) {
+				if(el.tagName == "A") {
+						// Clicking on a link in a <dfn> shouldn't summon the panel
+						hitALink = true;
+				}
+				if(el.classList.contains("dfn-paneled")) {
+						target = "dfn";
+						break;
+				}
+				if(el.classList.contains("dfn-panel")) {
+						target = "dfn-panel";
+						break;
+				}
+				el = el.parentElement;
+		}
+		if(target != "dfn-panel") {
+				// Turn off any currently "on" or "activated" panels.
+				queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
+						el.classList.remove("on");
+						el.classList.remove("activated");
+				});
+		}
+		if(target == "dfn" && !hitALink) {
+				// open the panel
+				var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
+				if(dfnPanel) {
+						dfnPanel.classList.add("on");
+						var rect = el.getBoundingClientRect();
+						dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
+						dfnPanel.style.top = window.scrollY + rect.top + "px";
+						var panelRect = dfnPanel.getBoundingClientRect();
+						var panelWidth = panelRect.right - panelRect.left;
+						if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
+								// Reposition, because the panel is overflowing
+								dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
+						}
+				} else {
+						console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
+				}
+		} else if(target == "dfn-panel") {
+				// Switch it to "activated" state, which pins it.
+				el.classList.add("activated");
+				el.style.left = null;
+				el.style.top = null;
+		}
+
+});
+</script> <script src="//www.w3.org/scripts/TR/2016/fixup.js"></script>
+    <p role="navigation" id="back-to-top"><a href="#toc"><abbr title="Back to top">↑</abbr></a></p>
+  </body>
+</html>
