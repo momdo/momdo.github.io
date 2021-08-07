@@ -24,6 +24,7 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
           'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
           'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
+"accname-aam-11": 'https://momdo.github.io/accname-1.1/',
 "css-2018": 'https://momdo.github.io/css-2018/',
 "dom": 'https://triple-underscore.github.io/DOM4-ja.html',
 "url": 'https://triple-underscore.github.io/URL-ja.html',
