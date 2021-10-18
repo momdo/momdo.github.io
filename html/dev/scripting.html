@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">15 October 2021</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">18 October 2021</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -254,7 +254,7 @@ o<c- p>............</c->A<c- p>....</c->e
 
   <h5 id="restrictions-for-contents-of-script-elements"><span class="secno">4.12.1.2</span> <dfn><code>script</code>要素のコンテンツの制約</dfn><a href="#restrictions-for-contents-of-script-elements" class="self-link"></a></h5>
 
-  <p class="note">この節で説明される多少奇妙な制約を回避する最も簡単で安全な方法は、以下のシーケンスが（たとえば文字列、正規表現、またはコメントなど）スクリプト内でリテラルに表示され、かつ式の中でこのような構造体を使用してコードを記述を避けるようにするときに、<code>&lt;\/script</code>"としてASCII大文字・小文字不区別で一致する"<code>&lt;!--</code>"を"<code>&lt;\!--</code>"として、"<code>&lt;script</code>"を"<code>&lt;\script</code>"として、および"<code>&lt;/script</code>"を"として常にエスケープすることである。この節の制限がトリガーになりやすい落とし穴を回避する：すなわち、歴史的な理由のために、HTMLにおける<code id="restrictions-for-contents-of-script-elements:the-script-element"><a href="#the-script-element">script</a></code>ブロックの解析は、これらのシーケンスを考えた場合に直観的でない働きをする奇妙で風変わりな慣習である。</p>
+  <p class="note">The easiest and safest way to avoid the rather strange restrictions described in this section is to always escape an ASCII case-insensitive match for "<code>&lt;!--</code>" as "<code>\x3C!--</code>", "<code>&lt;script</code>" as "<code>\x3Cscript</code>", and "<code>&lt;/script</code>" as "<code>\x3C/script</code>" when these sequences appear in literals in scripts (e.g. in strings, regular expressions, or comments), and to avoid writing code that uses such constructs in expressions. この節の制限がトリガーになりやすい落とし穴を回避する：すなわち、歴史的な理由のために、HTMLにおける<code id="restrictions-for-contents-of-script-elements:the-script-element"><a href="#the-script-element">script</a></code>ブロックの解析は、これらのシーケンスを考えた場合に直観的でない働きをする奇妙で風変わりな慣習である。</p>
 
   <p><code id="restrictions-for-contents-of-script-elements:the-script-element-2"><a href="#the-script-element">script</a></code>要素の<a id="restrictions-for-contents-of-script-elements:descendant-text-content" href="https://triple-underscore.github.io/DOM4-ja.html#concept-descendant-text-content" data-x-internal="descendant-text-content">子孫テキストコンテンツ</a>は、Unicodeの文字セットである次のABNFの<code>script</code>生成物と一致しなければならない。<a href="references.html#refsABNF">[ABNF]</a></p>
 
@@ -293,20 +293,20 @@ t             <c- o>=/</c-> <c- l>%x0074</c-> <c- c1>; U+0074 LATIN SMALL LETTER
 
   <div class="example"><p>以下のスクリプトは、この問題を示している。このように、文字列が含まれているスクリプトがあるとする：</p>
 
-   <pre><code class='js'><c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script>'</c-><c- p>;</c->
+   <pre><code class='js'><c- a>const</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script>'</c-><c- p>;</c->
 console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
 
    <p>これが<code id="restrictions-for-contents-of-script-elements:the-script-element-4"><a href="#the-script-element">script</a></code>ブロックで直接この文字列を入れていた場合、上記の制限に違反しない。</p>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>></c->
-  <c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script>'</c-><c- p>;</c->
+  <c- a>const</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script>'</c-><c- p>;</c->
   console<c- p>.</c->log<c- p>(</c->example<c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
 
    <p>しかし、より大きな問題かつ、スクリプトがそれらの制限に違反しない理由は、実際にスクリプトが奇妙に解析されるだろうということである。<em>上記のスクリプトブロックは終了していない</em>。それは、実際には依然として<code id="restrictions-for-contents-of-script-elements:the-script-element-5"><a href="#the-script-element">script</a></code>ブロックの一部であるこのスニペットにおいて"<code>&lt;/script></code>"終了タグのように見えるものである。（スクリプトが終了していないため）スクリプトは実行しない。スクリプトが何らかの形で実行した場合、以下のようにマークアップが見えた場合、（ここで強調される）スクリプトが妥当なJavaScriptでないので、スクリプトは失敗するだろう：</p>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>></c-><mark>
-  <c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script>'</c-><c- p>;</c->
+  <c- a>const</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;!-- &lt;script>'</c-><c- p>;</c->
   console<c- p>.</c->log<c- p>(</c->example<c- p>);</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
 <c- c>&lt;!-- despite appearances, this is actually part of the script still! --></c->
@@ -319,8 +319,8 @@ console<c- p>.</c->log<c- p>(</c->example<c- p>);</c-></code></pre>
    <p>この節の最初に述べたように、問題の文字列をエスケープすることによって、問題は完全に回避されている：</p>
 
    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>></c-><mark>
-  <c- c1>// Note: `\s` is an escape sequence for `s`.</c->
-  <c- a>var</c-> example <c- o>=</c-> <c- t>'Consider this string: &lt;\!-- &lt;\script>'</c-><c- p>;</c->
+  <c- c1>// Note: `\x3C` is an escape sequence for `&lt;`.</c->
+  <c- a>const</c-> example <c- o>=</c-> <c- t>'Consider this string: \x3C!-- \x3Cscript>'</c-><c- p>;</c->
   console<c- p>.</c->log<c- p>(</c->example<c- p>);</c->
 </mark><c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
 <c- c>&lt;!-- this is just a comment between script blocks --></c->
