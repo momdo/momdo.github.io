@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">18 November 2021</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">24 November 2021</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -222,10 +222,10 @@
    <p>この動作は、<a href="workers.html#sharedworker" id="integration-with-the-javascript-module-system:sharedworker">共有ワーカー</a>が解析された<span>コンストラクターURL</span>によって入力される方法と同じであることに注意する。</p>
   </div>
 
-  <div class="example"><p>Since module type is also part of the <span>module map</span> key, the following code will create two separate entries in the <span>module map</span> (the type is "<code>javascript</code>" for the first, and "<code>css</code>" for the second):<pre><code class='html'><c- p>&lt;</c-><c- f>script</c-><c- p>></c->
+  <div class="example"><p>Since module type is also part of the <span>module map</span> key, the following code will create two separate entries in the <span>module map</span> (the type is "<code>javascript</code>" for the first, and "<code>css</code>" for the second):<pre><code class='html'><c- p>&lt;</c-><c- f>script</c-> <c- e>type</c-><c- o>=</c-><c- s>module</c-><c- p>></c->
   <c- k>import</c-> <c- u>"https://example.com/module"</c-><c- p>;</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
-<c- p>&lt;</c-><c- f>script</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>script</c-> <c- e>type</c-><c- o>=</c-><c- s>module</c-><c- p>></c->
   <c- k>import</c-> <c- u>"https://example.com/module"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"css"</c-> <c- p>};</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
 
@@ -234,6 +234,20 @@
    <p class="XXX">In practice, due to the as-yet-unspecified memory cache (see issue <a href="https://github.com/whatwg/html/issues/6110">#6110</a>) the resource may only be fetched once in WebKit and Blink-based browsers. Additionally, as long as all module types are mutually exclusive, the module type check in <span>fetch a single module script</span> will fail for at least one of the imports, so at most one module evaluation will occur.</p>
 
    <p>The purpose of including the type in the <span>module map</span> key is so that an import with the wrong type assertion does not prevent a different import of the same specifier but with the correct type from succeeding.</p>
+  </div>
+
+  <div class="example"><p>JavaScript module scripts are the default import type when importing from another JavaScript module; that is, when an <code>import</code> statement lacks a <code>type</code> import assertion the imported module script's type will be JavaScript. Attempting to import a JavaScript resource using an <code>import</code> statement with a <code>type</code> import assertion will fail:</p>
+
+    <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-> <c- e>type</c-><c- o>=</c-><c- s>"module"</c-><c- p>></c->
+    <c- c1>// All of the following will fail, assuming that the imported .mjs files are served with a</c->
+    <c- c1>// JavaScript MIME type. JavaScript module scripts are the default and cannot be imported with</c->
+    <c- c1>// any import type assertion.</c->
+    <c- k>import</c-> foo from <c- u>"./foo.mjs"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"javascript"</c-> <c- p>};</c->
+    <c- k>import</c-> foo2 from <c- u>"./foo2.mjs"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"js"</c-> <c- p>};</c->
+    <c- k>import</c-> foo3 from <c- u>"./foo3.mjs"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>""</c-> <c- p>};</c->
+    <c- k>await</c-> <c- k>import</c-><c- p>(</c-><c- u>"./foo4.mjs"</c-><c- p>,</c-> <c- p>{</c-> assert<c- o>:</c-> <c- p>{</c-> type<c- o>:</c-> <c- kc>null</c-> <c- p>}</c-> <c- p>});</c->
+    <c- k>await</c-> <c- k>import</c-><c- p>(</c-><c- u>"./foo5.mjs"</c-><c- p>,</c-> <c- p>{</c-> assert<c- o>:</c-> <c- p>{</c-> type<c- o>:</c-> <c- kc>undefined</c-> <c- p>}</c-> <c- p>});</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
   </div>
 
   
@@ -424,7 +438,7 @@
 
   
 
-  <dl class="domintro"><dt><code>self.<span id="dom-issecurecontext">isSecureContext</span></code><dd><p>このグローバルオブジェクトが<span>安全なコンテキスト</span>を表すかどうかを返す。<a href="references.html#refsSECURE-CONTEXTS">[SECURE-CONTEXTS]</a><dt><code>self.<span id="dom-origin">origin</span></code><dd><p>文字列としてシリアライズされたグローバルオブジェクトの<a id="windoworworkerglobalscope-mixin:concept-origin" href="origin.html#concept-origin">生成元</a>を返す。<dt><code>self.<span id="dom-crossoriginisolated">crossOriginIsolated</span></code><dd><p>このグローバルで実行しているスクリプトが生成元をまたいだ分離を必要とするAPIを使用できるかどうかを返す。これは、`<code>Cross-Origin-Opener-Policy</code>` および`<code>Cross-Origin-Embedder-Policy</code>` HTTPレスポンスヘッダーおよび"<code id="windoworworkerglobalscope-mixin:cross-origin-isolated-feature"><a href="infrastructure.html#cross-origin-isolated-feature">cross-origin-isolated</a></code>"機能に依存する。</dl>
+  <dl class="domintro"><dt><code>self.<span id="dom-issecurecontext">isSecureContext</span></code><dd><p>このグローバルオブジェクトが<span>安全なコンテキスト</span>を表すかどうかを返す。<a href="references.html#refsSECURE-CONTEXTS">[SECURE-CONTEXTS]</a><dt><code>self.<span id="dom-origin">origin</span></code><dd><p>文字列としてシリアライズされたグローバルオブジェクトの<a id="windoworworkerglobalscope-mixin:concept-origin" href="origin.html#concept-origin">生成元</a>を返す。<dt><code>self.<span id="dom-crossoriginisolated">crossOriginIsolated</span></code><dd><p>このグローバルで実行しているスクリプトが生成元をまたいだ分離を必要とするAPIを使用できるかどうかを返す。This depends on the `<code id="windoworworkerglobalscope-mixin:cross-origin-opener-policy-2"><a href="origin.html#cross-origin-opener-policy-2">Cross-Origin-Opener-Policy</a></code>` and `<code id="windoworworkerglobalscope-mixin:cross-origin-embedder-policy"><a href="origin.html#cross-origin-embedder-policy">Cross-Origin-Embedder-Policy</a></code>` HTTP response headers and the "<code id="windoworworkerglobalscope-mixin:cross-origin-isolated-feature"><a href="infrastructure.html#cross-origin-isolated-feature">cross-origin-isolated</a></code>" feature.</dl>
 
   <div class="example"><p>開発者は、<code>location.origin</code>よりも<code>self.origin</code>を使用することを強く勧める。前者は環境の<a id="windoworworkerglobalscope-mixin:concept-origin-2" href="origin.html#concept-origin">生成元</a>を、後者は環境のURLを返す。<code>https://stargate.example/</code>文書で次のスクリプトを実行することを想像してみる：</p>
 
