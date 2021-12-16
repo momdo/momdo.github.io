@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">8 December 2021</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">14 December 2021</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -833,8 +833,42 @@ console<c- p>.</c->log<c- p>(</c->pixels<c- p>.</c->data<c- p>[</c-><c- mf>2</c-
 
   <dl class="domintro"><dt><code><var>context</var>.<a href="#dom-context-2d-filter" id="dom-context-2d-filter-2">filter</a> [ = <var>value</var> ]</code><dd><p>Returns the current filter.</p>
 
-    <p>Can be set, to change the filter. Values that cannot be parsed as a <a id="filters:filter-value-list" href="https://drafts.fxtf.org/filter-effects/#typedef-filter-value-list" data-x-internal="filter-value-list">&lt;filter-value-list></a> value are ignored.</p>
-   </dl>
+    <p>Can be set, to change the filter. Values can either be the string "<code>none</code>", a string parseable as a <a id="filters:filter-value-list" href="https://drafts.fxtf.org/filter-effects/#typedef-filter-value-list" data-x-internal="filter-value-list">&lt;filter-value-list></a>, or a <code>CanvasFilter</code> object.</p>
+   <dt><code><var>filter</var> = new <span id="dom-canvasfilter">CanvasFilter</span>(<var>input</var>)</code><dd><p>Constructs a new <code id="filters:dom-canvasfilter"><a href="#dom-canvasfilter">CanvasFilter</a></code> from the properties of the <var>input</var> object. These properties include a <code>filter</code> property, whose value is one of the <a href="#supported-filter-names" id="filters:supported-filter-names">supported filter names</a>, and additionally can include properties corresponding to the settings for the filter. These latter properties are the same as the XML attribute names when using the corresponding SVG filters.<dt><code><var>filter</var> = new <a href="#dom-canvasfilter" id="filters:dom-canvasfilter-2">CanvasFilter</a>(<var>inputs</var>)</code><dd><p>Constructs a new <code id="filters:dom-canvasfilter-3"><a href="#dom-canvasfilter">CanvasFilter</a></code> from the <var>inputs</var> array. Each element in the array is an input as described for the previous overload. They are composed in sequence to create the final filter.</dl>
+
+  
+
+  <p class="note">Though <code><var>context</var>.<code id="filters:dom-context-2d-filter"><a href="#dom-context-2d-filter">filter</a></code> = "<code>none</code>"</code> will disable filters for the context, <code><var>context</var>.<code id="filters:dom-context-2d-filter-2"><a href="#dom-context-2d-filter">filter</a></code> = ""</code>, <code><var>context</var>.<code id="filters:dom-context-2d-filter-3"><a href="#dom-context-2d-filter">filter</a></code> = null</code>, and <code><var>context</var>.<code id="filters:dom-context-2d-filter-4"><a href="#dom-context-2d-filter">filter</a></code> = undefined</code> are all treated as unparseable inputs and the value of the <span>current filter</span> is left unchanged.</p>
+
+  
+
+  <p>The <dfn id="supported-filter-names">supported filter names</dfn> are "<code>gaussianBlur</code>", "<code>colorMatrix</code>", "<code>convolveMatrix</code>", and "<code>componentTransfer</code>".</p>
+
+  <div id="example-canvas-filter" class="example"><p>The following example will set the canvas's filter to a <code>colorMatrix</code> filter that swaps the green and red channels, then blurs the result by 5 pixels:</p>
+
+   <pre><code class='js'><c- c1>// canvas is a reference to a &lt;canvas> element</c->
+<c- a>const</c-> context <c- o>=</c-> canvas<c- p>.</c->getContext<c- p>(</c-><c- t>'2d'</c-><c- p>);</c->
+context<c- p>.</c->filter <c- o>=</c-> <c- k>new</c-> CanvasFilter<c- p>([</c->
+  <c- p>{</c->
+    filter<c- o>:</c-> <c- u>"colorMatrix"</c-><c- p>,</c->
+    type<c- o>:</c-> <c- u>"matrix"</c-><c- p>,</c->
+    values<c- o>:</c-> <c- p>[</c->
+      <c- mf>0</c-><c- p>,</c-> <c- mf>1</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c->
+      <c- mf>1</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c->
+      <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>1</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c->
+      <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>1</c-><c- p>,</c-> <c- mf>0</c->
+    <c- p>],</c->
+  <c- p>},</c->
+  <c- p>{</c->
+    filter<c- o>:</c-> <c- u>"gaussianBlur"</c-><c- p>,</c->
+    stdDeviation<c- o>:</c-> <c- mf>5</c-><c- p>,</c->
+  <c- p>}</c->
+<c- p>]);</c-></code></pre>
+  </div>
+
+  <p class="note">Currently, <code>CanvasFilter</code>s can only be linked lists. Full filter graphs are a planned expansion of this feature.</p>
+
+  <p>Coordinates used in the value of the <span>current filter</span> are interpreted such that one pixel is equivalent to one SVG user space unit and to one canvas coordinate space unit. Filter coordinates are not affected by the <a href="#transformations" id="filters:transformations">current transformation matrix</a>. The current transformation matrix affects only the input to the filter. Filters are applied in the <span>output bitmap</span>'s coordinate space.</p>
 
   
 
@@ -842,7 +876,7 @@ console<c- p>.</c->log<c- p>(</c->pixels<c- p>.</c->data<c- p>[</c-><c- mf>2</c-
 
   
 
-  <p>Since drawing is performed using filter value 'none' until an externally-defined filter has finished loading, authors might wish to determine whether such a filter has finished loading before proceeding with a drawing operation. One way to accomplish this is to load the externally-defined filter elsewhere within the same page in some element that sends a <code>load</code> event (for example, an <a id="working-with-externally-defined-svg-filters:svg-use" href="https://triple-underscore.github.io/svg-struct-ja.html#UseElement" data-x-internal="svg-use">SVG <code>use</code></a> element), and wait for the <code>load</code> event to be dispatched.</p>
+  <p>Since drawing is performed using filter value "<code>none</code>" until an externally-defined filter has finished loading, authors might wish to determine whether such a filter has finished loading before proceeding with a drawing operation. One way to accomplish this is to load the externally-defined filter elsewhere within the same page in some element that sends a <code>load</code> event (for example, an <a id="working-with-externally-defined-svg-filters:svg-use" href="https://triple-underscore.github.io/svg-struct-ja.html#UseElement" data-x-internal="svg-use">SVG <code>use</code></a> element), and wait for the <code>load</code> event to be dispatched.</p>
 
   
 
