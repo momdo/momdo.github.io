@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">3 February 2022</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">11 February 2022</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -31,7 +31,7 @@
 
   
 
-  <nav><a href="common-microsyntaxes.html">← 2.3 共通マイクロ構文</a> — <a href="./">目次</a> — <a href="common-dom-interfaces.html">2.5 共通DOMインターフェイス →</a></nav><ol class="toc"><li><ol><li><a href="urls-and-fetching.html#urls"><span class="secno">2.4</span> URL</a><ol><li><a href="urls-and-fetching.html#terminology-2"><span class="secno">2.4.1</span> 用語</a><li><a href="urls-and-fetching.html#cors-settings-attributes"><span class="secno">2.4.2</span> CORS設定属性</a><li><a href="urls-and-fetching.html#referrer-policy-attributes"><span class="secno">2.4.3</span> リファラーポリシー属性</a><li><a href="urls-and-fetching.html#nonce-attributes"><span class="secno">2.4.6</span> Nonce属性</a><li><a href="urls-and-fetching.html#lazy-loading-attributes"><span class="secno">2.4.5</span> 遅延読み込み属性</a></ol></ol></ol><h3 id="urls"><span class="secno">2.4</span> URL<a href="#urls" class="self-link"></a></h3>
+  <nav><a href="common-microsyntaxes.html">← 2.3 共通マイクロ構文</a> — <a href="./">目次</a> — <a href="common-dom-interfaces.html">2.5 共通DOMインターフェイス →</a></nav><ol class="toc"><li><ol><li><a href="urls-and-fetching.html#urls"><span class="secno">2.4</span> URL</a><ol><li><a href="urls-and-fetching.html#terminology-2"><span class="secno">2.4.1</span> 用語</a><li><a href="urls-and-fetching.html#cors-settings-attributes"><span class="secno">2.4.2</span> CORS設定属性</a><li><a href="urls-and-fetching.html#referrer-policy-attributes"><span class="secno">2.4.3</span> リファラーポリシー属性</a><li><a href="urls-and-fetching.html#nonce-attributes"><span class="secno">2.4.6</span> Nonce属性</a><li><a href="urls-and-fetching.html#lazy-loading-attributes"><span class="secno">2.4.5</span> 遅延読み込み属性</a><li><a href="urls-and-fetching.html#blocking-attributes"><span class="secno">2.4.6</span> Blocking attributes</a></ol></ol></ol><h3 id="urls"><span class="secno">2.4</span> URL<a href="#urls" class="self-link"></a></h3>
 
   <h4 id="terminology-2"><span class="secno">2.4.1</span> 用語<a href="#terminology-2" class="self-link"></a></h4>
 
@@ -186,5 +186,31 @@
   <ul><li><p>Set a minimum value that most often results in the resources being loaded before they intersect the viewport under normal usage patterns for the given device.<li><p>The typical scrolling speed: increase the value for devices with faster typical scrolling speeds.<li><p>The current scrolling speed or momentum: the UA can attempt to predict where the scrolling will likely stop, and adjust the value accordingly.<li><p>The network quality: increase the value for slow or high-latency connections.<li><p>User preferences can influence the value.</ul>
 
   <p class="note">It is important <a href="https://triple-underscore.github.io/infra-ja.html#tracking-vector" id="lazy-loading-attributes:tracking-vector" class="no-backref" data-x-internal="tracking-vector">for privacy</a> that the <a href="#lazy-load-root-margin" id="lazy-loading-attributes:lazy-load-root-margin-3">lazy load root margin</a> not leak additional information. For example, the typical scrolling speed on the current device could be imprecise so as to not introduce a new fingerprinting vector.</p>
+
+  <h4 id="blocking-attributes"><span class="secno">2.4.6</span> Blocking attributes<a href="#blocking-attributes" class="self-link"></a></h4>
+
+  <p>A <dfn id="blocking-attribute">blocking attribute</dfn> explicitly indicates that certain operations should be blocked on the fetching of an external resource. The operations that can be blocked are represented by <dfn id="possible-blocking-token">possible blocking tokens</dfn>, which are strings listed by the following table:</p>
+
+  <table><thead><tr><th>Possible blocking token<th>説明<tbody><tr><td>"<dfn id="blocking-token-render"><code>render</code></dfn>"<td>The element is <a href="#render-blocking" id="blocking-attributes:render-blocking">render-blocking</a>.</table>
+
+
+  <p id="future-blocking-tokens" class="note">In the future, there might be more <a href="#possible-blocking-token" id="blocking-attributes:possible-blocking-token">possible blocking tokens</a>.</p>
+
+  <p>A <a href="#blocking-attribute" id="blocking-attributes:blocking-attribute">blocking attribute</a> must have a value that is an <a id="blocking-attributes:unordered-set-of-unique-space-separated-tokens" href="common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens">unordered set of unique space-separated tokens</a>. The <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-supported-tokens" id="blocking-attributes:concept-supported-tokens" data-x-internal="concept-supported-tokens">supported tokens</a> of a <a href="#blocking-attribute" id="blocking-attributes:blocking-attribute-2">blocking attribute</a> are the <a href="#possible-blocking-token" id="blocking-attributes:possible-blocking-token-2">possible blocking tokens</a>. Any element can have at most one <a href="#blocking-attribute" id="blocking-attributes:blocking-attribute-3">blocking attribute</a>.</p>
+
+  <p>The <dfn id="blocking-tokens-set">blocking tokens set</dfn> for an element <var>el</var> are the result of the following steps:</p>
+
+  <ol><li><p>Let <var>value</var> be the value of <var>el</var>'s <a href="#blocking-attribute" id="blocking-attributes:blocking-attribute-4">blocking attribute</a>, or the empty string if no such attribute exists.</p>
+
+   <li><p>Set <var>value</var> to <var>value</var>, <a id="blocking-attributes:converted-to-ascii-lowercase" href="https://triple-underscore.github.io/infra-ja.html#ascii-lowercase" data-x-internal="converted-to-ascii-lowercase">converted to ASCII lowercase</a>.</p>
+
+   <li><p>Let <var>rawTokens</var> be the result of <a href="https://triple-underscore.github.io/infra-ja.html#split-on-ascii-whitespace" id="blocking-attributes:split-a-string-on-spaces" data-x-internal="split-a-string-on-spaces">splitting <var>value</var> on ASCII whitespace</a>.</p>
+
+   <li><p>Return a set containing the elements of <var>rawTokens</var> that are <a href="#possible-blocking-token" id="blocking-attributes:possible-blocking-token-3">possible blocking tokens</a>.</p>
+  </ol>
+
+  <p>An element is <dfn id="render-blocking">render-blocking</dfn> if its <a href="#blocking-tokens-set" id="blocking-attributes:blocking-tokens-set">blocking tokens set</a> contains "<code id="blocking-attributes:blocking-token-render"><a href="#blocking-token-render">render</a></code>".</p>
+
+  <p>Whenever a <a href="#render-blocking" id="blocking-attributes:render-blocking-2">render-blocking</a> element <var>el</var> <a id="blocking-attributes:becomes-browsing-context-disconnected" href="infrastructure.html#becomes-browsing-context-disconnected">becomes browsing-context disconnected</a>, or <var>el</var>'s <a href="#blocking-attribute" id="blocking-attributes:blocking-attribute-5">blocking attribute</a>'s value is changed so that <var>el</var> is no longer <a href="#render-blocking" id="blocking-attributes:render-blocking-3">render-blocking</a>, then <a id="blocking-attributes:unblock-rendering" href="dom.html#unblock-rendering">unblock rendering</a> on <var>el</var>.</p>
 
   <nav><a href="common-microsyntaxes.html">← 2.3 共通マイクロ構文</a> — <a href="./">目次</a> — <a href="common-dom-interfaces.html">2.5 共通DOMインターフェイス →</a></nav>
