@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">19 April 2022</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">22 April 2022</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -152,7 +152,7 @@
 
   
 
-  <div class="note"><p><code id="the-dialog-element:attr-dialog-open-2"><a href="#attr-dialog-open">open</a></code>属性を削除すると、通常ダイアログが非表示になる。しかし、そのようにすると、いくつかの奇妙な追加の結果となる：<ul><li><p><code id="the-dialog-element:event-close"><a href="indices.html#event-close">close</a></code>イベントは発火しない。<li><p><code id="the-dialog-element:dom-dialog-close"><a href="#dom-dialog-close">close()</a></code>メソッドと<a href="#canceling-dialogs">ユーザーエージェントが提供する取り消しインターフェイス</a>は、もはやダイアログを閉じることができなくなる。<li><p><code id="the-dialog-element:dom-dialog-showmodal"><a href="#dom-dialog-showmodal">showModal()</a></code>メソッドを使用してダイアログが表示された場合、<code>Document</code>は<a href="interaction.html#blocked-by-a-modal-dialog" id="the-dialog-element:blocked-by-a-modal-dialog">ブロック</a>される。</ul>
+  <div id="note-dialog-remove-open-attribute" class="note"><p><code id="the-dialog-element:attr-dialog-open-2"><a href="#attr-dialog-open">open</a></code>属性を削除すると、通常ダイアログが非表示になる。しかし、そのようにすると、いくつかの奇妙な追加の結果となる：<ul><li><p><code id="the-dialog-element:event-close"><a href="indices.html#event-close">close</a></code>イベントは発火しない。<li><p><code id="the-dialog-element:dom-dialog-close"><a href="#dom-dialog-close">close()</a></code>メソッドと<a href="#canceling-dialogs">ユーザーエージェントが提供する取り消しインターフェイス</a>は、もはやダイアログを閉じることができなくなる。<li><p><code id="the-dialog-element:dom-dialog-showmodal"><a href="#dom-dialog-showmodal">showModal()</a></code>メソッドを使用してダイアログが表示された場合、<code>Document</code>は<a href="interaction.html#blocked-by-a-modal-dialog" id="the-dialog-element:blocked-by-a-modal-dialog">ブロック</a>される。</ul>
 
    <p>これらの理由から、<code id="the-dialog-element:attr-dialog-open-3"><a href="#attr-dialog-open">open</a></code>属性を手動で削除しない方が一般的には良い方法である。代わりに、ダイアログを閉じるために<code id="the-dialog-element:dom-dialog-close-2"><a href="#dom-dialog-close">close()</a></code>メソッドを使用する、または非表示にするために<code id="the-dialog-element:attr-hidden"><a href="interaction.html#attr-hidden">hidden</a></code>属性を使用する。</p>
   </div>
@@ -172,6 +172,17 @@
    </dl>
 
 
+
+  
+
+  <div id="note-dialog-method-names" class="note"><p>We use show/close as the verbs for <code id="the-dialog-element:the-dialog-element-8"><a href="#the-dialog-element">dialog</a></code> elements, as opposed to verb pairs that are more commonly thought of as antonyms such as show/hide or open/close, due to the following constraints:</p>
+
+   <ul><li><p>Hiding a dialog is different from closing one. Closing a dialog gives it a return value, fires an event, unblocks the page for other dialogs, and so on. Whereas hiding a dialog is a purely visual property, and is something you can already do with the <code id="the-dialog-element:attr-hidden-2"><a href="interaction.html#attr-hidden">hidden</a></code> attribute or by removing the <code id="the-dialog-element:attr-dialog-open-4"><a href="#attr-dialog-open">open</a></code> attribute. (See also the <a href="#note-dialog-remove-open-attribute">note above</a> about removing the <code id="the-dialog-element:attr-dialog-open-5"><a href="#attr-dialog-open">open</a></code> attribute, and how hiding the dialog in that way is generally not desired.)<li><p>Showing a dialog is different from opening one. Opening a dialog consists of creating and showing that dialog (similar to how <code id="the-dialog-element:dom-open"><a href="window-object.html#dom-open">window.open()</a></code> both creates and shows a new window). Whereas showing the dialog is the process of taking a <code id="the-dialog-element:the-dialog-element-9"><a href="#the-dialog-element">dialog</a></code> element that is already in the DOM, and making it interactive and visible to the user.<li><p>If we were to have a <code>dialog.open()</code> method despite the above, it would conflict with the <code>dialog.open</code> property.</ul>
+
+   <p>Furthermore, a <a href="https://lists.whatwg.org/pipermail/whatwg-whatwg.org/2013-December/041799.html">survey</a> of many other UI frameworks contemporary to the original design of the <code id="the-dialog-element:the-dialog-element-10"><a href="#the-dialog-element">dialog</a></code> element made it clear that the show/close verb pair was reasonably common.</p>
+
+   <p>In summary, it turns out that the implications of certain verbs, and how they are used in technology contexts, mean that paired actions such as showing and closing a dialog are not always expressible as antonyms.</p>
+  </div>
 
   
 
