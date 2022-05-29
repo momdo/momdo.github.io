@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">25 May 2022</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><h2 id="dev-edition-h2" class="no-num no-toc">Edition for Web Developers — Last Updated <span class="pubdate">26 May 2022</span></h2></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -68,11 +68,11 @@
 
   <dl class="domintro"><dt><code><var>event</var>.<span id="dom-pagetransitionevent-persisted">persisted</span></code><dd><p><code id="the-pagetransitionevent-interface:event-pageshow"><a href="indices.html#event-pageshow">pageshow</a></code>に対して、ページが新しく読み込まれている（および<code id="the-pagetransitionevent-interface:event-load"><a href="indices.html#event-load">load</a></code>イベントが発生する）場合にfalseを返す。そうでなければ、trueを返す。</p>
 
-    <p><code id="the-pagetransitionevent-interface:event-pagehide"><a href="indices.html#event-pagehide">pagehide</a></code>イベントに対して、ページが最後の時間まで出かける場合はfalseを返す。Otherwise, returns true, meaning that the page might be reused if the user navigates back to this page (if the <code>Document</code>'s <i>salvageable</i> state stays true).</p>
+    <p><code id="the-pagetransitionevent-interface:event-pagehide"><a href="indices.html#event-pagehide">pagehide</a></code>イベントに対して、ページが最後の時間まで出かける場合はfalseを返す。そうでなければtrueを返す。これは、ユーザーがこのページに戻った場合（<code>Document</code>の<i>salvageable</i>状態がtrueのままの場合）にページが再利用される可能性があることを意味する。</p>
 
-    <p>最上でないページを含む可能性があるもの：</p>
+    <p>ページがサルベージ不能になる原因には、次のものがある：</p>
 
-    <ul class="brief"><li>The user agent decided to not keep the <code>Document</code> alive in a <a id="the-pagetransitionevent-interface:session-history-entry" href="history.html#session-history-entry">session history entry</a> after <span>unload</span><li>Having <code id="the-pagetransitionevent-interface:the-iframe-element"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>s that are not <i>salvageable</i><li>アクティブな<code id="the-pagetransitionevent-interface:websocket-2"><a data-x-internal="websocket-2" href="https://websockets.spec.whatwg.org/#websocket">WebSocket</a></code>オブジェクト<li><span><code>Document</code>の中止</span></ul>
+    <ul class="brief"><li>ユーザーエージェントが、<span>アンロード</span>後に<a id="the-pagetransitionevent-interface:session-history-entry" href="history.html#session-history-entry">セッション履歴エントリー</a>で<code>Document</code>を存続させないことを決定した<li><i>salvageable</i>ではない<code id="the-pagetransitionevent-interface:the-iframe-element"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>を持っている<li>アクティブな<code id="the-pagetransitionevent-interface:websocket-2"><a data-x-internal="websocket-2" href="https://websockets.spec.whatwg.org/#websocket">WebSocket</a></code>オブジェクト<li><span><code>Document</code>の中止</span></ul>
    </dl>
 
   
@@ -96,11 +96,11 @@
 
   
 
-  <h4 id="the-x-frame-options-header"><span class="secno">7.9.3</span> The `<code id="the-x-frame-options-header:x-frame-options"><a href="#x-frame-options">X-Frame-Options</a></code>` header<a href="#the-x-frame-options-header" class="self-link"></a></h4>
+  <h4 id="the-x-frame-options-header"><span class="secno">7.9.3</span> `<code id="the-x-frame-options-header:x-frame-options"><a href="#x-frame-options">X-Frame-Options</a></code>`ヘッダー<a href="#the-x-frame-options-header" class="self-link"></a></h4>
 
-  <p>The `<dfn id="x-frame-options" data-dfn-type="http-header"><code>X-Frame-Options</code></dfn>` HTTP response header is a legacy way of controlling whether and how a <code>Document</code> may be loaded inside of a <a id="the-x-frame-options-header:child-browsing-context" href="browsers.html#child-browsing-context">child browsing context</a>. It is obsoleted by the <code id="the-x-frame-options-header:frame-ancestors-directive"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code> CSP directive, which provides more granular control over the same situations. It was originally defined in <cite>HTTP Header Field X-Frame-Options</cite>, but the definition here supersedes that document. <a href="references.html#refsCSP">[CSP]</a> <a href="references.html#refsRFC7034">[RFC7034]</a><p class="note">特に、<cite>HTTPヘッダーフィールドX-Frame-Options</cite>はヘッダーの`<code>ALLOW-FROM</code>`バリアントを指定したが、これは実装されない。</p>
+  <p> `<dfn id="x-frame-options" data-dfn-type="http-header"><code>X-Frame-Options</code></dfn>` HTTP レスポンスヘッダーは、<a id="the-x-frame-options-header:child-browsing-context" href="browsers.html#child-browsing-context">子ブラウジングコンテキスト</a>内で<code>Document</code>をロードしてもよいかどうか、およびどのようにロードするかを制御するためのレガシーな方法である。それは同じ状況をより細かく制御できる<code id="the-x-frame-options-header:frame-ancestors-directive"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code> CSPディレクティブによって廃止された。 もともとは<cite>HTTPヘッダーフィールドX-Frame-Options</cite>で定義されていたが、ここでの定義はその文書に取って代わる。<a href="references.html#refsCSP">[CSP]</a> <a href="references.html#refsRFC7034">[RFC7034]</a><p class="note">特に、<cite>HTTPヘッダーフィールドX-Frame-Options</cite>はヘッダーの`<code>ALLOW-FROM</code>`バリアントを指定したが、これは実装されない。</p>
 
-  <p class="note"><span>If</span> both a CSP <code id="the-x-frame-options-header:frame-ancestors-directive-2"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code> directive and an `<code id="the-x-frame-options-header:x-frame-options-2"><a href="#x-frame-options">X-Frame-Options</a></code>` header are used in the same <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="the-x-frame-options-header:concept-response" data-x-internal="concept-response">response</a>, then `<code id="the-x-frame-options-header:x-frame-options-3"><a href="#x-frame-options">X-Frame-Options</a></code>` is ignored.</p>
+  <p class="note">CSP <code id="the-x-frame-options-header:frame-ancestors-directive-2"><a data-x-internal="frame-ancestors-directive" href="https://triple-underscore.github.io/CSP3-ja.html#frame-ancestors">frame-ancestors</a></code>ディレクティブと`<code id="the-x-frame-options-header:x-frame-options-2"><a href="#x-frame-options">X-Frame-Options</a></code>`ヘッダーの両方が同じ<a href="https://triple-underscore.github.io/Fetch-ja.html#concept-response" id="the-x-frame-options-header:concept-response" data-x-internal="concept-response">レスポンス</a>で使用される<span>場合</span>、`<code id="the-x-frame-options-header:x-frame-options-3"><a href="#x-frame-options">X-Frame-Options</a></code>`は無視される。</p>
 
   <p>ウェブ開発者および適合性チェッカーにとって、その値の<a href="https://fetch.spec.whatwg.org/#abnf" id="the-x-frame-options-header:header-abnf" data-x-internal="header-abnf">ABNF</a>は次のとおりである：</p>
 
@@ -121,6 +121,6 @@
   </div>
 
 
-  <h4 id="the-refresh-header"><span class="secno">7.9.4</span> The `<code id="the-refresh-header:refresh"><a href="#refresh">Refresh</a></code>` header<a href="#the-refresh-header" class="self-link"></a></h4>
+  <h4 id="the-refresh-header"><span class="secno">7.9.4</span>  `<code id="the-refresh-header:refresh"><a href="#refresh">Refresh</a></code>`ヘッダー<a href="#the-refresh-header" class="self-link"></a></h4>
 
-  <p>The `<dfn id="refresh" data-dfn-type="http-header"><code>Refresh</code></dfn>` HTTP response header is the HTTP-equivalent to a <code id="the-refresh-header:the-meta-element"><a href="semantics.html#the-meta-element">meta</a></code> element with an <code id="the-refresh-header:attr-meta-http-equiv"><a href="semantics.html#attr-meta-http-equiv">http-equiv</a></code> attribute in the <a href="semantics.html#attr-meta-http-equiv-refresh" id="the-refresh-header:attr-meta-http-equiv-refresh">Refresh state</a>. It takes <a href="semantics.html#conformance-attr-meta-http-equiv-refresh">the same value</a> and works largely the same. Its processing model is detailed in <span>create and initialize a <code>Document</code> object</span>.<nav><a href="history.html">← 7.8 セッション履歴およびナビゲーション</a> — <a href="./">目次</a> — <a href="webappapis.html">8 ウェブアプリケーションAPI →</a></nav>
+  <p>`<dfn id="refresh" data-dfn-type="http-header"><code>Refresh</code></dfn>`レスポンスヘッダーは、<a href="semantics.html#attr-meta-http-equiv-refresh" id="the-refresh-header:attr-meta-http-equiv-refresh">Refresh</a>状態の<code id="the-refresh-header:attr-meta-http-equiv"><a href="semantics.html#attr-meta-http-equiv">http-equiv</a></code>属性を持つ<code id="the-refresh-header:the-meta-element"><a href="semantics.html#the-meta-element">meta</a></code>要素と同等のHTTPである。それは<a href="semantics.html#conformance-attr-meta-http-equiv-refresh">同じ値</a>を取り、ほぼ同じように機能する。その処理モデルについては、<span><code>Document</code>オブジェクトの作成と初期化</span>で詳しく説明している。<nav><a href="history.html">← 7.8 セッション履歴およびナビゲーション</a> — <a href="./">目次</a> — <a href="webappapis.html">8 ウェブアプリケーションAPI →</a></nav>
