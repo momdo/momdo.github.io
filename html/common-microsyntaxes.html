@@ -10,7 +10,7 @@
   <script async="" crossorigin="" src="./html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">3 June 2022</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">9 June 2022</span></h2></hgroup>
    
    
 
@@ -76,15 +76,25 @@
 
   <h4 id="keywords-and-enumerated-attributes"><span class="secno">2.3.3</span> キーワードおよび列挙属性<a href="#keywords-and-enumerated-attributes" class="self-link"></a></h4>
 
-  <p>一部の属性は、有限集合のキーワードのいずれかを取るように定義されている。このような属性は<dfn id="enumerated-attribute">列挙属性</dfn>と呼ばれる。キーワードは、特定の<em>状態</em>にそれぞれ対応付けて定義される（キーワードの一部が互いに同義語となる場合、複数のキーワードは同じ状態に対応づけられる。加えて、一部のキーワードは不適合であるということができる。これは、歴史的な理由のためだけの仕様である）。さらに、2つのデフォルト状態を挙げることができる。1つ目は<dfn id="invalid-value-default"><i>不正値のデフォルト</i></dfn>であり、2つ目は<dfn id="missing-value-default"><i>欠損値のデフォルト</i></dfn>である。</p>
+  <p>Some attributes, called <dfn id="enumerated-attribute">enumerated attributes</dfn>, take on a finite set of states. The state for such an attribute is derived by combining the attribute's value, a set of keyword/state mappings given in the specification of each attribute, and two possible special states that can also be given in the specification of the attribute. These special states are the <dfn id="invalid-value-default"><i>invalid value default</i></dfn> and the <dfn id="missing-value-default"><i>missing value default</i></dfn>.</p>
 
-  <p>列挙属性が指定される場合、属性値は、先行または後続の空白なしで、不適合でないとされる与えられたキーワードのいずれかと<a id="keywords-and-enumerated-attributes:ascii-case-insensitive" href="https://triple-underscore.github.io/infra-ja.html#ascii-case-insensitive" data-x-internal="ascii-case-insensitive">ASCII大文字・小文字不区別</a>で一致しなければならない。</p>
+  <p class="note">Multiple keywords can map to the same state.</p>
 
-  <p>属性が指定されるときに、その値が与えられたキーワードのいずれかと<a id="keywords-and-enumerated-attributes:ascii-case-insensitive-2" href="https://triple-underscore.github.io/infra-ja.html#ascii-case-insensitive" data-x-internal="ascii-case-insensitive">ASCII大文字・小文字不区別</a>で一致する場合、属性のキーワードの状態は、属性が表す状態である。属性値が与えられたキーワードのいずれにも一致しないが、属性が<i id="keywords-and-enumerated-attributes:invalid-value-default"><a href="#invalid-value-default">不正値のデフォルト</a></i>を持つ場合、その属性はその状態を表す。そうでなければ、デフォルトは存在せず、何も表さない状態を意味する不正値である。</p>
+  <p class="note">空文字列は妥当なキーワードとなりうる。Note that the <i id="keywords-and-enumerated-attributes:missing-value-default"><a href="#missing-value-default">missing value default</a></i> applies only when the attribute is <em>missing</em>, not when it is present with an empty string value.</p>
 
-  <p>属性が指定<em>されない</em>場合、<i id="keywords-and-enumerated-attributes:missing-value-default"><a href="#missing-value-default">欠損値のデフォルト</a></i>定義状態がある場合、それは（欠損）属性によって表される状態である。そうでなければ、属性の不在は何も状態を表さないことを意味する。</p>
+  <p>To determine the state of an attribute, use the following steps:</p>
 
-  <p class="note">空文字列は妥当なキーワードとなりうる。</p>
+  <ol><li><p>If the attribute is not specified:</p>
+
+    <ol><li><p>If the attribute has a <i id="keywords-and-enumerated-attributes:missing-value-default-2"><a href="#missing-value-default">missing value default</a></i> state defined, then return that <i id="keywords-and-enumerated-attributes:missing-value-default-3"><a href="#missing-value-default">missing value default</a></i> state.<li><p>Otherwise, return no state.</ol>
+   <li><p>If the attribute's value is an <a id="keywords-and-enumerated-attributes:ascii-case-insensitive" href="https://triple-underscore.github.io/infra-ja.html#ascii-case-insensitive" data-x-internal="ascii-case-insensitive">ASCII case-insensitive</a> match for one of the keywords defined for the attribute, then return the state represented by that keyword.<li><p>If the attribute has an <i id="keywords-and-enumerated-attributes:invalid-value-default"><a href="#invalid-value-default">invalid value default</a></i> state defined, then return that <i id="keywords-and-enumerated-attributes:invalid-value-default-2"><a href="#invalid-value-default">invalid value default</a></i> state.<li><p>Return no state.</ol>
+
+  <p>For authoring conformance purposes, if an enumerated attribute is specified, the attribute's value must be an <a id="keywords-and-enumerated-attributes:ascii-case-insensitive-2" href="https://triple-underscore.github.io/infra-ja.html#ascii-case-insensitive" data-x-internal="ascii-case-insensitive">ASCII case-insensitive</a> match for one of the conforming keywords for that attribute, with no leading or trailing whitespace.</p>
+
+  <p>For <a href="common-dom-interfaces.html#reflect" id="keywords-and-enumerated-attributes:reflect">reflection</a> purposes, states which have any keywords mapping to them are said to have a <dfn id="canonical-keyword">canonical keyword</dfn>. This is determined as follows:</p>
+
+  <ul><li><p>If there is only one keyword mapping to the given state, then it is that keyword.<li><p>If there is only one <em>conforming</em> keyword mapping to the given state, then it is that conforming keyword.<li><p>Otherwise, the canonical keyword for the state will be explicitly given in the specification for the attribute.</ul>
+
 
 
   <h4 id="numbers"><span class="secno">2.3.4</span> 数<a href="#numbers" class="self-link"></a></h4>
