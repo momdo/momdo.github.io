@@ -10,7 +10,7 @@
   <script async="" crossorigin="" src="./html-dfn.js"></script>
   <script data-file-issue-url="https://github.com/momdo/momdo.github.io/issues/new" async="" crossorigin="" src="https://resources.whatwg.org/file-issue.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><h2 id="living-standard" class="no-num no-toc">Living Standard — Last Updated <span class="pubdate">27 October 2022</span></h2></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">7 November 2022</span></hgroup>
    
    
 
@@ -142,7 +142,7 @@
 
   <p><i>この節は非規範的である。</i></p>
 
-  <p>ウェブ著者をマルチスレッド処理の複雑さに触れさせることを回避するために、HTMLとDOM APIは、スクリプトが他のスクリプトの同時実行を検出しないように設計されている。<a href="workers.html#worker" id="serialisability-of-script-execution:worker">ワーカー</a>と等しい、実装の動作がすべての<a href="browsers.html#browsing-context" id="serialisability-of-script-execution:browsing-context">ブラウジングコンテキスト</a>内におけるすべてのスクリプトの実行を完全に逐次化すると考えることができるのが意図するところである。</p>
+  <p>ウェブ著者をマルチスレッド処理の複雑さに触れさせることを回避するために、HTMLとDOM APIは、スクリプトが他のスクリプトの同時実行を検出しないように設計されている。Even with <a href="workers.html#worker" id="serialisability-of-script-execution:worker">workers</a>, the intent is that the behavior of implementations can be thought of as completely serializing the execution of all scripts in all globals.</p>
 
   <p>この一般的な設計原則の例外は、JavaScript <code id="serialisability-of-script-execution:sharedarraybuffer"><a data-x-internal="sharedarraybuffer" href="https://tc39.es/ecma262/#sec-sharedarraybuffer-objects">SharedArrayBuffer</a></code>クラスである。<code id="serialisability-of-script-execution:sharedarraybuffer-2"><a data-x-internal="sharedarraybuffer" href="https://tc39.es/ecma262/#sec-sharedarraybuffer-objects">SharedArrayBuffer</a></code>オブジェクトを使用すると、他の<a href="https://tc39.es/ecma262/#sec-agents" id="serialisability-of-script-execution:agent" data-x-internal="agent">エージェント</a>のスクリプトが同時に実行されていることが実際には観察することができる。さらに、JavaScriptメモリーモデルのため、シリアライズされた<em>スクリプト</em>の実行によって表現できないだけでなく、これらのスクリプト間でのシリアライズされた<em>ステートメント</em>の実行によって表現できない状況もある。</p>
 
@@ -394,7 +394,7 @@ a<c- p>.</c->setAttribute<c- p>(</c-><c- t>'href'</c-><c- p>,</c-> <c- t>'https:
 
     <p>コードを実行させるサイトをだまそうとするために使用できる多くの構成要素がある。著者がセーフリストのフィルターを書く場合に考慮が促されるいくつかのものがある：</p>
 
-    <ul><li><code id="writing-secure-applications-with-html:the-img-element"><a href="embedded-content.html#the-img-element">img</a></code>のような無害のように思える要素を許可する場合、同様に、与えられた属性をセーフリストに登録することが重要である。たとえば、imgがすべての属性を許可する場合、攻撃者は、任意のスクリプトを実行するために<code id="writing-secure-applications-with-html:handler-onload"><a href="webappapis.html#handler-onload">onload</a></code>属性を使用できる。<li>（たとえばリンクについて）URLの提供を許可する場合、悪用される可能性がある多数のスキームが存在するため、各URLのスキームも明示的にセーフリストに登録する必要がある。最も顕著な例は、"<code id="writing-secure-applications-with-html:javascript-protocol"><a href="browsing-the-web.html#javascript-protocol">javascript:</a></code>"だが、ユーザーエージェントは他のものを実装することができる（そして実際、歴史的に実装している）。<li><code id="writing-secure-applications-with-html:the-base-element"><a href="semantics.html#the-base-element">base</a></code>要素を挿入できるようにすることは、相対的なリンクを持つページでの任意の<code id="writing-secure-applications-with-html:the-script-element"><a href="scripting.html#the-script-element">script</a></code>要素がハイジャックされる可能性があり、同様に任意のフォームの提出が敵対サイトにリダイレクトされてしまうことを意味する。</ul>
+    <ul><li><code id="writing-secure-applications-with-html:the-img-element"><a href="embedded-content.html#the-img-element">img</a></code>のような無害のように思える要素を許可する場合、同様に、与えられた属性をセーフリストに登録することが重要である。たとえば、imgがすべての属性を許可する場合、攻撃者は、任意のスクリプトを実行するために<code id="writing-secure-applications-with-html:handler-onload"><a href="webappapis.html#handler-onload">onload</a></code>属性を使用できる。<li>（たとえばリンクについて）URLの提供を許可する場合、悪用される可能性がある多数のスキームが存在するため、各URLのスキームも明示的にセーフリストに登録する必要がある。最も顕著な例は、"<code id="writing-secure-applications-with-html:the-javascript:-url-special-case"><a href="browsing-the-web.html#the-javascript:-url-special-case">javascript:</a></code>"だが、ユーザーエージェントは他のものを実装することができる（そして実際、歴史的に実装している）。<li><code id="writing-secure-applications-with-html:the-base-element"><a href="semantics.html#the-base-element">base</a></code>要素を挿入できるようにすることは、相対的なリンクを持つページでの任意の<code id="writing-secure-applications-with-html:the-script-element"><a href="scripting.html#the-script-element">script</a></code>要素がハイジャックされる可能性があり、同様に任意のフォームの提出が敵対サイトにリダイレクトされてしまうことを意味する。</ul>
    <dt>クロスサイトリクエストフォージェリー（CSRF）<dd><p>たとえば、ユーザー名でフォーラムにメッセージを投稿する、購入する、またはパスポートの申請するなど、サイトがユーザーに対してユーザー固有の副作用を伴うフォーム送信を行うことを許可する場合、他のサイトによってユーザーを無意識にリクエストするようにだますよりかはむしろ、意図的にユーザーによって行われたことを確認するのが重要である。</p>
 
     <p>HTMLフォームが他の生成元に送信できるため、この問題は存在する。</p>
@@ -404,7 +404,7 @@ a<c- p>.</c->setAttribute<c- p>(</c-><c- t>'href'</c-><c- p>,</c-> <c- t>'https:
 
     <p>たとえば、敵対的なサイトが小さな<code id="writing-secure-applications-with-html:the-iframe-element"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>を被害者のサイトに配置し、ユーザーがリアクションゲームをプレイすることによって、クリックするようユーザーにさせる場合、ユーザーをだます1つの手段である。ひとたびユーザーがゲームをプレイすると、敵対サイトはユーザーがクリックしようとすると同時にマウスカーソルの下にiframeを配置できる。こうして被害者サイトのインターフェイスをクリックするようにユーザーを騙す。</p>
 
-    <p>これを回避するために、フレームに使用されることを予想しないサイトは、（たとえば<code id="writing-secure-applications-with-html:dom-top"><a href="browsers.html#dom-top">top</a></code>属性の値に<code id="writing-secure-applications-with-html:dom-window"><a href="window-object.html#dom-window">window</a></code>オブジェクトを比較することによって）フレームにないことを検出した場合のみ、それらのインターフェイスを有効にすることを促進する。</p>
+    <p>これを回避するために、フレームに使用されることを予想しないサイトは、（たとえば<code id="writing-secure-applications-with-html:dom-top"><a href="nav-history-apis.html#dom-top">top</a></code>属性の値に<code id="writing-secure-applications-with-html:dom-window"><a href="nav-history-apis.html#dom-window">window</a></code>オブジェクトを比較することによって）フレームにないことを検出した場合のみ、それらのインターフェイスを有効にすることを促進する。</p>
    </dl>
 
 
