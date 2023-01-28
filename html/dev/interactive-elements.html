@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">20 January 2023</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">27 January 2023</span></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -146,9 +146,52 @@
 
   <dl class="element"><dt><a href="dom.html#concept-element-categories" id="the-dialog-element:concept-element-categories">カテゴリー</a>：<dd><a id="the-dialog-element:flow-content-2" href="dom.html#flow-content-2">フローコンテンツ</a>。<dt><a href="dom.html#concept-element-contexts" id="the-dialog-element:concept-element-contexts">この要素を使用できるコンテキスト</a>：<dd><a id="the-dialog-element:flow-content-2-2" href="dom.html#flow-content-2">フローコンテンツ</a>が期待される場所。<dt><a href="dom.html#concept-element-content-model" id="the-dialog-element:concept-element-content-model">コンテンツモデル</a>：<dd><a id="the-dialog-element:flow-content-2-3" href="dom.html#flow-content-2">フローコンテンツ</a>。<dt><a href="dom.html#concept-element-tag-omission" id="the-dialog-element:concept-element-tag-omission">text/htmlにおけるタグ省略</a>：<dd>どちらのタグも省略不可。<dt><a href="dom.html#concept-element-attributes" id="the-dialog-element:concept-element-attributes">コンテンツ属性</a>：<dd><a id="the-dialog-element:global-attributes" href="dom.html#global-attributes">グローバル属性</a><dd><code id="the-dialog-element:attr-dialog-open"><a href="#attr-dialog-open">open</a></code> — ダイアログボックスが見えるかどうか<dt><a href="dom.html#concept-element-accessibility-considerations" id="the-dialog-element:concept-element-accessibility-considerations">アクセシビリティの考慮</a>：<dd><a href="https://momdo.github.io/html-aria/#el-dialog">著者向け</a>。<dd><a href="https://w3c.github.io/html-aam/#el-dialog">実装者向け</a>。<dt><a href="dom.html#concept-element-dom" id="the-dialog-element:concept-element-dom">DOMインターフェイス</a>：<dd><code>HTMLDialogElement</code>を使用する。</dl>
 
-  <p><code id="the-dialog-element:the-dialog-element"><a href="#the-dialog-element">dialog</a></code>要素は、たとえばダイアログボックス、インスペクタ、またはウィンドウなどのタスクを実行するために、ユーザーが操作するアプリケーションの一部を表す。</p>
+  <p>The <code id="the-dialog-element:the-dialog-element"><a href="#the-dialog-element">dialog</a></code> element represents a transitory part of an application, in the form of a small window ("dialog box"), which the user interacts with to perform a task or gather information. Once the user is done, the dialog can be automatically closed by the application, or manually closed by the user.</p>
 
-  <p><dfn data-dfn-for="dialog" id="attr-dialog-open" data-dfn-type="element-attr"><code>open</code></dfn>属性は、<a id="the-dialog-element:boolean-attribute" href="common-microsyntaxes.html#boolean-attribute">真偽属性</a>である。指定される場合、<code id="the-dialog-element:the-dialog-element-2"><a href="#the-dialog-element">dialog</a></code>要素はアクティブであり、ユーザーが操作できることを示す。</p>
+  <p>Especially for modal dialogs, which are a familiar pattern across all types of applications, authors should work to ensure that dialogs in their web applications behave in a way that is familiar to users of non-web applications.</p>
+
+  <p class="note">As with all HTML elements, it is not conforming to use the <code id="the-dialog-element:the-dialog-element-2"><a href="#the-dialog-element">dialog</a></code> element when attempting to represent another type of control. For example, context menus, tooltips, and popup listboxes are not dialog boxes, so abusing the <code id="the-dialog-element:the-dialog-element-3"><a href="#the-dialog-element">dialog</a></code> element to implement these patterns is incorrect.</p>
+
+  <p>An important part of user-facing dialog behavior is the placement of initial focus. The <span>dialog focusing steps</span> attempt to pick a good candidate for initial focus when a dialog is shown, but might not be a substitute for authors carefully thinking through the correct choice to match user expectations for a specific dialog. As such, authors should use the <code id="the-dialog-element:attr-fe-autofocus"><a href="interaction.html#attr-fe-autofocus">autofocus</a></code> attribute on the descendant element of the dialog that the user is expected to immediately interact with after the dialog opens. If there is no such element, then authors should use the <code id="the-dialog-element:attr-fe-autofocus-2"><a href="interaction.html#attr-fe-autofocus">autofocus</a></code> attribute on the <code id="the-dialog-element:the-dialog-element-4"><a href="#the-dialog-element">dialog</a></code> element itself.</p>
+
+  <div class="example"><p>In the following example, a dialog is used for editing the details of a product in an inventory management web application.</p>
+
+   <pre><code class='html'><c- p>&lt;</c-><c- f>dialog</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>label</c-><c- p>></c->Product Number <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>"text"</c-> <c- e>readonly</c-><c- p>>&lt;/</c-><c- f>label</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>label</c-><c- p>></c->Product Name <c- p>&lt;</c-><c- f>input</c-> <c- e>type</c-><c- o>=</c-><c- s>"text"</c-> <c- e>autofocus</c-><c- p>>&lt;/</c-><c- f>label</c-><c- p>></c->
+<c- p>&lt;/</c-><c- f>dialog</c-><c- p>></c-></code></pre>
+
+   <p>If the <code id="the-dialog-element:attr-fe-autofocus-3"><a href="interaction.html#attr-fe-autofocus">autofocus</a></code> attribute was not present, the Product Number field would have been focused by the dialog focusing steps. Although that is reasonable behavior, the author determined that the more relevant field to focus was the Product Name field, as the Product Number field is readonly and expects no user input. So, the author used autofocus to override the default.</p>
+
+   <p>Even if the author wants to focus the Product Number field by default, they are best off explicitly specifying that by using autofocus on that <code id="the-dialog-element:the-input-element"><a href="input.html#the-input-element">input</a></code> element. This makes the intent obvious to future readers of the code, and ensures the code stays robust in the face of future updates. (For example, if another developer added a close button, and positioned it in the node tree before the Product Number field).</p>
+  </div>
+
+  <p>Another important aspect of user behavior is whether dialogs are scrollable or not. In some cases, overflow (and thus scrollability) cannot be avoided, e.g., when it is caused by the user's high text zoom settings. But in general, scrollable dialogs are not expected by users. Adding large text nodes directly to dialog elements is particularly bad as this is likely to cause the dialog element itself to overflow. Authors are best off avoiding them.</p>
+
+  <div class="example"><p>The following terms of service dialog respects the above suggestions.</p>
+
+   <pre><code class='html'><c- p>&lt;</c-><c- f>dialog</c-> <c- e>style</c-><c- o>=</c-><c- s>"height: 80vh;"</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>div</c-> <c- e>style</c-><c- o>=</c-><c- s>"overflow: auto; height: 60vh;"</c-> <c- e>autofocus</c-><c- p>></c->
+    <c- p>&lt;</c-><c- f>p</c-><c- p>></c->By placing an order via this Web site on the first day of the fourth month of the year
+    2010 Anno Domini, you agree to grant Us a non-transferable option to claim, for now and for
+    ever more, your immortal soul.<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+    <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Should We wish to exercise this option, you agree to surrender your immortal soul,
+    and any claim you may have on it, within 5 (five) working days of receiving written
+    notification from  this site or one of its duly authorized minions.<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+    <c- c>&lt;!-- ... etc., with many more &lt;p> elements ... --></c->
+  <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>form</c-> <c- e>method</c-><c- o>=</c-><c- s>"dialog"</c-><c- p>></c->
+    <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>"submit"</c-> <c- e>value</c-><c- o>=</c-><c- s>"agree"</c-><c- p>></c->Agree<c- p>&lt;/</c-><c- f>button</c-><c- p>></c->
+    <c- p>&lt;</c-><c- f>button</c-> <c- e>type</c-><c- o>=</c-><c- s>"submit"</c-> <c- e>value</c-><c- o>=</c-><c- s>"disagree"</c-><c- p>></c->Disagree<c- p>&lt;/</c-><c- f>button</c-><c- p>></c->
+  <c- p>&lt;/</c-><c- f>form</c-><c- p>></c->
+<c- p>&lt;/</c-><c- f>dialog</c-><c- p>></c-></code></pre>
+
+   <p>Note how the <span>dialog focusing steps</span> would have picked the scrollable <code id="the-dialog-element:the-div-element"><a href="grouping-content.html#the-div-element">div</a></code> element by default, but similarly to the previous example, we have placed <code id="the-dialog-element:attr-fe-autofocus-4"><a href="interaction.html#attr-fe-autofocus">autofocus</a></code> on the <code id="the-dialog-element:the-div-element-2"><a href="grouping-content.html#the-div-element">div</a></code> so as to be more explicit and robust against future changes.</p>
+
+   <p>In contrast, if the <code id="the-dialog-element:the-p-element"><a href="grouping-content.html#the-p-element">p</a></code> elements expressing the terms of service did not have such a wrapper <code id="the-dialog-element:the-div-element-3"><a href="grouping-content.html#the-div-element">div</a></code> element, then the <code id="the-dialog-element:the-dialog-element-5"><a href="#the-dialog-element">dialog</a></code> itself would become scrollable, violating the above advice. Furthermore, in the absence of any <code id="the-dialog-element:attr-fe-autofocus-5"><a href="interaction.html#attr-fe-autofocus">autofocus</a></code> attribute, such a markup pattern would have violated the above advice and tripped up the <span>dialog focusing steps</span>'s default behavior, and caused focus to jump to the Agree <code id="the-dialog-element:the-button-element"><a href="form-elements.html#the-button-element">button</a></code>, which is a bad user experience.</p>
+  </div>
+
+  <p><dfn data-dfn-for="dialog" id="attr-dialog-open" data-dfn-type="element-attr"><code>open</code></dfn>属性は、<a id="the-dialog-element:boolean-attribute" href="common-microsyntaxes.html#boolean-attribute">真偽属性</a>である。指定される場合、<code id="the-dialog-element:the-dialog-element-6"><a href="#the-dialog-element">dialog</a></code>要素はアクティブであり、ユーザーが操作できることを示す。</p>
 
   
 
@@ -157,16 +200,16 @@
    <p>これらの理由から、<code id="the-dialog-element:attr-dialog-open-3"><a href="#attr-dialog-open">open</a></code>属性を手動で削除しない方が一般的には良い方法である。代わりに、ダイアログを閉じるために<code id="the-dialog-element:dom-dialog-close-2"><a href="#dom-dialog-close">close()</a></code>メソッドを使用する、または非表示にするために<code id="the-dialog-element:attr-hidden"><a href="interaction.html#attr-hidden">hidden</a></code>属性を使用する。</p>
   </div>
 
-  <p><code id="the-dialog-element:attr-tabindex"><a href="interaction.html#attr-tabindex">tabindex</a></code>属性は、<code id="the-dialog-element:the-dialog-element-3"><a href="#the-dialog-element">dialog</a></code>要素で指定されてはならない。</p>
+  <p><code id="the-dialog-element:attr-tabindex"><a href="interaction.html#attr-tabindex">tabindex</a></code>属性は、<code id="the-dialog-element:the-dialog-element-7"><a href="#the-dialog-element">dialog</a></code>要素で指定されてはならない。</p>
 
 
-  <dl class="domintro"><dt><code><var>dialog</var>.<span id="dom-dialog-show">show</span>()</code><dd><p><code id="the-dialog-element:the-dialog-element-4"><a href="#the-dialog-element">dialog</a></code>要素を表示する。<dt><code><var>dialog</var>.<span id="dom-dialog-showmodal">showModal</span>()</code><dd><p><code id="the-dialog-element:the-dialog-element-5"><a href="#the-dialog-element">dialog</a></code>要素を表示し、一番上のモーダルダイアログにする。</p>
+  <dl class="domintro"><dt><code><var>dialog</var>.<span id="dom-dialog-show">show</span>()</code><dd><p><code id="the-dialog-element:the-dialog-element-8"><a href="#the-dialog-element">dialog</a></code>要素を表示する。<dt><code><var>dialog</var>.<span id="dom-dialog-showmodal">showModal</span>()</code><dd><p><code id="the-dialog-element:the-dialog-element-9"><a href="#the-dialog-element">dialog</a></code>要素を表示し、一番上のモーダルダイアログにする。</p>
 
-    <p>この方法は、<code id="the-dialog-element:attr-fe-autofocus"><a href="interaction.html#attr-fe-autofocus">autofocus</a></code>属性を履行する。</p>
-   <dt><code><var>dialog</var>.<span id="dom-dialog-close">close</span>([ <var>result</var> ])</code><dd><p><code id="the-dialog-element:the-dialog-element-6"><a href="#the-dialog-element">dialog</a></code>要素を閉じる。</p>
+    <p>この方法は、<code id="the-dialog-element:attr-fe-autofocus-6"><a href="interaction.html#attr-fe-autofocus">autofocus</a></code>属性を履行する。</p>
+   <dt><code><var>dialog</var>.<span id="dom-dialog-close">close</span>([ <var>result</var> ])</code><dd><p><code id="the-dialog-element:the-dialog-element-10"><a href="#the-dialog-element">dialog</a></code>要素を閉じる。</p>
 
     <p>引数が与えられた場合、戻り値を提供する。</p>
-   <dt><code><var>dialog</var>.<span id="dom-dialog-returnvalue">returnValue</span> [ = <var>result</var> ]</code><dd><p><code id="the-dialog-element:the-dialog-element-7"><a href="#the-dialog-element">dialog</a></code>の戻り値を返す。</p>
+   <dt><code><var>dialog</var>.<span id="dom-dialog-returnvalue">returnValue</span> [ = <var>result</var> ]</code><dd><p><code id="the-dialog-element:the-dialog-element-11"><a href="#the-dialog-element">dialog</a></code>の戻り値を返す。</p>
 
     <p>戻り値を更新する設定が可能である。</p>
    </dl>
@@ -174,11 +217,11 @@
 
   
 
-  <div id="note-dialog-method-names" class="note"><p>次の制約により、表示する/隠す（show/hide）や開く/閉じる（open/close）などの対義語として一般的に考えられている動詞のペアとは対照的に、<code id="the-dialog-element:the-dialog-element-8"><a href="#the-dialog-element">dialog</a></code>要素の動詞として表示する/閉じる（show/close）を使用する：</p>
+  <div id="note-dialog-method-names" class="note"><p>次の制約により、表示する/隠す（show/hide）や開く/閉じる（open/close）などの対義語として一般的に考えられている動詞のペアとは対照的に、<code id="the-dialog-element:the-dialog-element-12"><a href="#the-dialog-element">dialog</a></code>要素の動詞として表示する/閉じる（show/close）を使用する：</p>
 
-   <ul><li><p>ダイアログを非表示にすることは、ダイアログを閉じることとは異なる。ダイアログを閉じると、戻り値が返され、イベントが発火し、他のダイアログのページのブロックが解除される、などする。ダイアログを非表示にすることは純粋に視覚的なプロパティであり、<code id="the-dialog-element:attr-hidden-2"><a href="interaction.html#attr-hidden">hidden</a></code>属性を使用するか、<code id="the-dialog-element:attr-dialog-open-4"><a href="#attr-dialog-open">open</a></code>属性を削除することですでに実行できることである。（<code id="the-dialog-element:attr-dialog-open-5"><a href="#attr-dialog-open">open</a></code>属性を削除すること、およびそのようにダイアログを非表示にすることは一般的に望ましくないことについては、<a href="#note-dialog-remove-open-attribute">上記の注</a>も参照。）<li><p>ダイアログを表示することは、ダイアログを開くこととは異なる。ダイアログを開くことは、そのダイアログを作成して、表示することである（<code id="the-dialog-element:dom-open"><a href="nav-history-apis.html#dom-open">window.open()</a></code>が新しいウィンドウを作成して表示する方法と同様である）。ダイアログの表示は、すでにDOMにある<code id="the-dialog-element:the-dialog-element-9"><a href="#the-dialog-element">dialog</a></code>要素を取得し、それをインタラクティブにしてユーザーに可視にするプロセスである。<li><p>上記にもかかわらず<code>dialog.open()</code>メソッドがあるとすれば、<code>dialog.open</code>プロパティと競合するだろう。</ul>
+   <ul><li><p>ダイアログを非表示にすることは、ダイアログを閉じることとは異なる。ダイアログを閉じると、戻り値が返され、イベントが発火し、他のダイアログのページのブロックが解除される、などする。ダイアログを非表示にすることは純粋に視覚的なプロパティであり、<code id="the-dialog-element:attr-hidden-2"><a href="interaction.html#attr-hidden">hidden</a></code>属性を使用するか、<code id="the-dialog-element:attr-dialog-open-4"><a href="#attr-dialog-open">open</a></code>属性を削除することですでに実行できることである。（<code id="the-dialog-element:attr-dialog-open-5"><a href="#attr-dialog-open">open</a></code>属性を削除すること、およびそのようにダイアログを非表示にすることは一般的に望ましくないことについては、<a href="#note-dialog-remove-open-attribute">上記の注</a>も参照。）<li><p>ダイアログを表示することは、ダイアログを開くこととは異なる。ダイアログを開くことは、そのダイアログを作成して、表示することである（<code id="the-dialog-element:dom-open"><a href="nav-history-apis.html#dom-open">window.open()</a></code>が新しいウィンドウを作成して表示する方法と同様である）。ダイアログの表示は、すでにDOMにある<code id="the-dialog-element:the-dialog-element-13"><a href="#the-dialog-element">dialog</a></code>要素を取得し、それをインタラクティブにしてユーザーに可視にするプロセスである。<li><p>上記にもかかわらず<code>dialog.open()</code>メソッドがあるとすれば、<code>dialog.open</code>プロパティと競合するだろう。</ul>
 
-   <p>さらに、<code id="the-dialog-element:the-dialog-element-10"><a href="#the-dialog-element">dialog</a></code>要素のもとのデザインと同時代の他の多くのUIフレームワークの<a href="https://lists.whatwg.org/pipermail/whatwg-whatwg.org/2013-December/041799.html">調査</a>により、表示する/閉じる（show/close）の動詞のペアがかなり一般的であることが明らかになった。</p>
+   <p>さらに、<code id="the-dialog-element:the-dialog-element-14"><a href="#the-dialog-element">dialog</a></code>要素のもとのデザインと同時代の他の多くのUIフレームワークの<a href="https://lists.whatwg.org/pipermail/whatwg-whatwg.org/2013-December/041799.html">調査</a>により、表示する/閉じる（show/close）の動詞のペアがかなり一般的であることが明らかになった。</p>
 
    <p>要約すると、特定の動詞の意味、およびそれらの動詞が技術的なコンテキストでどのように使用されるかは、ダイアログの表示と閉じるなどのペアの動作が必ずしも対義語として表現できるとは限らないことがわかる。</p>
   </div>
