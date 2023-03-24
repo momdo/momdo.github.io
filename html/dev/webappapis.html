@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">17 March 2023</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">24 March 2023</span></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press '/'" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -282,27 +282,27 @@
   <c- k>import</c-> <c- u>"https://example.com/module"</c-><c- p>;</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
 <c- p>&lt;</c-><c- f>script</c-> <c- e>type</c-><c- o>=</c-><c- s>module</c-><c- p>></c->
-  <c- k>import</c-> <c- u>"https://example.com/module"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"css"</c-> <c- p>};</c->
+  <c- k>import</c-> <c- u>"https://example.com/module"</c-> <c- a>with</c-> <c- p>{</c-> type<c- o>:</c-> <c- u>"css"</c-> <c- p>};</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
 
-   <p>これにより、2つの別々のフェッチと2つの別々のモジュール評価が実行される可能性がある。これは、同じ(<var>referrer</var>, <var>moduleRequest</var>.[[Specifier]])ペアを使用した<span>HostLoadImportedModule</span>への各呼び出しが同じ<a href="https://tc39.es/ecma262/#sec-source-text-module-records" id="integration-with-the-javascript-module-system:source-text-module-record" data-x-internal="source-text-module-record">モジュールレコード</a>を返さなければならないことを示すインポートアサーション仕様によって推奨される（ただし必須ではない）制約の<a id="integration-with-the-javascript-module-system:willful-violation" href="introduction.html#willful-violation">故意の違反</a>である。 <a href="references.html#refsJSIMPORTASSERTIONS">[JSIMPORTASSERTIONS]</a></p>
+   <p>これにより、2つの別々のフェッチと2つの別々のモジュール評価が実行される可能性がある。</p>
 
    <p class="XXX">実際には、まだ指定されていないメモリーキャッシュ（issue <a href="https://github.com/whatwg/html/issues/6110">#6110</a>を参照）のため、リソースはWebKitおよびBlinkベースのブラウザーで1回のみフェッチしてもよい。さらに、すべてのモジュールタイプが相互に排他的である限り、<span>単一のモジュールスクリプトをフェッチする</span>際のモジュールタイプチェックは、少なくとも1つのインポートで失敗するため、最大で1つのモジュール評価が行われる。</p>
 
-   <p><span>モジュールマップ</span>キーにタイプを含める目的は、タイプアサーションが間違っているインポートが、同じ指定子の異なるインポートを妨げないようにすることであるが、タイプが正しい場合は成功しない。</p>
+   <p>The purpose of including the type in the <span>module map</span> key is so that an import with the wrong type attribute does not prevent a different import of the same specifier but with the correct type from succeeding.</p>
   </div>
 
-  <div class="example"><p>JavaScriptモジュールスクリプトは、別のJavaScriptモジュールからインポートする場合のデフォルトのインポートタイプである。つまり、<code>import</code>ステートメントに<code>type</code>インポートアサーションがない場合、インポートされたモジュールスクリプトのタイプはJavaScriptになる。<code>type</code>インポートアサーションをもつ<code>import</code>ステートメントを使用してJavaScriptリソースをインポートしようとすると、失敗する：</p>
+  <div class="example"><p>JavaScript module scripts are the default import type when importing from another JavaScript module; that is, when an <code>import</code> statement lacks a <code>type</code> import attribute the imported module script's type will be JavaScript. Attempting to import a JavaScript resource using an <code>import</code> statement with a <code>type</code> import attribute will fail:</p>
 
     <pre><code class='html'><c- p>&lt;</c-><c- f>script</c-> <c- e>type</c-><c- o>=</c-><c- s>"module"</c-><c- p>></c->
     <c- c1>// All of the following will fail, assuming that the imported .mjs files are served with a</c->
     <c- c1>// JavaScript MIME type. JavaScript module scripts are the default and cannot be imported with</c->
-    <c- c1>// any import type assertion.</c->
-    <c- k>import</c-> foo <c- k>from</c-> <c- u>"./foo.mjs"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"javascript"</c-> <c- p>};</c->
-    <c- k>import</c-> foo2 <c- k>from</c-> <c- u>"./foo2.mjs"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>"js"</c-> <c- p>};</c->
-    <c- k>import</c-> foo3 <c- k>from</c-> <c- u>"./foo3.mjs"</c-> assert <c- p>{</c-> type<c- o>:</c-> <c- u>""</c-> <c- p>};</c->
-    <c- k>await</c-> <c- k>import</c-><c- p>(</c-><c- u>"./foo4.mjs"</c-><c- p>,</c-> <c- p>{</c-> assert<c- o>:</c-> <c- p>{</c-> type<c- o>:</c-> <c- kc>null</c-> <c- p>}</c-> <c- p>});</c->
-    <c- k>await</c-> <c- k>import</c-><c- p>(</c-><c- u>"./foo5.mjs"</c-><c- p>,</c-> <c- p>{</c-> assert<c- o>:</c-> <c- p>{</c-> type<c- o>:</c-> <c- kc>undefined</c-> <c- p>}</c-> <c- p>});</c->
+    <c- c1>// any import type attribute.</c->
+    <c- k>import</c-> foo <c- k>from</c-> <c- u>"./foo.mjs"</c-> <c- a>with</c-> <c- p>{</c-> type<c- o>:</c-> <c- u>"javascript"</c-> <c- p>};</c->
+    <c- k>import</c-> foo2 <c- k>from</c-> <c- u>"./foo2.mjs"</c-> <c- a>with</c-> <c- p>{</c-> type<c- o>:</c-> <c- u>"js"</c-> <c- p>};</c->
+    <c- k>import</c-> foo3 <c- k>from</c-> <c- u>"./foo3.mjs"</c-> <c- a>with</c-> <c- p>{</c-> type<c- o>:</c-> <c- u>""</c-> <c- p>};</c->
+    <c- k>await</c-> <c- k>import</c-><c- p>(</c-><c- u>"./foo4.mjs"</c-><c- p>,</c-> <c- p>{</c-> <c- a>with</c-><c- o>:</c-> <c- p>{</c-> type<c- o>:</c-> <c- kc>null</c-> <c- p>}</c-> <c- p>});</c->
+    <c- k>await</c-> <c- k>import</c-><c- p>(</c-><c- u>"./foo5.mjs"</c-><c- p>,</c-> <c- p>{</c-> <c- a>with</c-><c- o>:</c-> <c- p>{</c-> type<c- o>:</c-> <c- kc>undefined</c-> <c- p>}</c-> <c- p>});</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
   </div>
 
