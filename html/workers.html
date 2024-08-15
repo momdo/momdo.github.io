@@ -9,7 +9,7 @@
   
   <script defer="" crossorigin="" src="./html-dfn.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">19 July 2024</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">15 August 2024</span></hgroup>
    
    
 
@@ -1265,23 +1265,7 @@ worker<c- p>.</c->port<c- p>.</c->postMessage<c- p>({</c-> foo<c- o>:</c-> <c- t
 
   <h4 id="runtime-script-errors-2"><span class="secno">10.2.5</span> Runtime script errors<a href="#runtime-script-errors-2" class="self-link"></a></h4>
 
-  <p>Whenever an uncaught runtime script error occurs in one of the worker's scripts, if the error did not occur while handling a previous script error, the user agent must <a id="runtime-script-errors-2:report-the-error" href="webappapis.html#report-the-error">report the error</a> for that <a href="webappapis.html#concept-script" id="runtime-script-errors-2:concept-script">script</a>, with the position (line number and column number) where the error occurred, using the <code id="runtime-script-errors-2:workerglobalscope"><a href="#workerglobalscope">WorkerGlobalScope</a></code> object as the target.</p>
-
-  <p>For shared workers, if the error is still <i id="runtime-script-errors-2:concept-error-nothandled"><a href="webappapis.html#concept-error-nothandled">not handled</a></i> afterwards, the error may be reported to a developer console.</p>
-
-  <p>For dedicated workers, if the error is still <i id="runtime-script-errors-2:concept-error-nothandled-2"><a href="webappapis.html#concept-error-nothandled">not handled</a></i> afterwards, the user agent must <a id="runtime-script-errors-2:queue-a-task" href="webappapis.html#queue-a-task">queue a task</a> to run these steps:</p>
-
-  
-
-  <ol><li><p>Let <var>notHandled</var> be the result of <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-event-fire" id="runtime-script-errors-2:concept-event-fire" data-x-internal="concept-event-fire">firing an event</a> named <code id="runtime-script-errors-2:event-error"><a href="indices.html#event-error">error</a></code> at the <code id="runtime-script-errors-2:worker"><a href="#worker">Worker</a></code> object associated with the worker, using <code id="runtime-script-errors-2:errorevent"><a href="webappapis.html#errorevent">ErrorEvent</a></code>, with the <code id="runtime-script-errors-2:dom-event-cancelable"><a data-x-internal="dom-event-cancelable" href="https://triple-underscore.github.io/DOM4-ja.html#dom-event-cancelable">cancelable</a></code> attribute initialized to true, the <code id="runtime-script-errors-2:dom-errorevent-message"><a href="webappapis.html#dom-errorevent-message">message</a></code>, <code id="runtime-script-errors-2:dom-errorevent-filename"><a href="webappapis.html#dom-errorevent-filename">filename</a></code>, <code id="runtime-script-errors-2:dom-errorevent-lineno"><a href="webappapis.html#dom-errorevent-lineno">lineno</a></code>, and <code id="runtime-script-errors-2:dom-errorevent-colno"><a href="webappapis.html#dom-errorevent-colno">colno</a></code> attributes initialized appropriately, and the <code id="runtime-script-errors-2:dom-errorevent-error"><a href="webappapis.html#dom-errorevent-error">error</a></code> attribute initialized to null.<li><p>If <var>notHandled</var> is true, then the user agent must act as if the uncaught runtime script error had occurred in the global scope that the <code id="runtime-script-errors-2:worker-2"><a href="#worker">Worker</a></code> object is in, thus repeating the entire runtime script error reporting process one level up.</ol>
-
-  <p>If the implicit port connecting the worker to its <code id="runtime-script-errors-2:worker-3"><a href="#worker">Worker</a></code> object has been disentangled (i.e. if the parent worker has been terminated), then the user agent must act as if the <code id="runtime-script-errors-2:worker-4"><a href="#worker">Worker</a></code> object had no <code id="runtime-script-errors-2:event-error-2"><a href="indices.html#event-error">error</a></code> event handler and as if that worker's <code id="runtime-script-errors-2:handler-workerglobalscope-onerror"><a href="#handler-workerglobalscope-onerror">onerror</a></code> attribute was null, but must otherwise act as described above.</p>
-
-  
-
-  <p class="note">Thus, error reports propagate up to the chain of dedicated workers up to the original <code id="runtime-script-errors-2:document"><a href="dom.html#document">Document</a></code>, even if some of the workers along this chain have been terminated and garbage collected.</p>
-
-  <p>The <a id="runtime-script-errors-2:task-source" href="webappapis.html#task-source">task source</a> for the task mentioned above is the <a id="runtime-script-errors-2:dom-manipulation-task-source" href="webappapis.html#dom-manipulation-task-source">DOM manipulation task source</a>.</p>
+  <p>Whenever an uncaught runtime script error occurs in one of the worker's scripts, if the error did not occur while handling a previous script error, the user agent will <a href="webappapis.html#report-an-exception" id="runtime-script-errors-2:report-an-exception">report</a> it for the worker's <code id="runtime-script-errors-2:workerglobalscope"><a href="#workerglobalscope">WorkerGlobalScope</a></code> object.</p>
 
 
   <h4 id="creating-workers"><span class="secno">10.2.6</span> Creating workers<a href="#creating-workers" class="self-link"></a></h4>

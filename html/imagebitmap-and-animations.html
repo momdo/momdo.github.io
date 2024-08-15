@@ -9,7 +9,7 @@
   
   <script defer="" crossorigin="" src="./html-dfn.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">19 July 2024</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">15 August 2024</span></hgroup>
    
    
 
@@ -179,7 +179,9 @@
 
   <p>The <code id="images-2:resizequality-2"><a href="#resizequality">ResizeQuality</a></code> enumeration is used to express a preference for the interpolation quality to use when scaling images.</p>
 
-  <p>The "<dfn data-dfn-for="ResizeQuality" id="dom-resizequality-pixelated" data-dfn-type="enum-value"><code>pixelated</code></dfn>" value indicates a preference to scale the image that maximizes the appearance. Scaling algorithms that "smooth" colors are acceptable, such as bilinear interpolation.</p>
+  <p>The "<dfn data-dfn-for="ResizeQuality" id="dom-resizequality-pixelated" data-dfn-type="enum-value"><code>pixelated</code></dfn>" value indicates a preference for scaling the image to preserve the pixelation of the original as much as possible, with minor smoothing as necessary to avoid distorting the image when the target size is not a clean multiple of the original.</p>
+
+  <p>To implement "<code id="images-2:dom-resizequality-pixelated-2"><a href="#dom-resizequality-pixelated">pixelated</a></code>", for each axis independently, first determine the integer multiple of its natural size that puts it closest to the target size and is greater than zero. Scale it to this integer-multiple-size using nearest neighbor, then scale it the rest of the way to the target size using bilinear interpolation.</p>
 
   <p>The "<dfn data-dfn-for="ResizeQuality" id="dom-resizequality-low" data-dfn-type="enum-value"><code>low</code></dfn>" value indicates a preference for a low level of image interpolation quality. Low-quality image interpolation may be more computationally efficient than higher settings.</p>
 
@@ -187,7 +189,7 @@
 
   <p>The "<dfn data-dfn-for="ResizeQuality" id="dom-resizequality-high" data-dfn-type="enum-value"><code>high</code></dfn>" value indicates a preference for a high level of image interpolation quality. High-quality image interpolation may be more computationally expensive than lower settings.</p>
 
-  <p class="note">Bilinear scaling is an example of a relatively fast, lower-quality image-smoothing algorithm. Bicubic or Lanczos scaling are examples of image-scaling algorithms that produce higher-quality output. This specification does not mandate that specific interpolation algorithms be used unless the value is "<a href="#dom-resizequality-pixelated" id="images-2:dom-resizequality-pixelated-2">pixelated</a>".</p>
+  <p class="note">Bilinear scaling is an example of a relatively fast, lower-quality image-smoothing algorithm. Bicubic or Lanczos scaling are examples of image-scaling algorithms that produce higher-quality output. This specification does not mandate that specific interpolation algorithms be used, except for "<code id="images-2:dom-resizequality-pixelated-3"><a href="#dom-resizequality-pixelated">pixelated</a></code>" as described above.</p>
 
   
 
@@ -262,7 +264,7 @@ loadMySprites<c- p>().</c->then<c- p>(</c->runDemo<c- p>);</c-></code></pre>
 
   <ol><li><p>Let <var>callbacks</var> be <var>target</var>'s <a href="#list-of-animation-frame-callbacks" id="animation-frames:list-of-animation-frame-callbacks-3">map of animation frame callbacks</a>.<li><p>Let <var>callbackHandles</var> be the result of <a href="https://triple-underscore.github.io/infra-ja.html#map-getting-the-keys" id="animation-frames:map-get-the-keys" data-x-internal="map-get-the-keys">getting the keys</a> of <var>callbacks</var>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-iterate" id="animation-frames:list-iterate" data-x-internal="list-iterate">For each</a> <var>handle</var> in <var>callbackHandles</var>, if <var>handle</var> <a href="https://triple-underscore.github.io/infra-ja.html#map-exists" id="animation-frames:map-exists" data-x-internal="map-exists">exists</a> in <var>callbacks</var>:</p>
 
-    <ol><li><p>Let <var>callback</var> be <var>callbacks</var>[<var>handle</var>].<li><p><a href="https://triple-underscore.github.io/infra-ja.html#map-remove" id="animation-frames:map-remove-2" data-x-internal="map-remove">Remove</a> <var>callbacks</var>[<var>handle</var>].<li><p><a href="https://triple-underscore.github.io/WebIDL-JS-ja.html#invoke-a-callback-function" id="animation-frames:es-invoking-callback-functions" data-x-internal="es-invoking-callback-functions">Invoke</a> <var>callback</var>, passing <var>now</var> as the only argument, and if an exception is thrown, <a id="animation-frames:report-the-exception" href="webappapis.html#report-the-exception">report the exception</a>.</ol>
+    <ol><li><p>Let <var>callback</var> be <var>callbacks</var>[<var>handle</var>].<li><p><a href="https://triple-underscore.github.io/infra-ja.html#map-remove" id="animation-frames:map-remove-2" data-x-internal="map-remove">Remove</a> <var>callbacks</var>[<var>handle</var>].<li><p><a href="https://triple-underscore.github.io/WebIDL-JS-ja.html#invoke-a-callback-function" id="animation-frames:es-invoking-callback-functions" data-x-internal="es-invoking-callback-functions">Invoke</a> <var>callback</var> with « <var>now</var> » and "<code>report</code>".</ol>
    </ol>
 
   <div class="example"><p>ワーカー内部では、<code id="animation-frames:the-canvas-element"><a href="canvas.html#the-canvas-element">canvas</a></code>要素から転送された<code id="animation-frames:offscreencanvas"><a href="canvas.html#offscreencanvas">OffscreenCanvas</a></code>と一緒に<code id="animation-frames:dom-animationframeprovider-requestanimationframe-2"><a href="#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code>を使用することができる。まず、文書内で、ワーカーに制御を転送する：</p>
