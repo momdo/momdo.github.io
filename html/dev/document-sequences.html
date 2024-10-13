@@ -9,7 +9,7 @@
   <script async="" src="./search.js"></script>
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="../dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">19 September 2024</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="../dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">10 October 2024</span></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press &apos;/&apos;" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -247,7 +247,7 @@
     <ol><li><p><a id="garbage-collection-and-browsing-contexts:update-for-navigable-creation/destruction" href="browsing-the-web.html#update-for-navigable-creation/destruction">Update for navigable creation/destruction</a> given <var>traversable</var>.</ol>
    <li><p>Invoke <a id="garbage-collection-and-browsing-contexts:webdriver-bidi-navigable-destroyed" href="https://w3c.github.io/webdriver-bidi/#webdriver-bidi-navigable-destroyed" data-x-internal="webdriver-bidi-navigable-destroyed">WebDriver BiDi navigable destroyed</a> with <var>navigable</var>.</ol>
 
-  <p>To <dfn id="destroy-a-top-level-traversable">destroy a top-level traversable</dfn> given a <a href="#top-level-traversable" id="garbage-collection-and-browsing-contexts:top-level-traversable">top-level traversable</a> <var>traversable</var>:</p>
+  <p>To <dfn id="destroy-a-top-level-traversable">destroy</dfn> a <a href="#top-level-traversable" id="garbage-collection-and-browsing-contexts:top-level-traversable">top-level traversable</a> <var>traversable</var>:</p>
 
   <ol><li><p>Let <var>browsingContext</var> be <var>traversable</var>'s <a href="#nav-bc" id="garbage-collection-and-browsing-contexts:nav-bc">active browsing context</a>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-iterate" id="garbage-collection-and-browsing-contexts:list-iterate" data-x-internal="list-iterate">For each</a> <var>historyEntry</var> in <var>traversable</var>'s <a href="#tn-session-history-entries" id="garbage-collection-and-browsing-contexts:tn-session-history-entries">session history entries</a> <span class="XXX">in what order?</span>:</p>
 
@@ -256,12 +256,18 @@
 
   <p>User agents may <a href="#destroy-a-top-level-traversable" id="garbage-collection-and-browsing-contexts:destroy-a-top-level-traversable">destroy a top-level traversable</a> at any time (typically, <a href="document-lifecycle.html#nav-traversal-ui">in response to user requests</a>).</p>
 
-  <p id="closing-browsing-contexts"><span id="close-a-browsing-context"></span>To <dfn id="close-a-top-level-traversable">close a top-level traversable</dfn> <var>traversable</var>:</p>
+  <p id="closing-browsing-contexts"><span id="close-a-browsing-context"></span>To <dfn data-export="" data-dfn-for="top-level traversable" id="close-a-top-level-traversable">close</dfn> a <a href="#top-level-traversable" id="garbage-collection-and-browsing-contexts:top-level-traversable-2">top-level traversable</a> <var>traversable</var>:</p>
 
-  <ol><li><p>If <var>traversable</var>'s <a href="#is-closing" id="garbage-collection-and-browsing-contexts:is-closing">is closing</a> is true, then return.<li><p>Let <var>toUnload</var> be <var>traversable</var>'s <a href="#nav-document" id="garbage-collection-and-browsing-contexts:nav-document-2">active document</a>'s <a href="#inclusive-descendant-navigables" id="garbage-collection-and-browsing-contexts:inclusive-descendant-navigables">inclusive descendant navigables</a>.<li><p>If the result of <a id="garbage-collection-and-browsing-contexts:checking-if-unloading-is-canceled" href="browsing-the-web.html#checking-if-unloading-is-canceled">checking if unloading is canceled</a> for <var>toUnload</var> is true, then return.<li><p><a href="browsing-the-web.html#tn-append-session-history-traversal-steps" id="garbage-collection-and-browsing-contexts:tn-append-session-history-traversal-steps-2">Append the following session history traversal steps</a> to <var>traversable</var>:</p>
+  <ol><li><p>If <var>traversable</var>'s <a href="#is-closing" id="garbage-collection-and-browsing-contexts:is-closing">is closing</a> is true, then return.<li><p><a href="#definitely-close-a-top-level-traversable" id="garbage-collection-and-browsing-contexts:definitely-close-a-top-level-traversable">Definitely close</a> <var>traversable</var>.</ol>
+
+  <p>To <dfn id="definitely-close-a-top-level-traversable">definitely close</dfn> a <a href="#top-level-traversable" id="garbage-collection-and-browsing-contexts:top-level-traversable-3">top-level traversable</a> <var>traversable</var>:</p>
+
+  <ol><li><p>Let <var>toUnload</var> be <var>traversable</var>'s <a href="#nav-document" id="garbage-collection-and-browsing-contexts:nav-document-2">active document</a>'s <a href="#inclusive-descendant-navigables" id="garbage-collection-and-browsing-contexts:inclusive-descendant-navigables">inclusive descendant navigables</a>.<li><p>If the result of <a id="garbage-collection-and-browsing-contexts:checking-if-unloading-is-canceled" href="browsing-the-web.html#checking-if-unloading-is-canceled">checking if unloading is canceled</a> for <var>toUnload</var> is true, then return.<li><p><a href="browsing-the-web.html#tn-append-session-history-traversal-steps" id="garbage-collection-and-browsing-contexts:tn-append-session-history-traversal-steps-2">Append the following session history traversal steps</a> to <var>traversable</var>:</p>
 
     <ol><li><p>Let <var>afterAllUnloads</var> be an algorithm step which <a href="#destroy-a-top-level-traversable" id="garbage-collection-and-browsing-contexts:destroy-a-top-level-traversable-2">destroys</a> <var>traversable</var>.<li><p><a id="garbage-collection-and-browsing-contexts:unload-a-document-and-its-descendants" href="document-lifecycle.html#unload-a-document-and-its-descendants">Unload a document and its descendants</a> given <var>traversable</var>'s <a href="#nav-document" id="garbage-collection-and-browsing-contexts:nav-document-3">active document</a>, null, and <var>afterAllUnloads</var>.</ol>
    </ol>
+
+  <p class="note">The <a href="#close-a-top-level-traversable" id="garbage-collection-and-browsing-contexts:close-a-top-level-traversable">close</a> vs. <a href="#definitely-close-a-top-level-traversable" id="garbage-collection-and-browsing-contexts:definitely-close-a-top-level-traversable-2">definitely close</a> separation allows other specifications to call <a href="#close-a-top-level-traversable" id="garbage-collection-and-browsing-contexts:close-a-top-level-traversable-2">close</a> and have it be a no-op if the top-level traversable is already closing due to JavaScript code calling <code id="garbage-collection-and-browsing-contexts:dom-window-close"><a href="nav-history-apis.html#dom-window-close">window.close()</a></code>.</p>
 
 
   <h5 id="navigable-target-names"><span class="secno">7.3.1.7</span> <span id="browsing-context-names"></span>ナビゲート可能なターゲット名<a href="#navigable-target-names" class="self-link"></a></h5>
