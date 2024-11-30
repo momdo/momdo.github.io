@@ -9,7 +9,7 @@
   
   <script defer="" crossorigin="" src="./html-dfn.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">13 November 2024</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">26 November 2024</span></hgroup>
    
    
 
@@ -625,10 +625,14 @@ location<c- p>.</c->href <c- o>=</c-> <c- t>'#foo'</c-><c- p>;</c-></code></pre>
 
     <p>then:</p>
 
-    <ol><li><p>Set <var>unloadPromptShown</var> to true.<li><p>Invoke <a id="preventing-navigation:webdriver-bidi-user-prompt-opened" href="https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-opened" data-x-internal="webdriver-bidi-user-prompt-opened">WebDriver BiDi user prompt opened</a> with <var>document</var>'s <a id="preventing-navigation:concept-relevant-global-4" href="webappapis.html#concept-relevant-global">relevant global object</a>, "<code>beforeunload</code>", and "".<li><p>Ask the user to confirm that they wish to unload the document, and <a id="preventing-navigation:pause" href="webappapis.html#pause">pause</a> while waiting for the user's response.</p>
+    <ol><li><p>Set <var>unloadPromptShown</var> to true.<li><p>Let <var>userPromptHandler</var> be the result of <a id="preventing-navigation:webdriver-bidi-user-prompt-opened" href="https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-opened" data-x-internal="webdriver-bidi-user-prompt-opened">WebDriver BiDi user prompt opened</a> with <var>document</var>'s <a id="preventing-navigation:concept-relevant-global-4" href="webappapis.html#concept-relevant-global">relevant global object</a>, "<code>beforeunload</code>", and "".<li><p>If <var>userPromptHandler</var> is "<code>dismiss</code>", then set <var>unloadPromptCanceled</var> to true.<li><p>If <var>userPromptHandler</var> is "<code>none</code>", then:</p>
 
-      <p class="note">The message shown to the user is not customizable, but instead determined by the user agent. In particular, the actual value of the <code id="preventing-navigation:dom-beforeunloadevent-returnvalue-2"><a href="nav-history-apis.html#dom-beforeunloadevent-returnvalue">returnValue</a></code> attribute is ignored.</p>
-     <li><p>If the user did not confirm the page navigation, set <var>unloadPromptCanceled</var> to true.<li><p>Invoke <a id="preventing-navigation:webdriver-bidi-user-prompt-closed" href="https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-closed" data-x-internal="webdriver-bidi-user-prompt-closed">WebDriver BiDi user prompt closed</a> with <var>document</var>'s <a id="preventing-navigation:concept-relevant-global-5" href="webappapis.html#concept-relevant-global">relevant global object</a> and true if <var>unloadPromptCanceled</var> is false or false otherwise.</ol>
+      <ul><li><p>Ask the user to confirm that they wish to unload the document, and <a id="preventing-navigation:pause" href="webappapis.html#pause">pause</a> while waiting for the user's response.</p>
+
+        <p class="note">The message shown to the user is not customizable, but instead determined by the user agent. In particular, the actual value of the <code id="preventing-navigation:dom-beforeunloadevent-returnvalue-2"><a href="nav-history-apis.html#dom-beforeunloadevent-returnvalue">returnValue</a></code> attribute is ignored.</p>
+       <li><p>If the user did not confirm the page navigation, then set <var>unloadPromptCanceled</var> to true.</ul>
+
+     <li><p>Invoke <a id="preventing-navigation:webdriver-bidi-user-prompt-closed" href="https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-closed" data-x-internal="webdriver-bidi-user-prompt-closed">WebDriver BiDi user prompt closed</a> with <var>document</var>'s <a id="preventing-navigation:concept-relevant-global-5" href="webappapis.html#concept-relevant-global">relevant global object</a>, "<code>beforeunload</code>", and true if <var>unloadPromptCanceled</var> is false or false otherwise.</ol>
    <li><p>Decrease <var>document</var>'s <a id="preventing-navigation:unload-counter-2" href="document-lifecycle.html#unload-counter">unload counter</a> by 1.<li><p>Return (<var>unloadPromptShown</var>, <var>unloadPromptCanceled</var>).</ol>
 
 
