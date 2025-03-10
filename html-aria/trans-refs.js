@@ -19,6 +19,7 @@ addEventListener("DOMContentLoaded", function(){
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
 "dpub-aria-1.0": 'https://momdo.github.io/dpub-aria-1.0/',
+"dpub-aria-1.1": 'https://momdo.github.io/dpub-aria-1.1/',
 html: ['https://momdo.github.io/html/',
 'https://triple-underscore.github.io/index.html#spec-list-html'],
 infra: 'https://triple-underscore.github.io/infra-ja.html',

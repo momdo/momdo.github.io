@@ -20,15 +20,17 @@ addEventListener("DOMContentLoaded", function(){
 	var refList = {
 html: ['https://momdo.github.io/html/',
 'https://triple-underscore.github.io/index.html#spec-list-html'],
-"wai-aria-1.1": 'https://momdo.github.io/wai-aria-1.1/',
-rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
-          'http://www.studyinghttp.net/rfc_ja/rfc2119',
+"wai-aria": 'https://momdo.github.io/wai-aria-1.1/',
+rfc2119: [ 
           'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
           'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html',
+          'https://triple-underscore.github.io/bcp14-ja.html',
 ],
+rfc8174: 'https://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
 svg2: 'https://triple-underscore.github.io/svg-misc-ja.html',
 wcag21: 'https://waic.jp/docs/WCAG21/',
+infra: 'https://triple-underscore.github.io/infra-ja.html',
 	};
 
 	(function() {
