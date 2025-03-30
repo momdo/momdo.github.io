@@ -1,6 +1,6 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="generator" content="ReSpec 35.2.2">
+<meta name="generator" content="ReSpec 35.3.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
 span.example-title{text-transform:none}
@@ -54,17 +54,24 @@ dfn{cursor:pointer}
     
 <style>
 
-      ol {
+      ol.acc-ol {
+        counter-reset: acclist;
+        list-style: none;
+        padding-left: 32px;
+      }
+
+      ol.acc-ol > li {
+        counter-increment: acclist;
+      }
+
+      ol.acc-ol > li:before {
+        content: counters(acclist, ".") " ";
+        font-weight: bold;
+      }
+
+      ol.note-list,
+      ol.note-list li {
         list-style: decimal;
-      }
-      ol ol {
-        list-style: upper-alpha;
-      }
-      ol ol ol {
-        list-style: lower-roman;
-      }
-      ol ol ol ol {
-        list-style: lower-alpha;
       }
     
 </style>
@@ -114,9 +121,9 @@ dd{margin-left:0}
 }
 </style>
 <meta name="color-scheme" content="light">
-<meta name="revision" content="ff9dd6b78101667a99a75962b1fa680b90de1980">
+<meta name="revision" content="7cb7cff109532ce2b28e3f9166468682e5684079">
 <meta name="description" content="この文書は、ユーザーエージェントがウェブコンテンツ言語からアクセシブルオブジェクトの名前および説明をどのように決定するのかを説明する。この情報はアクセシビリティAPIを通じて公開されるため、支援技術はこのオブジェクトを識別し、その名前または説明をユーザーに提示することができる。名前および説明を決定するためのアルゴリズムを文書化することは、異なるアクセシビリティAPI間でこれらのプロパティの相互運用可能な公開を促進し、この情報が著者の意図と一致する方法で表示されるように保証することを促す。">
-<!--link rel="canonical" href="https://www.w3.org/TR/accname-1.2/">
+<!--link rel="canonical" href="https://www.w3.org/TR/accname-1.2/"-->
 <script type="application/ld+json">{
   "@context": [
     "http://schema.org",
@@ -147,15 +154,15 @@ dd{margin-left:0}
   "name": "Accessible Name and Description Computation 1.2",
   "inLanguage": "en-US",
   "license": "https://www.w3.org/copyright/software-license-2023/",
-  "datePublished": "2025-03-07",
+  "datePublished": "2025-03-28",
   "copyrightHolder": {
     "name": "World Wide Web Consortium",
     "url": "https://www.w3.org/"
   },
   "discussionUrl": "https://github.com/w3c/accname/issues/",
   "alternativeHeadline": "",
-  "isBasedOn": "https://www.w3.org/TR/2025/WD-accname-1.2-20250307/",
-  "description": "This document describes how user agents determine the names and\n        descriptions of accessible objects from web content languages. This information is in turn exposed through\n        accessibility APIs so that assistive technologies can identify these objects and present\n        their names or descriptions to users. Documenting the algorithm through which names and descriptions are to be determined promotes interoperable exposure of these properties among different\n        accessibility APIs and helps to ensure that this information appears in a manner consistent with author intent.",
+  "isBasedOn": "https://www.w3.org/TR/2025/WD-accname-1.2-20250327/",
+  "description": "This document describes how user agents determine the names and\n        descriptions of accessible objects\n        from web content languages. This information is in turn exposed through\n        accessibility APIs so that assistive technologies can identify these objects and present\n        their names or descriptions to users. Documenting the algorithm through which names and descriptions are to be determined promotes interoperable exposure of these properties among different\n        accessibility APIs and helps to ensure that this information appears in a manner consistent with author intent.",
   "editor": [
     {
       "type": "Person",
@@ -203,10 +210,10 @@ dd{margin-left:0}
       }
     },
     {
-      "id": "https://www.w3.org/TR/CSS21/",
+      "id": "https://www.w3.org/TR/CSS2/",
       "type": "TechArticle",
       "name": "Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification",
-      "url": "https://www.w3.org/TR/CSS21/",
+      "url": "https://www.w3.org/TR/CSS2/",
       "creator": [
         {
           "name": "Bert Bos"
@@ -359,7 +366,7 @@ dd{margin-left:0}
       }
     }
   ]
-}</script-->
+}</script>
 <style>
 .hljs{--base:#fafafa;--mono-1:#383a42;--mono-2:#686b77;--mono-3:#717277;--hue-1:#0b76c5;--hue-2:#336ae3;--hue-3:#a626a4;--hue-4:#42803c;--hue-5:#ca4706;--hue-5-2:#c91243;--hue-6:#986801;--hue-6-2:#9a6a01}
 @media (prefers-color-scheme:dark){
@@ -377,6 +384,23 @@ dd{margin-left:0}
 .hljs-emphasis{font-style:italic}
 .hljs-strong{font-weight:700}
 .hljs-link{text-decoration:underline}
+</style>
+<style>
+var:hover{text-decoration:underline;cursor:pointer}
+var.respec-hl{color:var(--color,#000);background-color:var(--bg-color);box-shadow:0 0 0 2px var(--bg-color)}
+@media (prefers-color-scheme:dark){
+var.respec-hl{filter:saturate(.9) brightness(.9)}
+}
+var.respec-hl-c1{--bg-color:#f4d200}
+var.respec-hl-c2{--bg-color:#ff87a2}
+var.respec-hl-c3{--bg-color:#96e885}
+var.respec-hl-c4{--bg-color:#3eeed2}
+var.respec-hl-c5{--bg-color:#eacfb6}
+var.respec-hl-c6{--bg-color:#82ddff}
+var.respec-hl-c7{--bg-color:#ffbcf2}
+@media print{
+var.respec-hl{background:0 0;color:#000;box-shadow:unset}
+}
 </style>
 <style>
 var{position:relative;cursor:pointer}
@@ -527,25 +551,25 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     "wai-aria-1.2",
     "infra"
   ],
-  "gitRevision": "ff9dd6b78101667a99a75962b1fa680b90de1980",
-  "publishDate": "2025-03-07",
+  "gitRevision": "7cb7cff109532ce2b28e3f9166468682e5684079",
+  "publishDate": "2025-03-28",
   "previousMaturity": "WD",
-  "previousPublishDate": "2025-03-07",
-  "publishISODate": "2025-03-07T00:00:00.000Z",
-  "generatedSubtitle": "W3C Working Draft 07 March 2025"
+  "previousPublishDate": "2025-03-27",
+  "publishISODate": "2025-03-28T00:00:00.000Z",
+  "generatedSubtitle": "W3C Working Draft 28 March 2025"
 }</script>
 <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-WD"></head>
   <body class="h-entry" data-cite="dom core-aam-1.2 wai-aria-1.2 infra">
 <aside style="border-radius: 20px; border: solid lightpink 3px;padding: 1em; padding-bottom:0; margin-bottom: 1em;">
-<p>この文書は「<a href="https://www.w3.org/TR/2025/WD-accname-1.2-20250307/" style="float:none;">Accessible Name and Description Computation 1.2</a>（W3C Working Draft <time>2025-03-07</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳に誤りがありえます。</p>
+<p>この文書は「<a href="https://www.w3.org/TR/2025/WD-accname-1.2-20250328/" style="float:none;">Accessible Name and Description Computation 1.2</a>（W3C Working Draft <time>2025-03-28</time>）」の日本語訳です。日本語訳は参考情報であって、公式な文書ではありません。また、翻訳に誤りがありえます。</p>
 <p>訳者への連絡先、他の仕様の翻訳等については、<a href="https://github.com/momdo/momdo.github.io/wiki">Wiki</a>を参照ください。</p>
 <script src="./trans-refs.js" async></script>
 </aside>
 <div class="head"><p class="logos"><a class="logo" href="https://www.w3.org/"><img crossorigin="" alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a></p>
     <h1 id="title" class="title">Accessible Name and Description Computation 1.2 日本語訳</h1> 
-    <p id="w3c-state"><a href="https://www.w3.org/standards/types#WD">W3C Working Draft</a> <time class="dt-published" datetime="2025-03-07">07 March 2025</time></p>
+    <p id="w3c-state"><a href="https://www.w3.org/standards/types#WD">W3C Working Draft</a> <time class="dt-published" datetime="2025-03-28">28 March 2025</time></p>
     <details open=""><summary>More details about this document</summary><dl>
-        <dt>This version:</dt><dd><a class="u-url" href="https://www.w3.org/TR/2025/WD-accname-1.2-20250307/">https://www.w3.org/TR/2025/WD-accname-1.2-20250307/</a></dd>
+        <dt>This version:</dt><dd><a class="u-url" href="https://www.w3.org/TR/2025/WD-accname-1.2-20250328/">https://www.w3.org/TR/2025/WD-accname-1.2-20250328/</a></dd>
         <dt>Latest published version:</dt><dd><a href="https://www.w3.org/TR/accname-1.2/">https://www.w3.org/TR/accname-1.2/</a></dd>
         <dt>Latest editor's draft:</dt><dd><a href="https://w3c.github.io/accname/">https://w3c.github.io/accname/</a></dd>
         <dt>History:</dt><dd><a href="https://www.w3.org/standards/history/accname-1.2/">https://www.w3.org/standards/history/accname-1.2/</a></dd><dd><a href="https://github.com/w3c/accname/commits/">Commit history</a></dd>
@@ -616,7 +640,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
         </dl>
       </div>
     </section>
-    <section id="conformance"><div class="header-wrapper"><h2 id="x3-conformance"><bdi class="secno">3. </bdi> 適合性</h2><a class="self-link" href="#conformance" aria-label="Permalink for Section 3."></a></div><p>非規範的とマークとしてマークされる章と同様に、この仕様のすべてのオーサリングガイドライン、図、例、およびノートは非規範的である。この仕様における他のすべては規範的である。</p><p>キーワード<em class="rfc2119">MAY</em>、<em class="rfc2119">MUST</em>および<em class="rfc2119">MUST NOT</em>は、<a href="https://datatracker.ietf.org/doc/html/bcp14">BCP 14</a> [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a></cite>] [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8174" title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words">RFC8174</a></cite>]で示されるとおりに解釈される。ただし、大文字で表示される場合に限る。</p>
+    <section id="conformance"><div class="header-wrapper"><h2 id="x3-conformance"><bdi class="secno">3. </bdi> 適合性</h2><a class="self-link" href="#conformance" aria-label="Permalink for Section 3."></a></div><p>非規範的とマークとしてマークされる章と同様に、この仕様のすべてのオーサリングガイドライン、図、例、およびノートは非規範的である。この仕様における他のすべては規範的である。</p><p>キーワード<em class="rfc2119">MAY</em>、<em class="rfc2119">MUST</em>および<em class="rfc2119">MUST NOT</em>は、<a href="https://www.rfc-editor.org/info/bcp14">BCP 14</a> [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a></cite>] [<cite><a class="bibref" data-link-type="biblio" href="#bib-rfc8174" title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words">RFC8174</a></cite>]で示されるとおりに解釈される。ただし、大文字で表示される場合に限る。</p>
       <section id="rfc-2119-keywords"><div class="header-wrapper"><h3 id="x3-1-rfc-2119-keywords"><bdi class="secno">3.1 </bdi>RFC 2119キーワード</h3><a class="self-link" href="#rfc-2119-keywords" aria-label="Permalink for Section 3.1"></a></div>
         
         <p>RFC-2119のキーワードは、大文字と太字で表記されている。上に示したキーワードが使用されるが、この形式を共有しない場合キーワードは、RFC 2119の意味で形式的な情報を伝達せず、単なる説明、すなわち、参考情報である。可能な限り、そのような用途は、この使用において回避される。</p>
@@ -739,14 +763,14 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
         <section id="computation-steps"><div class="header-wrapper"><h4 id="x4-3-2-computation-steps"><bdi class="secno">4.3.2 </bdi>計算ステップ</h4><a class="self-link" href="#computation-steps" aria-label="Permalink for Section 4.3.2"></a></div>
           
           <p>与えられた要素に対するテキストによる代替は、次のように計算される：</p>
-          <ol>
+          <ol class="acc-ol">
             <li id="comp_init"><span id="step1"></span><em>Initialization:</em> <code>root node</code>を与えられた要素に、<code>current node</code>を<code>root node</code>に、そして<code>total accumulated text</code>を空文字列（""）に設定する。<code>root node</code>のロールで名前付けが禁止されている場合、空の文字列（""）を返す。</li>
-            <li id="comp_computation"><span id="step2"></span><em>Computation:</em> <code>current node</code>のテキストによる代替を計算する。<ol>
-                <li id="comp_hidden_not_referenced"><span id="step2A"></span><em>Hidden Not Referenced:</em> <code>current node</code>が<span class="informative"><a data-link-type="dfn" href="https://momdo.github.io/wai-aria-1.2/#dfn-hidden">非表示</a></span><strong>かつ存在する</strong>場合：<ol>
+            <li id="comp_computation"><span id="step2"></span><em>Computation:</em> <code>current node</code>のテキストによる代替を計算する。<ol class="acc-ol">
+                <li id="comp_hidden_not_referenced"><span id="step2A"></span><em>Hidden Not Referenced:</em> <code>current node</code>が<span class="informative"><a data-link-type="dfn" href="https://momdo.github.io/wai-aria-1.2/#dfn-hidden">非表示</a></span><strong>かつ存在する</strong>場合：<ol class="acc-ol">
                     <li><code>aria-labelledby</code>または<code>aria-describedby</code>トラバーサルの一部<strong>ではなく</strong>、そのリレーションによって直接参照されるノードが非表示になっていた場合。</li>
                     <li>ネイティヴホスト言語のテキストによる代替<a class="termref informative" data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element">要素</a>（例：<abbr title="Hypertext Markup Language">HTML</abbr>の<code>label</code>）または<a class="termref informative" data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-attribute">属性</a>トラバーサルの一部<strong>でもなく</strong>、トラバーサルのルートが非表示になっていた場合。</li>
                   </ol>空文字列を返す。<div class="note" role="note" id="issue-container-generatedID"><div role="heading" class="note-title marker" id="h-note" aria-level="5"><span>注記</span></div><div class=""><p>アクセシブルな名前の計算のために、非表示の広い定義を明確にすることが重要である。</p>
-                    <ol>
+                    <ol class="note-list">
                       <li>CSSプロパティ<code>display:none</code>、<code>visibility:hidden</code>、<code>visibility:collapse</code>または<code>content-visibility:hidden</code>を持つノード :これらは、「認識できない」および「明示的に非表示」のガイドラインに一致するため、非表示と見なされる。</li>
                       <li><abbr title="Cascading Style Sheets">CSS</abbr>プロパティ<code>opacity:0</code>もしくは<code>filter:opacity(0%)</code>、または同様の<abbr title="Scalable Vector Graphics">SVG</abbr>メカニズムを持つノード：非表示とは見なされない。これらの方法で非表示にされたテキストは、選択またはコピーすることができ、ユーザーエージェントはアクセシビリティツリーでそのテキストを公開する。</li>
                       <li><code>aria-hidden="true"</code>プロパティを持つノード：非表示と見なされ、「明示的に非表示」のガイドラインに一致する。</li>
@@ -772,9 +796,9 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
 &lt;/element2></code></pre>
                   </aside>
                 </li>
-                <li id="comp_labelledby"><span id="step2B"></span><em>LabelledBy:</em> そうでなければ、<code>current node</code>が少なくとも1つの有効なIDREFを含む<code>aria-labelledby</code><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-attribute">属性</a>を持ち、かつ<code>current node</code>がまだ進行中の<code>aria-labelledby</code>または<code>aria-describedby</code>トラバーサルの一部になっていない場合、そのIDREFを出現順に処理する。<ol>
+                <li id="comp_labelledby"><span id="step2B"></span><em>LabelledBy:</em> そうでなければ、<code>current node</code>が少なくとも1つの有効なIDREFを含む<code>aria-labelledby</code><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-attribute">属性</a>を持ち、かつ<code>current node</code>がまだ進行中の<code>aria-labelledby</code>または<code>aria-describedby</code>トラバーサルの一部になっていない場合、そのIDREFを出現順に処理する。<ol class="acc-ol">
                     <li id="comp_labelledby_reset"><span id="step2B.i"></span><code>accumulated text</code>を空文字列に設定する。</li>
-                    <li id="comp_labelledby_foreach"><span id="step2B.ii"></span>IDREFごとに：<ol>
+                    <li id="comp_labelledby_foreach"><span id="step2B.ii"></span>IDREFごとに：<ol class="acc-ol">
                         <li id="comp_labelledby_set_current"><span id="step2B.ii.a"></span><code>current node</code>をIDREFによって参照されるノードに設定する。</li>
                         <li id="comp_labelledby_recursion"><span id="step2B.ii.b"></span><em>LabelledBy Recursion:</em> 全体の<a href="#comp_computation">Computation</a>ステップで始まる<code>current node</code>のテキストによる代替を計算する。<code>result</code>をそのテキストによる代替に設定する。</li>
                         <li id="comp_labelledby_append"><span id="step2B.ii.c"></span>スペース文字と<code>result</code>を<code>accumulated text</code>に追加する。</li>
@@ -785,7 +809,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
                   <div><p><a href="#comp_hidden_not_referenced">Hidden Not Referenced</a>と組み合わせた<a href="#comp_labelledby_recursion">LabelledBy Recursion</a>の結果は、<code>aria-labelledby</code>または<code>aria-describedby</code>によって参照されるノードが非表示の場合、<a class="termref informative" data-link-type="dfn" href="https://triple-underscore.github.io/infra-ja.html#user-agent">ユーザーエージェント</a>が、サブツリー内のすべてのノードを<a class="termref informative internalDFN" href="#dfn-accessible-name" data-link-type="dfn" id="ref-for-dfn-accessible-name-9">アクセシブルな名前また</a>は<a class="termref informative internalDFN" href="#dfn-accessible-description" data-link-type="dfn" id="ref-for-dfn-accessible-description-7">アクセシブルな説明</a>の一部として含め<em class="rfc2119">なければならない</em>ことを意味する。</p>
                     <aside class="example" id="example-3"><div class="marker"><a class="self-link" href="#example-3">例<bdi> 3</bdi></a></div>
                       <p>次の例は、句「…かつ<code>current node</code>がまだ…<code>aria-labelledby</code>トラバーサルの一部になっていない」の意味を示している。</p>
-                      <ol>
+                      <ol class="note-list">
                         <li><code>element1</code>の<a class="termref informative internalDFN" href="#dfn-accessible-name" data-link-type="dfn" id="ref-for-dfn-accessible-name-10">アクセシブルな名前</a>は"hello"である。これは、その<code>aria-labelledby</code>の最初のトラバースであり、<code>element3</code>につながるためである。</li>
                         <li><code>element2</code>は<a class="termref informative internalDFN" href="#dfn-accessible-name" data-link-type="dfn" id="ref-for-dfn-accessible-name-11">アクセシブルな名前</a>を持たない。計算は、<code>element1</code>につながる<code>aria-labelledby</code>の最初のトラバースを含むが、その後は<code>element1</code>の<code>aria-labelledby</code>を辿らない。</li>
                       </ol>
@@ -795,10 +819,10 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
                     </aside>
                   </div>
                 </li>
-                <li id="comp_embedded_control"><span id="step2C"></span><em>Embedded Control:</em> そうでなければ、<code>current node</code>が別の<a class="termref informative" data-link-type="dfn" href="https://momdo.github.io/wai-aria-1.2/#dfn-widget">ウィジェット</a>のラベル内に埋め込まれたコントロール（たとえば、<code>aria-labelledby</code>によって直接参照される任意の要素）であり、ユーザーが埋め込みコントロールの値を調整できる場合、次の方法で埋め込みコントロールを代替テキストの一部として返す：<ol>
+                <li id="comp_embedded_control"><span id="step2C"></span><em>Embedded Control:</em> そうでなければ、<code>current node</code>が別の<a class="termref informative" data-link-type="dfn" href="https://momdo.github.io/wai-aria-1.2/#dfn-widget">ウィジェット</a>のラベル内に埋め込まれたコントロール（たとえば、<code>aria-labelledby</code>によって直接参照される任意の要素）であり、ユーザーが埋め込みコントロールの値を調整できる場合、次の方法で埋め込みコントロールを代替テキストの一部として返す：<ol class="acc-ol">
                     <li id="comp_embedded_control_textbox"><em>Textbox:</em> 埋め込みコントロールがロール<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#textbox">textbox</a>を持つ場合、その値を返す。</li>
                     <li id="comp_embedded_control_combobox_or_listbox"><em>Combobox/Listbox:</em> 埋め込みコントロールがロール<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#combobox">combobox</a>または<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#listbox">listbox</a>を持つ場合、選択した<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#option">option</a>の代替テキストを返す。</li>
-                    <li id="comp_embedded_control_range"><em>Range:</em> 埋め込みコントロールがロールに役割<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#range">range</a>を持つ場合（たとえば、<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#spinbutton">spinbutton</a>、<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#slider">slider</a>）：<ol>
+                    <li id="comp_embedded_control_range"><em>Range:</em> 埋め込みコントロールがロールに役割<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#range">range</a>を持つ場合（たとえば、<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#spinbutton">spinbutton</a>、<a class="role-reference" href="https://www.w3.org/TR/wai-aria-1.3/#slider">slider</a>）：<ol class="acc-ol">
                         <li id="comp_embedded_control_range_valuetext"><code>aria-valuetext</code>プロパティが存在する場合、その値を返す。</li>
                         <li id="comp_embedded_control_range_valuenow">そうでなければ、<code>aria-valuenow</code>プロパティが存在する場合、その値を返す。</li>
                         <li id="comp_embedded_control_range_host_language_value">そうでなければ、ホスト言語属性によって指定される値を使用する。</li>
@@ -813,7 +837,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
 &lt;/label></code></pre>
                   </aside>
                 </li>
-                <li id="comp_label"><span id="step2D"></span><em>AriaLabel:</em> そうでなければ、<code>current node</code>が<a data-link-type="dfn" href="https://triple-underscore.github.io/DOM4-ja.html#concept-slot">slot</a>要素ではなく、かつ<code>aria-label</code><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-attribute">属性</a>を持ち、その値が未定義でも、空文字列でも、<a data-link-type="dfn" data-lt="ascii whitespace" href="https://triple-underscore.github.io/infra-ja.html#ascii-whitespace">空白</a>を削除しても空文字列ではない場合：<ol>
+                <li id="comp_label"><span id="step2D"></span><em>AriaLabel:</em> そうでなければ、<code>current node</code>が<a data-link-type="dfn" href="https://triple-underscore.github.io/DOM4-ja.html#concept-slot">slot</a>要素ではなく、かつ<code>aria-label</code><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-attribute">属性</a>を持ち、その値が未定義でも、空文字列でも、<a data-link-type="dfn" data-lt="ascii whitespace" href="https://triple-underscore.github.io/infra-ja.html#ascii-whitespace">空白</a>を削除しても空文字列ではない場合：<ol class="acc-ol">
                     <li><code>current node</code>のトラバースが再帰によるものであり、かつ、<code>current node</code>が埋め込みコントロールである場合、<code>aria-label</code>を無視してルール<a href="#comp_embedded_control">Embedded Control</a>に飛ぶ。</li>
                     <li>そうでなければ、<code>aria-label</code>の値を返す。</li>
                   </ol>
@@ -833,25 +857,25 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
       </div>
                   </aside>
                 </li>
-                <li id="comp_host_language_label"><span id="step2E"></span><em>Host Language Label:</em> そうでなければ、<code>current node</code>のネイティヴマークアップが代替テキストを定義する<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-attribute">属性</a>（たとえば<code>alt</code>）または<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element">要素</a>（たとえば、<abbr title="Hypertext Markup Language">HTML</abbr> <code>label</code>、<abbr title="Scalable Vector Graphics">SVG</abbr> <code>title</code>）を提供する場合、その代替はホスト言語によって定義された<code>flat string</code>の形式で返す。ただし、要素がプレゼンテーショナル（<code>role="presentation"</code> or <code>role="none"</code>）とマークされている場合は除く。<div class="note" role="note" id="issue-container-generatedID-1"><div role="heading" class="note-title marker" id="h-note-1" aria-level="5"><span>注記</span></div><div class="">代替テキストを定義するマークアップの詳細については、<a href="https://www.w3.org/TR/html-aam-1.0/#accessible-name-and-description-computation"><abbr title="Hypertext Markup Language">HTML</abbr>-AAM</a>、<a href="https://www.w3.org/TR/svg-aam-1.0/#mapping_additional_nd"><abbr title="Scalable Vector Graphics">SVG</abbr>-AAM</a>、またはその他のホスト言語の文書を参照のこと。</div></div>
+                <li id="comp_host_language_label"><span id="step2E"></span><em>Host Language Label:</em> そうでなければ、<code>current node</code>のネイティヴマークアップが代替テキストを定義する<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-attribute">属性</a>（たとえば<code>alt</code>）または<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element">要素</a>（たとえば、<abbr title="Hypertext Markup Language">HTML</abbr> <code>label</code>、<abbr title="Scalable Vector Graphics">SVG</abbr> <code>title</code>）を提供する場合、その代替はホスト言語によって定義された<code>flat string</code>の形式で返す。ただし、<code>current node</code>がプレゼンテーショナル（<code>role="presentation"</code>または<code>role="none"</code>）として公開されている場合は除く。<div class="note" role="note" id="issue-container-generatedID-1"><div role="heading" class="note-title marker" id="h-note-1" aria-level="5"><span>注記</span></div><div class="">代替テキストを定義するマークアップの詳細については、<a href="https://www.w3.org/TR/html-aam-1.0/#accessible-name-and-description-computation"><abbr title="Hypertext Markup Language">HTML</abbr>-AAM</a>、<a href="https://www.w3.org/TR/svg-aam-1.0/#mapping_additional_nd"><abbr title="Scalable Vector Graphics">SVG</abbr>-AAM</a>、またはその他のホスト言語の文書を参照のこと。</div></div>
                   <div class="note" role="note" id="issue-container-generatedID-2"><div role="heading" class="note-title marker" id="h-note-2" aria-level="5"><span>注記</span></div><div class=""><p>たとえば、<abbr title="Hypertext Markup Language">HTML</abbr>において、<code>img</code>要素の<code>alt</code>属性は代替テキストの文字列を定義し、<code>label</code>要素は参照されるフォーム要素のテキストを提供する。<abbr title="SVG2">SVG2</abbr>において、<code>desc</code>要素および<code>title</code>要素は、それらの親要素の説明を提供する。</p>
                   </div></div>
                 </li>
-                <li id="comp_name_from_content"><span id="step2F"></span><em>Name From Content:</em> そうでなければ、<code>current node's</code>の <a class="termref informative" data-link-type="dfn" href="https://momdo.github.io/wai-aria-1.2/#dfn-role">ロール</a>が<a class="specref" href="https://www.w3.org/TR/wai-aria-1.3/#namefromcontent">コンテンツ由来の名前</a>を許可する場合、または<code>current node</code>が<code>aria-labelledby</code>、<code>aria-describedby</code>によって参照される、もしくはネイティヴホスト言語の代替テキスト<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element">要素</a>（たとえば<abbr title="Hypertext Markup Language">HTML</abbr>の<code>label</code>）である場合、またはネイティヴホスト言語の代替<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element">要素</a>の子孫である場合は、次のようになる：<ol>
+                <li id="comp_name_from_content"><span id="step2F"></span><em>Name From Content:</em> そうでなければ、<code>current node's</code>の <a class="termref informative" data-link-type="dfn" href="https://momdo.github.io/wai-aria-1.2/#dfn-role">ロール</a>が<a class="specref" href="https://www.w3.org/TR/wai-aria-1.3/#namefromcontent">コンテンツ由来の名前</a>を許可する場合、または<code>current node</code>が<code>aria-labelledby</code>、<code>aria-describedby</code>によって参照される、もしくはネイティヴホスト言語の代替テキスト<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element">要素</a>（たとえば<abbr title="Hypertext Markup Language">HTML</abbr>の<code>label</code>）である場合、またはネイティヴホスト言語の代替<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element">要素</a>の子孫である場合は、次のようになる：<ol class="acc-ol">
                     <li id="comp_name_from_content_reset"><span id="step2F.i"></span><em>Name From Content Reset:</em> <code>accumulated text</code>を空文字列に設定する。</li>
-                    <li id="comp_name_from_content_pseudo_element"><span id="step2F.ii"></span><em>Name From Generated Content:</em> <code>current node</code>に関連付けられた <abbr title="Cascading Style Sheets">CSS</abbr>生成テキストコンテンツを確認して、<code>accumulated text</code>に含める。 <abbr title="Cascading Style Sheets">CSS</abbr> <a href="https://momdo.github.io/css2/generate.html#before-after-content"><code>::before</code>および<code>::after</code></a>擬似要素[<cite><a class="bibref" data-link-type="biblio" href="#bib-css2" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">CSS2</a></cite>]は、コンテンツモデルを持つ<a data-link-type="dfn" data-lt="element" href="https://dom.spec.whatwg.org/#concept-element">要素</a>に対してテキストコンテンツを提供できる。<ol>
+                    <li id="comp_name_from_content_pseudo_element"><span id="step2F.ii"></span><em>Name From Generated Content:</em> <code>current node</code>に関連付けられた <abbr title="Cascading Style Sheets">CSS</abbr>生成テキストコンテンツを確認して、<code>accumulated text</code>に含める。 <abbr title="Cascading Style Sheets">CSS</abbr> <a href="https://www.w3.org/TR/selectors-3/#gen-content"><code>::before</code>および<code>::after</code></a>擬似要素[<cite><a class="bibref" data-link-type="biblio" href="#bib-css2" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">CSS2</a></cite>]は、コンテンツモデルを持つ<a data-link-type="dfn" data-lt="element" href="https://dom.spec.whatwg.org/#concept-element">要素</a>に対してテキストコンテンツを提供できる。<ol class="acc-ol">
                         <li id="comp_name_from_content_pseudo_element_before"><code>::before</code>擬似要素の場合、<a class="termref informative" data-link-type="dfn" href="https://triple-underscore.github.io/infra-ja.html#user-agent">ユーザーエージェント</a>は、スペースなしで<abbr title="Cascading Style Sheets">CSS</abbr>テキストコンテンツを<code>current node</code>のテキストコンテンツの先頭に追加し<em class="rfc2119">なければならない</em>。</li>
                         <li id="comp_name_from_content_pseudo_element_after"><code>::after</code>擬似要素の場合、<a class="termref informative" data-link-type="dfn" href="https://triple-underscore.github.io/infra-ja.html#user-agent">ユーザーエージェント</a>は、スペースなしで<abbr title="Cascading Style Sheets">CSS</abbr>テキストコンテンツを<code>current node</code>のテキストコンテンツに追加し<em class="rfc2119">なければならない</em>。</li>
                       </ol>
                     </li>
                     
-                    <li id="comp_name_from_content_find_child"><em>Determine Child Nodes:</em> <code>current node</code>の<code>rendered child nodes</code>を決定する。<ol>
+                    <li id="comp_name_from_content_find_child"><em>Determine Child Nodes:</em> <code>current node</code>の<code>rendered child nodes</code>を決定する。<ol class="acc-ol">
                         <li id="comp_name_from_content_find_child_has_shadow_root"><code>current node</code>に<a data-link-type="dfn" href="https://triple-underscore.github.io/DOM4-ja.html#concept-shadow-root">シャドウルート</a>がアタッチされている場合、<code>rendered child nodes</code>を<a data-link-type="dfn" href="https://triple-underscore.github.io/DOM4-ja.html#concept-shadow-root">シャドウルート</a>の子ノードに設定する。</li>
                         <li id="comp_name_from_content_find_child_is_slot">そうでなければ、<code>current node</code>が<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#slot-assigned-nodes">割り当てられたノード</a>をもつ<a data-link-type="dfn" href="https://triple-underscore.github.io/DOM4-ja.html#concept-slot">スロット</a>である場合、<code>rendered child nodes</code>を<code>current node</code>の<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#slot-assigned-nodes">割り当てられたノード</a>に設定する。</li>
                         <li id="comp_name_from_content_find_child_otherwise">そうでなければ、<code>rendered child nodes</code>を<code>current node</code>の子ノードに設定する。</li>
                       </ol>
                     </li>
-                    <li id="comp_name_from_content_for_each_child"><span id="step2F.iii"></span><em>Name From Each Child:</em> <code>current node</code>の<code>rendered child node</code>ごとに：<ol>
+                    <li id="comp_name_from_content_for_each_child"><span id="step2F.iii"></span><em>Name From Each Child:</em> <code>current node</code>の<code>rendered child node</code>ごとに：<ol class="acc-ol">
                         <li id="comp_name_from_content_for_each_child_set_current"><span id="step2F.iii.a"></span><code>current node</code>を<code>rendered child node</code>に設定する。</li>
                         <li id="comp_name_from_content_for_each_child_recursion"><span id="step2F.iii.b"></span>全体の<a href="#comp_computation">Computation</a>ステップで始まる<code>current node</code>の代替テキストを計算する。<code>result</code>をその代替テキストに設定する。 </li>
                         <li id="comp_for_each_child_append"><span id="step2F.iii.c"></span><code>result</code>を<code>accumulated text</code>に追加する。</li>
@@ -925,7 +949,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           
           <ul>
             
-          <li>Rahim Abdi (Apple Inc.)</li><li>NAVYA AGARWAL (Adobe)</li><li>Mario Batušić (Fabasoft)</li><li>Benjamin Beaudry (Microsoft Corporation)</li><li>Curt Bellew (Oracle Corporation)</li><li>Zoë Bijl (W3C Invited Experts)</li><li>Aleksandar Cindrikj (Netcetera)</li><li>Keith Cirkel (Microsoft Corporation)</li><li>Daniel Clark (Microsoft Corporation)</li><li>James Craig (Apple Inc.)</li><li>Chris Cuellar (Bocoup)</li><li>Hidde de Vries (Logius)</li><li>Joanmarie Diggs (Igalia)</li><li>Howard Edwards (Bocoup)</li><li>James Edwards (TPGi)</li><li>Mayuri Faldu (Navy Federal Credit Union)</li><li>Betsy Fanning (PDF Association)</li><li>Steve Faulkner (TetraLogical Services Ltd)</li><li>Jane Fulton (Cisco)</li><li>Bryan Garaventa (W3C Invited Experts)</li><li>Rashmi Garimella (Google LLC)</li><li>Matt Garrish (DAISY Consortium)</li><li>Doug Geoffray (Microsoft Corporation)</li><li>Jaunita George (Navy Federal Credit Union)</li><li>Ariella Gilmore (IBM Corporation)</li><li>Glen Gordon (TPGi)</li><li>Shirisha Gubba (Google LLC)</li><li>Jon Gunderson (University of Illinois)</li><li>Oliver Habersetzer (SAP SE)</li><li>Theo Hale (Microsoft Corporation)</li><li>Sunny Hardasani (Adobe)</li><li>Matthew Hardy (Adobe)</li><li>Peter Heumader (Fabasoft)</li><li>Sarah Higley (Microsoft Corporation)</li><li>Hans Hillen (TPGi)</li><li>Isabel Holdsworth (TPGi)</li><li>Stanley Hon (Microsoft Corporation)</li><li>Michael Jackson (Microsoft Corporation)</li><li>Duff Johnson (PDF Association)</li><li>Summer Jones (Thomson Reuters Corp.)</li><li>Sanket Joshi (Microsoft Corporation)</li><li>William Kilian (TargetStream Technologies)</li><li>Matthew King (Meta)</li><li>Zachary Kinsey (TargetStream Technologies)</li><li>Greta Krafsig (The Washington Post)</li><li>Peter Krautzberger (krautzource UG)</li><li>Nina Krauß (SAP SE)</li><li>JaEun Jemma Ku (University of Illinois)</li><li>Joe Lamyman (TetraLogical Services Ltd)</li><li>Charles LaPierre (Benetech)</li><li>Philip Lazarevic (Level Access)</li><li>Aaron Leventhal (Google LLC)</li><li>Brett Lewis (TPGi)</li><li>Andy Luhrs (Microsoft Corporation)</li><li>Sazzad Mahamud (Google LLC)</li><li>Alison Maher (Microsoft Corporation)</li><li>Mark McCarthy (University of Illinois)</li><li>Clay Miller (Microsoft Corporation)</li><li>Daniel Montalvo (W3C)</li><li>James Nurthen (Adobe)</li><li>Scott O'Hara (Microsoft Corporation)</li><li>Lola Odelola (W3C Invited Experts)</li><li>Adam Page (Hilton)</li><li>Michael Pennisi (Bocoup)</li><li>Roberto Perez (Microsoft Corporation)</li><li>Giacomo Petri (UsableNet)</li><li>Noah Praskins (TPGi)</li><li>Daniel Pöll (Fabasoft)</li><li>Paul Rayius (Allyant)</li><li>Adrian Roselli (W3C Invited Experts)</li><li>Marco Sabidussi (UsableNet)</li><li>Trisha Salas (Level Access)</li><li>Stefan Schnabel (SAP SE)</li><li>Harris Schneiderman (Deque Systems, Inc.)</li><li>Raymond Schwartz (Navy Federal Credit Union)</li><li>Cynthia Shelly (Google LLC)</li><li>Tzviya Siegman (W3C)</li><li>Arturo Silva (The Washington Post)</li><li>Avneesh Singh (DAISY Consortium)</li><li>Michael[tm] Smith (sideshowbarker) (W3C)</li><li>Francis Storr (Intel Corporation)</li><li>Melanie Sumner (W3C Invited Experts)</li><li>Alexander Surkov (Igalia)</li><li>James Teh (Mozilla Foundation)</li><li>Jocelyn Tran (Google LLC)</li><li>Léonie Watson (TetraLogical Services Ltd)</li><li>Jan Williams (TPGi)</li><li>Valerie Young (Igalia)</li><li>Kate Zhao (Thomson Reuters Corp.)</li><li>Xiao (Helen) Zhou (University of Illinois)</li><li>Filippo Zorzi (UsableNet)</li></ul>
+          <li>Rahim Abdi (Apple Inc.)</li><li>NAVYA AGARWAL (Adobe)</li><li>Mario Batušić (Fabasoft)</li><li>Benjamin Beaudry (Microsoft Corporation)</li><li>Curt Bellew (Oracle Corporation)</li><li>Zoë Bijl (W3C Invited Experts)</li><li>Aleksandar Cindrikj (Netcetera)</li><li>Keith Cirkel (Microsoft Corporation)</li><li>Daniel Clark (Microsoft Corporation)</li><li>James Craig (Apple Inc.)</li><li>Chris Cuellar (Bocoup)</li><li>Hidde de Vries (Logius)</li><li>Joanmarie Diggs (Igalia)</li><li>Howard Edwards (Bocoup)</li><li>James Edwards (TPGi)</li><li>Mayuri Faldu (Navy Federal Credit Union)</li><li>Betsy Fanning (PDF Association)</li><li>Steve Faulkner (TetraLogical Services Ltd)</li><li>Jane Fulton (Cisco)</li><li>Bryan Garaventa (W3C Invited Experts)</li><li>Rashmi Garimella (Google LLC)</li><li>Matt Garrish (DAISY Consortium)</li><li>Doug Geoffray (Microsoft Corporation)</li><li>Jaunita George (Navy Federal Credit Union)</li><li>Ariella Gilmore (IBM Corporation)</li><li>Glen Gordon (TPGi)</li><li>Shirisha Gubba (Google LLC)</li><li>Eloisa Guerrero (Rakuten Group, Inc.)</li><li>Jon Gunderson (University of Illinois)</li><li>Oliver Habersetzer (SAP SE)</li><li>Theo Hale (Microsoft Corporation)</li><li>Sunny Hardasani (Adobe)</li><li>Matthew Hardy (Adobe)</li><li>Peter Heumader (Fabasoft)</li><li>Sarah Higley (Microsoft Corporation)</li><li>Hans Hillen (TPGi)</li><li>Isabel Holdsworth (TPGi)</li><li>Stanley Hon (Microsoft Corporation)</li><li>Michael Jackson (Microsoft Corporation)</li><li>Duff Johnson (PDF Association)</li><li>Summer Jones (Thomson Reuters Corp.)</li><li>William Kilian (TargetStream Technologies)</li><li>Matthew King (Meta)</li><li>Zachary Kinsey (TargetStream Technologies)</li><li>Greta Krafsig (The Washington Post)</li><li>Peter Krautzberger (krautzource UG)</li><li>Nina Krauß (SAP SE)</li><li>JaEun Jemma Ku (University of Illinois)</li><li>Joe Lamyman (TetraLogical Services Ltd)</li><li>Charles LaPierre (Benetech)</li><li>Philip Lazarevic (Level Access)</li><li>Aaron Leventhal (Google LLC)</li><li>Brett Lewis (TPGi)</li><li>Andy Luhrs (Microsoft Corporation)</li><li>Sazzad Mahamud (Google LLC)</li><li>Alison Maher (Microsoft Corporation)</li><li>Mark McCarthy (University of Illinois)</li><li>Clay Miller (Microsoft Corporation)</li><li>Daniel Montalvo (W3C)</li><li>James Nurthen (Adobe)</li><li>Scott O'Hara (Microsoft Corporation)</li><li>Lola Odelola (W3C Invited Experts)</li><li>Adam Page (Hilton)</li><li>Michael Pennisi (Bocoup)</li><li>Roberto Perez (Microsoft Corporation)</li><li>Giacomo Petri (UsableNet)</li><li>Noah Praskins (TPGi)</li><li>Daniel Pöll (Fabasoft)</li><li>Paul Rayius (Allyant)</li><li>Adrian Roselli (W3C Invited Experts)</li><li>Marco Sabidussi (UsableNet)</li><li>Trisha Salas (Level Access)</li><li>Stefan Schnabel (SAP SE)</li><li>Harris Schneiderman (Deque Systems, Inc.)</li><li>Raymond Schwartz (Navy Federal Credit Union)</li><li>Cynthia Shelly (Google LLC)</li><li>Tzviya Siegman (W3C)</li><li>Arturo Silva (The Washington Post)</li><li>Avneesh Singh (DAISY Consortium)</li><li>Michael[tm] Smith (sideshowbarker) (W3C)</li><li>Francis Storr (Intel Corporation)</li><li>Jennifer Strickland (MITRE Corporation)</li><li>Melanie Sumner (W3C Invited Experts)</li><li>Alexander Surkov (Igalia)</li><li>James Teh (Mozilla Foundation)</li><li>Jocelyn Tran (Google LLC)</li><li>Léonie Watson (TetraLogical Services Ltd)</li><li>Jan Williams (TPGi)</li><li>Valerie Young (Igalia)</li><li>Kate Zhao (Thomson Reuters Corp.)</li><li>Xiao (Helen) Zhou (University of Illinois)</li><li>Filippo Zorzi (UsableNet)</li></ul>
         </section>
         <section class="section" id="ack_funders"><div class="header-wrapper"><h4 id="x6-2-2-enabling-funders"><bdi class="secno">6.2.2</bdi> 資金提供者</h4><a class="self-link" href="#ack_funders" aria-label="Permalink for Appendix 6.2.2"></a></div>
 	
@@ -938,7 +962,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
 
 <section id="references" class="appendix"><div class="header-wrapper"><h2 id="a-references"><bdi class="secno">A. </bdi> 参考文献</h2><a class="self-link" href="#references" aria-label="Permalink for Appendix A."></a></div><section id="normative-references"><div class="header-wrapper"><h3 id="a-1-normative-references"><bdi class="secno">A.1 </bdi> 標準情報</h3><a class="self-link" href="#normative-references" aria-label="Permalink for Appendix A.1"></a></div>
     
-    <dl class="bibliography"><dt id="bib-core-aam-1.2">[CORE-AAM-1.2]</dt><dd><a href="https://www.w3.org/TR/core-aam-1.2/"><cite>Core Accessibility API Mappings 1.2</cite></a>. Valerie Young; Alexander Surkov. W3C. 7 March 2025. CRD. URL: <a href="https://www.w3.org/TR/core-aam-1.2/">https://www.w3.org/TR/core-aam-1.2/</a></dd><dt id="bib-css2">[CSS2]</dt><dd><a href="https://www.w3.org/TR/CSS21/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. Bert Bos; Tantek Çelik; Ian Hickson; Håkon Wium Lie. W3C. 7 June 2011. W3C Recommendation. URL: <a href="https://www.w3.org/TR/CSS21/">https://www.w3.org/TR/CSS21/</a></dd><dt id="bib-dom">[DOM]</dt><dd><a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Anne van Kesteren. WHATWG. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a></dd><dt id="bib-html-aam-1.0">[html-aam-1.0]</dt><dd><a href="https://www.w3.org/TR/html-aam-1.0/"><cite>HTML Accessibility API Mappings 1.0</cite></a>. Scott O'Hara. W3C. 7 March 2025. W3C Working Draft. URL: <a href="https://www.w3.org/TR/html-aam-1.0/">https://www.w3.org/TR/html-aam-1.0/</a></dd><dt id="bib-infra">[infra]</dt><dd><a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Anne van Kesteren; Domenic Denicola. WHATWG. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a></dd><dt id="bib-rfc2119">[RFC2119]</dt><dd><a href="https://www.rfc-editor.org/rfc/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner. IETF. March 1997. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a></dd><dt id="bib-rfc8174">[RFC8174]</dt><dd><a href="https://www.rfc-editor.org/rfc/rfc8174"><cite>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</cite></a>. B. Leiba. IETF. May 2017. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a></dd><dt id="bib-wai-aria">[WAI-ARIA]</dt><dd><a href="https://www.w3.org/TR/wai-aria-1.1/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.1</cite></a>. Joanmarie Diggs; Shane McCarron; Michael Cooper; Richard Schwerdtfeger; James Craig. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://www.w3.org/TR/wai-aria-1.1/">https://www.w3.org/TR/wai-aria-1.1/</a></dd></dl>
+    <dl class="bibliography"><dt id="bib-core-aam-1.2">[CORE-AAM-1.2]</dt><dd><a href="https://www.w3.org/TR/core-aam-1.2/"><cite>Core Accessibility API Mappings 1.2</cite></a>. Valerie Young; Alexander Surkov. W3C. 27 March 2025. CRD. URL: <a href="https://www.w3.org/TR/core-aam-1.2/">https://www.w3.org/TR/core-aam-1.2/</a></dd><dt id="bib-css2">[CSS2]</dt><dd><a href="https://www.w3.org/TR/CSS2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. Bert Bos; Tantek Çelik; Ian Hickson; Håkon Wium Lie. W3C. 7 June 2011. W3C Recommendation. URL: <a href="https://www.w3.org/TR/CSS2/">https://www.w3.org/TR/CSS2/</a></dd><dt id="bib-dom">[DOM]</dt><dd><a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Anne van Kesteren. WHATWG. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a></dd><dt id="bib-html-aam-1.0">[html-aam-1.0]</dt><dd><a href="https://www.w3.org/TR/html-aam-1.0/"><cite>HTML Accessibility API Mappings 1.0</cite></a>. Scott O'Hara. W3C. 24 March 2025. W3C Working Draft. URL: <a href="https://www.w3.org/TR/html-aam-1.0/">https://www.w3.org/TR/html-aam-1.0/</a></dd><dt id="bib-infra">[infra]</dt><dd><a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Anne van Kesteren; Domenic Denicola. WHATWG. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a></dd><dt id="bib-rfc2119">[RFC2119]</dt><dd><a href="https://www.rfc-editor.org/rfc/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. S. Bradner. IETF. March 1997. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a></dd><dt id="bib-rfc8174">[RFC8174]</dt><dd><a href="https://www.rfc-editor.org/rfc/rfc8174"><cite>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</cite></a>. B. Leiba. IETF. May 2017. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a></dd><dt id="bib-wai-aria">[WAI-ARIA]</dt><dd><a href="https://www.w3.org/TR/wai-aria-1.1/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.1</cite></a>. Joanmarie Diggs; Shane McCarron; Michael Cooper; Richard Schwerdtfeger; James Craig. W3C. 14 December 2017. W3C Recommendation. URL: <a href="https://www.w3.org/TR/wai-aria-1.1/">https://www.w3.org/TR/wai-aria-1.1/</a></dd></dl>
   </section><section id="informative-references"><div class="header-wrapper"><h3 id="a-2-informative-references"><bdi class="secno">A.2 </bdi>参考文献</h3><a class="self-link" href="#informative-references" aria-label="Permalink for Appendix A.2"></a></div>
     
     <dl class="bibliography"><dt id="bib-accname-1.1">[ACCNAME-1.1]</dt><dd><a href="https://www.w3.org/TR/accname-1.1/"><cite>Accessible Name and Description Computation 1.1</cite></a>. Joanmarie Diggs; Bryan Garaventa; Michael Cooper. W3C. 18 December 2018. W3C Recommendation. URL: <a href="https://www.w3.org/TR/accname-1.1/">https://www.w3.org/TR/accname-1.1/</a></dd><dt id="bib-wai-aria-1.2">[wai-aria-1.2]</dt><dd><a href="https://www.w3.org/TR/wai-aria-1.2/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.2</cite></a>. Joanmarie Diggs; James Nurthen; Michael Cooper; Carolyn MacLeod. W3C. 6 June 2023. W3C Recommendation. URL: <a href="https://www.w3.org/TR/wai-aria-1.2/">https://www.w3.org/TR/wai-aria-1.2/</a></dd></dl>
@@ -962,7 +986,104 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
       <ul>
     <li><a href="#ref-for-dfn-tooltip-attribute-1" title="§ 4.3.2 Computation steps">§ 4.3.2 Computation steps</a></li>
   </ul>
-    </div><script id="respec-dfn-panel">(() => {
+    </div><script id="respec-highlight-vars">(() => {
+// @ts-check
+
+if (document.respec) {
+  document.respec.ready.then(setupVarHighlighter);
+} else {
+  setupVarHighlighter();
+}
+
+function setupVarHighlighter() {
+  document
+    .querySelectorAll("var")
+    .forEach(varElem => varElem.addEventListener("click", highlightListener));
+}
+
+function highlightListener(ev) {
+  ev.stopPropagation();
+  const { target: varElem } = ev;
+  const hightligtedElems = highlightVars(varElem);
+  const resetListener = () => {
+    const hlColor = getHighlightColor(varElem);
+    hightligtedElems.forEach(el => removeHighlight(el, hlColor));
+    [...HL_COLORS.keys()].forEach(key => HL_COLORS.set(key, true));
+  };
+  if (hightligtedElems.length) {
+    document.body.addEventListener("click", resetListener, { once: true });
+  }
+}
+
+// availability of highlight colors. colors from var.css
+const HL_COLORS = new Map([
+  ["respec-hl-c1", true],
+  ["respec-hl-c2", true],
+  ["respec-hl-c3", true],
+  ["respec-hl-c4", true],
+  ["respec-hl-c5", true],
+  ["respec-hl-c6", true],
+  ["respec-hl-c7", true],
+]);
+
+function getHighlightColor(target) {
+  // return current colors if applicable
+  const { value } = target.classList;
+  const re = /respec-hl-\w+/;
+  const activeClass = re.test(value) && value.match(re);
+  if (activeClass) return activeClass[0];
+
+  // first color preference
+  if (HL_COLORS.get("respec-hl-c1") === true) return "respec-hl-c1";
+
+  // otherwise get some other available color
+  return [...HL_COLORS.keys()].find(c => HL_COLORS.get(c)) || "respec-hl-c1";
+}
+
+function highlightVars(varElem) {
+  const textContent = norm(varElem.textContent);
+  const parent = varElem.closest(".algorithm, section");
+  const highlightColor = getHighlightColor(varElem);
+
+  const varsToHighlight = [...parent.querySelectorAll("var")].filter(
+    el =>
+      norm(el.textContent) === textContent &&
+      el.closest(".algorithm, section") === parent
+  );
+
+  // update availability of highlight color
+  const colorStatus = varsToHighlight[0].classList.contains("respec-hl");
+  HL_COLORS.set(highlightColor, colorStatus);
+
+  // highlight vars
+  if (colorStatus) {
+    varsToHighlight.forEach(el => removeHighlight(el, highlightColor));
+    return [];
+  } else {
+    varsToHighlight.forEach(el => addHighlight(el, highlightColor));
+  }
+  return varsToHighlight;
+}
+
+function removeHighlight(el, highlightColor) {
+  el.classList.remove("respec-hl", highlightColor);
+  // clean up empty class attributes so they don't come in export
+  if (!el.classList.length) el.removeAttribute("class");
+}
+
+function addHighlight(elem, highlightColor) {
+  elem.classList.add("respec-hl", highlightColor);
+}
+
+/**
+ * Same as `norm` from src/core/utils, but our build process doesn't allow
+ * imports in runtime scripts, so duplicated here.
+ * @param {string} str
+ */
+function norm(str) {
+  return str.trim().replace(/\s+/g, " ");
+}
+})()</script><script id="respec-dfn-panel">(() => {
 // @ts-check
 if (document.respec) {
   document.respec.ready.then(setupPanel);
