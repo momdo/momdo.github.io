@@ -10,7 +10,7 @@
   <script defer="" crossorigin="" src="./html-dfn.js"></script>
   <script defer="" crossorigin="" src="/var-click-highlighting.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">1 October 2025</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">15 October 2025</span></hgroup>
    
    
 
@@ -1420,6 +1420,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
     <c- u>"/d-1.mjs"</c-><c- o>:</c-> <c- u>"sha384-MBO5IDfYaE6c6Aao94oZrIOiC6CGiSN2n4QUbHNPhzk5Xhm0djZLQqTpL0HzTUxk"</c->
   <c- p>}</c->
 <c- p>}</c-></code></pre>
+
    <p>The above example provides integrity metadata to be enforced on the modules <code>/a-1.mjs</code> and <code>/d-1.mjs</code>, even if the latter is not defined as an import in the map.</p>
   </div>
 
@@ -1565,12 +1566,14 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
    <p>When the new import map has no conflicting rules, and there are no impacted resolved modules, the resulting map would be a combination of the new and existing maps. Rules that would have individually impacted similar modules (e.g. "/app/" and "/app/helper") but are not an exact match are not conflicting, and all make it to the merged map.</p>
 
    <p>So, the following existing and new import maps:</p>
+
    <pre><code class='json'><c- p>{</c->
    <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/"</c-><c- o>:</c-> <c- u>"./original-app/"</c-><c- p>,</c->
   <c- p>}</c->
-<c- p>}</c-></code>
-<code class='json'><c- p>{</c->
+<c- p>}</c-></code></pre>
+
+   <pre><code class='json'><c- p>{</c->
   <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/helper"</c-><c- o>:</c-> <c- u>"./helper/index.mjs"</c->
   <c- p>},</c->
@@ -1580,7 +1583,9 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
     <c- p>}</c->
   <c- p>}</c->
 <c- p>}</c-></code></pre>
+
    <p>Would be equivalent to the following single import map:</p>
+
    <pre><code class='json'><c- p>{</c->
   <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/"</c-><c- o>:</c-> <c- u>"./original-app/"</c-><c- p>,</c->
@@ -1597,13 +1602,16 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   <div id="example-import-map-merge-conflict-imports" class="example"><a href="#example-import-map-merge-conflict-imports" class="self-link"></a><p>When the new import map impacts an already resolved module, that rule gets dropped from the import map.</p>
 
    <p>So, if the <a href="#resolved-module-set" id="import-map-processing-model:resolved-module-set-5">resolved module set</a> already contains the "<code>/app/helper</code>", the following new import map:</p>
+
    <pre><code class='json'><c- p>{</c->
    <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/helper"</c-><c- o>:</c-> <c- u>"./helper/index.mjs"</c-><c- p>,</c->
     <c- u>"lodash"</c-><c- o>:</c-> <c- u>"/node_modules/lodash-es/lodash.js"</c->
   <c- p>}</c->
 <c- p>}</c-></code></pre>
+
    <p>Would be equivalent to the following one:</p>
+
    <pre><code class='json'><c- p>{</c->
   <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"lodash"</c-><c- o>:</c-> <c- u>"/node_modules/lodash-es/lodash.js"</c->
@@ -1612,6 +1620,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   </div>
 
   <div id="example-import-map-merge-conflict-scopes" class="example"><a href="#example-import-map-merge-conflict-scopes" class="self-link"></a><p>The same is true for rules that impact already resolved modules defined in specific scopes. If we already resolved "<code>/app/helper</code>" from "<code>/app/main.mjs</code>" the following new import map:</p>
+
    <pre><code class='json'><c- p>{</c->
   <c- u>"scopes"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/"</c-><c- o>:</c-> <c- p>{</c->
@@ -1622,7 +1631,9 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
     <c- u>"lodash"</c-><c- o>:</c-> <c- u>"/node_modules/lodash-es/lodash.js"</c->
   <c- p>}</c->
 <c- p>}</c-></code></pre>
+
    <p>Would similarly be equivalent to:</p>
+
    <pre><code class='json'><c- p>{</c->
   <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"lodash"</c-><c- o>:</c-> <c- u>"/node_modules/lodash-es/lodash.js"</c->
@@ -1632,6 +1643,7 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
 
   <div id="example-import-map-merge-conflict-imports-and-scopes" class="example"><a href="#example-import-map-merge-conflict-imports-and-scopes" class="self-link"></a><p>We could also have cases where a single already-resolved module specifier has multiple rules for its resolution, depending on the referring script. In such cases, only the relevant rules would not be added to the map.</p>
    <p>For example, if we already resolved "<code>/app/helper</code>" from "<code>/app/vendor/main.mjs</code>", the following new import map:</p>
+
    <pre><code class='json'><c- p>{</c->
   <c- u>"scopes"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/"</c-><c- o>:</c-> <c- p>{</c->
@@ -1650,7 +1662,9 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
     <c- u>"/app/helper"</c-><c- o>:</c-> <c- u>"./other_path/helper/index.mjs"</c->
   <c- p>}</c->
 <c- p>}</c-></code></pre>
+
    <p>Would be equivalent to:</p>
+
    <pre><code class='json'><c- p>{</c->
   <c- u>"scopes"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/vendor/"</c-><c- o>:</c-> <c- p>{</c->
@@ -1668,18 +1682,22 @@ document<c- p>.</c->querySelector<c- p>(</c-><c- u>"button"</c-><c- p>).</c->add
   <div id="example-import-map-merge-two-map-conflict" class="example"><a href="#example-import-map-merge-two-map-conflict" class="self-link"></a><p>When the new import map has conflicting rules to the existing import map, with no impacted already resolved modules, the existing import map rules persist.</p>
 
    <p>For example, the following existing and new import maps:</p>
+
    <pre><code class='json'><c- p>{</c->
    <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/helper"</c-><c- o>:</c-> <c- u>"./helper/index.mjs"</c-><c- p>,</c->
     <c- u>"lodash"</c-><c- o>:</c-> <c- u>"/node_modules/lodash-es/lodash.js"</c->
   <c- p>}</c->
-<c- p>}</c-></code>
-<code class='json'><c- p>{</c->
+<c- p>}</c-></code></pre>
+
+   <pre><code class='json'><c- p>{</c->
   <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/helper"</c-><c- o>:</c-> <c- u>"./main/helper/index.mjs"</c->
   <c- p>}</c->
 <c- p>}</c-></code></pre>
+
    <p>Would be equivalent to the following single import map:</p>
+
    <pre><code class='json'><c- p>{</c->
   <c- u>"imports"</c-><c- o>:</c-> <c- p>{</c->
     <c- u>"/app/helper"</c-><c- o>:</c-> <c- u>"./helper/index.mjs"</c-><c- p>,</c->
