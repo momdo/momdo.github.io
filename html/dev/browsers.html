@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">2 December 2025</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">12 December 2025</span></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press &apos;/&apos;" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -31,7 +31,7 @@
 
   
 
-  <nav><a href="popover.html">← 6.12 popover属性</a> — <a href="./">目次</a> — <a href="nav-history-apis.html">7.2 ナビゲーションおよびセッション履歴に関連するAPI →</a></nav><ol class="toc"><li><a href="browsers.html#browsers"><span class="secno">7</span> ウェブページの読み込み</a><ol><li><a href="browsers.html#loading-web-pages-supporting-concepts"><span class="secno">7.1</span> サポートコンセプト</a><ol><li><a href="browsers.html#origin"><span class="secno">7.1.1</span> 生成元</a><ol><li><a href="browsers.html#sites"><span class="secno">7.1.1.1</span> サイト</a><li><a href="browsers.html#relaxing-the-same-origin-restriction"><span class="secno">7.1.1.2</span> 同一生成元制限を緩和する</a></ol><li><a href="browsers.html#origin-keyed-agent-clusters"><span class="secno">7.1.2</span> オリジンキーエージェントクラスター</a><li><a href="browsers.html#cross-origin-opener-policies"><span class="secno">7.1.3</span> 生成元をまたいだオープナーポリシー</a><ol><li><a href="browsers.html#the-coop-headers"><span class="secno">7.1.3.1</span> ヘッダー</a></ol><li><a href="browsers.html#coep"><span class="secno">7.1.4</span> 生成元をまたいだ埋め込みポリシー</a><ol><li><a href="browsers.html#the-coep-headers"><span class="secno">7.1.4.1</span> ヘッダー</a></ol><li><a href="browsers.html#sandboxing"><span class="secno">7.1.5</span> サンドボックス</a></ol></ol></ol><h2 id="browsers"><span class="secno">7</span> ウェブページの読み込み<a href="#browsers" class="self-link"></a></h2>
+  <nav><a href="popover.html">← 6.12 popover属性</a> — <a href="./">目次</a> — <a href="nav-history-apis.html">7.2 ナビゲーションおよびセッション履歴に関連するAPI →</a></nav><ol class="toc"><li><a href="browsers.html#browsers"><span class="secno">7</span> ウェブページの読み込み</a><ol><li><a href="browsers.html#loading-web-pages-supporting-concepts"><span class="secno">7.1</span> サポートコンセプト</a><ol><li><a href="browsers.html#origin"><span class="secno">7.1.1</span> 生成元</a><ol><li><a href="browsers.html#sites"><span class="secno">7.1.1.1</span> サイト</a><li><a href="browsers.html#relaxing-the-same-origin-restriction"><span class="secno">7.1.1.2</span> 同一生成元制限を緩和する</a><li><a href="browsers.html#the-origin-interface"><span class="secno">7.1.1.3</span> The <code>Origin</code> interface</a></ol><li><a href="browsers.html#origin-keyed-agent-clusters"><span class="secno">7.1.2</span> オリジンキーエージェントクラスター</a><li><a href="browsers.html#cross-origin-opener-policies"><span class="secno">7.1.3</span> 生成元をまたいだオープナーポリシー</a><ol><li><a href="browsers.html#the-coop-headers"><span class="secno">7.1.3.1</span> ヘッダー</a></ol><li><a href="browsers.html#coep"><span class="secno">7.1.4</span> 生成元をまたいだ埋め込みポリシー</a><ol><li><a href="browsers.html#the-coep-headers"><span class="secno">7.1.4.1</span> ヘッダー</a></ol><li><a href="browsers.html#sandboxing"><span class="secno">7.1.5</span> サンドボックス</a></ol></ol></ol><h2 id="browsers"><span class="secno">7</span> ウェブページの読み込み<a href="#browsers" class="self-link"></a></h2>
 
   
 
@@ -104,6 +104,40 @@
   </div>
 
   
+
+  <h5 id="the-origin-interface"><span class="secno">7.1.1.3</span> The <code>Origin</code> interface<a href="#the-origin-interface" class="self-link"></a></h5>
+
+  <p>The <code>Origin</code> interface represents an <a href="#concept-origin" id="the-origin-interface:concept-origin">origin</a>, allowing robust <a href="#same-origin" id="the-origin-interface:same-origin">same origin</a> and <a href="#same-site" id="the-origin-interface:same-site">same site</a> comparisons.</p>
+
+  
+
+  <p><code>Origin</code> objects have an associated <dfn data-dfn-for="Origin" id="concept-origin-origin">origin</dfn>, which holds an <a href="#concept-origin" id="the-origin-interface:concept-origin-2">origin</a>.</p>
+
+  <p><a href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-platform-object" id="the-origin-interface:platform-object" data-x-internal="platform-object">Platform objects</a> have an <dfn data-dfn-for="platform object" id="extract-an-origin" data-export="">extract an origin</dfn> operation, which returns null unless otherwise specified.</p>
+
+  <div data-algorithm=""><p>Objects implementing the <code>Origin</code> interface's <a href="#extract-an-origin" id="the-origin-interface:extract-an-origin">extract an origin</a> steps are to return <a id="the-origin-interface:this" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin">origin</a>.</p>
+  </div>
+
+  <div data-algorithm=""><p>The <dfn data-dfn-for="Origin" id="dom-origin-constructor" data-dfn-type="constructor"><code>new Origin()</code></dfn> constructor steps are to set <a id="the-origin-interface:this-2" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-2">origin</a> to a unique <a href="#concept-origin-opaque" id="the-origin-interface:concept-origin-opaque">opaque origin</a>.</p>
+  </div>
+
+  <div data-algorithm=""><p>The static <dfn data-dfn-for="Origin" id="dom-origin-from" data-dfn-type="method"><code>from(<var>value</var>)</code></dfn> method steps are:</p>
+
+  <ol><li><p>If <var>value</var> is a <a id="the-origin-interface:platform-object-2" href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-platform-object" data-x-internal="platform-object">platform object</a>:</p>
+    <ol><li><p>Let <var>origin</var> be the result of executing <var>value</var>'s <a href="#extract-an-origin" id="the-origin-interface:extract-an-origin-2">extract an origin</a> operation.<li><p>If <var>origin</var> is not null, then return a new <code>Origin</code> object whose <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-3">origin</a> is <var>origin</var>.</ol>
+   <li><p>If <var>value</var> is a <a id="the-origin-interface:string" href="https://triple-underscore.github.io/infra-ja.html#string" data-x-internal="string">string</a>:</p>
+    <ol><li><p>Let <var>parsedURL</var> be the result of <a href="https://triple-underscore.github.io/URL-ja.html#concept-basic-url-parser" id="the-origin-interface:basic-url-parser" data-x-internal="basic-url-parser">basic URL parsing</a> <var>value</var>.<li><p>If <var>parsedURL</var> is not failure, then return a new <code>Origin</code> object whose <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-4">origin</a> is set to <var>parsedURL</var>'s <a href="https://triple-underscore.github.io/URL-ja.html#concept-url-origin" id="the-origin-interface:concept-url-origin" data-x-internal="concept-url-origin">origin</a>.</ol>
+   <li><p>Throw a <code id="the-origin-interface:typeerror"><a data-x-internal="typeerror" href="https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-typeerror">TypeError</a></code>.</ol>
+  </div>
+
+  <div data-algorithm=""><p>The <dfn data-dfn-for="Origin" id="dom-origin-opaque" data-dfn-type="attribute"><code>opaque</code></dfn> getter steps are to return true if <a id="the-origin-interface:this-3" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-5">origin</a> is an <a href="#concept-origin-opaque" id="the-origin-interface:concept-origin-opaque-2">opaque origin</a>; otherwise false.</p>
+  </div>
+
+  <div data-algorithm=""><p>The <dfn data-dfn-for="Origin" id="dom-origin-issameorigin" data-dfn-type="method"><code>isSameOrigin(<var>other</var>)</code></dfn> method steps are to return true if <a id="the-origin-interface:this-4" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-6">origin</a> is <a href="#same-origin" id="the-origin-interface:same-origin-2">same origin</a> with <var>other</var>'s <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-7">origin</a>; otherwise false.</p>
+  </div>
+
+  <div data-algorithm=""><p>The <dfn data-dfn-for="Origin" id="dom-origin-issamesite" data-dfn-type="method"><code>isSameSite(<var>other</var>)</code></dfn> method steps are to return true if <a id="the-origin-interface:this-5" href="https://triple-underscore.github.io/WebIDL-ja.html#this" data-x-internal="this">this</a>'s <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-8">origin</a> is <a href="#same-site" id="the-origin-interface:same-site-2">same site</a> with <var>other</var>'s <a href="#concept-origin-origin" id="the-origin-interface:concept-origin-origin-9">origin</a>; otherwise false.</p>
+  </div>
 
 
   <h4 id="origin-keyed-agent-clusters"><span class="secno">7.1.2</span> <span id="origin-isolation"></span>オリジンキーエージェントクラスター<a href="#origin-keyed-agent-clusters" class="self-link"></a></h4>
