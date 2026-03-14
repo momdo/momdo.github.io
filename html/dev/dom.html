@@ -10,7 +10,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">27 February 2026</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">12 March 2026</span></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press &apos;/&apos;" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -87,11 +87,17 @@
 
   <div data-algorithm=""><p>A <code>Document</code> object has an associated <dfn data-dfn-for="Document" id="concept-document-internal-ancestor-origin-objects-list" data-export="">internal ancestor origin objects list</dfn>, initially null.</p>
 
-  <p>The <dfn id="internal-ancestor-origin-objects-list-creation-steps">internal ancestor origin objects list creation steps</dfn> given a <code>Document</code> object <var>innerDoc</var> are:</p>
+  <p>The <dfn id="internal-ancestor-origin-objects-list-creation-steps">internal ancestor origin objects list creation steps</dfn> given a <code>Document</code> object <var>document</var> and a <a id="ancestor-origins:referrer-policy" href="https://triple-underscore.github.io/webappsec-referrer-policy-ja.html#referrer-policy" data-x-internal="referrer-policy">referrer policy</a> <var>referrerPolicy</var> are:</p>
 
-  <ol><li><p>Let <var>output</var> be « ».<li><p>Let <var>parentDoc</var> be <var>innerDoc</var>'s <a href="document-sequences.html#doc-container-document" id="ancestor-origins:doc-container-document">container document</a>.<li><p>If <var>parentDoc</var> is null, then return <var>output</var>.<li><p><a id="ancestor-origins:assert" href="https://triple-underscore.github.io/infra-ja.html#assert" data-x-internal="assert">Assert</a>: <var>parentDoc</var> is <a id="ancestor-origins:fully-active" href="document-sequences.html#fully-active">fully active</a>.<li><p>Let <var>ancestorOrigins</var> be <var>parentDoc</var>'s <a href="#concept-document-internal-ancestor-origin-objects-list" id="ancestor-origins:concept-document-internal-ancestor-origin-objects-list">internal ancestor origin objects list</a>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append" data-x-internal="list-append">Append</a> <var>parentDoc</var>'s <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin" data-x-internal="concept-document-origin">origin</a> to <var>output</var>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-iterate" id="ancestor-origins:list-iterate" data-x-internal="list-iterate">For each</a> <var>ancestorOrigin</var> of <var>ancestorOrigins</var>:</p>
+  <ol><li><p>Let <var>output</var> be « ».<li><p>Let <var>parentDoc</var> be <var>document</var>'s <a href="document-sequences.html#doc-container-document" id="ancestor-origins:doc-container-document">container document</a>.<li><p>If <var>parentDoc</var> is null, then return <var>output</var>.<li><p><a id="ancestor-origins:assert" href="https://triple-underscore.github.io/infra-ja.html#assert" data-x-internal="assert">Assert</a>: <var>parentDoc</var> is <a id="ancestor-origins:fully-active" href="document-sequences.html#fully-active">fully active</a>.<li><p>Let <var>ancestorOrigins</var> be <var>parentDoc</var>'s <a href="#concept-document-internal-ancestor-origin-objects-list" id="ancestor-origins:concept-document-internal-ancestor-origin-objects-list">internal ancestor origin objects list</a>.<li><p>Let <var>container</var> be <var>document</var>'s <a id="ancestor-origins:node-navigable" href="document-sequences.html#node-navigable">node navigable</a>'s <a href="document-sequences.html#nav-container" id="ancestor-origins:nav-container">container</a>.<li><p>Let <var>masked</var> be false.<li><p>If <var>referrerPolicy</var> is "<code>no-referrer</code>", then set <var>masked</var> to true.<li><p>Otherwise, if <var>referrerPolicy</var> is "<code>same-origin</code>" and <var>parentDoc</var>'s <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin" data-x-internal="concept-document-origin">origin</a> is not <a id="ancestor-origins:same-origin" href="browsers.html#same-origin">same origin</a> with <var>document</var>'s <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-2" data-x-internal="concept-document-origin">origin</a>, then set <var>masked</var> to true.</p>
 
-    <ol><li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append-2" data-x-internal="list-append">Append</a> <var>ancestorOrigin</var> to <var>output</var>.</ol>
+    <p class="note">Since <a id="ancestor-origins:mixed-content" href="https://w3c.github.io/webappsec-mixed-content/#mixed-content" data-x-internal="mixed-content">mixed content</a> checks prevent <span>non-secure context</span> <span>environments</span> in <span>secure context</span> <span>environments</span>, there's no need to check for <span>secure contexts</span> for "<code>strict-origin</code>", "<code>strict-origin-when-cross-origin</code>", and "<code>no-referrer-when-downgrade</code>". The "<code>origin</code>" and "<code>origin-when-cross-origin</code>" values also don't need special treatment since we're at most exposing an <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-3" data-x-internal="concept-document-origin">origin</a> here.</p>
+   <li><p>If <var>masked</var> is true, then <a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append" data-x-internal="list-append">append</a> a new <a href="browsers.html#concept-origin-opaque" id="ancestor-origins:concept-origin-opaque">opaque origin</a> to <var>output</var>.<li><p>Otherwise, <a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append-2" data-x-internal="list-append">append</a> <var>parentDoc</var>'s <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-4" data-x-internal="concept-document-origin">origin</a> to <var>output</var>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-iterate" id="ancestor-origins:list-iterate" data-x-internal="list-iterate">For each</a> <var>ancestorOrigin</var> of <var>ancestorOrigins</var>:</p>
+
+    <ol><li><p>If <var>masked</var> is true and <var>ancestorOrigin</var> is <a id="ancestor-origins:same-origin-2" href="browsers.html#same-origin">same origin</a> with <var>parentDoc</var>'s <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-5" data-x-internal="concept-document-origin">origin</a>, then <a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append-3" data-x-internal="list-append">append</a> a new <a href="browsers.html#concept-origin-opaque" id="ancestor-origins:concept-origin-opaque-2">opaque origin</a> to <var>output</var> and <a id="ancestor-origins:continue" href="https://triple-underscore.github.io/infra-ja.html#iteration-continue" data-x-internal="continue">continue</a>.<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append-4" data-x-internal="list-append">Append</a> <var>ancestorOrigin</var> to <var>output</var> and set <var>masked</var> to false.</p>
+
+      <p class="note">Setting <var>masked</var> to false here doesn't imply that all further ancestors' origins are necessarily exposed. They might have been previously masked when an ancestor document ran these steps, and the resulting list is used as a starting point when a child document is created (see step 5 above).</p>
+     </ol>
    <li><p>Return <var>output</var>.</ol>
   </div>
 
@@ -101,8 +107,72 @@
 
   <ol><li><p>Let <var>ancestorOrigins</var> be <var>document</var>'s <a href="#concept-document-internal-ancestor-origin-objects-list" id="ancestor-origins:concept-document-internal-ancestor-origin-objects-list-2">internal ancestor origin objects list</a>.<li><p><a id="ancestor-origins:assert-2" href="https://triple-underscore.github.io/infra-ja.html#assert" data-x-internal="assert">Assert</a>: <var>ancestorOrigins</var> is not null.<li><p>Let <var>output</var> be « ».<li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-iterate" id="ancestor-origins:list-iterate-2" data-x-internal="list-iterate">For each</a> <var>origin</var> of <var>ancestorOrigins</var>:</p>
 
-    <ol><li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append-3" data-x-internal="list-append">Append</a> the <span>serialization</span> of <var>origin</var> to <var>output</var>.</ol>
+    <ol><li><p><a href="https://triple-underscore.github.io/infra-ja.html#list-append" id="ancestor-origins:list-append-5" data-x-internal="list-append">Append</a> the <span>serialization</span> of <var>origin</var> to <var>output</var>.</ol>
    <li><p>Return a new <code>DOMStringList</code> object whose associated list is <var>output</var>.</ol>
+  </div>
+
+  <div class="example"><p>Consider a <a id="ancestor-origins:top-level-browsing-context" href="document-sequences.html#top-level-browsing-context">top-level browsing context</a> document with the URL <code>https://a.example/top</code>:</p>
+
+   <pre><code class='html'><c- cp>&lt;!doctype html></c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>></c->top<c- p>&lt;/</c-><c- f>title</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>referrerpolicy</c-><c- o>=</c-><c- s>"no-referrer"</c-> <c- e>src</c-><c- o>=</c-><c- s>"https://a.example/child"</c-><c- p>>&lt;/</c-><c- f>iframe</c-><c- p>></c-></code></pre>
+
+   <p>The child document:</p>
+
+   <pre><code class='html'><c- cp>&lt;!doctype html></c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>></c->child<c- p>&lt;/</c-><c- f>title</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"https://b.example/grandchild"</c-><c- p>>&lt;/</c-><c- f>iframe</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>></c->
+ console<c- p>.</c->log<c- p>([...</c->location<c- p>.</c->ancestorOrigins<c- p>]);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
+
+   <p>The grandchild document:</p>
+
+   <pre><code class='html'><c- cp>&lt;!doctype html></c->
+<c- p>&lt;</c-><c- f>title</c-><c- p>></c->grandchild<c- p>&lt;/</c-><c- f>title</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>></c->
+ console<c- p>.</c->log<c- p>([...</c->location<c- p>.</c->ancestorOrigins<c- p>]);</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>></c-></code></pre>
+
+   <p>When the child's <code>Document</code> object is created, its parent's origin is masked because the <code id="ancestor-origins:the-iframe-element"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> element's <code id="ancestor-origins:attr-iframe-referrerpolicy"><a href="iframe-embed-object.html#attr-iframe-referrerpolicy">referrerpolicy</a></code> attribute's value is "<code>no-referrer</code>", even though the documents are <a id="ancestor-origins:same-origin-3" href="browsers.html#same-origin">same origin</a>. The value logged is « "<code>null</code>" ».</p>
+
+   <p>When the grandchild's <code>Document</code> object is created, the child's <code>Document</code> object's <a href="#concept-document-internal-ancestor-origin-objects-list" id="ancestor-origins:concept-document-internal-ancestor-origin-objects-list-3">internal ancestor origin objects list</a> (which contains a single <a href="browsers.html#concept-origin-opaque" id="ancestor-origins:concept-origin-opaque-3">opaque origin</a>) is used as a starting point, and the child's <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-6" data-x-internal="concept-document-origin">origin</a> is added to the list. The value logged is thus « "<code>https://a.example</code>", "<code>null</code>" ».</p>
+  </div>
+
+  <div class="example"><p>If we consider the previous example but the <code id="ancestor-origins:the-iframe-element-2"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> element in the top document has no <code id="ancestor-origins:attr-iframe-referrerpolicy-2"><a href="iframe-embed-object.html#attr-iframe-referrerpolicy">referrerpolicy</a></code> attribute, and instead the <code id="ancestor-origins:the-iframe-element-3"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> element in the child document has <code>referrerpolicy="no-referrer"</code>.</p>
+
+   <p>In this case, the top document's <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-7" data-x-internal="concept-document-origin">origin</a> is added to the child's <code>Document</code> object's <a href="#concept-document-internal-ancestor-origin-objects-list" id="ancestor-origins:concept-document-internal-ancestor-origin-objects-list-4">internal ancestor origin objects list</a>. The value logged is « "<code>https://a.example</code>" ».</p>
+
+   <p>For the grandchild, the child's <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-8" data-x-internal="concept-document-origin">origin</a> is masked as an <a href="browsers.html#concept-origin-opaque" id="ancestor-origins:concept-origin-opaque-4">opaque origin</a>. Since the top document's <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-9" data-x-internal="concept-document-origin">origin</a> is <a id="ancestor-origins:same-origin-4" href="browsers.html#same-origin">same origin</a> with the child document's <a href="https://triple-underscore.github.io/DOM4-ja.html#concept-document-origin" id="ancestor-origins:concept-document-origin-10" data-x-internal="concept-document-origin">origin</a>, it is also masked. The value logged is thus « "<code>null</code>", "<code>null</code>" ».</p>
+  </div>
+
+  <div class="example"><p>In this example, we show that the top-level document's origin is not masked even though there's a descendant same-origin document whose origin <em>is</em> masked, since there's a cross-origin document in between.</p>
+
+   <ul><li><p>Top-level with URL <code>https://a.example/top</code></p>
+
+     <pre><code class='html'><c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"https://b.example/child"</c-><c- p>>&lt;/</c-><c- f>iframe</c-><c- p>></c-></code></pre>
+
+     <p>The <a href="#concept-document-ancestor-origins-list" id="ancestor-origins:concept-document-ancestor-origins-list">ancestor origins list</a> associated list is « ».</p>
+    <li><p>Child with URL <code>https://b.example/child</code></p>
+
+     <pre><code class='html'><c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"https://a.example/grandchild"</c-><c- p>>&lt;/</c-><c- f>iframe</c-><c- p>></c-></code></pre>
+
+     <p>The <a href="#concept-document-ancestor-origins-list" id="ancestor-origins:concept-document-ancestor-origins-list-2">ancestor origins list</a> associated list is « "<code>https://a.example</code>" ».</p>
+    <li><p>Grandchild with URL <code>https://a.example/grandchild</code></p>
+
+     <pre><code class='html'><c- p>&lt;</c-><c- f>iframe</c-> <c- e>src</c-><c- o>=</c-><c- s>"https://c.example/great-grandchild"</c->
+        <c- e>referrerpolicy</c-><c- o>=</c-><c- s>"no-referrer"</c-><c- p>>&lt;/</c-><c- f>iframe</c-><c- p>></c-></code></pre>
+
+     <p>The <a href="#concept-document-ancestor-origins-list" id="ancestor-origins:concept-document-ancestor-origins-list-3">ancestor origins list</a> associated list is « "<code>https://b.example</code>", "<code>https://a.example</code>" ».</p>
+    <li><p>Great-grandchild with URL <code>https://c.example/great-grandchild</code></p>
+
+     <p>The <a href="#concept-document-ancestor-origins-list" id="ancestor-origins:concept-document-ancestor-origins-list-4">ancestor origins list</a> associated list is « "<code>null</code>", "<code>https://b.example</code>", "<code>https://a.example</code>" ». The top-level origin is not masked.</p>
+    </ul>
+  </div>
+
+  <div class="example"><p>If we consider the previous example but the top-level document's <code id="ancestor-origins:the-iframe-element-4"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> also has <code>referrerpolicy="no-referrer"</code>, then the resulting <a href="#concept-document-ancestor-origins-list" id="ancestor-origins:concept-document-ancestor-origins-list-5">ancestor origins list</a> associated list for each document would be:</p>
+
+   <ul><li><p>Top-level: « »<li><p>Child: « "<code>null</code>" »<li><p>Grandchild: « "<code>https://b.example</code>", "<code>null</code>" »<li><p>Great-grandchild: « "<code>null</code>", "<code>https://b.example</code>", "<code>null</code>" ». The top-level origin is masked because it was masked when the child document ran the <a href="#internal-ancestor-origin-objects-list-creation-steps" id="ancestor-origins:internal-ancestor-origin-objects-list-creation-steps">internal ancestor origin objects list creation steps</a>, and that result is passed on to the grandchild document's <a href="#internal-ancestor-origin-objects-list-creation-steps" id="ancestor-origins:internal-ancestor-origin-objects-list-creation-steps-2">internal ancestor origin objects list creation steps</a>, and so on.</ul>
   </div>
 
 
