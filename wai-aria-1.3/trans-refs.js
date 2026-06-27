@@ -18,11 +18,27 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-dom4: 'https://triple-underscore.github.io/DOM4-ja.html',
-html: ['https://momdo.github.io/html/',
-'https://triple-underscore.github.io/#spec-list-html'],
-mathml3: ['http://takamu.sakura.ne.jp/mathml3-ja/index.html',
-'http://washitake.com/MathML/ver3/'],
+"accname-1-2": [
+'https://momdo.github.io/accname-1.2/', 
+'https://jp.htmlspecs.com/accname-1.2/'
+],
+"core-aam-1-2":'https://jp.htmlspecs.com/core-aam-1.2/',
+dom: [
+'https://triple-underscore.github.io/DOM4-ja.html',
+'https://jp.htmlspecs.com/dom/'
+],
+"dpub-aria-1-0": 'https://momdo.github.io/dpub-aria-1.0/',
+html: [
+'https://momdo.github.io/html/',
+'https://triple-underscore.github.io/#spec-list-html',
+'https://jp.htmlspecs.com/'
+],
+infra: [
+'https://jp.htmlspecs.com/infra/',
+'https://triple-underscore.github.io/infra-ja.html'
+],
+mathml3: 'http://takamu.sakura.ne.jp/mathml3-ja/index.html',
+"permissions-policy":'https://jp.htmlspecs.com/permissions-policy/',
 rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
     'http://www.studyinghttp.net/rfc_ja/rfc2119',
     'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
@@ -31,14 +47,28 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
 ],
 rfc3986: 'https://triple-underscore.github.io/rfc-others/RFC3986-ja.html',
 rfc8174: 'http://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
-svg2: 'https://triple-underscore.github.io/svg-misc-ja.html',
-"wai-aria-practices-1.1": 'https://waic.jp/docs/2019/NOTE-wai-aria-practices-1.1-20190207/',
-webidl: 'https://triple-underscore.github.io/WebIDL-ja.html',
+"selecotrs-4": [
+'https://jp.htmlspecs.com/css/selectors-4/',
+'https://triple-underscore.github.io/selectors4-ja.html'
+],
+svg2: [
+'https://triple-underscore.github.io/svg-misc-ja.html',
+'https://jp.htmlspecs.com/SVG2/'
+],
+"uievents-key": [
+'https://triple-underscore.github.io/uievents-key-ja.html',
+'https://jp.htmlspecs.com/uievents-key/',
+],
+webidl: [
+'https://triple-underscore.github.io/WebIDL-ja.html',
+'https://jp.htmlspecs.com/webidl/'
+],
 "xml-names": 'http://www.hcn.zaq.ne.jp/___/XML/Namespaces-ja.html',
-
-"css3-selectors": 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-selectors/',
-"html-aria": 'https://momdo.github.io/html-aria/',
-"wai-aria-1.1": 'http://momdo.github.io/wai-aria/',
+"html-aria": [
+'https://momdo.github.io/html-aria/',
+'https://jp.htmlspecs.com/html-aria/'
+],
+"wai-aria-1-1": 'http://momdo.github.io/wai-aria/',
 wcag21: 'https://waic.jp/docs/WCAG21/',
 	};
 
