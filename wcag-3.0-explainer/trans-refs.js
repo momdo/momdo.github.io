@@ -18,15 +18,13 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-css2: 'http://momdo.s35.xrea.com/web-html-test/spec/CSS21/cover.html',
-"wai-aria": 'https://momdo.github.io/wai-aria-1.1/',
-"wcag21": 'https://waic.jp/docs/WCAG21/',
-"dom": 'https://triple-underscore.github.io/DOM4-ja.html',
-RFC2119: [
-          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+atag20: 'https://waic.jp/translations/ATAG20/',
+uaag20: 'https://imagedrive.github.io/TR/UAAG20/',
+wcag22: [
+  'https://waic.jp/translations/WCAG22/',
+  'https://jp.htmlspecs.com/WCAG22/'
 ],
+wcag3: 'https://jp.htmlspecs.com/wcag-3.0/'
 	};
 
 	(function(){
@@ -38,6 +36,8 @@ RFC2119: [
 			span.className = "ref-secure";	// TODO: 適宜変更
 
 			a.setAttribute("href", href);
+      const title = new URL(href).hostname;
+      a.setAttribute("title", title);
 			a.appendChild(document.createTextNode(text));
 			if(text.match(/訳$/) || text.match(/1$/)){ //最初だけ（強引に）マッチング
             	span.appendChild(document.createElement("br"));

@@ -36,7 +36,6 @@ BATTERY: [
   'https://jp.htmlspecs.com/battery-status/'
 ],
 BCP47: [
-  'http://www.studyinghttp.net/rfc_ja/rfc2119',
   'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
   'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
   'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'

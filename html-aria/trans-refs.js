@@ -18,20 +18,37 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-"dpub-aria-1.0": 'https://momdo.github.io/dpub-aria-1.0/',
-"dpub-aria-1.1": 'https://momdo.github.io/dpub-aria-1.1/',
-html: ['https://momdo.github.io/html/',
-'https://triple-underscore.github.io/index.html#spec-list-html'],
-infra: 'https://triple-underscore.github.io/infra-ja.html',
-"wai-aria-1.1": 'https://momdo.github.io/wai-aria-1.1/',
-"wai-aria-1.2": 'https://momdo.github.io/wai-aria-1.2/',
-rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
-          'http://www.studyinghttp.net/rfc_ja/rfc2119',
-          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+"accname-1.2": [
+  'https://momdo.github.io/wai-aria-1.2/',
+  'https://jp.htmlspecs.com/accname-1.2/'
+],
+"dpub-aria-1.1": [
+  'https://momdo.github.io/dpub-aria-1.1/',
+  'https://jp.htmlspecs.com/dpub-aria-1.1/'
+],
+html: [
+  'https://momdo.github.io/html/',
+  'https://triple-underscore.github.io/index.html#spec-list-html',
+  'https://jp.htmlspecs.com/'
+],
+"html-aam-1.0": 'https://jp.htmlspecs.com/html-aam-1.0/',
+infra: [
+  'https://triple-underscore.github.io/infra-ja.html',
+  'https://jp.htmlspecs.com/infra/'
+],
+rfc2119: [
+  'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
+  'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
+  'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
 rfc8174: 'http://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
+"svg-aam-1.0": 'https://jp.htmlspecs.com/svg-aam-1.0/',
+"wai-aria-1.1": 'https://momdo.github.io/wai-aria-1.1/',
+"wai-aria-1.2": [
+  'https://momdo.github.io/wai-aria-1.2/',
+  'https://jp.htmlspecs.com/wai-aria-1.2/'
+]
+
 	};
 
 	(function(){
@@ -43,6 +60,8 @@ rfc8174: 'http://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
 			span.className = "ref-secure";	// TODO: 適宜変更
 
 			a.setAttribute("href", href);
+      const title = new URL(href).hostname;
+      a.setAttribute("title", title);
 			a.appendChild(document.createTextNode(text));
 			if(text.match(/訳$/) || text.match(/1$/)){ //最初だけ（強引に）マッチング
             	span.appendChild(document.createElement("br"));
