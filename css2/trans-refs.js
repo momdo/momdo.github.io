@@ -19,31 +19,45 @@ addEventListener("DOMContentLoaded", function(){
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
 HTML4: 'http://www.asahi-net.or.jp/~sd5a-ucd/rec-html401j/cover.html',
-RFC3986: 'https://triple-underscore.github.io/RFC3986-ja.html',
-RFC2045:[ 'http://www.akanko.net/marimo/data/rfc/rfc2045-jp.txt',
-          'http://hp.vector.co.jp/authors/VA014833/rfc2045J.html',
+RFC3986: 'https://triple-underscore.github.io/rfc-others/RFC3986-ja.html',
+RFC2045: 'http://www.akanko.net/marimo/data/rfc/rfc2045-jp.txt',
+// 'http://hp.vector.co.jp/authors/VA014833/rfc2045J.html',
+RFC2119: [ 
+  'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
+  'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
+  'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
-RFC2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
-    'http://www.studyinghttp.net/rfc_ja/rfc2119',
-    'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-    'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-    'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+2318: [
+  'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2318j.html',
+  'https://wiki.suikawiki.org/n/RFC%202318',
+  'http://www.7key.jp/rfc/rfc2318.html',
 ],
-2318: [ 'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2318j.html',
-           'http://suika.fam.cx/~wakaba/wiki/sw/n/RFC%202318',
-           'http://www.7key.jp/rfc/rfc2318.html',
+CSS: 'https://momdo.github.io/css-2015/',
+CSS3COLOR: [
+  'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
+  'https://jp.htmlspecs.com/css/css-color-3/'
 ],
-CSS:[ 'https://momdo.github.io/css-2015/',
-      'https://triple-underscore.github.io/css-2015-ja.html',
+CSS3LIST: [
+  'https://triple-underscore.github.io/css-lists-ja.html',
+   'https://jp.htmlspecs.com/css/css-lists-3/'
 ],
-CSS3COLOR: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
-CSS3SEL: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-selectors/',
-CSS3SPEECH: 'https://triple-underscore.github.io/css-speech-ja.html',
-MEDIAQ: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/',
+CSS3SEL: [
+  'http://standards.mitsue.co.jp/resources/w3c/TR/css3-selectors/',
+  'https://jp.htmlspecs.com/css/selectors-3/'
+],
+CSS3SPEECH: [
+  'https://triple-underscore.github.io/css-speech-ja.html',
+  'https://jp.htmlspecs.com/css/css-speech-1/'
+],
+MATH30: 'https://takamu.sakura.ne.jp/mathml3-ja/index.html',
+MEDIAQ: [
+  'https://jp.htmlspecs.com/css/mediaqueries-3/',
+  'http://standards.mitsue.co.jp/resources/w3c/TR/css3-mediaqueries/',
+],
 SVG11: 'https://triple-underscore.github.io/SVG11/',
 WCAG20: 'http://waic.jp/docs/WCAG20/Overview.html',
-XHTML: 'http://msugai.fc2web.com/web/W3C/xhtml1SE/Cover.html',
-XMLNAMESPACES: 'http://www.hcn.zaq.ne.jp/___/XML/Namespaces-ja.html',
+//XHTML: 'http://msugai.fc2web.com/web/W3C/xhtml1SE/Cover.html',
+XMLNAMESPACES: 'https://triple-underscore.github.io/xml-names-ja.html',
 	};
 
 	(function(){
