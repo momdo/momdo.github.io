@@ -18,23 +18,68 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-css2: 'https://momdo.github.io/css2/cover.html',
-css3bg: 'https://triple-underscore.github.io/css-backgrounds-ja.html',
-"css-text-3": 'https://triple-underscore.github.io/css-text-ja.html',
-"css-color-3": 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
-"css-counter-styles-3": 'https://triple-underscore.github.io/css-counter-styles-ja.html',
-"css-fonts-3": 'https://triple-underscore.github.io/css-fonts-ja.html',
-"css-values-3":  'https://momdo.github.io/css3-values/',
-"css-writing-modes-4": 'https://triple-underscore.github.io/css-writing-modes-ja.html',
-
-"css-animations-1": 'https://triple-underscore.github.io/css-animations-ja.html',
-rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
-          'http://www.studyinghttp.net/rfc_ja/rfc2119',
-          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+"css-backgrounds-3":  [
+  'https://triple-underscore.github.io/css-backgrounds-ja.html',
+  'https://jp.htmlspecs.com/css/css-backgrounds-3/'
 ],
-"html":  'https://momdo.github.io/html/',
+"css-break-3": 'https://jp.htmlspecs.com/css/css-break-3/',
+"css-color-4": [
+  'https://triple-underscore.github.io/css-color-ja.html',
+  'https://jp.htmlspecs.com/css/css-color-4/'
+],
+"css-display-3": 'https://jp.htmlspecs.com/css/css-display-3/',
+"css-fonts-3": 'https://jp.htmlspecs.com/css/css-fonts-3/',
+"css-fonts-4": [
+  'https://triple-underscore.github.io/css-fonts4-ja.html',
+  'https://jp.htmlspecs.com/css/css-fonts-4/'
+],
+"css-inline-3": [
+  'https://triple-underscore.github.io/css-inline-ja.html',
+  'https://jp.htmlspecs.com/css/css-inline-3/'
+],
+"css-overflow-3": [
+  'https://triple-underscore.github.io/css-overflow-ja.html',
+  'https://jp.htmlspecs.com/css/css-overflow-3/'
+],
+"css-ruby-1": [
+  'https://triple-underscore.github.io/css-ruby-ja.html',
+  'https://jp.htmlspecs.com/css/css-ruby-1/'
+],
+"css-text-3": 'https://jp.htmlspecs.com/css/css-text-3/',
+"css-text-decor-4": [
+  "https://triple-underscore.github.io/css-text-decor-ja.html",
+  'https://jp.htmlspecs.com/css/css-text-decor-4/'
+],
+"css-values-3": [
+  'https://momdo.github.io/css3-values/',
+  'https://jp.htmlspecs.com/css/css-values-3/'
+],
+"css-values-4":	[
+  'https://triple-underscore.github.io/css-values-ja.html',
+  'https://jp.htmlspecs.com/css/css-values-4/'
+],
+"css-writing-modes-4": [
+  "https://triple-underscore.github.io/css-writing-modes-ja.html",
+  'https://jp.htmlspecs.com/css/css-writing-modes-4/'
+],
+css2: 'https://ss1.xrea.com/momdo.s35.xrea.com/web-html-test/spec/CSS21/cover.html',
+rfc2119: [
+  'http://www.studyinghttp.net/rfc_ja/rfc2119',
+  'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
+  'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
+  'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+],
+//info
+"css-animations-1": [
+  "https://triple-underscore.github.io/css-animations-ja.html",
+  'https://jp.htmlspecs.com/css/css-animations-1/'
+],
+"css-color-3": 'https://jp.htmlspecs.com/css/css-color-3/',
+html: [
+  'https://momdo.github.io/html/',
+  'https://triple-underscore.github.io/index.html#spec-list-html',
+  'https://jp.htmlspecs.com/'
+],
 	};
 
 	(function(){
@@ -45,7 +90,9 @@ rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
 
 			span.className = "ref-secure";	// TODO: 適宜変更
 
-			a.setAttribute("href", href);
+      a.setAttribute("href", href);
+      const title = new URL(href).hostname;
+      a.setAttribute("title", title);
 			a.appendChild(document.createTextNode(text));
 			if(text.match(/訳$/) || text.match(/1$/)){ //最初だけ（強引に）マッチング
             	span.appendChild(document.createElement("br"));

@@ -18,26 +18,56 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-css21: 'http://momdo.github.io/css2/cover.html',
-"css-backgrounds-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-backgrounds-ja.html',
-//css3color: 'http://standards.mitsue.co.jp/resources/w3c/TR/css3-color/',
+"css-backgrounds-3": [
+  'https://triple-underscore.github.io/css-backgrounds-ja.html',
+  'https://jp.htmlspecs.com/css/css-backgrounds-3/'
+],
+"css-color-3": 'https://jp.htmlspecs.com/css/css-color-3/',
+"css-values-3": [
+  'https://momdo.github.io/css3-values/',
+  'https://jp.htmlspecs.com/css/css-values-3/'
+],
+"css-writing-modes-3": [
+  "https://triple-underscore.github.io/css-writing-modes-ja.html",
+  'https://jp.htmlspecs.com/css/css-writing-modes-3/'
+],
+css2: 'https://ss1.xrea.com/momdo.s35.xrea.com/web-html-test/spec/CSS21/cover.html',
+"css3-images": [
+  "https://triple-underscore.github.io/css-images-ja.html",
+  'https://jp.htmlspecs.com/css/css-images-3/'
+],
+html: [
+  'https://momdo.github.io/html/',
+  'https://triple-underscore.github.io/index.html#spec-list-html',
+  'https://jp.htmlspecs.com/'
+],
 //png: 'http://www.milk-island.net/document/png/',
-"css-cascade-4": 'http://www.hcn.zaq.ne.jp/___/WEB/css-cascade-ja.html', //そのうち削除するかも
-"css-images-3": 'http://www.hcn.zaq.ne.jp/___/WEB/css-images-ja.html',
-"css-values-3":  'http://momdo.github.io/css3-values/',
-"cssom-1": 'http://www.hcn.zaq.ne.jp/___/WEB/cssom-ja.html',
-rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
-          'http://www.studyinghttp.net/rfc_ja/rfc2119',
-          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+rfc2119: [
+  'http://www.studyinghttp.net/rfc_ja/rfc2119',
+  'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
+  'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
+  'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+],
+svg11: 'https://triple-underscore.github.io/SVG11/index.html',
+svg2: [
+  'https://triple-underscore.github.io/svg-misc-ja.html',
+  'https://jp.htmlspecs.com/SVG2/'
+],
+"css-cascading-4": "https://jp.htmlspecs.com/css/css-cascade-4/",
+"css-pseudo-4": [
+  'https://triple-underscore.github.io/css-pseudo-ja.html',
+  'https://jp.htmlspecs.com/css/css-pseudo-4/'
+],
+"css-transitions-1": [
+  "https://triple-underscore.github.io/css-transitions-ja.html",
+  'https://jp.htmlspecs.com/css/css-transitions-1/'
 ],
 css1: 'http://www.doraneko.org/webauth/css1/19961217/Overview.html',
-css2: 'https://momdo.github.io/css2/Overview.html',
-svg11: 'http://www.hcn.zaq.ne.jp/___/SVG11-2nd/',
-html: 'http://momdo.github.io/html/',
-"css-pseudo-4": 'https://triple-underscore.github.io/css-pseudo-ja.html',
-"css-transitions-1":'https://triple-underscore.github.io/css-transitions-ja.html',
+"css4-images": [
+  "https://triple-underscore.github.io/css-images4-ja.html",
+  'https://jp.htmlspecs.com/css/css-images-4/'
+]
+
 	};
 
 	(function(){
@@ -49,6 +79,8 @@ html: 'http://momdo.github.io/html/',
 			span.className = "ref-secure";	// TODO: 適宜変更
 
 			a.setAttribute("href", href);
+      const title = new URL(href).hostname;
+      a.setAttribute("title", title);
 			a.appendChild(document.createTextNode(text));
 			if(text.match(/訳$/) || text.match(/1$/)){ //最初だけ（強引に）マッチング
             	span.appendChild(document.createElement("br"));

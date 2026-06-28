@@ -18,18 +18,31 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
+"core-aam-1.2" : 'https://jp.htmlspecs.com/core-aam-1.2/',
 css2: 'http://momdo.s35.xrea.com/web-html-test/spec/CSS21/cover.html',
 "wai-aria": 'https://momdo.github.io/wai-aria-1.1/',
 "wcag21": 'https://waic.jp/docs/WCAG21/',
-"dom": 'https://triple-underscore.github.io/DOM4-ja.html',
-infra: 'https://triple-underscore.github.io/infra-ja.html',
-rfc2119: [ 'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
-          'http://www.studyinghttp.net/rfc_ja/rfc2119',
-          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
+"dom": [
+  'https://triple-underscore.github.io/DOM4-ja.html',
+  'https://jp.htmlspecs.com/dom/'
+],
+"html-aam-1.0": 'https://jp.htmlspecs.com/html-aam-1.0/',
+infra: [
+  'https://triple-underscore.github.io/infra-ja.html',
+  'https://jp.htmlspecs.com/infra/'
+],
+rfc2119: [ 
+  'http://www.ipa.go.jp/security/rfc/RFC2119JA.html',
+  'http://www.studyinghttp.net/rfc_ja/rfc2119',
+  'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
+  'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
+  'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
 rfc8174: 'https://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
+"accname-1.1": [
+  'https://momdo.github.io/accname-1.1/',
+  'https://jp.htmlspecs.com/accname-1.1/'
+],
 "wai-aria-1.2": 'https://momdo.github.io/wai-aria-1.2/',
 	};
 

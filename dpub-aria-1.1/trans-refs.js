@@ -18,19 +18,28 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-html: ['https://momdo.github.io/html/',
-'https://triple-underscore.github.io/index.html#spec-list-html'],
-"wai-aria": 'https://momdo.github.io/wai-aria-1.1/',
+html: [
+  'https://momdo.github.io/html/',
+  'https://triple-underscore.github.io/index.html#spec-list-html',
+  'https://jp.htmlspecs.com/'
+],
 rfc2119: [ 
-          'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
-          'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
-          'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html',
-          'https://triple-underscore.github.io/bcp14-ja.html',
+  'http://www.cam.hi-ho.ne.jp/mendoxi/rfc/rfc2119j.html',
+  'http://www.asahi-net.or.jp/~sd5a-ucd/rfc-j/rfc-2119j.html',
+  'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html',
+  'https://triple-underscore.github.io/bcp14-ja.html',
 ],
 rfc8174: 'https://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
-svg2: 'https://triple-underscore.github.io/svg-misc-ja.html',
-wcag21: 'https://waic.jp/docs/WCAG21/',
-infra: 'https://triple-underscore.github.io/infra-ja.html',
+epub: 'https://jp.htmlspecs.com/epub-33/',
+infra: [
+  'https://triple-underscore.github.io/infra-ja.html',
+  'https://jp.htmlspecs.com/infra/'
+],
+svg2: [
+  'https://triple-underscore.github.io/svg-misc-ja.html',
+  'https://jp.htmlspecs.com/SVG2/'
+],
+"wai-aria": 'https://momdo.github.io/wai-aria-1.1/'
 	};
 
 	(function() {
@@ -42,6 +51,8 @@ infra: 'https://triple-underscore.github.io/infra-ja.html',
 			span.className = "ref-secure";	// TODO: 適宜変更
 
 			a.setAttribute("href", href);
+      const title = new URL(href).hostname;
+      a.setAttribute("title", title);
 			a.appendChild(document.createTextNode(text));
 			if(text.match(/訳$/) || text.match(/1$/)){ //最初だけ（強引に）マッチング
                 span.appendChild(document.createElement("br"));
