@@ -28,7 +28,7 @@ addEventListener("DOMContentLoaded", function(){
   'https://triple-underscore.github.io/css-sizing-ja.html',
   'https://jp.htmlspecs.com/css/css-box-3/'
 ],
-"css-cascading-4": "https://jp.htmlspecs.com/css/css-cascade-4/",
+"css-cascade-4": "https://jp.htmlspecs.com/css/css-cascade-4/",
 "css-color-4": [
   'https://triple-underscore.github.io/css-color-ja.html',
   'https://jp.htmlspecs.com/css/css-color-4/'
@@ -102,6 +102,10 @@ addEventListener("DOMContentLoaded", function(){
   "https://triple-underscore.github.io/css-text-ja.html",
   'https://jp.htmlspecs.com/css/css-text-4/'
 ],
+"css-text-decor-4": [
+  "https://triple-underscore.github.io/css-text-decor-ja.html",
+  'https://jp.htmlspecs.com/css/css-text-decor-4/'
+],
 "css-transforms-1": [
   "https://triple-underscore.github.io/css-transforms-ja.html",
   'https://jp.htmlspecs.com/css/css-transforms-1/'
@@ -166,6 +170,7 @@ rfc2119: [
   "https://triple-underscore.github.io/css-animations-ja.html",
   'https://jp.htmlspecs.com/css/css-animations-1/'
 ],
+"css-break-3": "https://jp.htmlspecs.com/css/css-break-3/",
 "css-cascade-3": "https://jp.htmlspecs.com/css/css-cascade-3/",
 "css-cascade-5": [
   'https://triple-underscore.github.io/css-cascade-ja.html',
