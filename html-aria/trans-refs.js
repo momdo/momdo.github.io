@@ -31,7 +31,7 @@ html: [
   'https://triple-underscore.github.io/index.html#spec-list-html',
   'https://jp.htmlspecs.com/'
 ],
-"html-aam-1.0": 'https://jp.htmlspecs.com/html-aam-1.0/',
+"html-aam-1-0": 'https://jp.htmlspecs.com/html-aam-1.0/',
 infra: [
   'https://triple-underscore.github.io/infra-ja.html',
   'https://jp.htmlspecs.com/infra/'
