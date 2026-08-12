@@ -18,11 +18,11 @@ addEventListener("DOMContentLoaded", function(){
 	// URL リスト
 	// ID : {URL | [URL, ...]}, ...
 	var refList = {
-"accname-1.2": [
+"accname-1-2": [
   'https://momdo.github.io/wai-aria-1.2/',
   'https://jp.htmlspecs.com/accname-1.2/'
 ],
-"dpub-aria-1.1": [
+"dpub-aria-1-1": [
   'https://momdo.github.io/dpub-aria-1.1/',
   'https://jp.htmlspecs.com/dpub-aria-1.1/'
 ],
@@ -42,9 +42,9 @@ rfc2119: [
   'http://www.t-net.ne.jp/~cyfis/rfc/format/rfc2119_ja.html'
 ],
 rfc8174: 'http://www5d.biglobe.ne.jp/stssk/rfc/rfc8174j.html',
-"svg-aam-1.0": 'https://jp.htmlspecs.com/svg-aam-1.0/',
-"wai-aria-1.1": 'https://momdo.github.io/wai-aria-1.1/',
-"wai-aria-1.2": [
+"svg-aam-1-0": 'https://jp.htmlspecs.com/svg-aam-1.0/',
+"wai-aria-1-1": 'https://momdo.github.io/wai-aria-1.1/',
+"wai-aria-1-2": [
   'https://momdo.github.io/wai-aria-1.2/',
   'https://jp.htmlspecs.com/wai-aria-1.2/'
 ]
