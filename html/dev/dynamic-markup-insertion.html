@@ -11,7 +11,7 @@
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">11 August 2026</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">28 August 2026</span></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press &apos;/&apos;" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -470,23 +470,23 @@
 
   <p>空の設定はすべてを許可する（<code id="configuration-invariants:dom-element-sethtmlunsafe"><a href="#dom-element-sethtmlunsafe">setHTMLUnsafe()</a></code>のような"安全でない"メソッドで呼び出された場合）。設定"<dfn data-dfn-for="SanitizerPresets" id="dom-sanitizerpresets-default" data-dfn-type="enum-value">デフォルト</dfn>"には、<span>組み込みの安全なデフォルト設定</span>が含まれる。"安全な"および"安全でない"サニタイザー方法は、異なるデフォルトを持つことに注意する。</p>
 
-  <p>Not all configuration dictionaries are valid. A valid configuration avoids redundancy (like specifying the same element to be allowed twice) and contradictions (like specifying an element to be both removed and allowed.)</p>
+  <p>すべての設定ディクショナリーが有効なわけではない。有効な設定は、冗長性（同じ要素を2回許可するように指定するなど）および矛盾（要素を削除して許可するように指定するなど）を回避する。</p>
 
-  <p>Several conditions need to hold for a configuration to be valid:</p>
+  <p>構成を有効にするには、いくつかの条件を満たす必要がある：</p>
 
-  <ul><li><p>Mixing global allow- and remove-lists:</p>
+  <ul><li><p>グローバルな許可リストおよび削除リストの混在：</p>
 
-    <ul><li><p><code>elements</code> or <code>removeElements</code> can exist, but not both. If both are missing, this is equivalent to <code>removeElements</code> being an empty list.<li><p><code>attributes</code> or <code>removeAttributes</code> can exist, but not both. If both are missing, this is equivalent to <code>removeAttributes</code> being an empty list.<li><p><code>dataAttributes</code> is conceptually an extension of the <code>attributes</code> allow-list. The <code>dataAttributes</code> member is only allowed when an <code>attributes</code> list is used.</ul>
-   <li><p>Duplicate entries between different global lists:</p>
+    <ul><li><p><code>elements</code>または<code>removeElements</code>は存在できるが、両方は存在できない。両方が欠落している場合、これは<code>removeElements</code>が空のリストであることと同じである。<li><p><code>attributes</code>または<code>removeAttributes</code>は存在できるが、両方は存在できない。両方が欠落している場合、これは<code>removeAttributes</code>が空のリストであることと同じである。<li><p><code>dataAttributes</code>は、概念的には<code>attributes</code>許可リストの拡張である。<code>dataAttributes</code>メンバーは、<code>attributes</code>リストが使用されている場合にのみ許可される。</ul>
+   <li><p>異なるグローバルリスト間でエントリーが重複：</p>
 
-    <ul><li><p>There are no duplicate entries (i.e., no same elements) between <code>elements</code>, <code>removeElements</code>, or <code>replaceWithChildrenElements</code>.<li><p>There are no duplicate entries (i.e., no same attributes) between <code>attributes</code> or <code>removeAttributes</code>.</ul>
-   <li><p>Mixing local allow- and remove-lists on the same element:</p>
+    <ul><li><p><code>elements</code>、<code>removeElements</code>、または<code>replaceWithChildrenElements</code>の間に重複するエントリーがない（すなわち、同じ要素がない）。<li><p><code>attributes</code>または<code>removeAttributes</code>の間に重複するエントリーがない（すなわち、同じ属性がない）。</ul>
+   <li><p>同じ要素にローカルの許可リストおよび削除リストの混在：</p>
 
-    <ul><li><p>When an <code>attributes</code> list exists, both, either or none of the <code>attributes</code> and <code>removeAttributes</code> lists are allowed on the same element.<li><p>When a <code>removeAttributes</code> list exists, either or none of the <code>attributes</code> and <code>removeAttributes</code> lists are allowed on the same element, but not both.</ul>
-   <li><p>Duplicate entries on the same element:</p>
+    <ul><li><p><code>attributes</code>リストが存在する場合、同じ要素に対して<code>attributes</code>リストと<code>removeAttributes</code>リストの両方が許可されるか、どちらも許可されない。<li><p><code>removeAttributes</code>リストが存在する場合、<code>attributes</code>リストと<code>removeAttributes</code>リストのいずれか一方または両方を同じ要素で使用することはできない。</ul>
+   <li><p>同じ要素に重複するエントリー：</p>
 
-    <ul><li><p>There are no duplicate entries between <code>attributes</code> and <code>removeAttributes</code> on the same element.</ul>
-   <li><p>No element from the <span>built-in non-replaceable elements list</span> appears in <code>replaceWithChildrenElements</code>, since replacing these elements with their children could lead to re-parsing issues or invalid node trees.</ul>
+    <ul><li><p>同じ要素の<code>attributes</code>と<code>removeAttributes</code>の間に重複するエントリーがない。</ul>
+   <li><p><span>組み込みの置換不可能な要素リスト</span>の要素は、これらの要素を子で置換すると、再解析の問題や無効なノードツリーが発生する可能性があるため、<code>replaceWithChildrenElements</code>には表示されない。</ul>
 
   <p>The <code>elements</code> element allow-list can also specify allowing or removing attributes for a given element. This is meant to mirror this standard's structure, which knows both <a id="configuration-invariants:global-attributes" href="dom.html#global-attributes">global attributes</a> as well as local attributes that apply to a specific element. Global and local attributes can be mixed, but note that ambiguous configurations where a particular attribute would be allowed by one list and forbidden by another, are generally invalid.</p>
 
