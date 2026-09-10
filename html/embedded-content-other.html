@@ -11,7 +11,7 @@
   <script defer="" crossorigin="" src="./html-dfn.js"></script>
   <script defer="" crossorigin="" src="https://html.spec.whatwg.org/var-click-highlighting.js"></script>
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">1 September 2026</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1 class="allcaps">HTML</h1><p id="living-standard">Living Standard — Last Updated <span class="pubdate">8 September 2026</span></hgroup>
    
    
 
@@ -137,7 +137,18 @@
 
   <p class="note">For <code id="dimension-attributes:the-iframe-element-2"><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>, <code id="dimension-attributes:the-embed-element-2"><a href="iframe-embed-object.html#the-embed-element">embed</a></code> and <code id="dimension-attributes:the-object-element-2"><a href="iframe-embed-object.html#the-object-element">object</a></code> the IDL attributes are <code id="dimension-attributes:idl-domstring"><a data-x-internal="idl-domstring" href="https://triple-underscore.github.io/WebIDL-ja.html#idl-DOMString">DOMString</a></code>; for <code id="dimension-attributes:the-video-element-2"><a href="media.html#the-video-element">video</a></code> and <code id="dimension-attributes:the-source-element-2"><a href="embedded-content.html#the-source-element">source</a></code> the IDL attributes are <code id="dimension-attributes:idl-unsigned-long"><a data-x-internal="idl-unsigned-long" href="https://triple-underscore.github.io/WebIDL-ja.html#idl-unsigned-long">unsigned long</a></code>.</p>
 
-  <p class="note">The corresponding IDL attributes for <code id="dimension-attributes:dom-img-height"><a href="embedded-content.html#dom-img-height">img</a></code> and <code id="dimension-attributes:dom-input-height"><a href="input.html#dom-input-height">input</a></code> elements are defined in those respective elements' sections, as they are slightly more specific to those elements' other behaviors.</p>
+  <p class="note">The corresponding IDL attributes for <code id="dimension-attributes:dom-img-height"><a href="embedded-content.html#dom-img-height">img</a></code> and <code id="dimension-attributes:dom-input-height"><a href="input.html#dom-input-height">input</a></code> elements are defined in those respective elements' sections, as they are slightly more specific to those elements' other behaviors. Both are defined in terms of the algorithm below.</p>
+
+  <div data-algorithm=""><p>To <dfn id="determine-dimensions">determine the dimensions</dfn> of an <code id="dimension-attributes:the-img-element-2"><a href="embedded-content.html#the-img-element">img</a></code> or <code id="dimension-attributes:the-input-element-2"><a href="input.html#the-input-element">input</a></code> element <var>element</var> given a struct consisting of a width and a height, or null, <var>naturalDimensions</var>:</p>
+
+  <ol><li><p>If <var>element</var> is <a id="dimension-attributes:being-rendered" href="rendering.html#being-rendered">being rendered</a>, then return the width and height of <var>element</var>'s <a id="dimension-attributes:content-box" href="https://triple-underscore.github.io/css-box-ja.html#content-box" data-x-internal="content-box">content box</a>, in <a href="https://triple-underscore.github.io/css-values-ja.html#px" id="dimension-attributes:'px'-3" data-x-internal="'px'">CSS pixels</a>. <a href="references.html#refsCSS">[CSS]</a><li><p>Let <var>width</var> and <var>height</var> be 0.<li><p>If <var>naturalDimensions</var> is not null, then set <var>width</var> to <var>naturalDimensions</var>'s width and <var>height</var> to <var>naturalDimensions</var>'s height.<li><p>If <var>element</var> has a <code id="dimension-attributes:attr-dim-width-2"><a href="#attr-dim-width">width</a></code> attribute:</p>
+
+    <ol><li><p>Let <var>attributeWidth</var> be the result of <a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers" id="dimension-attributes:rules-for-parsing-non-negative-integers">parsing that attribute's value</a>.<li><p>If <var>attributeWidth</var> is not an error, then set <var>width</var> to <var>attributeWidth</var>.</ol>
+   <li><p>If <var>element</var> has a <code id="dimension-attributes:attr-dim-height-2"><a href="#attr-dim-height">height</a></code> attribute:</p>
+
+    <ol><li><p>Let <var>attributeHeight</var> be the result of <a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers" id="dimension-attributes:rules-for-parsing-non-negative-integers-2">parsing that attribute's value</a>.<li><p>If <var>attributeHeight</var> is not an error, then set <var>height</var> to <var>attributeHeight</var>.</ol>
+   <li><p>Return a width of <var>width</var> and a height of <var>height</var>, in <a href="https://triple-underscore.github.io/css-values-ja.html#px" id="dimension-attributes:'px'-4" data-x-internal="'px'">CSS pixels</a>.</ol>
+  </div>
 
   
 
