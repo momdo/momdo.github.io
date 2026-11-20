@@ -6,12 +6,12 @@
      link.hash = location.hash;
    }
   </script><body>
-  <script async="" src="./search.js"></script>
+  <script async="" src="/dev/search.js"></script>
   
   
   
   
-  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">16 October 2026</span></hgroup>
+  <header id="head" class="head with-buttons"><a href="https://whatwg.org/" class="logo"><img width="100" alt="WHATWG" crossorigin="" class="darkmode-aware" src="https://resources.whatwg.org/logo.svg" height="100"></a><hgroup><h1><a rel="home" href="./dev" />HTML: The Living Standard</a></h1><p id="dev-edition-h2">Edition for Web Developers — Last Updated <span class="pubdate">19 November 2026</span></hgroup>
    
 
    <div id="search"><input placeholder="Search. Press &apos;/&apos;" autocomplete="off" name="query" id="query" type="search"><ol id="results"></ol>
@@ -32,7 +32,7 @@
 
   
 
-  <nav><a href="workers.html">← 10 ウェブワーカー</a> — <a href="./">目次</a> — <a href="webstorage.html">12 Web storage →</a></nav><ol class="toc"><li><a href="worklets.html#worklets"><span class="secno">11</span> ワークレット</a><ol><li><a href="worklets.html#worklets-intro"><span class="secno">11.1</span> 導入</a><ol><li><a href="worklets.html#worklets-motivations"><span class="secno">11.1.1</span> Motivations</a><li><a href="worklets.html#worklets-idempotent"><span class="secno">11.1.2</span> Code idempotence</a><li><a href="worklets.html#worklets-speculative"><span class="secno">11.1.3</span> Speculative evaluation</a></ol><li><a href="worklets.html#worklets-examples"><span class="secno">11.2</span> Examples</a><ol><li><a href="worklets.html#worklets-examples-loading"><span class="secno">11.2.1</span> Loading scripts</a><li><a href="worklets.html#worklets-example-registering"><span class="secno">11.2.2</span> Registering a class and invoking its methods</a></ol><li><a href="worklets.html#worklets-infrastructure"><span class="secno">11.3</span> Infrastructure</a><ol><li><a href="worklets.html#worklets-global"><span class="secno">11.3.1</span> The global scope</a><ol><li><a href="worklets.html#worklet-agents-and-event-loops"><span class="secno">11.3.1.1</span> Agents and event loops</a></ol><li><a href="worklets.html#worklets-worklet"><span class="secno">11.3.2</span> The <code>Worklet</code> class</a><li><a href="worklets.html#worklets-lifetime"><span class="secno">11.3.3</span> The worklet's lifetime</a></ol></ol></ol><h2 id="worklets"><span class="secno">11</span> ワークレット<a href="#worklets" class="self-link"></a></h2>
+  <nav><a href="workers.html">← 10 ウェブワーカー</a> — <a href="./">目次</a> — <a href="webstorage.html">12 ウェブストレージ →</a></nav><ol class="toc"><li><a href="worklets.html#worklets"><span class="secno">11</span> ワークレット</a><ol><li><a href="worklets.html#worklets-intro"><span class="secno">11.1</span> 導入</a><ol><li><a href="worklets.html#worklets-motivations"><span class="secno">11.1.1</span> 動機</a><li><a href="worklets.html#worklets-idempotent"><span class="secno">11.1.2</span> コードの冪等性</a><li><a href="worklets.html#worklets-speculative"><span class="secno">11.1.3</span> 投機的評価</a></ol><li><a href="worklets.html#worklets-examples"><span class="secno">11.2</span> 例</a><ol><li><a href="worklets.html#worklets-examples-loading"><span class="secno">11.2.1</span> スクリプトの読み込み</a><li><a href="worklets.html#worklets-example-registering"><span class="secno">11.2.2</span> クラスの登録およびそのメソッドの呼び出し</a></ol><li><a href="worklets.html#worklets-infrastructure"><span class="secno">11.3</span> インフラ</a><ol><li><a href="worklets.html#worklets-global"><span class="secno">11.3.1</span> グローバルスコープ</a><ol><li><a href="worklets.html#worklet-agents-and-event-loops"><span class="secno">11.3.1.1</span> エージェントおよびイベントループ</a></ol><li><a href="worklets.html#worklets-worklet"><span class="secno">11.3.2</span> <code>Worklet</code>クラス</a><li><a href="worklets.html#worklets-lifetime"><span class="secno">11.3.3</span> ワークレットの存続期間</a></ol></ol></ol><h2 id="worklets"><span class="secno">11</span> ワークレット<a href="#worklets" class="self-link"></a></h2>
 
   <h3 id="worklets-intro"><span class="secno">11.1</span> 導入<a href="#worklets-intro" class="self-link"></a></h3>
 
@@ -42,62 +42,62 @@
 
   <p>ここで指定したワークレットインフラは、ウェブ開発者が直接使用することはできない。その代わりに、他の仕様はそのワークレットインフラに基づいて構築され、ブラウザー実装パイプラインの特定の部分で実行するために特化された、直接使用可能なワークレットタイプを作成する。</p>
 
-  <h4 id="worklets-motivations"><span class="secno">11.1.1</span> Motivations<a href="#worklets-motivations" class="self-link"></a></h4>
+  <h4 id="worklets-motivations"><span class="secno">11.1.1</span> 動機<a href="#worklets-motivations" class="self-link"></a></h4>
 
   
 
-  <p>Allowing extension points to rendering, or other sensitive parts of the implementation pipeline such as audio output, is difficult. If extension points were done with full access to the APIs available on <code>Window</code>, engines would need to abandon previously-held assumptions for what could happen in the middle of those phases. For example, during the layout phase, rendering engines assume that no DOM will be modified.</p>
+  <p>レンダリング、または音声出力などの実装パイプラインのその他の機微な部分に拡張ポイントを許可することは困難である。拡張ポイントが<code>Window</code>上で利用可能なAPIへの完全なアクセスを伴う形で設けられるなら、エンジンは、それらのフェーズの途中で何が起こり得るかについて従来保持していた前提を放棄する必要がある。例えば、レイアウトフェーズ中、レンダリングエンジンはDOMが変更されないと想定する。</p>
 
-  <p>Additionally, defining extension points in the <code>Window</code> environment would restrict user agents to performing work in the same thread as the <code>Window</code> object. (Unless implementations added complex, high-overhead infrastructure to allow thread-safe APIs, as well as thread-joining guarantees.)</p>
+  <p>さらに、<code>Window</code>環境で拡張ポイントを定義すると、ユーザーエージェントは<code>Window</code>オブジェクトと同じスレッドで作業を実行するよう制限される。（ただし、実装がスレッドセーフなAPIを可能にする複雑でオーバーヘッドの大きいインフラと、スレッドのjoinに関する保証を追加する場合は除く。）</p>
 
-  <p>Worklets are designed to allow extension points, while keeping guarantees that user agents currently rely on. This is done through new global environments, based on subclasses of <code id="worklets-motivations:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>.</p>
+  <p>ワークレットは、ユーザーエージェントが現在依存している保証を維持しながら、拡張ポイントを可能にするよう設計されている。これは、<code id="worklets-motivations:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>のサブクラスに基づく新しいグローバル環境を通じて実現される。</p>
 
-  <p>Worklets are similar to web workers. However, they:</p>
+  <p>ワークレットはウェブワーカーに類似している。ただし、次の点が異なる：</p>
 
-  <ul><li><p>Are thread-agnostic. That is, they are not designed to run on a dedicated separate thread, like each worker is. Implementations can run worklets wherever they choose (including on the main thread).<li><p>Are able to have multiple duplicate instances of the global scope created, for the purpose of parallelism.<li><p>Do not use an event-based API. Instead, classes are registered on the global scope, whose methods are invoked by the user agent.<li><p>Have a reduced API surface on the global scope.<li><p>Have a lifetime for their <span>global object</span> which is defined by other specifications, often in an <a id="worklets-motivations:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> manner.</ul>
+  <ul><li><p>スレッド非依存である。すなわち、各ワーカーのように専用の個別スレッドで実行するよう設計されているわけではない。実装は、選択した任意の場所（メインスレッドを含む）でワークレットを実行できる。<li><p>並列処理を目的として、グローバルスコープの重複インスタンスを複数持つことができる。<li><p>イベントベースのAPIを使用しない。その代わり、クラスはグローバルスコープに登録され、そのメソッドはユーザーエージェントによって呼び出される。<li><p>グローバルスコープ上で縮小されたAPIサーフェスを持つ。<li><p>それらの<span>グローバルオブジェクト</span>の存続期間は他の仕様によって定義され、多くの場合、<a id="worklets-motivations:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">実装定義</a>の方法で定義される。</ul>
 
-  <p>As worklets have relatively high overhead, they are best used sparingly. Due to this, a given <code id="worklets-motivations:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code> is expected to be shared between multiple separate scripts. (This is similar to how a single <code>Window</code> is shared between multiple separate scripts.)</p>
+  <p>ワークレットは比較的オーバーヘッドが大きいため、控えめに使用するのが最善である。このため、与えられた<code id="worklets-motivations:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>は複数の個別のスクリプト間で共有されることが想定されている。（これは、単一の<code>Window</code>が複数の個別のスクリプト間で共有される方法に類似している。）</p>
 
-  <p>Worklets are a general technology that serve different use cases. Some worklets, such as those defined in <cite>CSS Painting API</cite>, provide extension points intended for stateless, idempotent, and short-running computations, which have special considerations as described in the next couple of sections. Others, such as those defined in <cite>Web Audio API</cite>, are used for stateful, long-running operations. <a href="references.html#refsCSSPAINT">[CSSPAINT]</a> <a href="references.html#refsWEBAUDIO">[WEBAUDIO]</a></p>
+  <p>ワークレットは、さまざまなユースケースに対応する汎用技術である。<cite>CSS Painting API</cite>で定義されているものなど、一部のワークレットは、ステートレスで、冪等で、短時間で実行される計算を対象とする拡張ポイントを提供しており、これらには次のいくつかの節で説明する特別な考慮事項がある。一方、<cite>Web Audio API</cite>で定義されているものなど、その他のものは、ステートフルで長時間実行される操作に使用される。<a href="references.html#refsCSSPAINT">[CSSPAINT]</a> <a href="references.html#refsWEBAUDIO">[WEBAUDIO]</a></p>
 
-  <h4 id="worklets-idempotent"><span class="secno">11.1.2</span> Code idempotence<a href="#worklets-idempotent" class="self-link"></a></h4>
+  <h4 id="worklets-idempotent"><span class="secno">11.1.2</span> コードの冪等性<a href="#worklets-idempotent" class="self-link"></a></h4>
 
-  <p>Some specifications which use worklets are intended to allow user agents to parallelize work over multiple threads, or to move work between threads as required. In these specifications, user agents might invoke methods on a web-developer-provided class in an <a id="worklets-idempotent:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> order.</p>
+  <p>ワークレットを使用する一部の仕様は、ユーザーエージェントが複数のスレッドにわたって作業を並列化すること、または必要に応じてスレッド間で作業を移動したりできるようにすることを意図している。これらの仕様では、ユーザーエージェントは、ウェブ開発者が提供したクラス上のメソッドを<a id="worklets-idempotent:implementation-defined" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">実装定義</a>の順序で呼び出す場合がある。</p>
 
-  <p>As a result of this, to prevent interoperability issues, authors who register classes on such <code id="worklets-idempotent:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s should make their code idempotent. That is, a method or set of methods on the class should produce the same output given a particular input.</p>
+  <p>その結果、相互運用性の問題を防ぐために、そのような<code id="worklets-idempotent:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>にクラスを登録する著者は、コードを冪等にすべきである。つまり、そのクラス上のメソッドまたはメソッド群は、特定の入力が与えられた場合に同じ出力を生成すべきである。</p>
 
-  <p>This specification uses the following techniques in order to encourage authors to write code in an idempotent way:</p>
+  <p>この仕様は、著者が冪等な方法でコードを記述するよう促すために、次のテクニックを使用する：</p>
 
-  <ul><li><p>No reference to the global object is available (i.e., there is no counterpart to <code id="worklets-idempotent:dom-workerglobalscope-self"><a href="workers.html#dom-workerglobalscope-self">self</a></code> on <code id="worklets-idempotent:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>).</p>
+  <ul><li><p>グローバルオブジェクトへの参照は利用できない（すなわち、<code id="worklets-idempotent:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>上には<code id="worklets-idempotent:dom-workerglobalscope-self"><a href="workers.html#dom-workerglobalscope-self">self</a></code>に相当するものがない）。</p>
 
-    <p class="XXX">Although this was the intention when worklets were first specified, the introduction of <code>globalThis</code> has made it no longer true. See <a href="https://github.com/whatwg/html/issues/6059">issue #6059</a> for more discussion.</p>
-   <li><p>Code is loaded as a <span>module script</span>, which results in the code being executed in strict mode and with no shared <code>this</code> referencing the global proxy.</ul>
+    <p class="XXX">これは、ワークレットが最初に仕様化されたときの意図であったが、<code>globalThis</code>の導入によって、もはや正しくなくなっている。詳細な議論については、<a href="https://github.com/whatwg/html/issues/6059">issue #6059</a>を参照。</p>
+   <li><p>コードは<span>モジュールスクリプト</span>として読み込まれ、その結果、コードは厳格モードで実行され、グローバルプロキシを参照する共有の<code>this</code>は存在しない。</ul>
 
-  <p>Together, these restrictions help prevent two different scripts from sharing state using properties of the <span>global object</span>.</p>
+  <p>これらの制限は共に、2つの異なるスクリプトがグローバルオブジェクトのプロパティを使用して状態を共有することを防ぐ助けとなる。</p>
 
-  <p>Additionally, specifications which use worklets and intend to allow <a id="worklets-idempotent:implementation-defined-2" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">implementation-defined</a> behavior must obey the following:</p>
+  <p>さらに、ワークレットを使用し、<a id="worklets-idempotent:implementation-defined-2" href="https://triple-underscore.github.io/infra-ja.html#implementation-defined" data-x-internal="implementation-defined">実装定義</a>の動作を許可することを意図する仕様は、次の要件に従わなければならない：</p>
 
-  <ul><li><p>They must require user agents to always have at least two <code id="worklets-idempotent:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code> instances per <code id="worklets-idempotent:worklet"><a href="#worklet">Worklet</a></code>, and randomly assign a method or set of methods on a class to a particular <code id="worklets-idempotent:workletglobalscope-4"><a href="#workletglobalscope">WorkletGlobalScope</a></code> instance. These specifications may provide an opt-out under memory constraints.<li><p>These specifications must allow user agents to create and destroy instances of their <code id="worklets-idempotent:workletglobalscope-5"><a href="#workletglobalscope">WorkletGlobalScope</a></code> subclasses at any time.</ul>
+  <ul><li><p>それらは、ユーザーエージェントが各<code id="worklets-idempotent:worklet"><a href="#worklet">Worklet</a></code>につき少なくとも2つの<code id="worklets-idempotent:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code>インスタンスを常に持ち、クラス上のメソッドまたはメソッド群を特定の<code id="worklets-idempotent:workletglobalscope-4"><a href="#workletglobalscope">WorkletGlobalScope</a></code>インスタンスにランダムに割り当てることを要求しなければならない。これらの仕様は、メモリ制約下でオプトアウトする選択肢を提供してもよい。<li><p>これらの仕様は、ユーザーエージェントが任意の時点で<code id="worklets-idempotent:workletglobalscope-5"><a href="#workletglobalscope">WorkletGlobalScope</a></code>サブクラスのインスタンスを作成および破棄できるようにしなければならない。</ul>
 
-  <h4 id="worklets-speculative"><span class="secno">11.1.3</span> Speculative evaluation<a href="#worklets-speculative" class="self-link"></a></h4>
+  <h4 id="worklets-speculative"><span class="secno">11.1.3</span> 投機的評価<a href="#worklets-speculative" class="self-link"></a></h4>
 
-  <p>Some specifications which use worklets can invoke methods on a web-developer-provided class based on the state of the user agent. To increase concurrency between threads, a user agent may invoke a method speculatively, based on potential future states.</p>
+  <p>ワークレットを使用する一部の仕様は、ユーザーエージェントの状態に基づいて、ウェブ開発者が提供したクラス上のメソッドを呼び出すことができる。スレッド間の並行性を高めるため、ユーザーエージェントは、将来起こり得る状態に基づいて、メソッドを投機的に呼び出してもよい。</p>
 
-  <p>In these specifications, user agents might invoke such methods at any time, and with any arguments, not just ones corresponding to the current state of the user agent. The results of such speculative evaluations are not displayed immediately, but can be cached for use if the user agent state matches the speculated state. This can increase the concurrency between the user agent and worklet threads.</p>
+  <p>これらの仕様では、ユーザーエージェントは、現在のユーザーエージェントの状態に対応する引数だけでなく、任意の引数を使用して、任意の時点でそのようなメソッドを呼び出す場合がある。このような投機的評価の結果は、直ちには表示されないが、ユーザーエージェントの状態が予測された状態と一致した場合に使用できるよう、キャッシュされることがある。これにより、ユーザーエージェントとワークレットのスレッド間の並行性を高めることができる。</p>
 
-  <p>As a result of this, to prevent interoperability risks between user agents, authors who register classes on such <code id="worklets-speculative:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s should make their code stateless. That is, the only effect of invoking a method should be its result, and not any side effects such as updating mutable state.</p>
+  <p>その結果、ユーザーエージェント間の相互運用性のリスクを防ぐために、そのような<code id="worklets-speculative:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>にクラスを登録する著者は、コードをステートレスにすべきである。つまり、メソッドを呼び出すことの唯一の効果はその結果であるべきであり、可変状態の更新などの副作用であってはならない。</p>
 
-  <p>The same techniques which encourage <a href="#worklets-idempotent">code idempotence</a> also encourage authors to write stateless code.</p>
+  <p><a href="#worklets-idempotent">コードの冪等性</a>を促進する同じテクニックは、著者がステートレスなコードを記述することも促進する。</p>
 
-  <div class="non-normative"><h3 id="worklets-examples"><span class="secno">11.2</span> Examples<a href="#worklets-examples" class="self-link"></a></h3>
+  <div class="non-normative"><h3 id="worklets-examples"><span class="secno">11.2</span> 例<a href="#worklets-examples" class="self-link"></a></h3>
 
   
 
-  <p>For these examples, we'll use a fake worklet. The <code>Window</code> object provides two <code id="worklets-examples:worklet"><a href="#worklet">Worklet</a></code> instances, which each run code in their own collection of <code id="worklets-examples:fakeworkletglobalscope"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>s:<dl class="domintro"><dt><code>window.fakeWorklet1</code><dd>Returns one of the fake worklets.<dt><code>window.fakeWorklet2</code><dd>Returns another of the fake worklets.</dl>
+  <p>これらの例では、偽ワークレットを使用する。<code>Window</code>オブジェクトは2つの<code id="worklets-examples:worklet"><a href="#worklet">Worklet</a></code>インスタンスを提供し、それぞれが独自の<code id="worklets-examples:fakeworkletglobalscope"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>の集合内でコードを実行する：<dl class="domintro"><dt><code>window.fakeWorklet1</code><dd>偽ワークレットの1つを返す。<dt><code>window.fakeWorklet2</code><dd>別の偽ワークレットを返す。</dl>
 
-  <p>Both of these have their <a href="#worklet-global-scope-type" id="worklets-examples:worklet-global-scope-type">worklet global scope type</a> set to <code id="worklets-examples:fakeworkletglobalscope-2"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>, and their <a href="#worklet-destination-type" id="worklets-examples:worklet-destination-type">worklet destination type</a> set to "<code>fakeworklet</code>". User agents should create at least two <code id="worklets-examples:fakeworkletglobalscope-3"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code> instances per worklet.</p>
+  <p>これらはいずれも、<a href="#worklet-global-scope-type" id="worklets-examples:worklet-global-scope-type">ワークレットのグローバルスコープ型</a>が<code id="worklets-examples:fakeworkletglobalscope-2"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>に設定され、<a href="#worklet-destination-type" id="worklets-examples:worklet-destination-type">ワークレットの宛先型</a>が"<code>fakeworklet</code>"に設定されている。ユーザーエージェントは、各ワークレットにつき少なくとも2つの<code id="worklets-examples:fakeworkletglobalscope-3"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>インスタンスを作成すべきである。</p>
 
-  <p class="note">"<code>fakeworklet</code>" is not actually a valid <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination" id="worklets-examples:concept-request-destination" data-x-internal="concept-request-destination">destination</a> per <cite>Fetch</cite>. But this illustrates how real worklets would generally have their own worklet-type-specific destination. <a href="references.html#refsFETCH">[FETCH]</a></p>
+  <p class="note">"<code>fakeworklet</code>"は、実際には<cite>Fetch</cite>における有効な<a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination" id="worklets-examples:concept-request-destination" data-x-internal="concept-request-destination">宛先</a>ではない。しかし、これは、実際のワークレットが一般に、それぞれのワークレット型に固有の宛先を持つことを示している。<a href="references.html#refsFETCH">[FETCH]</a></p>
 
   
 
@@ -105,24 +105,24 @@
 
   
 
-  <p>Inside a <code id="fakeworkletglobalscope">FakeWorkletGlobalScope</code>, the following global method is available:</p>
+  <p><code id="fakeworkletglobalscope">FakeWorkletGlobalScope</code>内では、次のグローバルメソッドを利用できる：</p>
 
-  <dl class="domintro"><dt><code>registerFake(<var>type</var>, <var>classConstructor</var>)</code><dd>Registers the JavaScript class given by <var>classConstructor</var> for use when the user agent later wants to do some operation specified by <var>type</var>.</dl>
-
-  
-
-  <h4 id="worklets-examples-loading"><span class="secno">11.2.1</span> Loading scripts<a href="#worklets-examples-loading" class="self-link"></a></h4>
+  <dl class="domintro"><dt><code>registerFake(<var>type</var>, <var>classConstructor</var>)</code><dd><var>classConstructor</var>で与えられるJavaScriptクラスを、ユーザーエージェントが後で<var>type</var>によって指定された何らかの操作を実行するときに使用するために登録する。</dl>
 
   
 
-  <p>To load scripts into <span>fake worklet 1</span>, a web developer would write:</p>
+  <h4 id="worklets-examples-loading"><span class="secno">11.2.1</span> スクリプトの読み込み<a href="#worklets-examples-loading" class="self-link"></a></h4>
+
+  
+
+  <p><span>偽ワークレット1</span>にスクリプトを読み込むため、ウェブ開発者は次のように記述する：</p>
 
   <pre><code class='js'>window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- t>'script1.mjs'</c-><c- p>);</c->
 window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- t>'script2.mjs'</c-><c- p>);</c-></code></pre>
 
-  <p>Note that which script finishes fetching and runs first is dependent on network timing: it could be either <code>script1.mjs</code> or <code>script2.mjs</code>. This generally won't matter for well-written scripts intended to be loaded in worklets, if they follow the suggestions about preparing for <a href="#worklets-speculative">speculative evaluation</a>.</p>
+  <p>どちらのスクリプトのフェッチが先に完了し、最初に実行されるかはネットワークのタイミングに依存することに注意する。それは<code>script1.mjs</code>または<code>script2.mjs</code>のいずれかであり得る。これは一般に、<a href="#worklets-speculative">投機的評価</a>への準備に関する提案に従っている場合、ワークレットへの読み込みを意図して適切に記述されたスクリプトでは問題にならない。</p>
 
-  <p>If a web developer wants to perform a task only after the scripts have successfully run and loaded into some worklets, they could write:</p>
+  <p>ウェブ開発者が、スクリプトが正常に実行され、いくつかのワークレットに読み込まれた後にのみタスクを実行したい場合、次のように記述できる：</p>
 
   <pre><code class='js'>Promise<c- p>.</c->all<c- p>([</c->
     window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- t>'script1.mjs'</c-><c- p>),</c->
@@ -133,7 +133,7 @@ window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- t>'script2.mj
 
   <hr>
 
-  <p>Another important point about script-loading is that loaded scripts can be run in multiple <code id="worklets-examples-loading:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s per <code id="worklets-examples-loading:worklet"><a href="#worklet">Worklet</a></code>, as discussed in the section on <a href="#worklets-idempotent">code idempotence</a>. In particular, the specification above for <span>fake worklet 1</span> and <span>fake worklet 2</span> require this. So, consider a scenario such as the following:</p>
+  <p>スクリプトの読み込みに関するもう1つの重要な点は、コードの冪等性に関する節で説明したとおり、読み込まれたスクリプトは1つの<code id="worklets-examples-loading:worklet"><a href="#worklet">Worklet</a></code>につき複数の<code id="worklets-examples-loading:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>で実行され得ることである。特に、<span>偽ワークレット1</span>および<span>偽ワークレット2</span>に関する上記の仕様は、これを要求する。そこで、次のようなシナリオを考える：</p>
 
   <pre><code class='js'><c- c1>// script.mjs</c->
 console<c- p>.</c->log<c- p>(</c-><c- u>"Hello from a FakeWorkletGlobalScope!"</c-><c- p>);</c-></code></pre>
@@ -141,20 +141,20 @@ console<c- p>.</c->log<c- p>(</c-><c- u>"Hello from a FakeWorkletGlobalScope!"</
   <pre><code class='js'><c- c1>// app.mjs</c->
 window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- u>"script.mjs"</c-><c- p>);</c-></code></pre>
 
-  <p>This could result in output such as the following from a user agent's console:</p>
+  <p>これにより、ユーザーエージェントのコンソールに次のような出力が生じることがある：</p>
 
   <pre><code>[fakeWorklet1#1] Hello from a FakeWorkletGlobalScope!
 [fakeWorklet1#4] Hello from a FakeWorkletGlobalScope!
 [fakeWorklet1#2] Hello from a FakeWorkletGlobalScope!
 [fakeWorklet1#3] Hello from a FakeWorkletGlobalScope!</code></pre>
 
-  <p>If the user agent at some point decided to kill and restart the third instance of <code id="worklets-examples-loading:fakeworkletglobalscope"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>, the console would again print <code>[fakeWorklet1#3] Hello from a FakeWorkletGlobalScope!</code> when this occurs.</p>
+  <p>ユーザーエージェントがある時点で、<code id="worklets-examples-loading:fakeworkletglobalscope"><a href="#fakeworkletglobalscope">FakeWorkletGlobalScope</a></code>の3番目のインスタンスを強制終了して再起動することを決定した場合、その際、コンソールには再び<code>[fakeWorklet1#3] Hello from a FakeWorkletGlobalScope!</code>が出力される。</p>
 
-  <h4 id="worklets-example-registering"><span class="secno">11.2.2</span> Registering a class and invoking its methods<a href="#worklets-example-registering" class="self-link"></a></h4>
+  <h4 id="worklets-example-registering"><span class="secno">11.2.2</span> クラスの登録およびそのメソッドの呼び出し<a href="#worklets-example-registering" class="self-link"></a></h4>
 
   
 
-  <p>Let's say that one of the intended usages of our fake worklet by web developers is to allow them to customize the highly-complex process of boolean negation. They might register their customization as follows:</p>
+  <p>ウェブ開発者による偽ワークレットの意図された使用法の1つが、ブール否定という非常に複雑なプロセスをカスタマイズできるようにすることであるとする。ウェブ開発者は、そのカスタマイズを次のように登録する場合がある：</p>
 
   <pre><code class='js'><c- c1>// script.mjs</c->
 registerFake<c- p>(</c-><c- t>'negation-processor'</c-><c- p>,</c-> <c- a>class</c-> <c- p>{</c->
@@ -166,7 +166,7 @@ registerFake<c- p>(</c-><c- t>'negation-processor'</c-><c- p>,</c-> <c- a>class<
   <pre><code class='js'><c- c1>// app.mjs</c->
 window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- u>"script.mjs"</c-><c- p>);</c-></code></pre>
 
-  <div data-algorithm=""><p>To make use of such registered classes, the specification for fake worklets could define a <dfn id="fakeworkletglobalscope-process">find the opposite of true</dfn> algorithm, given a <code id="worklets-example-registering:worklet"><a href="#worklet">Worklet</a></code> <var>worklet</var><span>, which invokes the <code>process</code> method on any class registered to one of <var>worklet</var>'s global scopes as having type "<code>negation-processor</code>", with true as the argument, and then uses the result in some way.</span></p>
+  <div data-algorithm=""><p>このように登録されたクラスを利用するため、偽ワークレットの仕様は、<code id="worklets-example-registering:worklet"><a href="#worklet">Worklet</a></code> <var>worklet</var>を受け取り、<dfn id="fakeworkletglobalscope-process">trueの反対を求める</dfn>アルゴリズムを定義できる。<span>これは、<var>worklet</var>のグローバルスコープのいずれかに"<code>negation-processor</code>"型として登録された任意のクラスのprocessメソッドを引数trueで呼び出し、その後、その結果を何らかの方法で使用する。</span></p>
 
   
   </div>
@@ -175,59 +175,59 @@ window<c- p>.</c->fakeWorklet1<c- p>.</c->addModule<c- p>(</c-><c- u>"script.mjs
 
   </div>
 
-  <h3 id="worklets-infrastructure"><span class="secno">11.3</span> Infrastructure<a href="#worklets-infrastructure" class="self-link"></a></h3>
+  <h3 id="worklets-infrastructure"><span class="secno">11.3</span> インフラ<a href="#worklets-infrastructure" class="self-link"></a></h3>
 
-  <h4 id="worklets-global"><span class="secno">11.3.1</span> The global scope<a href="#worklets-global" class="self-link"></a></h4>
+  <h4 id="worklets-global"><span class="secno">11.3.1</span> グローバルスコープ<a href="#worklets-global" class="self-link"></a></h4>
 
-  <p>Subclasses of <code id="workletglobalscope">WorkletGlobalScope</code> are used to create <span>global objects</span> wherein code loaded into a particular <code id="worklets-global:worklet"><a href="#worklet">Worklet</a></code> can execute.</p>
-
-  
-
-  <p class="note">Other specifications are intended to subclass <code id="worklets-global:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>, adding APIs to register a class, as well as other APIs specific for their worklet type.</p>
+  <p><code id="workletglobalscope">WorkletGlobalScope</code>のサブクラスは、特定の<code id="worklets-global:worklet"><a href="#worklet">Worklet</a></code>に読み込まれたコードを実行できる<span>グローバルオブジェクト</span>を作成するために使用される。</p>
 
   
 
-  <h5 id="worklet-agents-and-event-loops"><span class="secno">11.3.1.1</span> Agents and event loops<a href="#worklet-agents-and-event-loops" class="self-link"></a></h5>
+  <p class="note">他の仕様は、<code id="worklets-global:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>をサブクラス化し、クラスを登録するためのAPIおよび、それぞれのワークレット型に固有のその他のAPIを追加することを意図している。</p>
 
   
 
-  <p>Each <code id="worklet-agents-and-event-loops:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code> is contained in its own <a id="worklet-agents-and-event-loops:worklet-agent" href="webappapis.html#worklet-agent">worklet agent</a>, which has its corresponding <a href="webappapis.html#concept-agent-event-loop" id="worklet-agents-and-event-loops:concept-agent-event-loop">event loop</a>. However, in practice, implementation of these agents and event loops is expected to be different from most others.</p>
-
-  <p>A <a id="worklet-agents-and-event-loops:worklet-agent-2" href="webappapis.html#worklet-agent">worklet agent</a> exists for each <code id="worklet-agents-and-event-loops:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code> since, in theory, an implementation could use a separate thread for each <code id="worklet-agents-and-event-loops:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code> instance, and allowing this level of parallelism is best done using agents. However, because their [[CanBlock]] value is false, there is no requirement that agents and threads are one-to-one. This allows implementations the freedom to execute scripts loaded into a worklet on any thread, including one running code from other agents with [[CanBlock]] of false, such as the thread of a <a id="worklet-agents-and-event-loops:similar-origin-window-agent" href="webappapis.html#similar-origin-window-agent">similar-origin window agent</a> ("the main thread"). Contrast this with <a href="webappapis.html#dedicated-worker-agent" id="worklet-agents-and-event-loops:dedicated-worker-agent">dedicated worker agents</a>, whose true value for [[CanBlock]] effectively requires them to get a dedicated operating system thread.</p>
-
-  <p>Worklet <a href="webappapis.html#event-loop" id="worklet-agents-and-event-loops:event-loop">event loops</a> are also somewhat special. They are only used for <span>tasks</span> associated with <code id="worklet-agents-and-event-loops:dom-worklet-addmodule"><a href="#dom-worklet-addmodule">addModule()</a></code>, tasks wherein the user agent invokes author-defined methods, and <span>microtasks</span>. Thus, even though the <a href="#event-loop-processing-model">event loop processing model</a> specifies that all event loops run continuously, implementations can achieve observably-equivalent results using a simpler strategy, which just <a href="https://triple-underscore.github.io/WebIDL-JS-ja.html#invoke-a-callback-function" id="worklet-agents-and-event-loops:es-invoking-callback-functions" data-x-internal="es-invoking-callback-functions">invokes</a> author-provided methods and then relies on that process to <span>perform a microtask checkpoint</span>.</p>
+  <h5 id="worklet-agents-and-event-loops"><span class="secno">11.3.1.1</span> エージェントおよびイベントループ<a href="#worklet-agents-and-event-loops" class="self-link"></a></h5>
 
   
 
-  <h4 id="worklets-worklet"><span class="secno">11.3.2</span> The <code id="worklets-worklet:worklet"><a href="#worklet">Worklet</a></code> class<a href="#worklets-worklet" class="self-link"></a></h4><div class="mdn-anno wrapped"><button onclick="toggleStatus(this)" class="mdn-anno-btn"><b title="Support in all current engines." class="all-engines-flag">✔</b><span>MDN</span></button><div class="feature"><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Worklet" title="The Worklet interface is a lightweight version of Web Workers and gives developers access to low-level parts of the rendering pipeline.">Worklet</a><p class="all-engines-text">Support in all current engines.<div class="support"><span class="firefox yes"><span>Firefox</span><span>76+</span></span><span class="safari yes"><span>Safari</span><span>14.1+</span></span><span class="chrome yes"><span>Chrome</span><span>65+</span></span><hr><span class="opera unknown"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span><hr><span class="edge unknown"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>Internet Explorer</span><span>No</span></span><hr><span class="firefox_android unknown"><span>Firefox Android</span><span>?</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span></div></div></div>
+  <p>各<code id="worklet-agents-and-event-loops:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>は、それぞれ独自の<a id="worklet-agents-and-event-loops:worklet-agent" href="webappapis.html#worklet-agent">ワークレットエージェント</a>に含まれており、そのエージェントには対応する<a href="webappapis.html#concept-agent-event-loop" id="worklet-agents-and-event-loops:concept-agent-event-loop">イベントループ</a>がある。しかし、実際には、これらのエージェントおよびイベントループの実装は、他の大半のものとは異なると想定されている。</p>
 
-  <p>The <code id="worklet">Worklet</code> class provides the capability to add module scripts into its associated <code id="worklets-worklet:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s. The user agent can then create classes registered on the <code id="worklets-worklet:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s and invoke their methods.</p>
+  <p>理論上、実装は<code id="worklet-agents-and-event-loops:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code>の各インスタンスに個別のスレッドを使用でき、このレベルの並列性を可能にするにはエージェントを使用するのが最適であるため、各<code id="worklet-agents-and-event-loops:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>に対して<a id="worklet-agents-and-event-loops:worklet-agent-2" href="webappapis.html#worklet-agent">ワークレットエージェント</a>が存在する。ただし、それらの[[CanBlock]]の値はfalseであるため、エージェントとスレッドが1対1で対応する必要はない。これにより、実装は、ワークレットに読み込まれたスクリプトを任意のスレッドで実行でき、これには、[[CanBlock]]がfalseである他のエージェントからのコードを実行しているスレッド、例えば<a id="worklet-agents-and-event-loops:similar-origin-window-agent" href="webappapis.html#similar-origin-window-agent">類似オリジンのウィンドウエージェント</a>（"メインスレッド"）のスレッドも含まれる。これとは対照的に、<a href="webappapis.html#dedicated-worker-agent" id="worklet-agents-and-event-loops:dedicated-worker-agent">専用ワーカーエージェント</a>は、[[CanBlock]]の値がtrueであるため、事実上、専用のオペレーティングシステムスレッドを必要とする。</p>
+
+  <p>ワークレットの<a href="webappapis.html#event-loop" id="worklet-agents-and-event-loops:event-loop">イベントループ</a>も、いくぶん特殊である。それらは、<code id="worklet-agents-and-event-loops:dom-worklet-addmodule"><a href="#dom-worklet-addmodule">addModule()</a></code>に関連付けられた<span>タスク</span>、ユーザーエージェントが著者定義のメソッドを呼び出すタスク、および<span>マイクロタスク</span>にのみ使用される。したがって、<a href="#event-loop-processing-model">イベントループ処理モデル</a>はすべてのイベントループが継続的に実行されることを規定しているが、実装は、著者が提供したメソッドを<a href="https://triple-underscore.github.io/WebIDL-JS-ja.html#invoke-a-callback-function" id="worklet-agents-and-event-loops:es-invoking-callback-functions" data-x-internal="es-invoking-callback-functions">呼び出し</a>、そのプロセスに<span>マイクロタスクチェックポイントを実行させる</span>だけの、より単純な戦略を用いて、観測可能な結果が等価になるようにできる。</p>
 
   
 
-  <p>Specifications that create <code id="worklets-worklet:worklet-2"><a href="#worklet">Worklet</a></code> instances must specify the following for a given instance:</p>
+  <h4 id="worklets-worklet"><span class="secno">11.3.2</span> <code id="worklets-worklet:worklet"><a href="#worklet">Worklet</a></code>クラス<a href="#worklets-worklet" class="self-link"></a></h4><div class="mdn-anno wrapped"><button onclick="toggleStatus(this)" class="mdn-anno-btn"><b title="Support in all current engines." class="all-engines-flag">✔</b><span>MDN</span></button><div class="feature"><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Worklet" title="The Worklet interface is a lightweight version of Web Workers and gives developers access to low-level parts of the rendering pipeline.">Worklet</a><p class="all-engines-text">Support in all current engines.<div class="support"><span class="firefox yes"><span>Firefox</span><span>76+</span></span><span class="safari yes"><span>Safari</span><span>14.1+</span></span><span class="chrome yes"><span>Chrome</span><span>65+</span></span><hr><span class="opera unknown"><span>Opera</span><span>?</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span><hr><span class="edge unknown"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>Internet Explorer</span><span>No</span></span><hr><span class="firefox_android unknown"><span>Firefox Android</span><span>?</span></span><span class="safari_ios unknown"><span>Safari iOS</span><span>?</span></span><span class="chrome_android unknown"><span>Chrome Android</span><span>?</span></span><span class="webview_android unknown"><span>WebView Android</span><span>?</span></span><span class="samsunginternet_android unknown"><span>Samsung Internet</span><span>?</span></span><span class="opera_android unknown"><span>Opera Android</span><span>?</span></span></div></div></div>
 
-  <ul><li><p>its <dfn id="worklet-global-scope-type" data-export="">worklet global scope type</dfn>, which must be a Web IDL type that <a href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-inherit" id="worklets-worklet:inherit" data-x-internal="inherit">inherits</a> from <code id="worklets-worklet:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code>; and<li><p>its <dfn id="worklet-destination-type" data-export="">worklet destination type</dfn>, which must be a <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination" id="worklets-worklet:concept-request-destination" data-x-internal="concept-request-destination">destination</a>, and is used when fetching scripts.</ul>
+  <p><code id="worklet">Worklet</code>クラスは、関連付けられた<code id="worklets-worklet:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>にモジュールスクリプトを追加する機能を提供する。その後、ユーザーエージェントは<code id="worklets-worklet:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>に登録されたクラスを作成し、それらのメソッドを呼び出すことができる。</p>
 
-  <dl class="domintro"><dt><code>await <var>worklet</var>.<span id="dom-worklet-addmodule">addModule</span>(<var>moduleURL</var>[, { <span>credentials</span> }])</code><dd><p>Loads and executes the <span>module script</span> given by <var>moduleURL</var> into all of <var>worklet</var>'s <span>global scopes</span>. It can also create additional global scopes as part of this process, depending on the worklet type. The returned promise will fulfill once the script has been successfully loaded and run in all global scopes.</p>
+  
 
-    <p>The <code>credentials</code> option can be set to a <a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode" id="worklets-worklet:concept-request-credentials-mode" data-x-internal="concept-request-credentials-mode">credentials mode</a> to modify the script-fetching process. It defaults to "<code>same-origin</code>".</p>
+  <p><code id="worklets-worklet:worklet-2"><a href="#worklet">Worklet</a></code>インスタンスを作成する仕様は、各インスタンスについて次の事項を指定しなければならない：</p>
 
-    <p>Any failures in <span>fetching</span> the script or its dependencies will cause the returned promise to be rejected with an <a id="worklets-worklet:aborterror" href="https://triple-underscore.github.io/WebIDL-ja.html#aborterror" data-x-internal="aborterror">"<code>AbortError</code>"</a> <code id="worklets-worklet:domexception"><a data-x-internal="domexception" href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException">DOMException</a></code>. Any errors in parsing the script or its dependencies will cause the returned promise to be rejected with the exception generated during parsing.</p>
+  <ul><li><p>その<dfn id="worklet-global-scope-type" data-export="">ワークレットグローバルスコープ型</dfn>。これは<code id="worklets-worklet:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code>を<a href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-inherit" id="worklets-worklet:inherit" data-x-internal="inherit">継承する</a>Web IDL型でなければならない。および<li><p>その<dfn id="worklet-destination-type" data-export="">ワークレットの宛先型</dfn>。これは<a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-destination" id="worklets-worklet:concept-request-destination" data-x-internal="concept-request-destination">宛先</a>でなければならず、スクリプトのフェッチ時に使用される。</ul>
+
+  <dl class="domintro"><dt><code>await <var>worklet</var>.<span id="dom-worklet-addmodule">addModule</span>(<var>moduleURL</var>[, { <span>credentials</span> }])</code><dd><p><var>moduleURL</var>で指定された<span>モジュールスクリプト</span>を読み込み、<var>worklet</var>のすべての<span>グローバルスコープ</span>で実行する。また、この処理の一環として、ワークレット型に応じて追加のグローバルスコープを作成することもできる。スクリプトがすべてのグローバルスコープで正常に読み込まれ、実行されると、返されるプロミスは実行される。</p>
+
+    <p><code>credentials</code>オプションは、スクリプトのフェッチ処理を変更するために<a href="https://triple-underscore.github.io/Fetch-ja.html#concept-request-credentials-mode" id="worklets-worklet:concept-request-credentials-mode" data-x-internal="concept-request-credentials-mode">資格情報モード</a>に設定できる。デフォルトは"<code>same-origin</code>"である。</p>
+
+    <p>スクリプトまたはその依存関係の<span>フェッチ</span>に失敗すると、返されるプロミスは<a id="worklets-worklet:aborterror" href="https://triple-underscore.github.io/WebIDL-ja.html#aborterror" data-x-internal="aborterror">"<code>AbortError</code>"</a> <code id="worklets-worklet:domexception"><a data-x-internal="domexception" href="https://triple-underscore.github.io/WebIDL-ja.html#dfn-DOMException">DOMException</a></code>で拒否される。スクリプトまたはその依存関係の解析でエラーが発生すると、返されるプロミスは解析中に生成された例外で拒否される。</p>
    </dl>
 
   
 
-  <h4 id="worklets-lifetime"><span class="secno">11.3.3</span> The worklet's lifetime<a href="#worklets-lifetime" class="self-link"></a></h4>
+  <h4 id="worklets-lifetime"><span class="secno">11.3.3</span> ワークレットの存続期間<a href="#worklets-lifetime" class="self-link"></a></h4>
 
-  <p>The lifetime of a <code id="worklets-lifetime:worklet"><a href="#worklet">Worklet</a></code> has no special considerations; it is tied to the object it belongs to, such as the <code>Window</code>.</p>
+  <p><code id="worklets-lifetime:worklet"><a href="#worklet">Worklet</a></code>の存続期間には特別な考慮事項はなく、<code>Window</code>など、それが属するオブジェクトに結び付けられている。</p>
 
   
 
-  <p>The lifetime of a <code id="worklets-lifetime:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code> is, at a minimum, tied to the <code>Document</code> whose <span>worklet global scopes</span> contain it. In particular, <a href="document-lifecycle.html#destroy-a-document" id="worklets-lifetime:destroy-a-document">destroying</a> the <code>Document</code> will <span>terminate</span> the corresponding <code id="worklets-lifetime:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code> and allow it to be garbage-collected.</p>
+  <p><code id="worklets-lifetime:workletglobalscope"><a href="#workletglobalscope">WorkletGlobalScope</a></code>の存続期間は、少なくとも、それを含む<span>ワークレットグローバルスコープ</span>を有する<code>Document</code>に結び付けられている。特に、<code>Document</code>を<a href="document-lifecycle.html#destroy-a-document" id="worklets-lifetime:destroy-a-document">破棄</a>すると、対応する<code id="worklets-lifetime:workletglobalscope-2"><a href="#workletglobalscope">WorkletGlobalScope</a></code>は<span>終了</span>し、ガベージコレクションが可能になる。</p>
 
-  <p>Additionally, user agents may, at any time, <span>terminate</span> a given <code id="worklets-lifetime:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code>, unless the specification defining the corresponding worklet type says otherwise. For example, they might terminate them if the <a id="worklets-lifetime:worklet-agent" href="webappapis.html#worklet-agent">worklet agent</a>'s <a href="webappapis.html#concept-agent-event-loop" id="worklets-lifetime:concept-agent-event-loop">event loop</a> has no <span>tasks</span> queued, or if the user agent has no pending operations planning to make use of the worklet, or if the user agent detects abnormal operations such as infinite loops or callbacks exceeding imposed time limits.</p>
+  <p>さらに、対応するワークレット型を定義する仕様で別段の定めがない限り、ユーザーエージェントは任意の時点で、特定の<code id="worklets-lifetime:workletglobalscope-3"><a href="#workletglobalscope">WorkletGlobalScope</a></code>を<span>終了</span>させてもよい。例えば、<a id="worklets-lifetime:worklet-agent" href="webappapis.html#worklet-agent">ワークレットエージェント</a>の<a href="webappapis.html#concept-agent-event-loop" id="worklets-lifetime:concept-agent-event-loop">イベントループ</a>にキューに入ってい<span>るタスク</span>がない場合、ユーザーエージェントがそのワークレットを使用する予定の保留中の操作を持たない場合、またはユーザーエージェントが無限ループもしくは課された時間制限を超えるコールバックなどの異常な操作を検出した場合に、終了させることがある。</p>
 
-  <p>Finally, specifications for specific worklet types can give more specific details on when to <span>create</span> <code id="worklets-lifetime:workletglobalscope-4"><a href="#workletglobalscope">WorkletGlobalScope</a></code>s for a given worklet type. For example, they might create them during specific processes that call upon worklet code, as in the <a href="#worklets-example-registering">example</a>.</p>
+  <p>最後に、特定のワークレット型に関する仕様は、特定のワークレット型について<code id="worklets-lifetime:workletglobalscope-4"><a href="#workletglobalscope">WorkletGlobalScope</a></code>をいつ<span>作成する</span>かに関する、より詳細な情報を示すことができる。たとえば、<a href="#worklets-example-registering">例</a>に示すように、ワークレットコードを呼び出す特定の処理中に、それらを作成することがある。</p>
 
-  <nav><a href="workers.html">← 10 ウェブワーカー</a> — <a href="./">目次</a> — <a href="webstorage.html">12 Web storage →</a></nav>
+  <nav><a href="workers.html">← 10 ウェブワーカー</a> — <a href="./">目次</a> — <a href="webstorage.html">12 ウェブストレージ →</a></nav>
